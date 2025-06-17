@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,6 +23,7 @@ public class PrimitiveSchemaTypeProperties extends SimpleSchemaTypeProperties
     public PrimitiveSchemaTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
     }
 
 

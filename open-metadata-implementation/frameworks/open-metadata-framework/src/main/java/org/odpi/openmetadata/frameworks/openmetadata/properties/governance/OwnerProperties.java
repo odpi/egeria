@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -32,6 +33,7 @@ public class OwnerProperties extends ClassificationProperties
     public OwnerProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName);
     }
 
 

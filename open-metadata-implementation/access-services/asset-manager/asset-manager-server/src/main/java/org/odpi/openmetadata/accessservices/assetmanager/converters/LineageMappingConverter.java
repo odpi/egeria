@@ -82,7 +82,7 @@ public class LineageMappingConverter<B> extends AssetManagerOMASConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    lineageMappingProperties.setQualifiedName(this.getISCQualifiedName(instanceProperties));
+                    lineageMappingProperties.setISCQualifiedName(this.getISCQualifiedName(instanceProperties));
                     lineageMappingProperties.setLabel(this.getLabel(instanceProperties));
                     lineageMappingProperties.setDescription(this.getDescription(instanceProperties));
 

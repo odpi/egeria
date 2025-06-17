@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
 import java.util.List;
@@ -1083,7 +1084,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
 
         final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/attached-to/{2}";
 
-        if (schemaAttributeProperties.getTypeName() == null)
+        if ((schemaAttributeProperties.getTypeName() == null) || (OpenMetadataType.SCHEMA_ATTRIBUTE.typeName.equals(schemaAttributeProperties.getTypeName())))
         {
             schemaAttributeProperties.setTypeName(schemaAttributeTypeName);
         }

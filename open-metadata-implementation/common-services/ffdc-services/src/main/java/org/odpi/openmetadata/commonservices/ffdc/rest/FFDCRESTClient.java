@@ -4364,13 +4364,13 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public ActorProfileResponse callActorProfileGetRESTCall(String    methodName,
-                                                            String    urlTemplate,
-                                                            Object... params) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public ActorProfileGraphResponse callActorProfileGetRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        ActorProfileResponse restResult = this.callGetRESTCall(methodName, ActorProfileResponse.class, urlTemplate, params);
+        ActorProfileGraphResponse restResult = this.callGetRESTCall(methodName, ActorProfileGraphResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

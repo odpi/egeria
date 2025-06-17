@@ -68,7 +68,7 @@ public class ActorProfileConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ActorProfileElement bean)
+            if (returnBean instanceof ActorProfileGraphElement bean)
             {
                 ActorProfileProperties profileProperties = new ActorProfileProperties();
 

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class AssignmentScopeProperties extends RelationshipProperties
     public AssignmentScopeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
     }
 
 

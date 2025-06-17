@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class ContactMethodProperties
     private Date                 effectiveFrom = null;
     private Date                 effectiveTo   = null;
 
-    private String               typeName             = null;
+    private String               typeName             = OpenMetadataType.CONTACT_DETAILS.typeName;
     private Map<String, Object>  extendedProperties   = null;
 
 
@@ -42,7 +43,6 @@ public class ContactMethodProperties
      */
     public ContactMethodProperties()
     {
-        super();
     }
 
 
@@ -55,6 +55,8 @@ public class ContactMethodProperties
     {
         if (template != null)
         {
+            name = template.getName();
+            contactType = template.getContactType();
             contactMethodType = template.getContactMethodType();
             contactMethodService = template.getContactMethodService();
             contactMethodValue = template.getContactMethodValue();

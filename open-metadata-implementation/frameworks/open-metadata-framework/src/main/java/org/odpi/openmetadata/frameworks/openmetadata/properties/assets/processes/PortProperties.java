@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ public class PortProperties extends ReferenceableProperties
     public PortProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.PORT.typeName);
     }
 
 

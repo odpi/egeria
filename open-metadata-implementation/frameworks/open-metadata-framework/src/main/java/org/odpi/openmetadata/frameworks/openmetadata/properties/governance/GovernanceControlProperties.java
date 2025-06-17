@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityAccessControlProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -21,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = NamingStandardRuleProperties.class, name = "NamingStandardRuleProperties"),
-                @JsonSubTypes.Type(value = SecurityGroupProperties.class, name = "SecurityGroupProperties"),
+                @JsonSubTypes.Type(value = TechnicalControlProperties.class, name = "TechnicalControlProperties"),
+                @JsonSubTypes.Type(value = OrganizationalControlProperties.class, name = "OrganizationalControlProperties"),
         })
 public class GovernanceControlProperties extends GovernanceDefinitionProperties
 {
@@ -34,6 +36,8 @@ public class GovernanceControlProperties extends GovernanceDefinitionProperties
      */
     public GovernanceControlProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_CONTROL.typeName);
     }
 
 

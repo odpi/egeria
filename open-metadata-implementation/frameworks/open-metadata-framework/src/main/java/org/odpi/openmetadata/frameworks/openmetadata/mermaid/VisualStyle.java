@@ -75,6 +75,7 @@ public enum VisualStyle
     EXTERNAL_REFERENCE(Colour.BLACK.getColourNumber(), Colour.YELLOW.getColourNumber(), Colour.BLACK.getColourNumber(), "docs"),
     GOVERNED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "rounded"),
     GOVERNANCE_ACTOR(Colour.BLACK.getColourNumber(), Colour.LIGHT_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "trap-t"),
+    GOVERNANCE_TEAM(Colour.BLACK.getColourNumber(), Colour.LIGHT_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "tri"),
 
 
     PRINCIPAL_PROJECT(Colour.WHITE.getColourNumber(), Colour.DUSKY_ROSE.getColourNumber(), Colour.BLACK.getColourNumber(), "notch-rect"),

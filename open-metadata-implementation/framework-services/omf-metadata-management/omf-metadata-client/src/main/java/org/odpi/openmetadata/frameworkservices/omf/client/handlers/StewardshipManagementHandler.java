@@ -81,6 +81,50 @@ public class StewardshipManagementHandler
 
 
     /**
+     * Create a new client.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
+     * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public StewardshipManagementHandler(String   localServerName,
+                                        String   serverName,
+                                        String   serverPlatformURLRoot,
+                                        String   localServerUserId,
+                                        String   localServerUserPassword,
+                                        AuditLog auditLog,
+                                        String   accessServiceURLMarker,
+                                        int      maxPageSize) throws InvalidParameterException
+    {
+        final String methodName = "StewardshipManagementHandler";
+
+        this.client = new OpenMetadataStoreHandler(serverName, serverPlatformURLRoot, accessServiceURLMarker, localServerUserId, localServerUserPassword, maxPageSize);
+        this.auditLog = auditLog;
+
+        String serviceName = ViewServiceDescription.CLASSIFICATION_EXPLORER.getViewServiceFullName();
+
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
+                                                                                     serviceName,
+                                                                                     localServerName);
+        this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
+                                                                                                   serviceName,
+                                                                                                   localServerName);
+        this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
+                                                                                               serviceName,
+                                                                                               localServerName);
+    }
+
+
+    /**
      * Return information about the elements classified with the confidence classification.
      *
      * @param userId calling user

@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewSolutionBlueprintRequestBody extends NewElementRequestBody
+public class NewSolutionBlueprintRequestBody extends NewElementOptionsRequestBody
 {
     private SolutionBlueprintProperties properties = null;
 

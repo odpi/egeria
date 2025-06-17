@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class CommentProperties extends ReferenceableProperties
     public CommentProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.COMMENT.typeName);
     }
 
 

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.database
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +32,7 @@ public class DatabaseColumnProperties extends TabularColumnProperties
     public DatabaseColumnProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.RELATIONAL_COLUMN.typeName);
     }
 
 

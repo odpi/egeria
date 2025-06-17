@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.Locati
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.DigitalLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.rest.LocationResponse;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
@@ -370,9 +370,9 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
                                      String                    externalSourceGUID,
                                      String                    externalSourceName,
                                      String                    locationGUID,
-                                     DigitalLocationProperties properties) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                     CyberLocationProperties properties) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName = "setLocationAsDigital";
         final String locationGUIDParameter = "locationGUID";

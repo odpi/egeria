@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties;
 
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AgreementRoleAppointee extends ActorRoleAppointee
 {
-    private AgreementRoleProperties agreementRoleProperties = null;
+    private AgreementActorProperties agreementActorProperties = null;
 
 
     /**
@@ -45,7 +45,7 @@ public class AgreementRoleAppointee extends ActorRoleAppointee
 
         if (template != null)
         {
-            agreementRoleProperties = template.getAgreementRoleProperties();
+            agreementActorProperties = template.getAgreementRoleProperties();
         }
     }
 
@@ -66,20 +66,20 @@ public class AgreementRoleAppointee extends ActorRoleAppointee
      *
      * @return agreement role properties
      */
-    public AgreementRoleProperties getAgreementRoleProperties()
+    public AgreementActorProperties getAgreementRoleProperties()
     {
-        return agreementRoleProperties;
+        return agreementActorProperties;
     }
 
 
     /**
      * Set up the role information from the agreement.
      *
-     * @param agreementRoleProperties agreement role properties
+     * @param agreementActorProperties agreement role properties
      */
-    public void setAgreementRoleProperties(AgreementRoleProperties agreementRoleProperties)
+    public void setAgreementRoleProperties(AgreementActorProperties agreementActorProperties)
     {
-        this.agreementRoleProperties = agreementRoleProperties;
+        this.agreementActorProperties = agreementActorProperties;
     }
 
 
@@ -92,7 +92,7 @@ public class AgreementRoleAppointee extends ActorRoleAppointee
     public String toString()
     {
         return "AgreementRoleAppointee{" +
-                "agreementRoleProperties=" + agreementRoleProperties +
+                "agreementActorProperties=" + agreementActorProperties +
                 "} " + super.toString();
     }
 
@@ -118,7 +118,7 @@ public class AgreementRoleAppointee extends ActorRoleAppointee
             return false;
         }
         AgreementRoleAppointee that = (AgreementRoleAppointee) objectToCompare;
-        return Objects.equals(agreementRoleProperties, that.agreementRoleProperties);
+        return Objects.equals(agreementActorProperties, that.agreementActorProperties);
     }
 
 
@@ -130,6 +130,6 @@ public class AgreementRoleAppointee extends ActorRoleAppointee
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), agreementRoleProperties);
+        return Objects.hash(super.hashCode(), agreementActorProperties);
     }
 }

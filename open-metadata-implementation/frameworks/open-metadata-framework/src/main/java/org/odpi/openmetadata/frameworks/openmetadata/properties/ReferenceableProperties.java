@@ -2,23 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecord;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.NoteLogEntryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.NoteLogHeaderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
@@ -27,7 +21,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.FeedbackProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryCategoryProperties;
@@ -43,7 +36,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaEle
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataSourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SecurityManagerProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueSetProperties;
@@ -67,6 +59,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = ActorProfileProperties.class, name = "ActorProfileProperties"),
+                @JsonSubTypes.Type(value = ActorRoleProperties.class, name = "ActorRoleProperties"),
                 @JsonSubTypes.Type(value = AgreementProperties.class, name = "AgreementProperties"),
                 @JsonSubTypes.Type(value = BusinessCapabilityProperties.class, name = "BusinessCapabilityProperties"),
                 @JsonSubTypes.Type(value = CollectionProperties.class, name = "CollectionProperties"),
@@ -85,12 +78,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GlossaryProperties.class, name = "GlossaryProperties"),
                 @JsonSubTypes.Type(value = GlossaryCategoryProperties.class, name = "GlossaryCategoryProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermProperties.class, name = "GlossaryTermProperties"),
-                @JsonSubTypes.Type(value = GovernanceDomainProperties.class, name = "GovernanceDomainProperties"),
-                @JsonSubTypes.Type(value = GovernanceDomainSetProperties.class, name = "GovernanceDomainSetProperties"),
-                @JsonSubTypes.Type(value = GovernanceLevelIdentifierProperties.class, name = "GovernanceLevelIdentifierProperties"),
-                @JsonSubTypes.Type(value = GovernanceLevelIdentifierSetProperties.class, name = "GovernanceLevelIdentifierSetProperties"),
-                @JsonSubTypes.Type(value = GovernanceStatusIdentifierProperties.class, name = "GovernanceStatusIdentifierProperties"),
-                @JsonSubTypes.Type(value = GovernanceStatusIdentifierSetProperties.class, name = "GovernanceStatusIdentifierSetProperties"),
                 @JsonSubTypes.Type(value = GovernanceMetricProperties.class, name = "GovernanceMetricProperties"),
                 @JsonSubTypes.Type(value = GovernanceZoneProperties.class, name = "GovernanceZoneProperties"),
                 @JsonSubTypes.Type(value = InformationSupplyChainProperties.class, name = "InformationSupplyChainProperties"),
@@ -99,8 +86,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = MeaningProperties.class, name = "MeaningProperties"),
                 @JsonSubTypes.Type(value = MetadataSourceProperties.class, name = "MetadataSourceProperties"),
                 @JsonSubTypes.Type(value = NoteProperties.class, name = "NoteProperties"),
-                @JsonSubTypes.Type(value = NoteLogEntryProperties.class, name = "NoteLogEntryProperties"),
-                @JsonSubTypes.Type(value = NoteLogHeaderProperties.class, name = "NoteLogHeaderProperties"),
                 @JsonSubTypes.Type(value = NoteLogProperties.class, name = "NoteLogProperties"),
                 @JsonSubTypes.Type(value = PortProperties.class, name = "PortProperties"),
                 @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),

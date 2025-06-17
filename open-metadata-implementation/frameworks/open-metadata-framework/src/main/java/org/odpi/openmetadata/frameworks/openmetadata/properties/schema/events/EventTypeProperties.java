@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ComplexSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.RootSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -26,6 +27,7 @@ public class EventTypeProperties extends RootSchemaTypeProperties
     public EventTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.EVENT_TYPE.typeName);
     }
 
 

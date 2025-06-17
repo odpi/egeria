@@ -126,7 +126,7 @@ public class SecurityManagerAdmin extends AccessServiceAdmin
                                                  new SecurityManagerOMRSTopicListener(AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceFullName(),
                                                                                       serverUserName,
                                                                                       eventPublisher,
-                                                                                      instance.getUserIdentityHandler(),
+                                                                                      instance.getGenericHandler(),
                                                                                       supportedZones,
                                                                                       outTopicAuditLog),
                                                  auditLog);

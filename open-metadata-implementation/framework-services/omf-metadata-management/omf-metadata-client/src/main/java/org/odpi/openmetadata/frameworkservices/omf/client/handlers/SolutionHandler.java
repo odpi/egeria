@@ -7,7 +7,6 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.InformationSupplyChainMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionRoleMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -18,7 +17,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
@@ -35,7 +33,7 @@ import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreAuditCo
 import java.util.*;
 
 /**
- * ManageSolutions provides methods to define information supply chains, solution components and their supporting objects
+ * SolutionHandler provides methods to define information supply chains, solution components and their supporting objects
  * The interface supports the following types of objects
  *
  * <ul>
@@ -44,7 +42,6 @@ import java.util.*;
  *     <li>SolutionBlueprints</li>
  *     <li>SolutionComponents</li>
  *     <li>SolutionPorts</li>
- *     <li>SolutionRoles</li>
  * </ul>
  */
 public class SolutionHandler
@@ -519,7 +516,7 @@ public class SolutionHandler
             openMetadataStoreClient.createRelatedElementsInStore(userId,
                                                                  externalSourceGUID,
                                                                  externalSourceName,
-                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
                                                                  segment1GUID,
                                                                  segment2GUID,
                                                                  forLineage,
@@ -534,7 +531,7 @@ public class SolutionHandler
             openMetadataStoreClient.createRelatedElementsInStore(userId,
                                                                  externalSourceGUID,
                                                                  externalSourceName,
-                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
                                                                  segment1GUID,
                                                                  segment2GUID,
                                                                  forLineage,
@@ -586,7 +583,7 @@ public class SolutionHandler
         OpenMetadataRelationshipList relationshipList = openMetadataStoreClient.getMetadataElementRelationships(userId,
                                                                                                                 segment1GUID,
                                                                                                                 segment2GUID,
-                                                                                                                OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                                OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
                                                                                                                 null,
                                                                                                                 null,
                                                                                                                 null,
@@ -1463,567 +1460,6 @@ public class SolutionHandler
     }
 
 
-
-
-    /**
-     * Create a new solution role.
-     *
-     * @param userId                       userId of user making request.
-     * @param externalSourceGUID           unique identifier of the software capability that owns this element
-     * @param externalSourceName           unique name of the software capability that owns this element
-     * @param anchorGUID                   unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
-     *                                     or the Anchors classification is included in the initial classifications.
-     * @param isOwnAnchor                  boolean flag to day that the element should be classified as its own anchor once its element
-     *                                     is created in the repository.
-     * @param anchorScopeGUID              unique identifier of any anchor scope to use for searching
-     * @param properties                   properties for the new element.
-     * @param parentGUID                   unique identifier of optional parent entity
-     * @param parentRelationshipTypeName   type of relationship to connect the new element to the parent
-     * @param parentRelationshipProperties properties to include in parent relationship
-     * @param parentAtEnd1                 which end should the parent GUID go in the relationship
-     * @param forLineage                   the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing       the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime                only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-     * @return unique identifier of the newly created element
-     * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public String createSolutionRole(String                  userId,
-                                     String                  externalSourceGUID,
-                                     String                  externalSourceName,
-                                     String                  anchorGUID,
-                                     boolean                 isOwnAnchor,
-                                     String                  anchorScopeGUID,
-                                     ActorRoleProperties     properties,
-                                     String                  parentGUID,
-                                     String                  parentRelationshipTypeName,
-                                     ElementProperties       parentRelationshipProperties,
-                                     boolean                 parentAtEnd1,
-                                     boolean                 forLineage,
-                                     boolean                 forDuplicateProcessing,
-                                     Date                    effectiveTime) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
-    {
-        final String methodName = "createSolutionRole";
-        final String propertiesName = "properties";
-        final String qualifiedNameParameterName = "properties.qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesName, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        String elementTypeName = OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName;
-
-        if (properties.getTypeName() != null)
-        {
-            elementTypeName = properties.getTypeName();
-        }
-
-
-        return openMetadataStoreClient.createMetadataElementInStore(userId,
-                                                                    externalSourceGUID,
-                                                                    externalSourceName,
-                                                                    elementTypeName,
-                                                                    ElementStatus.ACTIVE,
-                                                                    null,
-                                                                    anchorGUID,
-                                                                    isOwnAnchor,
-                                                                    anchorScopeGUID,
-                                                                    properties.getEffectiveFrom(),
-                                                                    properties.getEffectiveTo(),
-                                                                    this.getElementProperties(properties),
-                                                                    parentGUID,
-                                                                    parentRelationshipTypeName,
-                                                                    parentRelationshipProperties,
-                                                                    parentAtEnd1,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing,
-                                                                    effectiveTime);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a solution role using an existing element as a template.
-     * The template defines additional classifications and relationships that should be added to the new solution role.
-     *
-     * @param userId                       calling user
-     * @param externalSourceGUID           unique identifier of the software capability that owns this element
-     * @param externalSourceName           unique name of the software capability that owns this element
-     * @param anchorGUID                   unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
-     *                                     or the Anchors classification is included in the initial classifications.
-     * @param isOwnAnchor                  boolean flag to day that the element should be classified as its own anchor once its element
-     *                                     is created in the repository.
-     * @param anchorScopeGUID              unique identifier of any anchor scope to use for searching
-     * @param effectiveFrom                the date when this element is active - null for active on creation
-     * @param effectiveTo                  the date when this element becomes inactive - null for active until deleted
-     * @param templateGUID                 the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                                     connection etc)
-     * @param replacementProperties        properties of the new metadata element.  These override the template values
-     * @param placeholderProperties        property name-to-property value map to replace any placeholder values in the
-     *                                     template element - and their anchored elements, which are also copied as part of this operation.
-     * @param parentGUID                   unique identifier of optional parent entity
-     * @param parentRelationshipTypeName   type of relationship to connect the new element to the parent
-     * @param parentRelationshipProperties properties to include in parent relationship
-     * @param parentAtEnd1                 which end should the parent GUID go in the relationship
-     * @param forLineage                   the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing       the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime                only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-     *
-     * @return unique identifier of the new metadata element
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createSolutionRoleFromTemplate(String              userId,
-                                                 String              externalSourceGUID,
-                                                 String              externalSourceName,
-                                                 String              anchorGUID,
-                                                 boolean             isOwnAnchor,
-                                                 String              anchorScopeGUID,
-                                                 Date                effectiveFrom,
-                                                 Date                effectiveTo,
-                                                 String              templateGUID,
-                                                 ElementProperties   replacementProperties,
-                                                 Map<String, String> placeholderProperties,
-                                                 String              parentGUID,
-                                                 String              parentRelationshipTypeName,
-                                                 ElementProperties   parentRelationshipProperties,
-                                                 boolean             parentAtEnd1,
-                                                 boolean             forLineage,
-                                                 boolean             forDuplicateProcessing,
-                                                 Date                effectiveTime) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        return openMetadataStoreClient.createMetadataElementFromTemplate(userId,
-                                                                         externalSourceGUID,
-                                                                         externalSourceName,
-                                                                         OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
-                                                                         anchorGUID,
-                                                                         isOwnAnchor,
-                                                                         anchorScopeGUID,
-                                                                         effectiveFrom,
-                                                                         effectiveTo,
-                                                                         templateGUID,
-                                                                         replacementProperties,
-                                                                         placeholderProperties,
-                                                                         parentGUID,
-                                                                         parentRelationshipTypeName,
-                                                                         parentRelationshipProperties,
-                                                                         parentAtEnd1,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         effectiveTime);
-    }
-
-
-    /**
-     * Update the properties of a solution role.
-     *
-     * @param userId                 userId of user making request.
-     * @param externalSourceGUID     unique identifier of the software capability that owns this element
-     * @param externalSourceName     unique name of the software capability that owns this element
-     * @param solutionRoleGUID      unique identifier of the solution role (returned from create)
-     * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                               the individual properties specified on the request.
-     * @param properties             properties for the element.
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void updateSolutionRole(String                  userId,
-                                   String                  externalSourceGUID,
-                                   String                  externalSourceName,
-                                   String                  solutionRoleGUID,
-                                   boolean                 replaceAllProperties,
-                                   ActorRoleProperties     properties,
-                                   boolean                 forLineage,
-                                   boolean                 forDuplicateProcessing,
-                                   Date                    effectiveTime) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
-    {
-        final String methodName = "updateSolutionRole";
-        final String propertiesName = "properties";
-        final String qualifiedNameParameterName = "properties.qualifiedName";
-        final String guidParameterName = "solutionRoleGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(solutionRoleGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesName, methodName);
-
-        if (replaceAllProperties)
-        {
-            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-        }
-
-        openMetadataStoreClient.updateMetadataElementInStore(userId,
-                                                             externalSourceGUID,
-                                                             externalSourceName,
-                                                             solutionRoleGUID,
-                                                             replaceAllProperties,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             this.getElementProperties(properties),
-                                                             effectiveTime);
-    }
-
-
-    /**
-     * Attach a solution component to a solution role.
-     *
-     * @param userId                  userId of user making request
-     * @param externalSourceGUID      unique identifier of the software capability that owns this element
-     * @param externalSourceName      unique name of the software capability that owns this element
-     * @param solutionRoleGUID unique identifier of the parent
-     * @param solutionComponentGUID     unique identifier of the solution component
-     * @param relationshipProperties  description of the relationship.
-     * @param forLineage              the query is to support lineage retrieval
-     * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime           the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void linkSolutionComponentActor(String                           userId,
-                                           String                           externalSourceGUID,
-                                           String                           externalSourceName,
-                                           String                           solutionRoleGUID,
-                                           String                           solutionComponentGUID,
-                                           SolutionComponentActorProperties relationshipProperties,
-                                           boolean                          forLineage,
-                                           boolean                          forDuplicateProcessing,
-                                           Date                             effectiveTime) throws InvalidParameterException, 
-                                                                                                  PropertyServerException, 
-                                                                                                  UserNotAuthorizedException
-    {
-        final String methodName = "linkSolutionComponentActor";
-        final String end1GUIDParameterName = "parentSolutionRoleGUID";
-        final String end2GUIDParameterName = "solutionComponentActorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(solutionRoleGUID, end1GUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(solutionComponentGUID, end2GUIDParameterName, methodName);
-
-        if (relationshipProperties != null)
-        {
-            openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 externalSourceGUID,
-                                                                 externalSourceName,
-                                                                 OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
-                                                                 solutionRoleGUID,
-                                                                 solutionComponentGUID,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 relationshipProperties.getEffectiveFrom(),
-                                                                 relationshipProperties.getEffectiveTo(),
-                                                                 this.getElementProperties(relationshipProperties),
-                                                                 effectiveTime);
-        }
-        else
-        {
-            openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 externalSourceGUID,
-                                                                 externalSourceName,
-                                                                 OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
-                                                                 solutionRoleGUID,
-                                                                 solutionComponentGUID,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 null,
-                                                                 null,
-                                                                 null,
-                                                                 effectiveTime);
-        }
-    }
-
-
-    /**
-     * Detach a solution component from a solution role.
-     *
-     * @param userId                 userId of user making request.
-     * @param externalSourceGUID     unique identifier of the software capability that owns this element
-     * @param externalSourceName     unique name of the software capability that owns this element
-     * @param solutionRoleGUID    unique identifier of the parent solution component.
-     * @param solutionComponentGUID    unique identifier of the nested solution component.
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void detachSolutionComponentActor(String  userId,
-                                             String  externalSourceGUID,
-                                             String  externalSourceName,
-                                             String  solutionRoleGUID,
-                                             String  solutionComponentGUID,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing,
-                                             Date    effectiveTime) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
-    {
-        final String methodName = "detachSolutionComponentActor";
-
-        final String end1GUIDParameterName = "parentSolutionRoleGUID";
-        final String end2GUIDParameterName = "nestedDataFieldGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(solutionRoleGUID, end1GUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(solutionComponentGUID, end2GUIDParameterName, methodName);
-
-        openMetadataStoreClient.detachRelatedElementsInStore(userId,
-                                                             externalSourceGUID,
-                                                             externalSourceName,
-                                                             OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
-                                                             solutionRoleGUID,
-                                                             solutionComponentGUID,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             effectiveTime);
-    }
-
-
-    /**
-     * Delete a solution role.
-     *
-     * @param userId                 userId of user making request.
-     * @param externalSourceGUID     unique identifier of the software capability that owns this element
-     * @param externalSourceName     unique name of the software capability that owns this element
-     * @param solutionRoleGUID      unique identifier of the element
-     * @param cascadedDelete         can the solution role be deleted if it has solution components linked to it?
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void deleteSolutionRole(String  userId,
-                                   String  externalSourceGUID,
-                                   String  externalSourceName,
-                                   String  solutionRoleGUID,
-                                   boolean cascadedDelete,
-                                   boolean forLineage,
-                                   boolean forDuplicateProcessing,
-                                   Date    effectiveTime) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
-    {
-        final String methodName = "deleteSolutionRole";
-        final String guidParameterName = "solutionRoleGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(solutionRoleGUID, guidParameterName, methodName);
-
-        openMetadataStoreClient.deleteMetadataElementInStore(userId,
-                                                             externalSourceGUID,
-                                                             externalSourceName,
-                                                             solutionRoleGUID,
-                                                             cascadedDelete,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             effectiveTime);
-    }
-
-
-    /**
-     * Returns the list of solution roles with a particular name.
-     *
-     * @param userId                 userId of user making request
-     * @param name                   name of the element to return - match is full text match in qualifiedName or name
-     * @param templateFilter         should templates be returned?
-     * @param limitResultsByStatus   control the status of the elements to retrieve - default is everything but Deleted
-     * @param asOfTime               repository time to use
-     * @param sequencingOrder        order to retrieve results
-     * @param sequencingProperty     property to use for sequencing order
-     * @param startFrom              paging start point
-     * @param pageSize               maximum results that can be returned
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @return a list of elements
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<SolutionRoleElement> getSolutionRolesByName(String              userId,
-                                                            String              name,
-                                                            TemplateFilter      templateFilter,
-                                                            List<ElementStatus> limitResultsByStatus,
-                                                            Date                asOfTime,
-                                                            SequencingOrder     sequencingOrder,
-                                                            String              sequencingProperty,
-                                                            int                 startFrom,
-                                                            int                 pageSize,
-                                                            boolean             forLineage,
-                                                            boolean             forDuplicateProcessing,
-                                                            Date                effectiveTime) throws InvalidParameterException,
-                                                                                                      PropertyServerException,
-                                                                                                      UserNotAuthorizedException
-    {
-        final String methodName = "getSolutionRolesByName";
-        final String nameParameterName = "name";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameterName, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                   OpenMetadataProperty.NAME.name);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
-                                                                                                      null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ, templateFilter),
-                                                                                                      limitResultsByStatus,
-                                                                                                      asOfTime,
-                                                                                                      null,
-                                                                                                      sequencingProperty,
-                                                                                                      sequencingOrder,
-                                                                                                      forLineage,
-                                                                                                      forDuplicateProcessing,
-                                                                                                      effectiveTime,
-                                                                                                      startFrom,
-                                                                                                      pageSize);
-
-        return convertSolutionRoles(userId,
-                                    openMetadataElements,
-                                    asOfTime,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    effectiveTime,
-                                    methodName);
-    }
-
-
-    /**
-     * Return the properties of a specific solution role.
-     *
-     * @param userId                 userId of user making request
-     * @param solutionRoleGUID      unique identifier of the required element
-     * @param asOfTime               repository time to use
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @return retrieved properties
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public SolutionRoleElement getSolutionRoleByGUID(String  userId,
-                                                     String  solutionRoleGUID,
-                                                     Date    asOfTime,
-                                                     boolean forLineage,
-                                                     boolean forDuplicateProcessing,
-                                                     Date    effectiveTime) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
-    {
-        final String methodName = "getSolutionRoleByGUID";
-        final String guidParameterName = "solutionRoleGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(solutionRoleGUID, guidParameterName, methodName);
-
-        OpenMetadataElement openMetadataElement = openMetadataStoreClient.getMetadataElementByGUID(userId,
-                                                                                                   solutionRoleGUID,
-                                                                                                   forLineage,
-                                                                                                   forDuplicateProcessing,
-                                                                                                   asOfTime,
-                                                                                                   effectiveTime);
-
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName)))
-        {
-            return convertSolutionRole(userId,
-                                       openMetadataElement,
-                                       asOfTime,
-                                       forLineage,
-                                       forDuplicateProcessing,
-                                       effectiveTime,
-                                       methodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.
-     * The returned solution roles include a list of the components that are associated with it.
-     * The search string is treated as a regular expression.
-     *
-     * @param userId               calling user
-     * @param searchString         string to find in the properties
-     * @param templateFilter         should templates be returned?
-     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
-     * @param asOfTime             repository time to use
-     * @param sequencingOrder      order to retrieve results
-     * @param sequencingProperty   property to use for sequencing order
-     * @param startFrom            paging start point
-     * @param pageSize             maximum results that can be returned
-     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-     * @return list of matching metadata elements
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<SolutionRoleElement> findSolutionRoles(String              userId,
-                                                       String              searchString,
-                                                       TemplateFilter      templateFilter,
-                                                       List<ElementStatus> limitResultsByStatus,
-                                                       Date                asOfTime,
-                                                       SequencingOrder     sequencingOrder,
-                                                       String              sequencingProperty,
-                                                       int                 startFrom,
-                                                       int                 pageSize,
-                                                       boolean             forLineage,
-                                                       boolean             forDuplicateProcessing,
-                                                       Date                effectiveTime) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
-    {
-        final String methodName = "findSolutionRoles";
-        final String searchStringParameterName = "searchString";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
-                                                                                                                searchString,
-                                                                                                                templateFilter,
-                                                                                                                OpenMetadataType.ACTOR_ROLE.typeName,
-                                                                                                                limitResultsByStatus,
-                                                                                                                asOfTime,
-                                                                                                                sequencingProperty,
-                                                                                                                sequencingOrder,
-                                                                                                                forLineage,
-                                                                                                                forDuplicateProcessing,
-                                                                                                                effectiveTime,
-                                                                                                                startFrom,
-                                                                                                                pageSize);
-
-        return convertSolutionRoles(userId,
-                                    openMetadataElements,
-                                    asOfTime,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    effectiveTime,
-                                    methodName);
-    }
-
-
-
     /**
      * Create a new solution component.
      *
@@ -2238,8 +1674,8 @@ public class SolutionHandler
      * @param userId                  userId of user making request
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
-     * @param parentSolutionComponentGUID unique identifier of the parent
-     * @param solutionComponentActorGUID     unique identifier of the solution component
+     * @param parentSolutionComponentGUID unique identifier of the parent solution component
+     * @param childSolutionComponentGUID     unique identifier of the child solution component
      * @param relationshipProperties  description of the relationship.
      * @param forLineage              the query is to support lineage retrieval
      * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
@@ -2252,7 +1688,7 @@ public class SolutionHandler
                                  String                    externalSourceGUID,
                                  String                    externalSourceName,
                                  String                    parentSolutionComponentGUID,
-                                 String                    solutionComponentActorGUID,
+                                 String                    childSolutionComponentGUID,
                                  RelationshipProperties    relationshipProperties,
                                  boolean                   forLineage,
                                  boolean                   forDuplicateProcessing,
@@ -2262,11 +1698,11 @@ public class SolutionHandler
     {
         final String methodName = "linkSubcomponent";
         final String end1GUIDParameterName = "parentSolutionComponentGUID";
-        final String end2GUIDParameterName = "solutionComponentActorGUID";
+        final String end2GUIDParameterName = "childSolutionComponentGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentSolutionComponentGUID, end1GUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(solutionComponentActorGUID, end2GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(childSolutionComponentGUID, end2GUIDParameterName, methodName);
 
         if (relationshipProperties != null)
         {
@@ -2275,7 +1711,7 @@ public class SolutionHandler
                                                                  externalSourceName,
                                                                  OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
                                                                  parentSolutionComponentGUID,
-                                                                 solutionComponentActorGUID,
+                                                                 childSolutionComponentGUID,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  relationshipProperties.getEffectiveFrom(),
@@ -2290,7 +1726,7 @@ public class SolutionHandler
                                                                  externalSourceName,
                                                                  OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
                                                                  parentSolutionComponentGUID,
-                                                                 solutionComponentActorGUID,
+                                                                 childSolutionComponentGUID,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  null,
@@ -2342,6 +1778,239 @@ public class SolutionHandler
                                                              OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
                                                              parentSolutionComponentGUID,
                                                              subcomponentGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship.
+     *
+     * @param userId                  userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param solutionComponentOneGUID unique identifier of the solution component at end 1
+     * @param solutionComponentTwoGUID unique identifier of the solution component at end 2
+     * @param relationshipProperties  additional properties for the relationship.
+     * @param forLineage              the query is to support lineage retrieval
+     * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime           the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSolutionLinkingWire(String                        userId,
+                                        String                        externalSourceGUID,
+                                        String                        externalSourceName,
+                                        String                        solutionComponentOneGUID,
+                                        String                        solutionComponentTwoGUID,
+                                        SolutionLinkingWireProperties relationshipProperties,
+                                        boolean                       forLineage,
+                                        boolean                       forDuplicateProcessing,
+                                        Date                          effectiveTime) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "linkSolutionLinkingWire";
+        final String end1GUIDParameterName = "solutionComponentOneGUID";
+        final String end2GUIDParameterName = "solutionComponentTwoGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(solutionComponentOneGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(solutionComponentTwoGUID, end2GUIDParameterName, methodName);
+
+        if (relationshipProperties != null)
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                 solutionComponentOneGUID,
+                                                                 solutionComponentTwoGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 relationshipProperties.getEffectiveFrom(),
+                                                                 relationshipProperties.getEffectiveTo(),
+                                                                 this.getElementProperties(relationshipProperties),
+                                                                 effectiveTime);
+        }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                 solutionComponentOneGUID,
+                                                                 solutionComponentTwoGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime);
+        }
+    }
+
+
+    /**
+     * Detach a design object such as a solution component or governance definition from its implementation.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param solutionComponentOneGUID unique identifier of the solution component at end 1
+     * @param solutionComponentTwoGUID unique identifier of the solution component at end 2
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionLinkingWire(String  userId,
+                                          String  externalSourceGUID,
+                                          String  externalSourceName,
+                                          String  solutionComponentOneGUID,
+                                          String  solutionComponentTwoGUID,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        final String methodName = "detachSolutionLinkingWire";
+
+        final String end1GUIDParameterName = "solutionComponentOneGUID";
+        final String end2GUIDParameterName = "solutionComponentTwoGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(solutionComponentOneGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(solutionComponentTwoGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                             solutionComponentOneGUID,
+                                                             solutionComponentTwoGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+
+    /**
+     * Attach a solution component to an actor role.
+     *
+     * @param userId                  userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param solutionRoleGUID unique identifier of the parent
+     * @param solutionComponentGUID     unique identifier of the solution component
+     * @param relationshipProperties  description of the relationship.
+     * @param forLineage              the query is to support lineage retrieval
+     * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime           the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSolutionComponentActor(String                           userId,
+                                           String                           externalSourceGUID,
+                                           String                           externalSourceName,
+                                           String                           solutionRoleGUID,
+                                           String                           solutionComponentGUID,
+                                           SolutionComponentActorProperties relationshipProperties,
+                                           boolean                          forLineage,
+                                           boolean                          forDuplicateProcessing,
+                                           Date                             effectiveTime) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "linkSolutionComponentActor";
+        final String end1GUIDParameterName = "parentSolutionRoleGUID";
+        final String end2GUIDParameterName = "solutionComponentActorGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(solutionRoleGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(solutionComponentGUID, end2GUIDParameterName, methodName);
+
+        if (relationshipProperties != null)
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                                 solutionRoleGUID,
+                                                                 solutionComponentGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 relationshipProperties.getEffectiveFrom(),
+                                                                 relationshipProperties.getEffectiveTo(),
+                                                                 this.getElementProperties(relationshipProperties),
+                                                                 effectiveTime);
+        }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                                 solutionRoleGUID,
+                                                                 solutionComponentGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime);
+        }
+    }
+
+
+    /**
+     * Detach a solution component from an actor role.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param solutionRoleGUID    unique identifier of the parent solution component.
+     * @param solutionComponentGUID    unique identifier of the nested solution component.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionComponentActor(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  solutionRoleGUID,
+                                             String  solutionComponentGUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "detachSolutionComponentActor";
+
+        final String end1GUIDParameterName = "parentSolutionRoleGUID";
+        final String end2GUIDParameterName = "nestedDataFieldGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(solutionRoleGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(solutionComponentGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                             solutionRoleGUID,
+                                                             solutionComponentGUID,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              effectiveTime);
@@ -2732,58 +2401,6 @@ public class SolutionHandler
             }
 
             return solutionBlueprintElements;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Convert the open metadata elements retrieve into solution role elements.
-     *
-     * @param userId calling user
-     * @param openMetadataElements elements extracted from the repository
-     * @param asOfTime repository time to use
-     * @param forLineage the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime effectivity dating for elements
-     * @param methodName calling method
-     * @return list of solution roles (or null)
-     */
-    private List<SolutionRoleElement> convertSolutionRoles(String                    userId,
-                                                           List<OpenMetadataElement> openMetadataElements,
-                                                           Date                      asOfTime,
-                                                           boolean                   forLineage,
-                                                           boolean                   forDuplicateProcessing,
-                                                           Date                      effectiveTime,
-                                                           String                    methodName)
-    {
-        if (openMetadataElements != null)
-        {
-            List<SolutionRoleElement> solutionRoleElements = new ArrayList<>();
-
-            for (OpenMetadataElement openMetadataElement : openMetadataElements)
-            {
-                if (openMetadataElement != null)
-                {
-                    SolutionRoleElement solutionRoleElement = convertSolutionRole(userId,
-                                                                                  openMetadataElement,
-                                                                                  asOfTime,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing,
-                                                                                  effectiveTime,
-                                                                                  methodName);
-                    if (solutionRoleElement != null)
-                    {
-                        /*
-                         * Only save the roles that either inherit from SolutionActorRole or are linked to solution components.
-                         */
-                        solutionRoleElements.add(solutionRoleElement);
-                    }
-                }
-            }
-
-            return solutionRoleElements;
         }
 
         return null;
@@ -3463,98 +3080,6 @@ public class SolutionHandler
 
             return null;
         }
-    }
-
-
-    /**
-     * Return the solution role extracted from the open metadata element plus linked solution components.
-     * Only convert the roles that either inherit from SolutionActorRole or are linked to solution components.
-     *
-     * @param userId calling user
-     * @param openMetadataElement element extracted from the repository
-     * @param asOfTime repository time to use
-     * @param forLineage the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime effectivity dating for elements
-     * @param methodName calling method
-     * @return bean or null
-     */
-    private SolutionRoleElement convertSolutionRole(String              userId,
-                                                    OpenMetadataElement openMetadataElement,
-                                                    Date                asOfTime,
-                                                    boolean             forLineage,
-                                                    boolean             forDuplicateProcessing,
-                                                    Date                effectiveTime,
-                                                    String              methodName)
-    {
-        try
-        {
-            List<RelatedMetadataElement> relatedMetadataElements = new ArrayList<>();
-
-            int startFrom = 0;
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                                       openMetadataElement.getElementGUID(),
-                                                                                                                       1,
-                                                                                                                       OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
-                                                                                                                       null,
-                                                                                                                       asOfTime,
-                                                                                                                       null,
-                                                                                                                       SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                                       forLineage,
-                                                                                                                       forDuplicateProcessing,
-                                                                                                                       effectiveTime,
-                                                                                                                       startFrom,
-                                                                                                                       invalidParameterHandler.getMaxPagingSize());
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                relatedMetadataElements.addAll(relatedMetadataElementList.getElementList());
-
-                startFrom                  = startFrom + invalidParameterHandler.getMaxPagingSize();
-                relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                openMetadataElement.getElementGUID(),
-                                                                                                1,
-                                                                                                OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
-                                                                                                null,
-                                                                                                asOfTime,
-                                                                                                null,
-                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                forLineage,
-                                                                                                forDuplicateProcessing,
-                                                                                                effectiveTime,
-                                                                                                startFrom,
-                                                                                                invalidParameterHandler.getMaxPagingSize());
-            }
-
-            if ((propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName)) ||
-                    (!relatedMetadataElements.isEmpty()))
-            {
-                SolutionRoleConverter<SolutionRoleElement> converter = new SolutionRoleConverter<>(propertyHelper, serviceName, serverName);
-                SolutionRoleElement solutionRoleElement = converter.getNewComplexBean(SolutionRoleElement.class,
-                                                                                      openMetadataElement,
-                                                                                      relatedMetadataElements,
-                                                                                      methodName);
-                if (solutionRoleElement != null)
-                {
-                    SolutionRoleMermaidGraphBuilder graphBuilder = new SolutionRoleMermaidGraphBuilder(solutionRoleElement);
-
-                    solutionRoleElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-                }
-
-                return solutionRoleElement;
-            }
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
-            }
-        }
-
-        return null;
     }
 
 
@@ -4252,54 +3777,6 @@ public class SolutionHandler
      * @param properties supplied properties
      * @return element properties
      */
-    private ElementProperties getElementProperties(ActorRoleProperties properties)
-    {
-        if (properties != null)
-        {
-            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                   properties.getQualifiedName());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.NAME.name,
-                                                                 properties.getTitle());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.IDENTIFIER.name,
-                                                                 properties.getRoleId());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.DESCRIPTION.name,
-                                                                 properties.getDescription());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.SCOPE.name,
-                                                                 properties.getScope());
-
-            elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                              OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
-                                                              properties.getDomainIdentifier());
-
-            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                    properties.getAdditionalProperties());
-
-            elementProperties = propertyHelper.addPropertyMap(elementProperties,
-                                                              properties.getExtendedProperties());
-
-            return elementProperties;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Convert the specific properties into a set of element properties for the open metadata client.
-     *
-     * @param properties supplied properties
-     * @return element properties
-     */
     private ElementProperties getElementProperties(SolutionComponentActorProperties properties)
     {
         if (properties != null)
@@ -4311,42 +3788,6 @@ public class SolutionHandler
             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                  properties.getDescription());
-
-            elementProperties = propertyHelper.addPropertyMap(elementProperties,
-                                                              properties.getExtendedProperties());
-
-            return elementProperties;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Convert the specific properties into a set of element properties for the open metadata client.
-     *
-     * @param properties supplied properties
-     * @return element properties
-     */
-    private ElementProperties getElementProperties(ImplementedByProperties properties)
-    {
-        if (properties != null)
-        {
-            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataProperty.DESIGN_STEP.name,
-                                                                                   properties.getDesignStep());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.ROLE.name,
-                                                                 properties.getRole());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.DESCRIPTION.name,
-                                                                 properties.getDescription());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.TRANSFORMATION.name,
-                                                                 properties.getTransformation());
 
             elementProperties = propertyHelper.addPropertyMap(elementProperties,
                                                               properties.getExtendedProperties());

@@ -38,7 +38,8 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
      *
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId userId used for server initiated actions
+     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -47,6 +48,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
     public AutomatedCurationInstance(String       serverName,
                                      AuditLog     auditLog,
                                      String       localServerUserId,
+                                     String       localServerUserPassword,
                                      int          maxPageSize,
                                      String       remoteServerName,
                                      String       remoteServerURL) throws InvalidParameterException
@@ -55,23 +57,43 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
               myDescription.getViewServiceName(),
               auditLog,
               localServerUserId,
+              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
-        assetCertificationManager     = new AssetCertificationManager(remoteServerName, remoteServerURL);
-        assetLicenseManager           = new AssetLicenseManager(remoteServerName, remoteServerURL);
-        externalReferenceManager      = new ExternalReferenceManager(remoteServerName, remoteServerURL);
-        validValuesAssetOwner         = new ValidValuesAssetOwner(remoteServerName, remoteServerURL);
-        fileSystemAssetOwner          = new FileSystemAssetOwner(remoteServerName, remoteServerURL, auditLog);
-        csvFileAssetOwner             = new CSVFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
-        avroFileAssetOwner            = new AvroFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
-        connectedAssetClient          = new ConnectedAssetClient(remoteServerName, remoteServerURL);
-        openMetadataStoreClient       = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
-        openGovernanceClient          = new OpenGovernanceClient(remoteServerName, remoteServerURL, maxPageSize);
-        openIntegrationServiceClient  = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, maxPageSize);
-        governanceConfigurationClient = new GovernanceConfigurationClient(remoteServerName, remoteServerURL, maxPageSize);
-        technologyTypeHandler         = new TechnologyTypeHandler(externalReferenceManager, openMetadataStoreClient, serviceName, serverName);
+        if (localServerUserPassword == null)
+        {
+            assetCertificationManager     = new AssetCertificationManager(remoteServerName, remoteServerURL);
+            assetLicenseManager           = new AssetLicenseManager(remoteServerName, remoteServerURL);
+            externalReferenceManager      = new ExternalReferenceManager(remoteServerName, remoteServerURL);
+            validValuesAssetOwner         = new ValidValuesAssetOwner(remoteServerName, remoteServerURL);
+            fileSystemAssetOwner          = new FileSystemAssetOwner(remoteServerName, remoteServerURL, auditLog);
+            csvFileAssetOwner             = new CSVFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
+            avroFileAssetOwner            = new AvroFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
+            connectedAssetClient          = new ConnectedAssetClient(remoteServerName, remoteServerURL);
+            openMetadataStoreClient       = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+            openGovernanceClient          = new OpenGovernanceClient(remoteServerName, remoteServerURL, maxPageSize);
+            openIntegrationServiceClient  = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, maxPageSize);
+            governanceConfigurationClient = new GovernanceConfigurationClient(remoteServerName, remoteServerURL, maxPageSize);
+        }
+        else
+        {
+            assetCertificationManager     = new AssetCertificationManager(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword);
+            assetLicenseManager           = new AssetLicenseManager(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword);
+            externalReferenceManager      = new ExternalReferenceManager(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword);
+            validValuesAssetOwner         = new ValidValuesAssetOwner(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword);
+            fileSystemAssetOwner          = new FileSystemAssetOwner(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog);
+            csvFileAssetOwner             = new CSVFileAssetOwner(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog);
+            avroFileAssetOwner            = new AvroFileAssetOwner(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog);
+            connectedAssetClient          = new ConnectedAssetClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword);
+            openMetadataStoreClient       = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            openGovernanceClient          = new OpenGovernanceClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            openIntegrationServiceClient  = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            governanceConfigurationClient = new GovernanceConfigurationClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+        }
+
+        technologyTypeHandler = new TechnologyTypeHandler(externalReferenceManager, openMetadataStoreClient, serviceName, serverName);
     }
 
 

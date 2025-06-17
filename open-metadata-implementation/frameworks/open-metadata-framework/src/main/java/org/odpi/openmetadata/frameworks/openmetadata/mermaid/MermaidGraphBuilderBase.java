@@ -390,7 +390,7 @@ public class MermaidGraphBuilderBase
     protected void addClassifications(ElementHeader elementHeader)
     {
 
-        if ((elementHeader.getClassifications() != null) || (! elementHeader.getClassifications().isEmpty()))
+        if ((elementHeader.getClassifications() != null) && (! elementHeader.getClassifications().isEmpty()))
         {
             this.startSubgraph("Classifications", VisualStyle.DESCRIPTION, "TB");
 
@@ -660,6 +660,11 @@ public class MermaidGraphBuilderBase
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.ACTOR.typeName))
         {
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.TEAM.typeName))
+            {
+                return VisualStyle.GOVERNANCE_TEAM;
+            }
+
             return VisualStyle.GOVERNANCE_ACTOR;
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.SOLUTION_PORT.typeName))

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -37,6 +38,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
     public SchemaElementProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SCHEMA_ELEMENT.typeName);
     }
 
 
@@ -157,6 +159,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
         SchemaElementProperties that = (SchemaElementProperties) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
                 Objects.equals(getDescription(), that.getDescription());

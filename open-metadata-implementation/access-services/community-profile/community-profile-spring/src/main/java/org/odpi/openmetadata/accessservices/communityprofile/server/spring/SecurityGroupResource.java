@@ -115,7 +115,7 @@ public class SecurityGroupResource
 
 
     /**
-     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, the should be only one.
+     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, there should be only one.
      *
      * @param serverName called server
      * @param userId calling user
@@ -200,7 +200,6 @@ public class SecurityGroupResource
      * @param securityGroupGUID unique identifier for the actor profile
      *
      * @return properties of the actor profile
-     *
      *   InvalidParameterException securityGroupGUID or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem

@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleAppointee;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -47,21 +47,18 @@ public interface DigitalRolesInterface
 
 
     /**
-     * Create a definition of a new role that is part of an agreement such as a digital subscription.
-     *
+     * Create a definition of a new actor that is part of an agreement such as a digital subscription.
      * These roles are often referred to in the agreement.  For example, the agreement may refer to the subscriber, payer, data consumer.
-     * The name of such a role is stored in the <i>agreementRoleProperties</i>.  The properties of the person role that is created to represent
+     * The name of such a role is stored in the <i>agreementActorProperties</i>.  The properties of the person role that is created to represent
      * the role is stored in <i>personRoleProperties</i>.  A person (or multiple people) can be appointed to the new role using the
      * <i>appointPersonRole</i> method.
-     *
      * The new person role created is anchored to the agreement and so it is deleted when the agreement is deleted.
      * It can be managed using the methods below before that.
-     *
      * More general support for creating roles is found in Community Profile OMAS and Governance Program OMAS.
      *
      * @param userId calling user
      * @param agreementGUID unique identifier of the agreement
-     * @param agreementRoleProperties description of a role found in the agreement text
+     * @param agreementActorProperties description of a role found in the agreement text
      * @param personRoleProperties properties to use when creating the role.
      *
      * @return unique identifier of new role
@@ -70,12 +67,12 @@ public interface DigitalRolesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    String createAgreementRole(String                  userId,
-                               String                  agreementGUID,
-                               AgreementRoleProperties agreementRoleProperties,
-                               PersonRoleProperties    personRoleProperties) throws UserNotAuthorizedException,
-                                                                                    InvalidParameterException,
-                                                                                    PropertyServerException;
+    String createAgreementActor(String                   userId,
+                                String                   agreementGUID,
+                                AgreementActorProperties agreementActorProperties,
+                                PersonRoleProperties     personRoleProperties) throws UserNotAuthorizedException,
+                                                                                      InvalidParameterException,
+                                                                                      PropertyServerException;
 
 
     /**
@@ -105,7 +102,7 @@ public interface DigitalRolesInterface
      * @param agreementGUID unique identifier of the agreement
      * @param roleGUID identifier of the person role
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
-     * @param agreementRoleProperties properties to change
+     * @param agreementActorProperties properties to change
      *
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws PropertyServerException problem accessing property server
@@ -115,9 +112,9 @@ public interface DigitalRolesInterface
                              String                  agreementGUID,
                              String                  roleGUID,
                              boolean                 isMergeUpdate,
-                             AgreementRoleProperties agreementRoleProperties) throws UserNotAuthorizedException,
-                                                                                     InvalidParameterException,
-                                                                                     PropertyServerException;
+                             AgreementActorProperties agreementActorProperties) throws UserNotAuthorizedException,
+                                                                                       InvalidParameterException,
+                                                                                       PropertyServerException;
 
 
     /**

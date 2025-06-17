@@ -3,40 +3,38 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.properties.actors;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Date;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ActorRoleProperties provides a structure for describe a role assigned to a person.
+ * ActorRoleProperties provides a structure to describe a role assigned to an actor profile.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ActorRoleProperties
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = PersonRoleProperties.class, name = "PersonRoleProperties"),
+                @JsonSubTypes.Type(value = TeamRoleProperties.class, name = "TeamRoleProperties"),
+                @JsonSubTypes.Type(value = ITProfileRoleProperties.class, name = "ITProfileRoleProperties"),
+                @JsonSubTypes.Type(value = SolutionRoleProperties.class, name = "SolutionRoleProperties"),
+        })
+public class ActorRoleProperties extends ReferenceableProperties
 {
-    private String               qualifiedName = null; /* qualifiedName */
-    private String               roleId        = null; /* identifier */
-    private String               scope         = null; /* scope */
-    private String               title         = null; /* name */
-    private String               description   = null; /* description */
+    private String identifier = null; /* identifier */
+    private String scope       = null; /* scope */
+    private String name        = null; /* name */
+    private String description = null; /* description */
 
-    private int                  domainIdentifier = 0; /* Zero means not specific to a governance domain */
-
-    private Map<String, String>  additionalProperties = null;
-
-    private Date                 effectiveFrom = null;
-    private Date                 effectiveTo   = null;
-
-    private String               typeName             = null;
-    private Map<String, Object>  extendedProperties   = null;
 
 
     /**
@@ -44,6 +42,8 @@ public class ActorRoleProperties
      */
     public ActorRoleProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.ACTOR_ROLE.typeName);
     }
 
 
@@ -54,44 +54,17 @@ public class ActorRoleProperties
      */
     public ActorRoleProperties(ActorRoleProperties template)
     {
+        super(template);
+
         if (template != null)
         {
-            this.qualifiedName        = template.getQualifiedName();
-            this.roleId               = template.getRoleId();
-            this.scope                = template.getScope();
-            this.title                = template.getTitle();
-            this.description          = template.getDescription();
-            this.domainIdentifier     = template.getDomainIdentifier();
-            this.additionalProperties = template.getAdditionalProperties();
-            this.effectiveFrom        = template.getEffectiveFrom();
-            this.effectiveTo          = template.getEffectiveTo();
-            this.typeName             = template.getTypeName();
-            this.extendedProperties   = template.getExtendedProperties();
+            this.identifier    = template.getIdentifier();
+            this.scope       = template.getScope();
+            this.name        = template.getName();
+            this.description = template.getDescription();
         }
     }
 
-
-
-    /**
-     * Return the unique name for element in open metadata ecosystem.
-     *
-     * @return unique name
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-
-    /**
-     * Set up the unique name for element in open metadata ecosystem.
-     *
-     * @param qualifiedName unique name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
-    }
 
 
     /**
@@ -99,20 +72,20 @@ public class ActorRoleProperties
      *
      * @return unique identifier
      */
-    public String getRoleId()
+    public String getIdentifier()
     {
-        return roleId;
+        return identifier;
     }
 
 
     /**
      * Set up the unique identifier for this job role/appointment.
      *
-     * @param roleId unique identifier
+     * @param identifier unique identifier
      */
-    public void setRoleId(String roleId)
+    public void setIdentifier(String identifier)
     {
-        this.roleId = roleId;
+        this.identifier = identifier;
     }
 
 
@@ -146,20 +119,20 @@ public class ActorRoleProperties
      *
      * @return string name
      */
-    public String getTitle()
+    public String getName()
     {
-        return title;
+        return name;
     }
 
 
     /**
      * Set up the job role title.
      *
-     * @param title string name
+     * @param name string name
      */
-    public void setTitle(String title)
+    public void setName(String name)
     {
-        this.title = title;
+        this.name = name;
     }
 
 
@@ -185,142 +158,6 @@ public class ActorRoleProperties
     }
 
 
-    /**
-     * Return the identifier of the governance domain that this role belongs to.  Zero means that the
-     * role is not specific to any domain.
-     *
-     * @return int
-     */
-    public int getDomainIdentifier()
-    {
-        return domainIdentifier;
-    }
-
-
-    /**
-     * Set up the identifier of the governance domain that this role belongs to.  Zero means that the
-     * role is not specific to any domain.
-     *
-     * @param domainIdentifier int
-     */
-    public void setDomainIdentifier(int domainIdentifier)
-    {
-        this.domainIdentifier = domainIdentifier;
-    }
-
-
-    /**
-     * Return a copy of the additional properties.  Null means no additional properties are available.
-     *
-     * @return AdditionalProperties map
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        return additionalProperties;
-    }
-
-
-    /**
-     * Set up additional properties.
-     *
-     * @param additionalProperties Additional properties map
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return the date/time that this element is effective from (null means effective from the epoch).
-     *
-     * @return date object
-     */
-    public Date getEffectiveFrom()
-    {
-        return effectiveFrom;
-    }
-
-
-    /**
-     * Set up the date/time that this element is effective from (null means effective from the epoch).
-     *
-     * @param effectiveFrom date object
-     */
-    public void setEffectiveFrom(Date effectiveFrom)
-    {
-        this.effectiveFrom = effectiveFrom;
-    }
-
-
-    /**
-     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
-     *
-     * @return date object
-     */
-    public Date getEffectiveTo()
-    {
-        return effectiveTo;
-    }
-
-
-    /**
-     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
-     *
-     * @param effectiveTo date object
-     */
-    public void setEffectiveTo(Date effectiveTo)
-    {
-        this.effectiveTo = effectiveTo;
-    }
-
-
-    /**
-     * Return the open metadata type name of this object - this is used to create a subtype of
-     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
-     *
-     * @return string type name
-     */
-    public String getTypeName()
-    {
-        return typeName;
-    }
-
-
-    /**
-     * Set up the open metadata type name of this object - this is used to create a subtype of
-     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
-     *
-     * @param typeName string type name
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
-
-
-    /**
-     * Return the properties that are defined for a subtype of referenceable but are not explicitly
-     * supported by the bean.
-     *
-     * @return map of properties
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        return extendedProperties;
-    }
-
-
-    /**
-     * Set up the properties that are defined for a subtype of referenceable but are not explicitly
-     * supported by the bean.
-     *
-     * @param extendedProperties map of properties
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties)
-    {
-        this.extendedProperties = extendedProperties;
-    }
 
 
     /**
@@ -332,18 +169,11 @@ public class ActorRoleProperties
     public String toString()
     {
         return "ActorRoleProperties{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
-                       ", roleId='" + roleId + '\'' +
-                       ", scope='" + scope + '\'' +
-                       ", title='" + title + '\'' +
-                       ", description='" + description + '\'' +
-                       ", domainIdentifier=" + domainIdentifier +
-                       ", additionalProperties=" + additionalProperties +
-                       ", effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo +
-                       ", typeName='" + typeName + '\'' +
-                       ", extendedProperties=" + extendedProperties +
-                       '}';
+                "identifier='" + identifier + '\'' +
+                ", scope='" + scope + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -364,18 +194,15 @@ public class ActorRoleProperties
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         ActorRoleProperties that = (ActorRoleProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
-                       Objects.equals(qualifiedName, that.qualifiedName) &&
-                       Objects.equals(roleId, that.roleId) &&
+        return Objects.equals(identifier, that.identifier) &&
                        Objects.equals(scope, that.scope) &&
-                       Objects.equals(title, that.title) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(additionalProperties, that.additionalProperties) &&
-                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
-                       Objects.equals(effectiveTo, that.effectiveTo) &&
-                       Objects.equals(typeName, that.typeName) &&
-                       Objects.equals(extendedProperties, that.extendedProperties);
+                       Objects.equals(name, that.name) &&
+                       Objects.equals(description, that.description) ;
     }
 
 
@@ -387,6 +214,6 @@ public class ActorRoleProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, roleId, scope, title, description, domainIdentifier, additionalProperties, effectiveFrom, effectiveTo, typeName, extendedProperties);
+        return Objects.hash(identifier, scope, name, description);
     }
 }

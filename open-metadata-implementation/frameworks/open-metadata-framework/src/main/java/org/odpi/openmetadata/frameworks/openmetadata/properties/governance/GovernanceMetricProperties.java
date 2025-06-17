@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
 
@@ -31,6 +32,7 @@ public class GovernanceMetricProperties extends ReferenceableProperties
     public GovernanceMetricProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_METRIC.typeName);
     }
 
 

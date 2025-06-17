@@ -176,7 +176,7 @@ public class QueryBuilder
 
         if (propertyValue != null)
         {
-            subSelect = subSelect + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " " + operator + "  '" + propertyValue + "'";
+            subSelect = subSelect + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " " + operator + "  '" + escapePropertyValue(propertyValue) + "'";
         }
 
         return subSelect + "))) ";
@@ -471,7 +471,6 @@ public class QueryBuilder
                                                      Object                     propertyValue) throws RepositoryErrorException
     {
         final String methodName = "getNestedPropertyComparisonClause";
-
 
         String propertyColumn = this.mapPropertyNameToColumn(leafPropertyName, RepositoryColumn.ATTRIBUTE_NAME.getColumnName());
 

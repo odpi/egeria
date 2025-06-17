@@ -121,14 +121,8 @@ public class ClientConstructorTest
                                             String   serverPlatformRootURL,
                                             AuditLog auditLog) throws InvalidParameterException
     {
-        new UserIdentityManagement(serverName, serverPlatformRootURL, auditLog, 100);
-        new UserIdentityManagement(serverName, serverPlatformRootURL, 100);
-        new UserIdentityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog, 100);
-        new UserIdentityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100);
-
-        CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
-
-        new UserIdentityManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
+        new UserIdentityManagement(this.getClass().getName(), serverName, serverPlatformRootURL, auditLog, 100);
+        new UserIdentityManagement(this.getClass().getName(), serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog, 100);
     }
 
 

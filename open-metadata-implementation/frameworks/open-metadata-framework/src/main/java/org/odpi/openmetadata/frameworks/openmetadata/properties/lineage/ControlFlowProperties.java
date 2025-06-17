@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -20,10 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ControlFlowProperties extends RelationshipProperties
 {
-    private String qualifiedName = null;
-    private String label         = null;
-    private String description   = null;
-    private String guard         = null;
+    private String iscQualifiedName = null;
+    private String label            = null;
+    private String description      = null;
+    private String guard            = null;
 
 
     /**
@@ -32,6 +33,7 @@ public class ControlFlowProperties extends RelationshipProperties
     public ControlFlowProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName);
     }
 
 
@@ -42,36 +44,37 @@ public class ControlFlowProperties extends RelationshipProperties
      */
     public ControlFlowProperties(ControlFlowProperties template)
     {
+        super(template);
+
         if (template != null)
         {
-            qualifiedName = template.getQualifiedName();
-            label         = template.getLabel();
-            description   = template.getDescription();
-            guard         = template.getGuard();
+            iscQualifiedName = template.getISCQualifiedName();
+            label            = template.getLabel();
+            description      = template.getDescription();
+            guard            = template.getGuard();
         }
     }
 
 
     /**
-     * Set up the fully qualified name.
+     * Set up the fully qualified name of the associated information supply chain.
      *
-     * @param qualifiedName String name
+     * @param iscQualifiedName String name
      */
-    public void setQualifiedName(String qualifiedName)
+    public void setISCQualifiedName(String iscQualifiedName)
     {
-        this.qualifiedName = qualifiedName;
+        this.iscQualifiedName = iscQualifiedName;
     }
 
 
     /**
-     * Returns the stored qualified name property for the relationship.
-     * If no qualified name is available then the empty string is returned.
+     * Returns the stored qualified name of the associated information supply chain.
      *
      * @return qualifiedName
      */
-    public String getQualifiedName()
+    public String getISCQualifiedName()
     {
-        return qualifiedName;
+        return iscQualifiedName;
     }
 
 
@@ -150,13 +153,11 @@ public class ControlFlowProperties extends RelationshipProperties
     public String toString()
     {
         return "ControlFlowProperties{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", guard='" + guard + '\'' +
-                       ", label='" + label + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       '}';
+                "iscQualifiedName='" + iscQualifiedName + '\'' +
+                ", label='" + label + '\'' +
+                ", description='" + description + '\'' +
+                ", guard='" + guard + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -177,8 +178,9 @@ public class ControlFlowProperties extends RelationshipProperties
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
         ControlFlowProperties that = (ControlFlowProperties) objectToCompare;
-        return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
+        return Objects.equals(getISCQualifiedName(), that.getISCQualifiedName()) &&
                 Objects.equals(getLabel(), that.getLabel()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                        Objects.equals(getGuard(), that.getGuard());
@@ -193,6 +195,6 @@ public class ControlFlowProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, label, description, guard);
+        return Objects.hash(iscQualifiedName, label, description, guard);
     }
 }

@@ -6,10 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.ImplementedByProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 
-import java.util.Date;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

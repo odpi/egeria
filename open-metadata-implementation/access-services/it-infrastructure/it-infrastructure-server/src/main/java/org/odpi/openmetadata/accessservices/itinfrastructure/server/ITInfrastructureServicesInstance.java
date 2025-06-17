@@ -27,9 +27,6 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
     private ConnectionHandler<ConnectionElement>                 connectionHandler;
     private ConnectorTypeHandler<ConnectorTypeElement>           connectorTypeHandler;
     private EndpointHandler<EndpointElement>                     endpointHandler;
-    private ActorProfileHandler<ITProfileElement>                itProfileHandler;
-    private UserIdentityHandler<UserIdentityElement>             userIdentityHandler;
-    private ContactDetailsHandler<ContactMethodElement>          contactDetailsHandler;
     private SoftwareCapabilityHandler<SoftwareCapabilityElement> softwareCapabilityHandler;
     private AssetHandler<AssetElement>                           assetHandler;
     private RelatedAssetHandler<RelatedAssetElement>             relatedAssetHandler;
@@ -121,48 +118,6 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
                                                          defaultZones,
                                                          publishZones,
                                                          auditLog);
-
-            this.itProfileHandler = new ActorProfileHandler<>(new ITProfileConverter<>(repositoryHelper, serviceName, serverName),
-                                                              ITProfileElement.class,
-                                                              serviceName,
-                                                              serverName,
-                                                              invalidParameterHandler,
-                                                              repositoryHandler,
-                                                              repositoryHelper,
-                                                              localServerUserId,
-                                                              securityVerifier,
-                                                              supportedZones,
-                                                              defaultZones,
-                                                              publishZones,
-                                                              auditLog);
-
-            this.userIdentityHandler = new UserIdentityHandler<>(new UserIdentityConverter<>(repositoryHelper, serviceName, serverName),
-                                                                 UserIdentityElement.class,
-                                                                 serviceName,
-                                                                 serverName,
-                                                                 invalidParameterHandler,
-                                                                 repositoryHandler,
-                                                                 repositoryHelper,
-                                                                 localServerUserId,
-                                                                 securityVerifier,
-                                                                 supportedZones,
-                                                                 defaultZones,
-                                                                 publishZones,
-                                                                 auditLog);
-
-            this.contactDetailsHandler = new ContactDetailsHandler<>(new ContactMethodConverter<>(repositoryHelper, serviceName, serverName),
-                                                                     ContactMethodElement.class,
-                                                                     serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHandler,
-                                                                     repositoryHelper,
-                                                                     localServerUserId,
-                                                                     securityVerifier,
-                                                                     supportedZones,
-                                                                     defaultZones,
-                                                                     publishZones,
-                                                                     auditLog);
 
             this.softwareCapabilityHandler = new SoftwareCapabilityHandler<>(new SoftwareCapabilityConverter<>(repositoryHelper, serviceName, serverName),
                                                                              SoftwareCapabilityElement.class,
@@ -289,55 +244,6 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
 
         return endpointHandler;
     }
-
-
-    /**
-     * Return the handler for managing ITProfile objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    ActorProfileHandler<ITProfileElement> getITProfileHandler() throws PropertyServerException
-    {
-        final String methodName = "getITProfileHandler";
-
-        validateActiveRepository(methodName);
-
-        return itProfileHandler;
-    }
-
-
-    /**
-     * Return the handler for managing UserIdentity objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    UserIdentityHandler<UserIdentityElement> getUserIdentityHandler() throws PropertyServerException
-    {
-        final String methodName = "getUserIdentityHandler";
-
-        validateActiveRepository(methodName);
-
-        return userIdentityHandler;
-    }
-
-
-    /**
-     * Return the handler for managing ContactDetails objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    ContactDetailsHandler<ContactMethodElement> getContactDetailsHandler() throws PropertyServerException
-    {
-        final String methodName = "getContactDetailsHandler";
-
-        validateActiveRepository(methodName);
-
-        return contactDetailsHandler;
-    }
-
 
 
     /**

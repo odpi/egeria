@@ -169,7 +169,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
                             boolean                      assetManagerIsHome,
                             String                       parentProcessGUID,
                             String                       childProcessGUID,
-                            ProcessContainmentProperties containmentProperties,
+                            ProcessHierarchyProperties containmentProperties,
                             Date                         effectiveTime,
                             boolean                      forLineage,
                             boolean                      forDuplicateProcessing) throws InvalidParameterException,

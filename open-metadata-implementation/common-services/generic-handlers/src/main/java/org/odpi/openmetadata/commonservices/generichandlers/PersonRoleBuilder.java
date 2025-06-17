@@ -215,7 +215,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataProperty.ROLE_POSITION.name,
+                                                                                     OpenMetadataProperty.POSITION_NAME.name,
                                                                                      position,
                                                                                      methodName);
 
@@ -237,7 +237,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties =  repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataProperty.ROLE_POSITION.name,
+                                                                                      OpenMetadataProperty.POSITION_NAME.name,
                                                                                       position,
                                                                                       methodName);
 

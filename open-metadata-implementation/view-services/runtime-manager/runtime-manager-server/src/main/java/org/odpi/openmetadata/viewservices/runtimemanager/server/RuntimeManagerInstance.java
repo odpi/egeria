@@ -31,7 +31,8 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
      *
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId userId used for server initiated actions
+     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -40,6 +41,7 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
     public RuntimeManagerInstance(String       serverName,
                                   AuditLog     auditLog,
                                   String       localServerUserId,
+                                  String       localServerUserPassword,
                                   int          maxPageSize,
                                   String       remoteServerName,
                                   String       remoteServerURL) throws InvalidParameterException
@@ -48,14 +50,25 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
               myDescription.getViewServiceName(),
               auditLog,
               localServerUserId,
+              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
-        platformManagerClient       = new PlatformManagerClient(remoteServerName, remoteServerURL, maxPageSize);
-        serverManagerClient       = new ServerManagerClient(remoteServerName, remoteServerURL, maxPageSize);
-        connectedAssetClient    = new ConnectedAssetClient(remoteServerName, remoteServerURL, maxPageSize);
-        openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+        if (localServerUserPassword == null)
+        {
+            platformManagerClient   = new PlatformManagerClient(remoteServerName, remoteServerURL, maxPageSize);
+            serverManagerClient     = new ServerManagerClient(remoteServerName, remoteServerURL, maxPageSize);
+            connectedAssetClient    = new ConnectedAssetClient(remoteServerName, remoteServerURL, maxPageSize);
+            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+        }
+        else
+        {
+            platformManagerClient   = new PlatformManagerClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            serverManagerClient     = new ServerManagerClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            connectedAssetClient    = new ConnectedAssetClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword);
+            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+        }
     }
 
 

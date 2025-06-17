@@ -729,7 +729,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public ActorProfileElement getActorProfileByGUID(String userId,
+    public ActorProfileGraphElement getActorProfileByGUID(String userId,
                                                      String actorProfileGUID) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -742,7 +742,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}";
 
-        ActorProfileResponse restResult = restClient.callActorProfileGetRESTCall(methodName,
+        ActorProfileGraphResponse restResult = restClient.callActorProfileGetRESTCall(methodName,
                                                                                  urlTemplate,
                                                                                  serverName,
                                                                                  userId,
@@ -765,7 +765,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public ActorProfileElement getActorProfileByUserId(String userId,
+    public ActorProfileGraphElement getActorProfileByUserId(String userId,
                                                        String actorProfileUserId) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
@@ -778,7 +778,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/user-ids/{2}";
 
-        ActorProfileResponse restResult = restClient.callActorProfileGetRESTCall(methodName,
+        ActorProfileGraphResponse restResult = restClient.callActorProfileGetRESTCall(methodName,
                                                                                  urlTemplate,
                                                                                  serverName,
                                                                                  userId,

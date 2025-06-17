@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AssetL
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.DigitalLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -569,9 +569,9 @@ public class LocationRESTServices
             {
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-                if (requestBody.getProperties() instanceof DigitalLocationProperties)
+                if (requestBody.getProperties() instanceof CyberLocationProperties)
                 {
-                    DigitalLocationProperties properties = (DigitalLocationProperties)requestBody.getProperties();
+                    CyberLocationProperties properties = (CyberLocationProperties)requestBody.getProperties();
 
                     handler.addCyberLocationClassification(userId,
                                                            requestBody.getExternalSourceGUID(),
@@ -588,7 +588,7 @@ public class LocationRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(DigitalLocationProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(CyberLocationProperties.class.getName(), methodName);
                 }
             }
             else

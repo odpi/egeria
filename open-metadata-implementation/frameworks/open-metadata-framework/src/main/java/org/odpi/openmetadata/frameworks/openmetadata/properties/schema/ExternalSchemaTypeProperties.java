@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -24,6 +25,7 @@ public class ExternalSchemaTypeProperties extends SchemaTypeProperties
     public ExternalSchemaTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.EXTERNAL_SCHEMA_TYPE.typeName);
     }
 
 

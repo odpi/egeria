@@ -75,7 +75,6 @@ public class InvalidParameterTest
                                          AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceWiki());
 
         thisTest.testCertificationClient(serverName, serverPlatformRootURL, userId, auditLog);
-        thisTest.testGovernanceClassificationsClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testExternalReferenceClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testGovernanceMetricsClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testGovernanceProgramReviewClient(serverName, serverPlatformRootURL, userId, auditLog);
@@ -83,40 +82,6 @@ public class InvalidParameterTest
         thisTest.testGovernanceZoneClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testLicenseClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testSubjectAreaClient(serverName, serverPlatformRootURL, userId, auditLog);
-    }
-
-
-    /**
-     * Create a client to test the invalid parameters.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
-     * @param userId calling user
-     * @param auditLog logging destination
-     * @throws FVTUnexpectedCondition the test case failed
-     */
-    private void testGovernanceClassificationsClient(String   serverName,
-                                                     String   serverPlatformRootURL,
-                                                     String   userId,
-                                                     AuditLog auditLog) throws FVTUnexpectedCondition
-    {
-        final String activityName = "testGovernanceClassificationsClient";
-
-        try
-        {
-            GovernanceProgramRESTClient          restClient = new GovernanceProgramRESTClient(serverName, serverPlatformRootURL, auditLog);
-            GovernanceClassificationLevelManager client     = new GovernanceClassificationLevelManager(serverName, serverPlatformRootURL, restClient, maxPageSize);
-
-            new CreateStandardClassificationLevelsInvalidParameterTest(userId, client);
-        }
-        catch (FVTUnexpectedCondition testCaseError)
-        {
-            throw testCaseError;
-        }
-        catch (Exception unexpectedError)
-        {
-            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
-        }
     }
 
 

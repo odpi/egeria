@@ -24,28 +24,38 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
      * Set up the Glossary Browser OMVS instance*
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId userId used for server initiated actions
+     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
      * @throws InvalidParameterException problem with server name or platform URL
      */
     public GlossaryBrowserInstance(String       serverName,
-                                    AuditLog     auditLog,
-                                    String       localServerUserId,
-                                    int          maxPageSize,
-                                    String       remoteServerName,
-                                    String       remoteServerURL) throws InvalidParameterException
+                                   AuditLog     auditLog,
+                                   String       localServerUserId,
+                                   String       localServerUserPassword,
+                                   int          maxPageSize,
+                                   String       remoteServerName,
+                                   String       remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
               myDescription.getViewServiceName(),
               auditLog,
               localServerUserId,
+              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
-        glossaryExchangeClient = new GlossaryExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        if (localServerUserPassword == null)
+        {
+            glossaryExchangeClient = new GlossaryExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        }
+        else
+        {
+            glossaryExchangeClient = new GlossaryExchangeClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog, maxPageSize);
+        }
     }
 
 

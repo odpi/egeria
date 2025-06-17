@@ -20,6 +20,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataE
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -68,6 +70,38 @@ public class GovernanceDefinitionHandler
                                        int      maxPageSize) throws InvalidParameterException
     {
         this.openMetadataStoreClient = new OpenMetadataStoreHandler(serverName, serverPlatformURLRoot, accessServiceURLMarker, maxPageSize);
+        this.auditLog                = auditLog;
+
+        this.serverName = localServerName;
+        this.serviceName = serviceName;
+    }
+
+
+    /**
+     * Create a new client.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
+     * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
+     * @param serviceName name of calling service
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public GovernanceDefinitionHandler(String   localServerName,
+                                       String   serverName,
+                                       String   serverPlatformURLRoot,
+                                       String   localServerUserId,
+                                       String   localServerUserPassword,
+                                       AuditLog auditLog,
+                                       String   accessServiceURLMarker,
+                                       String   serviceName,
+                                       int      maxPageSize) throws InvalidParameterException
+    {
+        this.openMetadataStoreClient = new OpenMetadataStoreHandler(serverName, serverPlatformURLRoot, accessServiceURLMarker, localServerUserId, localServerUserPassword, maxPageSize);
         this.auditLog                = auditLog;
 
         this.serverName = localServerName;
@@ -596,126 +630,6 @@ public class GovernanceDefinitionHandler
 
 
     /**
-     * Attach a governance definition to its implementation.
-     *
-     * @param userId                  userId of user making request
-     * @param externalSourceGUID      unique identifier of the software capability that owns this element
-     * @param externalSourceName      unique name of the software capability that owns this element
-     * @param technicalControlGUID unique identifier of the first governance definition
-     * @param implementationGUID unique identifier of the implementation
-     * @param relationshipTypeName name of the relationship to use
-     * @param relationshipProperties  additional properties for the relationship.
-     * @param forLineage              the query is to support lineage retrieval
-     * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime           the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void linkDefinitionImplementation(String                             userId,
-                                             String                             externalSourceGUID,
-                                             String                             externalSourceName,
-                                             String                             technicalControlGUID,
-                                             String                             implementationGUID,
-                                             String                             relationshipTypeName,
-                                             GovernanceImplementationProperties relationshipProperties,
-                                             boolean                            forLineage,
-                                             boolean                            forDuplicateProcessing,
-                                             Date                               effectiveTime) throws InvalidParameterException,
-                                                                                                      PropertyServerException,
-                                                                                                      UserNotAuthorizedException
-    {
-        final String methodName = "linkDefinitionImplementation";
-        final String end1GUIDParameterName = "technicalControlGUID";
-        final String end2GUIDParameterName = "implementationGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(technicalControlGUID, end1GUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(implementationGUID, end2GUIDParameterName, methodName);
-
-        if (relationshipProperties != null)
-        {
-            openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 externalSourceGUID,
-                                                                 externalSourceName,
-                                                                 relationshipTypeName,
-                                                                 technicalControlGUID,
-                                                                 implementationGUID,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 relationshipProperties.getEffectiveFrom(),
-                                                                 relationshipProperties.getEffectiveTo(),
-                                                                 this.getElementProperties(relationshipProperties),
-                                                                 effectiveTime);
-        }
-        else
-        {
-            openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 externalSourceGUID,
-                                                                 externalSourceName,
-                                                                 relationshipTypeName,
-                                                                 technicalControlGUID,
-                                                                 implementationGUID,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 null,
-                                                                 null,
-                                                                 null,
-                                                                 effectiveTime);
-        }
-    }
-
-
-    /**
-     * Detach a governance definition from its implementation.
-     *
-     * @param userId                 userId of user making request.
-     * @param externalSourceGUID     unique identifier of the software capability that owns this element
-     * @param externalSourceName     unique name of the software capability that owns this element
-     * @param technicalControlGUID unique identifier of the  governance definition
-     * @param implementationGUID unique identifier of the implementation
-     * @param relationshipTypeName name of the relationship to use
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void detachDefinitionImplementation(String  userId,
-                                               String  externalSourceGUID,
-                                               String  externalSourceName,
-                                               String  technicalControlGUID,
-                                               String  implementationGUID,
-                                               String  relationshipTypeName,
-                                               boolean forLineage,
-                                               boolean forDuplicateProcessing,
-                                               Date    effectiveTime) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
-    {
-        final String methodName = "detachDefinitionImplementation";
-
-        final String end1GUIDParameterName = "technicalControlGUID";
-        final String end2GUIDParameterName = "implementationGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(technicalControlGUID, end1GUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(implementationGUID, end2GUIDParameterName, methodName);
-
-        openMetadataStoreClient.detachRelatedElementsInStore(userId,
-                                                             externalSourceGUID,
-                                                             externalSourceName,
-                                                             relationshipTypeName,
-                                                             technicalControlGUID,
-                                                             implementationGUID,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             effectiveTime);
-    }
-
-
-    /**
      * Delete a governance definition.
      *
      * @param userId                 userId of user making request.
@@ -999,6 +913,247 @@ public class GovernanceDefinitionHandler
     }
 
 
+    /*
+     * Design to implementations
+     */
+
+
+
+    /**
+     * Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship.
+     *
+     * @param userId                  userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param designGUID              unique identifier of the  governance definition or solution component etc
+     * @param implementationGUID      unique identifier of the implementation
+     * @param relationshipProperties  additional properties for the relationship.
+     * @param forLineage              the query is to support lineage retrieval
+     * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime           the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkDesignToImplementation(String                  userId,
+                                           String                  externalSourceGUID,
+                                           String                  externalSourceName,
+                                           String                  designGUID,
+                                           String                  implementationGUID,
+                                           ImplementedByProperties relationshipProperties,
+                                           boolean                 forLineage,
+                                           boolean                 forDuplicateProcessing,
+                                           Date                    effectiveTime) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "linkDesignToImplementation";
+        final String end1GUIDParameterName = "designGUID";
+        final String end2GUIDParameterName = "implementationGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(designGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(implementationGUID, end2GUIDParameterName, methodName);
+
+        if (relationshipProperties != null)
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                 designGUID,
+                                                                 implementationGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 relationshipProperties.getEffectiveFrom(),
+                                                                 relationshipProperties.getEffectiveTo(),
+                                                                 this.getElementProperties(relationshipProperties),
+                                                                 effectiveTime);
+        }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                 designGUID,
+                                                                 implementationGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime);
+        }
+    }
+
+
+    /**
+     * Detach a design object such as a solution component or governance definition from its implementation.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param designGUID             unique identifier of the  governance definition, solution component etc
+     * @param implementationGUID     unique identifier of the implementation
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDesignFromImplementation(String  userId,
+                                               String  externalSourceGUID,
+                                               String  externalSourceName,
+                                               String  designGUID,
+                                               String  implementationGUID,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "detachDefinitionImplementation";
+
+        final String end1GUIDParameterName = "designGUID";
+        final String end2GUIDParameterName = "implementationGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(designGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(implementationGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                             designGUID,
+                                                             implementationGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Attach a design object such as a solution component or governance definition to one of its implementation resources via the ImplementationResource relationship.
+     *
+     * @param userId                  userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param designGUID              unique identifier of the  governance definition or solution component etc
+     * @param implementationResourceGUID      unique identifier of the implementation
+     * @param relationshipProperties  additional properties for the relationship.
+     * @param forLineage              the query is to support lineage retrieval
+     * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime           the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkImplementationResource(String                           userId,
+                                           String                           externalSourceGUID,
+                                           String                           externalSourceName,
+                                           String                           designGUID,
+                                           String                           implementationResourceGUID,
+                                           ImplementationResourceProperties relationshipProperties,
+                                           boolean                          forLineage,
+                                           boolean                          forDuplicateProcessing,
+                                           Date                             effectiveTime) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "linkImplementationResource";
+        final String end1GUIDParameterName = "designGUID";
+        final String end2GUIDParameterName = "implementationResourceGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(designGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(implementationResourceGUID, end2GUIDParameterName, methodName);
+
+        if (relationshipProperties != null)
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName,
+                                                                 designGUID,
+                                                                 implementationResourceGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 relationshipProperties.getEffectiveFrom(),
+                                                                 relationshipProperties.getEffectiveTo(),
+                                                                 this.getElementProperties(relationshipProperties),
+                                                                 effectiveTime);
+        }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName,
+                                                                 designGUID,
+                                                                 implementationResourceGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime);
+        }
+    }
+
+
+    /**
+     * Detach a design object such as a solution component or governance definition from one of its implementation resources.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param designGUID             unique identifier of the  governance definition, solution component etc
+     * @param implementationResourceGUID     unique identifier of the implementation
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachImplementationResource(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  designGUID,
+                                             String  implementationResourceGUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "detachImplementationResource";
+
+        final String end1GUIDParameterName = "designGUID";
+        final String end2GUIDParameterName = "implementationResourceGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(designGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(implementationResourceGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName,
+                                                             designGUID,
+                                                             implementationResourceGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+    /*
+     * Mapping
+     */
+
     /**
      * Convert the specific properties into a set of element properties for the open metadata client.
      *
@@ -1151,13 +1306,51 @@ public class GovernanceDefinitionHandler
      * @param properties supplied properties
      * @return element properties
      */
-    private ElementProperties getElementProperties(GovernanceImplementationProperties properties)
+    private ElementProperties getElementProperties(ImplementedByProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.DESIGN_STEP.name,
+                                                                                   properties.getDesignStep());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.ROLE.name,
+                                                                 properties.getRole());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.TRANSFORMATION.name,
+                                                                 properties.getTransformation());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                 properties.getISCQualifiedName());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(ImplementationResourceProperties properties)
     {
         if (properties != null)
         {
             return propertyHelper.addStringProperty(null,
-                                                    OpenMetadataProperty.NOTES.name,
-                                                    properties.getNotes());
+                                                    OpenMetadataProperty.DESCRIPTION.name,
+                                                    properties.getDescription());
+
         }
 
         return null;

@@ -62,6 +62,7 @@ public class NewFileSystemRequestBody
             source = template.getSource();
             format = template.getFormat();
             encryption = template.getEncryption();
+            additionalProperties = template.getAdditionalProperties();
         }
     }
 

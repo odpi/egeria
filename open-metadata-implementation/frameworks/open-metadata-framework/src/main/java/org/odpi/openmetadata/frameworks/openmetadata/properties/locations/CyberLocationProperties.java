@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.frameworks.openmetadata.properties.locations;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -14,14 +14,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CyberLocationProperties indicates that a location is a cyber location rather than a physical location.
+ * CyberLocationProperties carries the parameters for marking a location as a digital (cyber) location.
  */
-@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CyberLocationProperties extends ClassificationProperties
 {
-    private String address = null;
+    private String networkAddress = null;
 
 
     /**
@@ -30,13 +30,14 @@ public class CyberLocationProperties extends ClassificationProperties
     public CyberLocationProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.CYBER_LOCATION_CLASSIFICATION.typeName);
     }
 
 
     /**
-     * Copy/clone constructor.
+     * Copy/clone constructor
      *
-     * @param template template object to copy.
+     * @param template object to copy
      */
     public CyberLocationProperties(CyberLocationProperties template)
     {
@@ -44,70 +45,80 @@ public class CyberLocationProperties extends ClassificationProperties
 
         if (template != null)
         {
-            address = template.getAddress();
+            networkAddress = template.getNetworkAddress();
         }
     }
 
 
     /**
-     * Set up address of the location.
+     * Return the network address used to connect to the location.
      *
-     * @param address String
+     * @return string name - often a URL
      */
-    public void setAddress(String address)
+    public String getNetworkAddress()
     {
-        this.address = address;
+        return networkAddress;
     }
 
 
     /**
-     * Return the address for the location.
+     * Set up the network address used to connect to the location.
      *
-     * @return String address
+     * @param networkAddress string name - often a URL
      */
-    public String getAddress()
+    public void setNetworkAddress(String networkAddress)
     {
-        return address;
+        this.networkAddress = networkAddress;
     }
 
 
     /**
-     * Standard toString method.
+     * JSON-style toString
      *
-     * @return print out of variables in a JSON-style
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
         return "CyberLocationProperties{" +
-                "address='" + address + '\'' +
+                "networkAddress='" + networkAddress + '\'' +
                 "} " + super.toString();
     }
 
     /**
-     * Compare the values of the supplied object with those stored in the current object.
+     * Return comparison result based on the content of the properties.
      *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
+     * @param objectToCompare test object
+     * @return result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare) return true;
-        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
-        if (!super.equals(objectToCompare)) return false;
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         CyberLocationProperties that = (CyberLocationProperties) objectToCompare;
-        return Objects.equals(address, that.address);
+        return Objects.equals(networkAddress, that.networkAddress);
     }
 
+
     /**
-     * Return hash code based on properties.
+     * Return hash code for this object
      *
-     * @return int
+     * @return int hash code
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), address);
+        return Objects.hash(super.hashCode(), networkAddress);
     }
 }

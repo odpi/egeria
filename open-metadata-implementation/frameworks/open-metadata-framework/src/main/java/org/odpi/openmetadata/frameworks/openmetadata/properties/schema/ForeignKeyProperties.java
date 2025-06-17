@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -37,6 +38,7 @@ public class ForeignKeyProperties extends RelationshipProperties
     public ForeignKeyProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName);
     }
 
 

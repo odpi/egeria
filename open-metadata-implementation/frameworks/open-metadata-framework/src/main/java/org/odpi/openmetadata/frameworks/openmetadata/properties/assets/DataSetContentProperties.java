@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -32,6 +33,7 @@ public class DataSetContentProperties extends RelationshipProperties
     public DataSetContentProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
     }
 
 

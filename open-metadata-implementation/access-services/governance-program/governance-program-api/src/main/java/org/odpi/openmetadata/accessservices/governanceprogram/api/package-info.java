@@ -13,10 +13,6 @@
  *       metric is associated with a governance definition.
  *   </li>
  *   <li>
- *       GovernanceClassificationLevelInterface - Defines the means of the standard governance classifications of Impact, Criticality,
- *       Retention, Confidence and Confidentiality.
- *   </li>
- *   <li>
  *       GovernanceRolesInterface - Defines the roles for the governance organization and the means to appoint people to them.
  *   </li>
  *   <li>

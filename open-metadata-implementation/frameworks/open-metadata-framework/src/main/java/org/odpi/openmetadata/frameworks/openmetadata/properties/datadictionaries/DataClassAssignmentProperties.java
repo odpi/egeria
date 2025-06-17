@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataClassAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -22,14 +23,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataClassAssignmentProperties extends RelationshipProperties
 {
-    private String                    method          = null;
-    private DataClassAssignmentStatus status          = DataClassAssignmentStatus.PROPOSED;
-    private boolean                   partialMatch    = false;
-    private int                       confidence      = 0;
-    private float  threshold      = 0F;
-    private long   valueFrequency = 0L;
-    private String steward        = null;
-    private String                    source          = null;
+    private String                    method         = null;
+    private DataClassAssignmentStatus status         = DataClassAssignmentStatus.PROPOSED;
+    private boolean                   partialMatch   = false;
+    private int                       confidence     = 0;
+    private float                     threshold      = 0F;
+    private long                      valueFrequency = 0L;
+    private String                    steward        = null;
+    private String                    source         = null;
 
 
     /**
@@ -38,6 +39,7 @@ public class DataClassAssignmentProperties extends RelationshipProperties
     public DataClassAssignmentProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.DATA_CLASS_ASSIGNMENT.typeName);
     }
 
 

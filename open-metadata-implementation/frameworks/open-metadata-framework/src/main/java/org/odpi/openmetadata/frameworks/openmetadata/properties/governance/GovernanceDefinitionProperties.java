@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -46,9 +48,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = LicenseTypeProperties.class, name = "LicenseTypeProperties"),
                 @JsonSubTypes.Type(value = CertificationTypeProperties.class, name = "CertificationTypeProperties"),
+                @JsonSubTypes.Type(value = GovernancePolicyProperties.class, name = "GovernancePolicyProperties"),
                 @JsonSubTypes.Type(value = GovernanceControlProperties.class, name = "GovernanceControlProperties"),
                 @JsonSubTypes.Type(value = GovernanceStrategyProperties.class, name = "GovernanceStrategyProperties"),
                 @JsonSubTypes.Type(value = RegulationProperties.class, name = "RegulationProperties"),
+                @JsonSubTypes.Type(value = DataProcessingPurposeProperties.class, name = "DataProcessingPurposeProperties"),
         })
 public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
 {
@@ -71,6 +75,7 @@ public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
     public GovernanceDefinitionProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_DEFINITION.typeName);
     }
 
 

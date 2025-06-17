@@ -297,7 +297,7 @@ public interface SecurityManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    ActorProfileElement getActorProfileByGUID(String userId,
+    ActorProfileGraphElement getActorProfileByGUID(String userId,
                                               String actorProfileGUID) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
@@ -315,7 +315,7 @@ public interface SecurityManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    ActorProfileElement getActorProfileByUserId(String userId,
+    ActorProfileGraphElement getActorProfileByUserId(String userId,
                                                 String actorProfileUserId) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException;

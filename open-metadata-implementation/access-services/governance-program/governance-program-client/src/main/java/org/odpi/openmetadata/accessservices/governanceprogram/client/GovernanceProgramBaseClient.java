@@ -359,7 +359,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getName(), titleParameterName, methodName);
 
         GovernanceRoleRequestBody requestBody = new GovernanceRoleRequestBody();
 
@@ -563,8 +563,8 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
 
         if (! isMergeUpdate)
         {
-            invalidParameterHandler.validateName(properties.getRoleId(), roleIdParameterName, methodName);
-            invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
+            invalidParameterHandler.validateName(properties.getIdentifier(), roleIdParameterName, methodName);
+            invalidParameterHandler.validateName(properties.getName(), titleParameterName, methodName);
         }
 
         GovernanceRoleRequestBody requestBody = new GovernanceRoleRequestBody();

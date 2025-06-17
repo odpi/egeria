@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -35,6 +36,7 @@ public class ReportProperties extends DataSetProperties
     public ReportProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.DEPLOYED_REPORT.typeName);
     }
 
 

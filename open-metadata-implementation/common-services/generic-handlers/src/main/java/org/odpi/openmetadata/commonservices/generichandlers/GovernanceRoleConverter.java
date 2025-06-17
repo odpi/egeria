@@ -74,9 +74,9 @@ public class GovernanceRoleConverter<B> extends OMFConverter<B>
 
                     governanceRoleProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     governanceRoleProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    governanceRoleProperties.setRoleId(this.removeIdentifier(instanceProperties));
+                    governanceRoleProperties.setIdentifier(this.removeIdentifier(instanceProperties));
                     governanceRoleProperties.setScope(this.removeScope(instanceProperties));
-                    governanceRoleProperties.setTitle(this.removeName(instanceProperties));
+                    governanceRoleProperties.setName(this.removeName(instanceProperties));
                     governanceRoleProperties.setDescription(this.removeDescription(instanceProperties));
                     governanceRoleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataProperty.HEAD_COUNT.name) != null);
                     governanceRoleProperties.setHeadCount(this.removeHeadCount(instanceProperties));

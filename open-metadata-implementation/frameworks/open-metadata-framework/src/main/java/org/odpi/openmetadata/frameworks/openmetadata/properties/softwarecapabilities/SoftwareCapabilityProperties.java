@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabil
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -39,6 +40,7 @@ public class SoftwareCapabilityProperties extends SupplementaryProperties
     public SoftwareCapabilityProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SOFTWARE_CAPABILITY.typeName);
     }
 
 

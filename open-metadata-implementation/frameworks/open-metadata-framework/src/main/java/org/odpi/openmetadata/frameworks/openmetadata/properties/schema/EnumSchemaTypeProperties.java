@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -28,6 +29,7 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
     public EnumSchemaTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.ENUM_SCHEMA_TYPE.typeName);
     }
 
 

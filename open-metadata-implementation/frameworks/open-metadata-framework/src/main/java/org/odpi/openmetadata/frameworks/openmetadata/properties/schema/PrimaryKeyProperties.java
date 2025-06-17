@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class PrimaryKeyProperties extends ClassificationProperties
     public PrimaryKeyProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName);
     }
 
 

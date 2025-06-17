@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.feedback;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -28,7 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InformalTagProperties
+public class InformalTagProperties extends OpenMetadataRootProperties
 {
     private boolean isPrivateTag = false;
     private String  name         = null;
@@ -42,6 +44,7 @@ public class InformalTagProperties
     public InformalTagProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.INFORMAL_TAG.typeName);
     }
 
 
@@ -52,6 +55,8 @@ public class InformalTagProperties
      */
     public InformalTagProperties(InformalTagProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             isPrivateTag = template.getIsPrivateTag();
@@ -159,11 +164,11 @@ public class InformalTagProperties
     public String toString()
     {
         return "InformalTagProperties{" +
-                ", isPrivateTag=" + isPrivateTag +
+                "isPrivateTag=" + isPrivateTag +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", user='" + user + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -180,7 +185,7 @@ public class InformalTagProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof InformalTagProperties))
+        if (!(objectToCompare instanceof InformalTagProperties that))
         {
             return false;
         }
@@ -188,7 +193,6 @@ public class InformalTagProperties
         {
             return false;
         }
-        InformalTagProperties that = (InformalTagProperties) objectToCompare;
         return getIsPrivateTag() == that.getIsPrivateTag() &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
@@ -204,6 +208,6 @@ public class InformalTagProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(isPrivateTag, name, description, user);
+        return Objects.hash(super.hashCode(), isPrivateTag, name, description, user);
     }
 }

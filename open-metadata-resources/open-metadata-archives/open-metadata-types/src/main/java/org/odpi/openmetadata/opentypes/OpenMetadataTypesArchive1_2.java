@@ -2353,7 +2353,7 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ROLE_POSITION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POSITION_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -2402,7 +2402,7 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ROLE_POSITION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POSITION_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -7753,9 +7753,6 @@ public class OpenMetadataTypesArchive1_2
     {
         this.archiveBuilder.addEntityDef(getGovernanceRuleEntity());
         this.archiveBuilder.addEntityDef(getGovernanceProcessEntity());
-
-        this.archiveBuilder.addRelationshipDef(getGovernanceRuleImplementationRelationship());
-        this.archiveBuilder.addRelationshipDef(getGovernanceProcessImplementationRelationship());
     }
 
 
@@ -7772,105 +7769,6 @@ public class OpenMetadataTypesArchive1_2
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
     }
 
-
-    private RelationshipDef getGovernanceRuleImplementationRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_RULE_IMPLEMENTATION_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "implementsGovernanceRules";
-        final String                     end1AttributeDescription     = "The rules that are implemented by this component.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_RULE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "implementations";
-        final String                     end2AttributeDescription     = "The software components that implement this governance rule.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
-
-    private RelationshipDef getGovernanceProcessImplementationRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_PROCESS_IMPLEMENTATION_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "implementsGovernanceProcesses";
-        final String                     end1AttributeDescription     = "The processes that are implemented by this component.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_PROCESS.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "implementations";
-        final String                     end2AttributeDescription     = "The processes that implement this governance process.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
 
 
     /*
@@ -10034,6 +9932,8 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SPECIFICATION_DETAILS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_NULLABLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_CASE_SENSITIVE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AVERAGE_VALUE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUE_LIST));

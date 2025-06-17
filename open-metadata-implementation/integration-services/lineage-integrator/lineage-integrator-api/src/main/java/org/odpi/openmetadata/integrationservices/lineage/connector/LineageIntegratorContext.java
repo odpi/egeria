@@ -1751,7 +1751,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                    boolean                      assetManagerIsHome,
                                    String                       parentProcessGUID,
                                    String                       childProcessGUID,
-                                   ProcessContainmentProperties containmentProperties,
+                                   ProcessHierarchyProperties containmentProperties,
                                    Date                         effectiveTime) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -1780,7 +1780,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
     public void setupProcessParent(boolean                      assetManagerIsHome,
                                    String                       parentProcessGUID,
                                    String                       childProcessGUID,
-                                   ProcessContainmentProperties containmentProperties,
+                                   ProcessHierarchyProperties containmentProperties,
                                    Date                         effectiveTime) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException

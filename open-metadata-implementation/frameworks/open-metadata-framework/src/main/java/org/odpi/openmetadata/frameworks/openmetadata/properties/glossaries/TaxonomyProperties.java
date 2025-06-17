@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -35,6 +36,7 @@ public class TaxonomyProperties extends ClassificationProperties
     public TaxonomyProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.TAXONOMY_CLASSIFICATION.typeName);
     }
 
 

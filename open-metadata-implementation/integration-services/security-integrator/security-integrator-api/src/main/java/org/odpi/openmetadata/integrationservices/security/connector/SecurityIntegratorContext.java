@@ -6,9 +6,12 @@ package org.odpi.openmetadata.integrationservices.security.connector;
 import org.odpi.openmetadata.accessservices.securitymanager.api.SecurityManagerEventListener;
 import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerClient;
 import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerEventClient;
+import org.odpi.openmetadata.accessservices.securitymanager.client.UserIdentityManagement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -19,11 +22,16 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileIdentityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -33,6 +41,7 @@ import java.util.List;
 public class SecurityIntegratorContext extends IntegrationContext
 {
     private final SecurityManagerClient      securityManagerClient;
+    private final UserIdentityManagement     userIdentityClient;
     private final SecurityManagerEventClient eventClient;
 
     private final AuditLog auditLog;
@@ -50,6 +59,7 @@ public class SecurityIntegratorContext extends IntegrationContext
      * @param openMetadataStoreClient client for calling the metadata server
      * @param actionControlInterface client for initiating governance actions
      * @param securityManagerClient client for exchange requests
+     * @param userIdentityClient client form managing user identities
      * @param eventClient client for registered listeners
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization the direction of integration permitted by the integration connector
@@ -69,6 +79,7 @@ public class SecurityIntegratorContext extends IntegrationContext
                                      OpenMetadataClient           openMetadataStoreClient,
                                      ActionControlInterface       actionControlInterface,
                                      SecurityManagerClient        securityManagerClient,
+                                     UserIdentityManagement       userIdentityClient,
                                      SecurityManagerEventClient   eventClient,
                                      boolean                      generateIntegrationReport,
                                      PermittedSynchronization     permittedSynchronization,
@@ -95,6 +106,7 @@ public class SecurityIntegratorContext extends IntegrationContext
               maxPageSize);
 
         this.securityManagerClient = securityManagerClient;
+        this.userIdentityClient =userIdentityClient;
         this.eventClient = eventClient;
 
         this.auditLog            = auditLog;
@@ -275,134 +287,396 @@ public class SecurityIntegratorContext extends IntegrationContext
     }
 
 
+
+
     /* ========================================================
-     * User identifies
+     * Manage user identities
      */
 
+
     /**
-     * Create a UserIdentity.
+     * Create a new user identity.
      *
-     * @param newIdentity properties for the new userIdentity.
-     *
-     * @return unique identifier of the UserIdentity
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @param anchorGUID                   unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                                     or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor                  boolean flag to day that the element should be classified as its own anchor once its element
+     *                                     is created in the repository.
+     * @param anchorScopeGUID              unique identifier of any anchor scope to use for searching
+     * @param properties                   properties for the new element.
+     * @param parentGUID                   unique identifier of optional parent entity
+     * @param parentRelationshipTypeName   type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1                 which end should the parent GUID go in the relationship
+     * @param forLineage                   the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing       the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime                only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @return unique identifier of the newly created element
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String createUserIdentity(UserIdentityProperties newIdentity) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public String createUserIdentity(String                 anchorGUID,
+                                     boolean                isOwnAnchor,
+                                     String                 anchorScopeGUID,
+                                     UserIdentityProperties properties,
+                                     String                 parentGUID,
+                                     String                 parentRelationshipTypeName,
+                                     ElementProperties parentRelationshipProperties,
+                                     boolean                parentAtEnd1,
+                                     boolean                forLineage,
+                                     boolean                forDuplicateProcessing,
+                                     Date                   effectiveTime) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        return securityManagerClient.createUserIdentity(userId, externalSourceGUID, externalSourceName, newIdentity);
+        String userIdentityGUID = userIdentityClient.createUserIdentity(userId, externalSourceGUID, externalSourceName, anchorGUID, isOwnAnchor, anchorScopeGUID, properties, parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, forLineage, forDuplicateProcessing, effectiveTime);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(userIdentityGUID);
+        }
+
+        return userIdentityGUID;
     }
 
 
     /**
-     * Update a UserIdentity.
+     * Create a new metadata element to represent a user identity using an existing element as a template.
+     * The template defines additional classifications and relationships that should be added to the new user identity.
      *
-     * @param userIdentityGUID unique identifier of the UserIdentity
-     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
-     * @param properties updated properties for the new userIdentity
+     * @param anchorGUID                   unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                                     or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor                  boolean flag to day that the element should be classified as its own anchor once its element
+     *                                     is created in the repository.
+     * @param anchorScopeGUID              unique identifier of any anchor scope to use for searching
+     * @param effectiveFrom                the date when this element is active - null for active on creation
+     * @param effectiveTo                  the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID                 the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                                     connection etc)
+     * @param replacementProperties        properties of the new metadata element.  These override the template values
+     * @param placeholderProperties        property name-to-property value map to replace any placeholder values in the
+     *                                     template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID                   unique identifier of optional parent entity
+     * @param parentRelationshipTypeName   type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1                 which end should the parent GUID go in the relationship
+     * @param forLineage                   the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing       the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime                only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @return unique identifier of the new metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createUserIdentityFromTemplate(String              anchorGUID,
+                                                 boolean             isOwnAnchor,
+                                                 String              anchorScopeGUID,
+                                                 Date                effectiveFrom,
+                                                 Date                effectiveTo,
+                                                 String              templateGUID,
+                                                 ElementProperties   replacementProperties,
+                                                 Map<String, String> placeholderProperties,
+                                                 String              parentGUID,
+                                                 String              parentRelationshipTypeName,
+                                                 ElementProperties   parentRelationshipProperties,
+                                                 boolean             parentAtEnd1,
+                                                 boolean             forLineage,
+                                                 boolean             forDuplicateProcessing,
+                                                 Date                effectiveTime) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        String userIdentityGUID = userIdentityClient.createUserIdentityFromTemplate(userId, externalSourceGUID, externalSourceName, anchorGUID, isOwnAnchor, anchorScopeGUID, effectiveFrom, effectiveTo, templateGUID, replacementProperties, placeholderProperties, parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, forLineage, forDuplicateProcessing, effectiveTime);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(userIdentityGUID);
+        }
+
+        return userIdentityGUID;
+    }
+
+
+    /**
+     * Update the properties of a user identity.
+     *
+     * @param userIdentityGUID      unique identifier of the user identity (returned from create)
+     * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                               the individual properties specified on the request.
+     * @param properties             properties for the element.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateUserIdentity(String                 userIdentityGUID,
-                                   boolean                isMergeUpdate,
-                                   UserIdentityProperties properties) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+                                   boolean                replaceAllProperties,
+                                   UserIdentityProperties properties,
+                                   boolean                forLineage,
+                                   boolean                forDuplicateProcessing,
+                                   Date                   effectiveTime) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
-        securityManagerClient.updateUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID, isMergeUpdate, properties);
+        userIdentityClient.updateUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID, replaceAllProperties, properties, forLineage, forDuplicateProcessing, effectiveTime);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(userIdentityGUID);
+        }
     }
 
 
     /**
-     * Remove a user identity object.  This will fail if the profile would be left without an
-     * associated user identity.
+     * Attach a profile to a user identity.
      *
-     * @param userIdentityGUID unique identifier of the UserIdentity
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @param userIdentityGUID unique identifier of the parent
+     * @param profileGUID     unique identifier of the actor profile
+     * @param relationshipProperties  description of the relationship.
+     * @param forLineage              the query is to support lineage retrieval
+     * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime           the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void deleteUserIdentity(String userIdentityGUID) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public void linkIdentityToProfile(String                    userIdentityGUID,
+                                      String                    profileGUID,
+                                      ProfileIdentityProperties relationshipProperties,
+                                      boolean                   forLineage,
+                                      boolean                   forDuplicateProcessing,
+                                      Date                      effectiveTime) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
-        securityManagerClient.deleteUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID);
+        userIdentityClient.linkIdentityToProfile(userId, externalSourceGUID, externalSourceName, userIdentityGUID, profileGUID, relationshipProperties, forLineage, forDuplicateProcessing, effectiveTime);
     }
 
 
     /**
-     * Retrieve the list of user identity metadata elements that contain the search string.
+     * Detach an actor profile from a user identity.
+     *
+     * @param userIdentityGUID    unique identifier of the parent actor profile.
+     * @param profileGUID    unique identifier of the nested actor profile.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachProfileIdentity(String  userIdentityGUID,
+                                      String  profileGUID,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        userIdentityClient.detachProfileIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID, profileGUID, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Add the SecurityGroupMembership classification to the user identity.
+     *
+     * @param userIdentityGUID    unique identifier of the user identity.
+     * @param properties            properties for the classification
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void addSecurityGroupMembership(String                            userIdentityGUID,
+                                           SecurityGroupMembershipProperties properties,
+                                           boolean                           forLineage,
+                                           boolean                           forDuplicateProcessing,
+                                           Date                              effectiveTime) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        userIdentityClient.addSecurityGroupMembership(userId, externalSourceGUID, externalSourceName, userIdentityGUID, properties, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Update the SecurityGroupMembership classification for the user identity.
+     *
+     * @param userIdentityGUID    unique identifier of the user identity.
+     * @param properties            properties for the classification
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateSecurityGroupMembership(String                            userIdentityGUID,
+                                              SecurityGroupMembershipProperties properties,
+                                              boolean                           forLineage,
+                                              boolean                           forDuplicateProcessing,
+                                              Date                              effectiveTime) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        userIdentityClient.updateSecurityGroupMembership(userId, externalSourceGUID, externalSourceName, userIdentityGUID, properties, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Remove the SecurityGroupMembership classification from the user identity.
+     *
+     * @param userIdentityGUID    unique identifier of the user identity.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeAllSecurityGroupMembership(String                            userIdentityGUID,
+                                                 boolean                           forLineage,
+                                                 boolean                           forDuplicateProcessing,
+                                                 Date                              effectiveTime) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        userIdentityClient.removeAllSecurityGroupMembership(userId, externalSourceGUID, externalSourceName, userIdentityGUID, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Delete a user identity.
+     *
+     * @param userIdentityGUID      unique identifier of the element
+     * @param cascadedDelete         can the user identity be deleted if it has actor profiles linked to it?
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void deleteUserIdentity(String  userIdentityGUID,
+                                   boolean cascadedDelete,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
+    {
+        userIdentityClient.deleteUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID, cascadedDelete, forLineage, forDuplicateProcessing, effectiveTime);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(userIdentityGUID);
+        }
+    }
+
+
+    /**
+     * Returns the list of user identities with a particular name.
+     *
+     * @param name                   name of the element to return - match is full text match in qualifiedName or name
+     * @param templateFilter         should templates be returned?
+     * @param limitResultsByStatus   control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime               repository time to use
+     * @param sequencingOrder        order to retrieve results
+     * @param sequencingProperty     property to use for sequencing order
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<UserIdentityElement> getUserIdentitiesByName(String              name,
+                                                             TemplateFilter templateFilter,
+                                                             List<ElementStatus> limitResultsByStatus,
+                                                             Date                asOfTime,
+                                                             SequencingOrder sequencingOrder,
+                                                             String              sequencingProperty,
+                                                             int                 startFrom,
+                                                             int                 pageSize,
+                                                             boolean             forLineage,
+                                                             boolean             forDuplicateProcessing,
+                                                             Date                effectiveTime) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        return userIdentityClient.getUserIdentitiesByName(userId, name, templateFilter, limitResultsByStatus, asOfTime, sequencingOrder, sequencingProperty, startFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Return the properties of a specific user identity.
+     *
+     * @param userIdentityGUID      unique identifier of the required element
+     * @param asOfTime               repository time to use
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return retrieved properties
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public UserIdentityElement getUserIdentityByGUID(String  userIdentityGUID,
+                                                     Date    asOfTime,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        return userIdentityClient.getUserIdentityByGUID(userId, userIdentityGUID, asOfTime, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Retrieve the list of user identities metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
-     * @param searchString string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
+     * @param searchString           string to find in the properties
+     * @param templateFilter         should templates be returned?
+     * @param limitResultsByStatus   control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime               repository time to use
+     * @param sequencingOrder        order to retrieve results
+     * @param sequencingProperty     property to use for sequencing order
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @return list of matching metadata elements
-     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<UserIdentityElement> findUserIdentities(String searchString,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<UserIdentityElement> findUserIdentities(String              searchString,
+                                                        TemplateFilter      templateFilter,
+                                                        List<ElementStatus> limitResultsByStatus,
+                                                        Date                asOfTime,
+                                                        SequencingOrder     sequencingOrder,
+                                                        String              sequencingProperty,
+                                                        int                 startFrom,
+                                                        int                 pageSize,
+                                                        boolean             forLineage,
+                                                        boolean             forDuplicateProcessing,
+                                                        Date                effectiveTime) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
-        return securityManagerClient.findUserIdentities(userId, searchString, startFrom, pageSize);
+        return userIdentityClient.findUserIdentities(userId, searchString, templateFilter, limitResultsByStatus, asOfTime, sequencingOrder, sequencingProperty, startFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime);
     }
-
-
-    /**
-     * Retrieve the list of user identity metadata elements with a matching qualified name.
-     * There are no wildcards supported on this request.
-     *
-     * @param name name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<UserIdentityElement>  getUserIdentitiesByName(String name,
-                                                              int    startFrom,
-                                                              int    pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
-    {
-        return securityManagerClient.getUserIdentitiesByName(userId, name, startFrom, pageSize);
-    }
-
-
-    /**
-     * Retrieve the userIdentity metadata element with the supplied unique identifier.
-     *
-     * @param userIdentityGUID unique identifier of the requested metadata element
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public UserIdentityElement getUserIdentityByGUID(String userIdentityGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        return securityManagerClient.getUserIdentityByGUID(userId, userIdentityGUID);
-    }
-
 
 
     /**
@@ -416,7 +690,7 @@ public class SecurityIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public ActorProfileElement getActorProfileByGUID(String actorProfileGUID) throws InvalidParameterException,
+    public ActorProfileGraphElement getActorProfileByGUID(String actorProfileGUID) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -435,7 +709,7 @@ public class SecurityIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public ActorProfileElement getActorProfileByUserId(String actorProfileUserId) throws InvalidParameterException,
+    public ActorProfileGraphElement getActorProfileByUserId(String actorProfileUserId) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {

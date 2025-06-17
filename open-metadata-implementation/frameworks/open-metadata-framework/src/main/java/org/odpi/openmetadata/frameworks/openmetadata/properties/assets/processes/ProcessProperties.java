@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProcessProperties extends AssetProperties
 {
-    private static final String formulaProperty                = OpenMetadataProperty.FORMULA.name;
-    private static final String formulaTypeProperty            = OpenMetadataProperty.FORMULA_TYPE.name;
-    private static final String implementationLanguageProperty = OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name;
-
     private String        formula                = null;
     private String        formulaType            = null;
     private String        implementationLanguage = null;
@@ -39,6 +36,7 @@ public class ProcessProperties extends AssetProperties
     public ProcessProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName);;
     }
 
 
@@ -75,22 +73,22 @@ public class ProcessProperties extends AssetProperties
 
             if (assetExtendedProperties != null)
             {
-                if (assetExtendedProperties.get(formulaProperty) != null)
+                if (assetExtendedProperties.get(OpenMetadataProperty.FORMULA.name) != null)
                 {
-                    formula = assetExtendedProperties.get(formulaProperty).toString();
-                    assetExtendedProperties.remove(formulaProperty);
+                    formula = assetExtendedProperties.get(OpenMetadataProperty.FORMULA.name).toString();
+                    assetExtendedProperties.remove(OpenMetadataProperty.FORMULA.name);
                 }
 
-                if (assetExtendedProperties.get(formulaTypeProperty) != null)
+                if (assetExtendedProperties.get(OpenMetadataProperty.FORMULA_TYPE.name) != null)
                 {
-                    formulaType = assetExtendedProperties.get(formulaTypeProperty).toString();
-                    assetExtendedProperties.remove(formulaTypeProperty);
+                    formulaType = assetExtendedProperties.get(OpenMetadataProperty.FORMULA_TYPE.name).toString();
+                    assetExtendedProperties.remove(OpenMetadataProperty.FORMULA_TYPE.name);
                 }
 
-                if (assetExtendedProperties.get(implementationLanguageProperty) != null)
+                if (assetExtendedProperties.get(OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name) != null)
                 {
-                    implementationLanguage = assetExtendedProperties.get(implementationLanguageProperty).toString();
-                    assetExtendedProperties.remove(implementationLanguageProperty);
+                    implementationLanguage = assetExtendedProperties.get(OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name).toString();
+                    assetExtendedProperties.remove(OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name);
                 }
 
                 super.setExtendedProperties(assetExtendedProperties);
@@ -118,17 +116,17 @@ public class ProcessProperties extends AssetProperties
 
         if (formula != null)
         {
-            extendedProperties.put(formulaProperty, formula);
+            extendedProperties.put(OpenMetadataProperty.FORMULA.name, formula);
         }
 
         if (formulaType != null)
         {
-            extendedProperties.put(formulaTypeProperty, formulaType);
+            extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, formulaType);
         }
 
         if (implementationLanguage != null)
         {
-            extendedProperties.put(implementationLanguageProperty, implementationLanguage);
+            extendedProperties.put(OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name, implementationLanguage);
         }
 
         if (! extendedProperties.isEmpty())

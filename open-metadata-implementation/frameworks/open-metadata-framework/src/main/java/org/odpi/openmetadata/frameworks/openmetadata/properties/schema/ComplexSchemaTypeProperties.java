@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -35,6 +36,7 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
     public ComplexSchemaTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName);
     }
 
 

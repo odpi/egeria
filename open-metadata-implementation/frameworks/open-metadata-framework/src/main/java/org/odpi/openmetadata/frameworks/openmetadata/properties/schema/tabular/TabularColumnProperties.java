@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -32,6 +33,7 @@ public class TabularColumnProperties extends SchemaAttributeProperties
     public TabularColumnProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.TABULAR_COLUMN.typeName);
     }
 
 

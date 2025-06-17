@@ -117,7 +117,7 @@ public class GlossaryTermConverter<B> extends OMFConverter<B>
                             relatedBy.setRelationshipProperties(relationshipProperties);
                         }
 
-                        bean.setRelatedElement(relatedBy);
+                        bean.setRelatedBy(relatedBy);
                     }
 
                     if (relatedEntities != null)

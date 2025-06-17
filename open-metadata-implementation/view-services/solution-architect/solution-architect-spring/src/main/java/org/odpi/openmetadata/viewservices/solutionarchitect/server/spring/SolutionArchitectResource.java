@@ -1078,7 +1078,7 @@ public class SolutionArchitectResource
 
 
     /**
-     * Attach a solution component to a solution component.
+     * Attach a solution component to a nested solution component.
      *
      * @param serverName         name of called server
      * @param solutionComponentGUID  unique identifier of the first solution component
@@ -1092,7 +1092,7 @@ public class SolutionArchitectResource
      */
     @PostMapping(path = "/solution-components/{solutionComponentGUID}/subcomponents/{subcomponentGUID}/attach")
     @Operation(summary="linkSubcomponent",
-            description="Attach a solution component to a solution component.",
+            description="Attach a solution component to a nested solution component.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-component"))
 
@@ -1114,7 +1114,7 @@ public class SolutionArchitectResource
      *
      * @param serverName         name of called server
      * @param parentSolutionComponentGUID  unique identifier of the first solution component
-     * @param memberDataFieldGUID      unique identifier of the second solution component
+     * @param subcomponentGUID      unique identifier of the second solution component
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1122,7 +1122,7 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/solution-components/{parentSolutionComponentGUID}/subcomponents/{memberDataFieldGUID}/detach")
+    @PostMapping(path = "/solution-components/{parentSolutionComponentGUID}/subcomponents/{subcomponentGUID}/detach")
     @Operation(summary="detachSubcomponent",
             description="Detach a solution component from a solution component.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1133,11 +1133,75 @@ public class SolutionArchitectResource
                                            @PathVariable
                                            String parentSolutionComponentGUID,
                                            @PathVariable
-                                           String memberDataFieldGUID,
+                                           String subcomponentGUID,
                                            @RequestBody (required = false)
                                            MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachSubcomponent(serverName, parentSolutionComponentGUID, memberDataFieldGUID, requestBody);
+        return restAPI.detachSubcomponent(serverName, parentSolutionComponentGUID, subcomponentGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a solution component to a solution component as a peer in a solution.
+     *
+     * @param serverName         name of called server
+     * @param solutionComponentOneGUID  unique identifier of the first solution component
+     * @param solutionComponentTwoGUID      unique identifier of the second solution component
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-components/{solutionComponentOneGUID}/wired-to/{solutionComponentTwoGUID}/attach")
+    @Operation(summary="linkSolutionLinkingWire",
+            description="Attach a solution component to a solution component as a peer in a solution.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse linkSolutionLinkingWire(@PathVariable
+                                         String                     serverName,
+                                         @PathVariable
+                                         String solutionComponentOneGUID,
+                                         @PathVariable
+                                         String solutionComponentTwoGUID,
+                                         @RequestBody (required = false)
+                                         RelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a solution component from a peer solution component.
+     *
+     * @param serverName         name of called server
+     * @param solutionComponentOneGUID  unique identifier of the first solution component
+     * @param solutionComponentTwoGUID      unique identifier of the second solution component
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-components/{solutionComponentOneGUID}/wired-to/{solutionComponentTwoGUID}/detach")
+    @Operation(summary="detachSolutionLinkingWire",
+            description="Detach a solution component from a peer solution component.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse detachSolutionLinkingWire(@PathVariable
+                                           String                    serverName,
+                                           @PathVariable
+                                           String solutionComponentOneGUID,
+                                           @PathVariable
+                                           String solutionComponentTwoGUID,
+                                           @RequestBody (required = false)
+                                           MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
     }
 
 

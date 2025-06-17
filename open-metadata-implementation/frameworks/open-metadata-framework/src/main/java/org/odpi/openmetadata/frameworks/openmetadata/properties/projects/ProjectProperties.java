@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -38,6 +39,7 @@ public class ProjectProperties extends ReferenceableProperties
     public ProjectProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.PROJECT.typeName);
     }
 
 
@@ -286,23 +288,16 @@ public class ProjectProperties extends ReferenceableProperties
     public String toString()
     {
         return "ProjectProperties{" +
-                       "identifier='" + identifier + '\'' +
-                       ", name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       ", phase='" + projectPhase + '\'' +
-                       ", health='" + projectHealth + '\'' +
-                       ", status='" + projectStatus + '\'' +
-                       ", startDate=" + startDate +
-                       ", priority=" + priority +
-                       ", plannedEndDate=" + plannedEndDate +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "identifier='" + identifier + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", projectPhase='" + projectPhase + '\'' +
+                ", projectHealth='" + projectHealth + '\'' +
+                ", projectStatus='" + projectStatus + '\'' +
+                ", priority=" + priority +
+                ", startDate=" + startDate +
+                ", plannedEndDate=" + plannedEndDate +
+                "} " + super.toString();
     }
 
 

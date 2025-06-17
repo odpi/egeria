@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,8 @@ public class AssetOriginProperties extends ClassificationProperties
      */
     public AssetOriginProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
     }
 
 
@@ -43,6 +46,8 @@ public class AssetOriginProperties extends ClassificationProperties
      */
     public AssetOriginProperties(AssetOriginProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             this.organizationGUID = template.getOrganizationGUID();
@@ -103,18 +108,7 @@ public class AssetOriginProperties extends ClassificationProperties
      */
     public Map<String, String> getOtherOriginValues()
     {
-        if (otherOriginValues == null)
-        {
-            return null;
-        }
-        else if (otherOriginValues.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(otherOriginValues);
-        }
+        return otherOriginValues;
     }
 
 
@@ -138,13 +132,10 @@ public class AssetOriginProperties extends ClassificationProperties
     public String toString()
     {
         return "AssetOriginProperties{" +
-                       "organizationGUID='" + organizationGUID + '\'' +
-                       ", businessCapabilityGUID='" + businessCapabilityGUID + '\'' +
-                       ", otherOriginValues=" + otherOriginValues +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "organizationGUID='" + organizationGUID + '\'' +
+                ", businessCapabilityGUID='" + businessCapabilityGUID + '\'' +
+                ", otherOriginValues=" + otherOriginValues +
+                "} " + super.toString();
     }
 
 
@@ -179,6 +170,6 @@ public class AssetOriginProperties extends ClassificationProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getOrganizationGUID(), getBusinessCapabilityGUID(), getOtherOriginValues());
+        return Objects.hash(super.hashCode(), organizationGUID, businessCapabilityGUID, otherOriginValues);
     }
 }

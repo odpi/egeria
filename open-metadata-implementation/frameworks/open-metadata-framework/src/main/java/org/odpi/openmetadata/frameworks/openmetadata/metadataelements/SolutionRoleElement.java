@@ -20,12 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionRoleElement implements MetadataElement
+public class SolutionRoleElement extends ActorRoleElement
 {
-    private ElementHeader                       elementHeader      = null;
-    private ActorRoleProperties                 properties         = null;
     private List<RelatedMetadataElementSummary> solutionComponents = null;
-    private String                              mermaidGraph    = null;
 
 
     /**
@@ -44,59 +41,12 @@ public class SolutionRoleElement implements MetadataElement
      */
     public SolutionRoleElement(SolutionRoleElement template)
     {
+        super (template);
+
         if (template != null)
         {
-            elementHeader      = template.getElementHeader();
-            properties         = template.getProperties();
             solutionComponents = template.getSolutionComponents();
-            mermaidGraph       = template.getMermaidGraph();
         }
-    }
-
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param header element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader header)
-    {
-        this.elementHeader = header;
-    }
-
-
-    /**
-     * Return the properties of the role.
-     *
-     * @return properties
-     */
-    public ActorRoleProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up the role properties.
-     *
-     * @param properties  properties
-     */
-    public void setProperties(ActorRoleProperties properties)
-    {
-        this.properties = properties;
     }
 
 
@@ -122,28 +72,6 @@ public class SolutionRoleElement implements MetadataElement
     }
 
 
-
-    /**
-     *
-     * @return mermaid markdown
-     */
-    public String getMermaidGraph()
-    {
-        return mermaidGraph;
-    }
-
-
-    /**
-     * Set up the graph view of the solution component.
-     *
-     * @param mermaidGraph mermaid markdown
-     */
-    public void setMermaidGraph(String mermaidGraph)
-    {
-        this.mermaidGraph = mermaidGraph;
-    }
-
-
     /**
      * JSON-style toString
      *
@@ -153,11 +81,8 @@ public class SolutionRoleElement implements MetadataElement
     public String toString()
     {
         return "SolutionRoleElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
-                ", solutionComponents=" + solutionComponents +
-                ", mermaidGraph='" + mermaidGraph + '\'' +
-                '}';
+                "solutionComponents=" + solutionComponents +
+                "} " + super.toString();
     }
 
 
@@ -178,11 +103,9 @@ public class SolutionRoleElement implements MetadataElement
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
         SolutionRoleElement that = (SolutionRoleElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties) &&
-                       Objects.equals(solutionComponents, that.solutionComponents) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph);
+        return Objects.equals(solutionComponents, that.solutionComponents);
     }
 
 
@@ -194,6 +117,6 @@ public class SolutionRoleElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, solutionComponents, mermaidGraph);
+        return Objects.hash(super.hashCode(), solutionComponents);
     }
 }

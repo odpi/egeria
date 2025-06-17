@@ -401,6 +401,8 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/governance-officer" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/actor-manager" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-officer" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/security-officer" }

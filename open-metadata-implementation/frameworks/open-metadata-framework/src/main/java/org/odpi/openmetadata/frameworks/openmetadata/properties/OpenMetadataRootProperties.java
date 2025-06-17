@@ -3,6 +3,11 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +24,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = ReferenceableProperties.class, name = "ReferenceableProperties"),
+                @JsonSubTypes.Type(value = GovernanceDefinitionProperties.class, name = "GovernanceDefinitionProperties"),
+                @JsonSubTypes.Type(value = InformalTagProperties.class, name = "InformalTagProperties"),
+                @JsonSubTypes.Type(value = RatingProperties.class, name = "RatingProperties"),
+                @JsonSubTypes.Type(value = LikeProperties.class, name = "LikeProperties"),
+        })
 public class OpenMetadataRootProperties
 {
     private Date                 effectiveFrom        = null;

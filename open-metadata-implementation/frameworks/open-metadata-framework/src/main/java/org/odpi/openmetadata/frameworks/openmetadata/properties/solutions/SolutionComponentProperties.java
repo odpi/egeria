@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -32,6 +33,7 @@ public class SolutionComponentProperties extends ReferenceableProperties
     public SolutionComponentProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SOLUTION_COMPONENT.typeName);
     }
 
 

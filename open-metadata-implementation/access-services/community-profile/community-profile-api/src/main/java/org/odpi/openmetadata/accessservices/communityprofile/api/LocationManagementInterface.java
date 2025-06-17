@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.api;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LocationElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AssetLocationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.DigitalLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
@@ -196,9 +196,9 @@ public interface LocationManagementInterface
                               String                    locationGUID,
                               String                    externalSourceGUID,
                               String                    externalSourceName,
-                              DigitalLocationProperties properties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException;
+                              CyberLocationProperties properties) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**

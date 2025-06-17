@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -28,6 +29,8 @@ public class LicenseTypeProperties extends GovernanceDefinitionProperties
      */
     public LicenseTypeProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.LICENSE_TYPE.typeName);
     }
 
 

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public class SubjectAreaProperties extends ReferenceableProperties
     public SubjectAreaProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName);
     }
 
 

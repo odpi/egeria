@@ -7,7 +7,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Governance
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityAccessControlProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -18,8 +20,8 @@ import java.util.List;
 
 
 /**
- * GovernanceDefinitionConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from GovernanceDefinitionElement.
+ * GovernanceDefinitionConverter provides common methods for transferring relevant properties from an Open Metadata
+ * Element object into a bean that inherits from GovernanceDefinitionElement.
  */
 public class GovernanceDefinitionConverter<B>  extends OpenMetadataConverterBase<B>
 {
@@ -38,6 +40,15 @@ public class GovernanceDefinitionConverter<B>  extends OpenMetadataConverterBase
     }
 
 
+    /**
+     * Uses the type of the entity to determine the type of bean to use for the properties.
+     *
+     * @param beanClass element bean class
+     * @param openMetadataElement element retrieved
+     * @param methodName calling method
+     * @return properties
+     * @throws PropertyServerException problem in conversion
+     */
     protected  GovernanceDefinitionProperties getGovernanceDefinitionProperties(Class<B>            beanClass,
                                                                                 OpenMetadataElement openMetadataElement,
                                                                                 String              methodName) throws PropertyServerException
@@ -63,42 +74,128 @@ public class GovernanceDefinitionConverter<B>  extends OpenMetadataConverterBase
 
                 ((LicenseTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(elementProperties));
             }
-            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REGULATION.typeName))
+            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_DRIVER.typeName))
             {
-                governanceDefinitionProperties = new RegulationProperties();
+                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_STRATEGY.typeName))
+                {
+                    governanceDefinitionProperties = new GovernanceStrategyProperties();
 
-                ((RegulationProperties) governanceDefinitionProperties).setJurisdiction(this.removeJurisdiction(elementProperties));
+                    ((GovernanceStrategyProperties) governanceDefinitionProperties).setBusinessImperatives(this.removeBusinessImperatives(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.BUSINESS_IMPERATIVE.typeName))
+                {
+                    governanceDefinitionProperties = new BusinessImperativeProperties();
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REGULATION.typeName))
+                {
+                    governanceDefinitionProperties = new RegulationProperties();
+
+                    ((RegulationProperties) governanceDefinitionProperties).setJurisdiction(this.removeJurisdiction(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REGULATION_ARTICLE.typeName))
+                {
+                    governanceDefinitionProperties = new RegulationArticleProperties();
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.THREAT.typeName))
+                {
+                    governanceDefinitionProperties = new ThreatProperties();
+                }
+                else
+                {
+                    governanceDefinitionProperties = new GovernanceDriverProperties();
+                }
             }
-            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_STRATEGY.typeName))
+            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_POLICY.typeName))
             {
-                governanceDefinitionProperties = new GovernanceStrategyProperties();
-
-                ((GovernanceStrategyProperties) governanceDefinitionProperties).setBusinessImperatives(this.removeBusinessImperatives(elementProperties));
+                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_PRINCIPLE.typeName))
+                {
+                    governanceDefinitionProperties = new GovernancePrincipleProperties();
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_OBLIGATION.typeName))
+                {
+                    governanceDefinitionProperties = new GovernanceObligationProperties();
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_APPROACH.typeName))
+                {
+                    governanceDefinitionProperties = new GovernanceApproachProperties();
+                }
+                else
+                {
+                    governanceDefinitionProperties = new GovernancePolicyProperties();
+                }
             }
             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_CONTROL.typeName))
             {
-                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECURITY_GROUP.typeName))
+                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TECHNICAL_CONTROL.typeName))
                 {
-                    governanceDefinitionProperties = new SecurityGroupProperties();
+                    if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECURITY_GROUP.typeName))
+                    {
+                        governanceDefinitionProperties = new SecurityGroupProperties();
 
-                    ((SecurityGroupProperties) governanceDefinitionProperties).setDistinguishedName(this.removeDistinguishedName(elementProperties));
+                        ((SecurityGroupProperties) governanceDefinitionProperties).setDistinguishedName(this.removeDistinguishedName(elementProperties));
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECURITY_ACCESS_CONTROL.typeName))
+                    {
+                        governanceDefinitionProperties = new SecurityAccessControlProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SERVICE_LEVEL_OBJECTIVE.typeName))
+                    {
+                        governanceDefinitionProperties = new ServiceLevelObjectiveProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_PROCESS.typeName))
+                    {
+                        governanceDefinitionProperties = new GovernanceProcessProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_RULE.typeName))
+                    {
+                        if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NAMING_STANDARD_RULE.typeName))
+                        {
+                            governanceDefinitionProperties = new NamingStandardRuleProperties();
+
+                            ((NamingStandardRuleProperties) governanceDefinitionProperties).setNamePatterns(this.removeNamePatterns(elementProperties));
+                        }
+                        else
+                        {
+                            governanceDefinitionProperties = new GovernanceRuleProperties();
+                        }
+                    }
+                    else
+                    {
+                        governanceDefinitionProperties = new TechnicalControlProperties();
+                    }
                 }
-                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NAMING_STANDARD_RULE.typeName))
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName))
                 {
-                    governanceDefinitionProperties = new NamingStandardRuleProperties();
-
-                    ((NamingStandardRuleProperties) governanceDefinitionProperties).setNamePatterns(this.removeNamePatterns(elementProperties));
+                    if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName))
+                    {
+                        governanceDefinitionProperties = new GovernanceResponsibilityProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_PROCEDURE.typeName))
+                    {
+                        governanceDefinitionProperties = new GovernanceProcedureProperties();
+                    }
+                    else
+                    {
+                        governanceDefinitionProperties = new OrganizationalControlProperties();
+                    }
                 }
                 else
                 {
                     governanceDefinitionProperties = new GovernanceControlProperties();
                 }
             }
+            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName))
+            {
+                governanceDefinitionProperties = new DataProcessingPurposeProperties();
+            }
             else
             {
                 governanceDefinitionProperties = new GovernanceDefinitionProperties();
             }
 
+            /*
+             * These are the standard properties for a governance definition.
+             */
             governanceDefinitionProperties.setDocumentIdentifier(this.removeQualifiedName(elementProperties));
             governanceDefinitionProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
             governanceDefinitionProperties.setTitle(this.removeTitle(elementProperties));

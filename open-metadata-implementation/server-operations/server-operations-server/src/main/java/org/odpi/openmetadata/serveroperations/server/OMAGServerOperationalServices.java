@@ -718,6 +718,7 @@ public class OMAGServerOperationalServices
                                        configuration.getViewServicesConfig(),
                                        operationalRepositoryServices,
                                        configuration.getLocalServerUserId(),
+                                       configuration.getLocalServerPassword(),
                                        serverName,
                                        activatedServiceList,
                                        configuration.getMaxPageSize(),
@@ -1024,6 +1025,7 @@ public class OMAGServerOperationalServices
      * @param operationalRepositoryServices repository services
      * @param localServerUserId             servers userId
      * @param serverName                    server name
+     * @param localServerPassword           server password or null
      * @param activatedServiceList          list of services (subsystems) running in the server
      * @param maxPageSize                   maximum page size. 0 means unlimited
      * @param auditLog                      audit log
@@ -1033,6 +1035,7 @@ public class OMAGServerOperationalServices
                                         List<ViewServiceConfig>         viewServiceConfigList,
                                         OMRSOperationalServices         operationalRepositoryServices,
                                         String                          localServerUserId,
+                                        String                          localServerPassword,
                                         String                          serverName,
                                         List<String>                    activatedServiceList,
                                         int                             maxPageSize,
@@ -1138,6 +1141,7 @@ public class OMAGServerOperationalServices
                                                         viewServiceConfig,
                                                         viewServicesAuditLog,
                                                         localServerUserId,
+                                                        localServerPassword,
                                                         maxPageSize);
                             operationalViewServiceAdminList.add(viewServiceAdmin);
                         }
@@ -1147,6 +1151,7 @@ public class OMAGServerOperationalServices
                                                                      viewServiceConfig,
                                                                      viewServicesAuditLog,
                                                                      localServerUserId,
+                                                                     localServerPassword,
                                                                      maxPageSize,
                                                                      activeViewServices);
                             operationalViewServerGenericServiceAdminList.add(viewServerGenericServiceAdmin);
@@ -1236,6 +1241,7 @@ public class OMAGServerOperationalServices
                                                                  viewServiceConfig,
                                                                  viewServicesAuditLog,
                                                                  localServerUserId,
+                                                                 localServerPassword,
                                                                  maxPageSize,
                                                                  activeViewServices);
                         operationalViewServerGenericServiceAdminList.add(viewServerGenericServiceAdmin);

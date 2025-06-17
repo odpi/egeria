@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -34,6 +35,7 @@ public class ResourceListProperties extends RelationshipProperties
     public ResourceListProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName);
     }
 
 

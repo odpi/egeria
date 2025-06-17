@@ -18,7 +18,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialInformationSupplyChain;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
@@ -47,24 +46,25 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
     {
         final String methodName = "start";
 
-        String genericHospitalNominationGUID    = null;
-        String genericHospitalCertificationGUID = null;
-        String genericSetUpDataLakeGUID         = null;
-        String genericHospitalOnboardingGUID    = null;
-        String hospitalCertificationTypeGUID    = null;
-        String dataQualityCertificationTypeGUID = null;
-        String clinicalTrialParentProjectGUID   = null;
-        String clinicalTrialId                  = null;
-        String clinicalTrialName                = null;
-        String clinicalTrialDescription         = null;
-        String clinicalTrialOwnerGUID           = null;
-        String clinicalTrialManagerGUID         = null;
-        String dataEngineerGUID                 = null;
-        String dataScientistGUID                = null;
-        String itProjectManagerGUID             = null;
-        String integrationDeveloperGUID         = null;
-        String lastUpdateConnectorGUID          = null;
-        String landingAreaConnectorGUID         = null;
+        String genericHospitalNominationGUID            = null;
+        String genericHospitalCertificationGUID         = null;
+        String genericSetUpDataLakeGUID                 = null;
+        String genericHospitalOnboardingGUID            = null;
+        String informationSupplyChainTemplateGUID       = null;
+        String hospitalCertificationTypeTemplateGUID    = null;
+        String dataQualityCertificationTypeTemplateGUID = null;
+        String clinicalTrialParentProjectGUID           = null;
+        String clinicalTrialId                          = null;
+        String clinicalTrialName                        = null;
+        String clinicalTrialDescription                 = null;
+        String clinicalTrialOwnerGUID                   = null;
+        String clinicalTrialManagerGUID                 = null;
+        String dataEngineerGUID                         = null;
+        String dataScientistGUID                        = null;
+        String itProjectManagerGUID                     = null;
+        String integrationDeveloperGUID                 = null;
+        String lastUpdateConnectorGUID                  = null;
+        String landingAreaConnectorGUID                 = null;
 
         super.start();
 
@@ -83,13 +83,20 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                         {
                             clinicalTrialParentProjectGUID = actionTargetElement.getActionTargetGUID();
                         }
-                        else if (CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN_TEMPLATE.getName().equals(actionTargetElement.getActionTargetName()))
                         {
-                            hospitalCertificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
+                            informationSupplyChainTemplateGUID = "1f71e403-1187-4f03-a1dd-ae7dc105f06f";
+                            //informationSupplyChainTemplateGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
-                        else if (CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE_TEMPLATE.getName().equals(actionTargetElement.getActionTargetName()))
                         {
-                            dataQualityCertificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
+                            hospitalCertificationTypeTemplateGUID = "5acc69bf-dfbb-4e4a-b47b-19d610f2cb06";
+                            //hospitalCertificationTypeTemplateGUID = actionTargetElement.getTargetElement().getElementGUID();
+                        }
+                        else if (CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE_TEMPLATE.getName().equals(actionTargetElement.getActionTargetName()))
+                        {
+                            dataQualityCertificationTypeTemplateGUID = "8a921039-ad5f-454d-ae17-e5a5b69f9333";
+                            //dataQualityCertificationTypeTemplateGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
                         else if (CocoClinicalTrialActionTarget.GENERIC_SET_UP_DATA_LAKE_GAT.getName().equals(actionTargetElement.getActionTargetName()))
                         {
@@ -160,8 +167,9 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                     clinicalTrialDescription == null || clinicalTrialDescription.isBlank() ||
                     lastUpdateConnectorGUID == null ||
                     landingAreaConnectorGUID == null ||
-                    hospitalCertificationTypeGUID == null ||
-                    dataQualityCertificationTypeGUID == null ||
+                    informationSupplyChainTemplateGUID == null ||
+                    hospitalCertificationTypeTemplateGUID == null ||
+                    dataQualityCertificationTypeTemplateGUID == null ||
                     genericHospitalNominationGUID == null ||
                     genericHospitalCertificationGUID == null ||
                     genericSetUpDataLakeGUID == null ||
@@ -223,15 +231,20 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
                                                                                                             CocoClinicalTrialActionTarget.GENERIC_HOSPITAL_ONBOARDING_GAT.getName());
                 }
-                else if (hospitalCertificationTypeGUID == null)
+                else if (informationSupplyChainTemplateGUID == null)
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                            CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName());
+                                                                                                            CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN_TEMPLATE.getName());
                 }
-                else if (dataQualityCertificationTypeGUID == null)
+                else if (hospitalCertificationTypeTemplateGUID == null)
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                            CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName());
+                                                                                                            CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE_TEMPLATE.getName());
+                }
+                else if (dataQualityCertificationTypeTemplateGUID == null)
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE_TEMPLATE.getName());
                 }
                 else if (clinicalTrialOwnerGUID == null)
                 {
@@ -280,10 +293,10 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                   integrationDeveloperGUID,
                                                                                   dataScientistGUID);
 
-                OpenMetadataElement informationSupplyChain = createInformationSupplyChain(clinicalTrialId, clinicalTrialName, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
-                String              informationSupplyChainGUID = informationSupplyChain.getElementGUID();
-
-                setUpCertificationType(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), hospitalCertificationTypeGUID);
+                OpenMetadataElement informationSupplyChain           = createInformationSupplyChain(clinicalTrialId, clinicalTrialName, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), informationSupplyChainTemplateGUID);
+                String              informationSupplyChainGUID       = informationSupplyChain.getElementGUID();
+                String              hospitalCertificationTypeGUID    = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), hospitalCertificationTypeTemplateGUID);
+                String              dataQualityCertificationTypeGUID = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), dataQualityCertificationTypeTemplateGUID);
 
                 String nominateHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::nominate-hospital",
                                                                                          "Nominate Hospital (" + clinicalTrialId + ")",
@@ -383,6 +396,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
      * @param clinicalTrialId identifier for the clinical trial
      * @param clinicalTrialName display name for hte clinical trial
      * @param clinicalTrialProjectGUID project for the clinical trial
+     * @param informationSupplyChainTemplateGUID template for the information supply chain
      * @return information supply chain element
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
@@ -390,9 +404,10 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
      */
     private OpenMetadataElement createInformationSupplyChain(String clinicalTrialId,
                                                              String clinicalTrialName,
-                                                             String clinicalTrialProjectGUID) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
+                                                             String clinicalTrialProjectGUID,
+                                                             String informationSupplyChainTemplateGUID) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException
     {
         Map<String, String> placeholderProperties = new HashMap<>();
 
@@ -405,7 +420,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                                        clinicalTrialProjectGUID,
                                                                                                                        null,
                                                                                                                        null,
-                                                                                                                       ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getGUID(),
+                                                                                                                       informationSupplyChainTemplateGUID,
                                                                                                                        null,
                                                                                                                        placeholderProperties,
                                                                                                                        clinicalTrialProjectGUID,
@@ -420,23 +435,37 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
     /**
      * Link the certification type to the project.
      *
-     * @param projectGUID unique identifier of the project
-     * @param certificationTypeGUID unique identifier of the certification type
+     * @param clinicalTrialId identifier of the clinical trial
+     * @param clinicalTrialProjectGUID unique identifier of the project
+     * @param certificationTypeTemplateGUID unique identifier of the certification type template
+     * @return unique identifier of the certification type
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization error
      */
-    private void setUpCertificationType(String projectGUID,
-                                        String certificationTypeGUID) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    private String setUpCertificationType(String clinicalTrialId,
+                                          String clinicalTrialProjectGUID,
+                                          String certificationTypeTemplateGUID) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
-                                                                              certificationTypeGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              null);
+        Map<String, String> placeholderProperties = new HashMap<>();
+
+        placeholderProperties.put(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getName(), clinicalTrialId);
+
+        return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.CERTIFICATION_TYPE.typeName,
+                                                                                          null,
+                                                                                          true,
+                                                                                          clinicalTrialProjectGUID,
+                                                                                          null,
+                                                                                          null,
+                                                                                          certificationTypeTemplateGUID,
+                                                                                          null,
+                                                                                          placeholderProperties,
+                                                                                          clinicalTrialProjectGUID,
+                                                                                          OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                                                                          null,
+                                                                                          false);
     }
 
 

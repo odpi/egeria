@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -36,6 +37,8 @@ public class ITInfrastructureProperties extends AssetProperties
      */
     public ITInfrastructureProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.IT_INFRASTRUCTURE.typeName);
     }
 
 

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -36,6 +37,7 @@ public class ServerAssetUseProperties extends RelationshipProperties
     public ServerAssetUseProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName);
     }
 
 

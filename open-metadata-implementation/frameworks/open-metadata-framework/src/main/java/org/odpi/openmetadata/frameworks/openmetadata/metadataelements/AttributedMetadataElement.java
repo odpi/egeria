@@ -26,6 +26,7 @@ public class AttributedMetadataElement implements MetadataElement
     private ElementHeader                       elementHeader        = null;
     private List<RelatedMetadataElementSummary> externalReferences   = null;
     private List<RelatedMetadataElementSummary> otherRelatedElements = null;
+    private RelatedBy                           relatedBy            = null;
     private String                              mermaidGraph         = null;
 
     /**
@@ -48,6 +49,7 @@ public class AttributedMetadataElement implements MetadataElement
             elementHeader        = template.getElementHeader();
             externalReferences   = template.getExternalReferences();
             otherRelatedElements = template.getOtherRelatedElements();
+            relatedBy            = template.getRelatedBy();
             mermaidGraph         = template.getMermaidGraph();
         }
     }
@@ -121,6 +123,30 @@ public class AttributedMetadataElement implements MetadataElement
 
 
     /**
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @return list of element stubs
+     */
+    public RelatedBy getRelatedBy()
+    {
+        return relatedBy;
+    }
+
+
+    /**
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @param relatedBy relationship details
+     */
+    public void setRelatedBy(RelatedBy relatedBy)
+    {
+        this.relatedBy = relatedBy;
+    }
+
+
+    /**
      * Return the mermaid representation of this data structure.
      *
      * @return string markdown
@@ -155,6 +181,7 @@ public class AttributedMetadataElement implements MetadataElement
                 "elementHeader=" + elementHeader +
                 ", externalReferences=" + externalReferences +
                 ", otherRelatedElements=" + otherRelatedElements +
+                ", relatedBy=" + relatedBy +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
     }
@@ -175,6 +202,7 @@ public class AttributedMetadataElement implements MetadataElement
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(externalReferences, that.externalReferences) &&
                 Objects.equals(otherRelatedElements, that.otherRelatedElements) &&
+                Objects.equals(relatedBy, that.relatedBy) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
@@ -187,6 +215,6 @@ public class AttributedMetadataElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, externalReferences, otherRelatedElements, mermaidGraph);
+        return Objects.hash(elementHeader, externalReferences, otherRelatedElements, relatedBy, mermaidGraph);
     }
 }

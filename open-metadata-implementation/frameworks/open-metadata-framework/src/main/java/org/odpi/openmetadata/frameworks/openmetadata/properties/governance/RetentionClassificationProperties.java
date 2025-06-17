@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -33,6 +34,7 @@ public class RetentionClassificationProperties extends GovernanceClassificationB
     public RetentionClassificationProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.RETENTION_CLASSIFICATION.typeName);
     }
 
 

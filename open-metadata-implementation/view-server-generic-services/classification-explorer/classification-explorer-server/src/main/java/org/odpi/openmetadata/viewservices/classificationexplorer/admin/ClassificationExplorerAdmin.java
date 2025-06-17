@@ -18,9 +18,9 @@ import java.util.List;
  */
 public class ClassificationExplorerAdmin extends ViewServerGenericServiceAdmin
 {
-    private AuditLog                auditLog   = null;
+    private AuditLog                       auditLog   = null;
     private ClassificationExplorerInstance instance   = null;
-    private String                  serverName = null;
+    private String                         serverName = null;
 
     /**
      * Default constructor
@@ -31,12 +31,13 @@ public class ClassificationExplorerAdmin extends ViewServerGenericServiceAdmin
 
 
     /**
-     * Initialize the Classification Explorer view service.
+     * Initialize the view service.
      *
      * @param serverName                         name of the local server
      * @param viewServiceConfig                  specific configuration properties for this view service.
      * @param auditLog                           audit log component for logging messages.
-     * @param serverUserName                     user id to use to issue calls to the remote server.
+     * @param serverUserName                     user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param serverUserPassword                 password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize                        maximum page size. 0 means unlimited
      * @param activeViewServices list of view services active in this server
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
@@ -46,9 +47,9 @@ public class ClassificationExplorerAdmin extends ViewServerGenericServiceAdmin
                            ViewServiceConfig       viewServiceConfig,
                            AuditLog                auditLog,
                            String                  serverUserName,
+                           String                  serverUserPassword,
                            int                     maxPageSize,
                            List<ViewServiceConfig> activeViewServices) throws OMAGConfigurationErrorException
-
     {
 
         final String actionDescription = "initialize";
@@ -67,6 +68,7 @@ public class ClassificationExplorerAdmin extends ViewServerGenericServiceAdmin
             this.instance = new ClassificationExplorerInstance(serverName,
                                                         auditLog,
                                                         serverUserName,
+                                                        serverUserPassword,
                                                         maxPageSize,
                                                         viewServiceConfig.getOMAGServerName(),
                                                         viewServiceConfig.getOMAGServerPlatformRootURL(),

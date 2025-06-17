@@ -30,7 +30,8 @@ import java.util.Map;
 public class SecurityIntegratorContextManager extends IntegrationContextManager
 {
     private MetadataSourceClient  metadataSourceClient;
-    private SecurityManagerClient securityManagerClient;
+    private SecurityManagerClient  securityManagerClient;
+    private UserIdentityManagement userIdentityClient = null;
 
     /**
      * Default constructor
@@ -43,6 +44,7 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
     /**
      * Initialize server properties for the context manager.
      *
+     * @param localServerName name of this integration daemon
      * @param partnerOMASServerName name of the server to connect to
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
@@ -51,7 +53,8 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
-    public void initializeContextManager(String              partnerOMASServerName,
+    public void initializeContextManager(String              localServerName,
+                                         String              partnerOMASServerName,
                                          String              partnerOMASPlatformRootURL,
                                          String              userId,
                                          String              password,
@@ -59,7 +62,7 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                          int                 maxPageSize,
                                          AuditLog            auditLog)
     {
-        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
+        super.initializeContextManager(localServerName, partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 
@@ -108,6 +111,25 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                                           partnerOMASPlatformRootURL,
                                                           restClient,
                                                           maxPageSize);
+
+        if (localServerPassword == null)
+        {
+            userIdentityClient = new UserIdentityManagement(localServerName,
+                                                            partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            auditLog,
+                                                            maxPageSize);
+        }
+        else
+        {
+            userIdentityClient = new UserIdentityManagement(localServerName,
+                                                            partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            localServerUserId,
+                                                            localServerPassword,
+                                                            auditLog,
+                                                            maxPageSize);
+        }
     }
 
 
@@ -226,6 +248,7 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                                                                         openMetadataStoreClient,
                                                                                         actionControlInterface,
                                                                                         securityManagerClient,
+                                                                                        userIdentityClient,
                                                                                         eventClient,
                                                                                         generateIntegrationReport,
                                                                                         permittedSynchronization,

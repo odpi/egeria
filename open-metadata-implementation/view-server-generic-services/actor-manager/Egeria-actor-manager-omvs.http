@@ -1,0 +1,1166 @@
+# Egeria-actor-manager-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with Governance Definitions
+# https://egeria-project.org/concepts/governance-definition
+
+@governanceDefinitionGUID=add guid here
+
+###
+# @name createGovernanceDefinition (with parent)
+# Create an anchored governance definition linked to a parent.  It may be of type:
+## * BusinessImperative
+## * RegulationArticle
+## * Threat
+## * GovernancePrinciple
+## * GovernanceObligation
+## * GovernanceApproach
+## * GovernanceProcessingPurpose
+# The type is added to the "typeName" property,
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "GovernanceDefinitionProperties",
+    "typeName" : "enter the type of the governance definition",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createGovernanceStrategy (with parent)
+# Create an anchored governance definition linked to a parent of type GovernanceStrategy
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "GovernanceStrategyProperties",
+    "typeName" : "GovernanceStrategy",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "businessImperatives" : [],
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createRegulation (with parent)
+# Create an anchored governance definition linked to a parent of type Regulation
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "RegulationProperties",
+    "typeName" : "Regulation",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "jurisdiction" : "",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "initialStatus": "DRAFT"
+}
+
+
+###
+# @name createGovernanceControl (with parent)
+# Create a governance control definition. It may be of type:
+## * GovernanceRule
+## * ServiceLevelObjective
+## * GovernanceProcess
+## * GoveranceResponsibility
+## * GovernanceProcedure
+## * SecurityAccessControl
+# The type is added to the "typeName" property.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "GovernanceControlProperties",
+    "typeName" : "enter the type of the governance definition",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "implementationDescription" : "Describe how this control will be implemented",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createSecurityGroup (with parent)
+# Create an anchored governance definition linked to a parent of type SecurityGroup
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "SecurityGroupProperties",
+    "typeName" : "SecurityGroup",
+    "domainIdentifier": 0,
+    "distinguishedName" : "",
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "implementationDescription" : "Describe how this control will be implemented",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createNamingStandardRule (with parent)
+# Create an anchored governance definition linked to a parent of type NamingStandardRule
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "NamingStandardRuleProperties",
+    "typeName" : "NamingStandardRule",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "implications": [],
+    "implementationDescription" : "Describe how this control will be implemented",
+    "namePatterns" : [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createCertificationType (with parent)
+# Create an anchored governance definition of type CertificationType, linked to a parent.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "CertificationTypeProperties",
+    "typeName" : "CertificationType",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "details" : "",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createLicenseType (with parent)
+# Create an anchored governance definition of type LicenseType, linked to a parent.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "LicenseTypeProperties",
+    "typeName" : "LicenseType",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "details" : "",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "initialStatus": "DRAFT"
+}
+
+
+
+
+###
+# @name createGovernanceDefinition (simple)
+# Create a governance definition. It may be of type:
+## * BusinessImperative
+## * RegulationArticle
+## * Threat
+## * GovernancePrinciple
+## * GovernanceObligation
+## * GovernanceApproach
+## * GovernanceProcessingPurpose
+# The type is added to the "typeName" property.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "class" : "GovernanceDefinitionProperties",
+    "typeName" : "enter the type of the governance definition",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createGovernanceStrategy (simple)
+# Create a governance definition of type GovernanceStrategy
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "class" : "GovernanceStrategyProperties",
+    "typeName" : "GovernanceStrategy",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "businessImperatives" : [],
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createRegulation (simple)
+# Create a governance definition of type Regulation
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "class" : "RegulationProperties",
+    "typeName" : "Regulation",
+    "domainIdentifier": 0,
+    "jurisdiction" : "",
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createGovernanceControl (simple)
+# Create a governance control definition. It may be of type:
+## * GovernanceRule
+## * ServiceLevelObjective
+## * GovernanceProcess
+## * GoveranceResponsibility
+## * GovernanceProcedure
+## * SecurityAccessControl
+# The type is added to the "typeName" property.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "class" : "GovernanceDefinitionProperties",
+    "typeName" : "enter the type of the governance definition",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "implementationDescription": "",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createSecurityGroup (simple)
+# Create a governance control definition of type SecurityGroup.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "class" : "SecurityGroupProperties",
+    "typeName" : "SecurityGroup",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "distinguishedName": "",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "implementationDescription": "",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createNamingStandardRule (simple)
+# Create a governance control definition of type NamingStandardsRule
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "class" : "NamingStandardRuleProperties",
+    "typeName" : "NamingStandardRule",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "implementationDescription": "",
+    "namePatterns": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createCertificationType (simple)
+# Create a governance definition of type CertificationType
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "class" : "CertificationTypeProperties",
+    "typeName" : "CertificationType",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "details" : "",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "initialStatus": "DRAFT"
+}
+
+###
+# @name createLicenseType (simple)
+# Create a governance definition of type LicenseType.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "class" : "LicenseTypeProperties",
+    "typeName" : "LicenseType",
+    "domainIdentifier": 0,
+    "documentIdentifier": "add unique name here",
+    "title": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "details" : "",
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "initialStatus": "DRAFT"
+}
+
+
+
+###
+# @name createGovernanceDefinitionFromTemplate
+# Create a new metadata element to represent a governance definition using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
+
+
+
+###
+# @name updateGovernanceDefinition
+# Update the properties of a governance definition.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/update?replaceAllProperties=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class" : "GovernanceDefinitionProperties",
+    "typeName" : "Add type name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "namespace": "add namespace for this structure",
+    "versionIdentifier": "add version for this structure",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name updateGovernanceDefinitionStatus
+# Update the status of a governance definition.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/update-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateGovernanceDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "status": "ACTIVE"
+}
+
+###
+
+@governanceDefinitionOneGUID=add guid here
+@governanceDefinitionTwoGUID=add guid here
+@relationshipTypeName=add type name here
+
+###
+# @name linkPeerDefinitions
+# Attach two peer governance definitions. Request body is optional.
+# The relationshipTypeNme can be:
+## * GovernanceDriverLink between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat).
+## * GovernancePolicyLink between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
+## * GovernanceControlLink between governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "PeerDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "PeerDefinitionProperties",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+
+# @name detachPeerDefinitions
+# Detach a governance definition from one of its peers. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+###
+# @name linkPeerDefinitions
+# Attach two peer governance definitions. Request body is optional.
+# The relationshipTypeNme can be:
+## * GovernanceDriverLink between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat).
+## * GovernancePolicyLink between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
+## * GovernanceControlLink between governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "PeerDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "PeerDefinitionProperties",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+
+# @name detachPeerDefinitions
+# Detach a governance definition from one of its peers. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+
+###
+# @name attachSupportingDefinition
+# Attach a supporting governance definition. Request body is optional.
+# The relationshipTypeNme can be:
+## * GovernanceResponse between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat) and governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
+## * GovernanceImplementation between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach) and governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/supporting-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SupportingDefinitionRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "SupportingDefinitionProperties",
+    "rationale": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+
+# @name detachSupportingDefinition
+# Detach a governance definition from a supporting governance definition. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/supporting-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+
+
+###
+
+@technicalControlGUID=add guid here
+@implementationGUID=add guid here
+
+###
+# @name linkDefinitionImplementation
+# Attach a governance definition to its implementation. Request body is optional.
+# The relationshipTypeNme can be:
+## * GovernanceRuleImplementation between GovernanceRule and DeployedSoftwareComponent.
+## * GovernanceProcessImplementation between GovernanceProcess and Process.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{technicalControlGUID}}/governance-implementation/{{relationshipTypeName}}/{{implementationGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GovernanceImplementationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "GovernanceImplementationProperties",
+    "notes": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+
+# @name detachDefinitionImplementation
+# Detach a governance definition from its implementation. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{technicalControlGUID}}/governance-implementation/{{relationshipTypeName}}/{{implementationGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+
+
+###
+# @name deleteGovernanceDefinition
+# Delete a governance definition. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findAllGovernanceDefinitions
+# Retrieve the list of governance definition metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name findAllGovernanceDefinitions - with full request body
+# Retrieve the list of governance definition metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findGovernanceDefinitions
+# Retrieve the list of governance definition metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+###
+# @name findGovernanceDefinitions - with full request body
+# Retrieve the list of governance definition metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+ "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName",
+  "filter" : "Add name here"
+}
+
+###
+
+# @name getGovernanceDefinitionsByName
+# Returns the list of governance definitions with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-name?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+###
+
+# @name getGovernanceDefinitionsByName - with full request body
+# Returns the list of governance definitions with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-name?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName",
+  "filter" : "Add name here"
+}
+
+
+###
+# @name getGovernanceDefinitionByGUID
+# Return the properties of a specific governance definition.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getGovernanceDefinitionByGUID - with request body
+# Return the properties of a specific governance definition.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "AnyTimeRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+
+
+
+

@@ -476,7 +476,7 @@ public class AssetManagerTestBase
 
         if (retrievedHeader == null)
         {
-            throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GlossaryTerm header from " + stepName + ")" + retrievedElement.toString());
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GlossaryTerm header from " + stepName + ")" + retrievedElement);
         }
 
         if (! glossaryTermGUID.equals(retrievedHeader.getGUID()))
@@ -609,7 +609,7 @@ public class AssetManagerTestBase
 
         if (! elementFound)
         {
-            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Element " + glossaryTermGUID + " not found for " + stepName + ") " + retrievedElements.size() + " elements retrieved: " + retrievedElements.toString());
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Element " + glossaryTermGUID + " not found for " + stepName + ") " + retrievedElements.size() + " elements retrieved: " + retrievedElements);
         }
     }
 }

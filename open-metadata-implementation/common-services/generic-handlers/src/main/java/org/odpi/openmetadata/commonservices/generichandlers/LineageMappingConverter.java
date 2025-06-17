@@ -82,7 +82,7 @@ public class LineageMappingConverter<B> extends OMFConverter<B>
 
                     LineageMappingProperties lineageMappingProperties = new LineageMappingProperties();
 
-                    lineageMappingProperties.setQualifiedName(this.getISCQualifiedName(instanceProperties));
+                    lineageMappingProperties.setISCQualifiedName(this.getISCQualifiedName(instanceProperties));
                     lineageMappingProperties.setLabel(this.getLabel(instanceProperties));
                     lineageMappingProperties.setDescription(this.getDescription(instanceProperties));
 

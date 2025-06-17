@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class GlossaryProperties extends ReferenceableProperties
     public GlossaryProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.GLOSSARY.typeName);
     }
 
 

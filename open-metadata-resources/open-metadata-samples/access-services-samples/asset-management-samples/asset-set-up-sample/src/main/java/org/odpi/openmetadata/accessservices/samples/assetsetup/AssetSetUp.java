@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.samples.assetsetup;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
-import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.ActorProfileManagement;
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.ExternalReferenceManagerClient;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ConnectionManager;
@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProf
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +55,9 @@ public class AssetSetUp
 
     private AssetConsumer                  assetConsumerClient            = null;
     private CSVFileAssetOwner              csvOnboardingClient            = null;
-    private OrganizationManagement         organizationManagement     = null;
-    private ExternalAssetManagerClient     externalAssetManagerClient = null;
-    private DatabaseManagerClient          databaseManagerClient      = null;
+    private ActorProfileManagement         actorProfileManagement         = null;
+    private ExternalAssetManagerClient     externalAssetManagerClient     = null;
+    private DatabaseManagerClient          databaseManagerClient          = null;
     private ExternalReferenceManagerClient externalReferenceManagerClient = null;
     private ConnectionManager              connectionManager              = null;
     private LocationManager                locationManager                = null;
@@ -88,16 +89,16 @@ public class AssetSetUp
 
         try
         {
-            csvOnboardingClient = new CSVFileAssetOwner(serverName, platformURLRoot);
-            assetConsumerClient = new AssetConsumer(serverName, platformURLRoot);
-            organizationManagement = new OrganizationManagement(serverName, platformURLRoot, 100);
-            externalAssetManagerClient = new ExternalAssetManagerClient(serverName, platformURLRoot, 100);
-            databaseManagerClient = new DatabaseManagerClient(serverName, platformURLRoot);
+            csvOnboardingClient            = new CSVFileAssetOwner(serverName, platformURLRoot);
+            assetConsumerClient            = new AssetConsumer(serverName, platformURLRoot);
+            actorProfileManagement         = new ActorProfileManagement(this.getClass().getName(), serverName, platformURLRoot, null, 100);
+            externalAssetManagerClient     = new ExternalAssetManagerClient(serverName, platformURLRoot, 100);
+            databaseManagerClient          = new DatabaseManagerClient(serverName, platformURLRoot);
             externalReferenceManagerClient = new ExternalReferenceManagerClient(serverName, platformURLRoot);
-            connectionManager = new ConnectionManager(serverName, platformURLRoot, 100);
-            locationManager = new LocationManager(serverName, platformURLRoot, 100);
-            capabilityManagerClient = new CapabilityManagerClient(serverName, platformURLRoot, 100);
-            governanceZoneManager = new GovernanceZoneManager(serverName, platformURLRoot);
+            connectionManager              = new ConnectionManager(serverName, platformURLRoot, 100);
+            locationManager                = new LocationManager(serverName, platformURLRoot, 100);
+            capabilityManagerClient        = new CapabilityManagerClient(serverName, platformURLRoot, 100);
+            governanceZoneManager          = new GovernanceZoneManager(serverName, platformURLRoot);
         }
         catch (Exception error)
         {
@@ -259,11 +260,20 @@ public class AssetSetUp
             profileProperties.setKnownName(organizationName);
             profileProperties.setTypeName("Organization");
 
-            String orgGUID = organizationManagement.createActorProfile(clientUserId,
+            String orgGUID = actorProfileManagement.createActorProfile(clientUserId,
                                                                        null,
+                                                                       null,
+                                                                       null,
+                                                                       true,
                                                                        null,
                                                                        profileProperties,
-                                                                       null);
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       true,
+                                                                       false,
+                                                                       false,
+                                                                       new Date());
             orgMap.put(organizationName, orgGUID);
         }
         catch (Exception error)

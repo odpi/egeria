@@ -366,6 +366,23 @@ public class BaseMapper
 
 
     /**
+     * Ensure any single quote in a property value is escaped.
+     *
+     * @param propertyValue supplied property value
+     * @return escaped property value
+     */
+    private String escapePropertyValue(Object propertyValue)
+    {
+        if (propertyValue != null)
+        {
+            return propertyValue.toString().replaceAll("'", "''");
+        }
+
+        return null;
+    }
+
+
+    /**
      * Set up the string value in the supplied instance table row.
      *
      * @param instanceTableRow table row
@@ -392,7 +409,7 @@ public class BaseMapper
 
         if (propertyValue != null)
         {
-            instanceTableRow.put(columnName, new JDBCDataValue(propertyValue, ColumnType.STRING.getJdbcType()));
+            instanceTableRow.put(columnName, new JDBCDataValue(escapePropertyValue(propertyValue), ColumnType.STRING.getJdbcType()));
         }
     }
 
@@ -440,7 +457,7 @@ public class BaseMapper
                         propertyValueAsString.append(",");
                     }
 
-                    propertyValueAsString.append(propertyValue);
+                    propertyValueAsString.append(escapePropertyValue(propertyValue));
                 }
             }
 

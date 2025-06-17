@@ -25,8 +25,8 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public OCFRESTClient(String serverName,
-                         String serverPlatformURLRoot,
+    public OCFRESTClient(String   serverName,
+                         String   serverPlatformURLRoot,
                          AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);

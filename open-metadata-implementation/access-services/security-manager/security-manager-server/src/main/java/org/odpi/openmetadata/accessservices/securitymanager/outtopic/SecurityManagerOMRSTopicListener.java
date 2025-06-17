@@ -3,16 +3,11 @@
 package org.odpi.openmetadata.accessservices.securitymanager.outtopic;
 
 import org.odpi.openmetadata.accessservices.securitymanager.events.SecurityManagerEventType;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -33,11 +28,11 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
     private static final Logger log = LoggerFactory.getLogger(SecurityManagerOMRSTopicListener.class);
 
 
-    private final SecurityManagerOutTopicPublisher         eventPublisher;
-    private final UserIdentityHandler<UserIdentityElement> userIdentityHandler;
-    private final OMRSRepositoryHelper                     repositoryHelper;
-    private final String                                   localServerUserId;
-    private final List<String>                             supportedZones;
+    private final SecurityManagerOutTopicPublisher      eventPublisher;
+    private final OpenMetadataAPIGenericHandler<Object> userIdentityHandler;
+    private final OMRSRepositoryHelper                  repositoryHelper;
+    private final String                                localServerUserId;
+    private final List<String>                          supportedZones;
 
     /**
      * Initialize the topic listener.
@@ -45,21 +40,21 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param serviceName this is the full name of the service - used for error logging in base class
      * @param localServerUserId userId used by this server for metadata governance
      * @param eventPublisher this is the out topic publisher
-     * @param userIdentityHandler handler for retrieving asset information
+     * @param genericHandler handler for retrieving entity information
      * @param supportedZones list of zones that the access service is allowed to serve instances from.
      * @param auditLog logging destination
      */
     public SecurityManagerOMRSTopicListener(String                                   serviceName,
                                             String                                   localServerUserId,
                                             SecurityManagerOutTopicPublisher         eventPublisher,
-                                            UserIdentityHandler<UserIdentityElement> userIdentityHandler,
+                                            OpenMetadataAPIGenericHandler<Object>    genericHandler,
                                             List<String>                             supportedZones,
                                             AuditLog                                 auditLog)
     {
         super(serviceName, auditLog);
 
-        this.userIdentityHandler = userIdentityHandler;
-        this.repositoryHelper = userIdentityHandler.getRepositoryHelper();
+        this.userIdentityHandler = genericHandler;
+        this.repositoryHelper = genericHandler.getRepositoryHelper();
         this.supportedZones = supportedZones;
         this.localServerUserId = localServerUserId;
         this.eventPublisher = eventPublisher;

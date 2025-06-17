@@ -5,6 +5,7 @@ package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.samples.archiveutilities.governanceengines.InformationSupplyChain;
 
 /**
  * Define the lineage between the Coco Pharmaceutical Systems

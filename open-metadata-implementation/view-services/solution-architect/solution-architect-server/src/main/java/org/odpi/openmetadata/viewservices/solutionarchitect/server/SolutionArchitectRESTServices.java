@@ -11,7 +11,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorRoleHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SolutionHandler;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -1483,22 +1485,22 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
 
-                response.setGUID(handler.createSolutionRole(userId,
-                                                            requestBody.getExternalSourceGUID(),
-                                                            requestBody.getExternalSourceName(),
-                                                            requestBody.getAnchorGUID(),
-                                                            requestBody.getIsOwnAnchor(),
-                                                            requestBody.getAnchorScopeGUID(),
-                                                            requestBody.getProperties(),
-                                                            requestBody.getParentGUID(),
-                                                            requestBody.getParentRelationshipTypeName(),
-                                                            requestBody.getParentRelationshipProperties(),
-                                                            requestBody.getParentAtEnd1(),
-                                                            requestBody.getForLineage(),
-                                                            requestBody.getForDuplicateProcessing(),
-                                                            requestBody.getEffectiveTime()));
+                response.setGUID(handler.createActorRole(userId,
+                                                         requestBody.getExternalSourceGUID(),
+                                                         requestBody.getExternalSourceName(),
+                                                         requestBody.getAnchorGUID(),
+                                                         requestBody.getIsOwnAnchor(),
+                                                         requestBody.getAnchorScopeGUID(),
+                                                         requestBody.getProperties(),
+                                                         requestBody.getParentGUID(),
+                                                         requestBody.getParentRelationshipTypeName(),
+                                                         requestBody.getParentRelationshipProperties(),
+                                                         requestBody.getParentAtEnd1(),
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
+                                                         requestBody.getEffectiveTime()));
             }
             else
             {
@@ -1548,26 +1550,26 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
 
-                response.setGUID(handler.createSolutionRoleFromTemplate(userId,
-                                                                        requestBody.getExternalSourceGUID(),
-                                                                        requestBody.getExternalSourceName(),
-                                                                        requestBody.getAnchorGUID(),
-                                                                        requestBody.getIsOwnAnchor(),
-                                                                        requestBody.getAnchorScopeGUID(),
-                                                                        null,
-                                                                        null,
-                                                                        requestBody.getTemplateGUID(),
-                                                                        requestBody.getReplacementProperties(),
-                                                                        requestBody.getPlaceholderPropertyValues(),
-                                                                        requestBody.getParentGUID(),
-                                                                        requestBody.getParentRelationshipTypeName(),
-                                                                        requestBody.getParentRelationshipProperties(),
-                                                                        requestBody.getParentAtEnd1(),
-                                                                        requestBody.getForLineage(),
-                                                                        requestBody.getForDuplicateProcessing(),
-                                                                        requestBody.getEffectiveTime()));
+                response.setGUID(handler.createActorRoleFromTemplate(userId,
+                                                                     requestBody.getExternalSourceGUID(),
+                                                                     requestBody.getExternalSourceName(),
+                                                                     requestBody.getAnchorGUID(),
+                                                                     requestBody.getIsOwnAnchor(),
+                                                                     requestBody.getAnchorScopeGUID(),
+                                                                     null,
+                                                                     null,
+                                                                     requestBody.getTemplateGUID(),
+                                                                     requestBody.getReplacementProperties(),
+                                                                     requestBody.getPlaceholderPropertyValues(),
+                                                                     requestBody.getParentGUID(),
+                                                                     requestBody.getParentRelationshipTypeName(),
+                                                                     requestBody.getParentRelationshipProperties(),
+                                                                     requestBody.getParentAtEnd1(),
+                                                                     requestBody.getForLineage(),
+                                                                     requestBody.getForDuplicateProcessing(),
+                                                                     requestBody.getEffectiveTime()));
             }
             else
             {
@@ -1620,17 +1622,17 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
 
-                handler.updateSolutionRole(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
-                                           solutionRoleGUID,
-                                           replaceAllProperties,
-                                           requestBody.getProperties(),
-                                           requestBody.getForLineage(),
-                                           requestBody.getForDuplicateProcessing(),
-                                           requestBody.getEffectiveTime());
+                handler.updateActorRole(userId,
+                                        requestBody.getExternalSourceGUID(),
+                                        requestBody.getExternalSourceName(),
+                                        solutionRoleGUID,
+                                        replaceAllProperties,
+                                        requestBody.getProperties(),
+                                        requestBody.getForLineage(),
+                                        requestBody.getForDuplicateProcessing(),
+                                        requestBody.getEffectiveTime());
             }
             else
             {
@@ -1817,29 +1819,29 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.deleteSolutionRole(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
-                                           solutionRoleGUID,
-                                           cascadedDelete,
-                                           requestBody.getForLineage(),
-                                           requestBody.getForDuplicateProcessing(),
-                                           requestBody.getEffectiveTime());
+                handler.deleteActorRole(userId,
+                                        requestBody.getExternalSourceGUID(),
+                                        requestBody.getExternalSourceName(),
+                                        solutionRoleGUID,
+                                        cascadedDelete,
+                                        requestBody.getForLineage(),
+                                        requestBody.getForDuplicateProcessing(),
+                                        requestBody.getEffectiveTime());
             }
             else
             {
-                handler.deleteSolutionRole(userId,
-                                           null,
-                                           null,
-                                           solutionRoleGUID,
-                                           cascadedDelete,
-                                           false,
-                                           false,
-                                           new Date());
+                handler.deleteActorRole(userId,
+                                        null,
+                                        null,
+                                        solutionRoleGUID,
+                                        cascadedDelete,
+                                        false,
+                                        false,
+                                        new Date());
             }
         }
         catch (Throwable error)
@@ -1885,22 +1887,22 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getSolutionRolesByName(userId,
-                                                                    requestBody.getFilter(),
-                                                                    requestBody.getTemplateFilter(),
-                                                                    requestBody.getLimitResultsByStatus(),
-                                                                    requestBody.getAsOfTime(),
-                                                                    requestBody.getSequencingOrder(),
-                                                                    requestBody.getSequencingProperty(),
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    requestBody.getForLineage(),
-                                                                    requestBody.getForDuplicateProcessing(),
-                                                                    requestBody.getEffectiveTime()));
+                response.setElements(handler.getActorRolesByName(userId,
+                                                                 requestBody.getFilter(),
+                                                                 requestBody.getTemplateFilter(),
+                                                                 requestBody.getLimitResultsByStatus(),
+                                                                 requestBody.getAsOfTime(),
+                                                                 requestBody.getSequencingOrder(),
+                                                                 requestBody.getSequencingProperty(),
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 requestBody.getForLineage(),
+                                                                 requestBody.getForDuplicateProcessing(),
+                                                                 requestBody.getEffectiveTime()));
             }
             else
             {
@@ -1956,37 +1958,37 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.findSolutionRoles(userId,
-                                                               instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                               requestBody.getTemplateFilter(),
-                                                               requestBody.getLimitResultsByStatus(),
-                                                               requestBody.getAsOfTime(),
-                                                               requestBody.getSequencingOrder(),
-                                                               requestBody.getSequencingProperty(),
-                                                               startFrom,
-                                                               pageSize,
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getEffectiveTime()));
+                response.setElements(handler.findActorRoles(userId,
+                                                            instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                            requestBody.getTemplateFilter(),
+                                                            requestBody.getLimitResultsByStatus(),
+                                                            requestBody.getAsOfTime(),
+                                                            requestBody.getSequencingOrder(),
+                                                            requestBody.getSequencingProperty(),
+                                                            startFrom,
+                                                            pageSize,
+                                                            requestBody.getForLineage(),
+                                                            requestBody.getForDuplicateProcessing(),
+                                                            requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElements(handler.findSolutionRoles(userId,
-                                                               instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                               TemplateFilter.ALL,
-                                                               null,
-                                                               null,
-                                                               SequencingOrder.CREATION_DATE_RECENT,
-                                                               null,
-                                                               startFrom,
-                                                               pageSize,
-                                                               false,
-                                                               false,
-                                                               new Date()));
+                response.setElements(handler.findActorRoles(userId,
+                                                            instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                            TemplateFilter.ALL,
+                                                            null,
+                                                            null,
+                                                            SequencingOrder.CREATION_DATE_RECENT,
+                                                            null,
+                                                            startFrom,
+                                                            pageSize,
+                                                            false,
+                                                            false,
+                                                            new Date()));
             }
         }
         catch (Throwable error)
@@ -2012,8 +2014,8 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public SolutionRoleResponse getSolutionRoleByGUID(String             serverName,
-                                                        String             solutionRoleGUID,
-                                                        AnyTimeRequestBody requestBody)
+                                                      String             solutionRoleGUID,
+                                                      AnyTimeRequestBody requestBody)
     {
         final String methodName = "getSolutionRoleByGUID";
 
@@ -2030,25 +2032,25 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElement(handler.getSolutionRoleByGUID(userId,
-                                                                   solutionRoleGUID,
-                                                                   requestBody.getAsOfTime(),
-                                                                   requestBody.getForLineage(),
-                                                                   requestBody.getForDuplicateProcessing(),
-                                                                   requestBody.getEffectiveTime()));
+                response.setElement(handler.getActorRoleByGUID(userId,
+                                                               solutionRoleGUID,
+                                                               requestBody.getAsOfTime(),
+                                                               requestBody.getForLineage(),
+                                                               requestBody.getForDuplicateProcessing(),
+                                                               requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElement(handler.getSolutionRoleByGUID(userId,
-                                                                   solutionRoleGUID,
-                                                                   null,
-                                                                   false,
-                                                                   false,
-                                                                   new Date()));
+                response.setElement(handler.getActorRoleByGUID(userId,
+                                                               solutionRoleGUID,
+                                                               null,
+                                                               false,
+                                                               false,
+                                                               new Date()));
             }
         }
         catch (Throwable error)
@@ -2381,6 +2383,163 @@ public class SolutionArchitectRESTServices extends TokenController
                                            false,
                                            false,
                                            new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Attach a solution component to a solution component.
+     *
+     * @param serverName         name of called server
+     * @param solutionComponentOneGUID unique identifier of the solution component at end 1
+     * @param solutionComponentTwoGUID unique identifier of the solution component at end 2
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkSolutionLinkingWire(String                  serverName,
+                                                String                  solutionComponentOneGUID,
+                                                String                  solutionComponentTwoGUID,
+                                                RelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSolutionLinkingWire";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SolutionLinkingWireProperties solutionLinkingWireProperties)
+                {
+                    handler.linkSolutionLinkingWire(userId,
+                                                    requestBody.getExternalSourceGUID(),
+                                                    requestBody.getExternalSourceName(),
+                                                    solutionComponentOneGUID,
+                                                    solutionComponentTwoGUID,
+                                                    solutionLinkingWireProperties,
+                                                    requestBody.getForLineage(),
+                                                    requestBody.getForDuplicateProcessing(),
+                                                    requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkSolutionLinkingWire(userId,
+                                                    requestBody.getExternalSourceGUID(),
+                                                    requestBody.getExternalSourceName(),
+                                                    solutionComponentOneGUID,
+                                                    solutionComponentTwoGUID,
+                                                    null,
+                                                    requestBody.getForLineage(),
+                                                    requestBody.getForDuplicateProcessing(),
+                                                    requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionLinkingWireProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkSolutionLinkingWire(userId,
+                                                null,
+                                                null,
+                                                solutionComponentOneGUID,
+                                                solutionComponentTwoGUID,
+                                                null,
+                                                false,
+                                                false,
+                                                new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a solution component from a solution component.
+     *
+     * @param serverName         name of called server
+     * @param solutionComponentOneGUID unique identifier of the solution component at end 1
+     * @param solutionComponentTwoGUID unique identifier of the solution component at end 2
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachSolutionLinkingWire(String                    serverName,
+                                                  String                    solutionComponentOneGUID,
+                                                  String                    solutionComponentTwoGUID,
+                                                  MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachSolutionLinkingWire";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachSolutionLinkingWire(userId,
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
+                                                  solutionComponentOneGUID,
+                                                  solutionComponentTwoGUID,
+                                                  requestBody.getForLineage(),
+                                                  requestBody.getForDuplicateProcessing(),
+                                                  requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachSolutionLinkingWire(userId,
+                                                  null,
+                                                  null,
+                                                  solutionComponentOneGUID,
+                                                  solutionComponentTwoGUID,
+                                                  false,
+                                                  false,
+                                                  new Date());
             }
         }
         catch (Throwable error)

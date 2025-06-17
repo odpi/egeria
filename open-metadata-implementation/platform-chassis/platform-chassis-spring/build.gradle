@@ -52,6 +52,7 @@ dependencies {
     // The following are only included at runtime for the full platform (ie adminChassisOnly is not set as a property)
     if (!project.hasProperty("adminChassisOnly")) {
         runtimeOnly project(':open-metadata-implementation:view-services:action-author:action-author-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:actor-manager:actor-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:automated-curation:automated-curation-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:collection-manager:collection-manager-spring')

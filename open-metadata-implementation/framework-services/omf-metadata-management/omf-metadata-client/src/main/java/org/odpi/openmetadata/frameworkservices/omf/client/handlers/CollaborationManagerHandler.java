@@ -79,6 +79,43 @@ public class CollaborationManagerHandler
     }
 
 
+    /**
+     * Create a new client.
+     *
+     * @param localServerName name of local server
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
+     * @param serviceName name of calling service
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CollaborationManagerHandler(String   localServerName,
+                                       String   serverName,
+                                       String   serverPlatformURLRoot,
+                                       String   localServerUserId,
+                                       String   localServerUserPassword,
+                                       AuditLog auditLog,
+                                       String   accessServiceURLMarker,
+                                       String   serviceName,
+                                       int      maxPageSize) throws InvalidParameterException
+    {
+        this.client = new OpenMetadataStoreHandler(serverName, serverPlatformURLRoot, accessServiceURLMarker, localServerUserId, localServerUserPassword, maxPageSize);
+        this.auditLog = auditLog;
+
+        this.commentConverter = new CommentConverter<>(propertyHelper, serviceName, localServerName);
+        this.likeConverter    = new LikeConverter<>(propertyHelper, serviceName, localServerName);
+        this.ratingConverter  = new RatingConverter<>(propertyHelper, serviceName, localServerName);
+        this.tagConverter     = new InformalTagConverter<>(propertyHelper, serviceName, localServerName);
+        this.noteLogConverter = new NoteLogConverter<>(propertyHelper, serviceName, localServerName);
+        this.noteConverter    = new NoteConverter<>(propertyHelper, serviceName, localServerName);
+    }
+
+
 
     /**
      * Adds a star rating and optional review text to the element.  If the user has already attached

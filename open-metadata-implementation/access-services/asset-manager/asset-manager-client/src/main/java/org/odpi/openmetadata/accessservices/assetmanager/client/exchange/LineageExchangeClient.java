@@ -413,7 +413,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                    boolean                      assetManagerIsHome,
                                    String                       parentProcessGUID,
                                    String                       childProcessGUID,
-                                   ProcessContainmentProperties containmentProperties,
+                                   ProcessHierarchyProperties containmentProperties,
                                    Date                         effectiveTime,
                                    boolean                      forLineage,
                                    boolean                      forDuplicateProcessing) throws InvalidParameterException,

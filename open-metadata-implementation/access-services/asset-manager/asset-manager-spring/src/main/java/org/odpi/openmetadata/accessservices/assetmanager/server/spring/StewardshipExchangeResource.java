@@ -48,41 +48,6 @@ public class StewardshipExchangeResource
 
 
     /**
-     * Return information about the elements classified with the data field classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param userId calling user
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-data-field")
-
-    public ElementStubsResponse getDataFieldClassifiedElements(@PathVariable String                      serverName,
-                                                               @PathVariable String                      userId,
-                                                               @RequestParam(required = false, defaultValue = "0")
-                                                                             int                         startFrom,
-                                                               @RequestParam(required = false, defaultValue = "0")
-                                                                             int                         pageSize,
-                                                               @RequestParam(required = false, defaultValue = "false")
-                                                                             boolean                     forLineage,
-                                                               @RequestParam(required = false, defaultValue = "false")
-                                                                             boolean                     forDuplicateProcessing,
-                                                               @RequestBody(required = false)
-                                                                             FindByPropertiesRequestBody requestBody)
-    {
-        return restAPI.getDataFieldClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
      * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
      * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
      * levelIdentifier property.

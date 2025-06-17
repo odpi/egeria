@@ -266,7 +266,7 @@ public enum OpenMetadataProperty
     /**
      * The courtesy title for the person.
      */
-    COURTESY_TITLE("title", DataType.STRING.getName(), "The courtesy title for the person.", "Dr", "c669dc73-3ae3-4350-95b7-4508a85bfc94"),
+    COURTESY_TITLE("courtesyTitle", DataType.STRING.getName(), "The honorific title for the person.", "Dr", "c669dc73-3ae3-4350-95b7-4508a85bfc94"),
 
     /**
      * Descriptive name of the tag.
@@ -1704,6 +1704,7 @@ public enum OpenMetadataProperty
      * The role of the member in the host cluster.  This value is typically defined by the technology of the host cluster.
      */
     MEMBER_ROLE("memberRole", DataType.STRING.getName(), "The role of the member in the host cluster.  This value is typically defined by the technology of the host cluster.", null, "9c143e06-6a8c-47ba-acf6-28a87fef4f2b"),
+
     /**
      * Preferred pronouns to use when addressing this person.
      */
@@ -1817,7 +1818,7 @@ public enum OpenMetadataProperty
     /**
      * Details of the type of role position within a group, team, project, eg deputy.
      */
-    ROLE_POSITION("positionName", DataType.STRING.getName(), "Details of the type of role position within a group, team, project, eg deputy.", null, "dc83ac84-914f-441e-876b-5a02293fc568"),
+    POSITION_NAME("positionName", DataType.STRING.getName(), "Details of the type of role position within a group, team, project, eg deputy.", null, "dc83ac84-914f-441e-876b-5a02293fc568"),
 
     /**
      * Can delegations and escalations flow on this relationship.

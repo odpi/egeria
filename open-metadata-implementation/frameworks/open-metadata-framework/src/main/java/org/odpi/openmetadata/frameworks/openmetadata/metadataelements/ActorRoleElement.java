@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 
 import java.util.Objects;
@@ -14,16 +15,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PersonalRoleElement contains the properties and header for a person role assigned to a profile retrieved from the metadata repository.
+ * ActorRoleElement contains the properties and header for an actor role assigned to a profile retrieved
+ * from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ActorRoleElement implements MetadataElement
+public class ActorRoleElement extends AttributedMetadataElement
 {
-    private ElementHeader        elementHeader  = null;
-    private PersonRoleProperties properties = null;
-    private RelatedBy            relatedBy  = null;
+    private ActorRoleProperties properties    = null;
 
 
     /**
@@ -42,37 +42,14 @@ public class ActorRoleElement implements MetadataElement
      */
     public ActorRoleElement(ActorRoleElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
             properties = template.getProperties();
-            relatedBy  = template.getRelatedBy();
         }
     }
 
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param header element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader header)
-    {
-        this.elementHeader = header;
-    }
 
 
     /**
@@ -80,7 +57,7 @@ public class ActorRoleElement implements MetadataElement
      *
      * @return properties
      */
-    public PersonRoleProperties getProperties()
+    public ActorRoleProperties getProperties()
     {
         return properties;
     }
@@ -91,33 +68,9 @@ public class ActorRoleElement implements MetadataElement
      *
      * @param properties  properties
      */
-    public void setProperties(PersonRoleProperties properties)
+    public void setProperties(ActorRoleProperties properties)
     {
         this.properties = properties;
-    }
-
-
-    /**
-     * Return details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @return list of element stubs
-     */
-    public RelatedBy getRelatedBy()
-    {
-        return relatedBy;
-    }
-
-
-    /**
-     * Set up details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @param relatedBy relationship details
-     */
-    public void setRelatedBy(RelatedBy relatedBy)
-    {
-        this.relatedBy = relatedBy;
     }
 
 
@@ -130,10 +83,8 @@ public class ActorRoleElement implements MetadataElement
     public String toString()
     {
         return "ActorRoleElement{" +
-                       "elementHeader=" + elementHeader +
-                       ", properties=" + properties +
-                       ", relatedBy=" + relatedBy +
-                       '}';
+                "properties=" + properties +
+                "} " + super.toString();
     }
 
 
@@ -154,10 +105,9 @@ public class ActorRoleElement implements MetadataElement
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
         ActorRoleElement that = (ActorRoleElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties) &&
-                       Objects.equals(relatedBy, that.relatedBy);
+        return Objects.equals(properties, that.properties);
     }
 
 
@@ -169,6 +119,6 @@ public class ActorRoleElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, relatedBy);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

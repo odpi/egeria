@@ -3383,24 +3383,6 @@ public enum OpenMetadataType
                        "Technical control expressed as a sequence of tasks."),
 
     /**
-     * Identifies the implementation of a governance rule.
-     */
-    GOVERNANCE_RULE_IMPLEMENTATION_RELATIONSHIP("e701a5c8-c1ba-4b75-8257-e0a6569eda48",
-                                                "GovernanceRuleImplementation",
-                                                OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
-                                                "1135c2b6-1c7c-43c6-8043-08ad8f90db5e",
-                                                "Identifies the implementation of a governance rule."),
-
-    /**
-     * Identifies the implementation of a governance process.
-     */
-    GOVERNANCE_PROCESS_IMPLEMENTATION_RELATIONSHIP("a5a7b08a-73fd-4026-a9dd-d0fe55bea8a4",
-                                                   "GovernanceProcessImplementation",
-                                                   OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
-                                                   "a431983a-3e94-4da7-ba4f-b53b75a94461",
-                                                   "Identifies the implementation of a governance process."),
-
-    /**
      * Describes the capability where policies are maintained.
      */
     POLICY_ADMINISTRATION_POINT_CLASSIFICATION("4f13baa3-31b3-4a85-985e-2abc784900b8",

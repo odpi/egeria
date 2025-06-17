@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIS
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -39,6 +40,7 @@ public class RootSchemaTypeProperties extends ComplexSchemaTypeProperties
     public RootSchemaTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName);
     }
 
 

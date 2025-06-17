@@ -35,7 +35,9 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
     private DataAssetManagerClient     dataAssetManagerClient     = null;
     private EndpointManagerClient      endpointManagerClient      = null;
     private HostManagerClient          hostManagerClient          = null;
-    private ITProfileManagerClient     itProfileManagerClient     = null;
+    private ActorProfileManagement     actorProfileManagement     = null;
+    private ContactMethodManagement    contactMethodManagement    = null;
+    private UserIdentityManagement     userIdentityClient         = null;
     private PlatformManagerClient      platformManagerClient      = null;
     private ProcessManagerClient       processManagerClient       = null;
     private ServerManagerClient        serverManagerClient        = null;
@@ -52,6 +54,7 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
     /**
      * Initialize server properties for the context manager.
      *
+     * @param localServerName name of this integration daemon
      * @param partnerOMASServerName name of the server to connect to
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
@@ -60,7 +63,8 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
-    public void initializeContextManager(String              partnerOMASServerName,
+    public void initializeContextManager(String              localServerName,
+                                         String              partnerOMASServerName,
                                          String              partnerOMASPlatformRootURL,
                                          String              userId,
                                          String              password,
@@ -68,7 +72,7 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
                                          int                 maxPageSize,
                                          AuditLog            auditLog)
     {
-        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
+        super.initializeContextManager(localServerName, partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 
@@ -111,11 +115,53 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
         connectorTypeManagerClient  = new ConnectorTypeManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
         dataAssetManagerClient = new DataAssetManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
         endpointManagerClient = new EndpointManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
-        hostManagerClient = new HostManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
-        itProfileManagerClient = new ITProfileManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
-        platformManagerClient = new PlatformManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        hostManagerClient      = new HostManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        platformManagerClient  = new PlatformManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
         processManagerClient = new ProcessManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
         serverManagerClient = new ServerManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+
+        if (localServerPassword == null)
+        {
+            actorProfileManagement = new ActorProfileManagement(localServerName,
+                                                                partnerOMASServerName,
+                                                                partnerOMASPlatformRootURL,
+                                                                auditLog,
+                                                                maxPageSize);
+            contactMethodManagement = new ContactMethodManagement(localServerName,
+                                                                  partnerOMASServerName,
+                                                                  partnerOMASPlatformRootURL,
+                                                                  auditLog,
+                                                                  maxPageSize);
+            userIdentityClient = new UserIdentityManagement(localServerName,
+                                                            partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            auditLog,
+                                                            maxPageSize);
+        }
+        else
+        {
+            actorProfileManagement = new ActorProfileManagement(localServerName,
+                                                                partnerOMASServerName,
+                                                                partnerOMASPlatformRootURL,
+                                                                localServerUserId,
+                                                                localServerPassword,
+                                                                auditLog,
+                                                                maxPageSize);
+            contactMethodManagement = new ContactMethodManagement(localServerName,
+                                                                  partnerOMASServerName,
+                                                                  partnerOMASPlatformRootURL,
+                                                                  localServerUserId,
+                                                                  localServerPassword,
+                                                                  auditLog,
+                                                                  maxPageSize);
+            userIdentityClient = new UserIdentityManagement(localServerName,
+                                                            partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            localServerUserId,
+                                                            localServerPassword,
+                                                            auditLog,
+                                                            maxPageSize);
+        }
     }
 
 
@@ -204,7 +250,9 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
                                                                                                     dataAssetManagerClient,
                                                                                                     endpointManagerClient,
                                                                                                     hostManagerClient,
-                                                                                                    itProfileManagerClient,
+                                                                                                    actorProfileManagement,
+                                                                                                    contactMethodManagement,
+                                                                                                    userIdentityClient,
                                                                                                     platformManagerClient,
                                                                                                     processManagerClient,
                                                                                                     serverManagerClient,

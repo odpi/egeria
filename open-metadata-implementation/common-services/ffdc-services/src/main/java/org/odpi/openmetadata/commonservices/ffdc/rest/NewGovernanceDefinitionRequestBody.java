@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewGovernanceDefinitionRequestBody extends NewElementRequestBody
+public class NewGovernanceDefinitionRequestBody extends NewElementOptionsRequestBody
 {
     private GovernanceDefinitionProperties properties    = null;
     private GovernanceDefinitionStatus     initialStatus = null;
@@ -103,11 +103,9 @@ public class NewGovernanceDefinitionRequestBody extends NewElementRequestBody
     public String toString()
     {
         return "NewGovernanceDefinitionRequestBody{" +
-                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       ", properties=" + properties +
-                       ", initialStatus=" + initialStatus +
-                       '}';
+                "properties=" + properties +
+                ", initialStatus=" + initialStatus +
+                "} " + super.toString();
     }
 
 
