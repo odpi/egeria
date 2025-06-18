@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.omf.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -43,6 +44,14 @@ public enum OpenMetadataStoreErrorCode implements ExceptionMessageSet
                          "Multiple {0} relationships are attached to metadata element {1}",
                          "This relationship type is a singleton, which means that only once relationship of this type can be attached to an element.  The system is unable to retrieve the singleton relationship because there are more than one relationship defined.",
                          "Using a different method, retrieve all of the relationships of this type for this element and either delete/archive the relationships no longer needed, or adjust their effectivity date(s) so that only one relationship is effective at any one time."),
+
+    /**
+     * OPEN-METADATA-STORE-500-025 - The Design Model OMAS has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}
+     */
+    UNEXPECTED_CONVERTER_EXCEPTION(500, "OPEN-METADATA-STORE-500-025",
+                                   "The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1} for service {2}.  The message was: {3}",
+                                   "The request returns with this exception to indicate there has been an internal server error. The server also created a detailed error message and stack trace in the audit log.",
+                                   "Review the stack trace to identify where the error occurred and work to resolve the cause."),
 
     ;
 

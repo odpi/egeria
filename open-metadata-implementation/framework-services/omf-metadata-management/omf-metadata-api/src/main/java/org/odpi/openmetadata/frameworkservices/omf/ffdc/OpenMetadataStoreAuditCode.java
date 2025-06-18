@@ -119,7 +119,7 @@ public enum OpenMetadataStoreAuditCode implements AuditLogMessageSet
     UNEXPECTED_CONVERTER_EXCEPTION("OPEN-METADATA-STORE-0025",
                                    AuditLogRecordSeverityLevel.EXCEPTION,
                                    "The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1} for service {2}.  The message was: {3}",
-                                   "The request returns all of the information that it was able to receive.",
+                                   "The request returns an exception detailing the cause of the error.",
                                    "Review the stack trace to identify where the error occurred and work to resolve the cause."),
 
     ;

@@ -140,7 +140,7 @@ public class DataFieldConverter<B> extends OpenMetadataConverterBase<B>
      *
      * @param relatedMetadataElement element
      *
-     * @return dataStructure properties
+     * @return member data field properties
      */
     public MemberDataFieldProperties getMemberDataFieldProperties(RelatedMetadataElement relatedMetadataElement)
     {
