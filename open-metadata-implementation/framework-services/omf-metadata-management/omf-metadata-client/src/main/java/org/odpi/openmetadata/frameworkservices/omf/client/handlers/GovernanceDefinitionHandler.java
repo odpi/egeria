@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreAuditCode;
+import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreErrorCode;
 
 
 import java.util.*;
@@ -1363,9 +1364,10 @@ public class GovernanceDefinitionHandler
      * @param openMetadataElements elements extracted from the repository
      * @param methodName calling method
      * @return list of data fields (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<GovernanceDefinitionElement> convertGovernanceDefinitions(List<OpenMetadataElement> openMetadataElements,
-                                                                           String                    methodName)
+                                                                           String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {
@@ -1392,8 +1394,9 @@ public class GovernanceDefinitionHandler
      * @param openMetadataElement element extracted from the repository
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
-    private GovernanceDefinitionElement convertGovernanceDefinition(OpenMetadataElement openMetadataElement, String              methodName)
+    private GovernanceDefinitionElement convertGovernanceDefinition(OpenMetadataElement openMetadataElement, String              methodName) throws PropertyServerException
     {
         try
         {
@@ -1404,14 +1407,21 @@ public class GovernanceDefinitionHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   serviceName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 }

@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreAuditCode;
+import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreErrorCode;
 
 import java.util.*;
 
@@ -684,13 +685,7 @@ public class UserIdentityHandler
                                                                                                       startFrom,
                                                                                                       pageSize);
 
-        return convertUserIdentities(userId,
-                                     openMetadataElements,
-                                     asOfTime,
-                                     forLineage,
-                                     forDuplicateProcessing,
-                                     effectiveTime,
-                                     methodName);
+        return convertUserIdentities(openMetadataElements, methodName);
     }
 
 
@@ -796,13 +791,7 @@ public class UserIdentityHandler
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
-        return convertUserIdentities(userId,
-                                     openMetadataElements,
-                                     asOfTime,
-                                     forLineage,
-                                     forDuplicateProcessing,
-                                     effectiveTime,
-                                     methodName);
+        return convertUserIdentities(openMetadataElements, methodName);
     }
 
 
@@ -914,22 +903,13 @@ public class UserIdentityHandler
     /**
      * Convert the open metadata elements retrieved into user identity elements.
      *
-     * @param userId calling user
      * @param openMetadataElements elements extracted from the repository
-     * @param asOfTime repository time to use
-     * @param forLineage the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of user identities (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
-    private List<UserIdentityElement> convertUserIdentities(String                    userId,
-                                                            List<OpenMetadataElement> openMetadataElements,
-                                                            Date                      asOfTime,
-                                                            boolean                   forLineage,
-                                                            boolean                   forDuplicateProcessing,
-                                                            Date                      effectiveTime,
-                                                            String                    methodName)
+    private List<UserIdentityElement> convertUserIdentities(List<OpenMetadataElement> openMetadataElements,
+                                                            String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {
@@ -957,9 +937,10 @@ public class UserIdentityHandler
      * @param openMetadataElement element extracted from the repository
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private UserIdentityElement convertUserIdentity(OpenMetadataElement openMetadataElement,
-                                                    String              methodName)
+                                                    String              methodName) throws PropertyServerException
     {
         try
         {
@@ -971,14 +952,21 @@ public class UserIdentityHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   serviceName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 

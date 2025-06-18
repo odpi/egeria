@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreAuditCode;
+import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreErrorCode;
 
 import java.util.*;
 
@@ -915,6 +916,7 @@ public class ActorRoleHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of actor roles (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<ActorRoleElement> convertActorRoles(String                    userId,
                                                      List<OpenMetadataElement> openMetadataElements,
@@ -922,7 +924,7 @@ public class ActorRoleHandler
                                                      boolean                   forLineage,
                                                      boolean                   forDuplicateProcessing,
                                                      Date                      effectiveTime,
-                                                     String                    methodName)
+                                                     String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {
@@ -969,6 +971,7 @@ public class ActorRoleHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private ActorRoleElement convertActorRole(String              userId,
                                               OpenMetadataElement openMetadataElement,
@@ -976,7 +979,7 @@ public class ActorRoleHandler
                                               boolean             forLineage,
                                               boolean             forDuplicateProcessing,
                                               Date                effectiveTime,
-                                              String              methodName)
+                                              String              methodName) throws PropertyServerException
     {
         try
         {
@@ -1048,14 +1051,22 @@ public class ActorRoleHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
-        }
 
-        return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
+        }
     }
 
 

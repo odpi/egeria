@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreAuditCode;
+import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreErrorCode;
 
 import java.util.*;
 
@@ -2326,6 +2327,7 @@ public class SolutionHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of information supply chains (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<InformationSupplyChainElement> convertInformationSupplyChains(String                    userId,
                                                                                List<OpenMetadataElement> openMetadataElements,
@@ -2334,7 +2336,7 @@ public class SolutionHandler
                                                                                boolean                   forLineage,
                                                                                boolean                   forDuplicateProcessing,
                                                                                Date                      effectiveTime,
-                                                                               String                    methodName)
+                                                                               String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {
@@ -2373,6 +2375,7 @@ public class SolutionHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of solution blueprints (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<SolutionBlueprintElement> convertSolutionBlueprints(String                    userId,
                                                                      List<OpenMetadataElement> openMetadataElements,
@@ -2380,7 +2383,7 @@ public class SolutionHandler
                                                                      boolean                   forLineage,
                                                                      boolean                   forDuplicateProcessing,
                                                                      Date                      effectiveTime,
-                                                                     String                    methodName)
+                                                                     String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {
@@ -2420,6 +2423,7 @@ public class SolutionHandler
      * @param fullDisplay print all elements
      * @param methodName calling method
      * @return list of solution components (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<SolutionComponentElement> convertSolutionComponents(String                    userId,
                                                                      List<OpenMetadataElement> openMetadataElements,
@@ -2429,7 +2433,7 @@ public class SolutionHandler
                                                                      boolean                   forDuplicateProcessing,
                                                                      Date                      effectiveTime,
                                                                      boolean                   fullDisplay,
-                                                                     String                    methodName)
+                                                                     String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {
@@ -2464,9 +2468,10 @@ public class SolutionHandler
      * @param relatedMetadataElementList elements retrieved from the repository
      * @param methodName calling method
      * @return list of summary elements (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<RelatedMetadataElementSummary> convertSolutionComponentImplementations(RelatedMetadataElementList relatedMetadataElementList,
-                                                                                        String                     methodName)
+                                                                                        String                     methodName) throws PropertyServerException
     {
         if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
         {
@@ -2499,6 +2504,7 @@ public class SolutionHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private InformationSupplyChainElement convertInformationSupplyChain(String              userId,
                                                                         OpenMetadataElement openMetadataElement,
@@ -2507,7 +2513,7 @@ public class SolutionHandler
                                                                         boolean             forLineage,
                                                                         boolean             forDuplicateProcessing,
                                                                         Date                effectiveTime,
-                                                                        String              methodName)
+                                                                        String              methodName) throws PropertyServerException
     {
         try
         {
@@ -2632,13 +2638,21 @@ public class SolutionHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 
@@ -2654,6 +2668,7 @@ public class SolutionHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private InformationSupplyChainSegmentElement convertInformationSupplyChainSegment(String              userId,
                                                                                       OpenMetadataElement openMetadataElement,
@@ -2661,7 +2676,7 @@ public class SolutionHandler
                                                                                       boolean             forLineage,
                                                                                       boolean             forDuplicateProcessing,
                                                                                       Date                effectiveTime,
-                                                                                      String              methodName)
+                                                                                      String              methodName) throws PropertyServerException
     {
         try
         {
@@ -2748,13 +2763,21 @@ public class SolutionHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 
@@ -2768,6 +2791,7 @@ public class SolutionHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<SolutionLinkingWireRelationship> convertSolutionLinkingWires(String              userId,
                                                                               OpenMetadataElement solutionComponent,
@@ -2775,7 +2799,7 @@ public class SolutionHandler
                                                                               boolean             forLineage,
                                                                               boolean             forDuplicateProcessing,
                                                                               Date                effectiveTime,
-                                                                              String              methodName)
+                                                                              String              methodName) throws PropertyServerException
     {
         try
         {
@@ -2870,11 +2894,21 @@ public class SolutionHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
+
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
 
         return null;
@@ -2890,6 +2924,7 @@ public class SolutionHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<RelatedMetadataElementSummary> convertPortSummaries(String  userId,
                                                                      String  solutionComponentGUID,
@@ -2897,7 +2932,7 @@ public class SolutionHandler
                                                                      boolean forLineage,
                                                                      boolean forDuplicateProcessing,
                                                                      Date    effectiveTime,
-                                                                     String  methodName)
+                                                                     String  methodName) throws PropertyServerException
     {
         try
         {
@@ -2954,11 +2989,21 @@ public class SolutionHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
+
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
 
         return null;
@@ -2976,6 +3021,7 @@ public class SolutionHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private SolutionBlueprintElement convertSolutionBlueprint(String              userId,
                                                               OpenMetadataElement openMetadataElement,
@@ -2983,7 +3029,7 @@ public class SolutionHandler
                                                               boolean             forLineage,
                                                               boolean             forDuplicateProcessing,
                                                               Date                effectiveTime,
-                                                              String              methodName)
+                                                              String              methodName) throws PropertyServerException
     {
         try
         {
@@ -3072,13 +3118,21 @@ public class SolutionHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 
@@ -3096,6 +3150,7 @@ public class SolutionHandler
      * @param fullDisplay print all elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private SolutionComponentElement convertSolutionComponent(String              userId,
                                                               OpenMetadataElement openMetadataElement,
@@ -3105,7 +3160,7 @@ public class SolutionHandler
                                                               boolean             forDuplicateProcessing,
                                                               Date                effectiveTime,
                                                               boolean             fullDisplay,
-                                                              String              methodName)
+                                                              String              methodName) throws PropertyServerException
     {
         try
         {
@@ -3222,13 +3277,21 @@ public class SolutionHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 
@@ -3336,6 +3399,7 @@ public class SolutionHandler
      * @param effectiveTime effectivity data
      * @param methodName calling method
      * @return list of parent elements (including the starting one)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<RelatedMetadataElement> getFullParentContext(String                 userId,
                                                               RelatedMetadataElement initialParentElement,
@@ -3343,7 +3407,7 @@ public class SolutionHandler
                                                               boolean                forLineage,
                                                               boolean                forDuplicateProcessing,
                                                               Date                   effectiveTime,
-                                                              String                 methodName)
+                                                              String                 methodName) throws PropertyServerException
     {
         List<RelatedMetadataElement> fullParentContext = new ArrayList<>();
 
@@ -3390,9 +3454,23 @@ public class SolutionHandler
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName, OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                           methodName,
-                                                                                                                           error.getMessage()));
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
+            }
+
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
 
         return fullParentContext;
@@ -3408,12 +3486,13 @@ public class SolutionHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private SolutionPortElement convertSolutionPort(String                 userId,
                                                     RelatedMetadataElement openMetadataElement,
                                                     Date                   asOfTime,
                                                     Date                   effectiveTime,
-                                                    String                 methodName)
+                                                    String                 methodName) throws PropertyServerException
     {
         // todo
         return null;
@@ -3426,9 +3505,10 @@ public class SolutionHandler
      * @param relatedMetadataElement element extracted from the repository
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private RelatedMetadataElementSummary convertSolutionComponentImplementation(RelatedMetadataElement relatedMetadataElement,
-                                                                                 String                 methodName)
+                                                                                 String                 methodName) throws PropertyServerException
     {
         RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> converter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
                                                                                                                                        serviceName,
@@ -3443,13 +3523,21 @@ public class SolutionHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 

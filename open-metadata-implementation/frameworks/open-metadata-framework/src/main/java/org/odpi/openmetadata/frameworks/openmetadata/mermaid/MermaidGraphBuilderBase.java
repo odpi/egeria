@@ -1720,9 +1720,14 @@ public class MermaidGraphBuilderBase
      */
     private String getCardinalityLinkName(MemberDataFieldProperties memberDataFieldProperties)
     {
-        return this.getCardinalityLabel(memberDataFieldProperties.getDataFieldPosition(),
-                                        memberDataFieldProperties.getMinCardinality(),
-                                        memberDataFieldProperties.getMaxCardinality());
+        if (memberDataFieldProperties != null)
+        {
+            return this.getCardinalityLabel(memberDataFieldProperties.getDataFieldPosition(),
+                                            memberDataFieldProperties.getMinCardinality(),
+                                            memberDataFieldProperties.getMaxCardinality());
+        }
+
+        return "*";
     }
 
 

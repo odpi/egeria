@@ -35,6 +35,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreAuditCode;
+import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreErrorCode;
 
 import java.util.*;
 
@@ -2440,6 +2441,7 @@ public class DataDesignHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of data structures (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<DataStructureElement> convertDataStructures(String                    userId,
                                                              List<OpenMetadataElement> openMetadataElements,
@@ -2447,7 +2449,7 @@ public class DataDesignHandler
                                                              boolean                   forLineage,
                                                              boolean                   forDuplicateProcessing,
                                                              Date                      effectiveTime,
-                                                             String                    methodName)
+                                                             String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {
@@ -2486,6 +2488,7 @@ public class DataDesignHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private DataStructureElement convertDataStructure(String              userId,
                                                       OpenMetadataElement openMetadataElement,
@@ -2493,7 +2496,7 @@ public class DataDesignHandler
                                                       boolean             forLineage,
                                                       boolean             forDuplicateProcessing,
                                                       Date                effectiveTime,
-                                                      String              methodName)
+                                                      String              methodName) throws PropertyServerException
     {
         try
         {
@@ -2577,14 +2580,21 @@ public class DataDesignHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   serviceName,
-                                                                                                                   error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 
@@ -2600,6 +2610,7 @@ public class DataDesignHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of data fields (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<DataFieldElement> convertDataFields(String                    userId,
                                                      List<OpenMetadataElement> openMetadataElements,
@@ -2607,7 +2618,7 @@ public class DataDesignHandler
                                                      boolean                   forLineage,
                                                      boolean                   forDuplicateProcessing,
                                                      Date                      effectiveTime,
-                                                     String                    methodName)
+                                                     String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {
@@ -2645,6 +2656,7 @@ public class DataDesignHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private DataFieldElement convertDataField(String              userId,
                                               OpenMetadataElement openMetadataElement,
@@ -2652,7 +2664,7 @@ public class DataDesignHandler
                                               boolean             forLineage,
                                               boolean             forDuplicateProcessing,
                                               Date                effectiveTime,
-                                              String              methodName)
+                                              String              methodName) throws PropertyServerException
     {
         try
         {
@@ -2735,14 +2747,21 @@ public class DataDesignHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             serviceName,
-                                                                                                             error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 
@@ -2758,6 +2777,7 @@ public class DataDesignHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private MemberDataField convertMemberDataField(String                 userId,
                                                    RelatedMetadataElement startingMetadataElement,
@@ -2765,10 +2785,13 @@ public class DataDesignHandler
                                                    boolean                forLineage,
                                                    boolean                forDuplicateProcessing,
                                                    Date                   effectiveTime,
-                                                   String                 methodName)
+                                                   String                 methodName) throws PropertyServerException
     {
         if (startingMetadataElement != null)
         {
+            /*
+             * Set up the description of the data field element
+             */
             MemberDataField memberDataField = new MemberDataField(this.convertDataField(userId,
                                                                                         startingMetadataElement.getElement(),
                                                                                         asOfTime,
@@ -2778,6 +2801,9 @@ public class DataDesignHandler
                                                                                         methodName));
 
 
+            /*
+             * Add in details of the relationship to the caller's element.
+             */
             DataFieldConverter<DataFieldElement> converter = new DataFieldConverter<>(propertyHelper, serviceName, serverName);
 
             memberDataField.setMemberDataFieldProperties(converter.getMemberDataFieldProperties(startingMetadataElement));
@@ -2800,6 +2826,7 @@ public class DataDesignHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of data classes (or null)
+     * @throws PropertyServerException problem with the conversion process
      */
     private List<DataClassElement> convertDataClasses(String                    userId,
                                                       List<OpenMetadataElement> openMetadataElements,
@@ -2807,7 +2834,7 @@ public class DataDesignHandler
                                                       boolean                   forLineage,
                                                       boolean                   forDuplicateProcessing,
                                                       Date                      effectiveTime,
-                                                      String                    methodName)
+                                                      String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {
@@ -2845,6 +2872,7 @@ public class DataDesignHandler
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
+     * @throws PropertyServerException problem with the conversion process
      */
     private DataClassElement convertDataClass(String              userId,
                                               OpenMetadataElement openMetadataElement,
@@ -2852,7 +2880,7 @@ public class DataDesignHandler
                                               boolean             forLineage,
                                               boolean             forDuplicateProcessing,
                                               Date                effectiveTime,
-                                              String              methodName)
+                                              String              methodName) throws PropertyServerException
     {
         try
         {
@@ -2889,14 +2917,21 @@ public class DataDesignHandler
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             serviceName,
-                                                                                                             error.getMessage()));
+                auditLog.logException(methodName,
+                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     serviceName,
+                                                                                                                     error.getMessage()),
+                                      error);
             }
 
-            return null;
+            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             serviceName,
+                                                                                                                             error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 }
