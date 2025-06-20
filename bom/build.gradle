@@ -32,7 +32,7 @@ ext {
     collections4Version = '4.4'
     // TODO: Version 1.17.0 breaks XTDB because of a change in lucene's library names
     commonscodecVersion = '1.16.0'
-    commonsconfiguration2Version = '2.10.1'
+    commonsconfiguration2Version = '2.12.0'
     commonsconfigurationVersion = '1.10'
 
     commonsioVersion = '2.18.0'
