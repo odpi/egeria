@@ -37,8 +37,8 @@ public enum VisualStyle
     HOST(Colour.WHITE.getColourNumber(), Colour.DARK_GRAY.getColourNumber(), Colour.YELLOW.getColourNumber(), "rect"),
 
     INFORMATION_SUPPLY_CHAIN(Colour.WHITE.getColourNumber(), Colour.SLATE.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), "flip-tri"),
-    INFORMATION_SUPPLY_CHAIN_SEG(Colour.SLATE.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), Colour.SLATE.getColourNumber(), "hex"),
-    INFORMATION_SUPPLY_CHAIN_SEG_GRAPH(Colour.SLATE.getColourNumber(), Colour.WHITE.getColourNumber(), Colour.SLATE.getColourNumber(), "hex"),
+    INFORMATION_SUPPLY_CHAIN_SEG(Colour.SLATE.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), Colour.SLATE.getColourNumber(), "flip-tri"),
+    PRINCIPLE_INFORMATION_SUPPLY_CHAIN(Colour.WHITE.getColourNumber(), Colour.SLATE.getColourNumber(), Colour.MUSTARD.getColourNumber(), "flip-tri"),
     INFORMATION_SUPPLY_CHAIN_IMPL(Colour.BLACK.getColourNumber(), Colour.MUSTARD.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
 
     WHITE_SUBGRAPH(Colour.WHITE.getColourNumber(), Colour.WHITE.getColourNumber(), Colour.WHITE.getColourNumber(), "hex"),

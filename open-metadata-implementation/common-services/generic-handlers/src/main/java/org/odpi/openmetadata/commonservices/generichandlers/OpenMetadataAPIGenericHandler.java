@@ -6686,8 +6686,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             String relationshipGUIDTypeName = relationship.getType().getTypeDefName();
 
             /*
-             * Retrieve the end entities using the repository handler as called to validate the anchor and
-             * call the security verifier are done here.
+             * Retrieve the end entities using the repository handler as calls to validate the anchor
+             * via the security verifier are done here.
              */
             EntityDetail bean1Entity = repositoryHandler.getEntityByGUID(userId,
                                                                          relationship.getEntityOneProxy().getGUID(),
@@ -6781,8 +6781,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             }
             else if (anchor1Entity != null)
             {
-                if (anchor1Entity.getGUID().equals(anchor2Entity.getGUID()))
+                if ((anchor2Entity != null) && (anchor1Entity.getGUID().equals(anchor2Entity.getGUID())))
                 {
+                    /*
+                     * Both ends of the relationship have the same anchor so they are members of the anchor
+                     */
                     securityVerifier.validateUserForAnchorMemberUpdate(userId,
                                                                        anchor1Entity,
                                                                        repositoryHelper,

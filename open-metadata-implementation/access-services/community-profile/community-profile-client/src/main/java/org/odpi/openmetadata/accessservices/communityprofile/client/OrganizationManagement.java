@@ -10,14 +10,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileGraphElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Appointee;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-
-import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -182,11 +176,11 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/{2}";
 
-        PersonRoleResponse restResult = restClient.callPersonRoleGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             personRoleGUID);
+        ActorRoleResponse restResult = restClient.callPersonRoleGetRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            serverName,
+                                                                            userId,
+                                                                            personRoleGUID);
 
         return restResult.getElement();
     }

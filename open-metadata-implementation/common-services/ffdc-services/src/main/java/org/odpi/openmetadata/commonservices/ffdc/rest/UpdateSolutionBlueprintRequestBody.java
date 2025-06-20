@@ -6,9 +6,6 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
-
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,11 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateSolutionBlueprintRequestBody extends MetadataSourceRequestBody
+public class UpdateSolutionBlueprintRequestBody extends UpdateElementRequestBody
 {
-    private SolutionBlueprintProperties properties = null;
-
-
     /**
      * Default constructor
      */
@@ -40,35 +34,7 @@ public class UpdateSolutionBlueprintRequestBody extends MetadataSourceRequestBod
     public UpdateSolutionBlueprintRequestBody(UpdateSolutionBlueprintRequestBody template)
     {
         super(template);
-
-        if (template != null)
-        {
-            this.properties = template.getProperties();
-        }
     }
-
-
-    /**
-     * Return the properties for the new element.
-     *
-     * @return properties
-     */
-    public SolutionBlueprintProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up the properties for the new element.
-     *
-     * @param properties properties
-     */
-    public void setProperties(SolutionBlueprintProperties properties)
-    {
-        this.properties = properties;
-    }
-
 
     /**
      * JSON-style toString.
@@ -78,45 +44,6 @@ public class UpdateSolutionBlueprintRequestBody extends MetadataSourceRequestBod
     @Override
     public String toString()
     {
-        return "UpdateSolutionBlueprintRequestBody{" +
-                "properties=" + properties +
-                "} " + super.toString();
-    }
-
-
-    /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof UpdateSolutionBlueprintRequestBody that))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        return Objects.equals(properties, that.properties);
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), properties);
+        return "UpdateSolutionBlueprintRequestBody{} " + super.toString();
     }
 }

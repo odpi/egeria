@@ -959,11 +959,11 @@ public class SecurityManagerClient implements SecurityManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/{2}";
 
-        PersonRoleResponse restResult = restClient.callPersonRoleGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             personRoleGUID);
+        ActorRoleResponse restResult = restClient.callPersonRoleGetRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            serverName,
+                                                                            userId,
+                                                                            personRoleGUID);
 
         return restResult.getElement();
     }
@@ -1006,13 +1006,13 @@ public class SecurityManagerClient implements SecurityManagerInterface
         requestBody.setNamePropertyName(namePropertyName);
         requestBody.setNameParameterName(nameParameterName);
 
-        PersonRolesResponse restResult = restClient.callPersonRolesPostRESTCall(methodName,
-                                                                                urlTemplate,
-                                                                                requestBody,
-                                                                                serverName,
-                                                                                userId,
-                                                                                Integer.toString(startFrom),
-                                                                                Integer.toString(pageSize));
+        ActorRolesResponse restResult = restClient.callPersonRolesPostRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               requestBody,
+                                                                               serverName,
+                                                                               userId,
+                                                                               Integer.toString(startFrom),
+                                                                               Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1053,13 +1053,13 @@ public class SecurityManagerClient implements SecurityManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        PersonRolesResponse restResult = restClient.callPersonRolesPostRESTCall(methodName,
-                                                                                urlTemplate,
-                                                                                requestBody,
-                                                                                serverName,
-                                                                                userId,
-                                                                                Integer.toString(startFrom),
-                                                                                Integer.toString(pageSize));
+        ActorRolesResponse restResult = restClient.callPersonRolesPostRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               requestBody,
+                                                                               serverName,
+                                                                               userId,
+                                                                               Integer.toString(startFrom),
+                                                                               Integer.toString(pageSize));
 
         return restResult.getElements();
     }

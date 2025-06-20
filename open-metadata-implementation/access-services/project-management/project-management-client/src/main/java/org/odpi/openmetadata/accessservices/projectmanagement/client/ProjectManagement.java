@@ -1265,13 +1265,13 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
         final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "/project-managers/by-project/{2}?startFrom={3}&pageSize={4}";
 
-        PersonRolesResponse restResult = restClient.callPersonRolesGetRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               projectGUID,
-                                                                               Integer.toString(startFrom),
-                                                                               Integer.toString(pageSize));
+        ActorRolesResponse restResult = restClient.callPersonRolesGetRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              serverName,
+                                                                              userId,
+                                                                              projectGUID,
+                                                                              Integer.toString(startFrom),
+                                                                              Integer.toString(pageSize));
 
         return restResult.getElements();
     }

@@ -1891,10 +1891,6 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         {
             anchorIdentifiers = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, targetTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName))
-        {
-            anchorIdentifiers = this.getAnchorGUIDForISCSegment(localServerUserId, targetGUID, targetTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-        }
         else if ((repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.GLOSSARY_CATEGORY.typeName)) ||
                  (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)) ||
                  (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SOLUTION_COMPONENT.typeName)) ||

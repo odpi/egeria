@@ -21,14 +21,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InformationSupplyChainElement implements MetadataElement
+public class InformationSupplyChainElement extends AttributedMetadataElement
 {
-    private ElementHeader                              elementHeader   = null;
-    private InformationSupplyChainProperties           properties      = null;
-    private List<InformationSupplyChainSegmentElement> segments        = null; // InformationSupplyChainComposition
-    private List<RelationshipElement>                  implementation  = null; // qualified name in relationship
-    private String                                     mermaidTimeline = null;
-    private String                                     mermaidGraph    = null;
+    private InformationSupplyChainProperties      properties        = null;
+    private List<RelatedMetadataElementSummary>   parents           = null; // InformationSupplyChainComposition
+    private List<InformationSupplyChainSegment>   segments          = null; // InformationSupplyChainComposition
+    private List<RelatedMetadataElementSummary>   links             = null; // InformationSupplyChainLinks
+    private List<InformationSupplyChainComponent> implementedByList = null; // ImplementedBy
+    private List<RelationshipElement>             implementation    = null; // isc qualified name in relationship
+
 
     /**
      * Default constructor
@@ -46,39 +47,17 @@ public class InformationSupplyChainElement implements MetadataElement
      */
     public InformationSupplyChainElement(InformationSupplyChainElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader   = template.getElementHeader();
-            properties      = template.getProperties();
-            segments        = template.getSegments();
-            implementation  = template.getImplementation();
-            mermaidTimeline = template.getMermaidTimeline();
-            mermaidGraph    = template.getMermaidGraph();
+            properties             = template.getProperties();
+            parents                = template.getParents();
+            segments               = template.getSegments();
+            links                  = template.getLinks();
+            implementation         = template.getImplementation();
+            implementedByList      = template.getImplementedByList();
         }
-    }
-
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
     }
 
 
@@ -105,24 +84,92 @@ public class InformationSupplyChainElement implements MetadataElement
 
 
     /**
-     * Return the list of segments in the information supply chain.
+     * Return the list of parent information supply chains for the information supply chain.
      *
      * @return list
      */
-    public List<InformationSupplyChainSegmentElement> getSegments()
+    public List<RelatedMetadataElementSummary> getParents()
+    {
+        return parents;
+    }
+
+
+    /**
+     * Set up the list of parent information supply chains for the information supply chain.
+     *
+     * @param parents list
+     */
+    public void setParents(List<RelatedMetadataElementSummary> parents)
+    {
+        this.parents = parents;
+    }
+
+
+    /**
+     * Return the list of nested information supply chains (segments) in the information supply chain.
+     *
+     * @return list
+     */
+    public List<InformationSupplyChainSegment> getSegments()
     {
         return segments;
     }
 
 
     /**
-     * Set up the list of segments in the information supply chain.
+     * Set up the list of nested information supply chains (segments) in the information supply chain.
      *
      * @param segments list
      */
-    public void setSegments(List<InformationSupplyChainSegmentElement> segments)
+    public void setSegments(List<InformationSupplyChainSegment> segments)
     {
         this.segments = segments;
+    }
+
+
+    /**
+     * Return the list of links in the information supply chain.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getLinks()
+    {
+        return links;
+    }
+
+
+    /**
+     * Set up the list of links in the information supply chain.
+     *
+     * @param links list
+     */
+    public void setLinks(List<RelatedMetadataElementSummary> links)
+    {
+        this.links = links;
+    }
+
+
+    /**
+     * Return list of linked ImplementedBy relationships = these link typically to solution components by may
+     * also link directly to assets implementing the data flows.
+     *
+     * @return list
+     */
+    public List<InformationSupplyChainComponent> getImplementedByList()
+    {
+        return implementedByList;
+    }
+
+
+    /**
+     * Set up  list of linked ImplementedBy relationships = these link typically to solution components by may
+     * also link directly to assets implementing the data flows.
+     *
+     * @param implementedByList list
+     */
+    public void setImplementedByList(List<InformationSupplyChainComponent> implementedByList)
+    {
+        this.implementedByList = implementedByList;
     }
 
 
@@ -149,49 +196,6 @@ public class InformationSupplyChainElement implements MetadataElement
 
 
     /**
-     * Return the timeline showing the flow of data along the information supply chain.
-     *
-     * @return mermaid markdown
-     */
-    public String getMermaidTimeline()
-    {
-        return mermaidTimeline;
-    }
-
-
-    /**
-     * Set up the timeline showing the flow of data along the information supply chain.
-     *
-     * @param mermaidTimeline mermaid markdown
-     */
-    public void setMermaidTimeline(String mermaidTimeline)
-    {
-        this.mermaidTimeline = mermaidTimeline;
-    }
-
-
-    /**
-     *
-     * @return mermaid markdown
-     */
-    public String getMermaidGraph()
-    {
-        return mermaidGraph;
-    }
-
-
-    /**
-     * Set up the graph view of the information supply chain.
-     *
-     * @param mermaidGraph mermaid markdown
-     */
-    public void setMermaidGraph(String mermaidGraph)
-    {
-        this.mermaidGraph = mermaidGraph;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -200,13 +204,13 @@ public class InformationSupplyChainElement implements MetadataElement
     public String toString()
     {
         return "InformationSupplyChainElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
+                "properties=" + properties +
+                ", parents=" + parents +
                 ", segments=" + segments +
+                ", links=" + links +
                 ", implementation=" + implementation +
-                ", mermaidTimeline='" + mermaidTimeline + '\'' +
-                ", mermaidGraph='" + mermaidGraph + '\'' +
-                '}';
+                ", implementedByList=" + implementedByList +
+                "} " + super.toString();
     }
 
 
@@ -221,8 +225,14 @@ public class InformationSupplyChainElement implements MetadataElement
     {
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         InformationSupplyChainElement that = (InformationSupplyChainElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) && Objects.equals(properties, that.properties) && Objects.equals(segments, that.segments) && Objects.equals(implementation, that.implementation) && Objects.equals(mermaidTimeline, that.mermaidTimeline) && Objects.equals(mermaidGraph, that.mermaidGraph);
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(parents, that.parents) &&
+                Objects.equals(segments, that.segments) &&
+                Objects.equals(links, that.links) &&
+                Objects.equals(implementation, that.implementation) &&
+                Objects.equals(implementedByList, that.implementedByList);
     }
 
     /**
@@ -233,6 +243,6 @@ public class InformationSupplyChainElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, properties, segments, implementation, mermaidTimeline, mermaidGraph);
+        return Objects.hash(super.hashCode(), properties, parents, segments, links, implementation, implementedByList);
     }
 }

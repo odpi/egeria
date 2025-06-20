@@ -58,9 +58,7 @@ content-packs/CocoComboArchive.omarchive
 # https://egeria-project.org/concepts/information-supply-chain
 
 @informationSupplyChainGUID=add guid here
-@segmentGUID=add guid here
-@segment1GUID=add guid here
-@segment2GUID=add guid here
+@nestedInformationSupplyChainGUID=add guid here
 
 ###
 # @name createInformationSupplyChain
@@ -70,7 +68,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewInformationSupplyChainRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -179,7 +177,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateInformationSupplyChainRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -201,86 +199,20 @@ Content-Type: application/json
   }
 }
 
-
 ###
-# @name createInformationSupplyChainSegment
-# Create an information supply chain segment and link it to its owning information supply chain.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/segments
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
-{
-  "class" : "InformationSupplyChainSegmentRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class" : "InformationSupplyChainSegmentProperties",
-    "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
-    "description": "add description here",
-    "scope": "add scope of this information supply chain's applicability.",
-    "integrationStyle": "style",
-    "estimatedVolumetrics": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name updateInformationSupplyChainSegment
-# Update the properties of an information supply chain segment.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/segments/{{segmentGUID}}/update?replaceAllProperties=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "InformationSupplyChainSegmentRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class" : "InformationSupplyChainSegmentProperties",
-    "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
-    "description": "add description here",
-    "scope": "add scope of this information supply chain's applicability.",
-    "integrationStyle": "style",
-    "estimatedVolumetrics": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
+@peerOneGUID=add guid here
+@peerTwoGUID=add guid here
                                                               
 ###
-# @name linkSegments
-# Connect two information supply chain segments.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/segments/{{segment1GUID}}/link-to/{{segment2GUID}}/attach
+# @name linkPeersInInformationSupplyChain
+# Connect two peer information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain. Rrequest body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{peerOneGUID}}/peer-links/{{peerTwoGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "InformationSupplyChainLinkRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -297,10 +229,9 @@ Content-Type: application/json
 
                                      
 ###
-
-# @name detachSegments
-# Detach two information supply chain segments from one another. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/segments/{{segment1GUID}}/link-to/{{segment2GUID}}/detach
+# @name unlinkPeerInformationSupplyChains
+# Detach two peers in an information supply chain from one another.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{peerOneGUID}}/peer-links/{{peerTwoGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -311,13 +242,38 @@ Content-Type: application/json
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false
+}
+
+###
+
+# @name composeInformationSupplyChains
+# Connect a nested information supply chain to its parent. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/compositions/{{nestedInformationSupplyChainGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "InformationSupplyChainLinkProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
 }
 
 
 ###
-# @name deleteInformationSupplyChainSegment
-# Delete an information supply chain segment. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/segments/{{segmentGUID}}/delete
+
+# @name decomposeInformationSupplyChains
+# Detach a nested information supply chain from its parent. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/compositions/{{nestedInformationSupplyChainGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -329,6 +285,7 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
 
 
 ###
@@ -481,7 +438,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewSolutionBlueprintRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -589,7 +546,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateSolutionBlueprintRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -619,7 +576,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "SolutionBlueprintCompositionRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -790,21 +747,20 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# Work with Solution Roles
+# Work with Solution Roles (using Actor Manager OMVS)
 # https://egeria-project.org/concepts/solution-role
 
 @solutionRoleGUID=add guid here
-@parentSolutionRoleGUID=add guid here
 
 ###
 # @name createSolutionRole
-# Create a data structure.
+# Create an actor role that is of type SolutionRole.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewActorRoleRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -826,7 +782,7 @@ Content-Type: application/json
   },
   "parentAtEnd1": false,
   "properties": {
-    "class" : "ActorRoleProperties",
+    "class" : "SolutionRoleProperties",
     "qualifiedName": "add unique name here",
     "name": "add short name here",
     "description": "add description here",
@@ -842,7 +798,7 @@ Content-Type: application/json
 
 ###
 # @name createSolutionRole
-# Create a data structure.
+# Create an actor role that is of type SolutionRole.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -859,7 +815,7 @@ Content-Type: application/json
 
 ###
 # @name createSolutionRoleFromTemplate
-# Create a new metadata element to represent a data structure using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+# Create a new metadata element to represent a actor role using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/from-template
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -906,13 +862,13 @@ Content-Type: application/json
 
 ###
 # @name updateSolutionRole
-# Update the properties of a data structure.
+# Update the properties of an actor role.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/update?replaceAllProperties=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateActorRoleRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -936,13 +892,13 @@ Content-Type: application/json
 
 ###
 # @name linkSolutionComponentActor
-# Connect a data structure to a data field. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{parentSolutionRoleGUID}}/solution-component-actors/{{solutionComponentGUID}}/attach
+# Connect a solution component to an actor role. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/solution-component-actors/{{solutionComponentGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "SolutionComponentActorRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -961,8 +917,8 @@ Content-Type: application/json
 ###
 
 # @name detachSolutionComponentActor
-# Detach a data field from a data structure. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{parentSolutionRoleGUID}}/solution-component-actors/{{solutionComponentGUID}}/detach
+# Detach an actor role from a solution component. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/solution-component-actors/{{solutionComponentGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -978,7 +934,7 @@ Content-Type: application/json
 
 ###
 # @name deleteSolutionRole
-# Delete a data structure. Request body is optional.
+# Delete an actor role. Request body is optional.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -995,7 +951,7 @@ Content-Type: application/json
 
 ###
 # @name findAllSolutionRoles
-# Retrieve the list of data structure metadata elements that contain the search string.
+# Retrieve the list of all defines actor roles.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1003,7 +959,7 @@ Content-Type: application/json
 
 ###
 # @name findAllSolutionRoles - with full request body
-# Retrieve the list of data structure metadata elements that contain the search string.
+# Retrieve the list of actor roles that contain the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1022,7 +978,7 @@ Content-Type: application/json
 
 ###
 # @name findSolutionRoles
-# Retrieve the list of data structure metadata elements that contain the search string.
+# Retrieve the list of actor roles that contain the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1034,7 +990,7 @@ Content-Type: application/json
 
 ###
 # @name findSolutionRoles - with full request body
-# Retrieve the list of data structure metadata elements that contain the search string.
+# Retrieve the list of actor roles that contain the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1054,7 +1010,7 @@ Content-Type: application/json
 ###
 
 # @name getSolutionRolesByName
-# Returns the list of data structures with a particular name.
+# Returns the list of actor roles with a particular name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-name?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1067,7 +1023,7 @@ Content-Type: application/json
 ###
 
 # @name getSolutionRolesByName - with full request body
-# Returns the list of data structures with a particular name.
+# Returns the list of actor roles with a particular name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-name?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1127,7 +1083,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewSolutionComponentRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1239,7 +1195,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateSolutionComponentRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1317,7 +1273,7 @@ Content-Type: application/json
      "class" : "SolutionLinkingWireProperties",
      "label" : "",
      "description" : "",
-     "informationSupplyChainSegmentGUIDs" : []
+     "iscQualifiedNames" : []
   },
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,

@@ -54,7 +54,7 @@ public class DataDesignerResource
     public GUIDResponse createDataStructure(@PathVariable
                                             String                               serverName,
                                             @RequestBody (required = false)
-                                            NewDataStructureRequestBody requestBody)
+                                            NewElementRequestBody requestBody)
     {
         return restAPI.createDataStructure(serverName, requestBody);
     }
@@ -114,7 +114,7 @@ public class DataDesignerResource
                                             @RequestParam (required = false, defaultValue = "false")
                                             boolean                                 replaceAllProperties,
                                             @RequestBody (required = false)
-                                            UpdateDataStructureRequestBody requestBody)
+                                            UpdateElementRequestBody requestBody)
     {
         return restAPI.updateDataStructure(serverName, dataStructureGUID, replaceAllProperties, requestBody);
     }
@@ -140,13 +140,13 @@ public class DataDesignerResource
                     url="https://egeria-project.org/concepts/data-structure"))
 
     public VoidResponse linkMemberDataField(@PathVariable
-                                            String                     serverName,
+                                            String                  serverName,
                                             @PathVariable
-                                            String                     dataStructureGUID,
+                                            String                  dataStructureGUID,
                                             @PathVariable
-                                            String                     dataFieldGUID,
+                                            String                  dataFieldGUID,
                                             @RequestBody (required = false)
-                                            MemberDataFieldRequestBody requestBody)
+                                            RelationshipRequestBody requestBody)
     {
         return restAPI.linkMemberDataField(serverName, dataStructureGUID, dataFieldGUID, requestBody);
     }
@@ -342,7 +342,7 @@ public class DataDesignerResource
     public GUIDResponse createDataField(@PathVariable
                                         String                               serverName,
                                         @RequestBody (required = false)
-                                        NewDataFieldRequestBody requestBody)
+                                        NewElementRequestBody requestBody)
     {
         return restAPI.createDataField(serverName, requestBody);
     }
@@ -402,7 +402,7 @@ public class DataDesignerResource
                                         @RequestParam (required = false, defaultValue = "false")
                                         boolean                                 replaceAllProperties,
                                         @RequestBody (required = false)
-                                        UpdateDataFieldRequestBody requestBody)
+                                        UpdateElementRequestBody requestBody)
     {
         return restAPI.updateDataField(serverName, dataFieldGUID, replaceAllProperties, requestBody);
     }
@@ -429,13 +429,13 @@ public class DataDesignerResource
                     url="https://egeria-project.org/concepts/data-field"))
 
     public VoidResponse linkNestedDataFields(@PathVariable
-                                             String                                serverName,
+                                             String                   serverName,
                                              @PathVariable
-                                             String                                parentDataFieldGUID,
+                                             String                   parentDataFieldGUID,
                                              @PathVariable
                                              String nestedDataFieldGUID,
                                              @RequestBody (required = false)
-                                             MemberDataFieldRequestBody requestBody)
+                                             RelationshipRequestBody requestBody)
     {
         return restAPI.linkNestedDataFields(serverName, parentDataFieldGUID, nestedDataFieldGUID, requestBody);
     }
@@ -631,9 +631,9 @@ public class DataDesignerResource
                     url="https://egeria-project.org/concepts/data-class"))
 
     public GUIDResponse createDataClass(@PathVariable
-                                        String                               serverName,
+                                        String                serverName,
                                         @RequestBody (required = false)
-                                        NewDataClassRequestBody requestBody)
+                                        NewElementRequestBody requestBody)
     {
         return restAPI.createDataClass(serverName, requestBody);
     }
@@ -693,7 +693,7 @@ public class DataDesignerResource
                                         @RequestParam (required = false, defaultValue = "false")
                                         boolean                                 replaceAllProperties,
                                         @RequestBody (required = false)
-                                        UpdateDataClassRequestBody requestBody)
+                                        UpdateElementRequestBody requestBody)
     {
         return restAPI.updateDataClass(serverName, dataClassGUID, replaceAllProperties, requestBody);
     }
@@ -725,7 +725,7 @@ public class DataDesignerResource
                                             @PathVariable
                                             String                                childDataClassGUID,
                                             @RequestBody (required = false)
-                                            MetadataSourceRequestBody requestBody)
+                                            RelationshipRequestBody requestBody)
     {
         return restAPI.linkNestedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
@@ -776,22 +776,22 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/data-classes/{parentDataClassGUID}/specializeddata-classes/{childDataClassGUID}/attach")
-    @Operation(summary="linkSpecialistDataClass",
+    @PostMapping(path = "/data-classes/{parentDataClassGUID}/specialized-data-classes/{childDataClassGUID}/attach")
+    @Operation(summary="linkSpecializedDataClass",
             description="Connect two data classes to show that one provides a more specialist evaluation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-class"))
 
-    public VoidResponse linkSpecialistDataClass(@PathVariable
-                                                String                                serverName,
+    public VoidResponse linkSpecializedDataClass(@PathVariable
+                                                String                  serverName,
                                                 @PathVariable
-                                                String                                parentDataClassGUID,
+                                                String                  parentDataClassGUID,
                                                 @PathVariable
-                                                String                                childDataClassGUID,
+                                                String                  childDataClassGUID,
                                                 @RequestBody (required = false)
-                                                MetadataSourceRequestBody requestBody)
+                                                RelationshipRequestBody requestBody)
     {
-        return restAPI.linkSpecialistDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
+        return restAPI.linkSpecializedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
 
 
@@ -808,13 +808,13 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/data-classes/{parentDataClassGUID}/specializeddata-classes/{childDataClassGUID}/detach")
-    @Operation(summary="detachSpecialistDataClass",
+    @PostMapping(path = "/data-classes/{parentDataClassGUID}/specialized-data-classes/{childDataClassGUID}/detach")
+    @Operation(summary="detachSpecializedDataClass",
             description="Detach two data classes from one another.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-class"))
 
-    public VoidResponse detachSpecialistDataClass(@PathVariable
+    public VoidResponse detachSpecializedDataClass(@PathVariable
                                                   String                    serverName,
                                                   @PathVariable
                                                   String                    parentDataClassGUID,
@@ -823,7 +823,7 @@ public class DataDesignerResource
                                                   @RequestBody (required = false)
                                                   MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachSpecialistDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
+        return restAPI.detachSpecializedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
 
 
@@ -990,7 +990,7 @@ public class DataDesignerResource
                                                 @PathVariable String                    dataDefinitionGUID,
                                                 @PathVariable String                    dataClassGUID,
                                                 @RequestBody (required = false)
-                                                    MetadataSourceRequestBody requestBody)
+                                                    RelationshipRequestBody requestBody)
     {
         return restAPI.linkDataClassDefinition(serverName, dataDefinitionGUID, dataClassGUID, requestBody);
     }
@@ -1049,7 +1049,7 @@ public class DataDesignerResource
                                                @PathVariable String                    dataDefinitionGUID,
                                                @PathVariable String                    glossaryTermGUID,
                                                @RequestBody (required = false)
-                                               MetadataSourceRequestBody requestBody)
+                                               RelationshipRequestBody requestBody)
     {
         return restAPI.linkSemanticDefinition(serverName, dataDefinitionGUID, glossaryTermGUID, requestBody);
     }
@@ -1110,7 +1110,7 @@ public class DataDesignerResource
                                                              @PathVariable String                    certificationTypeGUID,
                                                              @PathVariable String                    dataStructureGUID,
                                                              @RequestBody (required = false)
-                                                             MetadataSourceRequestBody requestBody)
+                                                             RelationshipRequestBody requestBody)
     {
         return restAPI.linkCertificationTypeToDataStructure(serverName, certificationTypeGUID, dataStructureGUID, requestBody);
     }

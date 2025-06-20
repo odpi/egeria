@@ -146,7 +146,7 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
 
                                     solutionLinkingWireProperties.setLabel(this.removeLabel(elementProperties));
                                     solutionLinkingWireProperties.setDescription(this.removeDescription(elementProperties));
-                                    solutionLinkingWireProperties.setInformationSupplyChainSegmentGUIDs(this.removeInformationSupplyChainSegmentGUIDs(elementProperties));
+                                    solutionLinkingWireProperties.setISCQualifiedNames(this.removeISCQualifiedNames(elementProperties));
                                     solutionLinkingWireProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
                                     solutionLinkingWireProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
                                     solutionLinkingWireProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));

@@ -1542,18 +1542,18 @@ public class DataDesignHandler
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkSpecialistDataClass(String  userId,
-                                        String  externalSourceGUID,
-                                        String  externalSourceName,
-                                        String  parentDataClassGUID,
-                                        String  childDataClassGUID,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing,
-                                        Date    effectiveTime) throws InvalidParameterException,
+    public void linkSpecializedDataClass(String  userId,
+                                         String  externalSourceGUID,
+                                         String  externalSourceName,
+                                         String  parentDataClassGUID,
+                                         String  childDataClassGUID,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
-        final String methodName = "linkSpecialistDataClass";
+        final String methodName = "linkSpecializedDataClass";
         final String end1GUIDParameterName = "parentDataClassGUID";
         final String end2GUIDParameterName = "childDataClassGUID";
 
@@ -1591,18 +1591,18 @@ public class DataDesignHandler
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachSpecialistDataClass(String  userId,
-                                          String  externalSourceGUID,
-                                          String  externalSourceName,
-                                          String  parentDataClassGUID,
-                                          String  childDataClassGUID,
-                                          boolean forLineage,
-                                          boolean forDuplicateProcessing,
-                                          Date    effectiveTime) throws InvalidParameterException,
+    public void detachSpecializedDataClass(String  userId,
+                                           String  externalSourceGUID,
+                                           String  externalSourceName,
+                                           String  parentDataClassGUID,
+                                           String  childDataClassGUID,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
     {
-        final String methodName = "detachSpecialistDataClass";
+        final String methodName = "detachSpecializedDataClass";
 
         final String end1GUIDParameterName = "parentDataClassGUID";
         final String end2GUIDParameterName = "childDataClassGUID";

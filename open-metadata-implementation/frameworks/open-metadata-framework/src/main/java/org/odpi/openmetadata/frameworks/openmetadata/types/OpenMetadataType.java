@@ -5750,15 +5750,6 @@ public enum OpenMetadataType
                              "A description of a managed flow of information between multiple systems."),
 
     /**
-     * A section of an information supply chain that has common characteristics and typically a common owner.
-     */
-    INFORMATION_SUPPLY_CHAIN_SEGMENT("6d9980b2-5c0b-4314-8d8d-9fa45f8904d1",
-                                     "InformationSupplyChainSegment",
-                                     OpenMetadataWikiPages.MODEL_0720_INFORMATION_SUPPLY_CHAINS,
-                                     "dddcf2ef-7ba2-4838-adca-fdf6b9468761",
-                                     "A section of an information supply chain that has common characteristics and typically a common owner."),
-
-    /**
      * Relationship identifying the segments belonging to an information supply chain.
      */
     INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP("fcdccfa3-e9f0-4543-8720-1958799fb6dc",

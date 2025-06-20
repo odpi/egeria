@@ -7,15 +7,15 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorRoleHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SolutionHandler;
-import org.odpi.openmetadata.frameworkservices.omf.rest.*;
+import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.RelatedMetadataElementsResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -55,8 +55,8 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createInformationSupplyChain(String                               serverName,
-                                                     NewInformationSupplyChainRequestBody requestBody)
+    public GUIDResponse createInformationSupplyChain(String                serverName,
+                                                     NewElementRequestBody requestBody)
     {
         final String methodName = "createInformationSupplyChain";
 
@@ -77,20 +77,44 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
-                response.setGUID(handler.createInformationSupplyChain(userId,
-                                                                      requestBody.getExternalSourceGUID(),
-                                                                      requestBody.getExternalSourceName(),
-                                                                      requestBody.getAnchorGUID(),
-                                                                      requestBody.getIsOwnAnchor(),
-                                                                      requestBody.getAnchorScopeGUID(),
-                                                                      requestBody.getProperties(),
-                                                                      requestBody.getParentGUID(),
-                                                                      requestBody.getParentRelationshipTypeName(),
-                                                                      requestBody.getParentRelationshipProperties(),
-                                                                      requestBody.getParentAtEnd1(),
-                                                                      requestBody.getForLineage(),
-                                                                      requestBody.getForDuplicateProcessing(),
-                                                                      requestBody.getEffectiveTime()));
+                if (requestBody.getProperties() instanceof InformationSupplyChainProperties informationSupplyChainProperties)
+                {
+                    response.setGUID(handler.createInformationSupplyChain(userId,
+                                                                          requestBody.getExternalSourceGUID(),
+                                                                          requestBody.getExternalSourceName(),
+                                                                          requestBody.getAnchorGUID(),
+                                                                          requestBody.getIsOwnAnchor(),
+                                                                          requestBody.getAnchorScopeGUID(),
+                                                                          informationSupplyChainProperties,
+                                                                          requestBody.getParentGUID(),
+                                                                          requestBody.getParentRelationshipTypeName(),
+                                                                          requestBody.getParentRelationshipProperties(),
+                                                                          requestBody.getParentAtEnd1(),
+                                                                          requestBody.getForLineage(),
+                                                                          requestBody.getForDuplicateProcessing(),
+                                                                          requestBody.getEffectiveTime()));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.createInformationSupplyChain(userId,
+                                                                          requestBody.getExternalSourceGUID(),
+                                                                          requestBody.getExternalSourceName(),
+                                                                          requestBody.getAnchorGUID(),
+                                                                          requestBody.getIsOwnAnchor(),
+                                                                          requestBody.getAnchorScopeGUID(),
+                                                                          null,
+                                                                          requestBody.getParentGUID(),
+                                                                          requestBody.getParentRelationshipTypeName(),
+                                                                          requestBody.getParentRelationshipProperties(),
+                                                                          requestBody.getParentAtEnd1(),
+                                                                          requestBody.getForLineage(),
+                                                                          requestBody.getForDuplicateProcessing(),
+                                                                          requestBody.getEffectiveTime()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(InformationSupplyChainProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -190,10 +214,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateInformationSupplyChain(String                                  serverName,
-                                                       String                                  informationSupplyChainGUID,
-                                                       boolean                                 replaceAllProperties,
-                                                       UpdateInformationSupplyChainRequestBody requestBody)
+    public VoidResponse   updateInformationSupplyChain(String                   serverName,
+                                                       String                   informationSupplyChainGUID,
+                                                       boolean                  replaceAllProperties,
+                                                       UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateInformationSupplyChain";
 
@@ -214,15 +238,34 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
-                handler.updateInformationSupplyChain(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     informationSupplyChainGUID,
-                                                     replaceAllProperties,
-                                                     requestBody.getProperties(),
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof InformationSupplyChainProperties informationSupplyChainProperties)
+                {
+                    handler.updateInformationSupplyChain(userId,
+                                                         requestBody.getExternalSourceGUID(),
+                                                         requestBody.getExternalSourceName(),
+                                                         informationSupplyChainGUID,
+                                                         replaceAllProperties,
+                                                         informationSupplyChainProperties,
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
+                                                         requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateInformationSupplyChain(userId,
+                                                         requestBody.getExternalSourceGUID(),
+                                                         requestBody.getExternalSourceName(),
+                                                         informationSupplyChainGUID,
+                                                         replaceAllProperties,
+                                                         null,
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
+                                                         requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(InformationSupplyChainProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -240,133 +283,11 @@ public class SolutionArchitectRESTServices extends TokenController
 
 
     /**
-     * Create an information supply chain segment.
+     * Connect two peers in an information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.
      *
-     * @param serverName                 name of called server.
-     * @param informationSupplyChainGUID unique identifier of optional parent information supply chain
-     * @param requestBody             properties for the information supply chain.
-     *
-     * @return unique identifier of the newly created element
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createInformationSupplyChainSegment(String                                   serverName,
-                                                            String                                   informationSupplyChainGUID,
-                                                            InformationSupplyChainSegmentRequestBody requestBody)
-    {
-        final String methodName = "createInformationSupplyChainSegment";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createInformationSupplyChainSegment(userId,
-                                                                             requestBody.getExternalSourceGUID(),
-                                                                             requestBody.getExternalSourceName(),
-                                                                             requestBody.getProperties(),
-                                                                             informationSupplyChainGUID,
-                                                                             requestBody.getForLineage(),
-                                                                             requestBody.getForDuplicateProcessing(),
-                                                                             requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the properties of an information supply chain segment.
-     *
-     * @param serverName         name of called server.
-     * @param segmentGUID unique identifier of the information supply chain segment (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse   updateInformationSupplyChainSegment(String                                         serverName,
-                                                              String                                         segmentGUID,
-                                                              boolean                                        replaceAllProperties,
-                                                              InformationSupplyChainSegmentRequestBody requestBody)
-    {
-        final String methodName = "updateInformationSupplyChainSegment";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
-
-                handler.updateInformationSupplyChainSegment(userId,
-                                                            requestBody.getExternalSourceGUID(),
-                                                            requestBody.getExternalSourceName(),
-                                                            segmentGUID,
-                                                            replaceAllProperties,
-                                                            requestBody.getProperties(),
-                                                            requestBody.getForLineage(),
-                                                            requestBody.getForDuplicateProcessing(),
-                                                            requestBody.getEffectiveTime());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Connect two information supply chain segments.
-     *
-     * @param serverName         name of called server
-     * @param segment1GUID  unique identifier of the first segment
-     * @param segment2GUID      unique identifier of the second segment
+     * @param serverName   name of called server
+     * @param peerOneGUID  unique identifier of the end one element in the relationship
+     * @param peerTwoGUID  unique identifier of the end two element in the relationship
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -374,74 +295,12 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkSegments(String                                serverName,
-                                     String                                segment1GUID,
-                                     String                                segment2GUID,
-                                     InformationSupplyChainLinkRequestBody requestBody)
+    public VoidResponse linkPeersInInformationSupplyChain(String                  serverName,
+                                                          String                  peerOneGUID,
+                                                          String                  peerTwoGUID,
+                                                          RelationshipRequestBody requestBody)
     {
-        final String methodName = "linkSegments";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
-
-                handler.linkSegments(userId,
-                                     requestBody.getExternalSourceGUID(),
-                                     requestBody.getExternalSourceName(),
-                                     segment1GUID,
-                                     segment2GUID,
-                                     requestBody.getProperties(),
-                                     requestBody.getForLineage(),
-                                     requestBody.getForDuplicateProcessing(),
-                                     requestBody.getEffectiveTime());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Detach two information supply chain segments from one another.
-     *
-     * @param serverName         name of called server
-     * @param segment1GUID  unique identifier of the first segment
-     * @param segment2GUID      unique identifier of the second segment
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse detachSegments(String                    serverName,
-                                       String                    segment1GUID,
-                                       String                    segment2GUID,
-                                       MetadataSourceRequestBody requestBody)
-    {
-        final String methodName = "detachSegments";
+        final String methodName = "linkPeersInInformationSupplyChain";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -460,25 +319,47 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.detachSegments(userId,
-                                       requestBody.getExternalSourceGUID(),
-                                       requestBody.getExternalSourceName(),
-                                       segment1GUID,
-                                       segment2GUID,
-                                       requestBody.getForLineage(),
-                                       requestBody.getForDuplicateProcessing(),
-                                       requestBody.getEffectiveTime());
+
+                if (requestBody.getProperties() instanceof InformationSupplyChainLinkProperties properties)
+                {
+                    handler.linkPeersInInformationSupplyChain(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              peerOneGUID,
+                                                              peerTwoGUID,
+                                                              properties,
+                                                              requestBody.getForLineage(),
+                                                              requestBody.getForDuplicateProcessing(),
+                                                              requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkPeersInInformationSupplyChain(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              peerOneGUID,
+                                                              peerTwoGUID,
+                                                              null,
+                                                              requestBody.getForLineage(),
+                                                              requestBody.getForDuplicateProcessing(),
+                                                              requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(InformationSupplyChainLinkProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                handler.detachSegments(userId,
-                                       null,
-                                       null,
-                                       segment1GUID,
-                                       segment2GUID,
-                                       false,
-                                       false,
-                                       new Date());
+                handler.linkPeersInInformationSupplyChain(userId,
+                                                          null,
+                                                          null,
+                                                          peerOneGUID,
+                                                          peerTwoGUID,
+                                                          null,
+                                                          false,
+                                                          false,
+                                                          new Date());
             }
         }
         catch (Throwable error)
@@ -492,10 +373,11 @@ public class SolutionArchitectRESTServices extends TokenController
 
 
     /**
-     * Delete an information supply chain segment.
+     * Detach two peers in an information supply chain from one another.    The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.
      *
      * @param serverName         name of called server
-     * @param segmentGUID  unique identifier of the  segment
+     * @param peerOneGUID  unique identifier of the end one element in the relationship
+     * @param peerTwoGUID  unique identifier of the end two element in the relationship
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -503,11 +385,12 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteInformationSupplyChainSegment(String                    serverName,
-                                                            String                    segmentGUID,
+    public VoidResponse unlinkPeersInInformationSupplyChain(String                    serverName,
+                                                            String                    peerOneGUID,
+                                                            String                    peerTwoGUID,
                                                             MetadataSourceRequestBody requestBody)
     {
-        final String methodName = "deleteInformationSupplyChainSegment";
+        final String methodName = "unlinkPeersInInformationSupplyChain";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -526,23 +409,182 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.deleteInformationSupplyChainSegment(userId,
+                handler.unlinkPeersInInformationSupplyChain(userId,
                                                             requestBody.getExternalSourceGUID(),
                                                             requestBody.getExternalSourceName(),
-                                                            segmentGUID,
+                                                            peerOneGUID,
+                                                            peerTwoGUID,
                                                             requestBody.getForLineage(),
                                                             requestBody.getForDuplicateProcessing(),
                                                             requestBody.getEffectiveTime());
             }
             else
             {
-                handler.deleteInformationSupplyChainSegment(userId,
+                handler.unlinkPeersInInformationSupplyChain(userId,
                                                             null,
                                                             null,
-                                                            segmentGUID,
+                                                            peerOneGUID,
+                                                            peerTwoGUID,
                                                             false,
                                                             false,
                                                             new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Connect a nested information supply chain to its parent.
+     *
+     * @param serverName         name of called server
+     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
+     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse composeInformationSupplyChains(String                  serverName,
+                                                       String                  informationSupplyChainGUID,
+                                                       String                  nestedInformationSupplyChainGUID,
+                                                       RelationshipRequestBody requestBody)
+    {
+        final String methodName = "composeInformationSupplyChains";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof InformationSupplyChainLinkProperties properties)
+                {
+                    handler.composeInformationSupplyChains(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              informationSupplyChainGUID,
+                                                              nestedInformationSupplyChainGUID,
+                                                              properties,
+                                                              requestBody.getForLineage(),
+                                                              requestBody.getForDuplicateProcessing(),
+                                                              requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.composeInformationSupplyChains(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              informationSupplyChainGUID,
+                                                              nestedInformationSupplyChainGUID,
+                                                              null,
+                                                              requestBody.getForLineage(),
+                                                              requestBody.getForDuplicateProcessing(),
+                                                              requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(InformationSupplyChainLinkProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.composeInformationSupplyChains(userId,
+                                                       null,
+                                                       null,
+                                                       informationSupplyChainGUID,
+                                                       nestedInformationSupplyChainGUID,
+                                                       null,
+                                                       false,
+                                                       false,
+                                                       new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a nested information supply chain from its parent.
+     *
+     * @param serverName         name of called server
+     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
+     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse decomposeInformationSupplyChains(String                    serverName,
+                                                         String                    informationSupplyChainGUID,
+                                                         String                    nestedInformationSupplyChainGUID,
+                                                         MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "decomposeInformationSupplyChains";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.decomposeInformationSupplyChains(userId,
+                                                         requestBody.getExternalSourceGUID(),
+                                                         requestBody.getExternalSourceName(),
+                                                         informationSupplyChainGUID,
+                                                         nestedInformationSupplyChainGUID,
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
+                                                         requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.decomposeInformationSupplyChains(userId,
+                                                         null,
+                                                         null,
+                                                         informationSupplyChainGUID,
+                                                         nestedInformationSupplyChainGUID,
+                                                         false,
+                                                         false,
+                                                         new Date());
             }
         }
         catch (Throwable error)
@@ -560,7 +602,7 @@ public class SolutionArchitectRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param informationSupplyChainGUID  unique identifier of the element to delete
-     * @param cascadedDelete can information supply chains be deleted if segments are attached?
+     * @param cascadedDelete can information supply chains be deleted if nested elements are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -854,8 +896,8 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createSolutionBlueprint(String                      serverName,
-                                                NewSolutionBlueprintRequestBody requestBody)
+    public GUIDResponse createSolutionBlueprint(String                serverName,
+                                                NewElementRequestBody requestBody)
     {
         final String methodName = "createSolutionBlueprint";
 
@@ -876,20 +918,44 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
-                response.setGUID(handler.createSolutionBlueprint(userId,
-                                                                 requestBody.getExternalSourceGUID(),
-                                                                 requestBody.getExternalSourceName(),
-                                                                 requestBody.getAnchorGUID(),
-                                                                 requestBody.getIsOwnAnchor(),
-                                                                 requestBody.getAnchorScopeGUID(),
-                                                                 requestBody.getProperties(),
-                                                                 requestBody.getParentGUID(),
-                                                                 requestBody.getParentRelationshipTypeName(),
-                                                                 requestBody.getParentRelationshipProperties(),
-                                                                 requestBody.getParentAtEnd1(),
-                                                                 requestBody.getForLineage(),
-                                                                 requestBody.getForDuplicateProcessing(),
-                                                                 requestBody.getEffectiveTime()));
+                if (requestBody.getProperties() instanceof SolutionBlueprintProperties properties)
+                {
+                    response.setGUID(handler.createSolutionBlueprint(userId,
+                                                                     requestBody.getExternalSourceGUID(),
+                                                                     requestBody.getExternalSourceName(),
+                                                                     requestBody.getAnchorGUID(),
+                                                                     requestBody.getIsOwnAnchor(),
+                                                                     requestBody.getAnchorScopeGUID(),
+                                                                     properties,
+                                                                     requestBody.getParentGUID(),
+                                                                     requestBody.getParentRelationshipTypeName(),
+                                                                     requestBody.getParentRelationshipProperties(),
+                                                                     requestBody.getParentAtEnd1(),
+                                                                     requestBody.getForLineage(),
+                                                                     requestBody.getForDuplicateProcessing(),
+                                                                     requestBody.getEffectiveTime()));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.createSolutionBlueprint(userId,
+                                                                     requestBody.getExternalSourceGUID(),
+                                                                     requestBody.getExternalSourceName(),
+                                                                     requestBody.getAnchorGUID(),
+                                                                     requestBody.getIsOwnAnchor(),
+                                                                     requestBody.getAnchorScopeGUID(),
+                                                                     null,
+                                                                     requestBody.getParentGUID(),
+                                                                     requestBody.getParentRelationshipTypeName(),
+                                                                     requestBody.getParentRelationshipProperties(),
+                                                                     requestBody.getParentAtEnd1(),
+                                                                     requestBody.getForLineage(),
+                                                                     requestBody.getForDuplicateProcessing(),
+                                                                     requestBody.getEffectiveTime()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -989,10 +1055,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateSolutionBlueprint(String                             serverName,
-                                                String                             solutionBlueprintGUID,
-                                                boolean                            replaceAllProperties,
-                                                UpdateSolutionBlueprintRequestBody requestBody)
+    public VoidResponse updateSolutionBlueprint(String                   serverName,
+                                                String                   solutionBlueprintGUID,
+                                                boolean                  replaceAllProperties,
+                                                UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateSolutionBlueprint";
 
@@ -1013,15 +1079,34 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
-                handler.updateSolutionBlueprint(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
-                                                solutionBlueprintGUID,
-                                                replaceAllProperties,
-                                                requestBody.getProperties(),
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof SolutionBlueprintProperties properties)
+                {
+                    handler.updateSolutionBlueprint(userId,
+                                                    requestBody.getExternalSourceGUID(),
+                                                    requestBody.getExternalSourceName(),
+                                                    solutionBlueprintGUID,
+                                                    replaceAllProperties,
+                                                    properties,
+                                                    requestBody.getForLineage(),
+                                                    requestBody.getForDuplicateProcessing(),
+                                                    requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateSolutionBlueprint(userId,
+                                                    requestBody.getExternalSourceGUID(),
+                                                    requestBody.getExternalSourceName(),
+                                                    solutionBlueprintGUID,
+                                                    replaceAllProperties,
+                                                    null,
+                                                    requestBody.getForLineage(),
+                                                    requestBody.getForDuplicateProcessing(),
+                                                    requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1054,7 +1139,7 @@ public class SolutionArchitectRESTServices extends TokenController
     public VoidResponse linkSolutionComponentToBlueprint(String                                  serverName,
                                                          String                                  parentSolutionBlueprintGUID,
                                                          String                                  nestedSolutionComponentGUID,
-                                                         SolutionBlueprintCompositionRequestBody requestBody)
+                                                         RelationshipRequestBody requestBody)
     {
         final String methodName = "linkSolutionComponentToBlueprint";
 
@@ -1074,15 +1159,34 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.linkSolutionComponentToBlueprint(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
-                                                         parentSolutionBlueprintGUID,
-                                                         nestedSolutionComponentGUID,
-                                                         requestBody.getProperties(),
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof SolutionBlueprintCompositionProperties properties)
+                {
+                    handler.linkSolutionComponentToBlueprint(userId,
+                                                             requestBody.getExternalSourceGUID(),
+                                                             requestBody.getExternalSourceName(),
+                                                             parentSolutionBlueprintGUID,
+                                                             nestedSolutionComponentGUID,
+                                                             properties,
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkSolutionComponentToBlueprint(userId,
+                                                             requestBody.getExternalSourceGUID(),
+                                                             requestBody.getExternalSourceName(),
+                                                             parentSolutionBlueprintGUID,
+                                                             nestedSolutionComponentGUID,
+                                                             null,
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1452,203 +1556,6 @@ public class SolutionArchitectRESTServices extends TokenController
     }
 
 
-
-
-    /**
-     * Create a solution role.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the solution role.
-     *
-     * @return unique identifier of the newly created element
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createSolutionRole(String                  serverName,
-                                           NewActorRoleRequestBody requestBody)
-    {
-        final String methodName = "createSolutionRole";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createActorRole(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
-                                                         requestBody.getAnchorGUID(),
-                                                         requestBody.getIsOwnAnchor(),
-                                                         requestBody.getAnchorScopeGUID(),
-                                                         requestBody.getProperties(),
-                                                         requestBody.getParentGUID(),
-                                                         requestBody.getParentRelationshipTypeName(),
-                                                         requestBody.getParentRelationshipProperties(),
-                                                         requestBody.getParentAtEnd1(),
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /**
-     * Create a new metadata element to represent a solution role using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new element.
-     *
-     * @param serverName             calling user
-     * @param requestBody properties that override the template
-     *
-     * @return unique identifier of the new metadata element
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GUIDResponse createSolutionRoleFromTemplate(String              serverName,
-                                                       TemplateRequestBody requestBody)
-    {
-        final String methodName = "createSolutionRoleFromTemplate";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createActorRoleFromTemplate(userId,
-                                                                     requestBody.getExternalSourceGUID(),
-                                                                     requestBody.getExternalSourceName(),
-                                                                     requestBody.getAnchorGUID(),
-                                                                     requestBody.getIsOwnAnchor(),
-                                                                     requestBody.getAnchorScopeGUID(),
-                                                                     null,
-                                                                     null,
-                                                                     requestBody.getTemplateGUID(),
-                                                                     requestBody.getReplacementProperties(),
-                                                                     requestBody.getPlaceholderPropertyValues(),
-                                                                     requestBody.getParentGUID(),
-                                                                     requestBody.getParentRelationshipTypeName(),
-                                                                     requestBody.getParentRelationshipProperties(),
-                                                                     requestBody.getParentAtEnd1(),
-                                                                     requestBody.getForLineage(),
-                                                                     requestBody.getForDuplicateProcessing(),
-                                                                     requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the properties of a solution role.
-     *
-     * @param serverName         name of called server.
-     * @param solutionRoleGUID unique identifier of the solution role (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse updateSolutionRole(String                      serverName,
-                                           String                     solutionRoleGUID,
-                                           boolean                    replaceAllProperties,
-                                           UpdateActorRoleRequestBody requestBody)
-    {
-        final String methodName = "updateSolutionRole";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
-
-                handler.updateActorRole(userId,
-                                        requestBody.getExternalSourceGUID(),
-                                        requestBody.getExternalSourceName(),
-                                        solutionRoleGUID,
-                                        replaceAllProperties,
-                                        requestBody.getProperties(),
-                                        requestBody.getForLineage(),
-                                        requestBody.getForDuplicateProcessing(),
-                                        requestBody.getEffectiveTime());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
     /**
      * Attach a solution component to a solution role.
      *
@@ -1662,10 +1569,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkSolutionComponentActor(String                            serverName,
-                                                   String                            solutionRoleGUID,
-                                                   String                            solutionComponentGUID,
-                                                   SolutionComponentActorRequestBody requestBody)
+    public VoidResponse linkSolutionComponentActor(String                  serverName,
+                                                   String                  solutionRoleGUID,
+                                                   String                  solutionComponentGUID,
+                                                   RelationshipRequestBody requestBody)
     {
         final String methodName = "linkSolutionComponentActor";
 
@@ -1685,15 +1592,34 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.linkSolutionComponentActor(userId,
-                                                   requestBody.getExternalSourceGUID(),
-                                                   requestBody.getExternalSourceName(),
-                                                   solutionRoleGUID,
-                                                   solutionComponentGUID,
-                                                   requestBody.getProperties(),
-                                                   requestBody.getForLineage(),
-                                                   requestBody.getForDuplicateProcessing(),
-                                                   requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof SolutionComponentActorProperties properties)
+                {
+                    handler.linkSolutionComponentActor(userId,
+                                                       requestBody.getExternalSourceGUID(),
+                                                       requestBody.getExternalSourceName(),
+                                                       solutionRoleGUID,
+                                                       solutionComponentGUID,
+                                                       properties,
+                                                       requestBody.getForLineage(),
+                                                       requestBody.getForDuplicateProcessing(),
+                                                       requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkSolutionComponentActor(userId,
+                                                       requestBody.getExternalSourceGUID(),
+                                                       requestBody.getExternalSourceName(),
+                                                       solutionRoleGUID,
+                                                       solutionComponentGUID,
+                                                       null,
+                                                       requestBody.getForLineage(),
+                                                       requestBody.getForDuplicateProcessing(),
+                                                       requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionComponentActorProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1787,283 +1713,6 @@ public class SolutionArchitectRESTServices extends TokenController
 
 
     /**
-     * Delete a solution role.
-     *
-     * @param serverName         name of called server
-     * @param solutionRoleGUID  unique identifier of the element to delete
-     * @param cascadedDelete can solution roles be deleted if solution components are attached?
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse deleteSolutionRole(String                    serverName,
-                                           String                    solutionRoleGUID,
-                                           boolean                   cascadedDelete,
-                                           MetadataSourceRequestBody requestBody)
-    {
-        final String methodName = "deleteSolutionRole";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                handler.deleteActorRole(userId,
-                                        requestBody.getExternalSourceGUID(),
-                                        requestBody.getExternalSourceName(),
-                                        solutionRoleGUID,
-                                        cascadedDelete,
-                                        requestBody.getForLineage(),
-                                        requestBody.getForDuplicateProcessing(),
-                                        requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteActorRole(userId,
-                                        null,
-                                        null,
-                                        solutionRoleGUID,
-                                        cascadedDelete,
-                                        false,
-                                        false,
-                                        new Date());
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of solution role metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public SolutionRolesResponse getSolutionRolesByName(String            serverName,
-                                                        int               startFrom,
-                                                        int               pageSize,
-                                                        FilterRequestBody requestBody)
-    {
-        final String methodName = "getSolutionRolesByName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        SolutionRolesResponse response = new SolutionRolesResponse();
-        AuditLog                        auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElements(handler.getActorRolesByName(userId,
-                                                                 requestBody.getFilter(),
-                                                                 requestBody.getTemplateFilter(),
-                                                                 requestBody.getLimitResultsByStatus(),
-                                                                 requestBody.getAsOfTime(),
-                                                                 requestBody.getSequencingOrder(),
-                                                                 requestBody.getSequencingProperty(),
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 requestBody.getForLineage(),
-                                                                 requestBody.getForDuplicateProcessing(),
-                                                                 requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-    
-    /**
-     * Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.
-     *
-     * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public SolutionRolesResponse findSolutionRoles(String            serverName,
-                                                   boolean           startsWith,
-                                                   boolean           endsWith,
-                                                   boolean           ignoreCase,
-                                                   int               startFrom,
-                                                   int               pageSize,
-                                                   FilterRequestBody requestBody)
-    {
-        final String methodName = "findSolutionRoles";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        SolutionRolesResponse response = new SolutionRolesResponse();
-        AuditLog              auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElements(handler.findActorRoles(userId,
-                                                            instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                            requestBody.getTemplateFilter(),
-                                                            requestBody.getLimitResultsByStatus(),
-                                                            requestBody.getAsOfTime(),
-                                                            requestBody.getSequencingOrder(),
-                                                            requestBody.getSequencingProperty(),
-                                                            startFrom,
-                                                            pageSize,
-                                                            requestBody.getForLineage(),
-                                                            requestBody.getForDuplicateProcessing(),
-                                                            requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.findActorRoles(userId,
-                                                            instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                            TemplateFilter.ALL,
-                                                            null,
-                                                            null,
-                                                            SequencingOrder.CREATION_DATE_RECENT,
-                                                            null,
-                                                            startFrom,
-                                                            pageSize,
-                                                            false,
-                                                            false,
-                                                            new Date()));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of solution role metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param solutionRoleGUID    unique identifier of the required element
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public SolutionRoleResponse getSolutionRoleByGUID(String             serverName,
-                                                      String             solutionRoleGUID,
-                                                      AnyTimeRequestBody requestBody)
-    {
-        final String methodName = "getSolutionRoleByGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        SolutionRoleResponse response = new SolutionRoleResponse();
-        AuditLog                      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ActorRoleHandler handler = instanceHandler.getSolutionRoleClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElement(handler.getActorRoleByGUID(userId,
-                                                               solutionRoleGUID,
-                                                               requestBody.getAsOfTime(),
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getActorRoleByGUID(userId,
-                                                               solutionRoleGUID,
-                                                               null,
-                                                               false,
-                                                               false,
-                                                               new Date()));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Create a solution component.
      *
      * @param serverName                 name of called server.
@@ -2075,7 +1724,7 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createSolutionComponent(String                      serverName,
-                                                NewSolutionComponentRequestBody requestBody)
+                                                NewElementRequestBody requestBody)
     {
         final String methodName = "createSolutionComponent";
 
@@ -2096,20 +1745,44 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
-                response.setGUID(handler.createSolutionComponent(userId,
-                                                                 requestBody.getExternalSourceGUID(),
-                                                                 requestBody.getExternalSourceName(),
-                                                                 requestBody.getAnchorGUID(),
-                                                                 requestBody.getIsOwnAnchor(),
-                                                                 requestBody.getAnchorScopeGUID(),
-                                                                 requestBody.getProperties(),
-                                                                 requestBody.getParentGUID(),
-                                                                 requestBody.getParentRelationshipTypeName(),
-                                                                 requestBody.getParentRelationshipProperties(),
-                                                                 requestBody.getParentAtEnd1(),
-                                                                 requestBody.getForLineage(),
-                                                                 requestBody.getForDuplicateProcessing(),
-                                                                 requestBody.getEffectiveTime()));
+                if (requestBody.getProperties() instanceof SolutionComponentProperties properties)
+                {
+                    response.setGUID(handler.createSolutionComponent(userId,
+                                                                     requestBody.getExternalSourceGUID(),
+                                                                     requestBody.getExternalSourceName(),
+                                                                     requestBody.getAnchorGUID(),
+                                                                     requestBody.getIsOwnAnchor(),
+                                                                     requestBody.getAnchorScopeGUID(),
+                                                                     properties,
+                                                                     requestBody.getParentGUID(),
+                                                                     requestBody.getParentRelationshipTypeName(),
+                                                                     requestBody.getParentRelationshipProperties(),
+                                                                     requestBody.getParentAtEnd1(),
+                                                                     requestBody.getForLineage(),
+                                                                     requestBody.getForDuplicateProcessing(),
+                                                                     requestBody.getEffectiveTime()));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.createSolutionComponent(userId,
+                                                                     requestBody.getExternalSourceGUID(),
+                                                                     requestBody.getExternalSourceName(),
+                                                                     requestBody.getAnchorGUID(),
+                                                                     requestBody.getIsOwnAnchor(),
+                                                                     requestBody.getAnchorScopeGUID(),
+                                                                     null,
+                                                                     requestBody.getParentGUID(),
+                                                                     requestBody.getParentRelationshipTypeName(),
+                                                                     requestBody.getParentRelationshipProperties(),
+                                                                     requestBody.getParentAtEnd1(),
+                                                                     requestBody.getForLineage(),
+                                                                     requestBody.getForDuplicateProcessing(),
+                                                                     requestBody.getEffectiveTime()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionComponentProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -2209,10 +1882,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateSolutionComponent(String                         serverName,
-                                                String                         solutionComponentGUID,
-                                                boolean                        replaceAllProperties,
-                                                UpdateSolutionComponentRequestBody requestBody)
+    public VoidResponse updateSolutionComponent(String                   serverName,
+                                                String                   solutionComponentGUID,
+                                                boolean                  replaceAllProperties,
+                                                UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateSolutionComponent";
 
@@ -2233,15 +1906,34 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
-                handler.updateSolutionComponent(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
-                                                solutionComponentGUID,
-                                                replaceAllProperties,
-                                                requestBody.getProperties(),
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof SolutionComponentProperties properties)
+                {
+                    handler.updateSolutionComponent(userId,
+                                                    requestBody.getExternalSourceGUID(),
+                                                    requestBody.getExternalSourceName(),
+                                                    solutionComponentGUID,
+                                                    replaceAllProperties,
+                                                    properties,
+                                                    requestBody.getForLineage(),
+                                                    requestBody.getForDuplicateProcessing(),
+                                                    requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateSolutionComponent(userId,
+                                                    requestBody.getExternalSourceGUID(),
+                                                    requestBody.getExternalSourceName(),
+                                                    solutionComponentGUID,
+                                                    replaceAllProperties,
+                                                    null,
+                                                    requestBody.getForLineage(),
+                                                    requestBody.getForDuplicateProcessing(),
+                                                    requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionComponentProperties.class.getName(), methodName);
+                }
             }
             else
             {

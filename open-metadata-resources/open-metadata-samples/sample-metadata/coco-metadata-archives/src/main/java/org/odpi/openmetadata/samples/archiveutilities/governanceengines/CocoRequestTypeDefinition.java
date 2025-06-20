@@ -149,7 +149,7 @@ public enum CocoRequestTypeDefinition
         newActionTarget = new NewActionTarget();
 
         newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN_TEMPLATE.getName());
-        newActionTarget.setActionTargetGUID(InformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION_TEMPLATE.getGUID());
+        newActionTarget.setActionTargetGUID(InformationSupplyChain.CLINICAL_TRIAL_TEMPLATE.getGUID());
 
         actionTargetList.add(newActionTarget);
 

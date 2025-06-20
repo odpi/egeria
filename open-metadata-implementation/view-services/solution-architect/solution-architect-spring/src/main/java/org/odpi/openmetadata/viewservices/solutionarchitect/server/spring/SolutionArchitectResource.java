@@ -56,7 +56,7 @@ public class SolutionArchitectResource
     public GUIDResponse createInformationSupplyChain(@PathVariable
                                                      String                               serverName,
                                                      @RequestBody (required = false)
-                                                     NewInformationSupplyChainRequestBody requestBody)
+                                                     NewElementRequestBody requestBody)
     {
         return restAPI.createInformationSupplyChain(serverName, requestBody);
     }
@@ -116,80 +116,19 @@ public class SolutionArchitectResource
                                                      @RequestParam (required = false, defaultValue = "false")
                                                      boolean                                 replaceAllProperties,
                                                      @RequestBody (required = false)
-                                                     UpdateInformationSupplyChainRequestBody requestBody)
+                                                     UpdateElementRequestBody requestBody)
     {
         return restAPI.updateInformationSupplyChain(serverName, informationSupplyChainGUID, replaceAllProperties, requestBody);
     }
 
 
-    /**
-     * Create an information supply chain segment and link it to its owning information supply chain.
-     *
-     * @param serverName                 name of called server.
-     * @param informationSupplyChainGUID unique identifier of optional parent information supply chain
-     * @param requestBody             properties for the information supply chain.
-     *
-     * @return unique identifier of the newly created element
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/segments")
-    @Operation(summary="createInformationSupplyChainSegment",
-            description="Create an information supply chain segment and link it to its owning information supply chain.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/information-supply-chain"))
-
-    public GUIDResponse createInformationSupplyChainSegment(@PathVariable
-                                                            String                                   serverName,
-                                                            @PathVariable
-                                                            String                                   informationSupplyChainGUID,
-                                                            @RequestBody (required = false)
-                                                            InformationSupplyChainSegmentRequestBody requestBody)
-    {
-        return restAPI.createInformationSupplyChainSegment(serverName, informationSupplyChainGUID, requestBody);
-    }
-
 
     /**
-     * Update the properties of an information supply chain segment.
-     *
-     * @param serverName         name of called server.
-     * @param segmentGUID unique identifier of the information supply chain segment (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/information-supply-chains/segments/{segmentGUID}/update")
-    @Operation(summary="updateInformationSupplyChainSegment",
-            description="Update the properties of an information supply chain segment.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/information-supply-chain"))
-
-    public VoidResponse   updateInformationSupplyChainSegment(@PathVariable
-                                                              String                                   serverName,
-                                                              @PathVariable
-                                                              String                                   segmentGUID,
-                                                              @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                                  replaceAllProperties,
-                                                              @RequestBody (required = false)
-                                                              InformationSupplyChainSegmentRequestBody requestBody)
-    {
-        return restAPI.updateInformationSupplyChainSegment(serverName, segmentGUID, replaceAllProperties, requestBody);
-    }
-
-
-    /**
-     * Connect two information supply chain segments.
+     * Connect two peers in an information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.
      *
      * @param serverName         name of called server
-     * @param segment1GUID  unique identifier of the first segment
-     * @param segment2GUID      unique identifier of the second segment
+     * @param peerOneGUID  unique identifier of the end one element in the relationship
+     * @param peerTwoGUID  unique identifier of the end two element in the relationship
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -197,31 +136,31 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/information-supply-chains/segments/{segment1GUID}/link-to/{segment2GUID}/attach")
-    @Operation(summary="linkSegments",
-            description="Connect two information supply chain segments.",
+    @PostMapping(path = "/information-supply-chains/{peerOneGUID}/peer-links/{peerTwoGUID}/attach")
+    @Operation(summary="linkPeersInInformationSupplyChain",
+            description="Connect two peer information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public VoidResponse linkSegments(@PathVariable
+    public VoidResponse linkPeersInInformationSupplyChain(@PathVariable
                                      String                                serverName,
-                                     @PathVariable
-                                     String                                segment1GUID,
-                                     @PathVariable
-                                     String                                segment2GUID,
-                                     @RequestBody (required = false)
-                                     InformationSupplyChainLinkRequestBody requestBody)
+                                                        @PathVariable
+                                     String peerOneGUID,
+                                                        @PathVariable
+                                     String peerTwoGUID,
+                                                        @RequestBody (required = false)
+                                     RelationshipRequestBody requestBody)
     {
-        return restAPI.linkSegments(serverName, segment1GUID, segment2GUID, requestBody);
+        return restAPI.linkPeersInInformationSupplyChain(serverName, peerOneGUID, peerTwoGUID, requestBody);
     }
 
 
     /**
-     * Detach two information supply chain segments from one another.
+     * Detach two peers in an information supply chain from one another.    The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.
      *
      * @param serverName         name of called server
-     * @param segment1GUID  unique identifier of the first segment
-     * @param segment2GUID      unique identifier of the second segment
+     * @param peerOneGUID  unique identifier of the end one element in the relationship
+     * @param peerTwoGUID  unique identifier of the end two element in the relationship
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -229,30 +168,31 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/information-supply-chains/segments/{segment1GUID}/link-to/{segment2GUID}/detach")
-    @Operation(summary="detachSegments",
-            description="Detach two information supply chain segments from one another.",
+    @PostMapping(path = "/information-supply-chains/{peerOneGUID}/peer-links/{peerTwoGUID}/detach")
+    @Operation(summary="unlinkPeerInformationSupplyChains",
+            description="Detach two peers in an information supply chain from one another.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public VoidResponse detachSegments(@PathVariable
+    public VoidResponse unlinkPeerInformationSupplyChains(@PathVariable
                                        String                    serverName,
                                        @PathVariable
-                                       String                    segment1GUID,
+                                       String peerOneGUID,
                                        @PathVariable
-                                       String                    segment2GUID,
+                                       String peerTwoGUID,
                                        @RequestBody (required = false)
                                        MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachSegments(serverName, segment1GUID, segment2GUID, requestBody);
+        return restAPI.unlinkPeersInInformationSupplyChain(serverName, peerOneGUID, peerTwoGUID, requestBody);
     }
 
 
     /**
-     * Delete an information supply chain segment.
+     * Connect a nested information supply chain to its parent.
      *
      * @param serverName         name of called server
-     * @param segmentGUID  unique identifier of the  segment
+     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
+     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -260,20 +200,54 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/information-supply-chains/segments/{segmentGUID}/delete")
-    @Operation(summary="deleteInformationSupplyChainSegment",
-            description="Delete an information supply chain segment.",
+    @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/compositions/{nestedInformationSupplyChainGUID}/attach")
+    @Operation(summary="composeInformationSupplyChains",
+            description="Connect a nested information supply chain to its parent.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public VoidResponse deleteInformationSupplyChainSegment(@PathVariable
-                                                            String                    serverName,
-                                                            @PathVariable
-                                                            String                    segmentGUID,
-                                                            @RequestBody (required = false)
-                                                            MetadataSourceRequestBody requestBody)
+    public VoidResponse composeInformationSupplyChains(@PathVariable
+                                                        String                                serverName,
+                                                        @PathVariable
+                                                        String informationSupplyChainGUID,
+                                                        @PathVariable
+                                                        String nestedInformationSupplyChainGUID,
+                                                        @RequestBody (required = false)
+                                                        RelationshipRequestBody requestBody)
     {
-        return restAPI.deleteInformationSupplyChainSegment(serverName, segmentGUID, requestBody);
+        return restAPI.composeInformationSupplyChains(serverName, informationSupplyChainGUID, nestedInformationSupplyChainGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a nested information supply chain from its parent.
+     *
+     * @param serverName         name of called server
+     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
+     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/compositions/{nestedInformationSupplyChainGUID}/detach")
+    @Operation(summary="decomposeInformationSupplyChains",
+            description="Detach a nested information supply chain from its parent.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/information-supply-chain"))
+
+    public VoidResponse decomposeInformationSupplyChains(@PathVariable
+                                                          String                    serverName,
+                                                          @PathVariable
+                                                          String informationSupplyChainGUID,
+                                                          @PathVariable
+                                                          String nestedInformationSupplyChainGUID,
+                                                          @RequestBody (required = false)
+                                                          MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.decomposeInformationSupplyChains(serverName, informationSupplyChainGUID, nestedInformationSupplyChainGUID, requestBody);
     }
 
 
@@ -282,7 +256,7 @@ public class SolutionArchitectResource
      *
      * @param serverName         name of called server
      * @param informationSupplyChainGUID  unique identifier of the element to delete
-     * @param cascadedDelete can information supply chains be deleted if segments are attached?
+     * @param cascadedDelete can information supply chains be deleted if nested elements are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -442,7 +416,7 @@ public class SolutionArchitectResource
     public GUIDResponse createSolutionBlueprint(@PathVariable
                                                 String                               serverName,
                                                 @RequestBody (required = false)
-                                                NewSolutionBlueprintRequestBody requestBody)
+                                                NewElementRequestBody requestBody)
     {
         return restAPI.createSolutionBlueprint(serverName, requestBody);
     }
@@ -502,7 +476,7 @@ public class SolutionArchitectResource
                                                 @RequestParam (required = false, defaultValue = "false")
                                                 boolean                                 replaceAllProperties,
                                                 @RequestBody (required = false)
-                                                UpdateSolutionBlueprintRequestBody requestBody)
+                                                UpdateElementRequestBody requestBody)
     {
         return restAPI.updateSolutionBlueprint(serverName, solutionBlueprintGUID, replaceAllProperties, requestBody);
     }
@@ -534,7 +508,7 @@ public class SolutionArchitectResource
                                                          @PathVariable
                                                          String solutionComponentGUID,
                                                          @RequestBody (required = false)
-                                                         SolutionBlueprintCompositionRequestBody requestBody)
+                                                         RelationshipRequestBody requestBody)
     {
         return restAPI.linkSolutionComponentToBlueprint(serverName, parentSolutionBlueprintGUID, solutionComponentGUID, requestBody);
     }
@@ -705,94 +679,6 @@ public class SolutionArchitectResource
     }
 
 
-
-    /**
-     * Create a solution role.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the solution role.
-     *
-     * @return unique identifier of the newly created element
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/solution-roles")
-
-    @Operation(summary="createSolutionRole",
-            description="Create a solution role.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/solution-role"))
-
-    public GUIDResponse createSolutionRole(@PathVariable
-                                           String                  serverName,
-                                           @RequestBody (required = false)
-                                           NewActorRoleRequestBody requestBody)
-    {
-        return restAPI.createSolutionRole(serverName, requestBody);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a solution role using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new element.
-     *
-     * @param serverName             calling user
-     * @param requestBody properties that override the template
-     *
-     * @return unique identifier of the new metadata element
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/solution-roles/from-template")
-    @Operation(summary="createSolutionRoleFromTemplate",
-            description="Create a new metadata element to represent a solution role using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/solution-role"))
-
-    public GUIDResponse createSolutionRoleFromTemplate(@PathVariable
-                                                       String              serverName,
-                                                       @RequestBody (required = false)
-                                                       TemplateRequestBody requestBody)
-    {
-        return restAPI.createSolutionRoleFromTemplate(serverName, requestBody);
-    }
-
-
-    /**
-     * Update the properties of a solution role.
-     *
-     * @param serverName         name of called server.
-     * @param solutionRoleGUID unique identifier of the solution role (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/solution-roles/{solutionRoleGUID}/update")
-    @Operation(summary="updateSolutionRole",
-            description="Update the properties of a solution role.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/solution-role"))
-
-    public VoidResponse updateSolutionRole(@PathVariable
-                                           String                                  serverName,
-                                           @PathVariable
-                                           String                                  solutionRoleGUID,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                           boolean                                 replaceAllProperties,
-                                           @RequestBody (required = false)
-                                           UpdateActorRoleRequestBody requestBody)
-    {
-        return restAPI.updateSolutionRole(serverName, solutionRoleGUID, replaceAllProperties, requestBody);
-    }
-
-
     /**
      * Attach a solution component to a solution role.
      *
@@ -819,7 +705,7 @@ public class SolutionArchitectResource
                                                    @PathVariable
                                                    String                     dataFieldGUID,
                                                    @RequestBody (required = false)
-                                                   SolutionComponentActorRequestBody requestBody)
+                                                   RelationshipRequestBody requestBody)
     {
         return restAPI.linkSolutionComponentActor(serverName, solutionRoleGUID, dataFieldGUID, requestBody);
     }
@@ -829,8 +715,8 @@ public class SolutionArchitectResource
      * Detach a solution component from a solution role.
      *
      * @param serverName         name of called server
-     * @param parentSolutionRoleGUID  unique identifier of the first solution role
-     * @param memberDataFieldGUID      unique identifier of the second solution role
+     * @param solutionRoleGUID  unique identifier of the first solution role
+     * @param solutionComponentGUID      unique identifier of the second solution role
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -838,7 +724,7 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/solution-roles/{parentSolutionRoleGUID}/solution-component-actors/{memberDataFieldGUID}/detach")
+    @PostMapping(path = "/solution-roles/{solutionRoleGUID}/solution-component-actors/{solutionComponentGUID}/detach")
     @Operation(summary="detachSolutionComponentActor",
             description="Detach a solution component from a solution role.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -847,146 +733,13 @@ public class SolutionArchitectResource
     public VoidResponse detachSolutionComponentActor(@PathVariable
                                                      String                    serverName,
                                                      @PathVariable
-                                                     String parentSolutionRoleGUID,
+                                                     String solutionRoleGUID,
                                                      @PathVariable
-                                                     String memberDataFieldGUID,
+                                                     String solutionComponentGUID,
                                                      @RequestBody (required = false)
                                                      MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachSolutionComponentActor(serverName, parentSolutionRoleGUID, memberDataFieldGUID, requestBody);
-    }
-
-
-    /**
-     * Delete a solution role.
-     *
-     * @param serverName         name of called server
-     * @param solutionRoleGUID  unique identifier of the element to delete
-     * @param cascadedDelete can solution roles be deleted if solution components are attached?
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/solution-roles/{solutionRoleGUID}/delete")
-    @Operation(summary="deleteSolutionRole",
-            description="Delete a solution role.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/solution-role"))
-
-    public VoidResponse deleteSolutionRole(@PathVariable
-                                           String                    serverName,
-                                           @PathVariable
-                                           String                    solutionRoleGUID,
-                                           @RequestParam(required = false, defaultValue = "false")
-                                           boolean                   cascadedDelete,
-                                           @RequestBody (required = false)
-                                           MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.deleteSolutionRole(serverName, solutionRoleGUID, cascadedDelete, requestBody);
-    }
-
-
-    /**
-     * Returns the list of solution roles with a particular name.
-     *
-     * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/solution-roles/by-name")
-    @Operation(summary="getSolutionRolesByName",
-            description="Returns the list of solution roles with a particular name.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/solution-role"))
-
-    public SolutionRolesResponse getSolutionRolesByName(@PathVariable
-                                                        String            serverName,
-                                                        @RequestParam (required = false, defaultValue = "0")
-                                                        int                     startFrom,
-                                                        @RequestParam (required = false, defaultValue = "0")
-                                                        int                     pageSize,
-                                                        @RequestBody (required = false)
-                                                        FilterRequestBody requestBody)
-    {
-        return restAPI.getSolutionRolesByName(serverName, startFrom, pageSize, requestBody);
-    }
-
-
-    /**
-     * Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.
-     *
-     * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/solution-roles/by-search-string")
-    @Operation(summary="findSolutionRoles",
-            description="Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/actor"))
-
-    public SolutionRolesResponse findSolutionRoles(@PathVariable String                  serverName,
-                                                   @RequestParam (required = false, defaultValue = "0")
-                                                   int                     startFrom,
-                                                   @RequestParam (required = false, defaultValue = "0")
-                                                   int                     pageSize,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                 startsWith,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                 endsWith,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                 ignoreCase,
-                                                   @RequestBody  (required = false)
-                                                   FilterRequestBody requestBody)
-    {
-        return restAPI.findSolutionRoles(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
-    }
-
-
-    /**
-     * Return the properties of a specific solution role.
-     *
-     * @param serverName name of the service to route the request to
-     * @param solutionRoleGUID    unique identifier of the required element
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/solution-roles/{solutionRoleGUID}/retrieve")
-    @Operation(summary="getSolutionRoleByGUID",
-            description="Return the properties of a specific solution role.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/solution-role"))
-
-    public SolutionRoleResponse getSolutionRoleByGUID(@PathVariable
-                                                      String             serverName,
-                                                      @PathVariable
-                                                      String             solutionRoleGUID,
-                                                      @RequestBody (required = false)
-                                                      AnyTimeRequestBody requestBody)
-    {
-        return restAPI.getSolutionRoleByGUID(serverName, solutionRoleGUID, requestBody);
+        return restAPI.detachSolutionComponentActor(serverName, solutionRoleGUID, solutionComponentGUID, requestBody);
     }
 
 
@@ -1011,7 +764,7 @@ public class SolutionArchitectResource
     public GUIDResponse createSolutionComponent(@PathVariable
                                                 String                               serverName,
                                                 @RequestBody (required = false)
-                                                NewSolutionComponentRequestBody requestBody)
+                                                NewElementRequestBody requestBody)
     {
         return restAPI.createSolutionComponent(serverName, requestBody);
     }

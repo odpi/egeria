@@ -20,6 +20,11 @@ public enum SolutionRoleDefinition
                                        "Clinical Trial Participating Hospital Coordinator",
                                        "A contact person from a hospital that is participating in a clinical trial that is responsible for ensuring the hospital's participation is operating according to the data agreements."),
 
+    CLINICAL_TRIALS_EXECUTIVE("2a404b2e-c13b-4971-af57-4a29afc116bf",
+                           "ClinicalTrialsExecutive",
+                           "Clinical Trial Executive",
+                           "An executive accountable for the compliant operation of all clinical trials."),
+
     CLINICAL_TRIAL_SPONSOR("f6bc847b-868d-43cc-b767-41f5fe3e47d1",
                            "ClinicalTrialSponsor",
                            "Clinical Trial Sponsor",

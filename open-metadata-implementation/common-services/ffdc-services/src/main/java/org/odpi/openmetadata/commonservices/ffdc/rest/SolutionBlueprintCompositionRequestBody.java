@@ -19,11 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionBlueprintCompositionRequestBody extends MetadataSourceRequestBody
+public class SolutionBlueprintCompositionRequestBody extends RelationshipRequestBody
 {
-    private SolutionBlueprintCompositionProperties properties = null;
-
-
     /**
      * Default constructor
      */
@@ -40,33 +37,6 @@ public class SolutionBlueprintCompositionRequestBody extends MetadataSourceReque
     public SolutionBlueprintCompositionRequestBody(SolutionBlueprintCompositionRequestBody template)
     {
         super(template);
-
-        if (template != null)
-        {
-            this.properties = template.getProperties();
-        }
-    }
-
-
-    /**
-     * Return the properties for the new element.
-     *
-     * @return properties
-     */
-    public SolutionBlueprintCompositionProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up the properties for the new element.
-     *
-     * @param properties properties
-     */
-    public void setProperties(SolutionBlueprintCompositionProperties properties)
-    {
-        this.properties = properties;
     }
 
 
@@ -78,45 +48,6 @@ public class SolutionBlueprintCompositionRequestBody extends MetadataSourceReque
     @Override
     public String toString()
     {
-        return "SolutionBlueprintCompositionRequestBody{" +
-                "properties=" + properties +
-                "} " + super.toString();
-    }
-
-
-    /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof SolutionBlueprintCompositionRequestBody that))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        return Objects.equals(properties, that.properties);
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), properties);
+        return "SolutionBlueprintCompositionRequestBody{} " + super.toString();
     }
 }

@@ -120,7 +120,7 @@ public class GovernanceOfficerResource
                                                    @RequestParam (required = false, defaultValue = "false")
                                                    boolean                                 replaceAllProperties,
                                                    @RequestBody (required = false)
-                                                   UpdateGovernanceDefinitionRequestBody requestBody)
+                                                   UpdateElementRequestBody requestBody)
     {
         return restAPI.updateGovernanceDefinition(serverName, urlMarker, governanceDefinitionGUID, replaceAllProperties, requestBody);
     }
@@ -211,7 +211,7 @@ public class GovernanceOfficerResource
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionOneGUID}/peer-definitions/{relationshipTypeName}/{governanceDefinitionTwoGUID}/detach")
     @Operation(summary="detachPeerDefinitions",
-            description="Detach a data field from a governance definition.",
+            description="Detach a governance definition from one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-definition"))
 

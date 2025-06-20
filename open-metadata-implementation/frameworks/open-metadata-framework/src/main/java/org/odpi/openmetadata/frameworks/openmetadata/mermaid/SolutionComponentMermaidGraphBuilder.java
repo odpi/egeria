@@ -72,41 +72,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                         }
                     }
 
-                    if (informationSupplyChainContext.linkedSegment() != null)
-                    {
-                        String segmentName = informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader().getGUID();
-                        String segmentDisplayName = super.getNodeDisplayName(informationSupplyChainContext.linkedSegment().getRelatedElement());
-
-                        appendNewMermaidNode(segmentName,
-                                             segmentDisplayName,
-                                             informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             getVisualStyleForEntity(informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader(),
-                                                                     VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG));
-
-                        appendMermaidLine(informationSupplyChainContext.linkedSegment().getRelationshipHeader().getGUID(),
-                                          segmentName,
-                                          super.addSpacesToTypeName(informationSupplyChainContext.linkedSegment().getRelationshipHeader().getType().getTypeName()),
-                                          currentNodeName);
-
-                        currentNodeName = segmentName;
-                    }
-
-                    if (informationSupplyChainContext.owningInformationSupplyChain() != null)
-                    {
-                        String iscName = informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader().getGUID();
-                        String iscDisplayName = super.getNodeDisplayName(informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement());
-
-                        appendNewMermaidNode(iscName,
-                                             iscDisplayName,
-                                             informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             getVisualStyleForEntity(informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader(),
-                                                                     VisualStyle.INFORMATION_SUPPLY_CHAIN));
-
-                        appendMermaidLine(informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getGUID(),
-                                          iscName,
-                                          addSpacesToTypeName(informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getType().getTypeName()),
-                                          currentNodeName);
-                    }
+                    super.addRelatedElementSummaries(informationSupplyChainContext.owningInformationSupplyChains(), VisualStyle.INFORMATION_SUPPLY_CHAIN, currentNodeName);
                 }
             }
         }

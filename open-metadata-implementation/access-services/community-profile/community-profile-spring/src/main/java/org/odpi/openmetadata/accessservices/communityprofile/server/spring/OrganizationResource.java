@@ -9,10 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.communityprofile.server.OrganizationRESTServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -80,9 +77,9 @@ public class OrganizationResource
      */
     @GetMapping(path = "/person-roles/{personRoleGUID}")
 
-    public PersonRoleResponse getPersonRoleByGUID(@PathVariable String serverName,
-                                                  @PathVariable String userId,
-                                                  @PathVariable String personRoleGUID)
+    public ActorRoleResponse getPersonRoleByGUID(@PathVariable String serverName,
+                                                 @PathVariable String userId,
+                                                 @PathVariable String personRoleGUID)
     {
         return restAPI.getPersonRoleByGUID(serverName, userId, personRoleGUID);
     }
