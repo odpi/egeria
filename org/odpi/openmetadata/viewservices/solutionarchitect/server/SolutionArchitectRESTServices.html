@@ -112,28 +112,29 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createInformationSupplyChain(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewInformationSupplyChainRequestBody)" class="member-name-link">createInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NewInformationSupplyChainRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewInformationSupplyChainRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#composeInformationSupplyChains(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">composeInformationSupplyChains</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedInformationSupplyChainGUID,
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Connect a nested information supply chain to its parent.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createInformationSupplyChain(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)" class="member-name-link">createInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an information supply chain.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createInformationSupplyChainFromTemplate(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody)" class="member-name-link">createInformationSupplyChainFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createInformationSupplyChainFromTemplate(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody)" class="member-name-link">createInformationSupplyChainFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../commonservices/ffdc/rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">TemplateRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent an information supply chain using an existing metadata element as a template.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createInformationSupplyChainSegment(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.InformationSupplyChainSegmentRequestBody)" class="member-name-link">createInformationSupplyChainSegment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
- <a href="../../../commonservices/ffdc/rest/InformationSupplyChainSegmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainSegmentRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create an information supply chain segment.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSolutionBlueprint(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewSolutionBlueprintRequestBody)" class="member-name-link">createSolutionBlueprint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NewSolutionBlueprintRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewSolutionBlueprintRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSolutionBlueprint(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)" class="member-name-link">createSolutionBlueprint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a solution blueprint.</div>
 </div>
@@ -144,8 +145,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a solution blueprint using an existing metadata element as a template.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSolutionComponent(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewSolutionComponentRequestBody)" class="member-name-link">createSolutionComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NewSolutionComponentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewSolutionComponentRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSolutionComponent(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)" class="member-name-link">createSolutionComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a solution component.</div>
 </div>
@@ -155,32 +156,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a solution component using an existing metadata element as a template.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSolutionRole(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewActorRoleRequestBody)" class="member-name-link">createSolutionRole</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NewActorRoleRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewActorRoleRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a solution role.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSolutionRoleFromTemplate(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody)" class="member-name-link">createSolutionRoleFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">TemplateRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new metadata element to represent a solution role using an existing metadata element as a template.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteInformationSupplyChain(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">deleteInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#decomposeInformationSupplyChains(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">decomposeInformationSupplyChains</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedInformationSupplyChainGUID,
+ <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a nested information supply chain from its parent.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteInformationSupplyChain(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">deleteInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
  boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Delete an information supply chain.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteInformationSupplyChainSegment(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">deleteInformationSupplyChainSegment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segmentGUID,
- <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Delete an information supply chain segment.</div>
+<div class="block">Delete an information supply chain.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteSolutionBlueprint(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">deleteSolutionBlueprint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -197,22 +187,6 @@ loadScripts(document, 'script');</script>
  <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete a solution component.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteSolutionRole(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">deleteSolutionRole</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionRoleGUID,
- boolean&nbsp;cascadedDelete,
- <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Delete a solution role.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachSegments(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">detachSegments</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segment1GUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segment2GUID,
- <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Detach two information supply chain segments from one another.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachSolutionComponentActor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">detachSolutionComponentActor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -280,167 +254,133 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of solution component metadata elements that contain the search string.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionRolesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionRolesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findSolutionRoles(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">findSolutionRoles</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- boolean&nbsp;startsWith,
- boolean&nbsp;endsWith,
- boolean&nbsp;ignoreCase,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/InformationSupplyChainResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInformationSupplyChainByGUID(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getInformationSupplyChainByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/InformationSupplyChainResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInformationSupplyChainByGUID(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getInformationSupplyChainByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
  boolean&nbsp;addImplementation,
  <a href="../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of information supply chain metadata elements that contain the search string.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/InformationSupplyChainsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInformationSupplyChainsByName(java.lang.String,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getInformationSupplyChainsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/InformationSupplyChainsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInformationSupplyChainsByName(java.lang.String,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getInformationSupplyChainsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  boolean&nbsp;addImplementation,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of information supply chain metadata elements that contain the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionBlueprintResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionBlueprintResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionBlueprintByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getSolutionBlueprintByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionBlueprintResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionBlueprintResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionBlueprintByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getSolutionBlueprintByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
  <a href="../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of solution blueprint metadata elements that contain the search string.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionBlueprintsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionBlueprintsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionBlueprintsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getSolutionBlueprintsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionBlueprintsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionBlueprintsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionBlueprintsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getSolutionBlueprintsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of solution blueprint metadata elements that contain the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionComponentResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionComponentResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getSolutionComponentByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionComponentResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionComponentResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getSolutionComponentByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
  <a href="../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of solution component metadata elements that contain the search string.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/omf/rest/RelatedMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">RelatedMetadataElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentImplementations(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getSolutionComponentImplementations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/omf/rest/RelatedMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">RelatedMetadataElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentImplementations(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getSolutionComponentImplementations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of  metadata elements that are associated with the solution component via the ImplementedBy relationship.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionComponentsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionComponentsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getSolutionComponentsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionComponentsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionComponentsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getSolutionComponentsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of solution component metadata elements that contain the search string.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionRoleResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionRoleResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionRoleByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getSolutionRoleByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionRoleGUID,
- <a href="../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the list of solution role metadata elements that contain the search string.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SolutionRolesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionRolesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionRolesByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getSolutionRolesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkPeersInInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkPeersInInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;peerOneGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;peerTwoGUID,
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the list of solution role metadata elements that contain the search string.</div>
+<div class="block">Connect two peers in an information supply chains.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSegments(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.InformationSupplyChainLinkRequestBody)" class="member-name-link">linkSegments</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segment1GUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segment2GUID,
- <a href="../../../commonservices/ffdc/rest/InformationSupplyChainLinkRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainLinkRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Connect two information supply chain segments.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSolutionComponentActor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SolutionComponentActorRequestBody)" class="member-name-link">linkSolutionComponentActor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSolutionComponentActor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkSolutionComponentActor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionRoleGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
- <a href="../../../commonservices/ffdc/rest/SolutionComponentActorRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionComponentActorRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a solution component to a solution role.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSolutionComponentToBlueprint(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SolutionBlueprintCompositionRequestBody)" class="member-name-link">linkSolutionComponentToBlueprint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSolutionComponentToBlueprint(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkSolutionComponentToBlueprint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentSolutionBlueprintGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSolutionComponentGUID,
- <a href="../../../commonservices/ffdc/rest/SolutionBlueprintCompositionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionBlueprintCompositionRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a solution component to a solution blueprint.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSolutionLinkingWire(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkSolutionLinkingWire</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSolutionLinkingWire(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkSolutionLinkingWire</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentTwoGUID,
  <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Attach a solution component to a solution component.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSubcomponent(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkSubcomponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentSolutionComponentGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSolutionComponentGUID,
- <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a solution component to a solution component.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInformationSupplyChain(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateInformationSupplyChainRequestBody)" class="member-name-link">updateInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSubcomponent(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkSubcomponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentSolutionComponentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSolutionComponentGUID,
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a solution component to a solution component.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unlinkPeersInInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">unlinkPeersInInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;peerOneGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;peerTwoGUID,
+ <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach two peers in an information supply chain from one another.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInformationSupplyChain(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)" class="member-name-link">updateInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/UpdateInformationSupplyChainRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateInformationSupplyChainRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of an information supply chain.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInformationSupplyChainSegment(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.InformationSupplyChainSegmentRequestBody)" class="member-name-link">updateInformationSupplyChainSegment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segmentGUID,
- boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/InformationSupplyChainSegmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainSegmentRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the properties of an information supply chain segment.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSolutionBlueprint(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateSolutionBlueprintRequestBody)" class="member-name-link">updateSolutionBlueprint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSolutionBlueprint(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)" class="member-name-link">updateSolutionBlueprint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionBlueprintGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/UpdateSolutionBlueprintRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionBlueprintRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of a solution blueprint.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSolutionComponent(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateSolutionComponentRequestBody)" class="member-name-link">updateSolutionComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSolutionComponent(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)" class="member-name-link">updateSolutionComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/UpdateSolutionComponentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionComponentRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the properties of a solution component.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSolutionRole(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateActorRoleRequestBody)" class="member-name-link">updateSolutionRole</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionRoleGUID,
- boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/UpdateActorRoleRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateActorRoleRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the properties of a solution role.</div>
+<div class="block">Update the properties of a solution component.</div>
 </div>
 </div>
 </div>
@@ -478,10 +418,10 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createInformationSupplyChain(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewInformationSupplyChainRequestBody)">
+<section class="detail" id="createInformationSupplyChain(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)">
 <h3>createInformationSupplyChain</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createInformationSupplyChain</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NewInformationSupplyChainRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewInformationSupplyChainRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create an information supply chain.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -515,12 +455,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateInformationSupplyChain(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateInformationSupplyChainRequestBody)">
+<section class="detail" id="updateInformationSupplyChain(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)">
 <h3>updateInformationSupplyChain</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateInformationSupplyChain</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/UpdateInformationSupplyChainRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateInformationSupplyChainRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the properties of an information supply chain.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -538,61 +478,62 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createInformationSupplyChainSegment(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.InformationSupplyChainSegmentRequestBody)">
-<h3>createInformationSupplyChainSegment</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createInformationSupplyChainSegment</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<section class="detail" id="linkPeersInInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)">
+<h3>linkPeersInInformationSupplyChain</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkPeersInInformationSupplyChain</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;peerOneGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;peerTwoGUID,
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Connect two peers in an information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>peerOneGUID</code> - unique identifier of the end one element in the relationship</dd>
+<dd><code>peerTwoGUID</code> - unique identifier of the end two element in the relationship</dd>
+<dd><code>requestBody</code> - description of the relationship.</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    there is a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="unlinkPeersInInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)">
+<h3>unlinkPeersInInformationSupplyChain</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">unlinkPeersInInformationSupplyChain</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;peerOneGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;peerTwoGUID,
+ <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach two peers in an information supply chain from one another.    The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>peerOneGUID</code> - unique identifier of the end one element in the relationship</dd>
+<dd><code>peerTwoGUID</code> - unique identifier of the end two element in the relationship</dd>
+<dd><code>requestBody</code> - description of the relationship.</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    there is a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="composeInformationSupplyChains(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)">
+<h3>composeInformationSupplyChains</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">composeInformationSupplyChains</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
- <a href="../../../commonservices/ffdc/rest/InformationSupplyChainSegmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainSegmentRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Create an information supply chain segment.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server.</dd>
-<dd><code>informationSupplyChainGUID</code> - unique identifier of optional parent information supply chain</dd>
-<dd><code>requestBody</code> - properties for the information supply chain.</dd>
-<dt>Returns:</dt>
-<dd>unique identifier of the newly created element
-  InvalidParameterException  one of the parameters is invalid.
-  PropertyServerException    there is a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="updateInformationSupplyChainSegment(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.InformationSupplyChainSegmentRequestBody)">
-<h3>updateInformationSupplyChainSegment</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateInformationSupplyChainSegment</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segmentGUID,
- boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/InformationSupplyChainSegmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainSegmentRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Update the properties of an information supply chain segment.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server.</dd>
-<dd><code>segmentGUID</code> - unique identifier of the information supply chain segment (returned from create)</dd>
-<dd><code>replaceAllProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
-                          the individual properties specified on the request.</dd>
-<dd><code>requestBody</code> - properties for the new element.</dd>
-<dt>Returns:</dt>
-<dd>void or
-  InvalidParameterException  one of the parameters is invalid.
-  PropertyServerException    there is a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="linkSegments(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.InformationSupplyChainLinkRequestBody)">
-<h3>linkSegments</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkSegments</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segment1GUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segment2GUID,
- <a href="../../../commonservices/ffdc/rest/InformationSupplyChainLinkRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainLinkRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Connect two information supply chain segments.</div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedInformationSupplyChainGUID,
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Connect a nested information supply chain to its parent.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
-<dd><code>segment1GUID</code> - unique identifier of the first segment</dd>
-<dd><code>segment2GUID</code> - unique identifier of the second segment</dd>
+<dd><code>informationSupplyChainGUID</code> - unique identifier of the parent information supply chain</dd>
+<dd><code>nestedInformationSupplyChainGUID</code> - unique identifier of the child information supply chain</dd>
 <dd><code>requestBody</code> - description of the relationship.</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -603,38 +544,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="detachSegments(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)">
-<h3>detachSegments</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachSegments</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segment1GUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segment2GUID,
+<section class="detail" id="decomposeInformationSupplyChains(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)">
+<h3>decomposeInformationSupplyChains</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">decomposeInformationSupplyChains</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedInformationSupplyChainGUID,
  <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Detach two information supply chain segments from one another.</div>
+<div class="block">Detach a nested information supply chain from its parent.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
-<dd><code>segment1GUID</code> - unique identifier of the first segment</dd>
-<dd><code>segment2GUID</code> - unique identifier of the second segment</dd>
-<dd><code>requestBody</code> - description of the relationship.</dd>
-<dt>Returns:</dt>
-<dd>void or
-  InvalidParameterException  one of the parameters is null or invalid.
-  PropertyServerException    there is a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="deleteInformationSupplyChainSegment(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)">
-<h3>deleteInformationSupplyChainSegment</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteInformationSupplyChainSegment</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;segmentGUID,
- <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Delete an information supply chain segment.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server</dd>
-<dd><code>segmentGUID</code> - unique identifier of the  segment</dd>
+<dd><code>informationSupplyChainGUID</code> - unique identifier of the parent information supply chain</dd>
+<dd><code>nestedInformationSupplyChainGUID</code> - unique identifier of the child information supply chain</dd>
 <dd><code>requestBody</code> - description of the relationship.</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -656,7 +577,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
 <dd><code>informationSupplyChainGUID</code> - unique identifier of the element to delete</dd>
-<dd><code>cascadedDelete</code> - can information supply chains be deleted if segments are attached?</dd>
+<dd><code>cascadedDelete</code> - can information supply chains be deleted if nested elements are attached?</dd>
 <dd><code>requestBody</code> - description of the relationship.</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -743,10 +664,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createSolutionBlueprint(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewSolutionBlueprintRequestBody)">
+<section class="detail" id="createSolutionBlueprint(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)">
 <h3>createSolutionBlueprint</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSolutionBlueprint</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NewSolutionBlueprintRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewSolutionBlueprintRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a solution blueprint.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -780,12 +701,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateSolutionBlueprint(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateSolutionBlueprintRequestBody)">
+<section class="detail" id="updateSolutionBlueprint(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)">
 <h3>updateSolutionBlueprint</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateSolutionBlueprint</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionBlueprintGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/UpdateSolutionBlueprintRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionBlueprintRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the properties of a solution blueprint.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -803,12 +724,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="linkSolutionComponentToBlueprint(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SolutionBlueprintCompositionRequestBody)">
+<section class="detail" id="linkSolutionComponentToBlueprint(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)">
 <h3>linkSolutionComponentToBlueprint</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkSolutionComponentToBlueprint</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentSolutionBlueprintGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSolutionComponentGUID,
- <a href="../../../commonservices/ffdc/rest/SolutionBlueprintCompositionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionBlueprintCompositionRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Attach a solution component to a solution blueprint.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -939,72 +860,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createSolutionRole(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewActorRoleRequestBody)">
-<h3>createSolutionRole</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSolutionRole</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NewActorRoleRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewActorRoleRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Create a solution role.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server.</dd>
-<dd><code>requestBody</code> - properties for the solution role.</dd>
-<dt>Returns:</dt>
-<dd>unique identifier of the newly created element
-  InvalidParameterException  one of the parameters is invalid.
-  PropertyServerException    there is a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="createSolutionRoleFromTemplate(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody)">
-<h3>createSolutionRoleFromTemplate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSolutionRoleFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">TemplateRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Create a new metadata element to represent a solution role using an existing metadata element as a template.
- The template defines additional classifications and relationships that should be added to the new element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - calling user</dd>
-<dd><code>requestBody</code> - properties that override the template</dd>
-<dt>Returns:</dt>
-<dd>unique identifier of the new metadata element
-  InvalidParameterException  one of the parameters is invalid
-  UserNotAuthorizedException the user is not authorized to issue this request
-  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="updateSolutionRole(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateActorRoleRequestBody)">
-<h3>updateSolutionRole</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateSolutionRole</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionRoleGUID,
- boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/UpdateActorRoleRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateActorRoleRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Update the properties of a solution role.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server.</dd>
-<dd><code>solutionRoleGUID</code> - unique identifier of the solution role (returned from create)</dd>
-<dd><code>replaceAllProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
-                          the individual properties specified on the request.</dd>
-<dd><code>requestBody</code> - properties for the new element.</dd>
-<dt>Returns:</dt>
-<dd>void or
-  InvalidParameterException  one of the parameters is invalid.
-  PropertyServerException    there is a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="linkSolutionComponentActor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SolutionComponentActorRequestBody)">
+<section class="detail" id="linkSolutionComponentActor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)">
 <h3>linkSolutionComponentActor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkSolutionComponentActor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionRoleGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
- <a href="../../../commonservices/ffdc/rest/SolutionComponentActorRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionComponentActorRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Attach a solution component to a solution role.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1043,102 +904,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteSolutionRole(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)">
-<h3>deleteSolutionRole</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteSolutionRole</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionRoleGUID,
- boolean&nbsp;cascadedDelete,
- <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Delete a solution role.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server</dd>
-<dd><code>solutionRoleGUID</code> - unique identifier of the element to delete</dd>
-<dd><code>cascadedDelete</code> - can solution roles be deleted if solution components are attached?</dd>
-<dd><code>requestBody</code> - description of the relationship.</dd>
-<dt>Returns:</dt>
-<dd>void or
-  InvalidParameterException  one of the parameters is null or invalid.
-  PropertyServerException    there is a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSolutionRolesByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
-<h3>getSolutionRolesByName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/SolutionRolesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionRolesResponse</a></span>&nbsp;<span class="element-name">getSolutionRolesByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the list of solution role metadata elements that contain the search string.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the service to route the request to</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>requestBody</code> - string to find in the properties</dd>
-<dt>Returns:</dt>
-<dd>list of matching metadata elements or
-  InvalidParameterException  one of the parameters is invalid
-  UserNotAuthorizedException the user is not authorized to issue this request
-  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="findSolutionRoles(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
-<h3>findSolutionRoles</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/SolutionRolesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionRolesResponse</a></span>&nbsp;<span class="element-name">findSolutionRoles</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- boolean&nbsp;startsWith,
- boolean&nbsp;endsWith,
- boolean&nbsp;ignoreCase,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the service to route the request to</dd>
-<dd><code>startsWith</code> - does the value start with the supplied string?</dd>
-<dd><code>endsWith</code> - does the value end with the supplied string?</dd>
-<dd><code>ignoreCase</code> - should the search ignore case?</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>requestBody</code> - string to find in the properties</dd>
-<dt>Returns:</dt>
-<dd>list of matching metadata elements or
-  InvalidParameterException  one of the parameters is invalid
-  UserNotAuthorizedException the user is not authorized to issue this request
-  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSolutionRoleByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)">
-<h3>getSolutionRoleByGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/SolutionRoleResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SolutionRoleResponse</a></span>&nbsp;<span class="element-name">getSolutionRoleByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionRoleGUID,
- <a href="../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the list of solution role metadata elements that contain the search string.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the service to route the request to</dd>
-<dd><code>solutionRoleGUID</code> - unique identifier of the required element</dd>
-<dd><code>requestBody</code> - string to find in the properties</dd>
-<dt>Returns:</dt>
-<dd>list of matching metadata elements or
-  InvalidParameterException  one of the parameters is invalid
-  UserNotAuthorizedException the user is not authorized to issue this request
-  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="createSolutionComponent(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewSolutionComponentRequestBody)">
+<section class="detail" id="createSolutionComponent(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)">
 <h3>createSolutionComponent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSolutionComponent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NewSolutionComponentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewSolutionComponentRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a solution component.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1172,12 +941,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateSolutionComponent(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateSolutionComponentRequestBody)">
+<section class="detail" id="updateSolutionComponent(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)">
 <h3>updateSolutionComponent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateSolutionComponent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../commonservices/ffdc/rest/UpdateSolutionComponentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionComponentRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the properties of a solution component.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

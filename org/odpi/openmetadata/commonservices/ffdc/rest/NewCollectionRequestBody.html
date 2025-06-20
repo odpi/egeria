@@ -74,7 +74,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody</a>
 <div class="inheritance"><a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.NewElementOptionsRequestBody</a>
+<div class="inheritance"><a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody</a>
 <div class="inheritance">org.odpi.openmetadata.commonservices.ffdc.rest.NewCollectionRequestBody</div>
+</div>
 </div>
 </div>
 </div>
@@ -85,7 +87,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">NewCollectionRequestBody</span>
-<span class="extends-implements">extends <a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></span></div>
+<span class="extends-implements">extends <a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></span></div>
 <div class="block">NewCollectionRequestBody describes the properties to create a new collection.</div>
 </section>
 <section class="summary">
@@ -148,6 +150,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></h3>
+<code><a href="NewElementRequestBody.html#getProperties()">getProperties</a>, <a href="NewElementRequestBody.html#setProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties)">setProperties</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.NewElementOptionsRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></h3>
 <code><a href="NewElementOptionsRequestBody.html#getAnchorGUID()">getAnchorGUID</a>, <a href="NewElementOptionsRequestBody.html#getAnchorScopeGUID()">getAnchorScopeGUID</a>, <a href="NewElementOptionsRequestBody.html#getIsOwnAnchor()">getIsOwnAnchor</a>, <a href="NewElementOptionsRequestBody.html#getParentAtEnd1()">getParentAtEnd1</a>, <a href="NewElementOptionsRequestBody.html#getParentGUID()">getParentGUID</a>, <a href="NewElementOptionsRequestBody.html#getParentRelationshipProperties()">getParentRelationshipProperties</a>, <a href="NewElementOptionsRequestBody.html#getParentRelationshipTypeName()">getParentRelationshipTypeName</a>, <a href="NewElementOptionsRequestBody.html#setAnchorGUID(java.lang.String)">setAnchorGUID</a>, <a href="NewElementOptionsRequestBody.html#setAnchorScopeGUID(java.lang.String)">setAnchorScopeGUID</a>, <a href="NewElementOptionsRequestBody.html#setIsOwnAnchor(boolean)">setIsOwnAnchor</a>, <a href="NewElementOptionsRequestBody.html#setParentAtEnd1(boolean)">setParentAtEnd1</a>, <a href="NewElementOptionsRequestBody.html#setParentGUID(java.lang.String)">setParentGUID</a>, <a href="NewElementOptionsRequestBody.html#setParentRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)">setParentRelationshipProperties</a>, <a href="NewElementOptionsRequestBody.html#setParentRelationshipTypeName(java.lang.String)">setParentRelationshipTypeName</a></code></div>
@@ -223,7 +228,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="NewElementOptionsRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></code></dd>
+<dd><code><a href="NewElementRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></code></dd>
 <dt>Returns:</dt>
 <dd>list of properties and their values.</dd>
 </dl>
@@ -236,7 +241,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Equals method that returns true if containing properties are the same.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="NewElementOptionsRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></code></dd>
+<dd><code><a href="NewElementRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - object to compare</dd>
 <dt>Returns:</dt>
@@ -251,7 +256,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="NewElementOptionsRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></code></dd>
+<dd><code><a href="NewElementRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

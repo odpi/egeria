@@ -80,15 +80,13 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Record Components:</dt>
 <dd><code><span id="param-parentComponents">parentComponents</span></code> - optional list of parent components necessary to pass through to get to information supply chain</dd>
-<dd><code><span id="param-linkedSegment">linkedSegment</span></code> - information supply chain segment</dd>
-<dd><code><span id="param-owningInformationSupplyChain">owningInformationSupplyChain</span></code> - owning information supply chain</dd>
+<dd><code><span id="param-owningInformationSupplyChains">owningInformationSupplyChains</span></code> - list of information supply chain directly connected to one or more parent components</dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">InformationSupplyChainContext</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;parentComponents, <a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;linkedSegment, <a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;owningInformationSupplyChain)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">InformationSupplyChainContext</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;parentComponents, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;owningInformationSupplyChains)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
 <div class="block">Describe the associated information supply chains for a solution component/asset.  It may be necessary to
- navigate through one or more solution components to get to the information supply chain segment and then the
- supply chain itself.</div>
+ navigate through one or more solution components to get to the information supply chain itself.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -100,9 +98,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.List,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary)" class="member-name-link">InformationSupplyChainContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;parentComponents,
- <a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;linkedSegment,
- <a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;owningInformationSupplyChain)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.List,java.util.List)" class="member-name-link">InformationSupplyChainContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;parentComponents,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;owningInformationSupplyChains)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Creates an instance of a <code>InformationSupplyChainContext</code> record class.</div>
 </div>
@@ -130,24 +127,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a hash code value for this object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkedSegment()" class="member-name-link">linkedSegment</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the value of the <a href="#param-linkedSegment"><code>linkedSegment</code></a> record component.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#owningInformationSupplyChain()" class="member-name-link">owningInformationSupplyChain</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the value of the <a href="#param-owningInformationSupplyChain"><code>owningInformationSupplyChain</code></a> record component.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parentComponents()" class="member-name-link">parentComponents</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#owningInformationSupplyChains()" class="member-name-link">owningInformationSupplyChains</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the value of the <a href="#param-owningInformationSupplyChains"><code>owningInformationSupplyChains</code></a> record component.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parentComponents()" class="member-name-link">parentComponents</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <a href="#param-parentComponents"><code>parentComponents</code></a> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a string representation of this record class.</div>
 </div>
 </div>
@@ -168,17 +160,15 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.util.List,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary)">
+<section class="detail" id="&lt;init&gt;(java.util.List,java.util.List)">
 <h3>InformationSupplyChainContext</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">InformationSupplyChainContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;parentComponents,
- <a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;linkedSegment,
- <a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;owningInformationSupplyChain)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;owningInformationSupplyChains)</span></div>
 <div class="block">Creates an instance of a <code>InformationSupplyChainContext</code> record class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>parentComponents</code> - the value for the <a href="#param-parentComponents"><code>parentComponents</code></a> record component</dd>
-<dd><code>linkedSegment</code> - the value for the <a href="#param-linkedSegment"><code>linkedSegment</code></a> record component</dd>
-<dd><code>owningInformationSupplyChain</code> - the value for the <a href="#param-owningInformationSupplyChain"><code>owningInformationSupplyChain</code></a> record component</dd>
+<dd><code>owningInformationSupplyChains</code> - the value for the <a href="#param-owningInformationSupplyChains"><code>owningInformationSupplyChains</code></a> record component</dd>
 </dl>
 </section>
 </li>
@@ -243,24 +233,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="linkedSegment()">
-<h3>linkedSegment</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></span>&nbsp;<span class="element-name">linkedSegment</span>()</div>
-<div class="block">Returns the value of the <a href="#param-linkedSegment"><code>linkedSegment</code></a> record component.</div>
+<section class="detail" id="owningInformationSupplyChains()">
+<h3>owningInformationSupplyChains</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">owningInformationSupplyChains</span>()</div>
+<div class="block">Returns the value of the <a href="#param-owningInformationSupplyChains"><code>owningInformationSupplyChains</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>the value of the <a href="#param-linkedSegment"><code>linkedSegment</code></a> record component</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="owningInformationSupplyChain()">
-<h3>owningInformationSupplyChain</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></span>&nbsp;<span class="element-name">owningInformationSupplyChain</span>()</div>
-<div class="block">Returns the value of the <a href="#param-owningInformationSupplyChain"><code>owningInformationSupplyChain</code></a> record component.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>the value of the <a href="#param-owningInformationSupplyChain"><code>owningInformationSupplyChain</code></a> record component</dd>
+<dd>the value of the <a href="#param-owningInformationSupplyChains"><code>owningInformationSupplyChains</code></a> record component</dd>
 </dl>
 </section>
 </li>
