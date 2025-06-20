@@ -235,12 +235,20 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         {
             archiveHelper.setGUID(informationSupplyChain.getQualifiedName(), informationSupplyChain.getGUID());
 
-            String iscGUID = archiveHelper.addInformationSupplyChain(OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+            String iscGUID = archiveHelper.addInformationSupplyChain(informationSupplyChain.getOwningSupplyChain(),
+                                                                     informationSupplyChain.isOwningInformationSupplyChainAnchor(),
+                                                                     informationSupplyChain.getAnchorScopeGUID(),
+                                                                     OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
                                                                      informationSupplyChain.getQualifiedName(),
                                                                      informationSupplyChain.getDisplayName(),
                                                                      informationSupplyChain.getDescription(),
                                                                      informationSupplyChain.getScope().getPreferredValue(),
                                                                      informationSupplyChain.getPurposes(),
+                                                                     null,
+                                                                     informationSupplyChain.getOwner(),
+                                                                     informationSupplyChain.getOwnerTypeName(),
+                                                                     informationSupplyChain.getOwnerPropertyName(),
+                                                                     null,
                                                                      null,
                                                                      null);
             assert(iscGUID.equals(informationSupplyChain.getGUID()));
@@ -257,32 +265,6 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         }
     }
 
-
-    /**
-     * Create supply chain segments
-     */
-    private void addInformationSupplyChainSegments()
-    {
-        for (InformationSupplyChainSegment segment : InformationSupplyChainSegment.values())
-        {
-            archiveHelper.setGUID(segment.getQualifiedName(), segment.getGUID());
-
-            String segmentGUID = archiveHelper.addInformationSupplyChainSegment(segment.getOwningSupplyChain().getGUID(),
-                                                                                OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName,
-                                                                                segment.getQualifiedName(),
-                                                                                segment.getDisplayName(),
-                                                                                segment.getDescription(),
-                                                                                segment.getScope().getPreferredValue(),
-                                                                                segment.getIntegrationStyle(),
-                                                                                null,
-                                                                                segment.getOwner(),
-                                                                                segment.getOwnerTypeName(),
-                                                                                segment.getOwnerPropertyName(),
-                                                                                null,
-                                                                                null);
-            assert(segmentGUID.equals(segment.getGUID()));
-        }
-    }
 
     /**
      * Link information supply chain segments together.
@@ -310,7 +292,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                              solutionComponentWire.getComponent2().getGUID(),
                                                              solutionComponentWire.getLabel(),
                                                              solutionComponentWire.getDescription(),
-                                                             solutionComponentWire.getInformationSupplySegmentGUIDs());
+                                                             solutionComponentWire.getISCQualifiedNames());
         }
     }
 
@@ -397,7 +379,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
 
             if (solutionComponent.getLinkedFromSegment() != null)
             {
-                for (InformationSupplyChainSegment segment : solutionComponent.getLinkedFromSegment())
+                for (InformationSupplyChain segment : solutionComponent.getLinkedFromSegment())
                 {
                     archiveHelper.addImplementedByRelationship(segment.getGUID(),
                                                                solutionComponent.getGUID(),
@@ -661,7 +643,6 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
 
         addSolutionRoles();
         addInformationSupplyChains();
-        addInformationSupplyChainSegments();
         addInformationSupplyChainLinks();
         addSolutionBlueprints();
 

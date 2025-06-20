@@ -23,8 +23,7 @@ public enum SolutionComponent
              "V1.0",
              new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
              null,
-             new InformationSupplyChainSegment[]{
-                     InformationSupplyChainSegment.HOSPITAL_TO_LANDING_AREA},
+             new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE, InformationSupplyChain.CLINICAL_TRIAL_SUBJECT_ONBOARDING_TEMPLATE},
              null),
 
     HOSPITAL_LANDING_AREA_FOLDER(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(),
@@ -35,9 +34,7 @@ public enum SolutionComponent
                                  "V1.0",
                                  new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                  null,
-                                 new InformationSupplyChainSegment[]{
-                                         InformationSupplyChainSegment.HOSPITAL_TO_LANDING_AREA,
-                                         InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE},
+                                 new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                  null),
 
     LANDING_FOLDER_CATALOGUER(ClinicalTrialSolutionComponent.LANDING_FOLDER_CATALOGUER.getGUID(),
@@ -48,8 +45,8 @@ public enum SolutionComponent
                               "V1.0",
                               new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                               null,
-                              new InformationSupplyChainSegment[]{
-                                      InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE},
+                              new InformationSupplyChain[]{
+                                      InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                               null),
 
     MOVE_FILE_TO_DATA_LAKE("18931474-d170-4394-97a9-0e627e2212ac",
@@ -132,8 +129,7 @@ public enum SolutionComponent
                                                     DETERMINE_ORIGIN_OF_DATA,
                                                     SET_RETENTION_PERIOD,
                                                     PUBLISH_ASSET},
-                                            new InformationSupplyChainSegment[]{
-                                                    InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE},
+                                            new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                             null),
 
     WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(),
@@ -144,9 +140,7 @@ public enum SolutionComponent
                                          "V1.0",
                                          new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                          null,
-                                         new InformationSupplyChainSegment[]{
-                                                 InformationSupplyChainSegment.DATA_LAKE_TO_SANDBOX,
-                                                 InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE},
+                                         new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                          null),
 
     POPULATE_SANDBOX(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(),
@@ -157,8 +151,7 @@ public enum SolutionComponent
                      "V1.0",
                      new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                      null,
-                     new InformationSupplyChainSegment[]{
-                             InformationSupplyChainSegment.DATA_LAKE_TO_SANDBOX},
+                     new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                      null),
 
     TREATMENT_VALIDATION_SANDBOX(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(),
@@ -169,9 +162,7 @@ public enum SolutionComponent
                                  "V1.0",
                                  new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                  null,
-                                 new InformationSupplyChainSegment[]{
-                                         InformationSupplyChainSegment.DATA_LAKE_TO_SANDBOX,
-                                         InformationSupplyChainSegment.ASSESS_TREATMENT},
+                                 new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                  null),
 
     ANALYSE_PATIENT_DATA("b5c8da4c-f925-4cf1-8294-e43cd2c1a584",
@@ -182,8 +173,7 @@ public enum SolutionComponent
                          "V1.0",
                          new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                          null,
-                         new InformationSupplyChainSegment[]{
-                                 InformationSupplyChainSegment.ASSESS_TREATMENT},
+                         new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                          null),
 
     TREATMENT_EFFICACY_EVIDENCE("48bc201e-3d4e-4beb-bdb2-0fd9d134f6d5",
@@ -194,9 +184,7 @@ public enum SolutionComponent
                                 "V1.0",
                                 new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                 null,
-                                new InformationSupplyChainSegment[]{
-                                        InformationSupplyChainSegment.DELIVER_REPORT,
-                                        InformationSupplyChainSegment.ASSESS_TREATMENT},
+                                new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                 null),
 
     ASSEMBLE_REPORT("72a86eec-9734-4bc0-babb-4fec0aa7c9ff",
@@ -207,8 +195,7 @@ public enum SolutionComponent
                     "V1.0",
                     new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                     null,
-                    new InformationSupplyChainSegment[]{
-                            InformationSupplyChainSegment.DELIVER_REPORT},
+                    new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                     null),
 
     REPORT_VALIDATION_AND_DELIVERY("0bf2547c-937c-41b6-814f-6284849271a1",
@@ -219,7 +206,7 @@ public enum SolutionComponent
                                    "V1.0",
                                    new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                    null,
-                                   new InformationSupplyChainSegment[]{InformationSupplyChainSegment.DELIVER_REPORT},
+                                   new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                    null),
 
     NOMINATE_HOSPITAL(ClinicalTrialSolutionComponent.NOMINATE_HOSPITAL.getGUID(),
@@ -287,9 +274,8 @@ public enum SolutionComponent
                        "V1.0",
                        new SolutionBlueprint[]{SolutionBlueprint.SUSTAINABILITY_REPORTING},
                        null,
-                       new InformationSupplyChainSegment[]{
-                               InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING,
-                               InformationSupplyChainSegment.SUSTAINABILITY_ASSESSMENT},
+                       new InformationSupplyChain[]{
+                               InformationSupplyChain.SUSTAINABILITY_REPORTING},
                        null),
 
     SUSTAINABILITY_CALCULATORS("06edd666-06fd-43ef-b7bd-22e2651c334f",
@@ -300,8 +286,8 @@ public enum SolutionComponent
                                "V1.0",
                                new SolutionBlueprint[]{SolutionBlueprint.SUSTAINABILITY_REPORTING},
                                null,
-                               new InformationSupplyChainSegment[]{
-                                       InformationSupplyChainSegment.SUSTAINABILITY_ASSESSMENT},
+                               new InformationSupplyChain[]{
+                                       InformationSupplyChain.SUSTAINABILITY_REPORTING},
                                null),
 
     SUSTAINABILITY_DASHBOARDS("d50a6f1f-49d2-47c3-a55e-5844464bd26f",
@@ -312,8 +298,8 @@ public enum SolutionComponent
                                "V1.0",
                               new SolutionBlueprint[]{SolutionBlueprint.SUSTAINABILITY_REPORTING},
                                null,
-                               new InformationSupplyChainSegment[]{
-                                       InformationSupplyChainSegment.DELIVER_SUSTAINABILITY_REPORT},
+                               new InformationSupplyChain[]{
+                                       InformationSupplyChain.SUSTAINABILITY_REPORTING},
                               null),
 
     EMPLOYEE_EXPENSE_TOOL("02cdce9a-7630-479a-90de-fd7698d098f1",
@@ -326,8 +312,8 @@ public enum SolutionComponent
                                   SolutionBlueprint.SUSTAINABILITY_REPORTING,
                                   SolutionBlueprint.EMPLOYEE_MANAGEMENT},
                           null,
-                          new InformationSupplyChainSegment[]{
-                                  InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING},
+                          new InformationSupplyChain[]{
+                                  InformationSupplyChain.SUSTAINABILITY_REPORTING},
                           null),
     HAZMAT_INVENTORY("25fd5be7-692d-4752-9dc7-30068a7d665e",
                      SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -339,8 +325,8 @@ public enum SolutionComponent
                              SolutionBlueprint.SUSTAINABILITY_REPORTING,
                              SolutionBlueprint.HAZARDOUS_MATERIAL_MANAGEMENT},
                      null,
-                     new InformationSupplyChainSegment[]{
-                             InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING},
+                     new InformationSupplyChain[]{
+                             InformationSupplyChain.SUSTAINABILITY_REPORTING},
                      null),
 
     ACCOUNTING_LEDGER("2c0f5a4e-bb02-4081-a80e-3072ca99a1aa",
@@ -353,8 +339,8 @@ public enum SolutionComponent
                               SolutionBlueprint.SUSTAINABILITY_REPORTING,
                               SolutionBlueprint.PERSONALIZED_MEDICINE_ORDER_FULFILLMENT},
                       null,
-                      new InformationSupplyChainSegment[]{
-                              InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING},
+                      new InformationSupplyChain[]{
+                              InformationSupplyChain.SUSTAINABILITY_REPORTING},
                       null),
 
     GOODS_INVENTORY("50768e61-43b6-4241-96a3-4c413582ec1f",
@@ -367,8 +353,8 @@ public enum SolutionComponent
                             SolutionBlueprint.SUSTAINABILITY_REPORTING,
                             SolutionBlueprint.INVENTORY_MANAGEMENT},
                     null,
-                    new InformationSupplyChainSegment[]{
-                            InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING},
+                    new InformationSupplyChain[]{
+                            InformationSupplyChain.SUSTAINABILITY_REPORTING},
                     null),
 
 
@@ -383,7 +369,7 @@ public enum SolutionComponent
     private final String                          versionIdentifier;
     private final SolutionBlueprint[]             consumingBlueprints;
     private final SolutionComponent[]             subComponents;
-    private final InformationSupplyChainSegment[] linkedFromSegment;
+    private final InformationSupplyChain[]        linkedFromSegment;
     private final String                          implementationResource;
 
 
@@ -401,16 +387,16 @@ public enum SolutionComponent
      * @param linkedFromSegment array of segments that are implemented by this component
      * @param implementationResource components useful when creating implementations
      */
-    SolutionComponent(String                          guid,
-                      String                          componentType,
-                      String                          implementationType,
-                      String                          displayName,
-                      String                          description,
-                      String                          versionIdentifier,
-                      SolutionBlueprint[]             consumingBlueprints,
-                      SolutionComponent[]             subComponents,
-                      InformationSupplyChainSegment[] linkedFromSegment,
-                      String                          implementationResource)
+    SolutionComponent(String                   guid,
+                      String                   componentType,
+                      String                   implementationType,
+                      String                   displayName,
+                      String                   description,
+                      String                   versionIdentifier,
+                      SolutionBlueprint[]      consumingBlueprints,
+                      SolutionComponent[]      subComponents,
+                      InformationSupplyChain[] linkedFromSegment,
+                      String                   implementationResource)
     {
         this.guid                   = guid;
         this.componentType          = componentType;
@@ -523,7 +509,7 @@ public enum SolutionComponent
      *
      * @return list of segments
      */
-    public List<InformationSupplyChainSegment> getLinkedFromSegment()
+    public List<InformationSupplyChain> getLinkedFromSegment()
     {
         if (linkedFromSegment == null)
         {

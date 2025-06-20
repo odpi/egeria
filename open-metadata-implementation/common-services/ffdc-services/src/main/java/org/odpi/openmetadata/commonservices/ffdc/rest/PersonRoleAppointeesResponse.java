@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * PersonRolesResponse is the response structure used on the OMAS REST API calls that return a
+ * ActorRolesResponse is the response structure used on the OMAS REST API calls that return a
  * a list of person role elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

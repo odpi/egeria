@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ActorProfileGraphResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.PersonRoleResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ActorRoleResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -101,17 +101,17 @@ public class OrganizationRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleResponse getPersonRoleByGUID(String serverName,
-                                                  String userId,
-                                                  String personRoleGUID)
+    public ActorRoleResponse getPersonRoleByGUID(String serverName,
+                                                 String userId,
+                                                 String personRoleGUID)
     {
         final String methodName        = "getPersonRoleByGUID";
         final String guidParameterName = "personRoleGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleResponse response = new PersonRoleResponse();
-        AuditLog           auditLog = null;
+        ActorRoleResponse response = new ActorRoleResponse();
+        AuditLog          auditLog = null;
 
         try
         {

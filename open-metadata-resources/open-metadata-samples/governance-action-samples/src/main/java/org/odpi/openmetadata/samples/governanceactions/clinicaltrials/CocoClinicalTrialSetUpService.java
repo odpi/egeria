@@ -293,10 +293,9 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                   integrationDeveloperGUID,
                                                                                   dataScientistGUID);
 
-                OpenMetadataElement informationSupplyChain           = createInformationSupplyChain(clinicalTrialId, clinicalTrialName, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), informationSupplyChainTemplateGUID);
-                String              informationSupplyChainGUID       = informationSupplyChain.getElementGUID();
-                String              hospitalCertificationTypeGUID    = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), hospitalCertificationTypeTemplateGUID);
-                String              dataQualityCertificationTypeGUID = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), dataQualityCertificationTypeTemplateGUID);
+                String              treatmentValidationInformationSupplyChainGUID = this.createInformationSupplyChain(clinicalTrialId, clinicalTrialName, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), informationSupplyChainTemplateGUID);
+                String              hospitalCertificationTypeGUID                 = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), hospitalCertificationTypeTemplateGUID);
+                String              dataQualityCertificationTypeGUID              = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), dataQualityCertificationTypeTemplateGUID);
 
                 String nominateHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::nominate-hospital",
                                                                                          "Nominate Hospital (" + clinicalTrialId + ")",
@@ -343,7 +342,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName(), dataQualityCertificationTypeGUID);
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.LANDING_AREA_CONNECTOR.getName(), landingAreaConnectorGUID);
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.DATA_ENGINEER.getName(), dataEngineerGUID);
-                addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName(), informationSupplyChainGUID);
+                addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName(), treatmentValidationInformationSupplyChainGUID);
 
 
                 String setUpDataLakeProcessGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::set-up-data-lake",
@@ -361,7 +360,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName(), dataQualityCertificationTypeGUID);
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.LAST_UPDATE_CONNECTOR.getName(), lastUpdateConnectorGUID);
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.ONBOARD_HOSPITAL_PROCESS.getName(), onboardHospitalGUID);
-                addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName(), informationSupplyChainGUID);
+                addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName(), treatmentValidationInformationSupplyChainGUID);
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
@@ -391,6 +390,49 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
 
     /**
+     * The information supply chain template creates three information supply chains.  There is a top level one for
+     * the whole clinical trial and two segments for the subject onboarding and the treatment validation
+     * @param toplevelInformationSupplyChainGUID new top level information supply chain
+     * @return guid of clinical trial treatment validation information supply chain
+     */
+    private String getTreatmentValidationInformationSupplyChain(String toplevelInformationSupplyChainGUID) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "getTreatmentValidationInformationSupplyChain";
+
+        RelatedMetadataElementList relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(toplevelInformationSupplyChainGUID,
+                                                                                                                                    1,
+                                                                                                                                    OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                                                    0,
+                                                                                                                                    governanceContext.getMaxPageSize());
+
+        if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+        {
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
+            {
+                if (relatedMetadataElement != null)
+                {
+                    String qualifiedName = propertyHelper.getStringProperty(governanceServiceName,
+                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                            relatedMetadataElement.getElement().getElementProperties(),
+                                                                            methodName);
+
+                    if ("Clinical Trial Treatment Validation::".equals(qualifiedName))
+                    {
+                        return relatedMetadataElement.getElement().getElementGUID();
+                    }
+                }
+            }
+        }
+
+        /*
+         * Should not get here
+         */
+        return null;
+    }
+
+    /**
      * Set up the information supply chain for this clinical trial.
      *
      * @param clinicalTrialId identifier for the clinical trial
@@ -402,12 +444,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization error
      */
-    private OpenMetadataElement createInformationSupplyChain(String clinicalTrialId,
-                                                             String clinicalTrialName,
-                                                             String clinicalTrialProjectGUID,
-                                                             String informationSupplyChainTemplateGUID) throws InvalidParameterException,
-                                                                                                               PropertyServerException,
-                                                                                                               UserNotAuthorizedException
+    private String createInformationSupplyChain(String clinicalTrialId,
+                                                String clinicalTrialName,
+                                                String clinicalTrialProjectGUID,
+                                                String informationSupplyChainTemplateGUID) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
         Map<String, String> placeholderProperties = new HashMap<>();
 
@@ -427,8 +469,15 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                                        OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                                                                                        null,
                                                                                                                        false);
+        if (informationSupplyChainGUID != null)
+        {
+            return this.getTreatmentValidationInformationSupplyChain(informationSupplyChainGUID);
+        }
 
-        return governanceContext.getOpenMetadataStore().getMetadataElementByGUID(informationSupplyChainGUID);
+        /*
+         * "Should" not happen!
+         */
+        return null;
     }
 
 

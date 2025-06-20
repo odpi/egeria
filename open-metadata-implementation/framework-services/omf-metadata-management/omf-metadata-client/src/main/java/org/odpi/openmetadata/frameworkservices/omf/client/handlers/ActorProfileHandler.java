@@ -323,8 +323,8 @@ public class ActorProfileHandler
      * @param userId                 userId of user making request
      * @param externalSourceGUID     unique identifier of the software capability that owns this element
      * @param externalSourceName     unique name of the software capability that owns this element
-     * @param locationGUID           unique identifier of the location
      * @param actorProfileGUID       unique identifier of the actor profile
+     * @param locationGUID           unique identifier of the location
      * @param relationshipProperties description of the relationship.
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -392,8 +392,8 @@ public class ActorProfileHandler
      * @param userId                 userId of user making request.
      * @param externalSourceGUID     unique identifier of the software capability that owns this element
      * @param externalSourceName     unique name of the software capability that owns this element
-     * @param locationGUID           unique identifier of the parent actor profile.
-     * @param actorProfileGUID            unique identifier of the nested actor profile.
+     * @param actorProfileGUID       unique identifier of the actor profile
+     * @param locationGUID           unique identifier of the location
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -503,7 +503,7 @@ public class ActorProfileHandler
 
 
     /**
-     * Detach a person profile to one of its peers.
+     * Detach a person profile from one of its peers.
      *
      * @param userId                 userId of user making request.
      * @param externalSourceGUID     unique identifier of the software capability that owns this element

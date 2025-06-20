@@ -255,11 +255,11 @@ public class ProjectManagementResource
      */
     @GetMapping(path = "/project-managers/by-project/{projectGUID}")
 
-    public PersonRolesResponse getProjectManagementRoles(@PathVariable String          serverName,
-                                                            @PathVariable String          userId,
-                                                            @PathVariable String          projectGUID,
-                                                            @RequestParam int             startFrom,
-                                                            @RequestParam int             pageSize)
+    public ActorRolesResponse getProjectManagementRoles(@PathVariable String          serverName,
+                                                        @PathVariable String          userId,
+                                                        @PathVariable String          projectGUID,
+                                                        @RequestParam int             startFrom,
+                                                        @RequestParam int             pageSize)
     {
         return restAPI.getProjectManagementRoles(serverName, userId, projectGUID, startFrom, pageSize);
     }

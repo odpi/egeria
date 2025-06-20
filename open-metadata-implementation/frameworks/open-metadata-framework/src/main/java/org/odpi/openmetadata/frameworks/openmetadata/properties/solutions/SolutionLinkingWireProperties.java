@@ -22,9 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionLinkingWireProperties extends RelationshipProperties
 {
-    private String       label                              = null;
-    private String       description                        = null;
-    private List<String> informationSupplyChainSegmentGUIDs = null;
+    private String       label             = null;
+    private String       description       = null;
+    private List<String> iscQualifiedNames = null;
 
 
     /**
@@ -49,8 +49,8 @@ public class SolutionLinkingWireProperties extends RelationshipProperties
         if (template != null)
         {
             this.label = template.getLabel();
-            this.description = template.getDescription();
-            this.informationSupplyChainSegmentGUIDs = template.getInformationSupplyChainSegmentGUIDs();
+            this.description       = template.getDescription();
+            this.iscQualifiedNames = template.getISCQualifiedNames();
         }
     }
 
@@ -104,20 +104,20 @@ public class SolutionLinkingWireProperties extends RelationshipProperties
      *
      * @return list
      */
-    public List<String> getInformationSupplyChainSegmentGUIDs()
+    public List<String> getISCQualifiedNames()
     {
-        return informationSupplyChainSegmentGUIDs;
+        return iscQualifiedNames;
     }
 
 
     /**
      * Set up the information supply chain segments that his wire implements.
      *
-     * @param informationSupplyChainSegmentGUIDs list
+     * @param iscQualifiedNames list
      */
-    public void setInformationSupplyChainSegmentGUIDs(List<String> informationSupplyChainSegmentGUIDs)
+    public void setISCQualifiedNames(List<String> iscQualifiedNames)
     {
-        this.informationSupplyChainSegmentGUIDs = informationSupplyChainSegmentGUIDs;
+        this.iscQualifiedNames = iscQualifiedNames;
     }
 
 
@@ -130,7 +130,7 @@ public class SolutionLinkingWireProperties extends RelationshipProperties
     public String toString()
     {
         return "SolutionLinkingWireProperties{" +
-                "informationSupplyChainSegmentGUIDs=" + informationSupplyChainSegmentGUIDs +
+                "iscQualifiedNames=" + iscQualifiedNames +
                 "label='" + label + '\'' +
                 "description='" + description + '\'' +
                 "} " + super.toString();
@@ -160,7 +160,7 @@ public class SolutionLinkingWireProperties extends RelationshipProperties
         }
         return Objects.equals(label, that.label) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(informationSupplyChainSegmentGUIDs, that.informationSupplyChainSegmentGUIDs);
+                Objects.equals(iscQualifiedNames, that.iscQualifiedNames);
     }
 
 
@@ -172,6 +172,6 @@ public class SolutionLinkingWireProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), label, description, informationSupplyChainSegmentGUIDs);
+        return Objects.hash(super.hashCode(), label, description, iscQualifiedNames);
     }
 }

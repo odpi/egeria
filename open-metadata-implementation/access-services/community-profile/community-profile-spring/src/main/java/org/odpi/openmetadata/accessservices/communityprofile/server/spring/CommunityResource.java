@@ -261,11 +261,11 @@ public class CommunityResource
      */
     @GetMapping(path = "/person-roles/by-community/{communityGUID}")
 
-    public PersonRolesResponse getRolesForCommunity(@PathVariable String          serverName,
-                                                    @PathVariable String          userId,
-                                                    @PathVariable String          communityGUID,
-                                                    @RequestParam int             startFrom,
-                                                    @RequestParam int             pageSize)
+    public ActorRolesResponse getRolesForCommunity(@PathVariable String          serverName,
+                                                   @PathVariable String          userId,
+                                                   @PathVariable String          communityGUID,
+                                                   @RequestParam int             startFrom,
+                                                   @RequestParam int             pageSize)
     {
         return restAPI.getRolesForCommunity(serverName, userId, communityGUID, startFrom, pageSize);
     }

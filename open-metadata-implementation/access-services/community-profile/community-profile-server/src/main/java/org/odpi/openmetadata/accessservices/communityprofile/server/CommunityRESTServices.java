@@ -650,19 +650,19 @@ public class CommunityRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRolesResponse getRolesForCommunity(String          serverName,
-                                                    String          userId,
-                                                    String          communityGUID,
-                                                    int             startFrom,
-                                                    int             pageSize)
+    public ActorRolesResponse getRolesForCommunity(String          serverName,
+                                                   String          userId,
+                                                   String          communityGUID,
+                                                   int             startFrom,
+                                                   int             pageSize)
     {
         final String methodName         = "getRolesForCommunity";
         final String guidParameterName  = "communityGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRolesResponse response = new PersonRolesResponse();
-        AuditLog            auditLog = null;
+        ActorRolesResponse response = new ActorRolesResponse();
+        AuditLog           auditLog = null;
 
         try
         {

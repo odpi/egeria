@@ -4,12 +4,12 @@ package org.odpi.openmetadata.frameworks.openmetadata.search;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -196,6 +196,90 @@ public class PropertyHelper
 
         return null;
     }
+
+
+    /**
+     * Extract the properties from the element.
+     *
+     * @param relatedElement from the repository
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public RelatedMetadataElementSummary getRelatedElementSummary(RelatedMetadataElement relatedElement,
+                                                                  String                 methodName) throws PropertyServerException
+    {
+        if ((relatedElement != null) && (relatedElement.getElement() != null))
+        {
+            RelatedMetadataElementSummary relatedElementSummary = new RelatedMetadataElementSummary();
+            MetadataElementSummary        elementSummary        = new MetadataElementSummary();
+            ElementHeader                 elementHeader         = new ElementHeader(relatedElement);
+
+            elementHeader.setGUID(relatedElement.getRelationshipGUID());
+
+            relatedElementSummary.setRelationshipHeader(elementHeader);
+            if (relatedElement.getRelationshipProperties() != null)
+            {
+                relatedElementSummary.setRelationshipProperties(relatedElement.getRelationshipProperties().getPropertiesAsStrings());
+            }
+
+            elementHeader = new ElementHeader(relatedElement.getElement());
+            elementHeader.setGUID(relatedElement.getElement().getElementGUID());
+            elementHeader.setClassifications(this.getElementClassifications(relatedElement.getElement().getClassifications()));
+
+            elementSummary.setElementHeader(elementHeader);
+            if (relatedElement.getElement().getElementProperties() != null)
+            {
+                elementSummary.setProperties(relatedElement.getElement().getElementProperties().getPropertiesAsStrings());
+            }
+
+            relatedElementSummary.setRelatedElement(elementSummary);
+            relatedElementSummary.setEffectiveFromTime(relatedElement.getEffectiveFromTime());
+            relatedElementSummary.setEffectiveToTime(relatedElement.getEffectiveToTime());
+            relatedElementSummary.setRelatedElementAtEnd1(relatedElement.getElementAtEnd1());
+
+            return relatedElementSummary;
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the classifications from the element.
+     *
+     * @param attachedClassifications classifications direct from the element
+     * @return list of bean classifications
+     */
+    public List<ElementClassification> getElementClassifications(List<AttachedClassification> attachedClassifications)
+    {
+        List<ElementClassification> beanClassifications = null;
+
+        if (attachedClassifications != null)
+        {
+            beanClassifications = new ArrayList<>();
+
+            for (AttachedClassification attachedClassification : attachedClassifications)
+            {
+                if (attachedClassification != null)
+                {
+                    ElementClassification beanClassification = new ElementClassification(attachedClassification);
+
+                    beanClassification.setClassificationName(attachedClassification.getClassificationName());
+                    beanClassification.setClassificationProperties(this.getElementPropertiesAsMap(attachedClassification.getClassificationProperties()));
+
+                    beanClassifications.add(beanClassification);
+                }
+            }
+
+        }
+
+        return beanClassifications;
+    }
+
+
 
 
     /**

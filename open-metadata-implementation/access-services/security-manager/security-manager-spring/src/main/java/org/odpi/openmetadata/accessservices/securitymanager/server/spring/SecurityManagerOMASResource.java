@@ -440,9 +440,9 @@ public class SecurityManagerOMASResource
      */
     @GetMapping(path = "/person-roles/{personRoleGUID}")
 
-    public PersonRoleResponse getPersonRoleByGUID(@PathVariable String serverName,
-                                                  @PathVariable String userId,
-                                                  @PathVariable String personRoleGUID)
+    public ActorRoleResponse getPersonRoleByGUID(@PathVariable String serverName,
+                                                 @PathVariable String userId,
+                                                 @PathVariable String personRoleGUID)
     {
         return restAPI.getPersonRoleByGUID(serverName, userId, personRoleGUID);
     }
@@ -465,11 +465,11 @@ public class SecurityManagerOMASResource
      */
     @PostMapping(path = "/person-roles/by-name")
 
-    public PersonRolesResponse getPersonRoleByName(@PathVariable String          serverName,
-                                                   @PathVariable String          userId,
-                                                   @RequestParam int             startFrom,
-                                                   @RequestParam int             pageSize,
-                                                   @RequestBody  NameRequestBody requestBody)
+    public ActorRolesResponse getPersonRoleByName(@PathVariable String          serverName,
+                                                  @PathVariable String          userId,
+                                                  @RequestParam int             startFrom,
+                                                  @RequestParam int             pageSize,
+                                                  @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getPersonRoleByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -492,11 +492,11 @@ public class SecurityManagerOMASResource
      */
     @PostMapping(path = "/person-roles/by-search-string")
 
-    public PersonRolesResponse findPersonRole(@PathVariable String                  serverName,
-                                              @PathVariable String                  userId,
-                                              @RequestParam int                     startFrom,
-                                              @RequestParam int                     pageSize,
-                                              @RequestBody  SearchStringRequestBody requestBody)
+    public ActorRolesResponse findPersonRole(@PathVariable String                  serverName,
+                                             @PathVariable String                  userId,
+                                             @RequestParam int                     startFrom,
+                                             @RequestParam int                     pageSize,
+                                             @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findPersonRole(serverName, userId, startFrom, pageSize, requestBody);
     }

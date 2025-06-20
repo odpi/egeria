@@ -7243,22 +7243,38 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a new information supply chain.
      *
+     * @param parentInformationSupplyChainGUID owning information supply chain
      * @param suppliedTypeName type name
+     * @param isParentAnchor is the parent guid the anchor?
+     * @param anchorScopeGUID the anchor scope
      * @param qualifiedName qualified name
      * @param name display name
      * @param description description
      * @param scope scope of responsibilities
      * @param purposes why is it needed
+     * @param owner owner for the Ownership classification
+     * @param ownerTypeName owner type for the Ownership classification
+     * @param ownerPropertyName owner property name for the Ownership classification
+     * @param integrationStyle how is it implemented
+     * @param estimatedVolumetrics estimated volumetrics
      * @param additionalProperties are there any additional properties to add
      * @param extendedProperties any additional properties associated with a subtype
      * @return unique identifier of the new profile
      */
-    public  String addInformationSupplyChain(String              suppliedTypeName,
+    public  String addInformationSupplyChain(String              parentInformationSupplyChainGUID,
+                                             boolean             isParentAnchor,
+                                             String              anchorScopeGUID,
+                                             String              suppliedTypeName,
                                              String              qualifiedName,
                                              String              name,
                                              String              description,
                                              String              scope,
                                              List<String>        purposes,
+                                             String              integrationStyle,
+                                             String              owner,
+                                             String              ownerTypeName,
+                                             String              ownerPropertyName,
+                                             Map<String, String> estimatedVolumetrics,
                                              Map<String, String> additionalProperties,
                                              Map<String, Object> extendedProperties)
     {
@@ -7276,67 +7292,6 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
         properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PURPOSES.name, purposes, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
-        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
-
-        List<Classification> classifications = new ArrayList<>();
-
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, null, methodName));
-
-        EntityDetail entity = archiveHelper.getEntityDetail(typeName,
-                                                            idToGUIDMap.getGUID(qualifiedName),
-                                                            properties,
-                                                            InstanceStatus.ACTIVE,
-                                                            classifications);
-
-        archiveBuilder.addEntity(entity);
-
-        return entity.getGUID();
-    }
-
-
-    /**
-     * Add a new information supply chain segment.
-     *
-     * @param informationSupplyChainGUID owning information supply chain
-     * @param suppliedTypeName type name to use
-     * @param qualifiedName qualified name
-     * @param name display name
-     * @param description description
-     * @param scope scope of responsibilities
-     * @param integrationStyle how is it implemented
-     * @param estimatedVolumetrics estimated volumetrics
-     * @param additionalProperties are there any additional properties to add
-     * @param extendedProperties any additional properties associated with a subtype
-     * @return unique identifier of the new profile
-     */
-    public  String addInformationSupplyChainSegment(String              informationSupplyChainGUID,
-                                                    String              suppliedTypeName,
-                                                    String              qualifiedName,
-                                                    String              name,
-                                                    String              description,
-                                                    String              scope,
-                                                    String              integrationStyle,
-                                                    Map<String, String> estimatedVolumetrics,
-                                                    String              owner,
-                                                    String              ownerTypeName,
-                                                    String              ownerPropertyName,
-                                                    Map<String, String> additionalProperties,
-                                                    Map<String, Object> extendedProperties)
-    {
-        final String methodName = "addInformationSupplyChainSegment";
-
-        String typeName = suppliedTypeName;
-
-        if (typeName == null)
-        {
-            typeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName;
-        }
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.INTEGRATION_STYLE.name, integrationStyle, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ESTIMATED_VOLUMETRICS.name, estimatedVolumetrics, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
@@ -7344,7 +7299,14 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName, null, methodName));
+        if ((parentInformationSupplyChainGUID != null) && (isParentAnchor))
+        {
+            classifications.add(this.getAnchorClassification(parentInformationSupplyChainGUID, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, anchorScopeGUID, methodName));
+        }
+        else
+        {
+            classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, anchorScopeGUID, methodName));
+        }
 
         if (owner != null)
         {
@@ -7359,9 +7321,9 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addEntity(entity);
 
-        if (informationSupplyChainGUID != null)
+        if (parentInformationSupplyChainGUID != null)
         {
-            addInformationSupplyChainComposition(informationSupplyChainGUID, entity.getGUID());
+            addInformationSupplyChainComposition(parentInformationSupplyChainGUID, entity.getGUID());
         }
 
         return entity.getGUID();
@@ -7650,20 +7612,20 @@ public class SimpleCatalogArchiveHelper
      * @param solutionComponent2GUID guid of component at end 2
      * @param label used in lineage graphs
      * @param description explains the progression of control between components
-     * @param informationSupplyChainSegmentGUIDs optional list of information supply chain segments that his link is part of
+     * @param iscQualifiedNamesGUIDs optional list of information supply chain segments that his link is part of
      */
     public void addSolutionLinkingWireRelationship(String       solutionComponent1GUID,
                                                    String       solutionComponent2GUID,
                                                    String       label,
                                                    String       description,
-                                                   List<String> informationSupplyChainSegmentGUIDs)
+                                                   List<String> iscQualifiedNamesGUIDs)
     {
         final String methodName = "addSolutionLinkingWireRelationship";
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponent1GUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponent2GUID));
 
-        InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, null, OpenMetadataProperty.INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS.name, informationSupplyChainSegmentGUIDs, methodName);
+        InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ISC_QUALIFIED_NAMES.name, iscQualifiedNamesGUIDs, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LABEL.name, label, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 

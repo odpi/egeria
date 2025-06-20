@@ -711,19 +711,19 @@ public class ProjectManagementRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRolesResponse getProjectManagementRoles(String          serverName,
-                                                         String          userId,
-                                                         String          projectGUID,
-                                                         int             startFrom,
-                                                         int             pageSize)
+    public ActorRolesResponse getProjectManagementRoles(String          serverName,
+                                                        String          userId,
+                                                        String          projectGUID,
+                                                        int             startFrom,
+                                                        int             pageSize)
     {
         final String methodName         = "getProjectManagementRoles";
         final String guidParameterName  = "projectGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRolesResponse response = new PersonRolesResponse();
-        AuditLog            auditLog = null;
+        ActorRolesResponse response = new ActorRolesResponse();
+        AuditLog           auditLog = null;
 
         try
         {

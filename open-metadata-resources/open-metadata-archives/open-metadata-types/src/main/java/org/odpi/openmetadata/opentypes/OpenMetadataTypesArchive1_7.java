@@ -926,7 +926,6 @@ public class OpenMetadataTypesArchive1_7
     private void add0720InformationSupplyChains()
     {
         this.archiveBuilder.addEntityDef(getInformationSupplyChainEntity());
-        this.archiveBuilder.addEntityDef(getInformationSupplyChainSegmentEntity());
         this.archiveBuilder.addRelationshipDef(getInformationSupplyChainCompositionRelationship());
     }
 
@@ -945,41 +944,6 @@ public class OpenMetadataTypesArchive1_7
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSES));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
-        validInstanceStatusList.add(InstanceStatus.DRAFT);
-        validInstanceStatusList.add(InstanceStatus.PREPARED);
-        validInstanceStatusList.add(InstanceStatus.PROPOSED);
-        validInstanceStatusList.add(InstanceStatus.APPROVED);
-        validInstanceStatusList.add(InstanceStatus.REJECTED);
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DISABLED);
-        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
-        validInstanceStatusList.add(InstanceStatus.OTHER);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
-        entityDef.setValidInstanceStatusList(validInstanceStatusList);
-
-        entityDef.setInitialStatus(InstanceStatus.DRAFT);
-
-        return entityDef;
-    }
-
-
-    private EntityDef getInformationSupplyChainSegmentEntity()
-    {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTEGRATION_STYLE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ESTIMATED_VOLUMETRICS));
 
@@ -1031,10 +995,10 @@ public class OpenMetadataTypesArchive1_7
          * Set up end 2.
          */
         final String                     end2AttributeName            = "segments";
-        final String                     end2AttributeDescription     = "A role performed by this person.";
+        final String                     end2AttributeDescription     = "Nested information supply chains.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -1262,7 +1226,7 @@ public class OpenMetadataTypesArchive1_7
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAMES));
 
         relationshipDef.setPropertiesDefinition(properties);
 

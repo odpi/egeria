@@ -105,29 +105,6 @@ Content-Type: application/json
 # Specific Stewardship Queries
 #==================================================
 
-###
-# @name getDataFieldClassifiedElements
-# Return information about the elements classified with the DataFieldValues classification.
-#
-# https://egeria-project.org/types/3/0340-Dictionary/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-data-field?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "DataFieldQueryProperties",
-    "effectiveTime" : "{{$isoTimestamp}}",
-    "asOfTime" : "{{$isoTimestamp}}",
-    "openMetadataTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
-    "sequencingProperty" : "???",
-    "sequencingOrder" : "LAST_UPDATE_RECENT",
-    "defaultValue" : "???",
-    "sampleValues" : [ "???" ],
-    "dataPattern" : [ "???" ],
-    "namePattern" : [ "???" ]
-}
-
 
 ###
 # @name getConfidenceClassifiedElements

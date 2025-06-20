@@ -1,4 +1,6 @@
 # Egeria-actor-manager-view-service
+# The Actor Manager OMVS provides APIs for supporting the creation and editing of actor profiles, 
+#actor roles and user identities.
 
 @baseURL=https://localhost:9443
 @viewServer=view-server
@@ -21,28 +23,29 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# Work with Governance Definitions
-# https://egeria-project.org/concepts/governance-definition
+# Work with Actor Profiles
+# https://egeria-project.org/concepts/actor-profile
 
-@governanceDefinitionGUID=add guid here
+@actorProfileGUID=add guid here
+
 
 ###
-# @name createGovernanceDefinition (with parent)
-# Create an anchored governance definition linked to a parent.  It may be of type:
-## * BusinessImperative
-## * RegulationArticle
-## * Threat
-## * GovernancePrinciple
-## * GovernanceObligation
-## * GovernanceApproach
-## * GovernanceProcessingPurpose
-# The type is added to the "typeName" property,
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
+# @name createActorProfile
+# Create a actor profile.
+#
+# Request body provides             properties for the actor profile.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewGovernanceDefinitionRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -64,674 +67,38 @@ Content-Type: application/json
   },
   "parentAtEnd1": false,
   "properties": {
-    "class" : "GovernanceDefinitionProperties",
-    "typeName" : "enter the type of the governance definition",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
+    "class" : "ActorProfileProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "name": "add short name here",
     "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
     "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createGovernanceStrategy (with parent)
-# Create an anchored governance definition linked to a parent of type GovernanceStrategy
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewGovernanceDefinitionRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "GovernanceStrategyProperties",
-    "typeName" : "GovernanceStrategy",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "businessImperatives" : [],
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createRegulation (with parent)
-# Create an anchored governance definition linked to a parent of type Regulation
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewGovernanceDefinitionRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "RegulationProperties",
-    "typeName" : "Regulation",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "jurisdiction" : "",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "initialStatus": "DRAFT"
+  }
 }
 
 
 ###
-# @name createGovernanceControl (with parent)
-# Create a governance control definition. It may be of type:
-## * GovernanceRule
-## * ServiceLevelObjective
-## * GovernanceProcess
-## * GoveranceResponsibility
-## * GovernanceProcedure
-## * SecurityAccessControl
-# The type is added to the "typeName" property.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewGovernanceDefinitionRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "GovernanceControlProperties",
-    "typeName" : "enter the type of the governance definition",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implementationDescription" : "Describe how this control will be implemented",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createSecurityGroup (with parent)
-# Create an anchored governance definition linked to a parent of type SecurityGroup
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewGovernanceDefinitionRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "SecurityGroupProperties",
-    "typeName" : "SecurityGroup",
-    "domainIdentifier": 0,
-    "distinguishedName" : "",
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implementationDescription" : "Describe how this control will be implemented",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createNamingStandardRule (with parent)
-# Create an anchored governance definition linked to a parent of type NamingStandardRule
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewGovernanceDefinitionRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "NamingStandardRuleProperties",
-    "typeName" : "NamingStandardRule",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "implementationDescription" : "Describe how this control will be implemented",
-    "namePatterns" : [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createCertificationType (with parent)
-# Create an anchored governance definition of type CertificationType, linked to a parent.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewGovernanceDefinitionRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "CertificationTypeProperties",
-    "typeName" : "CertificationType",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "details" : "",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createLicenseType (with parent)
-# Create an anchored governance definition of type LicenseType, linked to a parent.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewGovernanceDefinitionRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "LicenseTypeProperties",
-    "typeName" : "LicenseType",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "details" : "",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "initialStatus": "DRAFT"
-}
-
-
-
-
-###
-# @name createGovernanceDefinition (simple)
-# Create a governance definition. It may be of type:
-## * BusinessImperative
-## * RegulationArticle
-## * Threat
-## * GovernancePrinciple
-## * GovernanceObligation
-## * GovernanceApproach
-## * GovernanceProcessingPurpose
-# The type is added to the "typeName" property.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "GovernanceDefinitionProperties",
-    "typeName" : "enter the type of the governance definition",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createGovernanceStrategy (simple)
-# Create a governance definition of type GovernanceStrategy
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "GovernanceStrategyProperties",
-    "typeName" : "GovernanceStrategy",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "businessImperatives" : [],
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createRegulation (simple)
-# Create a governance definition of type Regulation
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "RegulationProperties",
-    "typeName" : "Regulation",
-    "domainIdentifier": 0,
-    "jurisdiction" : "",
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createGovernanceControl (simple)
-# Create a governance control definition. It may be of type:
-## * GovernanceRule
-## * ServiceLevelObjective
-## * GovernanceProcess
-## * GoveranceResponsibility
-## * GovernanceProcedure
-## * SecurityAccessControl
-# The type is added to the "typeName" property.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "GovernanceDefinitionProperties",
-    "typeName" : "enter the type of the governance definition",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "implementationDescription": "",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createSecurityGroup (simple)
-# Create a governance control definition of type SecurityGroup.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "SecurityGroupProperties",
-    "typeName" : "SecurityGroup",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "distinguishedName": "",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "implementationDescription": "",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createNamingStandardRule (simple)
-# Create a governance control definition of type NamingStandardsRule
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "NamingStandardRuleProperties",
-    "typeName" : "NamingStandardRule",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "implementationDescription": "",
-    "namePatterns": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createCertificationType (simple)
-# Create a governance definition of type CertificationType
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "CertificationTypeProperties",
-    "typeName" : "CertificationType",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "details" : "",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createLicenseType (simple)
-# Create a governance definition of type LicenseType.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "LicenseTypeProperties",
-    "typeName" : "LicenseType",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "details" : "",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-
-
-###
-# @name createGovernanceDefinitionFromTemplate
-# Create a new metadata element to represent a governance definition using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/from-template
+# @name createActorProfileFromTemplate
+# Create a new metadata element to represent a actor profile using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new element.
+#
+# Request body provides properties that override the template
+#
+# Returns unique identifier of the new metadata element
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/from-template
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -775,29 +142,586 @@ Content-Type: application/json
 }
 
 
-
 ###
-# @name updateGovernanceDefinition
-# Update the properties of a governance definition.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/update?replaceAllProperties=false
+# @name updateActorProfile
+# Update the properties of a actor profile.
+#
+# @param actorProfileGUID unique identifier of the actor profile (returned from create)
+# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+#                          the individual properties specified on the request.
+# Request body provides     properties for the new element.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateGovernanceDefinitionRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
-    "class" : "GovernanceDefinitionProperties",
-    "typeName" : "Add type name here",
+    "class" : "ActorProfileProperties",
+    "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
+    "name": "add short name here",
     "description": "add description here",
-    "namespace": "add namespace for this structure",
-    "versionIdentifier": "add version for this structure",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+
+@locationGUID=add guid here
+
+###
+# @name linkLocationToProfile
+# Attach a profile to a location.
+#
+# @param locationGUID           unique identifier of the location
+# @param actorProfileGUID       unique identifier of the actor profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/profile-locations/{{locationGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ProfileLocationProperties",
+    "associationType": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachLocationFromProfile
+# Detach an actor profile from a location.
+#
+# @param actorProfileGUID       unique identifier of the actor profile
+# @param locationGUID           unique identifier of the location
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/profile-locations/{{locationGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@personOneGUID=add guid here
+@personTwoGUID=add guid here
+
+###
+# @name linkPeerPerson
+# Attach a person profile to one of its peers.
+#
+# @param personOneGUID          unique identifier of the first person profile
+# @param personTwoGUID          unique identifier of the second person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "RelationshipProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachSupportingDefinition
+# Detach a person profile from one of its peers.
+#
+# @param personOneGUID          unique identifier of the first person profile
+# @param personTwoGUID          unique identifier of the second person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@superTeamGUID=add guid here
+@subteamGUID=add guid here
+
+###
+# @name linkTeamStructure
+# Attach a super team to a subteam.
+#
+# @param superTeamGUID          unique identifier of the super team
+# @param subteamGUID            unique identifier of the subteam
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{superTeamGUID}}/team-structures/{{subteamGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "TeamStructureProperties",
+    "delegationEscalationAuthority": true,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachTeamStructure
+# Detach a super team from a subteam.
+#
+# @param superTeamGUID          unique identifier of the super team
+# @param subteamGUID            unique identifier of the subteam
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{superTeamGUID}}/team-structures/{{subteamGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@assetGUID=add guid here
+@itProfileGUID=add guid here
+
+###
+# @name linkAssetToProfile
+# Attach an asset to an IT profile.
+#
+# @param assetGUID       unique identifier of the asset
+# @param itProfileGUID            unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "RelationshipProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name detachAssetFromProfile
+# Detach an asset from an IT profile.
+#
+# @param assetGUID       unique identifier of the asset
+# @param itProfileGUID            unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@teamGUID=add guid here
+
+###
+# @name linkTeamToMembershipRole
+# Attach a team to its membership role.
+#
+# @param teamGUID               unique identifier of the team
+# @param personRoleGUID         unique identifier of the associated person role
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{teamGUID}}/team-membership-roles/{{personRoleGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "TeamMembershipProperties",
+    "positionName": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachTeamFromMembershipRole
+# Detach a team profile from its membership role.
+#
+# @param teamGUID               unique identifier of the team
+# @param personRoleGUID         unique identifier of the associated person role
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{teamGUID}}/team-membership-roles/{{personRoleGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkTeamToLeadershipRole
+# Attach a team to its leadership role.
+#
+# @param teamGUID               unique identifier of the team
+# @param personRoleGUID         unique identifier of the associated person role
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{teamGUID}}/team-leadership-roles/{{personRoleGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "TeamLeadershipProperties",
+    "positionName": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachTeamFromLeadershipRole
+# Detach a team profile from its leadership role.
+#
+# @param teamGUID               unique identifier of the team
+# @param personRoleGUID         unique identifier of the associated person role
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{teamGUID}}/team-leadership-roles/{{personRoleGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+ {
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteActorProfile
+# Delete a actor profile.
+#
+# @param actorProfileGUID  unique identifier of the element to delete
+# @param cascadedDelete can actor profiles be deleted if data fields are attached?
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getActorProfilesByName
+# Returns the list of actor profiles with a particular name.
+#
+# @param startFrom paging start point
+# @param pageSize maximum results that can be returned
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName",
+  "filter" : "Add name here"
+}
+
+
+###
+# @name findActorProfiles
+# Retrieve the list of actor profile metadata elements that contain the search string.
+#
+# @param startsWith does the value start with the supplied string?
+# @param endsWith does the value end with the supplied string?
+# @param ignoreCase should the search ignore case?
+# @param startFrom paging start point
+# @param pageSize maximum results that can be returned
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName",
+  "filter" : "Add name here"
+}
+
+
+###
+# @name getActorProfileByGUID
+# Return the properties of a specific actor profile.
+#
+# @param actorProfileGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "AnyTimeRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name createActorRole
+# Create a actor role.
+#
+# Request body provides             properties for the actor role.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "ActorRoleProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "name":"add name here",
+    "identifier": "add name here",
+    "description": "add description here",
+    "scope": "add scope here",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -813,49 +737,140 @@ Content-Type: application/json
 
 
 ###
-# @name updateGovernanceDefinitionStatus
-# Update the status of a governance definition.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/update-status
+# @name createActorRoleFromTemplate
+# Create a new metadata element to represent a actor role using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new element.
+#
+# Request body provides properties that override the template
+#
+# Returns unique identifier of the new metadata element
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/from-template
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateGovernanceDefinitionRequestBody",
+  "class" : "TemplateRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
-  "status": "ACTIVE"
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
 }
 
-###
-
-@governanceDefinitionOneGUID=add guid here
-@governanceDefinitionTwoGUID=add guid here
-@relationshipTypeName=add type name here
 
 ###
-# @name linkPeerDefinitions
-# Attach two peer governance definitions. Request body is optional.
-# The relationshipTypeNme can be:
-## * GovernanceDriverLink between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat).
-## * GovernancePolicyLink between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
-## * GovernanceControlLink between governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
+# @name updateActorRole
+# Update the properties of a actor role.
+#
+# @param actorRoleGUID unique identifier of the actor role (returned from create)
+# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+#                          the individual properties specified on the request.
+# Request body provides     properties for the new element.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "PeerDefinitionRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
-    "class": "PeerDefinitionProperties",
-    "description": "",
+    "class" : "ActorRoleProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "name":"add name here",
+    "identifier": "add name here",
+    "description": "add description here",
+    "scope": "add scope here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+
+@personRoleGUID=add guid here
+@personProfileGUID=add guid here
+
+###
+# @name linkPersonRoleToProfile
+# Attach a person role to a person profile.
+#
+# @param personRoleGUID       unique identifier of the person role
+# @param personProfileGUID            unique identifier of the person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "PersonRoleAppointmentProperties",
+    "isPublic": true,
+    "expectedTimeAllocationPercent": 100,
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   }
@@ -863,10 +878,19 @@ Content-Type: application/json
 
 
 ###
-
-# @name detachPeerDefinitions
-# Detach a governance definition from one of its peers. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/detach
+# @name detachPersonRoleFromProfile
+# Detach a person role from a profile.
+#
+# @param personRoleGUID       unique identifier of the person role
+# @param personProfileGUID            unique identifier of the person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -879,29 +903,38 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
 
+@teamRoleGUID=add guid here
+@teamProfileGUID=add guid here
 
 ###
-# @name linkPeerDefinitions
-# Attach two peer governance definitions. Request body is optional.
-# The relationshipTypeNme can be:
-## * GovernanceDriverLink between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat).
-## * GovernancePolicyLink between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
-## * GovernanceControlLink between governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
+# @name linkTeamRoleToProfile
+# Attach a team role to a team profile.
+#
+# @param teamRoleGUID           unique identifier of the team role
+# @param teamProfileGUID        unique identifier of the team profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "PeerDefinitionRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
-    "class": "PeerDefinitionProperties",
-    "description": "",
+    "class": "TeamRoleAppointmentProperties",
+    "expectedTimeAllocationPercent": 100,
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   }
@@ -909,10 +942,19 @@ Content-Type: application/json
 
 
 ###
-
-# @name detachPeerDefinitions
-# Detach a governance definition from one of its peers. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/detach
+# @name Detach a team role from a team profile.
+# Detach a team role from a team profile.
+#
+# @param teamRoleGUID           unique identifier of the team role
+# @param teamProfileGUID        unique identifier of the team profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -926,28 +968,32 @@ Content-Type: application/json
 }
 
 
-
-
 ###
-# @name attachSupportingDefinition
-# Attach a supporting governance definition. Request body is optional.
-# The relationshipTypeNme can be:
-## * GovernanceResponse between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat) and governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
-## * GovernanceImplementation between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach) and governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/supporting-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
+# @name linkITProfileRoleToProfile
+# Attach an IT profile role to an IT profile.
+#
+# @param itProfileRoleGUID      unique identifier of the IT profile role
+# @param itProfileGUID          unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "SupportingDefinitionRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
-    "class": "SupportingDefinitionProperties",
-    "rationale": "",
+    "class": "ITProfileRoleAppointmentProperties",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   }
@@ -955,82 +1001,19 @@ Content-Type: application/json
 
 
 ###
-
-# @name detachSupportingDefinition
-# Detach a governance definition from a supporting governance definition. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionOneGUID}}/supporting-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-
-
-
-###
-
-@technicalControlGUID=add guid here
-@implementationGUID=add guid here
-
-###
-# @name linkDefinitionImplementation
-# Attach a governance definition to its implementation. Request body is optional.
-# The relationshipTypeNme can be:
-## * GovernanceRuleImplementation between GovernanceRule and DeployedSoftwareComponent.
-## * GovernanceProcessImplementation between GovernanceProcess and Process.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{technicalControlGUID}}/governance-implementation/{{relationshipTypeName}}/{{implementationGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "GovernanceImplementationRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "GovernanceImplementationProperties",
-    "notes": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-
-# @name detachDefinitionImplementation
-# Detach a governance definition from its implementation. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{technicalControlGUID}}/governance-implementation/{{relationshipTypeName}}/{{implementationGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-
-
-
-###
-# @name deleteGovernanceDefinition
-# Delete a governance definition. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/delete
+# @name detachITProfileRoleFromProfile
+# Detach an IT profile role from an IT profile.
+#
+# @param itProfileRoleGUID      unique identifier of the IT profile role
+# @param itProfileGUID          unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1045,17 +1028,46 @@ Content-Type: application/json
 
 
 ###
-# @name findAllGovernanceDefinitions
-# Retrieve the list of governance definition metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+# @name deleteActorRole
+# Delete a actor role.
+#
+# @param actorRoleGUID  unique identifier of the element to delete
+# @param cascadedDelete can actor roles be deleted if data fields are attached?
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 
 ###
-# @name findAllGovernanceDefinitions - with full request body
-# Retrieve the list of governance definition metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+# @name getActorRolesByName
+# Returns the list of actor roles with a particular name.
+#
+# @param startFrom paging start point
+# @param pageSize maximum results that can be returned
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1067,59 +1079,28 @@ Content-Type: application/json
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
-}
-
-
-###
-# @name findGovernanceDefinitions
-# Retrieve the list of governance definition metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "Add name here"
-}
-
-
-###
-# @name findGovernanceDefinitions - with full request body
-# Retrieve the list of governance definition metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FilterRequestBody",
- "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
   "sequencingProperty" : "qualifiedName",
   "filter" : "Add name here"
 }
 
-###
-
-# @name getGovernanceDefinitionsByName
-# Returns the list of governance definitions with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-name?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "Add name here"
-}
-
 
 ###
-
-# @name getGovernanceDefinitionsByName - with full request body
-# Returns the list of governance definitions with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/by-name?startFrom=0&pageSize=10
+# @name findActorRoles
+# Retrieve the list of actor role metadata elements that contain the search string.
+#
+# @param startsWith does the value start with the supplied string?
+# @param endsWith does the value end with the supplied string?
+# @param ignoreCase should the search ignore case?
+# @param startFrom paging start point
+# @param pageSize maximum results that can be returned
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1137,16 +1118,18 @@ Content-Type: application/json
 
 
 ###
-# @name getGovernanceDefinitionByGUID
-# Return the properties of a specific governance definition.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/retrieve
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# @name getGovernanceDefinitionByGUID - with request body
-# Return the properties of a specific governance definition.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/governance-definitions/{{governanceDefinitionGUID}}/retrieve
+# @name getActorRoleByGUID
+# Return the properties of a specific actor role.
+#
+# @param actorRoleGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{actorRoleGUID}}/retrieve"})
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1160,7 +1143,396 @@ Content-Type: application/json
 
 ###
 
+@userIdentityGUID=add guid here
+
+###
+# @name createUserIdentity
+# Create a user identity.
+#
+# Request body provides             properties for the user identity.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "UserIdentityProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "userId":"add name here",
+    "distinguishedName": "add name here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
 
 
+###
+# @name createUserIdentityFromTemplate
+# Create a new metadata element to represent a user identity using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new element.
+#
+# Request body provides properties that override the template
+#
+# Returns unique identifier of the new metadata element
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
 
 
+###
+# @name updateUserIdentity
+# Update the properties of a user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity (returned from create)
+# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+#                          the individual properties specified on the request.
+# Request body provides     properties for the new element.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class" : "UserIdentityProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "userId":"add name here",
+    "distinguishedName": "add name here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name linkIdentityToProfile
+# Attach a profile to a user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# @param profileGUID unique identifier of the actor profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/profile-identity/{{actorProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ProfileIdentityProperties",
+    "roleTypeName": "",
+    "roleGUID": "",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachProfileIdentity
+# Detach an actor profile from a user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# @param profileGUID unique identifier of the actor profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/profile-identity/{{actorProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+ {
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name addSecurityGroupMembership
+# Add the SecurityGroupMembership classification to the user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/security-group-memberships/classify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+{
+  "class" : "ClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "SecurityGroupMembershipProperties",
+    "groups": [""],
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name removeAllSecurityGroupMembership
+# Remove the SecurityGroupMembership classification from the user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/security-group-memberships/declassify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteUserIdentity
+# Delete a user identity.
+#
+# @param userIdentityGUID  unique identifier of the element to delete
+# @param cascadedDelete can user identities be deleted if data fields are attached?
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getUserIdentitiesByName
+# Returns the list of user identities with a particular name.
+#
+# @param startFrom paging start point
+# @param pageSize maximum results that can be returned
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName",
+  "filter" : "Add name here"
+}
+
+
+###
+# @name findUserIdentities
+# Retrieve the list of user identity metadata elements that contain the search string.
+#
+# @param startsWith does the value start with the supplied string?
+# @param endsWith does the value end with the supplied string?
+# @param ignoreCase should the search ignore case?
+# @param startFrom paging start point
+# @param pageSize maximum results that can be returned
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName",
+  "filter" : "Add name here"
+}
+
+
+###
+# @name getUserIdentityByGUID
+# Return the properties of a specific user identity.
+#
+# @param userIdentityGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "AnyTimeRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

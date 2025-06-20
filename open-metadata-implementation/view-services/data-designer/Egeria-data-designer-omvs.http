@@ -36,7 +36,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewDataStructureRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -146,7 +146,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateDataStructureRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -177,7 +177,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MemberDataFieldRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -362,7 +362,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewDataFieldRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -500,7 +500,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateDataFieldRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -542,7 +542,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MemberDataFieldRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -727,7 +727,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewDataClassRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -876,7 +876,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateDataClassRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -921,7 +921,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -952,12 +952,12 @@ Content-Type: application/json
 ###
 # @name linkSpecializedDataClass
 #  Connect two data classes to show that one provides a more specialist evaluation. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specializeddata-classes/{{childDataClassGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specialized-data-classes/{{childDataClassGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -970,7 +970,7 @@ Content-Type: application/json
 
 # @name linkSpecializedDataClass
 # Detach two data classes from one another. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specializeddata-classes/{{childDataClassGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specialized-data-classes/{{childDataClassGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1132,7 +1132,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1169,7 +1169,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1206,7 +1206,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

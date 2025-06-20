@@ -2446,12 +2446,7 @@ public enum OpenMetadataProperty
      */
     TRANSFORMATION("transformation", DataType.STRING.getName(), "Transformation process used to create the refinement.", null, "b2fa3b21-a298-4007-992f-07b3215ba698"),
 
-    /**
-     * Unique identifier of information supply chain segments that this wire belongs to.
-     */
-    INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS("informationSupplyChainSegmentGUIDs", DataType.ARRAY_STRING.getName(), "Unique identifier of information supply chain segments that this wire belongs to.", null, "71916c51-d9f7-431b-b697-528f3ba2dc80"),
-
-    /**
+   /**
      * Which way is data flowing?
      */
     DIRECTION("direction", SolutionPortDirection.getOpenTypeName(), "Which way is data flowing?", SolutionPortDirection.INPUT.getName(), "0c42037e-0e69-40dc-b8f8-d9ccd4a0d315"),
@@ -2470,6 +2465,11 @@ public enum OpenMetadataProperty
      * Unique name for the element.
      */
     ISC_QUALIFIED_NAME("iscQualifiedName", DataType.STRING.getName(), "Unique name for the associated Information Supply Chain.", "InformationSupplyChain:Monthly Reporting", "705bec02-411a-4a92-9566-6a67bf5a612b"),
+
+    /**
+     * List of unique names of the information supply chains that this wire belongs to.
+     */
+    ISC_QUALIFIED_NAMES("iscQualifiedNames", DataType.ARRAY_STRING.getName(), "List of unique names of the information supply chains that this wire belongs to.", null, "71916c51-d9f7-431b-b697-528f3ba2dc80"),
 
     /**
      * Placeholder for a query.

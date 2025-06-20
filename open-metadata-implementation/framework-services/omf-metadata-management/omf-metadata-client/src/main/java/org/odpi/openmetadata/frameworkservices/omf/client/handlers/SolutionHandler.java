@@ -23,7 +23,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.Soluti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainSegmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -329,160 +328,13 @@ public class SolutionHandler
 
 
     /**
-     * Create a new information supply chain segment that is anchored from an information supply chain.
-     *
-     * @param userId                 userId of user making request.
-     * @param externalSourceGUID      unique identifier of the software capability that owns this element
-     * @param externalSourceName      unique name of the software capability that owns this element
-     * @param properties             properties for the new element.
-     * @param informationSupplyChainGUID unique identifier of optional parent information supply chain
-     * @param forLineage the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     *
-     * @return unique identifier of the newly created element
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public String createInformationSupplyChainSegment(String                                  userId,
-                                                      String                                  externalSourceGUID,
-                                                      String                                  externalSourceName,
-                                                      InformationSupplyChainSegmentProperties properties,
-                                                      String                                  informationSupplyChainGUID,
-                                                      boolean                                 forLineage,
-                                                      boolean                                 forDuplicateProcessing,
-                                                      Date                                    effectiveTime) throws InvalidParameterException,
-                                                                                                                    PropertyServerException,
-                                                                                                                    UserNotAuthorizedException
-    {
-        final String methodName = "createInformationSupplyChain";
-        final String propertiesName = "properties";
-        final String qualifiedNameParameterName = "properties.qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesName, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        String elementTypeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName;
-
-        if (properties.getTypeName() != null)
-        {
-            elementTypeName = properties.getTypeName();
-        }
-
-        if (informationSupplyChainGUID != null)
-        {
-            return openMetadataStoreClient.createMetadataElementInStore(userId,
-                                                                        externalSourceGUID,
-                                                                        externalSourceName,
-                                                                        elementTypeName,
-                                                                        ElementStatus.ACTIVE,
-                                                                        null,
-                                                                        informationSupplyChainGUID,
-                                                                        false,
-                                                                        null,
-                                                                        properties.getEffectiveFrom(),
-                                                                        properties.getEffectiveTo(),
-                                                                        this.getElementProperties(properties),
-                                                                        informationSupplyChainGUID,
-                                                                        OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
-                                                                        null,
-                                                                        true,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        effectiveTime);
-        }
-        else
-        {
-            return openMetadataStoreClient.createMetadataElementInStore(userId,
-                                                                        externalSourceGUID,
-                                                                        externalSourceName,
-                                                                        elementTypeName,
-                                                                        ElementStatus.ACTIVE,
-                                                                        null,
-                                                                        null,
-                                                                        true,
-                                                                        null,
-                                                                        properties.getEffectiveFrom(),
-                                                                        properties.getEffectiveTo(),
-                                                                        this.getElementProperties(properties),
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        true,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        effectiveTime);
-        }
-    }
-
-
-    /**
-     * Update the properties of an information supply chain.
-     *
-     * @param userId                 userId of user making request.
-     * @param externalSourceGUID      unique identifier of the software capability that owns this element
-     * @param externalSourceName      unique name of the software capability that owns this element
-     * @param segmentGUID         unique identifier of the information supply chain segment (returned from create)
-     * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                               the individual properties specified on the request.
-     * @param properties             properties for the element.
-     * @param forLineage the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void   updateInformationSupplyChainSegment(String                                  userId,
-                                                      String                                  externalSourceGUID,
-                                                      String                                  externalSourceName,
-                                                      String                                  segmentGUID,
-                                                      boolean                                 replaceAllProperties,
-                                                      InformationSupplyChainSegmentProperties properties,
-                                                      boolean                                 forLineage,
-                                                      boolean                                 forDuplicateProcessing,
-                                                      Date                                    effectiveTime) throws InvalidParameterException,
-                                                                                                                    PropertyServerException,
-                                                                                                                    UserNotAuthorizedException
-    {
-        final String methodName = "updateInformationSupplyChainSegment";
-        final String propertiesName = "properties";
-        final String qualifiedNameParameterName = "properties.qualifiedName";
-        final String guidParameterName = "segmentGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(segmentGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesName, methodName);
-
-        if (replaceAllProperties)
-        {
-            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-        }
-
-        openMetadataStoreClient.updateMetadataElementInStore(userId,
-                                                             externalSourceGUID,
-                                                             externalSourceName,
-                                                             segmentGUID,
-                                                             replaceAllProperties,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             this.getElementProperties(properties),
-                                                             effectiveTime);
-    }
-
-
-    /**
-     * Connect two information supply chain segments.
+     * Connect two peers in an information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.
      *
      * @param userId          userId of user making request
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
-     * @param segment1GUID  unique identifier of the first segment
-     * @param segment2GUID      unique identifier of the second segment
+     * @param peerOneGUID  unique identifier of the end one element in the relationship
+     * @param peerTwoGUID  unique identifier of the end two element in the relationship
      * @param linkProperties   description of the relationship.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -492,25 +344,25 @@ public class SolutionHandler
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkSegments(String                               userId,
-                             String                               externalSourceGUID,
-                             String                               externalSourceName,
-                             String                               segment1GUID,
-                             String                               segment2GUID,
-                             InformationSupplyChainLinkProperties linkProperties,
-                             boolean                              forLineage,
-                             boolean                              forDuplicateProcessing,
-                             Date                                 effectiveTime) throws InvalidParameterException,
+    public void linkPeersInInformationSupplyChain(String                               userId,
+                                                  String                               externalSourceGUID,
+                                                  String                               externalSourceName,
+                                                  String                               peerOneGUID,
+                                                  String                               peerTwoGUID,
+                                                  InformationSupplyChainLinkProperties linkProperties,
+                                                  boolean                              forLineage,
+                                                  boolean                              forDuplicateProcessing,
+                                                  Date                                 effectiveTime) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
-        final String methodName = "linkSegments";
-        final String end1GUIDParameterName = "segment1GUID";
-        final String end2GUIDParameterName = "segment2GUID";
+        final String methodName = "linkPeersInInformationSupplyChain";
+        final String end1GUIDParameterName = "peerOneGUID";
+        final String end2GUIDParameterName = "peerTwoGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(segment1GUID, end1GUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(segment2GUID, end2GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(peerOneGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(peerTwoGUID, end2GUIDParameterName, methodName);
 
         if (linkProperties != null)
         {
@@ -518,8 +370,8 @@ public class SolutionHandler
                                                                  externalSourceGUID,
                                                                  externalSourceName,
                                                                  OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
-                                                                 segment1GUID,
-                                                                 segment2GUID,
+                                                                 peerOneGUID,
+                                                                 peerTwoGUID,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  linkProperties.getEffectiveFrom(),
@@ -533,8 +385,8 @@ public class SolutionHandler
                                                                  externalSourceGUID,
                                                                  externalSourceName,
                                                                  OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
-                                                                 segment1GUID,
-                                                                 segment2GUID,
+                                                                 peerOneGUID,
+                                                                 peerTwoGUID,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  null,
@@ -546,13 +398,13 @@ public class SolutionHandler
 
 
     /**
-     * Detach two information supply chain segments from one another.
+     * Detach two peers in an information supply chain from one another.    The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.
      *
      * @param userId          userId of user making request.
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
-     * @param segment1GUID  unique identifier of the first segment.
-     * @param segment2GUID      unique identifier of the second segment.
+     * @param peerOneGUID  unique identifier of the end one element in the relationship
+     * @param peerTwoGUID  unique identifier of the end two element in the relationship
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -561,29 +413,29 @@ public class SolutionHandler
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachSegments(String  userId,
-                               String  externalSourceGUID,
-                               String  externalSourceName,
-                               String  segment1GUID,
-                               String  segment2GUID,
-                               boolean forLineage,
-                               boolean forDuplicateProcessing,
-                               Date    effectiveTime) throws InvalidParameterException,
+    public void unlinkPeersInInformationSupplyChain(String  userId,
+                                                    String  externalSourceGUID,
+                                                    String  externalSourceName,
+                                                    String  peerOneGUID,
+                                                    String  peerTwoGUID,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
     {
-        final String methodName = "detachSegments";
+        final String methodName = "unlinkPeersInInformationSupplyChain";
 
-        final String end1GUIDParameterName = "segment1GUID";
-        final String end2GUIDParameterName = "segment2GUID";
+        final String end1GUIDParameterName = "peerOneGUID";
+        final String end2GUIDParameterName = "peerTwoGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(segment1GUID, end1GUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(segment2GUID, end2GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(peerOneGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(peerTwoGUID, end2GUIDParameterName, methodName);
 
         OpenMetadataRelationshipList relationshipList = openMetadataStoreClient.getMetadataElementRelationships(userId,
-                                                                                                                segment1GUID,
-                                                                                                                segment2GUID,
+                                                                                                                peerOneGUID,
+                                                                                                                peerTwoGUID,
                                                                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
                                                                                                                 null,
                                                                                                                 null,
@@ -601,7 +453,7 @@ public class SolutionHandler
             {
                 if (relationship != null)
                 {
-                    if ((segment1GUID.equals(relationship.getElementGUIDAtEnd1())) && (segment2GUID.equals(relationship.getElementGUIDAtEnd2())))
+                    if ((peerOneGUID.equals(relationship.getElementGUIDAtEnd1())) && (peerTwoGUID.equals(relationship.getElementGUIDAtEnd2())))
                     {
                         openMetadataStoreClient.deleteRelationshipInStore(userId,
                                                                           externalSourceGUID,
@@ -617,13 +469,16 @@ public class SolutionHandler
     }
 
 
+
     /**
-     * Delete an information supply chain segment.
+     * Connect two peers in an information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.
      *
-     * @param userId   userId of user making request
+     * @param userId          userId of user making request
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
-     * @param segmentGUID  unique identifier of the obsolete element
+     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
+     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
+     * @param linkProperties   description of the relationship.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -632,30 +487,128 @@ public class SolutionHandler
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void deleteInformationSupplyChainSegment(String  userId,
-                                                    String  externalSourceGUID,
-                                                    String  externalSourceName,
-                                                    String  segmentGUID,
-                                                    boolean forLineage,
-                                                    boolean forDuplicateProcessing,
-                                                    Date    effectiveTime) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    public void composeInformationSupplyChains(String                               userId,
+                                               String                               externalSourceGUID,
+                                               String                               externalSourceName,
+                                               String                               informationSupplyChainGUID,
+                                               String                               nestedInformationSupplyChainGUID,
+                                               InformationSupplyChainLinkProperties linkProperties,
+                                               boolean                              forLineage,
+                                               boolean                              forDuplicateProcessing,
+                                               Date                                 effectiveTime) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
     {
-        final String methodName = "deleteInformationSupplyChainSegment";
-        final String guidParameterName = "segmentGUID";
+        final String methodName = "composeInformationSupplyChains";
+        final String end1GUIDParameterName = "informationSupplyChainGUID";
+        final String end2GUIDParameterName = "nestedInformationSupplyChainGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(segmentGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateGUID(informationSupplyChainGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(nestedInformationSupplyChainGUID, end2GUIDParameterName, methodName);
 
-        openMetadataStoreClient.deleteMetadataElementInStore(userId,
-                                                             externalSourceGUID,
-                                                             externalSourceName,
-                                                             segmentGUID,
-                                                             false,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             effectiveTime);
+        if (linkProperties != null)
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                 informationSupplyChainGUID,
+                                                                 nestedInformationSupplyChainGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 linkProperties.getEffectiveFrom(),
+                                                                 linkProperties.getEffectiveTo(),
+                                                                 this.getElementProperties(linkProperties),
+                                                                 effectiveTime);
+        }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                 informationSupplyChainGUID,
+                                                                 nestedInformationSupplyChainGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime);
+        }
+    }
+
+
+    /**
+     * Detach a nested information supply chain from its parent.
+     *
+     * @param userId          userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
+     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void decomposeInformationSupplyChains(String  userId,
+                                                 String  externalSourceGUID,
+                                                 String  externalSourceName,
+                                                 String  informationSupplyChainGUID,
+                                                 String  nestedInformationSupplyChainGUID,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "decomposeInformationSupplyChains";
+
+        final String end1GUIDParameterName = "informationSupplyChainGUID";
+        final String end2GUIDParameterName = "nestedInformationSupplyChainGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(informationSupplyChainGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(nestedInformationSupplyChainGUID, end2GUIDParameterName, methodName);
+
+        OpenMetadataRelationshipList relationshipList = openMetadataStoreClient.getMetadataElementRelationships(userId,
+                                                                                                                informationSupplyChainGUID,
+                                                                                                                nestedInformationSupplyChainGUID,
+                                                                                                                OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                forLineage,
+                                                                                                                forDuplicateProcessing,
+                                                                                                                effectiveTime,
+                                                                                                                0,
+                                                                                                                0);
+
+        if ((relationshipList != null) && (relationshipList.getElementList() != null))
+        {
+            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
+            {
+                if (relationship != null)
+                {
+                    if ((informationSupplyChainGUID.equals(relationship.getElementGUIDAtEnd1())) && (nestedInformationSupplyChainGUID.equals(relationship.getElementGUIDAtEnd2())))
+                    {
+                        openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                                          externalSourceGUID,
+                                                                          externalSourceName,
+                                                                          relationship.getRelationshipGUID(),
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime);
+                    }
+                }
+            }
+        }
     }
 
 
@@ -2517,13 +2470,22 @@ public class SolutionHandler
     {
         try
         {
-            List<InformationSupplyChainSegmentElement> relatedSegments = new ArrayList<>();
+            List<InformationSupplyChainComponent> relatedComponents    = new ArrayList<>();
+            List<InformationSupplyChainSegment>   relatedSegments      = new ArrayList<>();
+            List<RelatedMetadataElement>          otherRelatedElements = new ArrayList<>();
+
+            /*
+             * This is a temporary list for holding the elements linked by ImplementedBy and
+             * InformationSupplyChainComposition relationships.
+             */
+            List<RelatedMetadataElement> extractedImplementedByElements = new ArrayList<>();
+            List<RelatedMetadataElement> extractedSegmentElements       = new ArrayList<>();
 
             int startFrom = 0;
             RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                        openMetadataElement.getElementGUID(),
-                                                                                                                       1,
-                                                                                                                       OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                                       0,
+                                                                                                                       null,
                                                                                                                        null,
                                                                                                                        asOfTime,
                                                                                                                        null,
@@ -2539,21 +2501,26 @@ public class SolutionHandler
                 {
                     if (relatedMetadataElement != null)
                     {
-                        relatedSegments.add(this.convertInformationSupplyChainSegment(userId,
-                                                                                      relatedMetadataElement.getElement(),
-                                                                                      asOfTime,
-                                                                                      forLineage,
-                                                                                      forDuplicateProcessing,
-                                                                                      effectiveTime,
-                                                                                      methodName));
+                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
+                        {
+                            extractedImplementedByElements.add(relatedMetadataElement);
+                        }
+                        else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                        {
+                            extractedSegmentElements.add(relatedMetadataElement);
+                        }
+                        else
+                        {
+                            otherRelatedElements.add(relatedMetadataElement);
+                        }
                     }
                 }
 
                 startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
                 relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                 openMetadataElement.getElementGUID(),
-                                                                                                1,
-                                                                                                OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                0,
+                                                                                                null,
                                                                                                 null,
                                                                                                 asOfTime,
                                                                                                 null,
@@ -2565,8 +2532,67 @@ public class SolutionHandler
                                                                                                 invalidParameterHandler.getMaxPagingSize());
             }
 
+            if (! extractedSegmentElements.isEmpty())
+            {
+                for (RelatedMetadataElement relatedMetadataElement : extractedImplementedByElements)
+                {
+                    if (relatedMetadataElement != null)
+                    {
+                        InformationSupplyChainSegment segment = this.getSegment(userId,
+                                                                                relatedMetadataElement,
+                                                                                asOfTime,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                effectiveTime,
+                                                                                methodName);
+
+                        if (segment != null)
+                        {
+                            relatedSegments.add(segment);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                relatedSegments = null;
+            }
+
+            if (! extractedImplementedByElements.isEmpty())
+            {
+                List<String> processedComponentGUIDs = new ArrayList<>();
+
+                for (RelatedMetadataElement relatedMetadataElement : extractedImplementedByElements)
+                {
+                    if (relatedMetadataElement != null)
+                    {
+                        InformationSupplyChainComponent informationSupplyChainComponent = this.getInformationSupplyChainComponent(userId,
+                                                                                                                                  relatedMetadataElement,
+                                                                                                                                  asOfTime,
+                                                                                                                                  forLineage,
+                                                                                                                                  forDuplicateProcessing,
+                                                                                                                                  effectiveTime,
+                                                                                                                                  processedComponentGUIDs,
+                                                                                                                                  methodName);
+
+
+                        if (informationSupplyChainComponent != null)
+                        {
+                            relatedComponents.add(informationSupplyChainComponent);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                relatedComponents = null;
+            }
             List<OpenMetadataRelationship> lineageRelationships = null;
 
+            /*
+             * The implementation is a query to extract all lineage relationships that iscQualifiedName in
+             * their properties, and it is set to this information supply chain's qualified name.
+             */
             if (addImplementation)
             {
                 lineageRelationships = new ArrayList<>();
@@ -2620,11 +2646,11 @@ public class SolutionHandler
                 }
             }
 
-
-            InformationSupplyChainConverter<InformationSupplyChainElement> converter = new InformationSupplyChainConverter<>(propertyHelper, serviceName, serverName, relatedSegments, lineageRelationships);
-            InformationSupplyChainElement informationSupplyChainElement = converter.getNewBean(InformationSupplyChainElement.class,
-                                                                                               openMetadataElement,
-                                                                                               methodName);
+            InformationSupplyChainConverter<InformationSupplyChainElement> converter = new InformationSupplyChainConverter<>(propertyHelper, serviceName, serverName, relatedSegments, relatedComponents, lineageRelationships);
+            InformationSupplyChainElement informationSupplyChainElement = converter.getNewComplexBean(InformationSupplyChainElement.class,
+                                                                                                      openMetadataElement,
+                                                                                                      otherRelatedElements,
+                                                                                                      methodName);
             if (informationSupplyChainElement != null)
             {
                 InformationSupplyChainMermaidGraphBuilder graphBuilder = new InformationSupplyChainMermaidGraphBuilder(informationSupplyChainElement);
@@ -2658,35 +2684,133 @@ public class SolutionHandler
 
 
     /**
-     * Return the information supply chain extracted from the open metadata element.
+     * Extract the elements related to this information supply chain's implementation components.  Typically,
+     * they are solution components, but there may also be assets, if the design is integrating with
+     * existing assets.
      *
      * @param userId calling user
-     * @param openMetadataElement element extracted from the repository
+     * @param startingElement retrieved implementation component
      * @param asOfTime repository time to use
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
-     * @return bean or null
-     * @throws PropertyServerException problem with the conversion process
+     * @return filled out component
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem with the conversion process, or repository
+     * @throws UserNotAuthorizedException authorization issue
      */
-    private InformationSupplyChainSegmentElement convertInformationSupplyChainSegment(String              userId,
-                                                                                      OpenMetadataElement openMetadataElement,
-                                                                                      Date                asOfTime,
-                                                                                      boolean             forLineage,
-                                                                                      boolean             forDuplicateProcessing,
-                                                                                      Date                effectiveTime,
-                                                                                      String              methodName) throws PropertyServerException
+    private InformationSupplyChainSegment getSegment(String                 userId,
+                                                     RelatedMetadataElement startingElement,
+                                                     Date                   asOfTime,
+                                                     boolean                forLineage,
+                                                     boolean                forDuplicateProcessing,
+                                                     Date                   effectiveTime,
+                                                     String                 methodName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        try
+        if (startingElement != null)
         {
-            List<RelatedMetadataElement>        relatedMetadataElements      = new ArrayList<>();
-            List<RelatedMetadataElementSummary> relatedPortElements          = new ArrayList<>();
-            List<SolutionLinkingWireRelationship> solutionLinkingWires       = new ArrayList<>();
+            InformationSupplyChainSegment informationSupplyChainComponent = new InformationSupplyChainSegment(propertyHelper.getRelatedElementSummary(startingElement, methodName));
 
-            int startFrom = 0;
+            /*
+             * Only pick up a single page to limit output
+             */
             RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                                       openMetadataElement.getElementGUID(),
+                                                                                                                       startingElement.getElement().getElementGUID(),
+                                                                                                                       1,
+                                                                                                                       OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
+                                                                                                                       null,
+                                                                                                                       asOfTime,
+                                                                                                                       null,
+                                                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                       forLineage,
+                                                                                                                       forDuplicateProcessing,
+                                                                                                                       effectiveTime,
+                                                                                                                       0,
+                                                                                                                       invalidParameterHandler.getMaxPagingSize());
+
+            if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+            {
+                List<InformationSupplyChainSegment> nestedSegments = new ArrayList<>();
+
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
+                {
+                    if (relatedMetadataElement != null)
+                    {
+                        /*
+                         * Solution components need additional information to extract ports and solution linking wires
+                         */
+                        if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
+                        {
+                            InformationSupplyChainSegment nestedSegment = this.getSegment(userId,
+                                                                                          relatedMetadataElement,
+                                                                                          asOfTime,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          effectiveTime,
+                                                                                          methodName);
+
+                            if (nestedSegment != null)
+                            {
+                                nestedSegments.add(nestedSegment);
+                            }
+                        }
+                        else
+                        {
+                            nestedSegments.add(new InformationSupplyChainSegment(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName)));
+                        }
+                    }
+                }
+
+                if (!nestedSegments.isEmpty())
+                {
+                    informationSupplyChainComponent.setNestedSegments(nestedSegments);
+                }
+            }
+
+            return informationSupplyChainComponent;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the elements related to this information supply chain's implementation components.  Typically,
+     * they are solution components, but there may also be assets, if the design is integrating with
+     * existing assets.
+     *
+     * @param userId calling user
+     * @param startingElement retrieved implementation component
+     * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime effectivity dating for elements
+     * @param processedComponentGUIDs list of GUID of components already processed
+     * @param methodName calling method
+     * @return filled out component
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem with the conversion process, or repository
+     * @throws UserNotAuthorizedException authorization issue
+     */
+    private InformationSupplyChainComponent getInformationSupplyChainComponent(String                 userId,
+                                                                               RelatedMetadataElement startingElement,
+                                                                               Date                   asOfTime,
+                                                                               boolean                forLineage,
+                                                                               boolean                forDuplicateProcessing,
+                                                                               Date                   effectiveTime,
+                                                                               List<String>           processedComponentGUIDs,
+                                                                               String                 methodName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        if (startingElement != null)
+        {
+            InformationSupplyChainComponent       informationSupplyChainComponent = new InformationSupplyChainComponent(propertyHelper.getRelatedElementSummary(startingElement, methodName));
+
+            /*
+             * Only pick up a single page to limit output
+             */
+            RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                       startingElement.getElement().getElementGUID(),
                                                                                                                        1,
                                                                                                                        null,
                                                                                                                        null,
@@ -2696,219 +2820,55 @@ public class SolutionHandler
                                                                                                                        forLineage,
                                                                                                                        forDuplicateProcessing,
                                                                                                                        effectiveTime,
-                                                                                                                       startFrom,
+                                                                                                                       0,
                                                                                                                        invalidParameterHandler.getMaxPagingSize());
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+
+            if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
             {
+                List<InformationSupplyChainComponent> nestedComponents = new ArrayList<>();
+
                 for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
                 {
-                    if (relatedMetadataElement != null)
+                    if ((relatedMetadataElement != null) && (! processedComponentGUIDs.contains(relatedMetadataElement.getElement().getElementGUID())))
                     {
+                        /*
+                         * Only process each component once.
+                         */
+                        processedComponentGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
+
+                        /*
+                         * Solution components need additional information to extract ports and solution linking wires
+                         */
                         if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
                         {
-                            List<RelatedMetadataElementSummary> componentPorts = this.convertPortSummaries(userId,
-                                                                                                           relatedMetadataElement.getElement().getElementGUID(),
-                                                                                                           asOfTime,
-                                                                                                           forLineage,
-                                                                                                           forDuplicateProcessing,
-                                                                                                           effectiveTime,
-                                                                                                           methodName);
+                            InformationSupplyChainComponent nestedComponent = this.getInformationSupplyChainComponent(userId,
+                                                                                                                      relatedMetadataElement,
+                                                                                                                      asOfTime,
+                                                                                                                      forLineage,
+                                                                                                                      forDuplicateProcessing,
+                                                                                                                      effectiveTime,
+                                                                                                                      processedComponentGUIDs,
+                                                                                                                      methodName);
 
-                            if (componentPorts != null)
+                            if (nestedComponent != null)
                             {
-                                relatedPortElements.addAll(componentPorts);
+                                nestedComponents.add(nestedComponent);
                             }
-
-                            List<SolutionLinkingWireRelationship> solutionLinkingWireRelationships = this.convertSolutionLinkingWires(userId,
-                                                                                                                                      relatedMetadataElement.getElement(),
-                                                                                                                                      asOfTime,
-                                                                                                                                      forLineage,
-                                                                                                                                      forDuplicateProcessing,
-                                                                                                                                      effectiveTime,
-                                                                                                                                      methodName);
-
-                            if (solutionLinkingWireRelationships != null)
-                            {
-                                solutionLinkingWires.addAll(solutionLinkingWireRelationships);
-                            }
-                        }
-
-                        relatedMetadataElements.add(relatedMetadataElement);
-                    }
-                }
-
-                startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
-                relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                openMetadataElement.getElementGUID(),
-                                                                                                1,
-                                                                                                null,
-                                                                                                null,
-                                                                                                asOfTime,
-                                                                                                null,
-                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                forLineage,
-                                                                                                forDuplicateProcessing,
-                                                                                                effectiveTime,
-                                                                                                startFrom,
-                                                                                                invalidParameterHandler.getMaxPagingSize());
-            }
-
-            InformationSupplyChainSegmentConverter<InformationSupplyChainSegmentElement> converter = new InformationSupplyChainSegmentConverter<>(propertyHelper, serviceName, serverName, solutionLinkingWires, relatedPortElements);
-            return converter.getNewComplexBean(InformationSupplyChainSegmentElement.class,
-                                               openMetadataElement,
-                                               relatedMetadataElements,
-                                               methodName);
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                     methodName,
-                                                                                                                     serviceName,
-                                                                                                                     error.getMessage()),
-                                      error);
-            }
-
-            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                             methodName,
-                                                                                                                             serviceName,
-                                                                                                                             error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
-        }
-    }
-
-
-    /**
-     * Return the port summaries for a solution component.
-     *
-     * @param userId calling user
-     * @param solutionComponent starting entity
-     * @param asOfTime repository time to use
-     * @param effectiveTime effectivity dating for elements
-     * @param methodName calling method
-     * @return list
-     * @throws PropertyServerException problem with the conversion process
-     */
-    private List<SolutionLinkingWireRelationship> convertSolutionLinkingWires(String              userId,
-                                                                              OpenMetadataElement solutionComponent,
-                                                                              Date                asOfTime,
-                                                                              boolean             forLineage,
-                                                                              boolean             forDuplicateProcessing,
-                                                                              Date                effectiveTime,
-                                                                              String              methodName) throws PropertyServerException
-    {
-        try
-        {
-            OpenMetadataConverterBase<ElementStub> wireConverter                    = new OpenMetadataConverterBase<>(propertyHelper, serviceName, serverName);
-            List<SolutionLinkingWireRelationship>  solutionLinkingWireRelationships = new ArrayList<>();
-
-            ElementStub solutionComponentStub = wireConverter.getElementStub(ElementStub.class, solutionComponent, methodName);
-
-            int startFrom = 0;
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                                       solutionComponent.getElementGUID(),
-                                                                                                                       0,
-                                                                                                                       OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
-                                                                                                                       null,
-                                                                                                                       asOfTime,
-                                                                                                                       null,
-                                                                                                                       SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                                       forLineage,
-                                                                                                                       forDuplicateProcessing,
-                                                                                                                       effectiveTime,
-                                                                                                                       startFrom,
-                                                                                                                       invalidParameterHandler.getMaxPagingSize());
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        SolutionLinkingWireRelationship wire = new SolutionLinkingWireRelationship();
-
-                        wire.setElementHeader(wireConverter.getMetadataElementHeader(ElementStub.class,
-                                                                                     relatedMetadataElement,
-                                                                                     relatedMetadataElement.getRelationshipGUID(),
-                                                                                     null,
-                                                                                     methodName));
-
-                        if (relatedMetadataElement.getRelationshipProperties() != null)
-                        {
-                            SolutionLinkingWireProperties wireProperties = new SolutionLinkingWireProperties();
-
-                            ElementProperties elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
-
-                            wireProperties.setLabel(wireConverter.removeLabel(elementProperties));
-                            wireProperties.setDescription(wireConverter.removeDescription(elementProperties));
-                            wireProperties.setInformationSupplyChainSegmentGUIDs(wireConverter.removeInformationSupplyChainSegmentGUIDs(elementProperties));
-                            wireProperties.setExtendedProperties(wireConverter.getRemainingExtendedProperties(elementProperties));
-                            wireProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
-                            wireProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());
-
-                            wire.setProperties(wireProperties);
-                        }
-                        ElementStub otherEndStub = wireConverter.getElementStub(ElementStub.class, relatedMetadataElement.getElement(), methodName);
-
-                        if (relatedMetadataElement.getElementAtEnd1())
-                        {
-                            wire.setEnd1Element(otherEndStub);
-                            wire.setEnd2Element(solutionComponentStub);
                         }
                         else
                         {
-                            wire.setEnd1Element(solutionComponentStub);
-                            wire.setEnd2Element(otherEndStub);
+                            nestedComponents.add(new InformationSupplyChainComponent(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName)));
                         }
-
-                        solutionLinkingWireRelationships.add(wire);
                     }
                 }
 
-                startFrom                  = startFrom + invalidParameterHandler.getMaxPagingSize();
-                relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                solutionComponent.getElementGUID(),
-                                                                                                0,
-                                                                                                OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
-                                                                                                null,
-                                                                                                asOfTime,
-                                                                                                null,
-                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                forLineage,
-                                                                                                forDuplicateProcessing,
-                                                                                                effectiveTime,
-                                                                                                startFrom,
-                                                                                                invalidParameterHandler.getMaxPagingSize());
+                if (!nestedComponents.isEmpty())
+                {
+                    informationSupplyChainComponent.setNestedElements(nestedComponents);
+                }
             }
 
-            if (! solutionLinkingWireRelationships.isEmpty())
-            {
-                return solutionLinkingWireRelationships;
-            }
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                     methodName,
-                                                                                                                     serviceName,
-                                                                                                                     error.getMessage()),
-                                      error);
-            }
-
-            throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                             methodName,
-                                                                                                                             serviceName,
-                                                                                                                             error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
+            return informationSupplyChainComponent;
         }
 
         return null;
@@ -3319,9 +3279,6 @@ public class SolutionHandler
     {
         if (relatedParentElements != null)
         {
-            RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> converter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
-                                                                                                                                           serviceName,
-                                                                                                                                           serverName);
             List<InformationSupplyChainContext> contexts = new ArrayList<>();
 
             for (RelatedMetadataElement parentElement : relatedParentElements)
@@ -3330,40 +3287,31 @@ public class SolutionHandler
                 {
                     if (propertyHelper.isTypeOf(parentElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
                     {
-                        InformationSupplyChainContext context = new InformationSupplyChainContext(null,
-                                                                                                  null,
-                                                                                                  converter.getNewBean(RelatedMetadataElementSummary.class,
-                                                                                                                       parentElement,
-                                                                                                                       methodName));
-                        contexts.add(context);
+                        contexts.add(new InformationSupplyChainContext(null,
+                                                                       Collections.singletonList(propertyHelper.getRelatedElementSummary(parentElement, methodName))));
                     }
                     else
                     {
-                        List<RelatedMetadataElement> fullParentContext = this.getFullParentContext(userId, parentElement, asOfTime, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-                        RelatedMetadataElementSummary informationSupplyChain = null;
-                        RelatedMetadataElementSummary linkedSegment = null;
+                        List<RelatedMetadataElement>  fullParentContext = this.getFullParentContext(userId, parentElement, asOfTime, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                        List<RelatedMetadataElementSummary> informationSupplyChains = new ArrayList<>();
                         List<RelatedMetadataElementSummary> parentComponents = new ArrayList<>();
 
                         for (RelatedMetadataElement relatedMetadataElement : fullParentContext)
                         {
                             if (relatedMetadataElement != null)
                             {
-                                RelatedMetadataElementSummary bean = converter.getNewBean(RelatedMetadataElementSummary.class,
-                                                                                          relatedMetadataElement,
-                                                                                          methodName);
+                                RelatedMetadataElementSummary bean = propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
 
-
-                                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName))
+                                if (bean != null)
                                 {
-                                    linkedSegment = bean;
-                                }
-                                else if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
-                                {
-                                    informationSupplyChain = bean;
-                                }
-                                else
-                                {
-                                    parentComponents.add(bean);
+                                    if ((propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)) && (relatedMetadataElement.getElementAtEnd1()))
+                                    {
+                                        informationSupplyChains.add(bean);
+                                    }
+                                    else
+                                    {
+                                        parentComponents.add(bean);
+                                    }
                                 }
                             }
                         }
@@ -3374,8 +3322,7 @@ public class SolutionHandler
                         }
 
                         InformationSupplyChainContext context = new InformationSupplyChainContext(parentComponents,
-                                                                                                  linkedSegment,
-                                                                                                  informationSupplyChain);
+                                                                                                  informationSupplyChains);
                         contexts.add(context);
                     }
                 }
@@ -3435,7 +3382,7 @@ public class SolutionHandler
                 {
                     if (relatedMetadataElement != null)
                     {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName))
+                        if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName)) && relatedMetadataElement.getElementAtEnd1())
                         {
                             fullParentContext.add(relatedMetadataElement);
                         }
@@ -3510,14 +3457,9 @@ public class SolutionHandler
     private RelatedMetadataElementSummary convertSolutionComponentImplementation(RelatedMetadataElement relatedMetadataElement,
                                                                                  String                 methodName) throws PropertyServerException
     {
-        RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> converter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
-                                                                                                                                       serviceName,
-                                                                                                                                       serverName);
         try
         {
-            return converter.getRelatedElementSummary(RelatedMetadataElementSummary.class,
-                                                      relatedMetadataElement,
-                                                      methodName);
+            return propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
         }
         catch (PropertyServerException error)
         {
@@ -3576,50 +3518,6 @@ public class SolutionHandler
             elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                       OpenMetadataProperty.PURPOSES.name,
                                                                       properties.getPurposes());
-
-            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                    properties.getAdditionalProperties());
-
-            elementProperties = propertyHelper.addPropertyMap(elementProperties,
-                                                              properties.getExtendedProperties());
-
-            return elementProperties;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Convert the specific properties into a set of element properties for the open metadata client.
-     *
-     * @param properties supplied properties
-     * @return element properties
-     */
-    private ElementProperties getElementProperties(InformationSupplyChainSegmentProperties properties)
-    {
-        if (properties != null)
-        {
-            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                   properties.getQualifiedName());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                 properties.getDisplayName());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.DESCRIPTION.name,
-                                                                 properties.getDescription());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.SCOPE.name,
-                                                                 properties.getScope());
-
-            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                    OpenMetadataProperty.ESTIMATED_VOLUMETRICS.name,
-                                                                    properties.getEstimatedVolumetrics());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
@@ -3798,8 +3696,8 @@ public class SolutionHandler
                                                                  properties.getDescription());
 
             elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
-                                                                      OpenMetadataProperty.INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS.name,
-                                                                      properties.getInformationSupplyChainSegmentGUIDs());
+                                                                      OpenMetadataProperty.ISC_QUALIFIED_NAMES.name,
+                                                                      properties.getISCQualifiedNames());
 
             elementProperties = propertyHelper.addPropertyMap(elementProperties,
                                                               properties.getExtendedProperties());

@@ -9,6 +9,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.DataDesignHandler;
 import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
@@ -50,8 +54,8 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createDataStructure(String                      serverName,
-                                            NewDataStructureRequestBody requestBody)
+    public GUIDResponse createDataStructure(String                serverName,
+                                            NewElementRequestBody requestBody)
     {
         final String methodName = "createDataStructure";
 
@@ -72,20 +76,44 @@ public class DataDesignerRESTServices extends TokenController
             {
                 DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
-                response.setGUID(handler.createDataStructure(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             requestBody.getAnchorGUID(),
-                                                             requestBody.getIsOwnAnchor(),
-                                                             requestBody.getAnchorScopeGUID(),
-                                                             requestBody.getProperties(),
-                                                             requestBody.getParentGUID(),
-                                                             requestBody.getParentRelationshipTypeName(),
-                                                             requestBody.getParentRelationshipProperties(),
-                                                             requestBody.getParentAtEnd1(),
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
+                if (requestBody.getProperties() instanceof DataStructureProperties dataStructureProperties)
+                {
+                    response.setGUID(handler.createDataStructure(userId,
+                                                                 requestBody.getExternalSourceGUID(),
+                                                                 requestBody.getExternalSourceName(),
+                                                                 requestBody.getAnchorGUID(),
+                                                                 requestBody.getIsOwnAnchor(),
+                                                                 requestBody.getAnchorScopeGUID(),
+                                                                 dataStructureProperties,
+                                                                 requestBody.getParentGUID(),
+                                                                 requestBody.getParentRelationshipTypeName(),
+                                                                 requestBody.getParentRelationshipProperties(),
+                                                                 requestBody.getParentAtEnd1(),
+                                                                 requestBody.getForLineage(),
+                                                                 requestBody.getForDuplicateProcessing(),
+                                                                 requestBody.getEffectiveTime()));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.createDataStructure(userId,
+                                                                 requestBody.getExternalSourceGUID(),
+                                                                 requestBody.getExternalSourceName(),
+                                                                 requestBody.getAnchorGUID(),
+                                                                 requestBody.getIsOwnAnchor(),
+                                                                 requestBody.getAnchorScopeGUID(),
+                                                                 null,
+                                                                 requestBody.getParentGUID(),
+                                                                 requestBody.getParentRelationshipTypeName(),
+                                                                 requestBody.getParentRelationshipProperties(),
+                                                                 requestBody.getParentAtEnd1(),
+                                                                 requestBody.getForLineage(),
+                                                                 requestBody.getForDuplicateProcessing(),
+                                                                 requestBody.getEffectiveTime()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataStructureProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -185,10 +213,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateDataStructure(String                         serverName,
-                                            String                         dataStructureGUID,
-                                            boolean                        replaceAllProperties,
-                                            UpdateDataStructureRequestBody requestBody)
+    public VoidResponse updateDataStructure(String                   serverName,
+                                            String                   dataStructureGUID,
+                                            boolean                  replaceAllProperties,
+                                            UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateDataStructure";
 
@@ -209,15 +237,34 @@ public class DataDesignerRESTServices extends TokenController
             {
                 DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
-                handler.updateDataStructure(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
-                                            dataStructureGUID,
-                                            replaceAllProperties,
-                                            requestBody.getProperties(),
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof DataStructureProperties dataStructureProperties)
+                {
+                    handler.updateDataStructure(userId,
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
+                                                dataStructureGUID,
+                                                replaceAllProperties,
+                                                dataStructureProperties,
+                                                requestBody.getForLineage(),
+                                                requestBody.getForDuplicateProcessing(),
+                                                requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateDataStructure(userId,
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
+                                                dataStructureGUID,
+                                                replaceAllProperties,
+                                                null,
+                                                requestBody.getForLineage(),
+                                                requestBody.getForDuplicateProcessing(),
+                                                requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataStructureProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -247,10 +294,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkMemberDataField(String                                serverName,
-                                            String                                dataStructureGUID,
-                                            String                                dataFieldGUID,
-                                            MemberDataFieldRequestBody requestBody)
+    public VoidResponse linkMemberDataField(String                  serverName,
+                                            String                  dataStructureGUID,
+                                            String                  dataFieldGUID,
+                                            RelationshipRequestBody requestBody)
     {
         final String methodName = "linkMemberDataField";
 
@@ -270,15 +317,34 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.linkMemberDataField(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
-                                            dataStructureGUID,
-                                            dataFieldGUID,
-                                            requestBody.getProperties(),
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof MemberDataFieldProperties memberDataFieldProperties)
+                {
+                    handler.linkMemberDataField(userId,
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
+                                                dataStructureGUID,
+                                                dataFieldGUID,
+                                                memberDataFieldProperties,
+                                                requestBody.getForLineage(),
+                                                requestBody.getForDuplicateProcessing(),
+                                                requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkMemberDataField(userId,
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
+                                                dataStructureGUID,
+                                                dataFieldGUID,
+                                                null,
+                                                requestBody.getForLineage(),
+                                                requestBody.getForDuplicateProcessing(),
+                                                requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(MemberDataFieldProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -659,8 +725,8 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createDataField(String                               serverName,
-                                        NewDataFieldRequestBody requestBody)
+    public GUIDResponse createDataField(String                serverName,
+                                        NewElementRequestBody requestBody)
     {
         final String methodName = "createDataField";
 
@@ -681,20 +747,44 @@ public class DataDesignerRESTServices extends TokenController
             {
                 DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
-                response.setGUID(handler.createDataField(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
-                                                         requestBody.getAnchorGUID(),
-                                                         requestBody.getIsOwnAnchor(),
-                                                         requestBody.getAnchorScopeGUID(),
-                                                         requestBody.getProperties(),
-                                                         requestBody.getParentGUID(),
-                                                         requestBody.getParentRelationshipTypeName(),
-                                                         requestBody.getParentRelationshipProperties(),
-                                                         requestBody.getParentAtEnd1(),
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getEffectiveTime()));
+                if (requestBody.getProperties() instanceof DataFieldProperties dataFieldProperties)
+                {
+                    response.setGUID(handler.createDataField(userId,
+                                                             requestBody.getExternalSourceGUID(),
+                                                             requestBody.getExternalSourceName(),
+                                                             requestBody.getAnchorGUID(),
+                                                             requestBody.getIsOwnAnchor(),
+                                                             requestBody.getAnchorScopeGUID(),
+                                                             dataFieldProperties,
+                                                             requestBody.getParentGUID(),
+                                                             requestBody.getParentRelationshipTypeName(),
+                                                             requestBody.getParentRelationshipProperties(),
+                                                             requestBody.getParentAtEnd1(),
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveTime()));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.createDataField(userId,
+                                                             requestBody.getExternalSourceGUID(),
+                                                             requestBody.getExternalSourceName(),
+                                                             requestBody.getAnchorGUID(),
+                                                             requestBody.getIsOwnAnchor(),
+                                                             requestBody.getAnchorScopeGUID(),
+                                                             null,
+                                                             requestBody.getParentGUID(),
+                                                             requestBody.getParentRelationshipTypeName(),
+                                                             requestBody.getParentRelationshipProperties(),
+                                                             requestBody.getParentAtEnd1(),
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveTime()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataFieldProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -794,10 +884,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateDataField(String                                  serverName,
-                                          String                                  dataFieldGUID,
-                                          boolean                                 replaceAllProperties,
-                                          UpdateDataFieldRequestBody requestBody)
+    public VoidResponse   updateDataField(String                   serverName,
+                                          String                   dataFieldGUID,
+                                          boolean                  replaceAllProperties,
+                                          UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateDataField";
 
@@ -818,15 +908,34 @@ public class DataDesignerRESTServices extends TokenController
             {
                 DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
-                handler.updateDataField(userId,
-                                        requestBody.getExternalSourceGUID(),
-                                        requestBody.getExternalSourceName(),
-                                        dataFieldGUID,
-                                        replaceAllProperties,
-                                        requestBody.getProperties(),
-                                        requestBody.getForLineage(),
-                                        requestBody.getForDuplicateProcessing(),
-                                        requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof DataFieldProperties dataFieldProperties)
+                {
+                    handler.updateDataField(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            dataFieldGUID,
+                                            replaceAllProperties,
+                                            dataFieldProperties,
+                                            requestBody.getForLineage(),
+                                            requestBody.getForDuplicateProcessing(),
+                                            requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateDataField(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            dataFieldGUID,
+                                            replaceAllProperties,
+                                            null,
+                                            requestBody.getForLineage(),
+                                            requestBody.getForDuplicateProcessing(),
+                                            requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataFieldProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -856,10 +965,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkNestedDataFields(String                     serverName,
-                                             String                     parentDataFieldGUID,
-                                             String                     nestedDataFieldGUID,
-                                             MemberDataFieldRequestBody requestBody)
+    public VoidResponse linkNestedDataFields(String                  serverName,
+                                             String                  parentDataFieldGUID,
+                                             String                  nestedDataFieldGUID,
+                                             RelationshipRequestBody requestBody)
     {
         final String methodName = "linkNestedDataFields";
 
@@ -879,15 +988,34 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.linkNestedDataFields(userId,
-                                             requestBody.getExternalSourceGUID(),
-                                             requestBody.getExternalSourceName(),
-                                             parentDataFieldGUID,
-                                             nestedDataFieldGUID,
-                                             requestBody.getProperties(),
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof MemberDataFieldProperties memberDataFieldProperties)
+                {
+                    handler.linkNestedDataFields(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 parentDataFieldGUID,
+                                                 nestedDataFieldGUID,
+                                                 memberDataFieldProperties,
+                                                 requestBody.getForLineage(),
+                                                 requestBody.getForDuplicateProcessing(),
+                                                 requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkNestedDataFields(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 parentDataFieldGUID,
+                                                 nestedDataFieldGUID,
+                                                 null,
+                                                 requestBody.getForLineage(),
+                                                 requestBody.getForDuplicateProcessing(),
+                                                 requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(MemberDataFieldProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1269,8 +1397,8 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createDataClass(String                               serverName,
-                                        NewDataClassRequestBody requestBody)
+    public GUIDResponse createDataClass(String                serverName,
+                                        NewElementRequestBody requestBody)
     {
         final String methodName = "createDataClass";
 
@@ -1291,20 +1419,44 @@ public class DataDesignerRESTServices extends TokenController
             {
                 DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
-                response.setGUID(handler.createDataClass(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
-                                                         requestBody.getAnchorGUID(),
-                                                         requestBody.getIsOwnAnchor(),
-                                                         requestBody.getAnchorScopeGUID(),
-                                                         requestBody.getProperties(),
-                                                         requestBody.getParentGUID(),
-                                                         requestBody.getParentRelationshipTypeName(),
-                                                         requestBody.getParentRelationshipProperties(),
-                                                         requestBody.getParentAtEnd1(),
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getEffectiveTime()));
+                if (requestBody.getProperties() instanceof DataClassProperties dataClassProperties)
+                {
+                    response.setGUID(handler.createDataClass(userId,
+                                                             requestBody.getExternalSourceGUID(),
+                                                             requestBody.getExternalSourceName(),
+                                                             requestBody.getAnchorGUID(),
+                                                             requestBody.getIsOwnAnchor(),
+                                                             requestBody.getAnchorScopeGUID(),
+                                                             dataClassProperties,
+                                                             requestBody.getParentGUID(),
+                                                             requestBody.getParentRelationshipTypeName(),
+                                                             requestBody.getParentRelationshipProperties(),
+                                                             requestBody.getParentAtEnd1(),
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveTime()));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.createDataClass(userId,
+                                                             requestBody.getExternalSourceGUID(),
+                                                             requestBody.getExternalSourceName(),
+                                                             requestBody.getAnchorGUID(),
+                                                             requestBody.getIsOwnAnchor(),
+                                                             requestBody.getAnchorScopeGUID(),
+                                                             null,
+                                                             requestBody.getParentGUID(),
+                                                             requestBody.getParentRelationshipTypeName(),
+                                                             requestBody.getParentRelationshipProperties(),
+                                                             requestBody.getParentAtEnd1(),
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveTime()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataClassProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1404,10 +1556,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateDataClass(String                                  serverName,
-                                          String                                  dataClassGUID,
-                                          boolean                                 replaceAllProperties,
-                                          UpdateDataClassRequestBody requestBody)
+    public VoidResponse   updateDataClass(String                   serverName,
+                                          String                   dataClassGUID,
+                                          boolean                  replaceAllProperties,
+                                          UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateDataClass";
 
@@ -1428,15 +1580,34 @@ public class DataDesignerRESTServices extends TokenController
             {
                 DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
-                handler.updateDataClass(userId,
-                                        requestBody.getExternalSourceGUID(),
-                                        requestBody.getExternalSourceName(),
-                                        dataClassGUID,
-                                        replaceAllProperties,
-                                        requestBody.getProperties(),
-                                        requestBody.getForLineage(),
-                                        requestBody.getForDuplicateProcessing(),
-                                        requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof DataClassProperties dataClassProperties)
+                {
+                    handler.updateDataClass(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            dataClassGUID,
+                                            replaceAllProperties,
+                                            dataClassProperties,
+                                            requestBody.getForLineage(),
+                                            requestBody.getForDuplicateProcessing(),
+                                            requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateDataClass(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            dataClassGUID,
+                                            replaceAllProperties,
+                                            null,
+                                            requestBody.getForLineage(),
+                                            requestBody.getForDuplicateProcessing(),
+                                            requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataClassProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1466,10 +1637,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkNestedDataClass(String                                serverName,
-                                            String                                parentDataClassGUID,
-                                            String                                childDataClassGUID,
-                                            MetadataSourceRequestBody requestBody)
+    public VoidResponse linkNestedDataClass(String                  serverName,
+                                            String                  parentDataClassGUID,
+                                            String                  childDataClassGUID,
+                                            RelationshipRequestBody requestBody)
     {
         final String methodName = "linkNestedDataClass";
 
@@ -1601,12 +1772,12 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkSpecialistDataClass(String                    serverName,
-                                                String                    parentDataClassGUID,
-                                                String                    childDataClassGUID,
-                                                MetadataSourceRequestBody requestBody)
+    public VoidResponse linkSpecializedDataClass(String                    serverName,
+                                                 String                    parentDataClassGUID,
+                                                 String                    childDataClassGUID,
+                                                 RelationshipRequestBody requestBody)
     {
-        final String methodName = "linkSpecialistDataClass";
+        final String methodName = "linkSpecializedDataClass";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -1624,25 +1795,25 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.linkSpecialistDataClass(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
-                                                parentDataClassGUID,
-                                                childDataClassGUID,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                handler.linkSpecializedDataClass(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 parentDataClassGUID,
+                                                 childDataClassGUID,
+                                                 requestBody.getForLineage(),
+                                                 requestBody.getForDuplicateProcessing(),
+                                                 requestBody.getEffectiveTime());
             }
             else
             {
-                handler.linkSpecialistDataClass(userId,
-                                                null,
-                                                null,
-                                                parentDataClassGUID,
-                                                childDataClassGUID,
-                                                false,
-                                                false,
-                                                new Date());
+                handler.linkSpecializedDataClass(userId,
+                                                 null,
+                                                 null,
+                                                 parentDataClassGUID,
+                                                 childDataClassGUID,
+                                                 false,
+                                                 false,
+                                                 new Date());
             }
         }
         catch (Throwable error)
@@ -1668,12 +1839,12 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSpecialistDataClass(String                    serverName,
-                                                  String                    parentDataClassGUID,
-                                                  String                    childDataClassGUID,
-                                                  MetadataSourceRequestBody requestBody)
+    public VoidResponse detachSpecializedDataClass(String                    serverName,
+                                                   String                    parentDataClassGUID,
+                                                   String                    childDataClassGUID,
+                                                   MetadataSourceRequestBody requestBody)
     {
-        final String methodName = "detachSpecialistDataClass";
+        final String methodName = "detachSpecializedDataClass";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -1692,25 +1863,25 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.detachSpecialistDataClass(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
-                                                  parentDataClassGUID,
-                                                  childDataClassGUID,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
+                handler.detachSpecializedDataClass(userId,
+                                                   requestBody.getExternalSourceGUID(),
+                                                   requestBody.getExternalSourceName(),
+                                                   parentDataClassGUID,
+                                                   childDataClassGUID,
+                                                   requestBody.getForLineage(),
+                                                   requestBody.getForDuplicateProcessing(),
+                                                   requestBody.getEffectiveTime());
             }
             else
             {
-                handler.detachSpecialistDataClass(userId,
-                                                  null,
-                                                  null,
-                                                  parentDataClassGUID,
-                                                  childDataClassGUID,
-                                                  false,
-                                                  false,
-                                                  new Date());
+                handler.detachSpecializedDataClass(userId,
+                                                   null,
+                                                   null,
+                                                   parentDataClassGUID,
+                                                   childDataClassGUID,
+                                                   false,
+                                                   false,
+                                                   new Date());
             }
         }
         catch (Throwable error)
@@ -2016,10 +2187,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkDataClassDefinition(String                    serverName,
-                                                String                    dataDefinitionGUID,
-                                                String                    dataClassGUID,
-                                                MetadataSourceRequestBody requestBody)
+    public VoidResponse linkDataClassDefinition(String                  serverName,
+                                                String                  dataDefinitionGUID,
+                                                String                  dataClassGUID,
+                                                RelationshipRequestBody requestBody)
     {
         final String methodName = "linkDataClassDefinition";
 
@@ -2146,10 +2317,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkSemanticDefinition(String                    serverName,
-                                               String                    dataDefinitionGUID,
-                                               String                    glossaryTermGUID,
-                                               MetadataSourceRequestBody requestBody)
+    public VoidResponse linkSemanticDefinition(String                  serverName,
+                                               String                  dataDefinitionGUID,
+                                               String                  glossaryTermGUID,
+                                               RelationshipRequestBody requestBody)
     {
         final String methodName = "linkSemanticDefinition";
 
@@ -2286,10 +2457,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkCertificationTypeToDataStructure(String                    serverName,
-                                                             String                    certificationTypeGUID,
-                                                             String                    dataStructureGUID,
-                                                             MetadataSourceRequestBody requestBody)
+    public VoidResponse linkCertificationTypeToDataStructure(String                  serverName,
+                                                             String                  certificationTypeGUID,
+                                                             String                  dataStructureGUID,
+                                                             RelationshipRequestBody requestBody)
     {
         final String methodName = "linkCertificationTypeToDataStructure";
 

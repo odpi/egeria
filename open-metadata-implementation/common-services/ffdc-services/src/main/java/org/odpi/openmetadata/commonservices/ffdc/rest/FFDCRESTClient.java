@@ -4443,13 +4443,13 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public PersonRoleResponse callPersonRoleGetRESTCall(String    methodName,
-                                                        String    urlTemplate,
-                                                        Object... params) throws InvalidParameterException,
+    public ActorRoleResponse callPersonRoleGetRESTCall(String    methodName,
+                                                       String    urlTemplate,
+                                                       Object... params) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        PersonRoleResponse restResult = this.callGetRESTCall(methodName, PersonRoleResponse.class, urlTemplate, params);
+        ActorRoleResponse restResult = this.callGetRESTCall(methodName, ActorRoleResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -4468,13 +4468,13 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public PersonRolesResponse callPersonRolesGetRESTCall(String    methodName,
-                                                          String    urlTemplate,
-                                                          Object... params)  throws InvalidParameterException,
+    public ActorRolesResponse callPersonRolesGetRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object... params)  throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        PersonRolesResponse restResult = this.callGetRESTCall(methodName, PersonRolesResponse.class, urlTemplate, params);
+        ActorRolesResponse restResult = this.callGetRESTCall(methodName, ActorRolesResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -4494,14 +4494,14 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public PersonRolesResponse callPersonRolesPostRESTCall(String    methodName,
-                                                           String    urlTemplate,
-                                                           Object    requestBody,
-                                                           Object... params)  throws InvalidParameterException,
+    public ActorRolesResponse callPersonRolesPostRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object    requestBody,
+                                                          Object... params)  throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        PersonRolesResponse restResult = this.callPostRESTCall(methodName, PersonRolesResponse.class, urlTemplate, requestBody, params);
+        ActorRolesResponse restResult = this.callPostRESTCall(methodName, ActorRolesResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

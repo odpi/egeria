@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,8 +25,7 @@ public class InformationSupplyChainSegmentProperties extends ReferenceableProper
     private String              displayName          = null;
     private String              description          = null;
     private String              scope                = null;
-    private String              integrationStyle     = null;
-    private Map<String, String> estimatedVolumetrics = null;
+
 
 
 
@@ -37,7 +35,6 @@ public class InformationSupplyChainSegmentProperties extends ReferenceableProper
     public InformationSupplyChainSegmentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName);
     }
 
 
@@ -55,8 +52,7 @@ public class InformationSupplyChainSegmentProperties extends ReferenceableProper
             this.displayName          = template.getDisplayName();
             this.description          = template.getDescription();
             this.scope                = template.getScope();
-            this.integrationStyle     = template.getIntegrationStyle();
-            this.estimatedVolumetrics = template.getEstimatedVolumetrics();
+
         }
     }
 
@@ -128,50 +124,6 @@ public class InformationSupplyChainSegmentProperties extends ReferenceableProper
 
 
     /**
-     * Return the integration style adopted in this segment.
-     *
-     * @return string
-     */
-    public String getIntegrationStyle()
-    {
-        return integrationStyle;
-    }
-
-
-    /**
-     * Return the integration style adopted in this segment.
-     *
-     * @param integrationStyle string
-     */
-    public void setIntegrationStyle(String integrationStyle)
-    {
-        this.integrationStyle = integrationStyle;
-    }
-
-
-    /**
-     * Set up the estimated volumetrics (size, volume of data, frequency of interaction etc).
-     *
-     * @return map of names to values
-     */
-    public Map<String, String> getEstimatedVolumetrics()
-    {
-        return estimatedVolumetrics;
-    }
-
-
-    /**
-     * Set up the estimated volumetrics (size, volume of data, frequency of interaction etc).
-     *
-     * @param estimatedVolumetrics map of names to values
-     */
-    public void setEstimatedVolumetrics(Map<String, String> estimatedVolumetrics)
-    {
-        this.estimatedVolumetrics = estimatedVolumetrics;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -183,8 +135,6 @@ public class InformationSupplyChainSegmentProperties extends ReferenceableProper
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", scope='" + scope + '\'' +
-                ", integrationStyle='" + integrationStyle + '\'' +
-                ", estimatedVolumetrics=" + estimatedVolumetrics +
                 "} " + super.toString();
     }
 
@@ -213,9 +163,7 @@ public class InformationSupplyChainSegmentProperties extends ReferenceableProper
         }
         return Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(scope, that.scope) &&
-                Objects.equals(integrationStyle, that.integrationStyle) &&
-                Objects.equals(estimatedVolumetrics, that.estimatedVolumetrics);
+                Objects.equals(scope, that.scope);
     }
 
 
@@ -227,6 +175,6 @@ public class InformationSupplyChainSegmentProperties extends ReferenceableProper
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, scope, integrationStyle, estimatedVolumetrics);
+        return Objects.hash(super.hashCode(), displayName, description, scope);
     }
 }

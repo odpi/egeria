@@ -558,7 +558,7 @@ public class ActorRoleHandler
 
 
     /**
-     * Attach an asset to an IT profile.
+     * Attach an IT profile role to an IT profile.
      *
      * @param userId                 userId of user making request
      * @param externalSourceGUID     unique identifier of the software capability that owns this element
@@ -573,17 +573,17 @@ public class ActorRoleHandler
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkITProfileRoleToProfile(String                            userId,
-                                           String                            externalSourceGUID,
-                                           String                            externalSourceName,
-                                           String                            itProfileRoleGUID,
-                                           String                            itProfileGUID,
-                                           ITInfrastructureProfileProperties relationshipProperties,
-                                           boolean                           forLineage,
-                                           boolean                           forDuplicateProcessing,
-                                           Date                              effectiveTime) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+    public void linkITProfileRoleToProfile(String                             userId,
+                                           String                             externalSourceGUID,
+                                           String                             externalSourceName,
+                                           String                             itProfileRoleGUID,
+                                           String                             itProfileGUID,
+                                           ITProfileRoleAppointmentProperties relationshipProperties,
+                                           boolean                            forLineage,
+                                           boolean                            forDuplicateProcessing,
+                                           Date                               effectiveTime) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
     {
         final String methodName            = "linkITProfileRoleToProfile";
         final String end1GUIDParameterName = "itProfileRoleGUID";
@@ -605,7 +605,7 @@ public class ActorRoleHandler
                                                                  forDuplicateProcessing,
                                                                  relationshipProperties.getEffectiveFrom(),
                                                                  relationshipProperties.getEffectiveTo(),
-                                                                 null,
+                                                                 null, // no properties yet
                                                                  effectiveTime);
         }
         else

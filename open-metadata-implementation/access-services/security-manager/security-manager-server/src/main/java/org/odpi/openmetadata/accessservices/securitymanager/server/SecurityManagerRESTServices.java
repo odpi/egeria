@@ -1088,17 +1088,17 @@ public class SecurityManagerRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleResponse getPersonRoleByGUID(String serverName,
-                                                  String userId,
-                                                  String personRoleGUID)
+    public ActorRoleResponse getPersonRoleByGUID(String serverName,
+                                                 String userId,
+                                                 String personRoleGUID)
     {
         final String methodName        = "getPersonRoleByGUID";
         final String guidParameterName = "personRoleGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleResponse response = new PersonRoleResponse();
-        AuditLog           auditLog = null;
+        ActorRoleResponse response = new ActorRoleResponse();
+        AuditLog          auditLog = null;
 
         try
         {
@@ -1138,19 +1138,19 @@ public class SecurityManagerRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRolesResponse getPersonRoleByName(String          serverName,
-                                                   String          userId,
-                                                   int             startFrom,
-                                                   int             pageSize,
-                                                   NameRequestBody requestBody)
+    public ActorRolesResponse getPersonRoleByName(String          serverName,
+                                                  String          userId,
+                                                  int             startFrom,
+                                                  int             pageSize,
+                                                  NameRequestBody requestBody)
     {
         final String methodName         = "getPersonRoleByName";
         final String nameParameterName  = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRolesResponse response = new PersonRolesResponse();
-        AuditLog            auditLog = null;
+        ActorRolesResponse response = new ActorRolesResponse();
+        AuditLog           auditLog = null;
 
         try
         {
@@ -1191,19 +1191,19 @@ public class SecurityManagerRESTServices
      *   PropertyServerException the server is not available.
      *   UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonRolesResponse findPersonRole(String                  serverName,
-                                              String                  userId,
-                                              int                     startFrom,
-                                              int                     pageSize,
-                                              SearchStringRequestBody requestBody)
+    public ActorRolesResponse findPersonRole(String                  serverName,
+                                             String                  userId,
+                                             int                     startFrom,
+                                             int                     pageSize,
+                                             SearchStringRequestBody requestBody)
     {
         final String methodName                = "findPersonRole";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRolesResponse response = new PersonRolesResponse();
-        AuditLog            auditLog = null;
+        ActorRolesResponse response = new ActorRolesResponse();
+        AuditLog           auditLog = null;
 
         try
         {

@@ -162,7 +162,7 @@ public class RelatedMetadataElement extends ElementControlHeader
 
 
     /**
-     * Return whether the element is at end 1 of the relationship.
+     * Return whether the related element is at end 1 of the relationship.
      *
      * @return boolean
      */
@@ -173,7 +173,7 @@ public class RelatedMetadataElement extends ElementControlHeader
 
 
     /**
-     * Set up whether the element is at end 1 of the relationship.
+     * Set up whether the related element is at end 1 of the relationship.
      *
      * @param elementAtEnd1 boolean
      */
