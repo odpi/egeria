@@ -753,9 +753,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0690_REQUEST_FOR_ACTION           = "https://egeria-project.org/types/6/0690-Request-for-Action/";
 
     /**
-     * <a href="https://egeria-project.org/types/7/0710-Digital-Service/">...</a>
+     * <a href="https://egeria-project.org/types/7/0710-Digital-Product/">...</a>
      */
-    public static final String MODEL_0710_DIGITAL_SERVICE              = "https://egeria-project.org/types/7/0710-Digital-Service/";
+    public static final String MODEL_0710_DIGITAL_PRODUCT               = "https://egeria-project.org/types/7/0710-Digital-Product/";
 
     /**
      * <a href="https://egeria-project.org/types/7/0711-Digital-Subscription/">...</a>
@@ -763,9 +763,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0711_DIGITAL_SUBSCRIPTION         = "https://egeria-project.org/types/7/0711-Digital-Subscription/";
 
     /**
-     * <a href="https://egeria-project.org/types/7/0715-Digital-Service-Ownership/">...</a>
+     * <a href="https://egeria-project.org/types/7/0715-Digital-Product-Management/">...</a>
      */
-    public static final String MODEL_0715_DIGITAL_SERVICE_OWNERSHIP    = "https://egeria-project.org/types/7/0715-Digital-Service-Ownership/";
+    public static final String MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT = "https://egeria-project.org/types/7/0715-Digital-Product-Management/";
 
     /**
      * <a href="https://egeria-project.org/types/7/0720-Information-Supply-Chains/">...</a>

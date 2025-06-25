@@ -1790,7 +1790,7 @@ public class ConnectionRESTServices
 
         if (element != null)
         {
-            ConnectionProperties properties = element.getConnectionProperties();
+            ConnectionProperties properties = element.getProperties();
 
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
@@ -1868,7 +1868,7 @@ public class ConnectionRESTServices
 
         if (element != null)
         {
-            EndpointProperties properties = element.getEndpointProperties();
+            EndpointProperties properties = element.getProperties();
 
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
@@ -1944,7 +1944,7 @@ public class ConnectionRESTServices
 
         if (element != null)
         {
-            ConnectorTypeProperties properties = element.getConnectorTypeProperties();
+            ConnectorTypeProperties properties = element.getProperties();
 
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),

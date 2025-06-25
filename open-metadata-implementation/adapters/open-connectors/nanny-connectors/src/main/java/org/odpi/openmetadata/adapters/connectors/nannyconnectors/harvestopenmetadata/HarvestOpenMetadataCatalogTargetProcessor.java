@@ -1549,7 +1549,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             syncCollection(databaseConnection, collectionElement, parentProjectElement, numberOfMembers, memberTypes);
 
-            AttachedClassification classification = propertyHelper.getClassification(collectionElement, OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName);
+            AttachedClassification classification = propertyHelper.getClassification(collectionElement, OpenMetadataType.DIGITAL_PRODUCT.typeName);
 
             if (classification != null)
             {
@@ -4638,7 +4638,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.COLLECTION_GUID, collectionElement.getElementGUID());
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PRODUCT_STATUS, propertyHelper.getStringProperty(connectorName,
-                                                                                                                     OpenMetadataProperty.PRODUCT_STATUS.name,
+                                                                                                                     OpenMetadataProperty.USER_DEFINED_STATUS.name,
                                                                                                                      digitalProductProperties,
                                                                                                                      methodName));
 

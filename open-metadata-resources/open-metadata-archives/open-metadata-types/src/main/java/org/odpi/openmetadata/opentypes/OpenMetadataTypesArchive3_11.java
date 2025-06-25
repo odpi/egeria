@@ -1007,8 +1007,6 @@ public class OpenMetadataTypesArchive3_11
     private void update07xxImplementationRelationships()
     {
         this.archiveBuilder.addRelationshipDef(getImplementedByRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateDigitalServiceManagementRelationship());
-
     }
 
 
@@ -1064,35 +1062,6 @@ public class OpenMetadataTypesArchive3_11
         return relationshipDef;
     }
 
-
-    private TypeDefPatch updateDigitalServiceManagementRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_SERVICE_MANAGEMENT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "digitalServiceManagers";
-        final String                     end2AttributeDescription     = "The roles for managing this digital service.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
 
 
     /*

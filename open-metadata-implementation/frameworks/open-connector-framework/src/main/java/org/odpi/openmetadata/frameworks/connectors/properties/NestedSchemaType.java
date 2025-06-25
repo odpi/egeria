@@ -79,7 +79,7 @@ public  class NestedSchemaType extends ComplexSchemaType
     {
         return "NestedSchemaType{" +
                 "schemaAttributes=" + schemaAttributes +
-                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", versionNumber='" + getVersionIdentifier() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +

@@ -21,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EndpointElement implements MetadataElement
 {
-    private EndpointProperties endpointProperties = null;
-    private ElementHeader      elementHeader      = null;
+    private EndpointProperties properties    = null;
+    private ElementHeader      elementHeader = null;
 
 
     /**
@@ -44,7 +44,7 @@ public class EndpointElement implements MetadataElement
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            endpointProperties = template.getEndpointProperties();
+            properties    = template.getProperties();
         }
     }
 
@@ -78,20 +78,20 @@ public class EndpointElement implements MetadataElement
      *
      * @return asset properties (using appropriate subclass)
      */
-    public EndpointProperties getEndpointProperties()
+    public EndpointProperties getProperties()
     {
-        return endpointProperties;
+        return properties;
     }
 
 
     /**
      * Set up the properties for the endpoint.
      *
-     * @param endpointProperties asset properties
+     * @param properties asset properties
      */
-    public void setEndpointProperties(EndpointProperties endpointProperties)
+    public void setProperties(EndpointProperties properties)
     {
-        this.endpointProperties = endpointProperties;
+        this.properties = properties;
     }
 
 
@@ -104,7 +104,7 @@ public class EndpointElement implements MetadataElement
     public String toString()
     {
         return "EndpointElement{" +
-                       "endpointProperties=" + endpointProperties +
+                       "endpointProperties=" + properties +
                        ", elementHeader=" + elementHeader +
                        '}';
     }
@@ -128,7 +128,7 @@ public class EndpointElement implements MetadataElement
             return false;
         }
         EndpointElement that = (EndpointElement) objectToCompare;
-        return Objects.equals(getEndpointProperties(), that.getEndpointProperties()) &&
+        return Objects.equals(getProperties(), that.getProperties()) &&
                        Objects.equals(getElementHeader(), that.getElementHeader());
     }
 
@@ -141,6 +141,6 @@ public class EndpointElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, endpointProperties);
+        return Objects.hash(super.hashCode(), elementHeader, properties);
     }
 }

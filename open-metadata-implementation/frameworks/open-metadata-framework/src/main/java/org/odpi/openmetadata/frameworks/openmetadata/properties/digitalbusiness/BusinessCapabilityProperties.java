@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.BusinessCapabilityType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -22,9 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BusinessCapabilityProperties extends ReferenceableProperties
 {
-    private String displayName = null;
-    private String description = null;
-    private String identifier  = null;
+    private String                 displayName                = null;
+    private String                 description                = null;
+    private String                 identifier                 = null;
+    private BusinessCapabilityType businessCapabilityType     = null;
+    private String                 businessImplementationType = null;
 
     /**
      * Default constructor
@@ -50,6 +53,8 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
             this.identifier = template.getIdentifier();
             this.displayName = template.getDisplayName();
             this.description = template.getDescription();
+            this.businessCapabilityType = template.getBusinessCapabilityType();
+            this.businessImplementationType = template.getBusinessImplementationType();
         }
     }
 
@@ -77,7 +82,7 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Return the display name for this asset (normally a shortened form of the qualified name).
+     * Return the display name for this business capability.
      *
      * @return string name
      */
@@ -88,7 +93,7 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the display name for this asset (normally a shortened form of the qualified name).
+     * Set up the display name for this business capability.
      *
      * @param displayName string name
      */
@@ -118,7 +123,50 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
     {
         this.description = description;
     }
-    
+
+
+    /**
+     * Return the type of business capability.
+     *
+     * @return enum
+     */
+    public BusinessCapabilityType getBusinessCapabilityType()
+    {
+        return businessCapabilityType;
+    }
+
+
+    /**
+     * Set up the type of business capability
+     *
+     * @param businessCapabilityType enum
+     */
+    public void setBusinessCapabilityType(BusinessCapabilityType businessCapabilityType)
+    {
+        this.businessCapabilityType = businessCapabilityType;
+    }
+
+
+    /**
+     * Return the type of implementation used for this business capability.
+     *
+     * @return string
+     */
+    public String getBusinessImplementationType()
+    {
+        return businessImplementationType;
+    }
+
+
+    /**
+     * Set up the type of implementation used for this business capability.
+     *
+     * @param businessImplementationType string
+     */
+    public void setBusinessImplementationType(String businessImplementationType)
+    {
+        this.businessImplementationType = businessImplementationType;
+    }
 
     /**
      * Standard toString method.
@@ -132,6 +180,8 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", identifier='" + identifier + '\'' +
+                ", businessCapabilityType=" + businessCapabilityType +
+                ", businessImplementationType='" + businessImplementationType + '\'' +
                 "} " + super.toString();
     }
 
@@ -158,7 +208,10 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
             return false;
         }
         return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) && Objects.equals(identifier, that.identifier);
+                Objects.equals(description, that.description) &&
+                Objects.equals(businessCapabilityType, that.businessCapabilityType) &&
+                Objects.equals(businessImplementationType, that.businessImplementationType) &&
+                Objects.equals(identifier, that.identifier);
     }
 
 
@@ -170,6 +223,6 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, identifier);
+        return Objects.hash(super.hashCode(), displayName, description, identifier, businessCapabilityType, businessImplementationType);
     }
 }

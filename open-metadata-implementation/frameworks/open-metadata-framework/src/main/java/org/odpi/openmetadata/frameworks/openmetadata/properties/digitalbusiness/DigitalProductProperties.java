@@ -7,36 +7,33 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DigitalProductStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DigitalProductProperties describes the properties that describe a digital product.  It is typically attached to a solution component,
- * but it can be attached to any referenceable.
+ * DigitalProductProperties describes the properties that describe a digital product.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DigitalProductProperties extends ClassificationProperties
+public class DigitalProductProperties extends CollectionProperties
 {
-    private DigitalProductStatus productStatus = null;
-    private String               productName   = null;
-    private String               productType          = null;
-    private String               description          = null;
-    private Date                 introductionDate     = null;
-    private String               maturity             = null;
-    private String               serviceLife          = null;
-    private String               currentVersion       = null;
-    private Date                 nextVersionDate      = null;
-    private Date                 withdrawDate         = null;
-    private Map<String, String>  additionalProperties = null;
+    private String userDefinedStatus = null;
+    private String productName       = null;
+    private String identifier        = null;
+    private String productType       = null;
+    private Date   introductionDate  = null;
+    private String maturity          = null;
+    private String serviceLife       = null;
+    private String currentVersion    = null;
+    private Date   nextVersionDate   = null;
+    private Date   withdrawDate      = null;
 
 
     /**
@@ -45,7 +42,7 @@ public class DigitalProductProperties extends ClassificationProperties
     public DigitalProductProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.DIGITAL_PRODUCT.typeName);
     }
 
 
@@ -60,17 +57,16 @@ public class DigitalProductProperties extends ClassificationProperties
 
         if (template != null)
         {
-            productStatus = template.getProductStatus();
-            productName = template.getProductName();
+            userDefinedStatus = template.getUserDefinedStatus();
+            productName       = template.getProductName();
             productType = template.getProductType();
-            description = template.getDescription();
+            identifier = template.getIdentifier();
             introductionDate = template.getIntroductionDate();
             maturity = template.getMaturity();
             serviceLife = template.getServiceLife();
             currentVersion  = template.getCurrentVersion();
             nextVersionDate = template.getNextVersionDate();
             withdrawDate    = template.getWithdrawDate();
-            additionalProperties = template.getAdditionalProperties();
         }
     }
 
@@ -78,22 +74,22 @@ public class DigitalProductProperties extends ClassificationProperties
     /**
      * Return the status of the product.
      *
-     * @return InstanceStatus enum
+     * @return string
      */
-    public DigitalProductStatus getProductStatus()
+    public String getUserDefinedStatus()
     {
-        return productStatus;
+        return userDefinedStatus;
     }
 
 
     /**
      * Set up the status of the product
      *
-     * @param productStatus InstanceStatus enum
+     * @param userDefinedStatus string
      */
-    public void setProductStatus(DigitalProductStatus productStatus)
+    public void setUserDefinedStatus(String userDefinedStatus)
     {
-        this.productStatus = productStatus;
+        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -120,6 +116,28 @@ public class DigitalProductProperties extends ClassificationProperties
 
 
     /**
+     * Return the product's identifier
+     *
+     * @return string
+     */
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+
+    /**
+     * Set up the product's identifier.
+     *
+     * @param identifier string
+     */
+    public void setIdentifier(String identifier)
+    {
+        this.identifier = identifier;
+    }
+
+
+    /**
      * Return the type of product.
      *
      * @return string name
@@ -138,28 +156,6 @@ public class DigitalProductProperties extends ClassificationProperties
     public void setProductType(String productType)
     {
         this.productType = productType;
-    }
-
-
-    /**
-     * Return the description.
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description.
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -295,26 +291,6 @@ public class DigitalProductProperties extends ClassificationProperties
     }
 
 
-    /**
-     * Return any additional properties that describe the product.
-     *
-     * @return name value pairs
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        return additionalProperties;
-    }
-
-
-    /**
-     * Set up any additional properties that describe the product.
-     *
-     * @param additionalProperties name value pairs
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
 
 
     /**
@@ -326,21 +302,17 @@ public class DigitalProductProperties extends ClassificationProperties
     public String toString()
     {
         return "DigitalProductProperties{" +
-                       "effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", productStatus='" + productStatus + '\'' +
-                       ", productName='" + productName + '\'' +
-                       ", productType='" + productType + '\'' +
-                       ", description='" + description + '\'' +
-                       ", introductionDate=" + introductionDate +
-                       ", maturity='" + maturity + '\'' +
-                       ", serviceLife='" + serviceLife + '\'' +
-                       ", currentVersion='" + currentVersion + '\'' +
-                       ", nextVersionDate=" + nextVersionDate +
-                       ", withdrawDate=" + withdrawDate +
-                       ", additionalProperties=" + additionalProperties +
-                       '}';
+                "userDefinedStatus=" + userDefinedStatus +
+                ", productName='" + productName + '\'' +
+                ", identifier='" + identifier + '\'' +
+                ", productType='" + productType + '\'' +
+                ", introductionDate=" + introductionDate +
+                ", maturity='" + maturity + '\'' +
+                ", serviceLife='" + serviceLife + '\'' +
+                ", currentVersion='" + currentVersion + '\'' +
+                ", nextVersionDate=" + nextVersionDate +
+                ", withdrawDate=" + withdrawDate +
+                "} " + super.toString();
     }
 
 
@@ -365,13 +337,12 @@ public class DigitalProductProperties extends ClassificationProperties
         {
             return false;
         }
-        return Objects.equals(productStatus, that.productStatus) &&
-                       Objects.equals(productName, that.productName) &&
-                       Objects.equals(productType, that.productType) && Objects.equals(description, that.description) &&
+        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
+                       Objects.equals(productName, that.productName) && Objects.equals(identifier, that.identifier) &&
+                       Objects.equals(productType, that.productType) &&
                        Objects.equals(introductionDate, that.introductionDate) && Objects.equals(maturity, that.maturity) &&
                        Objects.equals(serviceLife, that.serviceLife) && Objects.equals(currentVersion, that.currentVersion) &&
-                       Objects.equals(nextVersionDate, that.nextVersionDate) && Objects.equals(withdrawDate, that.withdrawDate) &&
-                       Objects.equals(additionalProperties, that.additionalProperties);
+                       Objects.equals(nextVersionDate, that.nextVersionDate) && Objects.equals(withdrawDate, that.withdrawDate);
     }
 
 
@@ -383,7 +354,7 @@ public class DigitalProductProperties extends ClassificationProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), productStatus, productName, productType, description, introductionDate,
-                            maturity, serviceLife, currentVersion, nextVersionDate, withdrawDate, additionalProperties);
+        return Objects.hash(super.hashCode(), userDefinedStatus, productName, productType, introductionDate,
+                            maturity, serviceLife, currentVersion, nextVersionDate, withdrawDate, identifier);
     }
 }

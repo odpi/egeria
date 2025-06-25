@@ -105,7 +105,7 @@ public class EnumSchemaType extends SimpleSchemaType
                 "validValueSetGUID='" + validValueSetGUID + '\'' +
                 ", dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
-                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", versionNumber='" + getVersionIdentifier() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +

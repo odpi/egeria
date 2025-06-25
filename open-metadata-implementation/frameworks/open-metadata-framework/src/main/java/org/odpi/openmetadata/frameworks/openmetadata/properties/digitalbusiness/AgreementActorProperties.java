@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AgreementActorProperties extends RelationshipProperties
 {
-    private String roleName = null;
+    private String actorName = null;
 
 
     /**
@@ -46,7 +46,7 @@ public class AgreementActorProperties extends RelationshipProperties
 
         if (template != null)
         {
-            roleName = template.getRoleName();
+            actorName = template.getActorName();
         }
     }
 
@@ -54,11 +54,11 @@ public class AgreementActorProperties extends RelationshipProperties
     /**
      * Set up the name of the role from the agreement text.
      *
-     * @param roleName String name
+     * @param actorName String name
      */
-    public void setRoleName(String roleName)
+    public void setActorName(String actorName)
     {
-        this.roleName = roleName;
+        this.actorName = actorName;
     }
 
 
@@ -67,9 +67,9 @@ public class AgreementActorProperties extends RelationshipProperties
      *
      * @return String name
      */
-    public String getRoleName()
+    public String getActorName()
     {
-        return roleName;
+        return actorName;
     }
 
 
@@ -82,7 +82,7 @@ public class AgreementActorProperties extends RelationshipProperties
     public String toString()
     {
         return "AgreementActorProperties{" +
-                "roleName='" + roleName + '\'' +
+                "roleName='" + actorName + '\'' +
                 "} " + super.toString();
     }
 
@@ -108,7 +108,7 @@ public class AgreementActorProperties extends RelationshipProperties
         {
             return false;
         }
-        return Objects.equals(roleName, that.roleName);
+        return Objects.equals(actorName, that.actorName);
     }
 
 
@@ -120,6 +120,6 @@ public class AgreementActorProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), roleName);
+        return Objects.hash(super.hashCode(), actorName);
     }
 }

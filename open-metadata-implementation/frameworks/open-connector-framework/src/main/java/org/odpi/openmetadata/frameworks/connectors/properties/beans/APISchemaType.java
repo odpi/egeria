@@ -102,7 +102,7 @@ public class APISchemaType extends SchemaType
         return "APISchemaType{" +
                 "operationCount='" + operationCount + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
-                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", versionNumber='" + getVersionIdentifier() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +

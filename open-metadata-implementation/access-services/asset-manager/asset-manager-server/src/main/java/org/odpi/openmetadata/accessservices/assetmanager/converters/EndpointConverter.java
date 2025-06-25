@@ -85,7 +85,7 @@ public class EndpointConverter<B> extends AssetManagerOMASConverter<B>
                     endpointProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     endpointProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setEndpointProperties(endpointProperties);
+                    bean.setProperties(endpointProperties);
                 }
                 else
                 {

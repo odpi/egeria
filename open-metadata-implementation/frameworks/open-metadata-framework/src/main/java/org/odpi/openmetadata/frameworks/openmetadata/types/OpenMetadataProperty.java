@@ -1257,11 +1257,6 @@ public enum OpenMetadataProperty
     /**
      * Display name of the product.
      */
-    PRODUCT_STATUS("productStatus", DataType.STRING.getName(),  "Lifecycle status of the product.", "DRAFT", "9aecda29-f1e1-4fe2-8066-2a9d094b990e"),
-
-    /**
-     * Display name of the product.
-     */
     PRODUCT_NAME("productName", DataType.STRING.getName(),  "Display name of the product.", "Teddy Bear Drop Foot Clinical Trial Patient Measurements", "aae2b086-05ea-433a-b1d6-502674c4ae6e"),
 
     /**
@@ -2397,11 +2392,6 @@ public enum OpenMetadataProperty
     ATTRIBUTE_NAME("attributeName", DataType.STRING.getName(), "The name of the attribute that the reference data assignment represents.", null, "be67948d-b0c2-457d-9897-41757cc2c6d1"),
 
     /**
-     * The type of agreement - values typically defined in a valid value set.
-     */
-    AGREEMENT_TYPE("agreementType", DataType.STRING.getName(), "The type of agreement - values typically defined in a valid metadata set.", null, "d994edef-90e1-4899-b814-e30dafa77944"),
-
-    /**
      * The type of solution component - for example, is it a process, of file or database.
      */
     SOLUTION_COMPONENT_TYPE("solutionComponentType", DataType.STRING.getName(), "The type of solution component - for example, is it a process, of file or database.", "Automated Process", "2455eae0-911c-48a5-aa60-eb5e8c90fd22"),
@@ -2740,11 +2730,6 @@ public enum OpenMetadataProperty
      * Prefix for element names to ensure uniqueness.
      */
     NAMESPACE("namespace", DataType.STRING.getName(), "Prefix for element names to ensure uniqueness.", null, "00282ffd-950d-43d1-b9ee-d1b38c6ec49f"),
-
-    /**
-     * Version of the schema type.
-     */
-    VERSION_NUMBER("versionNumber", DataType.STRING.getName(), "Version of the schema type.", null, "9059b5ee-00be-4298-bee2-d588ddc142c2"),
 
     /**
      * Format of the schema.

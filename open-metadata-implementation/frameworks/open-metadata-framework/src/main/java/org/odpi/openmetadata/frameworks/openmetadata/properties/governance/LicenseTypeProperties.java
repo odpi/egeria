@@ -81,21 +81,8 @@ public class LicenseTypeProperties extends GovernanceDefinitionProperties
     public String toString()
     {
         return "LicenseTypeProperties{" +
-                       "details='" + details + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", documentIdentifier='" + getDocumentIdentifier() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", title='" + getTitle() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", scope='" + getScope() + '\'' +
-                       ", domainIdentifier=" + getDomainIdentifier() +
-                       ", priority='" + getImportance() + '\'' +
-                       ", implications=" + getImplications() +
-                       ", outcomes=" + getOutcomes() +
-                       ", results=" + getResults() +
-                       '}';
+                "details='" + details + '\'' +
+                "} " + super.toString();
     }
 
 

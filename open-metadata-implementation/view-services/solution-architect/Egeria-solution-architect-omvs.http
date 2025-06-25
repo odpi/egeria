@@ -567,6 +567,27 @@ Content-Type: application/json
   }
 }
 
+###
+
+@solutionElementGUID=add guid here
+
+###
+# @name updateSolutionElementStatus
+# Update the status of a solution blueprint, solution component or solution port.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-elements/{{solutionElementGUID}}/update-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SolutionElementStatusRequestBody",
+  "status" : "APPROVED",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 
 ###
 # @name linkSolutionComponentToBlueprint

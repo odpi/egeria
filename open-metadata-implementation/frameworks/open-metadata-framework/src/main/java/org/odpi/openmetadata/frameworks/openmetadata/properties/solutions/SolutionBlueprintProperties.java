@@ -21,9 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionBlueprintProperties extends ReferenceableProperties
 {
-    private String displayName = null;
-    private String description = null;
-    private String version     = null;
+    private String displayName       = null;
+    private String description       = null;
+    private String versionIdentifier = null;
+    private String userDefinedStatus = null;
 
     /**
      * Default constructor
@@ -47,8 +48,9 @@ public class SolutionBlueprintProperties extends ReferenceableProperties
         if (template != null)
         {
             this.displayName = template.getDisplayName();
-            this.description = template.getDescription();
-            this.version = template.getVersion();
+            this.description       = template.getDescription();
+            this.versionIdentifier = template.getVersionIdentifier();
+            this.userDefinedStatus = template.getUserDefinedStatus();
         }
     }
 
@@ -102,20 +104,42 @@ public class SolutionBlueprintProperties extends ReferenceableProperties
      *
      * @return String
      */
-    public String getVersion()
+    public String getVersionIdentifier()
     {
-        return version;
+        return versionIdentifier;
     }
 
 
     /**
      * Set up the version number for this solution blueprint.
      *
-     * @param version String
+     * @param versionIdentifier String
      */
-    public void setVersion(String version)
+    public void setVersionIdentifier(String versionIdentifier)
     {
-        this.version = version;
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
+     * Return the status of the element.
+     *
+     * @return string
+     */
+    public String getUserDefinedStatus()
+    {
+        return userDefinedStatus;
+    }
+
+
+    /**
+     * Set up the status of the element
+     *
+     * @param userDefinedStatus string
+     */
+    public void setUserDefinedStatus(String userDefinedStatus)
+    {
+        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -130,7 +154,8 @@ public class SolutionBlueprintProperties extends ReferenceableProperties
         return "SolutionBlueprintProperties{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", version='" + version + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
 
@@ -157,8 +182,9 @@ public class SolutionBlueprintProperties extends ReferenceableProperties
             return false;
         }
         return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(version, that.version);
+                Objects.equals(description, that.description) &&
+                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
+                Objects.equals(versionIdentifier, that.versionIdentifier);
     }
 
 
@@ -170,6 +196,6 @@ public class SolutionBlueprintProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, version);
+        return Objects.hash(super.hashCode(), displayName, description, versionIdentifier, userDefinedStatus);
     }
 }

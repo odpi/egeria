@@ -105,7 +105,7 @@ public class ExternalSchemaType extends SchemaType
                 "linkedSchemaType=" + linkedSchemaType +
                 ", formula='" + getFormula() + '\'' +
                 ", queries=" + getQueries() +
-                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", versionNumber='" + getVersionIdentifier() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +

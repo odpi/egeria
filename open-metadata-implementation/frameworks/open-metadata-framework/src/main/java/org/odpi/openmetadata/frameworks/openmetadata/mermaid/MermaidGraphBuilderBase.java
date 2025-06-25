@@ -175,11 +175,11 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.TEMPLATE;
             }
-            else if (OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName.equals(classificationName))
+            else if (OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.DATA_DICTIONARY;
             }
-            else if (OpenMetadataType.DATA_SPEC_COLLECTION.typeName.equals(classificationName))
+            else if (OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.DATA_SPEC;
             }
@@ -187,15 +187,15 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.OBJECT_IDENTIFIER;
             }
-            else if (OpenMetadataType.ROOT_COLLECTION.typeName.equals(classificationName))
+            else if (OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.ROOT_COLLECTION;
             }
-            else if (OpenMetadataType.FOLDER.typeName.equals(classificationName))
+            else if (OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.FOLDER;
             }
-            else if (OpenMetadataType.HOME_COLLECTION.typeName.equals(classificationName))
+            else if (OpenMetadataType.HOME_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.HOME_COLLECTION;
             }
@@ -203,15 +203,15 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.RESULTS_SET;
             }
-            else if (OpenMetadataType.RECENT_ACCESS.typeName.equals(classificationName))
+            else if (OpenMetadataType.RECENT_ACCESS_COMMECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.RECENT_ACCESS;
             }
-            else if (OpenMetadataType.WORK_ITEM_LIST.typeName.equals(classificationName))
+            else if (OpenMetadataType.WORK_ITEM_LIST_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.WORK_ITEM_LIST;
             }
-            else if (OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName.equals(classificationName))
+            else if (OpenMetadataType.DIGITAL_PRODUCT.typeName.equals(classificationName))
             {
                 return VisualStyle.DIGITAL_PRODUCT;
             }
@@ -243,11 +243,11 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
-            else if (OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName.equals(classificationName))
+            else if (OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
-            else if (OpenMetadataType.DATA_SPEC_COLLECTION.typeName.equals(classificationName))
+            else if (OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
@@ -255,15 +255,15 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
-            else if (OpenMetadataType.ROOT_COLLECTION.typeName.equals(classificationName))
+            else if (OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
-            else if (OpenMetadataType.FOLDER.typeName.equals(classificationName))
+            else if (OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
-            else if (OpenMetadataType.HOME_COLLECTION.typeName.equals(classificationName))
+            else if (OpenMetadataType.HOME_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
@@ -271,15 +271,15 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
-            else if (OpenMetadataType.RECENT_ACCESS.typeName.equals(classificationName))
+            else if (OpenMetadataType.RECENT_ACCESS_COMMECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
-            else if (OpenMetadataType.WORK_ITEM_LIST.typeName.equals(classificationName))
+            else if (OpenMetadataType.WORK_ITEM_LIST_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
-            else if (OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName.equals(classificationName))
+            else if (OpenMetadataType.DIGITAL_PRODUCT.typeName.equals(classificationName))
             {
                 return true;
             }
@@ -1007,6 +1007,40 @@ public class MermaidGraphBuilderBase
      * @param end1Id identifier of the starting end
      * @param label label for the line
      * @param end2Id identifier of the ending end
+     * @param lineStyle required style of line
+     */
+    public void appendMermaidStyledLine(String    lineName,
+                                        String    end1Id,
+                                        String    label,
+                                        String    end2Id,
+                                        LineStyle lineStyle)
+    {
+        if (lineStyle != null)
+        {
+            switch (lineStyle)
+            {
+                case LONG -> appendMermaidLongLine(lineName, end1Id, label, end2Id);
+                case THIN -> appendMermaidThinLine(lineName, end1Id, label, end2Id);
+                case DOTTED -> appendMermaidDottedLine(lineName, end1Id, label, end2Id);
+                case INVISIBLE -> appendInvisibleMermaidLine(end1Id, end2Id);
+                case ANIMATED_LONG -> appendMermaidLongAnimatedLine(lineName, end1Id, label, end2Id);
+                default -> appendMermaidLine(lineName, end1Id, label, end2Id);
+            }
+        }
+        else
+        {
+            appendMermaidLine(lineName, end1Id, label, end2Id);
+        }
+    }
+
+
+    /**
+     * Append a new single pixel width line to the graph.
+     *
+     * @param lineName unique identifier of the line - may be null
+     * @param end1Id identifier of the starting end
+     * @param label label for the line
+     * @param end2Id identifier of the ending end
      */
     public void appendMermaidThinLine(String lineName,
                                       String end1Id,
@@ -1556,7 +1590,6 @@ public class MermaidGraphBuilderBase
         }
     }
 
-
     /**
      * Link the list of related elements into the graph.
      *
@@ -1568,11 +1601,27 @@ public class MermaidGraphBuilderBase
                                            VisualStyle                         visualStyle,
                                            String                              startingEndId)
     {
+        addRelatedElementSummaries(relatedMetadataElements, visualStyle, startingEndId, LineStyle.NORMAL);
+    }
+
+
+    /**
+     * Link the list of related elements into the graph.
+     *
+     * @param relatedMetadataElements list of related element (if null, nothing is added to the graph)
+     * @param visualStyle visual style for new nodes
+     * @param startingEndId identity of the starting node
+     */
+    public void addRelatedElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
+                                           VisualStyle                         visualStyle,
+                                           String                              startingEndId,
+                                           LineStyle                           lineStyle)
+    {
         if (relatedMetadataElements != null)
         {
             for (RelatedMetadataElementSummary relatedMetadataElement : relatedMetadataElements)
             {
-                addRelatedElementSummary(relatedMetadataElement, visualStyle, startingEndId);
+                addRelatedElementSummary(relatedMetadataElement, visualStyle, startingEndId, lineStyle);
             }
         }
     }
@@ -1587,6 +1636,21 @@ public class MermaidGraphBuilderBase
     public void addRelatedElementSummary(RelatedMetadataElementSummary relatedMetadataElement,
                                          VisualStyle                   visualStyle,
                                          String                        startingEndId)
+    {
+        addRelatedElementSummary(relatedMetadataElement, visualStyle, startingEndId, LineStyle.NORMAL);
+    }
+
+
+    /**
+     * Link the related element into the graph.
+     *
+     * @param relatedMetadataElement related element (if null, nothing is added to the graph)
+     * @param visualStyle visual style for new nodes
+     */
+    public void addRelatedElementSummary(RelatedMetadataElementSummary relatedMetadataElement,
+                                         VisualStyle                   visualStyle,
+                                         String                        startingEndId,
+                                         LineStyle                     lineStyle)
     {
         if (relatedMetadataElement != null)
         {
@@ -1610,20 +1674,26 @@ public class MermaidGraphBuilderBase
             {
                 label = this.addSpacesToTypeName(relatedMetadataElement.getRelationshipHeader().getType().getTypeName());
             }
+            else
+            {
+                label = label + " [" + this.addSpacesToTypeName(relatedMetadataElement.getRelationshipHeader().getType().getTypeName()) + "]";
+            }
 
             if (relatedMetadataElement.getRelatedElementAtEnd1())
             {
-                appendMermaidLine(relatedMetadataElement.getRelationshipHeader().getGUID(),
-                                  relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
-                                  label,
-                                  startingEndId);
+                appendMermaidStyledLine(relatedMetadataElement.getRelationshipHeader().getGUID(),
+                                        relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
+                                        label,
+                                        startingEndId,
+                                        lineStyle);
             }
             else
             {
-                appendMermaidLine(relatedMetadataElement.getRelationshipHeader().getGUID(),
-                                  startingEndId,
-                                  label,
-                                  relatedMetadataElement.getRelatedElement().getElementHeader().getGUID());
+                appendMermaidStyledLine(relatedMetadataElement.getRelationshipHeader().getGUID(),
+                                        startingEndId,
+                                        label,
+                                        relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
+                                        lineStyle);
             }
         }
     }

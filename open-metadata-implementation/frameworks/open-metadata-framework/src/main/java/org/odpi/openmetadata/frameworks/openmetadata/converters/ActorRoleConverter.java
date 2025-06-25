@@ -205,13 +205,7 @@ public class ActorRoleConverter<B> extends AttributedElementConverterBase<B>
         }
         else if (returnBean instanceof AttributedMetadataElement bean)
         {
-            if (relationships != null)
-            {
-                bean.setExternalReferences(super.getAttribution(beanClass, relationships));
-                bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
-                                                                          relationships,
-                                                                          processedRelationshipTypes));
-            }
+            super.addRelationshipsToBean(beanClass, relationships, null, bean);
         }
 
         return returnBean;
@@ -254,13 +248,7 @@ public class ActorRoleConverter<B> extends AttributedElementConverterBase<B>
         }
         else if (returnBean instanceof AttributedMetadataElement bean)
         {
-            if (relationships != null)
-            {
-                bean.setExternalReferences(super.getAttribution(beanClass, relationships));
-                bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
-                                                                          relationships,
-                                                                          processedRelationshipTypes));
-            }
+            super.addRelationshipsToBean(beanClass, relationships, null, bean);
         }
 
         return returnBean;

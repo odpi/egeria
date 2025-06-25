@@ -81,7 +81,8 @@ public class SolutionBlueprintConverter<B> extends OpenMetadataConverterBase<B>
                     solutionBlueprintProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
                     solutionBlueprintProperties.setDisplayName(this.removeDisplayName(elementProperties));
                     solutionBlueprintProperties.setDescription(this.removeDescription(elementProperties));
-                    solutionBlueprintProperties.setVersion(this.removeVersionIdentifier(elementProperties));
+                    solutionBlueprintProperties.setVersionIdentifier(this.removeVersionIdentifier(elementProperties));
+                    solutionBlueprintProperties.setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
                     solutionBlueprintProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
                     solutionBlueprintProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
 

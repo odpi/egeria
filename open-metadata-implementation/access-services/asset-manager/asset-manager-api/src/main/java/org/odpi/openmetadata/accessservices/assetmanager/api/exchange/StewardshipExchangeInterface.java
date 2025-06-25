@@ -516,7 +516,7 @@ public interface StewardshipExchangeInterface
                        String          assetManagerName,
                        String          elementGUID,
                        String          externalIdentifier,
-                       OwnerProperties properties,
+                       OwnershipProperties properties,
                        Date            effectiveTime,
                        boolean         forLineage,
                        boolean         forDuplicateProcessing) throws InvalidParameterException,

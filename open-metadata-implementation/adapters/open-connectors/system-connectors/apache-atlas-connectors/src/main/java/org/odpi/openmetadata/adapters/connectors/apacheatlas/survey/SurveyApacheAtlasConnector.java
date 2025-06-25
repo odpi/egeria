@@ -1065,7 +1065,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                   atlasTypeDef.getServiceType());
 
                 typeProperties = propertyHelper.addStringProperty(typeProperties,
-                                                                  OpenMetadataProperty.VERSION_NUMBER.name,
+                                                                  OpenMetadataProperty.VERSION_IDENTIFIER.name,
                                                                   atlasTypeDef.getTypeVersion());
 
                 Map<String, ElementProperties> initialClassifications = new HashMap<>();

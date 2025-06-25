@@ -54,13 +54,13 @@ public class CollectionManagerInstance extends OMVSServiceInstance
 
         if (localServerUserPassword == null)
         {
-            collectionsClient       = new CollectionsClient(remoteServerName, remoteServerURL, maxPageSize);
+            collectionsClient       = new CollectionsClient(serverName, remoteServerName, remoteServerURL, auditLog, maxPageSize);
             connectedAssetClient    = new ConnectedAssetClient(remoteServerName, remoteServerURL, auditLog);
             openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
         }
         else
         {
-            collectionsClient       = new CollectionsClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            collectionsClient       = new CollectionsClient(serverName, remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog, maxPageSize);
             connectedAssetClient    = new ConnectedAssetClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog);
             openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
         }

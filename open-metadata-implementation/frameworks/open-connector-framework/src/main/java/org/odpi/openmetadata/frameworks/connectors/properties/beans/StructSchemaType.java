@@ -72,7 +72,7 @@ public class StructSchemaType extends ComplexSchemaType
     {
         return "StructSchemaType{" +
                 "attributeCount=" + getAttributeCount() +
-                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", versionNumber='" + getVersionIdentifier() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +

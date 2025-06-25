@@ -8,16 +8,16 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.CollectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -130,82 +130,6 @@ public class CollectionManagerRESTServices extends TokenController
         return response;
     }
 
-
-    /**
-     * Returns the list of collections with a particular classification.
-     *
-     * @param serverName         name of called server
-     * @param requestBody        name of the classification - if null, all collections are returned
-     * @param startFrom          index of the list to start from (0 for start)
-     * @param pageSize           maximum number of elements to return
-     *
-     * @return a list of collections
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public CollectionsResponse getClassifiedCollections(String            serverName,
-                                                        int               startFrom,
-                                                        int               pageSize,
-                                                        FilterRequestBody requestBody)
-    {
-        final String methodName = "getClassifiedCollections";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        CollectionsResponse response = new CollectionsResponse();
-        AuditLog            auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElements(handler.getClassifiedCollections(userId,
-                                                                      requestBody.getFilter(),
-                                                                      requestBody.getTemplateFilter(),
-                                                                      requestBody.getLimitResultsByStatus(),
-                                                                      requestBody.getAsOfTime(),
-                                                                      requestBody.getSequencingOrder(),
-                                                                      requestBody.getSequencingProperty(),
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      requestBody.getForLineage(),
-                                                                      requestBody.getForDuplicateProcessing(),
-                                                                      requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.getClassifiedCollections(userId,
-                                                                      null,
-                                                                      TemplateFilter.ALL,
-                                                                      null,
-                                                                      null,
-                                                                      SequencingOrder.CREATION_DATE_RECENT,
-                                                                      null,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      false,
-                                                                      false,
-                                                                      new Date()));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-    
 
     /**
      * Returns the list of collections matching the search string - this is coded as a regular expression.
@@ -503,9 +427,9 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createCollection(String                   serverName,
-                                         String                   optionalClassificationName,
-                                         NewCollectionRequestBody requestBody)
+    public GUIDResponse createCollection(String                serverName,
+                                         String                optionalClassificationName,
+                                         NewElementRequestBody requestBody)
     {
         final String methodName = "createCollection";
 
@@ -526,443 +450,51 @@ public class CollectionManagerRESTServices extends TokenController
             {
                 CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-                response.setGUID(handler.createCollection(userId,
-                                                          requestBody.getAnchorGUID(),
-                                                          requestBody.getIsOwnAnchor(),
-                                                          requestBody.getAnchorScopeGUID(),
-                                                          optionalClassificationName,
-                                                          requestBody.getCollectionProperties(),
-                                                          requestBody.getParentGUID(),
-                                                          requestBody.getParentRelationshipTypeName(),
-                                                          requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Create a new collection with the RootCollection classification.  Used to identify the top of a
-     * collection hierarchy.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createRootCollection(String                   serverName,
-                                             NewCollectionRequestBody requestBody)
-    {
-        final String methodName = "createRootCollection";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createCollection(userId,
-                                                          requestBody.getAnchorGUID(),
-                                                          requestBody.getIsOwnAnchor(),
-                                                          requestBody.getAnchorScopeGUID(),
-                                                          OpenMetadataType.ROOT_COLLECTION.typeName,
-                                                          requestBody.getCollectionProperties(),
-                                                          requestBody.getParentGUID(),
-                                                          requestBody.getParentRelationshipTypeName(),
-                                                          requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Create a new collection with the DataSpec classification.  Used to identify the top of a
-     * collection hierarchy.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createDataSpecCollection(String                   serverName,
-                                                 NewCollectionRequestBody requestBody)
-    {
-        final String methodName = "createDataSpecCollection";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createCollection(userId,
-                                                          requestBody.getAnchorGUID(),
-                                                          requestBody.getIsOwnAnchor(),
-                                                          requestBody.getAnchorScopeGUID(),
-                                                          OpenMetadataType.DATA_SPEC_COLLECTION.typeName,
-                                                          requestBody.getCollectionProperties(),
-                                                          requestBody.getParentGUID(),
-                                                          requestBody.getParentRelationshipTypeName(),
-                                                          requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /**
-     * Create a new collection with the DataDictionary classification.  Used to identify the top of a
-     * collection hierarchy.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createDataDictionaryCollection(String                   serverName,
-                                                       NewCollectionRequestBody requestBody)
-    {
-        final String methodName = "createDataDictionaryCollection";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createCollection(userId,
-                                                          requestBody.getAnchorGUID(),
-                                                          requestBody.getIsOwnAnchor(),
-                                                          requestBody.getAnchorScopeGUID(),
-                                                          OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName,
-                                                          requestBody.getCollectionProperties(),
-                                                          requestBody.getParentGUID(),
-                                                          requestBody.getParentRelationshipTypeName(),
-                                                          requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Create a new collection with the Folder classification.  This is used to identify the organizing collections
-     * in a collection hierarchy.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createFolderCollection(String                   serverName,
-                                               NewCollectionRequestBody requestBody)
-    {
-        final String methodName = "createFolderCollection";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createCollection(userId,
-                                                          requestBody.getAnchorGUID(),
-                                                          requestBody.getIsOwnAnchor(),
-                                                          requestBody.getAnchorScopeGUID(),
-                                                          OpenMetadataType.FOLDER.typeName,
-                                                          requestBody.getCollectionProperties(),
-                                                          requestBody.getParentGUID(),
-                                                          requestBody.getParentRelationshipTypeName(),
-                                                          requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /**
-     * Create a new collection with the ContextEventCollection classification.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createContextEventCollection(String                   serverName,
-                                                     NewCollectionRequestBody requestBody)
-    {
-        final String methodName = "createContextEventCollection";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createCollection(userId,
-                                                          requestBody.getAnchorGUID(),
-                                                          requestBody.getIsOwnAnchor(),
-                                                          requestBody.getAnchorScopeGUID(),
-                                                          OpenMetadataType.FOLDER.typeName,
-                                                          requestBody.getCollectionProperties(),
-                                                          requestBody.getParentGUID(),
-                                                          requestBody.getParentRelationshipTypeName(),
-                                                          requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Create a new collection with the EventSet classification.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createEventSetCollection(String                   serverName,
-                                                 NewCollectionRequestBody requestBody)
-    {
-        final String methodName = "createEventSetCollection";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createCollection(userId,
-                                                          requestBody.getAnchorGUID(),
-                                                          requestBody.getIsOwnAnchor(),
-                                                          requestBody.getAnchorScopeGUID(),
-                                                          OpenMetadataType.EVENT_SET.typeName,
-                                                          requestBody.getCollectionProperties(),
-                                                          requestBody.getParentGUID(),
-                                                          requestBody.getParentRelationshipTypeName(),
-                                                          requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Create a new collection with the NamingStandardRuleSet classification.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createNamingStandardRuleSetCollection(String                   serverName,
-                                                              NewCollectionRequestBody requestBody)
-    {
-        final String methodName = "createNamingStandardRuleSetCollection";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createCollection(userId,
-                                                          requestBody.getAnchorGUID(),
-                                                          requestBody.getIsOwnAnchor(),
-                                                          requestBody.getAnchorScopeGUID(),
-                                                          OpenMetadataType.NAMING_STANDARD_RULE_SET.typeName,
-                                                          requestBody.getCollectionProperties(),
-                                                          requestBody.getParentGUID(),
-                                                          requestBody.getParentRelationshipTypeName(),
-                                                          requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1(),
-                                                          requestBody.getEffectiveTime()));
+                ElementStatus initialStatus = ElementStatus.ACTIVE;
+
+                if (requestBody instanceof NewDigitalProductRequestBody digitalProductRequestBody)
+                {
+                    initialStatus = handler.getElementStatus(digitalProductRequestBody.getInitialStatus());
+                }
+                else if (requestBody instanceof NewAgreementRequestBody agreementRequestBody)
+                {
+                    initialStatus = handler.getElementStatus(agreementRequestBody.getInitialStatus());
+                }
+
+                if (requestBody.getProperties() instanceof CollectionProperties collectionProperties)
+                {
+                    response.setGUID(handler.createCollection(userId,
+                                                              requestBody.getAnchorGUID(),
+                                                              requestBody.getIsOwnAnchor(),
+                                                              requestBody.getAnchorScopeGUID(),
+                                                              optionalClassificationName,
+                                                              collectionProperties,
+                                                              initialStatus,
+                                                              requestBody.getParentGUID(),
+                                                              requestBody.getParentRelationshipTypeName(),
+                                                              requestBody.getParentRelationshipProperties(),
+                                                              requestBody.getParentAtEnd1(),
+                                                              requestBody.getEffectiveTime()));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.createCollection(userId,
+                                                              requestBody.getAnchorGUID(),
+                                                              requestBody.getIsOwnAnchor(),
+                                                              requestBody.getAnchorScopeGUID(),
+                                                              optionalClassificationName,
+                                                              null,
+                                                              initialStatus,
+                                                              requestBody.getParentGUID(),
+                                                              requestBody.getParentRelationshipTypeName(),
+                                                              requestBody.getParentRelationshipProperties(),
+                                                              requestBody.getParentAtEnd1(),
+                                                              requestBody.getEffectiveTime()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(CollectionProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1044,66 +576,6 @@ public class CollectionManagerRESTServices extends TokenController
 
 
     /**
-     * Create a new collection that represents a digital product.
-     *
-     * @param serverName   name of called server.
-     * @param requestBody properties for the collection and attached DigitalProduct classification
-
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createDigitalProduct(String                       serverName,
-                                             NewDigitalProductRequestBody requestBody)
-    {
-        final String methodName = "createDigitalProduct";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createDigitalProduct(userId,
-                                                              requestBody.getAnchorGUID(),
-                                                              requestBody.getIsOwnAnchor(),
-                                                              requestBody.getAnchorScopeGUID(),
-                                                              requestBody.getCollectionProperties(),
-                                                              requestBody.getDigitalProductProperties(),
-                                                              requestBody.getParentGUID(),
-                                                              requestBody.getParentRelationshipTypeName(),
-                                                              requestBody.getParentRelationshipProperties(),
-                                                              requestBody.getParentAtEnd1(),
-                                                              requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Update the properties of a collection.
      *
      * @param serverName         name of called server.
@@ -1117,10 +589,10 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateCollection(String               serverName,
-                                           String               collectionGUID,
-                                           boolean              replaceAllProperties,
-                                           CollectionProperties requestBody)
+    public VoidResponse   updateCollection(String                   serverName,
+                                           String                   collectionGUID,
+                                           boolean                  replaceAllProperties,
+                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateCollection";
 
@@ -1141,11 +613,26 @@ public class CollectionManagerRESTServices extends TokenController
             {
                 CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-                handler.updateCollection(userId,
-                                         collectionGUID,
-                                         replaceAllProperties,
-                                         requestBody,
-                                         null);
+                if (requestBody.getProperties() instanceof CollectionProperties properties)
+                {
+                    handler.updateCollection(userId,
+                                             collectionGUID,
+                                             replaceAllProperties,
+                                             properties,
+                                             requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateCollection(userId,
+                                             collectionGUID,
+                                             replaceAllProperties,
+                                             null,
+                                             requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(CollectionProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1162,26 +649,24 @@ public class CollectionManagerRESTServices extends TokenController
     }
 
 
+
     /**
-     * Update the properties of the DigitalProduct classification attached to a collection.
+     * Update the status of a digital product.
      *
      * @param serverName         name of called server.
-     * @param collectionGUID unique identifier of the collection (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
-     * @param requestBody     properties for the DigitalProduct classification.
+     * @param digitalProductGUID unique identifier of the digital product (returned from create)
+     * @param requestBody     properties for the new element.
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateDigitalProduct(String                   serverName,
-                                               String                   collectionGUID,
-                                               boolean                  replaceAllProperties,
-                                               DigitalProductProperties requestBody)
+    public VoidResponse updateDigitalProductStatus(String                          serverName,
+                                                   String                          digitalProductGUID,
+                                                   DigitalProductStatusRequestBody requestBody)
     {
-        final String methodName = "updateDigitalProduct";
+        final String methodName = "updateDigitalProductStatus";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -1200,11 +685,74 @@ public class CollectionManagerRESTServices extends TokenController
             {
                 CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-                handler.updateDigitalProduct(userId,
-                                             collectionGUID,
-                                             replaceAllProperties,
-                                             requestBody,
-                                             null);
+                handler.updateCollectionStatus(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               digitalProductGUID,
+                                               handler.getElementStatus(requestBody.getStatus()),
+                                               requestBody.getForLineage(),
+                                               requestBody.getForDuplicateProcessing(),
+                                               requestBody.getEffectiveTime());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Update the status of an agreement.
+     *
+     * @param serverName         name of called server.
+     * @param agreementGUID unique identifier of the agreement (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse updateAgreementStatus(String                     serverName,
+                                              String                     agreementGUID,
+                                              AgreementStatusRequestBody requestBody)
+    {
+        final String methodName = "updateAgreementStatus";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+                handler.updateCollectionStatus(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               agreementGUID,
+                                               handler.getElementStatus(requestBody.getStatus()),
+                                               requestBody.getForLineage(),
+                                               requestBody.getForDuplicateProcessing(),
+                                               requestBody.getEffectiveTime());
             }
             else
             {
@@ -1235,11 +783,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse attachCollection(String                 serverName,
-                                         String                 collectionGUID,
-                                         String                 parentGUID,
-                                         boolean                makeAnchor,
-                                         ResourceListProperties requestBody)
+    public VoidResponse attachCollection(String                  serverName,
+                                         String                  collectionGUID,
+                                         String                  parentGUID,
+                                         boolean                 makeAnchor,
+                                         RelationshipRequestBody requestBody)
     {
         final String methodName = "attachCollection";
 
@@ -1256,20 +804,53 @@ public class CollectionManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                handler.attachCollection(userId,
-                                         collectionGUID,
-                                         parentGUID,
-                                         requestBody,
-                                         makeAnchor,
-                                         null);
+                if (requestBody.getProperties() instanceof ResourceListProperties properties)
+                {
+                    handler.attachCollection(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             collectionGUID,
+                                             parentGUID,
+                                             properties,
+                                             makeAnchor,
+                                             requestBody.getForLineage(),
+                                             requestBody.getForDuplicateProcessing(),
+                                             requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.attachCollection(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             collectionGUID,
+                                             parentGUID,
+                                             null,
+                                             makeAnchor,
+                                             requestBody.getForLineage(),
+                                             requestBody.getForDuplicateProcessing(),
+                                             requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ResourceListProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.attachCollection(userId,
+                                         null,
+                                         null,
+                                         collectionGUID,
+                                         parentGUID,
+                                         null,
+                                         makeAnchor,
+                                         false,
+                                         false,
+                                         new Date());
             }
         }
         catch (Throwable error)
@@ -1295,11 +876,10 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse detachCollection(String          serverName,
-                                         String          collectionGUID,
-                                         String          parentGUID,
-                                         NullRequestBody requestBody)
+    public VoidResponse detachCollection(String                    serverName,
+                                         String                    collectionGUID,
+                                         String                    parentGUID,
+                                         MetadataSourceRequestBody requestBody)
     {
         final String methodName = "detachCollection";
 
@@ -1318,7 +898,962 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            handler.detachCollection(userId, collectionGUID, parentGUID, null);
+            if (requestBody != null)
+            {
+                handler.detachCollection(userId,
+                                         requestBody.getExternalSourceGUID(),
+                                         requestBody.getExternalSourceName(),
+                                         collectionGUID,
+                                         parentGUID,
+                                         requestBody.getForLineage(),
+                                         requestBody.getForDuplicateProcessing(),
+                                         requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachCollection(userId,
+                                         null,
+                                         null,
+                                         collectionGUID,
+                                         parentGUID,
+                                         false,
+                                         false,
+                                         new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Link two dependent products.
+     *
+     * @param serverName         name of called server
+     * @param consumerDigitalProductGUID    unique identifier of the digital product that has the dependency.
+     * @param consumedDigitalProductGUID    unique identifier of the digital product that it is using.
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkDigitalProductDependency(String                  serverName,
+                                                     String                  consumerDigitalProductGUID,
+                                                     String                  consumedDigitalProductGUID,
+                                                     RelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkDigitalProductDependency";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DigitalProductDependencyProperties properties)
+                {
+                    handler.linkDigitalProductDependency(userId,
+                                                         requestBody.getExternalSourceGUID(),
+                                                         requestBody.getExternalSourceName(),
+                                                         consumerDigitalProductGUID,
+                                                         consumedDigitalProductGUID,
+                                                         properties,
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
+                                                         requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkDigitalProductDependency(userId,
+                                                         requestBody.getExternalSourceGUID(),
+                                                         requestBody.getExternalSourceName(),
+                                                         consumerDigitalProductGUID,
+                                                         consumedDigitalProductGUID,
+                                                         null,
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
+                                                         requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkDigitalProductDependency(userId,
+                                                     null,
+                                                     null,
+                                                     consumerDigitalProductGUID,
+                                                     consumedDigitalProductGUID,
+                                                     null,
+                                                     false,
+                                                     false,
+                                                     new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Unlink dependent products.
+     *
+     * @param serverName         name of called server
+     * @param consumerDigitalProductGUID    unique identifier of the digital product that has the dependency.
+     * @param consumedDigitalProductGUID    unique identifier of the digital product that it is using.
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachDigitalProductDependency(String                    serverName,
+                                                       String                    consumerDigitalProductGUID,
+                                                       String                    consumedDigitalProductGUID,
+                                                       MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachDigitalProductDependency";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachDigitalProductDependency(userId,
+                                                       requestBody.getExternalSourceGUID(),
+                                                       requestBody.getExternalSourceName(),
+                                                       consumerDigitalProductGUID,
+                                                       consumedDigitalProductGUID,
+                                                       requestBody.getForLineage(),
+                                                       requestBody.getForDuplicateProcessing(),
+                                                       requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachDigitalProductDependency(userId,
+                                                       null,
+                                                       null,
+                                                       consumerDigitalProductGUID,
+                                                       consumedDigitalProductGUID,
+                                                       false,
+                                                       false,
+                                                       new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Attach a subscriber to a subscription.
+     *
+     * @param serverName         name of called server
+     * @param digitalSubscriberGUID  unique identifier of the subscriber (referenceable)
+     * @param digitalSubscriptionGUID unique identifier of the  digital subscription agreement
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkSubscriber(String                  serverName,
+                                       String                  digitalSubscriberGUID,
+                                       String                  digitalSubscriptionGUID,
+                                       RelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSubscriber";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DigitalSubscriberProperties properties)
+                {
+                    handler.linkSubscriber(userId,
+                                           requestBody.getExternalSourceGUID(),
+                                           requestBody.getExternalSourceName(),
+                                           digitalSubscriberGUID,
+                                           digitalSubscriptionGUID,
+                                           properties,
+                                           requestBody.getForLineage(),
+                                           requestBody.getForDuplicateProcessing(),
+                                           requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkSubscriber(userId,
+                                           requestBody.getExternalSourceGUID(),
+                                           requestBody.getExternalSourceName(),
+                                           digitalSubscriberGUID,
+                                           digitalSubscriptionGUID,
+                                           null,
+                                           requestBody.getForLineage(),
+                                           requestBody.getForDuplicateProcessing(),
+                                           requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkSubscriber(userId,
+                                       null,
+                                       null,
+                                       digitalSubscriberGUID,
+                                       digitalSubscriptionGUID,
+                                       null,
+                                       false,
+                                       false,
+                                       new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a subscriber from a subscription.
+     *
+     * @param serverName         name of called server
+     * @param digitalSubscriberGUID  unique identifier of the subscriber (referenceable)
+     * @param digitalSubscriptionGUID unique identifier of the  digital subscription agreement
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachSubscriber(String                    serverName,
+                                         String                    digitalSubscriberGUID,
+                                         String                    digitalSubscriptionGUID,
+                                         MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachSubscriber";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachSubscriber(userId,
+                                         requestBody.getExternalSourceGUID(),
+                                         requestBody.getExternalSourceName(),
+                                         digitalSubscriberGUID,
+                                         digitalSubscriptionGUID,
+                                         requestBody.getForLineage(),
+                                         requestBody.getForDuplicateProcessing(),
+                                         requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachSubscriber(userId,
+                                         null,
+                                         null,
+                                         digitalSubscriberGUID,
+                                         digitalSubscriptionGUID,
+                                         false,
+                                         false,
+                                         new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Attach a product manager to a digital product.
+     *
+     * @param serverName         name of called server
+     * @param digitalProductGUID  unique identifier of the digital product
+     * @param digitalProductManagerGUID      unique identifier of the product manager role
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkProductManager(String                  serverName,
+                                           String                  digitalProductGUID,
+                                           String                  digitalProductManagerGUID,
+                                           RelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkProductManager";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DigitalProductManagementProperties properties)
+                {
+                    handler.linkProductManager(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               digitalProductGUID,
+                                               digitalProductManagerGUID,
+                                               properties,
+                                               requestBody.getForLineage(),
+                                               requestBody.getForDuplicateProcessing(),
+                                               requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkProductManager(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               digitalProductGUID,
+                                               digitalProductManagerGUID,
+                                               null,
+                                               requestBody.getForLineage(),
+                                               requestBody.getForDuplicateProcessing(),
+                                               requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkProductManager(userId,
+                                           null,
+                                           null,
+                                           digitalProductGUID,
+                                           digitalProductManagerGUID,
+                                           null,
+                                           false,
+                                           false,
+                                           new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a product manager from a digital product.
+     *
+     * @param serverName         name of called server
+     * @param digitalProductGUID  unique identifier of the digital product
+     * @param digitalProductManagerGUID      unique identifier of the product manager role
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachProductManager(String                    serverName,
+                                             String                    digitalProductGUID,
+                                             String                    digitalProductManagerGUID,
+                                             MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachProductManager";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachProductManager(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             digitalProductGUID,
+                                             digitalProductManagerGUID,
+                                             requestBody.getForLineage(),
+                                             requestBody.getForDuplicateProcessing(),
+                                             requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachProductManager(userId,
+                                             null,
+                                             null,
+                                             digitalProductGUID,
+                                             digitalProductManagerGUID,
+                                             false,
+                                             false,
+                                             new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Attach an actor to an agreement.
+     *
+     * @param serverName         name of called server
+     * @param agreementGUID  unique identifier of the agreement
+     * @param actorGUID      unique identifier of the actor
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse linkAgreementActor(String                  serverName,
+                                           String                  agreementGUID,
+                                           String                  actorGUID,
+                                           RelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAgreementActor";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof AgreementActorProperties properties)
+                {
+                    response.setGUID(handler.linkAgreementActor(userId,
+                                                                requestBody.getExternalSourceGUID(),
+                                                                requestBody.getExternalSourceName(),
+                                                                agreementGUID,
+                                                                actorGUID,
+                                                                properties,
+                                                                requestBody.getForLineage(),
+                                                                requestBody.getForDuplicateProcessing(),
+                                                                requestBody.getEffectiveTime()));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.linkAgreementActor(userId,
+                                                                requestBody.getExternalSourceGUID(),
+                                                                requestBody.getExternalSourceName(),
+                                                                agreementGUID,
+                                                                actorGUID,
+                                                                null,
+                                                                requestBody.getForLineage(),
+                                                                requestBody.getForDuplicateProcessing(),
+                                                                requestBody.getEffectiveTime()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                response.setGUID(handler.linkAgreementActor(userId,
+                                                            null,
+                                                            null,
+                                                            agreementGUID,
+                                                            actorGUID,
+                                                            null,
+                                                            false,
+                                                            false,
+                                                            new Date()));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach an actor from an agreement.
+     *
+     * @param serverName         name of called server
+     * @param agreementActorRelationshipGUID  unique identifier of the element being described
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachAgreementActor(String                    serverName,
+                                             String                    agreementActorRelationshipGUID,
+                                             MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachAgreementActor";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachAgreementActor(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             agreementActorRelationshipGUID,
+                                             requestBody.getForLineage(),
+                                             requestBody.getForDuplicateProcessing(),
+                                             requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachAgreementActor(userId,
+                                             null,
+                                             null,
+                                             agreementActorRelationshipGUID,
+                                             false,
+                                             false,
+                                             new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Attach an agreement to an element involved in its definition.
+     *
+     * @param serverName         name of called server
+     * @param agreementGUID  unique identifier of the agreement
+     * @param agreementItemGUID      unique identifier of the agreement item
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkAgreementItem(String                  serverName,
+                                          String                  agreementGUID,
+                                          String                  agreementItemGUID,
+                                          RelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAgreementItem";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof AgreementItemProperties properties)
+                {
+                    handler.linkAgreementItem(userId,
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
+                                              agreementGUID,
+                                              agreementItemGUID,
+                                              properties,
+                                              requestBody.getForLineage(),
+                                              requestBody.getForDuplicateProcessing(),
+                                              requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkAgreementItem(userId,
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
+                                              agreementGUID,
+                                              agreementItemGUID,
+                                              null,
+                                              requestBody.getForLineage(),
+                                              requestBody.getForDuplicateProcessing(),
+                                              requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkAgreementItem(userId,
+                                          null,
+                                          null,
+                                          agreementGUID,
+                                          agreementItemGUID,
+                                          null,
+                                          false,
+                                          false,
+                                          new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach an agreement from an element involved in its definition.
+     *
+     * @param serverName         name of called server
+     * @param agreementGUID  unique identifier of the agreement
+     * @param agreementItemGUID      unique identifier of the agreement item
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachAgreementItem(String                    serverName,
+                                            String                    agreementGUID,
+                                            String                    agreementItemGUID,
+                                            MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachAgreementItem";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachAgreementItem(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            agreementGUID,
+                                            agreementItemGUID,
+                                            requestBody.getForLineage(),
+                                            requestBody.getForDuplicateProcessing(),
+                                            requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachAgreementItem(userId,
+                                            null,
+                                            null,
+                                            agreementGUID,
+                                            agreementItemGUID,
+                                            false,
+                                            false,
+                                            new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Attach an agreement to an external reference element that describes the location of the contract documents.
+     *
+     * @param serverName         name of called server
+     * @param agreementGUID  unique identifier of the agreement
+     * @param externalReferenceGUID      unique identifier of the external reference describing the location of the contract
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkContract(String                  serverName,
+                                     String                  agreementGUID,
+                                     String                  externalReferenceGUID,
+                                     RelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkContract";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ContractLinkProperties properties)
+                {
+                    handler.linkContract(userId,
+                                         requestBody.getExternalSourceGUID(),
+                                         requestBody.getExternalSourceName(),
+                                         agreementGUID,
+                                         externalReferenceGUID,
+                                         properties,
+                                         requestBody.getForLineage(),
+                                         requestBody.getForDuplicateProcessing(),
+                                         requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkContract(userId,
+                                         requestBody.getExternalSourceGUID(),
+                                         requestBody.getExternalSourceName(),
+                                         agreementGUID,
+                                         externalReferenceGUID,
+                                         null,
+                                         requestBody.getForLineage(),
+                                         requestBody.getForDuplicateProcessing(),
+                                         requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkContract(userId,
+                                     null,
+                                     null,
+                                     agreementGUID,
+                                     externalReferenceGUID,
+                                     null,
+                                     false,
+                                     false,
+                                     new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach an agreement from an external reference describing the location of the contract documents.
+     *
+     * @param serverName         name of called server
+     * @param agreementGUID  unique identifier of the agreement
+     * @param externalReferenceGUID      unique identifier of the external reference describing the location of the contract
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachContract(String                    serverName,
+                                       String                    agreementGUID,
+                                       String                    externalReferenceGUID,
+                                       MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachContract";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachContract(userId,
+                                       requestBody.getExternalSourceGUID(),
+                                       requestBody.getExternalSourceName(),
+                                       agreementGUID,
+                                       externalReferenceGUID,
+                                       requestBody.getForLineage(),
+                                       requestBody.getForDuplicateProcessing(),
+                                       requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachContract(userId,
+                                       null,
+                                       null,
+                                       agreementGUID,
+                                       externalReferenceGUID,
+                                       false,
+                                       false,
+                                       new Date());
+            }
         }
         catch (Throwable error)
         {
@@ -1350,7 +1885,7 @@ public class CollectionManagerRESTServices extends TokenController
     public VoidResponse deleteCollection(String          serverName,
                                          String          collectionGUID,
                                          boolean         cascadedDelete,
-                                         NullRequestBody requestBody)
+                                         MetadataSourceRequestBody requestBody)
     {
         final String methodName = "deleteCollection";
 
@@ -1546,10 +2081,10 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addToCollection(String                         serverName,
-                                        String                         collectionGUID,
-                                        String                         elementGUID,
-                                        CollectionMembershipProperties requestBody)
+    public VoidResponse addToCollection(String                  serverName,
+                                        String                  collectionGUID,
+                                        String                  elementGUID,
+                                        RelationshipRequestBody requestBody)
     {
         final String methodName = "addToCollection";
 
@@ -1566,15 +2101,26 @@ public class CollectionManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                handler.addToCollection(userId, collectionGUID, requestBody, elementGUID, null);
+                if (requestBody.getProperties() instanceof CollectionMembershipProperties properties)
+                {
+                    handler.addToCollection(userId, collectionGUID, properties, elementGUID, null);
+                }
+                else if (requestBody.getProperties() instanceof CollectionMembershipProperties properties)
+                {
+                    handler.addToCollection(userId, collectionGUID, properties, elementGUID, null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(CollectionMembershipProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.addToCollection(userId, collectionGUID, null, elementGUID, null);
             }
         }
         catch (Throwable error)
@@ -1602,11 +2148,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateCollectionMembership(String                         serverName,
-                                                   String                         collectionGUID,
-                                                   String                         elementGUID,
-                                                   boolean                        replaceAllProperties,
-                                                   CollectionMembershipProperties requestBody)
+    public VoidResponse updateCollectionMembership(String                  serverName,
+                                                   String                  collectionGUID,
+                                                   String                  elementGUID,
+                                                   boolean                 replaceAllProperties,
+                                                   RelationshipRequestBody requestBody)
     {
         final String methodName = "updateCollectionMembership";
 
@@ -1623,15 +2169,26 @@ public class CollectionManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
-
-                handler.updateCollectionMembership(userId, collectionGUID, replaceAllProperties, requestBody, elementGUID, null);
+                if (requestBody.getProperties() instanceof CollectionMembershipProperties properties)
+                {
+                    handler.updateCollectionMembership(userId, collectionGUID, replaceAllProperties, properties, elementGUID, requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateCollectionMembership(userId, collectionGUID, replaceAllProperties, null, elementGUID, requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(CollectionMembershipProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.updateCollectionMembership(userId, collectionGUID, replaceAllProperties, null, elementGUID, new Date());
             }
         }
         catch (Throwable error)
@@ -1659,10 +2216,10 @@ public class CollectionManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse removeFromCollection(String          serverName,
-                                             String          collectionGUID,
-                                             String          elementGUID,
-                                             NullRequestBody requestBody)
+    public VoidResponse removeFromCollection(String                    serverName,
+                                             String                    collectionGUID,
+                                             String                    elementGUID,
+                                             MetadataSourceRequestBody requestBody)
     {
         final String methodName = "removeFromCollection";
 

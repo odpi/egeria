@@ -987,38 +987,6 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                 return anchorIdentifiers;
             }
         }
-        else
-        {
-            relationship = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                         connectionGUID,
-                                                                         OpenMetadataType.CONNECTION.typeName,
-                                                                         true,
-                                                                         OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                                         OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                                         null,
-                                                                         null,
-                                                                         SequencingOrder.CREATION_DATE_RECENT,
-                                                                         null,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         effectiveTime,
-                                                                         methodName);
-
-            if (relationship != null)
-            {
-                EntityProxy proxy = relationship.getEntityOneProxy();
-
-                if ((proxy != null) && (proxy.getGUID() != null))
-                {
-                    AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
-
-                    anchorIdentifiers.anchorGUID     = proxy.getGUID();
-                    anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
-
-                    return anchorIdentifiers;
-                }
-            }
-        }
 
         return null;
     }
@@ -1113,54 +1081,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                                                  effectiveTime,
                                                                  methodName);
 
-        if (relationships == null)
-        {
-            /*
-             * Try deprecated relationship
-             */
-            relationships = repositoryHandler.getRelationshipsByType(userId,
-                                                                     endpointGUID,
-                                                                     OpenMetadataType.ENDPOINT.typeName,
-                                                                     OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
-                                                                     OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
-                                                                     2,
-                                                                     null,
-                                                                     null,
-                                                                     SequencingOrder.CREATION_DATE_RECENT,
-                                                                     null,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     0, 0,
-                                                                     effectiveTime,
-                                                                     methodName);
-
-            if (relationships != null)
-            {
-                /*
-                 * Ignore the connection if the endpoint is used in many places.
-                 */
-                if (relationships.size() == 1)
-                {
-                    for (Relationship relationship : relationships)
-                    {
-                        if (relationship != null)
-                        {
-                            EntityProxy proxy = relationship.getEntityTwoProxy();
-                            if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
-                            {
-                                AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
-
-                                anchorIdentifiers.anchorGUID     = proxy.getGUID();
-                                anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
-
-                                return anchorIdentifiers;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        else
+        if (relationships != null)
         {
             /*
              * Ignore the connection if the endpoint is used in many places.

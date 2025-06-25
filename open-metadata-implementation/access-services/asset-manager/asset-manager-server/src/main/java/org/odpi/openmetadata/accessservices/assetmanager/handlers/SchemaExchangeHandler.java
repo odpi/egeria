@@ -359,7 +359,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         return new SchemaTypeBuilder(schemaType.getQualifiedName(),
                                      schemaType.getDisplayName(),
                                      schemaType.getDescription(),
-                                     schemaType.getVersionNumber(),
+                                     schemaType.getVersionIdentifier(),
                                      schemaType.getIsDeprecated(),
                                      schemaType.getAuthor(),
                                      schemaType.getUsage(),

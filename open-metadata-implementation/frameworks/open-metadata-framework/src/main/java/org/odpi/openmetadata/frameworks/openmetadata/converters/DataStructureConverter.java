@@ -3,17 +3,17 @@
 package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataStructureElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataStructureElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -21,7 +21,7 @@ import java.util.List;
  * DataStructureConverter generates a DataStructureElement from a DataStructure entity
  * and related elements.
  */
-public class DataStructureConverter<B> extends DataFieldConverter<B>
+public class DataStructureConverter<B> extends DataDefinitionConverterBase<B>
 {
     /**
      * Constructor
@@ -123,30 +123,45 @@ public class DataStructureConverter<B> extends DataFieldConverter<B>
 
 
     /**
-     * Summarize the elements linked off of the project in the project management list.
+     * Summarize the relationships that have no special processing by the subtype.
      *
      * @param beanClass bean class
      * @param relatedMetadataElements elements to summarize
-     * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected RelatedMetadataElementSummary getEquivalentSchemaType(Class<B>                     beanClass,
-                                                                    List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    protected void addRelationshipsToBean(Class<B>                     beanClass,
+                                          List<RelatedMetadataElement> relatedMetadataElements,
+                                          DataStructureElement         dataStructureElement) throws PropertyServerException
     {
-        final String methodName = "getEquivalentSchemaType";
+        final String methodName = "addRelationshipToBean";
 
         if (relatedMetadataElements != null)
         {
+            /*
+             * These are the relationships for the data definition element
+             */
+            List<RelatedMetadataElement> others = new ArrayList<>();
+
+            /*
+             * Step through the relationships processing those that relate directly to attributed elements
+             */
             for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
             {
-                if ((relatedMetadataElement != null) && (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SCHEMA_TYPE_DEFINITION.typeName)))
+                if (relatedMetadataElement != null)
                 {
-                   return super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName);
+                    if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SCHEMA_TYPE_DEFINITION.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        dataStructureElement.setEquivalentSchemaType(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else
+                    {
+                        others.add(relatedMetadataElement);
+                    }
                 }
             }
-        }
 
-        return null;
+            super.addRelationshipsToBean(beanClass, others, null, dataStructureElement);
+        }
     }
 
 
@@ -193,14 +208,7 @@ public class DataStructureConverter<B> extends DataFieldConverter<B>
 
                 if (relationships != null)
                 {
-                    bean.setEquivalentSchemaType(this.getEquivalentSchemaType(beanClass, relationships));
-                    bean.setExternalReferences(this.getAttribution(beanClass, relationships));
-                    bean.setMemberOfCollections(this.getParentCollectionMembership(beanClass, relationships));
-                    bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
-                                                                              relationships,
-                                                                              Arrays.asList(OpenMetadataType.SCHEMA_TYPE_DEFINITION.typeName,
-                                                                                            OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
-                                                                                            OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)));
+                    addRelationshipsToBean(beanClass, relationships, bean);
                 }
             }
 

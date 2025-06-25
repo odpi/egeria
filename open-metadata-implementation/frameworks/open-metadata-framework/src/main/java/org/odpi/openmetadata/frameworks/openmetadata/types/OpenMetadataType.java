@@ -305,21 +305,21 @@ public enum OpenMetadataType
     /**
      * This collection is the root collection in a collection hierarchy.
      */
-    ROOT_COLLECTION("9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4",
-                    "RootCollection",
-                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                    "f531c0b8-712c-4327-a8e5-7500727bab1d",
-                    "This collection is the root collection in a collection hierarchy."),
+    ROOT_COLLECTION_CLASSIFICATION("9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4",
+                                   "RootCollection",
+                                   OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                   "f531c0b8-712c-4327-a8e5-7500727bab1d",
+                                   "This collection is the root collection in a collection hierarchy."),
 
 
     /**
      * This collection is the home collection for a referenceable.
      */
-    HOME_COLLECTION("16274db0-ebd8-4a2b-b8ba-134a3f4d6130",
-                    "HomeCollection",
-                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                    "e1138106-f222-4847-ba1e-c6f014de7b4a",
-                    "This collection is the home collection for a referenceable."),
+    HOME_COLLECTION_CLASSIFICATION("16274db0-ebd8-4a2b-b8ba-134a3f4d6130",
+                                   "HomeCollection",
+                                   OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                   "e1138106-f222-4847-ba1e-c6f014de7b4a",
+                                   "This collection is the home collection for a referenceable."),
 
     /**
      * Defines that a collection is a set of results from an activity, query, ...
@@ -333,29 +333,38 @@ public enum OpenMetadataType
     /**
      * A collection that lists elements that have been part of recent activity.
      */
-    RECENT_ACCESS("e68d7cdf-08bc-4eee-844b-502f5940082",
-                  "RecentAccess",
-                  OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                  "e3c0d70e-8d9c-4575-a21d-dcc7a2bb5dcc",
-                  "A collection that lists elements that have been part of recent activity."),
+    RECENT_ACCESS_COMMECTION_CLASSIFICATION("e68d7cdf-08bc-4eee-844b-502f5940082",
+                                            "RecentAccess",
+                                            OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                            "e3c0d70e-8d9c-4575-a21d-dcc7a2bb5dcc",
+                                            "A collection that lists elements that have been part of recent activity."),
 
     /**
      * Defines that a collection should be treated like a folder.
      */
-    FOLDER("3c0fa687-8a63-4c8e-8bda-ede9c78be6c7",
-           "Folder",
-           OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-           "b2fe2ac5-f4d5-4eac-b4cf-c5fd112395eb",
-           "Defines that a collection should be treated like a folder."),
+    FOLDER_COLLECTION_CLASSIFICATION("3c0fa687-8a63-4c8e-8bda-ede9c78be6c7",
+                                     "Folder",
+                                     OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                     "b2fe2ac5-f4d5-4eac-b4cf-c5fd112395eb",
+                                     "Defines that a collection should be treated like a folder."),
 
     /**
      * Defines a list of activities such as ToDos, Tasks etc...
      */
-    WORK_ITEM_LIST("9d958a7c-5fca-4acc-83b3-f59b70e73f54",
-                   "WorkItemList",
-                   OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                   "2ee49f29-da72-490f-a6c4-e7525516e6f0",
-                   "Defines a list of activities such as ToDos, Tasks etc..."),
+    WORK_ITEM_LIST_COLLECTION_CLASSIFICATION("9d958a7c-5fca-4acc-83b3-f59b70e73f54",
+                                             "WorkItemList",
+                                             OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                             "2ee49f29-da72-490f-a6c4-e7525516e6f0",
+                                             "Defines a list of activities such as ToDos, Tasks etc..."),
+
+    /**
+     * Defines a list of elements that are grouped under a particular namespace.
+     */
+    NAMESPACE_COLLECTION_CLASSIFICATION("1a0849e0-c97b-4d99-adda-e22cdbb99ff9",
+                                        "Namespace",
+                                        OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                        "34b65dcd-de83-463c-9be6-30d765b42a6c",
+                                        "Defines a set of elements that are grouped under a particular namespace."),
 
 
     /**
@@ -1335,6 +1344,15 @@ public enum OpenMetadataType
          "Group of people working together."),
 
     /**
+     * Describes a specific organization.
+     */
+    ORGANIZATION("50a61105-35be-4ee3-8b99-bdd958ed0685",
+                 "Organization",
+                 OpenMetadataWikiPages.MODEL_0115_TEAMS,
+                 "1f885654-26a4-43bd-bb7b-62fbd8acdae9",
+                 "Describes a specific organization."),
+
+    /**
      * Relationship identifying a team reporting hierarchy.
      */
     TEAM_STRUCTURE_RELATIONSHIP("5ebc4fb2-b62a-4269-8f18-e9237a2229ca",
@@ -1902,14 +1920,6 @@ public enum OpenMetadataType
                                                  "62313ce0-7a48-461e-910e-6ec8a17abcae",
                                                  "Relates a connector category for a specific type of technology with the connector types that support it."),
 
-    /**
-     * A link between a connection and the endpoint that the connector should use.
-     */
-    CONNECTION_ENDPOINT_RELATIONSHIP("887a7132-d6bc-4b92-a483-e80b60c86fb2",
-                                     "ConnectionEndpoint",
-                                     OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
-                                     "02af6e89-05df-4cc5-ac32-2de8299c6e2f",
-                                     "A link between a connection and the endpoint that the connector should use."),
 
     /**
      * A link between a connection and the endpoint of the associated digital resource.
@@ -1946,15 +1956,6 @@ public enum OpenMetadataType
                                      OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
                                      "c05c1143-3ac4-4044-a0aa-eed71e949097",
                                      "A link between a virtual connection and one of the connections it depends on."),
-
-    /**
-     * Link between a connection and the description of the asset it can be used to access.
-     */
-    CONNECTION_TO_ASSET_RELATIONSHIP("e777d660-8dbe-453e-8b83-903771f054c0",
-                                     "ConnectionToAsset",
-                                     OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
-                                     "4fedfcf8-05c4-4c8c-8284-3554c4f4c295",
-                                     "Link between a connection and the description of the asset it can be used to access."),
 
     /**
      * Link between an asset and the connection to its digital resource.
@@ -3190,6 +3191,24 @@ public enum OpenMetadataType
                        "A governance control that is implemented using organization structure, training, roles manual procedures and reviews."),
 
     /**
+     * Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.
+     */
+    GOVERNANCE_RESPONSIBILITY("89a76b24-deb8-45bf-9304-a578a610326f",
+                              "GovernanceResponsibility",
+                              OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                              "c6e947b0-13a6-4e2e-a410-17c0794db5a8",
+                              "Describes a responsibility of a person, team or organization that supports the implementation of a governance driver."),
+
+    /**
+     * Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver.
+     */
+    GOVERNANCE_PROCEDURE("69055d10-51dc-4c2b-b21f-d76fad3f8ef3",
+                         "GovernanceProcedure",
+                         OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                         "09d402ba-d4bc-40f2-bdff-eba8ed7f79f1",
+                         "Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver."),
+
+    /**
      * A link between a governance control and the governance policy it is implementing.
      */
     GOVERNANCE_IMPLEMENTATION_RELATIONSHIP("787eaf46-7cf2-4096-8d6e-671a0819d57e",
@@ -3439,11 +3458,11 @@ public enum OpenMetadataType
     /**
      * Describes a collection of related naming standard rules.
      */
-    NAMING_STANDARD_RULE_SET("ba70f506-1f81-4890-bb4f-1cb1d99c939e",
-                             "NamingStandardRuleSet",
-                             OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
-                             "44d13d19-e98d-4b8b-a1cb-1a540afe69e6",
-                             "Describes a collection of related naming standard rules."),
+    NAMING_STANDARD_RULE_SET_COLLECTION_CLASSIFICATION("ba70f506-1f81-4890-bb4f-1cb1d99c939e",
+                                                       "NamingStandardRuleSet",
+                                                       OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
+                                                       "44d13d19-e98d-4b8b-a1cb-1a540afe69e6",
+                                                       "Describes a collection of related naming standard rules."),
 
     /**
      * Describes a primary noun, used in naming standards.
@@ -3472,14 +3491,15 @@ public enum OpenMetadataType
                             "f0c88ead-509d-4f78-b5ce-04416798ec5e",
                             "Describes modifying noun or adverb, used in naming standards."),
 
+
     /**
-     * Describes a specific organization.
+     * Relationship identifying the digital services supporting each business capability.
      */
-    ORGANIZATION("50a61105-35be-4ee3-8b99-bdd958ed0685",
-                 "Organization",
-                 OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
-                 "1f885654-26a4-43bd-bb7b-62fbd8acdae9",
-                 "Describes a specific organization."),
+    DIGITAL_SUPPORT_RELATIONSHIP("9e187e1e-2547-46bd-b0ee-c33ac6df4a1f",
+                                 "DigitalSupport",
+                                 OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                                 "79f27291-ed2f-4012-a603-3e3aca5bcbe7",
+                                 "Relationship identifying the digital services supporting each business capability."),
 
     /**
      * Describes a function, capability or skill set.
@@ -3489,24 +3509,6 @@ public enum OpenMetadataType
                         OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
                         "102f73be-7baf-4a10-997e-41e6eb42d66b",
                         "Describes a function, capability or skill set."),
-
-    /**
-     * Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.
-     */
-    GOVERNANCE_RESPONSIBILITY("89a76b24-deb8-45bf-9304-a578a610326f",
-                              "GovernanceResponsibility",
-                              OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
-                              "c6e947b0-13a6-4e2e-a410-17c0794db5a8",
-                              "Describes a responsibility of a person, team or organization that supports the implementation of a governance driver."),
-
-    /**
-     * Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver.
-     */
-    GOVERNANCE_PROCEDURE("69055d10-51dc-4c2b-b21f-d76fad3f8ef3",
-                         "GovernanceProcedure",
-                         OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
-                         "09d402ba-d4bc-40f2-bdff-eba8ed7f79f1",
-                         "Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver."),
 
     /**
      * Describes the origin of an asset.
@@ -3520,11 +3522,11 @@ public enum OpenMetadataType
     /**
      * Describes the relationship between a team and the business capabilities it supports.
      */
-    ORGANIZATIONAL_CAPABILITY_RELATIONSHIP("47f0ad39-db77-41b0-b406-36b1598e0ba7",
-                                           "OrganizationalCapability",
-                                           OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
-                                           "0cf949bc-70cf-4ae1-887a-4738d30c9317",
-                                           "Describes the relationship between a team and the business capabilities it supports."),
+    BUSINESS_CAPABILITY_TEAM_RELATIONSHIP("47f0ad39-db77-41b0-b406-36b1598e0ba7",
+                                          "BusinessCapabilityTeam",
+                                          OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                                          "0cf949bc-70cf-4ae1-887a-4738d30c9317",
+                                          "Describes the relationship between a team and the business capabilities it supports."),
 
     /**
      * Describes the goals, scope and authority of a project.
@@ -4288,6 +4290,16 @@ public enum OpenMetadataType
               "58fe2ef2-bbab-4bb1-8327-8325fb4f213c",
               "An agreement between parties."),
 
+
+    /**
+     * Defines an agreement concerned with the sharing of data between parties.
+     */
+    DATA_SHARING_AGREEMENT_CLASSIFICATION("bcaca488-9f71-42e8-b79c-11f321bb780a",
+                                          "DataSharingAgreement",
+                                          OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
+                                          "a2b65ea2-6dde-4271-84b9-e1094d2c5adc",
+                                          "Defines an agreement concerned with the sharing of data between parties."),
+
     /**
      * An actor identified in an agreement.
      */
@@ -4804,11 +4816,11 @@ public enum OpenMetadataType
     /**
      * A collection of related event types.
      */
-    EVENT_SET("bead9aa4-214a-4596-8036-aa78395bbfb1",
-              "EventSet",
-              OpenMetadataWikiPages.MODEL_0535_EVENT_SCHEMAS,
-              "b1eeb73c-d7dd-4edb-b0fb-b0ffc1bc04ff",
-              "A collection of related event types."),
+    EVENT_SET_COLLECTION_CLASSIFICATION("bead9aa4-214a-4596-8036-aa78395bbfb1",
+                                        "EventSet",
+                                        OpenMetadataWikiPages.MODEL_0535_EVENT_SCHEMAS,
+                                        "b1eeb73c-d7dd-4edb-b0fb-b0ffc1bc04ff",
+                                        "A collection of related event types."),
 
     /**
      * A description of an event (message)
@@ -5277,21 +5289,21 @@ public enum OpenMetadataType
     /**
      * This is a collection that describes the data requirements for a project or initiative..
      */
-    DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
-                         "DataSpec",
-                         OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
-                         "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
-                         "This is a collection that describes the data requirements for a project or initiative."),
+    DATA_SPEC_COLLECTION_CLASSIFICATION("781c5319-af83-4195-ada7-a44914f3e63a",
+                                        "DataSpec",
+                                        OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                                        "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
+                                        "This is a collection that describes the data requirements for a project or initiative."),
 
 
     /**
      * This is an organized collection of defined data fields that can be used in a data specification to describe some desired data.
      */
-    DATA_DICTIONARY_COLLECTION("7eec329e-e2de-481a-bd00-b1f6a5009dc9",
-                               "DataDictionary",
-                               OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
-                               "88f2cf3d-5c6f-4b7a-b93e-8f14ea232bda",
-                               "This is an organized collection of defined data fields that can be used in a data specification to describe some desired data."),
+    DATA_DICTIONARY_COLLECTION_CLASSIFICATION("7eec329e-e2de-481a-bd00-b1f6a5009dc9",
+                                              "DataDictionary",
+                                              OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                                              "88f2cf3d-5c6f-4b7a-b93e-8f14ea232bda",
+                                              "This is an organized collection of defined data fields that can be used in a data specification to describe some desired data."),
 
     /**
      * A list of data fields that describe the structure of a data source.
@@ -5651,40 +5663,22 @@ public enum OpenMetadataType
     /* ============================================================================================================================*/
 
     /**
-     * A business function implemented using IT.
+     * Relationship identifying dependencies between digital products.
      */
-    DIGITAL_SERVICE("f671e1fc-b204-4ee6-a4e2-da1633ecf50e",
-                    "DigitalService",
-                    OpenMetadataWikiPages.MODEL_0710_DIGITAL_SERVICE,
-                    "e98c1a6f-138b-4b8f-9e48-631bf3cdac44",
-                    "A business function implemented using technology."),
-
-    /**
-     * Relationship identifying dependencies between digital services.
-     */
-    DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP("e8303911-ba1c-4640-974e-c4d57ee1b310",
-                                            "DigitalServiceDependency",
-                                            OpenMetadataWikiPages.MODEL_0710_DIGITAL_SERVICE,
+    DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP("e8303911-ba1c-4640-974e-c4d57ee1b310",
+                                            "DigitalProductDependency",
+                                            OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
                                             "db671b3f-3468-4b6c-bdde-23244f5f001a",
-                                            "Relationship identifying dependencies between digital services."),
+                                            "Relationship identifying dependencies between digital products."),
 
     /**
-     * A digital product that is maintained by a digital service.
+     * A digital product is a collection of digital resources that have been designed to meet a specific consumer need.
      */
-    DIGITAL_SERVICE_PRODUCT_RELATIONSHIP("51465a59-c785-406d-929c-def34596e9af",
-                                         "DigitalServiceProduct",
-                                         OpenMetadataWikiPages.MODEL_0710_DIGITAL_SERVICE,
-                                         "355fb25a-12d3-458a-889e-5f9aa31cfdff",
-                                         "A digital product that is maintained by a digital service."),
-
-    /**
-     * Identifies an element that represents a digital product.
-     */
-    DIGITAL_PRODUCT_CLASSIFICATION("4aaaa7ca-6b4b-4c4b-997f-d5dfd42917b0",
-                                   "DigitalProduct",
-                                   OpenMetadataWikiPages.MODEL_0710_DIGITAL_SERVICE,
-                                   "6751673f-a4e7-4b64-84e4-4c59163d0102",
-                                   "Identifies an element that represents a digital product."),
+    DIGITAL_PRODUCT("4aaaa7ca-6b4b-4c4b-997f-d5dfd42917b0",
+                    "DigitalProduct",
+                    OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
+                    "6751673f-a4e7-4b64-84e4-4c59163d0102",
+                    "A digital product is a collection of digital resources that have been designed to meet a specific consumer need."),
 
     /**
      * A specialized agreement that represents a subscription to a digital service or digital product.
@@ -5705,40 +5699,22 @@ public enum OpenMetadataType
                                     "The link between a digital subscriber and the subscription details."),
 
     /**
-     * Relationship identifying the organizations responsible for operating the digital services.
-     */
-    DIGITAL_SERVICE_OPERATOR_RELATIONSHIP("79ac27f6-be9c-489f-a7c2-b9add0bf705c",
-                                          "DigitalServiceOperator",
-                                          OpenMetadataWikiPages.MODEL_0715_DIGITAL_SERVICE_OWNERSHIP,
-                                          "ffbeafae-228b-45d2-8270-378ba73916ff",
-                                          "Relationship identifying the organizations responsible for operating the digital services."),
-
-    /**
-     * Relationship identifying the digital services supporting each business capability.
-     */
-    DIGITAL_SUPPORT_RELATIONSHIP("9e187e1e-2547-46bd-b0ee-c33ac6df4a1f",
-                                 "DigitalSupport",
-                                 OpenMetadataWikiPages.MODEL_0715_DIGITAL_SERVICE_OWNERSHIP,
-                                 "79f27291-ed2f-4012-a603-3e3aca5bcbe7",
-                                 "Relationship identifying the digital services supporting each business capability."),
-
-    /**
      * Relationship identifying the individual responsible for each digital service.
      */
-    DIGITAL_SERVICE_MANAGEMENT_RELATIONSHIP("91ff7542-c275-4cd3-b367-97eec3360422",
+    DIGITAL_PRODUCT_MANAGEMENT_RELATIONSHIP("91ff7542-c275-4cd3-b367-97eec3360422",
                                             "DigitalServiceManagement",
-                                            OpenMetadataWikiPages.MODEL_0715_DIGITAL_SERVICE_OWNERSHIP,
+                                            OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
                                             "ee3fd1ff-0c81-4862-a29d-57b6c4175cce",
                                             "Relationship identifying the individual responsible for each digital service."),
 
     /**
      * Person managing a digital service.
      */
-    DIGITAL_SERVICE_MANAGER("6dfba6ce-e925-4281-880d-d04100c5b991",
-                             "DigitalServiceManager",
-                             OpenMetadataWikiPages.MODEL_0715_DIGITAL_SERVICE_OWNERSHIP,
-                             "6057d7a8-4b7f-4d37-95dd-513c131c7381",
-                             "Person managing a digital service."),
+    DIGITAL_PRODUCT_MANAGER("6dfba6ce-e925-4281-880d-d04100c5b991",
+                            "DigitalServiceManager",
+                            OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
+                            "6057d7a8-4b7f-4d37-95dd-513c131c7381",
+                            "Person managing a digital service."),
 
     /**
      * A description of a managed flow of information between multiple systems.
@@ -5891,11 +5867,11 @@ public enum OpenMetadataType
     /**
      * Relationship identifying the solution blueprint for a digital service.
      */
-    DIGITAL_SERVICE_DESIGN_RELATIONSHIP("a43b4c9c-52c2-4819-b3cc-9d07d49a11f2",
-                                        "DigitalServiceDesign",
-                                        OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
-                                        "490e2745-247c-4053-b50c-fff1548908e1",
-                                        "Relationship identifying the solution blueprint for a digital service."),
+    SOLUTION_DESIGN_RELATIONSHIP("a43b4c9c-52c2-4819-b3cc-9d07d49a11f2",
+                                 "SolutionDesign",
+                                 OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
+                                 "490e2745-247c-4053-b50c-fff1548908e1",
+                                 "Relationship identifying the solution blueprint for a digital service."),
 
 
     /**

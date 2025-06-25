@@ -278,7 +278,6 @@ public class OpenMetadataTypesArchive5_3
     private void update0201Connections()
     {
         this.archiveBuilder.addRelationshipDef(getConnectToEndpointRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateConnectionEndpointRelationship());
     }
 
     private RelationshipDef getConnectToEndpointRelationship()
@@ -321,25 +320,10 @@ public class OpenMetadataTypesArchive5_3
         return relationshipDef;
     }
 
-    private TypeDefPatch deprecateConnectionEndpointRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
 
     private void update0205ConnectionLinkage()
     {
         this.archiveBuilder.addRelationshipDef(getAssetConnectionRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateConnectionToAssetRelationship());
     }
 
     private RelationshipDef getAssetConnectionRelationship()
@@ -383,20 +367,6 @@ public class OpenMetadataTypesArchive5_3
     }
 
 
-    private TypeDefPatch deprecateConnectionToAssetRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -427,7 +397,7 @@ public class OpenMetadataTypesArchive5_3
 
     private ClassificationDef getDataDictionaryClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_DICTIONARY_COLLECTION,
+        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION,
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
@@ -435,7 +405,7 @@ public class OpenMetadataTypesArchive5_3
 
     private ClassificationDef getDataSpecClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_SPEC_COLLECTION,
+        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION,
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);

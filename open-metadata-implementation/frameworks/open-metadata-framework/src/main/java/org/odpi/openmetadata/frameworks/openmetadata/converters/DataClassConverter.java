@@ -22,7 +22,7 @@ import java.util.List;
  * DataClassConverter generates a DataClassElement from a DataClass entity
  * and related elements.
  */
-public class DataClassConverter<B> extends OpenMetadataConverterBase<B>
+public class DataClassConverter<B> extends DataDefinitionConverterBase<B>
 {
     /**
      * Constructor
@@ -93,7 +93,7 @@ public class DataClassConverter<B> extends OpenMetadataConverterBase<B>
      *
      * @return dataStructure properties
      */
-    protected DataClassProperties getDataClassProperties(OpenMetadataElement primaryElement)
+    private DataClassProperties getDataClassProperties(OpenMetadataElement primaryElement)
     {
         if (primaryElement.getElementProperties() != null)
         {
@@ -136,69 +136,63 @@ public class DataClassConverter<B> extends OpenMetadataConverterBase<B>
         return null;
     }
 
+
     /**
-     * Summarize the elements linked off of the data class in specialization hierarchy.
+     * Summarize the relationships for data class.
      *
      * @param beanClass bean class
      * @param relatedMetadataElements elements to summarize
-     * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected List<RelatedMetadataElementSummary> getDataClassHierarchy(Class<B>                     beanClass,
-                                                                        List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    protected void addRelationshipsToBean(Class<B>                     beanClass,
+                                          List<RelatedMetadataElement> relatedMetadataElements,
+                                          DataClassElement             dataClassElement) throws PropertyServerException
     {
-        final String methodName = "getDataClassHierarchy";
+        final String methodName = "addRelationshipToBean";
 
         if (relatedMetadataElements != null)
         {
-            List<RelatedMetadataElementSummary> elementSummaries = new ArrayList<>();
+            /*
+             * These are the relationships for the data definition element
+             */
+            List<RelatedMetadataElementSummary> dataClassHierarchy    = new ArrayList<>();
+            List<RelatedMetadataElementSummary> dataClassCompositions = new ArrayList<>();
+            List<RelatedMetadataElement>        others                = new ArrayList<>();
 
+            /*
+             * Step through the relationships processing those that relate directly to attributed elements
+             */
             for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
             {
-                if ((relatedMetadataElement != null) && (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_HIERARCHY.typeName)))
+                if (relatedMetadataElement != null)
                 {
-                    elementSummaries.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_HIERARCHY.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        dataClassHierarchy.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_COMPOSITION.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        dataClassCompositions.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else
+                    {
+                        others.add(relatedMetadataElement);
+                    }
                 }
             }
 
-            return elementSummaries;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Summarize the elements linked off of the data class in specialization hierarchy.
-     *
-     * @param beanClass bean class
-     * @param relatedMetadataElements elements to summarize
-     * @return list or null
-     * @throws PropertyServerException problem in converter
-     */
-    protected List<RelatedMetadataElementSummary> getDataClassComposition(Class<B>                     beanClass,
-                                                                          List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
-    {
-        final String methodName = "getDataClassComposition";
-
-        if (relatedMetadataElements != null)
-        {
-            List<RelatedMetadataElementSummary> elementSummaries = new ArrayList<>();
-
-            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            if (! dataClassHierarchy.isEmpty())
             {
-                if ((relatedMetadataElement != null) && (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_COMPOSITION.typeName)))
-                {
-                    elementSummaries.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
-                }
+                dataClassElement.setSpecializedDataClasses(dataClassHierarchy);
+            }
+            if (! dataClassCompositions.isEmpty())
+            {
+                dataClassElement.setNestedDataClasses(dataClassHierarchy);
             }
 
-            return elementSummaries;
+            super.addRelationshipsToBean(beanClass, others, null, dataClassElement);
         }
-
-        return null;
     }
-
 
 
     /**
@@ -244,14 +238,7 @@ public class DataClassConverter<B> extends OpenMetadataConverterBase<B>
 
                 if (relationships != null)
                 {
-                    bean.setNestedDataClasses(this.getDataClassComposition(beanClass, relationships));
-                    bean.setSpecializedDataClasses(this.getDataClassHierarchy(beanClass, relationships));
-                    bean.setExternalReferences(this.getAttribution(beanClass, relationships));
-                    bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
-                                                                              relationships,
-                                                                              Arrays.asList(OpenMetadataType.DATA_CLASS_HIERARCHY.typeName,
-                                                                                            OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
-                                                                                            OpenMetadataType.DATA_CLASS_COMPOSITION.typeName)));
+                    this.addRelationshipsToBean(beanClass, relationships, bean);
                 }
             }
 

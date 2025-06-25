@@ -20,12 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataStructureElement extends AttributedMetadataElement
+public class DataStructureElement extends DataDefinitionElement
 {
     private DataStructureProperties             properties           = null;
     private List<MemberDataField>               memberDataFields     = null;
     private RelatedMetadataElementSummary       equivalentSchemaType = null;
-    private List<RelatedMetadataElementSummary> memberOfCollections   = null;
 
 
 
@@ -52,7 +51,6 @@ public class DataStructureElement extends AttributedMetadataElement
             properties = template.getProperties();
             memberDataFields = template.getMemberDataFields();
             equivalentSchemaType = template.getEquivalentSchemaType();
-            memberOfCollections = template.getMemberOfCollections();
         }
     }
 
@@ -124,28 +122,6 @@ public class DataStructureElement extends AttributedMetadataElement
 
 
     /**
-     * Return the list of collections that is definition is a member of.
-     *
-     * @return related collections
-     */
-    public List<RelatedMetadataElementSummary> getMemberOfCollections()
-    {
-        return memberOfCollections;
-    }
-
-
-    /**
-     * Set up the list of collections that is definition is a member of.
-     *
-     * @param memberOfCollections related collections
-     */
-    public void setMemberOfCollections(List<RelatedMetadataElementSummary> memberOfCollections)
-    {
-        this.memberOfCollections = memberOfCollections;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -157,7 +133,6 @@ public class DataStructureElement extends AttributedMetadataElement
                 "properties=" + properties +
                 ", memberDataFields=" + memberDataFields +
                 ", equivalentSchemaType=" + equivalentSchemaType +
-                ", memberOfCollections=" + memberOfCollections +
                 "} " + super.toString();
     }
 
@@ -177,8 +152,7 @@ public class DataStructureElement extends AttributedMetadataElement
         DataStructureElement that = (DataStructureElement) objectToCompare;
         return Objects.equals(properties, that.properties) &&
                 Objects.equals(memberDataFields, that.memberDataFields) &&
-                Objects.equals(equivalentSchemaType, that.equivalentSchemaType) &&
-                Objects.equals(memberOfCollections, that.memberDataFields);
+                Objects.equals(equivalentSchemaType, that.equivalentSchemaType);
     }
 
     /**
@@ -189,6 +163,6 @@ public class DataStructureElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, memberDataFields, equivalentSchemaType, memberOfCollections);
+        return Objects.hash(super.hashCode(), properties, memberDataFields, equivalentSchemaType);
     }
 }

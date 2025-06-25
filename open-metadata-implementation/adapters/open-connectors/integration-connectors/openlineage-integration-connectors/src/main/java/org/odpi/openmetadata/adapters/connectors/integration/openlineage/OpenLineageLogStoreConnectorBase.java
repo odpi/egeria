@@ -212,14 +212,6 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
                                                                                                                                                                      OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
                                                                                                                                                                      new Date());
 
-                            if (connectionElement == null)
-                            {
-                                connectionElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
-                                                                                                                                                  2,
-                                                                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                                                                                                                  new Date());
-                            }
-
                             if (connectionElement != null)
                             {
                                 endpointGUID = getEndpointGUID(connectionElement.getElement().getElementGUID());
@@ -287,18 +279,6 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
         if (endpointElement != null)
         {
             endpointGUID = endpointElement.getElement().getElementGUID();
-        }
-        else
-        {
-            endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(connectionGUID,
-                                                                                                                            2,
-                                                                                                                            OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
-                                                                                                                            new Date());
-
-            if (endpointElement != null)
-            {
-                endpointGUID = endpointElement.getElement().getElementGUID();
-            }
         }
 
         return endpointGUID;

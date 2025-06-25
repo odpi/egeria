@@ -105,7 +105,7 @@ public class SimpleSchemaType extends SchemaType
         return "SimpleSchemaType{" +
                 "dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
-                ", versionNumber='" + versionNumber + '\'' +
+                ", versionNumber='" + versionIdentifier + '\'' +
                 ", author='" + author + '\'' +
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +

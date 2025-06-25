@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ComplexSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.RootSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -51,7 +50,7 @@ public class EventTypeProperties extends RootSchemaTypeProperties
     public String toString()
     {
         return "EventTypeProperties{" +
-                       "versionNumber='" + getVersionNumber() + '\'' +
+                       "versionNumber='" + getVersionIdentifier() + '\'' +
                        ", author='" + getAuthor() + '\'' +
                        ", usage='" + getUsage() + '\'' +
                        ", encodingStandard='" + getEncodingStandard() + '\'' +

@@ -82,8 +82,9 @@ public class SolutionPortConverter<B> extends OpenMetadataConverterBase<B>
                     portProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
                     portProperties.setDisplayName(this.removeDisplayName(elementProperties));
                     portProperties.setDescription(this.removeDescription(elementProperties));
-                    portProperties.setVersion(this.removeVersionIdentifier(elementProperties));
+                    portProperties.setVersionIdentifier(this.removeVersionIdentifier(elementProperties));
                     portProperties.setSolutionPortDirection(this.removeSolutionPortDirection(elementProperties));
+                    portProperties.setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
                     portProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
                     portProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
 

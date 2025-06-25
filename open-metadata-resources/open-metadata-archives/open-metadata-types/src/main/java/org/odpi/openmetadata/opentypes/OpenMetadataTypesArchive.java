@@ -157,7 +157,9 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
+        update0021Collections();
         update04xxGovernanceDefinitions();
+        update0484Agreements();
         update07xxImplementationRelationships();
     }
 
@@ -166,6 +168,46 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    /**
+     * A new classification for Collection
+     */
+    private void update0021Collections()
+    {
+        this.archiveBuilder.addClassificationDef(getNamespaceClassification());
+    }
+
+    private ClassificationDef getNamespaceClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION,
+                                                  null,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
+                                                  false);
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * A new classification for Agreement
+     */
+    private void update0484Agreements()
+    {
+        this.archiveBuilder.addClassificationDef(getDataSharingAgreementClassification());
+    }
+
+    private ClassificationDef getDataSharingAgreementClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION,
+                                                  null,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.AGREEMENT.typeName),
+                                                  false);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
     /**
      * A variety of changes to improve consistency and flexibility of the governance definitions

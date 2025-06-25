@@ -930,11 +930,15 @@ public class OpenMetadataConverterBase<B>
                 if (relatedMetadataElement != null)
                 {
                     boolean saveRelationship = true;
-                    for (String ignoreRelationshipType : processedRelationshipTypes)
+
+                    if (processedRelationshipTypes != null)
                     {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement, ignoreRelationshipType))
+                        for (String ignoreRelationshipType : processedRelationshipTypes)
                         {
-                            saveRelationship = false;
+                            if (propertyHelper.isTypeOf(relatedMetadataElement, ignoreRelationshipType))
+                            {
+                                saveRelationship = false;
+                            }
                         }
                     }
 
@@ -3918,6 +3922,28 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and delete the user defined status property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeUserDefinedStatus(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeUserDefinedStatus";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.USER_DEFINED_STATUS.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the type property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -4205,29 +4231,6 @@ public class OpenMetadataConverterBase<B>
                                                     OpenMetadataProperty.QUERY_ID.name,
                                                     elementProperties,
                                                     methodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Extract and delete the version number property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string name or null
-     */
-    protected String removeVersionNumber(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeVersionNumber";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataProperty.VERSION_NUMBER.name,
-                                                       elementProperties,
-                                                       methodName);
         }
 
         return null;

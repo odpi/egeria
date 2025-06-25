@@ -4,24 +4,25 @@ package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AttributedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 
 /**
- * ActorProfileConverter provides common methods for transferring relevant properties from an Open Metadata Element
- * object into a bean that inherits from ActorProfileElement.
+ * AttributedElementConverterBase provides common methods for transferring relevant properties from an Open Metadata Element
+ * object into a bean that inherits from AttributedMetadataElement.
  */
 public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase<B>
 {
-    protected List<String> processedRelationshipTypes = Collections.singletonList(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
-
     /**
      * Constructor
      *
@@ -34,6 +35,145 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
                                           String         serverName)
     {
         super(propertyHelper, serviceName, serverName);
+    }
+
+
+
+    /**
+     * Summarize the relationships that have no special processing by the subtype.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @param processedRelationshipTypes list of relationships that have already been processed by the subtype
+     * @throws PropertyServerException problem in converter
+     */
+    protected void addRelationshipsToBean(Class<B>                     beanClass,
+                                          List<RelatedMetadataElement> relatedMetadataElements,
+                                          List<String>                 processedRelationshipTypes,
+                                          AttributedMetadataElement    attributedMetadataElement) throws PropertyServerException
+    {
+        final String methodName = "addRelationshipToBean";
+
+        if (relatedMetadataElements != null)
+        {
+            /*
+             * These are the relationships for the attributed element
+             */
+            List<RelatedMetadataElementSummary> externalReferences = new ArrayList<>();
+            List<RelatedMetadataElementSummary> alsoKnownAs        = new ArrayList<>();
+            List<RelatedMetadataElementSummary> memberOfCollection = new ArrayList<>();
+            List<RelatedMetadataElementSummary> semanticAssignment = new ArrayList<>();
+            List<RelatedMetadataElementSummary> attachedLikes      = new ArrayList<>();
+            List<RelatedMetadataElementSummary> attachedTags       = new ArrayList<>();
+            List<RelatedMetadataElementSummary> attachedKeywords   = new ArrayList<>();
+            List<RelatedMetadataElementSummary> attachedComments   = new ArrayList<>();
+            List<RelatedMetadataElementSummary> attachedReviews    = new ArrayList<>();
+            List<RelatedMetadataElementSummary> others             = new ArrayList<>();
+
+            /*
+             * Step through the relationships processing those that relate directly to attributed elements
+             */
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        externalReferences.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        alsoKnownAs.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)) && (relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        memberOfCollection.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        semanticAssignment.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        attachedLikes.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        attachedTags.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        attachedKeywords.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        attachedComments.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        attachedReviews.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else
+                    {
+                        others.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                }
+            }
+
+            if (! externalReferences.isEmpty())
+            {
+                attributedMetadataElement.setExternalReferences(externalReferences);
+            }
+
+            if (! alsoKnownAs.isEmpty())
+            {
+                attributedMetadataElement.setAlsoKnownAs(alsoKnownAs);
+            }
+
+            if (! memberOfCollection.isEmpty())
+            {
+                attributedMetadataElement.setMemberOfCollections(memberOfCollection);
+            }
+
+            if (! semanticAssignment.isEmpty())
+            {
+                attributedMetadataElement.setSemanticAssignments(semanticAssignment);
+            }
+
+            if (! attachedLikes.isEmpty())
+            {
+                attributedMetadataElement.setAttachedLikes(attachedLikes);
+            }
+
+            if (! attachedTags.isEmpty())
+            {
+                attributedMetadataElement.setAttachedTags(attachedTags);
+            }
+
+            if (! attachedKeywords.isEmpty())
+            {
+                attributedMetadataElement.setAttachedKeywords(attachedKeywords);
+            }
+
+            if (! attachedComments.isEmpty())
+            {
+                attributedMetadataElement.setAttachedComments(attachedComments);
+            }
+
+            if (! attachedReviews.isEmpty())
+            {
+                attributedMetadataElement.setAttachedReviews(attachedReviews);
+            }
+
+            if (! others.isEmpty())
+            {
+                /*
+                 * All of the related elements processed by this class are stripped out of "others".  Since it is only extracting relationships in one direction,
+                 * relationships in the other direction will be added to otherRelatedElements.
+                 */
+                attributedMetadataElement.setOtherRelatedElements(super.getOtherRelatedElements(beanClass, relatedMetadataElements, processedRelationshipTypes));
+            }
+        }
     }
 
 
@@ -116,13 +256,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
 
         if (returnBean instanceof AttributedMetadataElement bean)
         {
-            if (relationships != null)
-            {
-                bean.setExternalReferences(super.getAttribution(beanClass, relationships));
-                bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
-                                                                          relationships,
-                                                                          processedRelationshipTypes));
-            }
+            this.addRelationshipsToBean(beanClass, relationships, null, bean);
         }
 
         return returnBean;
@@ -151,13 +285,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
 
         if (returnBean instanceof AttributedMetadataElement bean)
         {
-            if (relationships != null)
-            {
-                bean.setExternalReferences(super.getAttribution(beanClass, relationships));
-                bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
-                                                                          relationships,
-                                                                          processedRelationshipTypes));
-            }
+            this.addRelationshipsToBean(beanClass, relationships, null, bean);
         }
 
         return returnBean;

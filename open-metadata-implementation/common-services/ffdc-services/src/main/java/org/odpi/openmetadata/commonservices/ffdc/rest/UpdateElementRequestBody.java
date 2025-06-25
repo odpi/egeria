@@ -17,20 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = UpdateActorRoleRequestBody.class, name = "UpdateActorRoleRequestBody"),
-                @JsonSubTypes.Type(value = UpdateDataClassRequestBody.class, name = "UpdateDataClassRequestBody"),
-                @JsonSubTypes.Type(value = UpdateDataFieldRequestBody.class, name = "UpdateDataFieldRequestBody"),
-                @JsonSubTypes.Type(value = UpdateDataStructureRequestBody.class, name = "UpdateDataStructureRequestBody"),
-                @JsonSubTypes.Type(value = UpdateGovernanceDefinitionRequestBody.class, name = "UpdateGovernanceDefinitionRequestBody"),
-                @JsonSubTypes.Type(value = UpdateInformationSupplyChainRequestBody.class, name = "UpdateInformationSupplyChainRequestBody"),
-                @JsonSubTypes.Type(value = UpdateSolutionBlueprintRequestBody.class, name = "UpdateSolutionBlueprintRequestBody"),
-                @JsonSubTypes.Type(value = UpdateSolutionComponentRequestBody.class, name = "UpdateSolutionComponentRequestBody"),
-        })
 public class UpdateElementRequestBody extends MetadataSourceRequestBody
 {
     private OpenMetadataRootProperties properties = null;

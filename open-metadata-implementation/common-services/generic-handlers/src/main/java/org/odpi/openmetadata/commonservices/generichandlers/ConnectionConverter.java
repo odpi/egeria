@@ -95,7 +95,7 @@ public class ConnectionConverter<B> extends OMFConverter<B>
                     connectionProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     connectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setConnectionProperties(connectionProperties);
+                    bean.setProperties(connectionProperties);
                 }
                 else
                 {
@@ -131,10 +131,6 @@ public class ConnectionConverter<B> extends OMFConverter<B>
                             else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName))
                             {
                                 bean.setEndpoint(getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
-                            }
-                            else if ((bean.getEndpoint() == null) && (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName)))
-                            {
-                                bean.setEndpoint(getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
                             }
                         }
                     }

@@ -443,21 +443,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                            forDuplicateProcessing,
                                                            effectiveTime,
                                                            methodName);
-            repositoryHandler.removeAllRelationshipsOfType(userId,
-                                                           externalSourceGUID,
-                                                           externalSourceName,
-                                                           connectionGUID,
-                                                           OpenMetadataType.CONNECTION.typeName,
-                                                           OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
-                                                           OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
-                                                           null,
-                                                           null,
-                                                           SequencingOrder.CREATION_DATE_RECENT,
-                                                           null,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           effectiveTime,
-                                                           methodName);
         }
 
         if (connectorType != null)
@@ -1873,24 +1858,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      endpointGUID,
-                                      endpointGUIDParameterName,
-                                      OpenMetadataType.ENDPOINT.typeName,
-                                      connectionGUID,
-                                      connectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION.typeGUID,
-                                      OpenMetadataType.CONNECTION.typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
-                                      effectiveTime,
-                                      methodName);
     }
 
 
@@ -2042,24 +2009,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      connectionGUID,
-                                      connectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION.typeName,
-                                      assetGUID,
-                                      assetGUIDParameterName,
-                                      OpenMetadataType.ASSET.typeGUID,
-                                      OpenMetadataType.ASSET.typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                      effectiveTime,
-                                      methodName);
     }
 
 
@@ -2178,33 +2127,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                          effectiveTime,
                                                                          methodName);
 
-        if (connectionEntities == null)
-        {
-            /*
-             * Try the deprecated relationship
-             */
-            connectionEntities = this.getAttachedEntities(userId,
-                                                          assetEntity,
-                                                          assetGUIDParameterName,
-                                                          OpenMetadataType.ASSET.typeName,
-                                                          OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                          OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                          OpenMetadataType.CONNECTION.typeName,
-                                                          null,
-                                                          null,
-                                                          1,
-                                                          null,
-                                                          null,
-                                                          SequencingOrder.CREATION_DATE_RECENT,
-                                                          null,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          serviceSupportedZones,
-                                                          0,
-                                                          invalidParameterHandler.getMaxPagingSize(),
-                                                          effectiveTime,
-                                                          methodName);
-        }
 
         EntityDetail selectedEntity;
 
@@ -2276,12 +2198,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName)))
                         {
                             entityProxy = relationship.getEntityTwoProxy();
-                        }
-                        else if (repositoryHelper.isTypeOf(serviceName,
-                                                           relationship.getType().getTypeDefName(),
-                                                           OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
-                        {
-                            entityProxy = relationship.getEntityOneProxy();
                         }
                         if ((entityProxy != null) && (entityProxy.getGUID() != null) && (entityProxy.getType() != null))
                         {
@@ -2373,19 +2289,13 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                 {
                     if ((repositoryHelper.isTypeOf(serviceName,
                                                    relationship.getType().getTypeDefName(),
-                                                   OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
-                            || (repositoryHelper.isTypeOf(serviceName,
-                                                          relationship.getType().getTypeDefName(),
-                                                          OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName))
+                                                   OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
                                                           OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                               relationship.getType().getTypeDefName(),
-                                                              OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName))
-                                || (repositoryHelper.isTypeOf(serviceName,
-                                                              relationship.getType().getTypeDefName(),
-                                                              OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName)))
+                                                              OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName)))
                     {
                         supplementaryRelationships.add(relationship);
                     }
@@ -2538,34 +2448,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                 pageSize,
                                                                 effectiveTime,
                                                                 methodName);
-
-        if (entities == null)
-        {
-            /*
-             * Try the deprecated relationship
-             */
-            entities = super.getAttachedEntities(userId,
-                                                 assetGUID,
-                                                 assetGUIDParameterName,
-                                                 OpenMetadataType.ASSET.typeName,
-                                                 OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                 OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                 OpenMetadataType.CONNECTION.typeName,
-                                                 null,
-                                                 null,
-                                                 1,
-                                                 null,
-                                                 null,
-                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                 null,
-                                                 forLineage,
-                                                 forDuplicateProcessing,
-                                                 serviceSupportedZones,
-                                                 startingFrom,
-                                                 pageSize,
-                                                 effectiveTime,
-                                                 methodName);
-        }
 
         return getFullConnections(userId, entities, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }

@@ -21,16 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = NewActorRoleRequestBody.class, name = "NewActorRoleRequestBody"),
-                @JsonSubTypes.Type(value = NewCollectionRequestBody.class, name = "NewCollectionRequestBody"),
-                @JsonSubTypes.Type(value = NewDataClassRequestBody.class, name = "NewDataClassRequestBody"),
-                @JsonSubTypes.Type(value = NewDataFieldRequestBody.class, name = "NewDataFieldRequestBody"),
-                @JsonSubTypes.Type(value = NewDataStructureRequestBody.class, name = "NewDataStructureRequestBody"),
+                @JsonSubTypes.Type(value = NewAgreementRequestBody.class, name = "NewAgreementRequestBody"),
+                @JsonSubTypes.Type(value = NewDigitalProductRequestBody.class, name = "NewDigitalProductRequestBody"),
                 @JsonSubTypes.Type(value = NewGovernanceDefinitionRequestBody.class, name = "NewGovernanceDefinitionRequestBody"),
-                @JsonSubTypes.Type(value = NewInformationSupplyChainRequestBody.class, name = "NewInformationSupplyChainRequestBody"),
-                @JsonSubTypes.Type(value = NewProjectRequestBody.class, name = "NewProjectRequestBody"),
-                @JsonSubTypes.Type(value = NewSolutionBlueprintRequestBody.class, name = "NewSolutionBlueprintRequestBody"),
-                @JsonSubTypes.Type(value = NewSolutionComponentRequestBody.class, name = "NewSolutionComponentRequestBody"),
+                @JsonSubTypes.Type(value = NewSolutionElementRequestBody.class, name = "NewSolutionElementRequestBody"),
         })
 public class NewElementRequestBody extends NewElementOptionsRequestBody
 {

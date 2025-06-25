@@ -23,9 +23,11 @@ public class SolutionComponentProperties extends ReferenceableProperties
 {
     private String displayName                       = null;
     private String description                       = null;
-    private String version                           = null;
+    private String versionIdentifier                 = null;
     private String solutionComponentType             = null;
     private String plannedDeployedImplementationType = null;
+    private String userDefinedStatus                 = null;
+
 
     /**
      * Default constructor
@@ -48,11 +50,12 @@ public class SolutionComponentProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.displayName = template.getDisplayName();
-            this.description = template.getDescription();
-            this.version = template.getVersion();
-            this.solutionComponentType = template.getSolutionComponentType();
+            this.displayName                       = template.getDisplayName();
+            this.description                       = template.getDescription();
+            this.versionIdentifier                 = template.getVersionIdentifier();
+            this.solutionComponentType             = template.getSolutionComponentType();
             this.plannedDeployedImplementationType = template.getPlannedDeployedImplementationType();
+            this.userDefinedStatus                 = template.getUserDefinedStatus();
         }
     }
 
@@ -106,20 +109,20 @@ public class SolutionComponentProperties extends ReferenceableProperties
      *
      * @return String
      */
-    public String getVersion()
+    public String getVersionIdentifier()
     {
-        return version;
+        return versionIdentifier;
     }
 
 
     /**
      * Set up the version number for this digital service.
      *
-     * @param version String
+     * @param versionIdentifier String
      */
-    public void setVersion(String version)
+    public void setVersionIdentifier(String versionIdentifier)
     {
-        this.version = version;
+        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -167,6 +170,29 @@ public class SolutionComponentProperties extends ReferenceableProperties
     }
 
 
+
+    /**
+     * Return the status of the element.
+     *
+     * @return string
+     */
+    public String getUserDefinedStatus()
+    {
+        return userDefinedStatus;
+    }
+
+
+    /**
+     * Set up the status of the element.
+     *
+     * @param userDefinedStatus string
+     */
+    public void setUserDefinedStatus(String userDefinedStatus)
+    {
+        this.userDefinedStatus = userDefinedStatus;
+    }
+
+
     /**
      * Standard toString method.
      *
@@ -178,9 +204,10 @@ public class SolutionComponentProperties extends ReferenceableProperties
         return "SolutionComponentProperties{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", version='" + version + '\'' +
+                ", version='" + versionIdentifier + '\'' +
                 ", solutionComponentType='" + solutionComponentType + '\'' +
                 ", plannedDeployedImplementationType='" + plannedDeployedImplementationType + '\'' +
+                ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
 
@@ -210,7 +237,8 @@ public class SolutionComponentProperties extends ReferenceableProperties
                 Objects.equals(description, that.description) &&
                 Objects.equals(solutionComponentType, that.solutionComponentType) &&
                 Objects.equals(plannedDeployedImplementationType, that.plannedDeployedImplementationType) &&
-                       Objects.equals(version, that.version);
+                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
+                Objects.equals(versionIdentifier, that.versionIdentifier);
     }
 
 
@@ -223,6 +251,6 @@ public class SolutionComponentProperties extends ReferenceableProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), displayName, description, solutionComponentType,
-                            plannedDeployedImplementationType, version);
+                            plannedDeployedImplementationType, versionIdentifier, userDefinedStatus);
     }
 }

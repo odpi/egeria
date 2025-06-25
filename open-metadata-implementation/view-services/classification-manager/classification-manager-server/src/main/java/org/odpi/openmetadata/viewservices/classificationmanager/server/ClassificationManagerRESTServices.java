@@ -786,7 +786,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof OwnerProperties properties)
+                if (requestBody.getProperties() instanceof OwnershipProperties properties)
                 {
                     StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
@@ -802,7 +802,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(OwnerProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(OwnershipProperties.class.getName(), methodName);
                 }
             }
             else

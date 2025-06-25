@@ -169,8 +169,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "class" : "NewElementRequestBody",
   "isOwnAnchor" : true,
-  "collectionProperties": {
+  "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
@@ -187,19 +188,25 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "class" : "NewElementRequestBody",
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "collectionProperties": {
+  "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
     "collectionType": "Add appropriate valid value for type"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -210,19 +217,25 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "class" : "NewElementRequestBody",
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "collectionProperties": {
+  "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
     "collectionType": "Add appropriate valid value for type"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -235,19 +248,25 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "class" : "NewElementRequestBody",
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "collectionProperties": {
+  "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
     "collectionType": "Add appropriate valid value for type"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -259,19 +278,25 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "class" : "NewElementRequestBody",
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "collectionProperties": {
+  "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
     "collectionType": "Add appropriate valid value for type"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -282,14 +307,14 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewCollectionRequestBody",
+  "class" : "NewElementRequestBody",
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "collectionProperties": {
+  "properties": {
     "class" : "CollectionFolderProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
@@ -297,9 +322,13 @@ Content-Type: application/json
     "collectionType": "Add appropriate valid value for type",
     "collectionOrder" : "OTHER",
     "orderByPropertyName" : "Add property name if 'collectionOrder' is OTHER"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
-
 
 ###
 # @name createContextEventCollection
@@ -310,20 +339,25 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewCollectionRequestBody",
+  "class" : "NewElementRequestBody",
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "collectionProperties": {
+  "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
     "collectionType": "Add appropriate valid value for type"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -337,20 +371,25 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewCollectionRequestBody",
+  "class" : "NewElementRequestBody",
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "collectionProperties": {
+  "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
     "collectionType": "Add appropriate valid value for type"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -365,22 +404,26 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewCollectionRequestBody",
+  "class" : "NewElementRequestBody",
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "collectionProperties": {
+  "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
     "collectionType": "Add appropriate valid value for type"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
-
 
 ###
 # @name createCollectionFromTemplate
@@ -416,42 +459,64 @@ Content-Type: application/json
   }
 }
 
+
+###
+# @name updateCollection
+# Update the properties of a collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/update?replaceAllProperties=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateCollectionRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 ###
 
 @digitalProductGUID=xxx
 
 ###
-# @name createDigitalProduct
+# @name createDigitalProduct (no lifecycle)
 # Create a new collection that represents a digital product.
 # Note: the three dates: introductionDate, nextVersionDate and withdrawDate must be valid dates if specified,
 # otherwise you will get a 400 error response.
-# The valid values for productStatus are: DRAFT, PREPARED, PROPOSED, APPROVED, REJECTED, APPROVED_CONCEPT,
-# UNDER_DEVELOPMENT, DEVELOPMENT_COMPLETE, APPROVED_FOR_DEPLOYMENT, ACTIVE, DISABLED, DEPRECATED,
-# OTHER.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewDigitalProductRequestBody",
+  "class" : "NewElementRequestBody",
   "isOwnAnchor" : true,
   "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "xxx",
   "parentRelationshipTypeName" : "CollectionMembership",
   "parentAtEnd1": true,
-  "collectionProperties": {
-    "class" : "CollectionProperties",
-    "qualifiedName": "DigitalProduct:Add product name here",
-    "name" : "=Product contents",
-    "description" : "Add description of the contents of the product",
-    "collectionType": "Digital Product"
-  },
-  "digitalProductProperties" : {
+  "properties": {
     "class" : "DigitalProductProperties",
-    "productStatus" : "DRAFT",
+    "qualifiedName": "DigitalProduct:Add product name here",
+    "name" : "Product contents",
+    "description" : "Add description of product and its expected usage here",
+    "identifier" : "Add product identifier here",
     "productName" : "Add product name here",
     "productType" : "Periodic Delta",
-    "description" : "Add description of product and its expected usage here",
     "maturity" : "Add valid value here",
     "serviceLife" : "Add the estimated lifetime of the product",
     "introductionDate" : "date",
@@ -462,48 +527,236 @@ Content-Type: application/json
       "property1Name" : "property1Value",
       "property2Name" : "property2Value"
     }
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
+
 ###
-# @name updateCollection
-# Update the properties of a collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/update?replaceAllProperties=false
+# @name createDigitalProduct (lifecycle)
+# Create a new collection that represents a digital product.
+# Note: the three dates: introductionDate, nextVersionDate and withdrawDate must be valid dates if specified,
+# otherwise you will get a 400 error response.
+# The valid values for initialStatus are: DRAFT, PREPARED, PROPOSED, APPROVED, REJECTED, APPROVED_CONCEPT,
+# UNDER_DEVELOPMENT, DEVELOPMENT_COMPLETE, APPROVED_FOR_DEPLOYMENT, ACTIVE, DISABLED, DEPRECATED,
+# OTHER.  If useing OTHER, set the userDefinedStatus with the statu value you want.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "CollectionProperties",
-  "qualifiedName": "Must provide a unique name here if replaceAllProperties=true",
-  "name" : "Add display name here",
-  "description" : "Add description of the collection here",
-  "collectionType": "Add appropriate valid value for type"
+  "class" : "NewDigitalProductRequestBody",
+  "isOwnAnchor" : true,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "xxx",
+  "parentRelationshipTypeName" : "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DigitalProductProperties",
+    "qualifiedName": "DigitalProduct:Add product name here",
+    "userDefinedStatus" : "Optional value here - used when initial status is OTHER",
+    "name" : "Product display name",
+    "description" : "Add description of product and its expected usage here",
+    "identifier" : "Add product identifier here",
+    "productName" : "Add product name here",
+    "productType" : "Periodic Delta",
+    "maturity" : "Add valid value here",
+    "serviceLife" : "Add the estimated lifetime of the product",
+    "introductionDate" : "date",
+    "nextVersionDate": "date",
+    "withdrawDate": "date",
+    "currentVersion": "V0.1",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  },
+  "initialStatus" : "DRAFT",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
 # @name updateDigitalProduct
-# Update the properties of the DigitalProduct classification attached to a collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products/{{digitalProductGUID}}/update?replaceAllProperties=false
+# Update the properties of the DigitalProduct collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalProductGUID}}/update?replaceAllProperties=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DigitalProductProperties",
-  "productStatus" : "ACTIVE",
-  "productName" : "Add product name here",
-  "productType" : "Periodic Delta",
-  "description" : "Add description of product and its expected usage here",
-  "introductionDate" : "date",
-  "maturity" : "Add valid value here",
-  "serviceLife" : "Add the estimated lifetime of the product",
-  "currentVersion": "V1.0",
-  "nextVersionDate": "date",
-  "withdrawDate": "date",
-  "additionalProperties": {
-    "property1Name" : "property1Value",
-    "property2Name" : "property2Value"
-  }
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "DigitalProductProperties",
+    "qualifiedName": "DigitalProduct:Add product name here",
+    "name" : "Product contents",
+    "description" : "Add description of product and its expected usage here",
+    "userDefinedStatus" : "OBSOLETE",
+    "identifier" : "Add product identifier here",
+    "productName" : "Add product name here",
+    "productType" : "Periodic Delta",
+    "maturity" : "Add valid value here",
+    "serviceLife" : "Add the estimated lifetime of the product",
+    "introductionDate" : "date",
+    "nextVersionDate": "date",
+    "withdrawDate": "date",
+    "currentVersion": "V0.1",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
+
+###
+# @name updateDigitalProductStatus
+# Update the status of the DigitalProduct collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/digital-products/{{digitalProductGUID}}/update-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DigitalProductStatusRequestBody",
+  "status": "APPROVED",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+@agreementGUID=xxx
+
+###
+# @name createAgreement (no lifecycle)
+# Create a new collection that represents an agreement.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "xxx",
+  "parentRelationshipTypeName" : "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "AgreementProperties",
+    "qualifiedName": "Agreement:Add agreement name here",
+    "name" : "display name",
+    "description" : "Add description of the agreement here",
+    "identifier" : "Add agreement identifier here",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name createAgreement (lifecycle)
+# Create a new collection that represents an agreement.
+# Note: the three dates: introductionDate, nextVersionDate and withdrawDate must be valid dates if specified,
+# otherwise you will get a 400 error response.
+# The valid values for initialStatus are: DRAFT, PREPARED, PROPOSED, APPROVED, REJECTED
+# ACTIVE, DEPRECATED, OTHER.  If useing OTHER, set the userDefinedStatus with the statu value you want.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewAgreementRequestBody",
+  "isOwnAnchor" : true,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "xxx",
+  "parentRelationshipTypeName" : "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "AgreementProperties",
+    "qualifiedName": "Agreement:Add agreement name here",
+    "name" : "display name",
+    "description" : "Add description of the agreement here",
+    "userDefinedStatus" : "NEW",
+    "identifier" : "Add agreement identifier here",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  },
+  "initialStatus" : "OTHER",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateAgreement
+# Update the properties of the Agreement collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{agreementGUID}}/update?replaceAllProperties=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "AgreementProperties",
+    "qualifiedName": "Agreement:Add agreement name here",
+    "name" : "display name",
+    "description" : "Add description of the agreement here",
+    "userDefinedStatus" : "OBSOLETE",
+    "identifier" : "Add agreement identifier here",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateAgreementStatus
+# Update the status of the Agreement collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/agreements/{{agreementGUID}}/update-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "AgreementStatusStatusRequestBody",
+  "status": "APPROVED",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 
 ###
 # @name attachCollection
@@ -513,14 +766,22 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ResourceListProperties",
-  "resourceUse" : "Add valid value here",
-  "resourceUseDescription" : "Add description here",
-  "watchResource" : false,
-  "resourceUseProperties": {
-    "property1Name" : "property1Value",
-    "property2Name" : "property2Value"
-  }
+  "class" : "RelationshipRequestBody",
+  "properties": {
+    "class": "ResourceListProperties",
+    "resourceUse": "Add valid value here",
+    "resourceUseDescription": "Add description here",
+    "watchResource": false,
+    "resourceUseProperties": {
+      "property1Name": "property1Value",
+      "property2Name": "property2Value"
+    }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -531,8 +792,14 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NullRequestBody"
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
+
 
 ###
 # @name deleteCollection
@@ -546,7 +813,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NullRequestBody"
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -561,18 +833,26 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "CollectionMembershipProperties",
-  "membershipRationale": "xxx",
-  "createdBy": "user id here",
-  "expression": "expression that described why the element is a part of this collection",
-  "confidence": 100,
-  "membershipStatus": "PROPOSED",
-  "userDefinedStatus": "Add valid value here",
-  "steward": "identifier of steward that validated this member",
-  "stewardTypeName": "type name of element identifying the steward",
-  "stewardPropertyName": "property name if the steward's identifier",
-  "source": "source of the member",
-  "notes": "Add notes here"
+  "class" : "RelationshipRequestBody",
+  "properties" : {
+    "class": "CollectionMembershipProperties",
+    "membershipRationale": "xxx",
+    "createdBy": "user id here",
+    "expression": "expression that described why the element is a part of this collection",
+    "confidence": 100,
+    "membershipStatus": "PROPOSED",
+    "userDefinedStatus": "Add valid value here",
+    "steward": "identifier of steward that validated this member",
+    "stewardTypeName": "type name of element identifying the steward",
+    "stewardPropertyName": "property name if the steward's identifier",
+    "source": "source of the member",
+    "notes": "Add notes here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -583,18 +863,26 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "CollectionMembershipProperties",
-  "membershipRationale": "xxx",
-  "createdBy": "user id here",
-  "expression": "expression that described why the element is a part of this collection",
-  "confidence": 100,
-  "membershipStatus": "PROPOSED",
-  "userDefinedStatus": "Add valid value here",
-  "steward": "identifier of steward that validated this member",
-  "stewardTypeName": "type name of element identifying the steward",
-  "stewardPropertyName": "property name if the steward's identifier",
-  "source": "source of the member",
-  "notes": "Add notes here"
+  "class" : "RelationshipRequestBody",
+  "properties" : {
+    "class": "CollectionMembershipProperties",
+    "membershipRationale": "xxx",
+    "createdBy": "user id here",
+    "expression": "expression that described why the element is a part of this collection",
+    "confidence": 100,
+    "membershipStatus": "PROPOSED",
+    "userDefinedStatus": "Add valid value here",
+    "steward": "identifier of steward that validated this member",
+    "stewardTypeName": "type name of element identifying the steward",
+    "stewardPropertyName": "property name if the steward's identifier",
+    "source": "source of the member",
+    "notes": "Add notes here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -605,5 +893,10 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NullRequestBody"
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }

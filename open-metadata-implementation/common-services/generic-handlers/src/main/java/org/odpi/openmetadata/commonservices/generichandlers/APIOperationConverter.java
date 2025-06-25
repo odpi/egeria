@@ -75,7 +75,7 @@ public class APIOperationConverter<B> extends OMFConverter<B>
                     apiOperationProperties.setDisplayName(this.removeDisplayName(propertiesCopy));
                     apiOperationProperties.setDescription(this.removeDescription(propertiesCopy));
                     apiOperationProperties.setIsDeprecated(this.removeIsDeprecated(propertiesCopy));
-                    apiOperationProperties.setVersionNumber(this.removeVersionNumber(propertiesCopy));
+                    apiOperationProperties.setVersionIdentifier(this.removeVersionIdentifier(propertiesCopy));
                     apiOperationProperties.setAuthor(this.removeAuthor(propertiesCopy));
                     apiOperationProperties.setUsage(this.removeUsage(propertiesCopy));
                     apiOperationProperties.setEncodingStandard(this.removeEncodingStandard(propertiesCopy));

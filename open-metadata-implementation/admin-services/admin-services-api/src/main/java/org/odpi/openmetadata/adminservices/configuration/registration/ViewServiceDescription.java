@@ -318,7 +318,7 @@ public enum ViewServiceDescription
      * Maintain governance definitions used in all governance domains.
      */
     GOVERNANCE_OFFICER (825,
-                     ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                     ComponentDevelopmentStatus.STABLE,
                      "Governance Officer",
                      "Governance Officer OMVS",
                      "governance-officer",
@@ -405,7 +405,7 @@ public enum ViewServiceDescription
      * Manages the definitions of user identities, actor profiles, contact details and actor roles.
      */
     ACTOR_MANAGER (832,
-                 ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                 ComponentDevelopmentStatus.STABLE,
                  "Actor Manager",
                  "Actor Manager OMVS",
                  "actor-manager",
@@ -436,6 +436,44 @@ public enum ViewServiceDescription
                        "Manages the definition of subject areas and reporting on their contents.",
                        "https://egeria-project.org/services/omvs/subject-area/overview/",
                        AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Manages the creation and maintenance of connections, connector types and endpoints.
+     */
+    CONNECTION_MAKER (835,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "Connection Maker",
+                      "Connection Maker OMVS",
+                      "connection-maker",
+                      "Manages the creation and maintenance of connections, connector types and endpoints.",
+                      "https://egeria-project.org/services/omvs/connection-maker/overview/",
+                      AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName()),
+
+
+    /**
+     * Manages the creation and maintenance of connections, connector types and endpoints.
+     */
+    SCHEMA_MAKER (836,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "Schema Maker",
+                      "Schema Maker OMVS",
+                      "schema-maker",
+                      "Manages the creation and maintenance of schema elements.",
+                      "https://egeria-project.org/services/omvs/schema-maker/overview/",
+                      AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName()),
+
+
+    /**
+     * Manages the creation and maintenance of locations.
+     */
+    LOCATION_ARENA(837,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "Location Arena",
+                   "Location Arena OMVS",
+                   "location-arena",
+                   "Manages the creation and maintenance of locations.",
+                   "https://egeria-project.org/services/omvs/location-arena/overview/",
+                   AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName()),
 
     ;
 

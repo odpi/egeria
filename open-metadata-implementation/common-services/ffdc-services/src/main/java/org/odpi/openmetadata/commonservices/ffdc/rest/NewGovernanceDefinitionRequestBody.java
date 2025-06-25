@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 
 import java.util.Objects;
 
@@ -14,14 +13,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NewGovernanceDefinitionRequestBody provides a structure used when creating governance definitions.
+ * NewGovernanceDefinitionRequestBody provides an optional structure used when creating governance definitions.
+ * It provides an optional extension to set up the initial status.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewGovernanceDefinitionRequestBody extends NewElementOptionsRequestBody
+public class NewGovernanceDefinitionRequestBody extends NewElementRequestBody
 {
-    private GovernanceDefinitionProperties properties    = null;
     private GovernanceDefinitionStatus     initialStatus = null;
 
 
@@ -44,31 +43,8 @@ public class NewGovernanceDefinitionRequestBody extends NewElementOptionsRequest
 
         if (template != null)
         {
-            this.properties = template.getProperties();
             this.initialStatus = template.getInitialStatus();
         }
-    }
-
-
-    /**
-     * Return the properties of the governance definition.
-     *
-     * @return properties
-     */
-    public GovernanceDefinitionProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up the properties of the governance definition.
-     *
-     * @param properties properties
-     */
-    public void setProperties(GovernanceDefinitionProperties properties)
-    {
-        this.properties = properties;
     }
 
 
@@ -103,7 +79,6 @@ public class NewGovernanceDefinitionRequestBody extends NewElementOptionsRequest
     public String toString()
     {
         return "NewGovernanceDefinitionRequestBody{" +
-                "properties=" + properties +
                 ", initialStatus=" + initialStatus +
                 "} " + super.toString();
     }
@@ -130,7 +105,7 @@ public class NewGovernanceDefinitionRequestBody extends NewElementOptionsRequest
         {
             return false;
         }
-        return Objects.equals(properties, that.properties) && initialStatus == that.initialStatus;
+        return initialStatus == that.initialStatus;
     }
 
 
@@ -142,6 +117,6 @@ public class NewGovernanceDefinitionRequestBody extends NewElementOptionsRequest
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, initialStatus);
+        return Objects.hash(super.hashCode(), initialStatus);
     }
 }

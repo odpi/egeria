@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -434,7 +434,7 @@ public interface StewardshipManagementInterface
      */
     void  addOwnership(String          userId,
                        String          elementGUID,
-                       OwnerProperties properties,
+                       OwnershipProperties properties,
                        Date            effectiveTime,
                        boolean         forLineage,
                        boolean         forDuplicateProcessing) throws InvalidParameterException,

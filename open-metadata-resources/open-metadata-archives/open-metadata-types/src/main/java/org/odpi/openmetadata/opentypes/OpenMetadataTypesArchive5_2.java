@@ -197,6 +197,8 @@ public class OpenMetadataTypesArchive5_2
         this.archiveBuilder.addRelationshipDef(getITProfileRoleRelationship());
 
         this.archiveBuilder.addRelationshipDef(getContributionRelationship());
+
+        this.archiveBuilder.addTypeDefPatch(updateDigitalProductManagementRelationship());
     }
 
 
@@ -409,6 +411,36 @@ public class OpenMetadataTypesArchive5_2
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
+    }
+
+
+    private TypeDefPatch updateDigitalProductManagementRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_PRODUCT_MANAGEMENT_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "digitalProductManagers";
+        final String                     end2AttributeDescription     = "The roles for managing this digital product.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR_ROLE.typeName),
+                                                                                    end2AttributeName,
+                                                                                    end2AttributeDescription,
+                                                                                    end2AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
+
+
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
     }
 
 

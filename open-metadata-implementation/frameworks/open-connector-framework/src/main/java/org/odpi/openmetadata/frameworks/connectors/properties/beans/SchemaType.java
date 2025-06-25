@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,11 +44,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @SuppressWarnings(value = "deprecation")
 public class SchemaType extends SchemaElement
 {
-    protected String              versionNumber    = null;
-    protected String              author           = null;
-    protected String              usage            = null;
-    protected String              encodingStandard = null;
-    protected String              namespace        = null;
+    protected String versionIdentifier = null;
+    protected String author            = null;
+    protected String usage             = null;
+    protected String encodingStandard  = null;
+    protected String namespace         = null;
 
     /*
      * Values for when the schemaType is derived from other values rather than stored
@@ -79,8 +78,8 @@ public class SchemaType extends SchemaElement
 
         if (template != null)
         {
-            versionNumber = template.getVersionNumber();
-            author = template.getAuthor();
+            versionIdentifier = template.getVersionIdentifier();
+            author            = template.getAuthor();
             usage = template.getUsage();
             encodingStandard = template.getEncodingStandard();
             namespace = template.getNamespace();
@@ -185,17 +184,17 @@ public class SchemaType extends SchemaElement
      *
      * @return String version number
      */
-    public String getVersionNumber() { return versionNumber; }
+    public String getVersionIdentifier() { return versionIdentifier; }
 
 
     /**
      * Set up the version number of the schema element - null means no version number.
      *
-     * @param versionNumber String version number
+     * @param versionIdentifier String version number
      */
-    public void setVersionNumber(String versionNumber)
+    public void setVersionIdentifier(String versionIdentifier)
     {
-        this.versionNumber = versionNumber;
+        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -290,7 +289,7 @@ public class SchemaType extends SchemaElement
     public String toString()
     {
         return "SchemaType{" +
-                "versionNumber='" + versionNumber + '\'' +
+                "versionIdentifier='" + versionIdentifier + '\'' +
                 ", author='" + author + '\'' +
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
@@ -298,27 +297,7 @@ public class SchemaType extends SchemaElement
                 ", formula='" + formula + '\'' +
                 ", formulaType='" + formulaType + '\'' +
                 ", queries=" + queries +
-                ", isDeprecated=" + isDeprecated +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", isCalculatedValue=" + isCalculatedValue +
-                ", expression='" + expression + '\'' +
-                ", expressionType='" + expressionType + '\'' +
-                ", meanings=" + meanings +
-                ", searchKeywords=" + searchKeywords +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", extendedProperties=" + extendedProperties +
-                ", cloneSchemaElement=" + cloneSchemaElement() +
-                ", cloneSchemaType=" + cloneSchemaType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", status=" + getStatus() +
-                ", type=" + getType() +
-                ", origin=" + getOrigin() +
-                ", versions=" + getVersions() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -344,7 +323,7 @@ public class SchemaType extends SchemaElement
             return false;
         }
         SchemaType that = (SchemaType) objectToCompare;
-        return Objects.equals(getVersionNumber(), that.getVersionNumber()) &&
+        return Objects.equals(getVersionIdentifier(), that.getVersionIdentifier()) &&
                        Objects.equals(getAuthor(), that.getAuthor()) &&
                        Objects.equals(getUsage(), that.getUsage()) &&
                        Objects.equals(getEncodingStandard(), that.getEncodingStandard()) &&
@@ -363,7 +342,7 @@ public class SchemaType extends SchemaElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getVersionNumber(), getAuthor(), getUsage(), getEncodingStandard(), getNamespace(), getFormula(),
+        return Objects.hash(super.hashCode(), getVersionIdentifier(), getAuthor(), getUsage(), getEncodingStandard(), getNamespace(), getFormula(),
                             getFormulaType(), getQueries());
     }
 }

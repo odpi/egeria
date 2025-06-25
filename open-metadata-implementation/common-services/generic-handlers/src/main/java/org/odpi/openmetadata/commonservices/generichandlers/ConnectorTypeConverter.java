@@ -94,7 +94,7 @@ public class ConnectorTypeConverter<B> extends OMFConverter<B>
                     connectorTypeProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     connectorTypeProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setConnectorTypeProperties(connectorTypeProperties);
+                    bean.setProperties(connectorTypeProperties);
                 }
                 else
                 {
