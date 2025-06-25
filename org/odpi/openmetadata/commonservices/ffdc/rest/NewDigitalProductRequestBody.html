@@ -75,9 +75,7 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody</a>
 <div class="inheritance"><a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.NewElementOptionsRequestBody</a>
 <div class="inheritance"><a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody</a>
-<div class="inheritance"><a href="NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.NewCollectionRequestBody</a>
 <div class="inheritance">org.odpi.openmetadata.commonservices.ffdc.rest.NewDigitalProductRequestBody</div>
-</div>
 </div>
 </div>
 </div>
@@ -85,9 +83,9 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">NewDigitalProductRequestBody</span>
-<span class="extends-implements">extends <a href="NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewCollectionRequestBody</a></span></div>
-<div class="block">NewDigitalProductRequestBody describes the properties to create a new collection with a digital product
- classification.</div>
+<span class="extends-implements">extends <a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></span></div>
+<div class="block">NewDigitalProductRequestBody provides an optional structure used when creating digital products.
+ It provides an optional extension to set up the initial status.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -126,10 +124,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Equals method that returns true if containing properties are the same.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDigitalProductProperties()" class="member-name-link">getDigitalProductProperties</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/enums/DigitalProductStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DigitalProductStatus</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInitialStatus()" class="member-name-link">getInitialStatus</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the properties for the digital product classification.</div>
+<div class="block">Return the initial status of the digital product.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -137,9 +135,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDigitalProductProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties)" class="member-name-link">setDigitalProductProperties</a><wbr>(<a href="../../../frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductProperties</a>&nbsp;digitalProductProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInitialStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.DigitalProductStatus)" class="member-name-link">setInitialStatus</a><wbr>(<a href="../../../frameworks/openmetadata/enums/DigitalProductStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DigitalProductStatus</a>&nbsp;initialStatus)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the properties for the digital product classification.</div>
+<div class="block">Set up the initial status of the digital product.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -149,9 +147,6 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.NewCollectionRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewCollectionRequestBody</a></h3>
-<code><a href="NewCollectionRequestBody.html#getCollectionProperties()">getCollectionProperties</a>, <a href="NewCollectionRequestBody.html#setCollectionProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties)">setCollectionProperties</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></h3>
 <code><a href="NewElementRequestBody.html#getProperties()">getProperties</a>, <a href="NewElementRequestBody.html#setProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties)">setProperties</a></code></div>
@@ -202,24 +197,24 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getDigitalProductProperties()">
-<h3>getDigitalProductProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductProperties</a></span>&nbsp;<span class="element-name">getDigitalProductProperties</span>()</div>
-<div class="block">Return the properties for the digital product classification.</div>
+<section class="detail" id="getInitialStatus()">
+<h3>getInitialStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/enums/DigitalProductStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DigitalProductStatus</a></span>&nbsp;<span class="element-name">getInitialStatus</span>()</div>
+<div class="block">Return the initial status of the digital product.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>properties</dd>
+<dd>instance status</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setDigitalProductProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties)">
-<h3>setDigitalProductProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDigitalProductProperties</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductProperties</a>&nbsp;digitalProductProperties)</span></div>
-<div class="block">Set up the properties for the digital product classification.</div>
+<section class="detail" id="setInitialStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.DigitalProductStatus)">
+<h3>setInitialStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setInitialStatus</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/enums/DigitalProductStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DigitalProductStatus</a>&nbsp;initialStatus)</span></div>
+<div class="block">Set up the initial status of the digital product.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>digitalProductProperties</code> - properties</dd>
+<dd><code>initialStatus</code> - instance status</dd>
 </dl>
 </section>
 </li>
@@ -230,7 +225,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="NewCollectionRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewCollectionRequestBody</a></code></dd>
+<dd><code><a href="NewElementRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></code></dd>
 <dt>Returns:</dt>
 <dd>list of properties and their values.</dd>
 </dl>
@@ -243,7 +238,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Equals method that returns true if containing properties are the same.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="NewCollectionRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewCollectionRequestBody</a></code></dd>
+<dd><code><a href="NewElementRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - object to compare</dd>
 <dt>Returns:</dt>
@@ -258,7 +253,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="NewCollectionRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewCollectionRequestBody</a></code></dd>
+<dd><code><a href="NewElementRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

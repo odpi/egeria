@@ -122,9 +122,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a supporting governance definition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewGovernanceDefinitionRequestBody)" class="member-name-link">createGovernanceDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)" class="member-name-link">createGovernanceDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="../../../../commonservices/ffdc/rest/NewGovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewGovernanceDefinitionRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a governance definition.</div>
 </div>
@@ -299,7 +299,7 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createGovernanceDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewGovernanceDefinitionRequestBody)">
+<section class="detail" id="createGovernanceDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)">
 <h3>createGovernanceDefinition</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/governance-definitions")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createGovernanceDefinition</span><wbr><span class="parameters">(@PathVariable
@@ -307,7 +307,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/NewGovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewGovernanceDefinitionRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a governance definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -396,7 +396,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of called server.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
 <dd><code>governanceDefinitionGUID</code> - unique identifier of the governance definition (returned from create)</dd>
-<dd><code>requestBody</code> - properties for the new element.</dd>
+<dd><code>requestBody</code> - properties for the new status.</dd>
 <dt>Returns:</dt>
 <dd>void or
   InvalidParameterException  one of the parameters is invalid.

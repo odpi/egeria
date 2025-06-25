@@ -136,9 +136,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove a "ResourceList" relationship between two referenceables.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProject(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewProjectRequestBody)" class="member-name-link">createProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProject(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)" class="member-name-link">createProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
- <a href="../../../../commonservices/ffdc/rest/NewProjectRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewProjectRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new generic project.</div>
 </div>
@@ -201,7 +201,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectGraph(java.lang.String,java.lang.String)" class="member-name-link">getProjectGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the graph of related projects and resources starting with a supplied project guid..</div>
+<div class="block">Returns the graph of related projects and resources starting with a supplied project guid.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ProjectsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ProjectsResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getProjectsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -480,7 +480,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID)</span></div>
-<div class="block">Returns the graph of related projects and resources starting with a supplied project guid..</div>
+<div class="block">Returns the graph of related projects and resources starting with a supplied project guid.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
@@ -494,7 +494,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createProject(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewProjectRequestBody)">
+<section class="detail" id="createProject(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)">
 <h3>createProject</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/projects")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createProject</span><wbr><span class="parameters">(@PathVariable
@@ -502,7 +502,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false)
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/NewProjectRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewProjectRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a new generic project.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
