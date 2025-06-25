@@ -236,7 +236,7 @@ public class ProjectManagerResource
 
 
     /**
-     * Returns the graph of related projects and resources starting with a supplied project guid..
+     * Returns the graph of related projects and resources starting with a supplied project guid.
      *
      * @param serverName         name of called server
      * @param projectGUID     unique identifier of the starting project
@@ -278,7 +278,7 @@ public class ProjectManagerResource
     public GUIDResponse createProject(@PathVariable String                serverName,
                                       @RequestParam(required = false)
                                                     String                classificationName,
-                                      @RequestBody  NewProjectRequestBody requestBody)
+                                      @RequestBody  NewElementRequestBody requestBody)
     {
         return restAPI.createProject(serverName, classificationName, requestBody);
     }

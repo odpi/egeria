@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworkservices.omf.client.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.InformationSupplyChainMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
@@ -13,9 +14,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
@@ -869,6 +867,7 @@ public class SolutionHandler
      *                                     is created in the repository.
      * @param anchorScopeGUID              unique identifier of any anchor scope to use for searching
      * @param properties                   properties for the new element.
+     * @param initialStatus                initial value for the element status
      * @param parentGUID                   unique identifier of optional parent entity
      * @param parentRelationshipTypeName   type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -888,6 +887,7 @@ public class SolutionHandler
                                           boolean                     isOwnAnchor,
                                           String                      anchorScopeGUID,
                                           SolutionBlueprintProperties properties,
+                                          SolutionElementStatus       initialStatus,
                                           String                      parentGUID,
                                           String                      parentRelationshipTypeName,
                                           ElementProperties           parentRelationshipProperties,
@@ -913,12 +913,11 @@ public class SolutionHandler
             elementTypeName = properties.getTypeName();
         }
 
-
         return openMetadataStoreClient.createMetadataElementInStore(userId,
                                                                     externalSourceGUID,
                                                                     externalSourceName,
                                                                     elementTypeName,
-                                                                    ElementStatus.ACTIVE,
+                                                                    this.getElementStatus(initialStatus),
                                                                     null,
                                                                     anchorGUID,
                                                                     isOwnAnchor,
@@ -1163,8 +1162,8 @@ public class SolutionHandler
     {
         final String methodName = "detachSolutionComponentFromBlueprint";
 
-        final String end1GUIDParameterName = "parentSolutionBlueprintGUID";
-        final String end2GUIDParameterName = "nestedSolutionComponentGUID";
+        final String end1GUIDParameterName = "solutionBlueprintGUID";
+        final String end2GUIDParameterName = "solutionComponentGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(solutionBlueprintGUID, end1GUIDParameterName, methodName);
@@ -1176,6 +1175,123 @@ public class SolutionHandler
                                                              OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName,
                                                              solutionBlueprintGUID,
                                                              solutionComponentGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+
+    /**
+     * Attach a solution blueprint to the element it describes.
+     *
+     * @param userId                  userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+     * @param relationshipProperties  description of the relationship.
+     * @param forLineage              the query is to support lineage retrieval
+     * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime           the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSolutionDesign(String                   userId,
+                                   String                   externalSourceGUID,
+                                   String                   externalSourceName,
+                                   String                   parentGUID,
+                                   String                   solutionBlueprintGUID,
+                                   SolutionDesignProperties relationshipProperties,
+                                   boolean                  forLineage,
+                                   boolean                  forDuplicateProcessing,
+                                   Date                     effectiveTime) throws InvalidParameterException,
+                                                                                                              PropertyServerException,
+                                                                                                              UserNotAuthorizedException
+    {
+        final String methodName = "linkSolutionDesign";
+        final String end1GUIDParameterName = "parentGUID";
+        final String end2GUIDParameterName = "solutionBlueprintGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(solutionBlueprintGUID, end2GUIDParameterName, methodName);
+
+        if (relationshipProperties != null)
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName,
+                                                                 parentGUID,
+                                                                 solutionBlueprintGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 relationshipProperties.getEffectiveFrom(),
+                                                                 relationshipProperties.getEffectiveTo(),
+                                                                 null,
+                                                                 effectiveTime);
+        }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName,
+                                                                 parentGUID,
+                                                                 solutionBlueprintGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime);
+        }
+    }
+
+
+    /**
+     * Detach a solution blueprint from the element it describes.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionDesign(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  parentGUID,
+                                     String  solutionBlueprintGUID,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "detachSolutionDesign";
+
+        final String end1GUIDParameterName = "parentGUID";
+        final String end2GUIDParameterName = "solutionBlueprintGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(solutionBlueprintGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName,
+                                                             parentGUID,
+                                                             solutionBlueprintGUID,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              effectiveTime);
@@ -1426,6 +1542,7 @@ public class SolutionHandler
      *                                     is created in the repository.
      * @param anchorScopeGUID              unique identifier of any anchor scope to use for searching
      * @param properties                   properties for the new element.
+     * @param initialStatus                initial value for the element status
      * @param parentGUID                   unique identifier of optional parent entity
      * @param parentRelationshipTypeName   type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -1445,6 +1562,7 @@ public class SolutionHandler
                                           boolean                     isOwnAnchor,
                                           String                      anchorScopeGUID,
                                           SolutionComponentProperties properties,
+                                          SolutionElementStatus       initialStatus,
                                           String                      parentGUID,
                                           String                      parentRelationshipTypeName,
                                           ElementProperties           parentRelationshipProperties,
@@ -1474,7 +1592,7 @@ public class SolutionHandler
                                                                     externalSourceGUID,
                                                                     externalSourceName,
                                                                     elementTypeName,
-                                                                    ElementStatus.ACTIVE,
+                                                                    this.getElementStatus(initialStatus),
                                                                     null,
                                                                     anchorGUID,
                                                                     isOwnAnchor,
@@ -1619,6 +1737,52 @@ public class SolutionHandler
                                                              forDuplicateProcessing,
                                                              this.getElementProperties(properties),
                                                              effectiveTime);
+    }
+
+
+
+    /**
+     * Update the properties of a solution blueprint, solution component or solution port.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param solutionElementGUID      unique identifier of the solution element (returned from create)
+     * @param status                 new status for the element.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateSolutionElementStatus(String                userId,
+                                            String                externalSourceGUID,
+                                            String                externalSourceName,
+                                            String                solutionElementGUID,
+                                            SolutionElementStatus status,
+                                            boolean               forLineage,
+                                            boolean               forDuplicateProcessing,
+                                            Date                  effectiveTime) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName = "updateSolutionElementStatus";
+        final String propertiesName = "status";
+        final String guidParameterName = "solutionElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(solutionElementGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateObject(status, propertiesName, methodName);
+
+        openMetadataStoreClient.updateMetadataElementStatusInStore(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   solutionElementGUID,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   this.getElementStatus(status),
+                                                                   effectiveTime);
     }
 
 
@@ -2811,7 +2975,7 @@ public class SolutionHandler
              */
             RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                        startingElement.getElement().getElementGUID(),
-                                                                                                                       1,
+                                                                                                                       0,
                                                                                                                        null,
                                                                                                                        null,
                                                                                                                        asOfTime,
@@ -3490,6 +3654,35 @@ public class SolutionHandler
 
 
     /**
+     * Return the corresponding element status.
+     *
+     * @param status status that the solution element can be set
+     * @return element status
+     */
+    private ElementStatus getElementStatus(SolutionElementStatus status)
+    {
+        if (status != null)
+        {
+            switch (status)
+            {
+                case DRAFT -> { return ElementStatus.DRAFT; }
+                case PREPARED -> { return ElementStatus.PREPARED; }
+                case PROPOSED -> { return ElementStatus.PROPOSED; }
+                case APPROVED -> { return ElementStatus.APPROVED; }
+                case REJECTED -> { return ElementStatus.REJECTED; }
+                case DISABLED -> { return ElementStatus.DISABLED; }
+                case ACTIVE -> { return ElementStatus.ACTIVE; }
+                case DEPRECATED -> { return ElementStatus.DEPRECATED; }
+                case OTHER -> { return ElementStatus.OTHER; }
+            }
+        }
+
+        return ElementStatus.ACTIVE;
+    }
+
+
+
+    /**
      * Convert the specific properties into a set of element properties for the open metadata client.
      *
      * @param properties supplied properties
@@ -3584,8 +3777,12 @@ public class SolutionHandler
                                                                  properties.getDescription());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.VERSION.name,
-                                                                 properties.getVersion());
+                                                                 OpenMetadataProperty.VERSION_IDENTIFIER.name,
+                                                                 properties.getVersionIdentifier());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.USER_DEFINED_STATUS.name,
+                                                                 properties.getUserDefinedStatus());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
@@ -3652,8 +3849,8 @@ public class SolutionHandler
                                                                  properties.getDescription());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.VERSION.name,
-                                                                 properties.getVersion());
+                                                                 OpenMetadataProperty.VERSION_IDENTIFIER.name,
+                                                                 properties.getVersionIdentifier());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
@@ -3662,6 +3859,10 @@ public class SolutionHandler
             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                  properties.getPlannedDeployedImplementationType());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.USER_DEFINED_STATUS.name,
+                                                                 properties.getUserDefinedStatus());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
@@ -3732,8 +3933,12 @@ public class SolutionHandler
                                                                  properties.getDescription());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.VERSION.name,
-                                                                 properties.getVersion());
+                                                                 OpenMetadataProperty.VERSION_IDENTIFIER.name,
+                                                                 properties.getVersionIdentifier());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.USER_DEFINED_STATUS.name,
+                                                                 properties.getUserDefinedStatus());
 
             if (properties.getSolutionPortDirection() != null)
             {

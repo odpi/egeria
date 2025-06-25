@@ -9,10 +9,13 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SolutionHandler;
 import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
 import org.odpi.openmetadata.frameworkservices.omf.rest.RelatedMetadataElementsResponse;
@@ -918,6 +921,13 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
+                SolutionElementStatus initialStatus = SolutionElementStatus.ACTIVE;
+
+                if (requestBody instanceof NewSolutionElementRequestBody solutionElementRequestBody)
+                {
+                    initialStatus = solutionElementRequestBody.getInitialStatus();
+                }
+
                 if (requestBody.getProperties() instanceof SolutionBlueprintProperties properties)
                 {
                     response.setGUID(handler.createSolutionBlueprint(userId,
@@ -927,6 +937,7 @@ public class SolutionArchitectRESTServices extends TokenController
                                                                      requestBody.getIsOwnAnchor(),
                                                                      requestBody.getAnchorScopeGUID(),
                                                                      properties,
+                                                                     initialStatus,
                                                                      requestBody.getParentGUID(),
                                                                      requestBody.getParentRelationshipTypeName(),
                                                                      requestBody.getParentRelationshipProperties(),
@@ -944,6 +955,7 @@ public class SolutionArchitectRESTServices extends TokenController
                                                                      requestBody.getIsOwnAnchor(),
                                                                      requestBody.getAnchorScopeGUID(),
                                                                      null,
+                                                                     initialStatus,
                                                                      requestBody.getParentGUID(),
                                                                      requestBody.getParentRelationshipTypeName(),
                                                                      requestBody.getParentRelationshipProperties(),
@@ -1267,6 +1279,162 @@ public class SolutionArchitectRESTServices extends TokenController
                                                              false,
                                                              false,
                                                              new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Attach a solution blueprint to the element that is describes.
+     *
+     * @param serverName         name of called server
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkSolutionDesign(String                  serverName,
+                                           String                  parentGUID,
+                                           String                  solutionBlueprintGUID,
+                                           RelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSolutionDesign";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SolutionDesignProperties solutionDesignProperties)
+                {
+                    handler.linkSolutionDesign(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               parentGUID,
+                                               solutionBlueprintGUID,
+                                               solutionDesignProperties,
+                                               requestBody.getForLineage(),
+                                               requestBody.getForDuplicateProcessing(),
+                                               requestBody.getEffectiveTime());
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkSolutionDesign(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               parentGUID,
+                                               solutionBlueprintGUID,
+                                               null,
+                                               requestBody.getForLineage(),
+                                               requestBody.getForDuplicateProcessing(),
+                                               requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionDesignProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkSolutionDesign(userId,
+                                           null,
+                                           null,
+                                           parentGUID,
+                                           solutionBlueprintGUID,
+                                           null,
+                                           false,
+                                           false,
+                                           new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a solution blueprint from the element it describes.
+     *
+     * @param serverName         name of called server
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachSolutionDesign(String                    serverName,
+                                             String                    parentGUID,
+                                             String                    solutionBlueprintGUID,
+                                             MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachSolutionDesign";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachSolutionDesign(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             parentGUID,
+                                             solutionBlueprintGUID,
+                                             requestBody.getForLineage(),
+                                             requestBody.getForDuplicateProcessing(),
+                                             requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachSolutionDesign(userId,
+                                             null,
+                                             null,
+                                             parentGUID,
+                                             solutionBlueprintGUID,
+                                             false,
+                                             false,
+                                             new Date());
             }
         }
         catch (Throwable error)
@@ -1723,7 +1891,7 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createSolutionComponent(String                      serverName,
+    public GUIDResponse createSolutionComponent(String                serverName,
                                                 NewElementRequestBody requestBody)
     {
         final String methodName = "createSolutionComponent";
@@ -1745,6 +1913,13 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
+                SolutionElementStatus initialStatus = SolutionElementStatus.ACTIVE;
+
+                if (requestBody instanceof NewSolutionElementRequestBody solutionElementRequestBody)
+                {
+                    initialStatus = solutionElementRequestBody.getInitialStatus();
+                }
+
                 if (requestBody.getProperties() instanceof SolutionComponentProperties properties)
                 {
                     response.setGUID(handler.createSolutionComponent(userId,
@@ -1754,6 +1929,7 @@ public class SolutionArchitectRESTServices extends TokenController
                                                                      requestBody.getIsOwnAnchor(),
                                                                      requestBody.getAnchorScopeGUID(),
                                                                      properties,
+                                                                     initialStatus,
                                                                      requestBody.getParentGUID(),
                                                                      requestBody.getParentRelationshipTypeName(),
                                                                      requestBody.getParentRelationshipProperties(),
@@ -1771,6 +1947,7 @@ public class SolutionArchitectRESTServices extends TokenController
                                                                      requestBody.getIsOwnAnchor(),
                                                                      requestBody.getAnchorScopeGUID(),
                                                                      null,
+                                                                     initialStatus,
                                                                      requestBody.getParentGUID(),
                                                                      requestBody.getParentRelationshipTypeName(),
                                                                      requestBody.getParentRelationshipProperties(),
@@ -1949,6 +2126,64 @@ public class SolutionArchitectRESTServices extends TokenController
         return response;
     }
 
+
+    /**
+     * Update the status of a solution blueprint, solution component or solution port.
+     *
+     * @param serverName         name of called server.
+     * @param solutionElementGUID unique identifier of the solution element (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse updateSolutionElementStatus(String                           serverName,
+                                                    String                           solutionElementGUID,
+                                                    SolutionElementStatusRequestBody requestBody)
+    {
+        final String methodName = "updateSolutionElementStatus";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+
+                handler.updateSolutionElementStatus(userId,
+                                                    requestBody.getExternalSourceGUID(),
+                                                    requestBody.getExternalSourceName(),
+                                                    solutionElementGUID,
+                                                    requestBody.getStatus(),
+                                                    requestBody.getForLineage(),
+                                                    requestBody.getForDuplicateProcessing(),
+                                                    requestBody.getEffectiveTime());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
     /**
      * Attach a solution component to a solution component.

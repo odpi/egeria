@@ -79,7 +79,7 @@ public class APIParameterListConverter<B> extends OMFConverter<B>
                     properties.setDisplayName(this.removeDisplayName(propertiesCopy));
                     properties.setDescription(this.removeDescription(propertiesCopy));
                     properties.setIsDeprecated(this.removeIsDeprecated(propertiesCopy));
-                    properties.setVersionNumber(this.removeVersionNumber(propertiesCopy));
+                    properties.setVersionIdentifier(this.removeVersionIdentifier(propertiesCopy));
                     properties.setAuthor(this.removeAuthor(propertiesCopy));
                     properties.setUsage(this.removeUsage(propertiesCopy));
                     properties.setEncodingStandard(this.removeEncodingStandard(propertiesCopy));

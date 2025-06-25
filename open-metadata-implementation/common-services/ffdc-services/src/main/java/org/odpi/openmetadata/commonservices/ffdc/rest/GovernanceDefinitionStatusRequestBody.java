@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NewGovernanceDefinitionRequestBody provides a structure used when creating governance definitions.
+ * GovernanceDefinitionStatusRequestBody provides a new status for a governance definition.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,7 +48,7 @@ public class GovernanceDefinitionStatusRequestBody extends MetadataSourceRequest
 
 
     /**
-     * Return the initial status of the governance definition.
+     * Return the new status of the governance definition.
      *
      * @return instance status
      */
@@ -59,7 +59,7 @@ public class GovernanceDefinitionStatusRequestBody extends MetadataSourceRequest
 
 
     /**
-     * Set up the initial status of the governance definition.
+     * Set up the new status of the governance definition.
      *
      * @param status instance status
      */

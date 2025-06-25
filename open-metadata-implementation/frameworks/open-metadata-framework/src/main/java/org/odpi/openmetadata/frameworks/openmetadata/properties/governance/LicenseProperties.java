@@ -467,28 +467,26 @@ public class LicenseProperties extends RelationshipProperties
     public String toString()
     {
         return "LicenseProperties{" +
-                       "licenseId='" + licenseId + '\'' +
-                       ", startDate=" + startDate +
-                       ", endDate=" + endDate +
-                       ", conditions='" + conditions + '\'' +
-                       ", licensedBy='" + licensedBy + '\'' +
-                       ", licensedByTypeName='" + licensedByTypeName + '\'' +
-                       ", licensedByPropertyName='" + licensedByPropertyName + '\'' +
-                       ", custodian='" + custodian + '\'' +
-                       ", custodianTypeName='" + custodianTypeName + '\'' +
-                       ", custodianPropertyName='" + custodianPropertyName + '\'' +
-                       ", licensee='" + licensee + '\'' +
-                       ", licenseeTypeName='" + licenseeTypeName + '\'' +
-                       ", licenseePropertyName='" + licenseePropertyName + '\'' +
-                       ", entitlements=" + entitlements +
-                       ", restrictions=" + restrictions +
-                       ", obligations=" + obligations +
-                       ", notes='" + notes + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "licenseId='" + licenseId + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", conditions='" + conditions + '\'' +
+                ", licensedBy='" + licensedBy + '\'' +
+                ", licensedByTypeName='" + licensedByTypeName + '\'' +
+                ", licensedByPropertyName='" + licensedByPropertyName + '\'' +
+                ", custodian='" + custodian + '\'' +
+                ", custodianTypeName='" + custodianTypeName + '\'' +
+                ", custodianPropertyName='" + custodianPropertyName + '\'' +
+                ", licensee='" + licensee + '\'' +
+                ", licenseeTypeName='" + licenseeTypeName + '\'' +
+                ", licenseePropertyName='" + licenseePropertyName + '\'' +
+                ", entitlements=" + entitlements +
+                ", restrictions=" + restrictions +
+                ", obligations=" + obligations +
+                ", notes='" + notes + '\'' +
+                "} " + super.toString();
     }
+
 
 
     /**
@@ -505,7 +503,7 @@ public class LicenseProperties extends RelationshipProperties
         {
             return true;
         }
-        if (! (objectToCompare instanceof LicenseProperties))
+        if (! (objectToCompare instanceof LicenseProperties that))
         {
             return false;
         }
@@ -513,7 +511,6 @@ public class LicenseProperties extends RelationshipProperties
         {
             return false;
         }
-        LicenseProperties that = (LicenseProperties) objectToCompare;
         return Objects.equals(licenseId, that.licenseId) &&
                        Objects.equals(startDate, that.startDate) &&
                        Objects.equals(endDate, that.endDate) &&

@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Govern
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ElementStubsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindNameProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
@@ -1501,7 +1500,7 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof OwnerProperties properties)
+                if (requestBody.getProperties() instanceof OwnershipProperties properties)
                 {
                     SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
 
@@ -1519,7 +1518,7 @@ public class StewardshipExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(OwnerProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(OwnershipProperties.class.getName(), methodName);
                 }
             }
             else

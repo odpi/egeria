@@ -132,10 +132,6 @@ public class ConnectionConverter<B> extends AssetManagerOMASConverter<B>
                             {
                                 bean.setEndpoint(getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
                             }
-                            else if ((bean.getEndpoint() == null) && (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName)))
-                            {
-                                bean.setEndpoint(getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
-                            }
                         }
                     }
 

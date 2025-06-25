@@ -582,7 +582,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElements(userId,
                                         eventSetGUID,
                                         eventSetGUIDParameterName,
-                                        OpenMetadataType.EVENT_SET.typeName,
+                                        OpenMetadataType.EVENT_SET_COLLECTION_CLASSIFICATION.typeName,
                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                         OpenMetadataType.EVENT_TYPE.typeName,

@@ -143,7 +143,7 @@ public class LiteralSchemaType extends SchemaType
                        ", expression='" + getExpression() + '\'' +
                        ", formula='" + getFormula() + '\'' +
                        ", queries=" + getQueries() +
-                       ", versionNumber='" + getVersionNumber() + '\'' +
+                       ", versionNumber='" + getVersionIdentifier() + '\'' +
                        ", author='" + getAuthor() + '\'' +
                        ", usage='" + getUsage() + '\'' +
                        ", encodingStandard='" + getEncodingStandard() + '\'' +

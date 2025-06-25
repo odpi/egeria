@@ -656,7 +656,7 @@ public class StewardshipExchangeService
      */
     public void  addOwnership(String          elementGUID,
                               String          externalIdentifier,
-                              OwnerProperties properties,
+                              OwnershipProperties properties,
                               Date            effectiveTime) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException

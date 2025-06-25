@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetowner.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -84,7 +83,7 @@ public class ExternalReferenceRESTServices
                                                                      properties.getDisplayName(),
                                                                      properties.getResourceDescription(),
                                                                      properties.getURI(),
-                                                                     properties.getVersion(),
+                                                                     properties.getReferenceVersionIdentifier(),
                                                                      properties.getOrganization(),
                                                                      properties.getAdditionalProperties(),
                                                                      properties.getTypeName(),
@@ -160,7 +159,7 @@ public class ExternalReferenceRESTServices
                                                     properties.getDisplayName(),
                                                     properties.getResourceDescription(),
                                                     properties.getURI(),
-                                                    properties.getVersion(),
+                                                    properties.getReferenceVersionIdentifier(),
                                                     properties.getOrganization(),
                                                     properties.getAdditionalProperties(),
                                                     properties.getTypeName(),

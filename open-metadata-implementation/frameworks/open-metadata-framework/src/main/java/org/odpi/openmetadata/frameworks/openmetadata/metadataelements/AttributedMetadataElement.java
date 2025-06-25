@@ -24,6 +24,14 @@ public class AttributedMetadataElement implements MetadataElement
 {
     private ElementHeader                       elementHeader        = null;
     private List<RelatedMetadataElementSummary> externalReferences   = null;
+    private List<RelatedMetadataElementSummary> alsoKnownAs          = null;
+    private List<RelatedMetadataElementSummary> memberOfCollections  = null;
+    private List<RelatedMetadataElementSummary> semanticAssignments  = null;
+    private List<RelatedMetadataElementSummary> attachedLikes        = null;
+    private List<RelatedMetadataElementSummary> attachedTags         = null;
+    private List<RelatedMetadataElementSummary> attachedKeywords     = null;
+    private List<RelatedMetadataElementSummary> attachedComments     = null;
+    private List<RelatedMetadataElementSummary> attachedReviews      = null;
     private List<RelatedMetadataElementSummary> otherRelatedElements = null;
     private RelatedBy                           relatedBy            = null;
     private String                              mermaidGraph         = null;
@@ -47,6 +55,14 @@ public class AttributedMetadataElement implements MetadataElement
         {
             elementHeader        = template.getElementHeader();
             externalReferences   = template.getExternalReferences();
+            alsoKnownAs          = template.getAlsoKnownAs();
+            memberOfCollections  = template.getMemberOfCollections();
+            semanticAssignments  = template.getSemanticAssignments();
+            attachedLikes        = template.getAttachedLikes();
+            attachedTags         = template.getAttachedTags();
+            attachedKeywords     = template.getAttachedKeywords();
+            attachedComments     = template.getAttachedComments();
+            attachedReviews      = template.getAttachedReviews();
             otherRelatedElements = template.getOtherRelatedElements();
             relatedBy            = template.getRelatedBy();
             mermaidGraph         = template.getMermaidGraph();
@@ -80,7 +96,7 @@ public class AttributedMetadataElement implements MetadataElement
     /**
      * Set up the list of external references for this element
      *
-     * @param externalReferences  properties for the classification
+     * @param externalReferences list
      */
     public void setExternalReferences(List<RelatedMetadataElementSummary> externalReferences)
     {
@@ -91,11 +107,188 @@ public class AttributedMetadataElement implements MetadataElement
     /**
      * Return the list of external references for this element.
      *
-     * @return properties map
+     * @return list
      */
     public List<RelatedMetadataElementSummary> getExternalReferences()
     {
         return externalReferences;
+    }
+
+
+
+    /**
+     * Return the list of collections that is definition is a member of.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getMemberOfCollections()
+    {
+        return memberOfCollections;
+    }
+
+
+    /**
+     * Set up the list of collections that is definition is a member of.
+     *
+     * @param memberOfCollections list
+     */
+    public void setMemberOfCollections(List<RelatedMetadataElementSummary> memberOfCollections)
+    {
+        this.memberOfCollections = memberOfCollections;
+    }
+
+
+    /**
+     * Return attached external identifiers.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getAlsoKnownAs()
+    {
+        return alsoKnownAs;
+    }
+
+
+    /**
+     * Set up attached external identifiers.
+     *
+     * @param alsoKnownAs list
+     */
+    public void setAlsoKnownAs(List<RelatedMetadataElementSummary> alsoKnownAs)
+    {
+        this.alsoKnownAs = alsoKnownAs;
+    }
+
+
+    /**
+     * Return the glossary terms linked by semantic assignment.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getSemanticAssignments()
+    {
+        return semanticAssignments;
+    }
+
+
+    /**
+     * Set up the glossary terms linked by semantic assignment.
+     *
+     * @param semanticAssignments list
+     */
+    public void setSemanticAssignments(List<RelatedMetadataElementSummary> semanticAssignments)
+    {
+        this.semanticAssignments = semanticAssignments;
+    }
+
+
+    /**
+     * Return the list of likes for this element.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getAttachedLikes()
+    {
+        return attachedLikes;
+    }
+
+
+    /**
+     * Set up the list of likes for this element.
+     *
+     * @param attachedLikes list
+     */
+    public void setAttachedLikes(List<RelatedMetadataElementSummary> attachedLikes)
+    {
+        this.attachedLikes = attachedLikes;
+    }
+
+
+    /**
+     * Return the attached informal tags.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getAttachedTags()
+    {
+        return attachedTags;
+    }
+
+
+    /**
+     * Set up the attached informal tags.
+     *
+     * @param attachedTags list
+     */
+    public void setAttachedTags(List<RelatedMetadataElementSummary> attachedTags)
+    {
+        this.attachedTags = attachedTags;
+    }
+
+
+    /**
+     * Return the attached search keywords.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getAttachedKeywords()
+    {
+        return attachedKeywords;
+    }
+
+
+    /**
+     * Set up the attached search keywords.
+     *
+     * @param attachedKeywords list
+     */
+    public void setAttachedKeywords(List<RelatedMetadataElementSummary> attachedKeywords)
+    {
+        this.attachedKeywords = attachedKeywords;
+    }
+
+
+    /**
+     * Return the attached comments.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getAttachedComments()
+    {
+        return attachedComments;
+    }
+
+
+    /**
+     * Set up the attached comments.
+     *
+     * @param attachedComments list
+     */
+    public void setAttachedComments(List<RelatedMetadataElementSummary> attachedComments)
+    {
+        this.attachedComments = attachedComments;
+    }
+
+
+    /**
+     * Return the attached reviews (ratings).
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getAttachedReviews()
+    {
+        return attachedReviews;
+    }
+
+
+    /**
+     * Set up the attached reviews (ratings).
+     *
+     * @param attachedReviews list
+     */
+    public void setAttachedReviews(List<RelatedMetadataElementSummary> attachedReviews)
+    {
+        this.attachedReviews = attachedReviews;
     }
 
 
@@ -179,6 +372,14 @@ public class AttributedMetadataElement implements MetadataElement
         return "AttributedMetadataElement{" +
                 "elementHeader=" + elementHeader +
                 ", externalReferences=" + externalReferences +
+                ", alsoKnownAs=" + alsoKnownAs +
+                ", memberOfCollections=" + memberOfCollections +
+                ", semanticAssignments=" + semanticAssignments +
+                ", attachedLikes=" + attachedLikes +
+                ", attachedTags=" + attachedTags +
+                ", attachedKeywords=" + attachedKeywords +
+                ", attachedComments=" + attachedComments +
+                ", attachedReviews=" + attachedReviews +
                 ", otherRelatedElements=" + otherRelatedElements +
                 ", relatedBy=" + relatedBy +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
@@ -200,6 +401,14 @@ public class AttributedMetadataElement implements MetadataElement
         AttributedMetadataElement that = (AttributedMetadataElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(externalReferences, that.externalReferences) &&
+                Objects.equals(alsoKnownAs, that.alsoKnownAs) &&
+                Objects.equals(memberOfCollections, that.memberOfCollections) &&
+                Objects.equals(semanticAssignments, that.semanticAssignments) &&
+                Objects.equals(attachedLikes, that.attachedLikes) &&
+                Objects.equals(attachedTags, that.attachedTags) &&
+                Objects.equals(attachedKeywords, that.attachedKeywords) &&
+                Objects.equals(attachedComments, that.attachedComments) &&
+                Objects.equals(attachedReviews, that.attachedReviews) &&
                 Objects.equals(otherRelatedElements, that.otherRelatedElements) &&
                 Objects.equals(relatedBy, that.relatedBy) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph);
@@ -214,6 +423,8 @@ public class AttributedMetadataElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, externalReferences, otherRelatedElements, relatedBy, mermaidGraph);
+        return Objects.hash(elementHeader, externalReferences, alsoKnownAs, memberOfCollections, semanticAssignments,
+                            attachedLikes, attachedTags, attachedKeywords, attachedComments, attachedReviews,
+                            otherRelatedElements, relatedBy, mermaidGraph);
     }
 }

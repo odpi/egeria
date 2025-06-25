@@ -250,7 +250,7 @@ public class OpenMetadataTypesArchive5_0
 
     private ClassificationDef getRootCollectionClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.ROOT_COLLECTION,
+        return archiveHelper.getClassificationDef(OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION,
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
@@ -258,7 +258,7 @@ public class OpenMetadataTypesArchive5_0
 
     private ClassificationDef getHomeCollectionClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.HOME_COLLECTION,
+        return archiveHelper.getClassificationDef(OpenMetadataType.HOME_COLLECTION_CLASSIFICATION,
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
@@ -267,7 +267,7 @@ public class OpenMetadataTypesArchive5_0
 
     private ClassificationDef getRecentAccessClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.RECENT_ACCESS,
+        return archiveHelper.getClassificationDef(OpenMetadataType.RECENT_ACCESS_COMMECTION_CLASSIFICATION,
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
@@ -276,7 +276,7 @@ public class OpenMetadataTypesArchive5_0
 
     private ClassificationDef getWorkItemListClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.WORK_ITEM_LIST,
+        return archiveHelper.getClassificationDef(OpenMetadataType.WORK_ITEM_LIST_COLLECTION_CLASSIFICATION,
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);

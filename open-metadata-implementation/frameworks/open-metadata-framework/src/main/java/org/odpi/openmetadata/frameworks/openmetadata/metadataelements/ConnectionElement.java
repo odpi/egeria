@@ -23,11 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectionElement implements MetadataElement
 {
-    private ConnectionProperties     connectionProperties = null;
-    private ElementHeader            elementHeader        = null;
-    private ElementStub              connectorType        = null;
-    private ElementStub              endpoint             = null;
-    private List<EmbeddedConnection> embeddedConnections  = null;
+    private ConnectionProperties     properties          = null;
+    private ElementHeader            elementHeader       = null;
+    private ElementStub              connectorType       = null;
+    private ElementStub              endpoint            = null;
+    private List<EmbeddedConnection> embeddedConnections = null;
 
 
     /**
@@ -49,7 +49,7 @@ public class ConnectionElement implements MetadataElement
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            connectionProperties = template.getConnectionProperties();
+            properties    = template.getProperties();
             connectorType = template.getConnectorType();
             endpoint = template.getEndpoint();
             embeddedConnections = template.getEmbeddedConnections();
@@ -86,20 +86,20 @@ public class ConnectionElement implements MetadataElement
      *
      * @return asset properties (using appropriate subclass)
      */
-    public ConnectionProperties getConnectionProperties()
+    public ConnectionProperties getProperties()
     {
-        return connectionProperties;
+        return properties;
     }
 
 
     /**
      * Set up the properties for the connection.
      *
-     * @param connectionProperties asset properties
+     * @param properties asset properties
      */
-    public void setConnectionProperties(ConnectionProperties connectionProperties)
+    public void setProperties(ConnectionProperties properties)
     {
-        this.connectionProperties = connectionProperties;
+        this.properties = properties;
     }
 
 
@@ -191,7 +191,7 @@ public class ConnectionElement implements MetadataElement
     public String toString()
     {
         return "ConnectionElement{" +
-                       "connectionProperties=" + connectionProperties +
+                       "connectionProperties=" + properties +
                        ", elementHeader=" + elementHeader +
                        ", connectorType=" + connectorType +
                        ", endpoint=" + endpoint +
@@ -218,7 +218,7 @@ public class ConnectionElement implements MetadataElement
             return false;
         }
         ConnectionElement that = (ConnectionElement) objectToCompare;
-        return Objects.equals(getConnectionProperties(), that.getConnectionProperties()) &&
+        return Objects.equals(getProperties(), that.getProperties()) &&
                        Objects.equals(getElementHeader(), that.getElementHeader());
     }
 
@@ -231,6 +231,6 @@ public class ConnectionElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, connectionProperties);
+        return Objects.hash(super.hashCode(), elementHeader, properties);
     }
 }

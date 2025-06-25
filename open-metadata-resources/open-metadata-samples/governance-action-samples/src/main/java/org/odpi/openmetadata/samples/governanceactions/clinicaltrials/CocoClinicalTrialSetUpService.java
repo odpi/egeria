@@ -857,7 +857,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         initialClassifications = new HashMap<>();
 
-        initialClassifications.put(OpenMetadataType.DATA_SPEC_COLLECTION.typeName, null);
+        initialClassifications.put(OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION.typeName, null);
 
         properties = propertyHelper.addStringProperty(null,
                                                       OpenMetadataProperty.QUALIFIED_NAME.name,

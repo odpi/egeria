@@ -91,9 +91,10 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
                     solutionComponentProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
                     solutionComponentProperties.setDisplayName(this.removeDisplayName(elementProperties));
                     solutionComponentProperties.setDescription(this.removeDescription(elementProperties));
-                    solutionComponentProperties.setVersion(this.removeVersionIdentifier(elementProperties));
+                    solutionComponentProperties.setVersionIdentifier(this.removeVersionIdentifier(elementProperties));
                     solutionComponentProperties.setSolutionComponentType(this.removeSolutionComponentType(elementProperties));
                     solutionComponentProperties.setPlannedDeployedImplementationType(this.removeDeployedImplementationType(elementProperties));
+                    solutionComponentProperties.setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
                     solutionComponentProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
                     solutionComponentProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
 

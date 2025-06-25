@@ -20,13 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataFieldElement extends AttributedMetadataElement
+public class DataFieldElement extends DataDefinitionElement
 {
     private DataFieldProperties                 properties          = null;
     private List<MemberDataField>               nestedDataFields    = null;
     private List<RelatedMetadataElementSummary> assignedDataClasses = null;
-    private List<RelatedMetadataElementSummary> assignedMeanings    = null;
-    private List<RelatedMetadataElementSummary> memberOfCollections   = null;
 
 
     /**
@@ -52,8 +50,6 @@ public class DataFieldElement extends AttributedMetadataElement
             properties          = template.getProperties();
             nestedDataFields    = template.getNestedDataFields();
             assignedDataClasses = template.getAssignedDataClasses();
-            assignedMeanings    = template.getAssignedMeanings();
-            memberOfCollections = template.getMemberOfCollections();
         }
     }
 
@@ -125,50 +121,6 @@ public class DataFieldElement extends AttributedMetadataElement
 
 
     /**
-     * Return the assigned glossary terms that describes the meaning of this data field.
-     *
-     * @return related elements
-     */
-    public List<RelatedMetadataElementSummary> getAssignedMeanings()
-    {
-        return assignedMeanings;
-    }
-
-
-    /**
-     * Set up the assigned glossary terms that describes the meaning of this data field.
-     *
-     * @param assignedMeanings related elements
-     */
-    public void setAssignedMeanings(List<RelatedMetadataElementSummary> assignedMeanings)
-    {
-        this.assignedMeanings = assignedMeanings;
-    }
-
-
-    /**
-     * Return the list of collections that is definition is a member of.
-     *
-     * @return related collections
-     */
-    public List<RelatedMetadataElementSummary> getMemberOfCollections()
-    {
-        return memberOfCollections;
-    }
-
-
-    /**
-     * Set up the list of collections that is definition is a member of.
-     *
-     * @param memberOfCollections related collections
-     */
-    public void setMemberOfCollections(List<RelatedMetadataElementSummary> memberOfCollections)
-    {
-        this.memberOfCollections = memberOfCollections;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -180,8 +132,6 @@ public class DataFieldElement extends AttributedMetadataElement
                 "properties=" + properties +
                 ", nestedDataFields=" + nestedDataFields +
                 ", assignedDataClasses=" + assignedDataClasses +
-                ", assignedMeanings=" + assignedMeanings +
-                ", memberOfCollections=" + memberOfCollections +
                 "} " + super.toString();
     }
 
@@ -201,9 +151,7 @@ public class DataFieldElement extends AttributedMetadataElement
         DataFieldElement that = (DataFieldElement) objectToCompare;
         return Objects.equals(properties, that.properties) &&
                 Objects.equals(nestedDataFields, that.nestedDataFields) &&
-                Objects.equals(assignedDataClasses, that.assignedDataClasses) &&
-                Objects.equals(assignedMeanings, that.assignedMeanings) &&
-                Objects.equals(memberOfCollections, that.memberOfCollections);
+                Objects.equals(assignedDataClasses, that.assignedDataClasses) ;
     }
 
 
@@ -215,7 +163,6 @@ public class DataFieldElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, nestedDataFields, assignedDataClasses,
-                            assignedMeanings, memberOfCollections);
+        return Objects.hash(super.hashCode(), properties, nestedDataFields, assignedDataClasses);
     }
 }

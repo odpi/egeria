@@ -85,7 +85,7 @@ public class EndpointConverter<B> extends OMFConverter<B>
                     endpointProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     endpointProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setEndpointProperties(endpointProperties);
+                    bean.setProperties(endpointProperties);
                 }
                 else
                 {

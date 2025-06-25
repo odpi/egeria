@@ -395,24 +395,21 @@ public class CertificationProperties extends RelationshipProperties
     public String toString()
     {
         return "CertificationProperties{" +
-                       "certificateId='" + certificateId + '\'' +
-                       ", startDate=" + startDate +
-                       ", endDate=" + endDate +
-                       ", conditions='" + conditions + '\'' +
-                       ", certifiedBy='" + certifiedBy + '\'' +
-                       ", certifiedByTypeName='" + certifiedByTypeName + '\'' +
-                       ", certifiedByPropertyName='" + certifiedByPropertyName + '\'' +
-                       ", custodian='" + custodian + '\'' +
-                       ", custodianTypeName='" + custodianTypeName + '\'' +
-                       ", custodianPropertyName='" + custodianPropertyName + '\'' +
-                       ", recipient='" + recipient + '\'' +
-                       ", recipientTypeName='" + recipientTypeName + '\'' +
-                       ", recipientPropertyName='" + recipientPropertyName + '\'' +
-                       ", notes='" + notes + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "certificateId='" + certificateId + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", conditions='" + conditions + '\'' +
+                ", certifiedBy='" + certifiedBy + '\'' +
+                ", certifiedByTypeName='" + certifiedByTypeName + '\'' +
+                ", certifiedByPropertyName='" + certifiedByPropertyName + '\'' +
+                ", custodian='" + custodian + '\'' +
+                ", custodianTypeName='" + custodianTypeName + '\'' +
+                ", custodianPropertyName='" + custodianPropertyName + '\'' +
+                ", recipient='" + recipient + '\'' +
+                ", recipientTypeName='" + recipientTypeName + '\'' +
+                ", recipientPropertyName='" + recipientPropertyName + '\'' +
+                ", notes='" + notes + '\'' +
+                "} " + super.toString();
     }
 
 

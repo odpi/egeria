@@ -298,7 +298,7 @@ public class CreateConnectionTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ConnectionElement from Retrieve)");
             }
 
-            ConnectionProperties retrievedConnection = retrievedElement.getConnectionProperties();
+            ConnectionProperties retrievedConnection = retrievedElement.getProperties();
 
             if (retrievedConnection == null)
             {
@@ -336,7 +336,7 @@ public class CreateConnectionTest
             }
 
             retrievedElement = connectionList.get(0);
-            retrievedConnection = retrievedElement.getConnectionProperties();
+            retrievedConnection = retrievedElement.getProperties();
 
             if (! connectionName.equals(retrievedConnection.getQualifiedName()))
             {
@@ -510,7 +510,7 @@ public class CreateConnectionTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no EndpointElement from Retrieve)");
             }
 
-            EndpointProperties retrievedEndpoint = retrievedElement.getEndpointProperties();
+            EndpointProperties retrievedEndpoint = retrievedElement.getProperties();
 
             if (retrievedEndpoint == null)
             {
@@ -548,7 +548,7 @@ public class CreateConnectionTest
             }
 
             retrievedElement = endpointList.get(0);
-            retrievedEndpoint = retrievedElement.getEndpointProperties();
+            retrievedEndpoint = retrievedElement.getProperties();
 
             if (! endpointName.equals(retrievedEndpoint.getQualifiedName()))
             {
@@ -689,7 +689,7 @@ public class CreateConnectionTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ConnectorTypeElement from Retrieve)");
             }
 
-            ConnectorTypeProperties retrievedConnectorType = retrievedElement.getConnectorTypeProperties();
+            ConnectorTypeProperties retrievedConnectorType = retrievedElement.getProperties();
 
             if (retrievedConnectorType == null)
             {
@@ -735,7 +735,7 @@ public class CreateConnectionTest
             }
 
             retrievedElement = connectorTypeList.get(0);
-            retrievedConnectorType = retrievedElement.getConnectorTypeProperties();
+            retrievedConnectorType = retrievedElement.getProperties();
 
             if (! connectorTypeQName.equals(retrievedConnectorType.getQualifiedName()))
             {

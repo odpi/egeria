@@ -3579,29 +3579,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
-
-    /**
-     * Extract and delete the version number property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string name or null
-     */
-    protected String removeVersionNumber(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeVersionNumber";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.VERSION_NUMBER.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
     /**
      * Extract and delete the id property from the supplied instance properties.
      *

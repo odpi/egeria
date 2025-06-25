@@ -28,9 +28,7 @@ import org.odpi.openmetadata.frameworkservices.omf.ffdc.OpenMetadataStoreErrorCo
 import java.util.*;
 
 /**
- * Data design manager describes how to maintain and query data classes, actor profiles and user identities.
- * They are organized into specialized collections called data dictionaries and data specs (supported with the
- * collection manager).
+ * UserIdentityHandler describes how to maintain and query  user identities.
  */
 public class UserIdentityHandler
 {

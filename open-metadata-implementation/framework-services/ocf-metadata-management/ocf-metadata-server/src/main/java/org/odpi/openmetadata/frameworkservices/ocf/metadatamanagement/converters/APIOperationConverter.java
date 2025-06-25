@@ -78,7 +78,7 @@ public class APIOperationConverter<B> extends OMFConverter<B>
                     bean.setDisplayName(this.removeDisplayName(instanceProperties));
                     bean.setDescription(this.removeDescription(instanceProperties));
                     bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
-                    bean.setVersionNumber(this.removeVersionNumber(instanceProperties));
+                    bean.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     bean.setAuthor(this.removeAuthor(instanceProperties));
                     bean.setUsage(this.removeUsage(instanceProperties));
                     bean.setEncodingStandard(this.removeEncodingStandard(instanceProperties));

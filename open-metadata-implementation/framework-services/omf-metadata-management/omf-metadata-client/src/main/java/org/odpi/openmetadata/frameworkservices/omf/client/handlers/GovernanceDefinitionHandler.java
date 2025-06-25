@@ -53,6 +53,7 @@ public class GovernanceDefinitionHandler
     /**
      * Create a new client.
      *
+     * @param localServerName        name of this server (view server)
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
@@ -135,23 +136,23 @@ public class GovernanceDefinitionHandler
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String createGovernanceDefinition(String                  userId,
-                                             String                  externalSourceGUID,
-                                             String                  externalSourceName,
-                                             String                  anchorGUID,
-                                             boolean                 isOwnAnchor,
-                                             String                  anchorScopeGUID,
+    public String createGovernanceDefinition(String                         userId,
+                                             String                         externalSourceGUID,
+                                             String                         externalSourceName,
+                                             String                         anchorGUID,
+                                             boolean                        isOwnAnchor,
+                                             String                         anchorScopeGUID,
                                              GovernanceDefinitionProperties properties,
-                                             GovernanceDefinitionStatus initialStatus,
-                                             String                  parentGUID,
-                                             String                  parentRelationshipTypeName,
-                                             ElementProperties       parentRelationshipProperties,
-                                             boolean                 parentAtEnd1,
-                                             boolean                 forLineage,
-                                             boolean                 forDuplicateProcessing,
-                                             Date                    effectiveTime) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
+                                             GovernanceDefinitionStatus     initialStatus,
+                                             String                         parentGUID,
+                                             String                         parentRelationshipTypeName,
+                                             ElementProperties              parentRelationshipProperties,
+                                             boolean                        parentAtEnd1,
+                                             boolean                        forLineage,
+                                             boolean                        forDuplicateProcessing,
+                                             Date                           effectiveTime) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
         final String methodName = "createGovernanceDefinition";
         final String propertiesName = "properties";
@@ -203,10 +204,12 @@ public class GovernanceDefinitionHandler
         {
             switch (governanceDefinitionStatus)
             {
-                case ACTIVE -> { return ElementStatus.ACTIVE; }
-                case PROPOSED -> { return ElementStatus.PROPOSED; }
-                case DEPRECATED -> { return ElementStatus.DEPRECATED; }
                 case DRAFT -> { return ElementStatus.DRAFT; }
+                case PROPOSED -> { return ElementStatus.PROPOSED; }
+                case APPROVED -> { return ElementStatus.APPROVED; }
+                case REJECTED -> { return ElementStatus.REJECTED; }
+                case ACTIVE -> { return ElementStatus.ACTIVE; }
+                case DEPRECATED -> { return ElementStatus.DEPRECATED; }
                 case OTHER -> { return ElementStatus.OTHER; }
             }
         }

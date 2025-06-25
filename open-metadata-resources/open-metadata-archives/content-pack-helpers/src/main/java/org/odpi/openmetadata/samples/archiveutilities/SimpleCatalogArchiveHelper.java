@@ -3061,17 +3061,17 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Add an OrganizationalCapability relationship.
+     * Add an BusinessCapabilityTeam relationship.
      *
      * @param businessCapabilityQName qualified name of the specialized term
      * @param teamQName qualified name of the generalized term
      * @param scope scope of the team's ability to support the business capability
      */
-    public void addOrganizationalCapabilityRelationship(String businessCapabilityQName,
-                                                        String teamQName,
-                                                        String scope)
+    public void addBusinessCapabilityTeamRelationship(String businessCapabilityQName,
+                                                      String teamQName,
+                                                      String scope)
     {
-        final String methodName = "addOrganizationalCapabilityRelationship";
+        final String methodName = "addBusinessCapabilityTeamRelationship";
 
         String end1GUID = idToGUIDMap.getGUID(businessCapabilityQName);
         String end2GUID = idToGUIDMap.getGUID(teamQName);
@@ -3080,7 +3080,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.SCOPE.name, scope, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ORGANIZATIONAL_CAPABILITY_RELATIONSHIP.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.BUSINESS_CAPABILITY_TEAM_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(end1GUID + "_to_" + end2GUID + "_organizational_capability_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -3141,7 +3141,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, displayName, methodName); // it's an asset
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.TECHNICAL_NAME.name, technicalName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_NUMBER.name, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionNumber, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHOR.name, author, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
@@ -3218,7 +3218,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.TECHNICAL_NAME.name, technicalName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_NUMBER.name, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionNumber, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHOR.name, author, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);

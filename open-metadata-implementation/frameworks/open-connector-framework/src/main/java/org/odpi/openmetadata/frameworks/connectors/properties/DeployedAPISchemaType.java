@@ -79,7 +79,7 @@ public  class DeployedAPISchemaType extends APISchemaType
     {
         return "DeployedAPISchemaType{" +
                 "schemaAttributes=" + apiOperations +
-                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", versionNumber='" + getVersionIdentifier() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +

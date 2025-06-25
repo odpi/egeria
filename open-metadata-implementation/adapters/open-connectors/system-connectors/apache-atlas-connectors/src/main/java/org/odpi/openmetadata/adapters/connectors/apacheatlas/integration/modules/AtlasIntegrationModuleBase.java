@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifi
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
@@ -1337,7 +1337,7 @@ public abstract class AtlasIntegrationModuleBase
 
             if (owner != null)
             {
-                OwnerProperties properties = new OwnerProperties();
+                OwnershipProperties properties = new OwnershipProperties();
 
                 properties.setOwner(owner);
                 properties.setOwnerTypeName(egeriaOwnerTypeName);

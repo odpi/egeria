@@ -25,7 +25,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Endp
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EndpointElement implements CorrelatedMetadataElement
 {
-    private EndpointProperties              endpointProperties = null;
+    private EndpointProperties              properties         = null;
     private List<MetadataCorrelationHeader> correlationHeaders = null;
     private ElementHeader                   elementHeader      = null;
 
@@ -48,9 +48,9 @@ public class EndpointElement implements CorrelatedMetadataElement
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
+            elementHeader      = template.getElementHeader();
             correlationHeaders = template.getCorrelationHeaders();
-            endpointProperties = template.getEndpointProperties();
+            properties         = template.getProperties();
         }
     }
 
@@ -121,20 +121,20 @@ public class EndpointElement implements CorrelatedMetadataElement
      *
      * @return asset properties (using appropriate subclass)
      */
-    public EndpointProperties getEndpointProperties()
+    public EndpointProperties getProperties()
     {
-        return endpointProperties;
+        return properties;
     }
 
 
     /**
      * Set up the properties for the endpoint.
      *
-     * @param endpointProperties asset properties
+     * @param properties asset properties
      */
-    public void setEndpointProperties(EndpointProperties endpointProperties)
+    public void setProperties(EndpointProperties properties)
     {
-        this.endpointProperties = endpointProperties;
+        this.properties = properties;
     }
 
 
@@ -147,7 +147,7 @@ public class EndpointElement implements CorrelatedMetadataElement
     public String toString()
     {
         return "EndpointElement{" +
-                       "endpointProperties=" + endpointProperties +
+                       "endpointProperties=" + properties +
                        ", correlationHeaders=" + correlationHeaders +
                        ", elementHeader=" + elementHeader +
                        '}';
@@ -172,7 +172,7 @@ public class EndpointElement implements CorrelatedMetadataElement
             return false;
         }
         EndpointElement that = (EndpointElement) objectToCompare;
-        return Objects.equals(getEndpointProperties(), that.getEndpointProperties()) &&
+        return Objects.equals(getProperties(), that.getProperties()) &&
                        Objects.equals(getCorrelationHeaders(), that.getCorrelationHeaders()) &&
                        Objects.equals(getElementHeader(), that.getElementHeader());
     }
@@ -186,6 +186,6 @@ public class EndpointElement implements CorrelatedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, endpointProperties);
+        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, properties);
     }
 }

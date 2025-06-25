@@ -71,7 +71,7 @@ public class EventTypeConverter<B> extends OMFConverter<B>
                     eventType.setDisplayName(this.removeDisplayName(propertiesCopy));
                     eventType.setDescription(this.removeDescription(propertiesCopy));
                     eventType.setIsDeprecated(this.removeIsDeprecated(propertiesCopy));
-                    eventType.setVersionNumber(this.removeVersionNumber(propertiesCopy));
+                    eventType.setVersionIdentifier(this.removeVersionIdentifier(propertiesCopy));
                     eventType.setAuthor(this.removeAuthor(propertiesCopy));
                     eventType.setUsage(this.removeUsage(propertiesCopy));
                     eventType.setEncodingStandard(this.removeEncodingStandard(propertiesCopy));

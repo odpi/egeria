@@ -101,7 +101,7 @@ public class ComplexSchemaType extends SchemaType
     {
         return "ComplexSchemaType{" +
                 "attributeCount=" + attributeCount +
-                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", versionNumber='" + getVersionIdentifier() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +

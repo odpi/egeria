@@ -279,30 +279,20 @@ public class DataStoreProperties extends DataAssetProperties
      *
      * @return print out of variables in a JSON-style
      */
-    @SuppressWarnings(value = "deprecation")
     @Override
     public String toString()
     {
         return "DataStoreProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getResourceDescription() + '\'' +
-                       ", pathName='" + pathName + '\'' +
-                       ", createTime=" + createTime +
-                       ", modifiedTime=" + modifiedTime +
-                       ", encodingType='" + encodingType + '\'' +
-                       ", encodingLanguage='" + encodingLanguage + '\'' +
-                       ", encodingDescription='" + encodingDescription + '\'' +
-                       ", encodingProperties=" + encodingProperties +
-                       ", deployedImplementationType='" + deployedImplementationType + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", pathName='" + pathName + '\'' +
+                ", createTime=" + createTime +
+                ", modifiedTime=" + modifiedTime +
+                ", encodingType='" + encodingType + '\'' +
+                ", encodingLanguage='" + encodingLanguage + '\'' +
+                ", encodingDescription='" + encodingDescription + '\'' +
+                ", encodingProperties=" + encodingProperties +
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

@@ -94,7 +94,7 @@ public class ExternalReferenceConverter<B> extends OMFConverter<B>
                     externalReferenceProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     externalReferenceProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     externalReferenceProperties.setURI(this.removeURL(instanceProperties));
-                    externalReferenceProperties.setVersion(this.removeReferenceVersion(instanceProperties));
+                    externalReferenceProperties.setReferenceVersionIdentifier(this.removeReferenceVersion(instanceProperties));
                     externalReferenceProperties.setResourceDescription(this.removeDescription(instanceProperties));
                     externalReferenceProperties.setOrganization(this.removeOwningOrganization(instanceProperties));
 

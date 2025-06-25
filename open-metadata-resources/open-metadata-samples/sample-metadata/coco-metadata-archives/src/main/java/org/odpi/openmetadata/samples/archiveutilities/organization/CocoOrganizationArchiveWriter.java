@@ -536,9 +536,9 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
 
             if (deptDefinition.getBusinessArea() != null)
             {
-                archiveHelper.addOrganizationalCapabilityRelationship(deptDefinition.getBusinessArea().getQualifiedName(),
-                                                                      deptDefinition.getQualifiedName(),
-                                                                      deptDefinition.getBusinessAreaScope().getPreferredValue());
+                archiveHelper.addBusinessCapabilityTeamRelationship(deptDefinition.getBusinessArea().getQualifiedName(),
+                                                                    deptDefinition.getQualifiedName(),
+                                                                    deptDefinition.getBusinessAreaScope().getPreferredValue());
             }
         }
     }

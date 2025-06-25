@@ -269,7 +269,7 @@ public class ActorProfileConverter<B> extends OMFConverter<B>
 
                                     linkedInfrastructure.add(elementStub);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.ORGANIZATIONAL_CAPABILITY_RELATIONSHIP.typeName))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.BUSINESS_CAPABILITY_TEAM_RELATIONSHIP.typeName))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 

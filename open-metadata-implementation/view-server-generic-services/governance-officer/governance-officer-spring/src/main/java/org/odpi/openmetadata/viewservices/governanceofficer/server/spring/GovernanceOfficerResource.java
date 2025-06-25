@@ -56,7 +56,7 @@ public class GovernanceOfficerResource
     public GUIDResponse createGovernanceDefinition(@PathVariable String                               serverName,
                                                    @PathVariable String             urlMarker,
                                                    @RequestBody (required = false)
-                                                   NewGovernanceDefinitionRequestBody requestBody)
+                                                   NewElementRequestBody requestBody)
     {
         return restAPI.createGovernanceDefinition(serverName, urlMarker, requestBody);
     }
@@ -132,7 +132,7 @@ public class GovernanceOfficerResource
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID unique identifier of the governance definition (returned from create)
-     * @param requestBody     properties for the new element.
+     * @param requestBody     properties for the new status.
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.

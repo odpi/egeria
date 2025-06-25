@@ -4,6 +4,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.collections;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -23,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = CollectionFolderProperties.class, name = "CollectionFolderProperties"),
+                @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
+                @JsonSubTypes.Type(value = AgreementProperties.class, name = "AgreementProperties"),
         })
 public class CollectionProperties extends ReferenceableProperties
 {

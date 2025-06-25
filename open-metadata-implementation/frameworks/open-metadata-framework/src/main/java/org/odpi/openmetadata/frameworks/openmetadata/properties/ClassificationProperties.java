@@ -47,7 +47,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GovernanceMeasurementsDataSetProperties.class, name = "GovernanceMeasurementsDataSetProperties"),
                 @JsonSubTypes.Type(value = GovernanceMeasurementsProperties.class, name = "GovernanceMeasurementsProperties"),
                 @JsonSubTypes.Type(value = GovernanceExpectationsProperties.class, name = "GovernanceExpectationsProperties"),
-                @JsonSubTypes.Type(value = OwnerProperties.class, name = "OwnerProperties"),
+                @JsonSubTypes.Type(value = OwnershipProperties.class, name = "OwnershipProperties"),
                 @JsonSubTypes.Type(value = PrimaryKeyProperties.class, name = "PrimaryKeyProperties"),
                 @JsonSubTypes.Type(value = SecureLocationProperties.class, name = "SecureLocationProperties"),
                 @JsonSubTypes.Type(value = SecurityGroupMembershipProperties.class, name = "SecurityGroupMembershipProperties"),

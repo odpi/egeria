@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DigitalProductStatus;
 
 import java.util.Objects;
 
@@ -14,15 +13,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NewDigitalProductRequestBody describes the properties to create a new collection with a digital product
- * classification.
+ * NewDigitalProductRequestBody provides an optional structure used when creating digital products.
+ * It provides an optional extension to set up the initial status.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewDigitalProductRequestBody extends NewCollectionRequestBody
+public class NewDigitalProductRequestBody extends NewElementRequestBody
 {
-    private DigitalProductProperties digitalProductProperties = null;
+    private DigitalProductStatus     initialStatus = null;
 
 
     /**
@@ -44,30 +43,30 @@ public class NewDigitalProductRequestBody extends NewCollectionRequestBody
 
         if (template != null)
         {
-            this.digitalProductProperties = template.getDigitalProductProperties();
+            this.initialStatus = template.getInitialStatus();
         }
     }
 
 
     /**
-     * Return the properties for the digital product classification.
+     * Return the initial status of the digital product.
      *
-     * @return properties
+     * @return instance status
      */
-    public DigitalProductProperties getDigitalProductProperties()
+    public DigitalProductStatus getInitialStatus()
     {
-        return digitalProductProperties;
+        return initialStatus;
     }
 
 
     /**
-     * Set up the properties for the digital product classification.
+     * Set up the initial status of the digital product.
      *
-     * @param digitalProductProperties properties
+     * @param initialStatus instance status
      */
-    public void setDigitalProductProperties(DigitalProductProperties digitalProductProperties)
+    public void setInitialStatus(DigitalProductStatus initialStatus)
     {
-        this.digitalProductProperties = digitalProductProperties;
+        this.initialStatus = initialStatus;
     }
 
 
@@ -80,7 +79,7 @@ public class NewDigitalProductRequestBody extends NewCollectionRequestBody
     public String toString()
     {
         return "NewDigitalProductRequestBody{" +
-                "digitalProductProperties=" + digitalProductProperties +
+                ", initialStatus=" + initialStatus +
                 "} " + super.toString();
     }
 
@@ -106,7 +105,7 @@ public class NewDigitalProductRequestBody extends NewCollectionRequestBody
         {
             return false;
         }
-        return Objects.equals(digitalProductProperties, that.digitalProductProperties);
+        return initialStatus == that.initialStatus;
     }
 
 
@@ -118,6 +117,6 @@ public class NewDigitalProductRequestBody extends NewCollectionRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), digitalProductProperties);
+        return Objects.hash(super.hashCode(), initialStatus);
     }
 }

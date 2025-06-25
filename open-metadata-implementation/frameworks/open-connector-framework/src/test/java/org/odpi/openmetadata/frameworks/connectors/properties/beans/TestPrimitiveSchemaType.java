@@ -50,7 +50,7 @@ public class TestPrimitiveSchemaType
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
 
-        testObject.setVersionNumber("TestVersionNumber");
+        testObject.setVersionIdentifier("TestVersionNumber");
         testObject.setAuthor("TestAuthor");
         testObject.setUsage("TestUsage");
         testObject.setEncodingStandard("TestEncodingStandard");
@@ -76,7 +76,7 @@ public class TestPrimitiveSchemaType
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() != null);
 
-        assertTrue(resultObject.getVersionNumber().equals("TestVersionNumber"));
+        assertTrue(resultObject.getVersionIdentifier().equals("TestVersionNumber"));
         assertTrue(resultObject.getAuthor().equals("TestAuthor"));
         assertTrue(resultObject.getUsage().equals("TestUsage"));
         assertTrue(resultObject.getEncodingStandard().equals("TestEncodingStandard"));
@@ -100,7 +100,7 @@ public class TestPrimitiveSchemaType
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getVersionNumber() == null);
+        assertTrue(nullObject.getVersionIdentifier() == null);
         assertTrue(nullObject.getAuthor() == null);
         assertTrue(nullObject.getUsage() == null);
         assertTrue(nullObject.getEncodingStandard() == null);
@@ -118,7 +118,7 @@ public class TestPrimitiveSchemaType
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getVersionNumber() == null);
+        assertTrue(nullObject.getVersionIdentifier() == null);
         assertTrue(nullObject.getAuthor() == null);
         assertTrue(nullObject.getUsage() == null);
         assertTrue(nullObject.getEncodingStandard() == null);
@@ -135,7 +135,7 @@ public class TestPrimitiveSchemaType
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getVersionNumber() == null);
+        assertTrue(nullObject.getVersionIdentifier() == null);
         assertTrue(nullObject.getAuthor() == null);
         assertTrue(nullObject.getUsage() == null);
         assertTrue(nullObject.getEncodingStandard() == null);

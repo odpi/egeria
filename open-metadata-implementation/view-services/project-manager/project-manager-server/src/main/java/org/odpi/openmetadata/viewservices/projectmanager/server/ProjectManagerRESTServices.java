@@ -379,7 +379,7 @@ public class ProjectManagerRESTServices extends TokenController
 
 
     /**
-     * Returns the graph of related projects and resources starting with a supplied project guid..
+     * Returns the graph of related projects and resources starting with a supplied project guid.
      *
      * @param serverName         name of called server
      * @param projectGUID     unique identifier of the starting project
@@ -434,9 +434,9 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createProject(String                   serverName,
-                                      String                   optionalClassificationName,
-                                      NewProjectRequestBody requestBody)
+    public GUIDResponse createProject(String                serverName,
+                                      String                optionalClassificationName,
+                                      NewElementRequestBody requestBody)
     {
         final String methodName = "createProject";
 
@@ -457,16 +457,36 @@ public class ProjectManagerRESTServices extends TokenController
             {
                 ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
 
-                response.setGUID(handler.createProject(userId,
-                                                       requestBody.getAnchorGUID(),
-                                                       requestBody.getIsOwnAnchor(),
-                                                       requestBody.getAnchorScopeGUID(),
-                                                       optionalClassificationName,
-                                                       requestBody.getProjectProperties(),
-                                                       requestBody.getParentGUID(),
-                                                       requestBody.getParentRelationshipTypeName(),
-                                                       requestBody.getParentRelationshipProperties(),
-                                                       requestBody.getParentAtEnd1()));
+                if (requestBody.getProperties() instanceof ProjectProperties properties)
+                {
+                    response.setGUID(handler.createProject(userId,
+                                                           requestBody.getAnchorGUID(),
+                                                           requestBody.getIsOwnAnchor(),
+                                                           requestBody.getAnchorScopeGUID(),
+                                                           optionalClassificationName,
+                                                           properties,
+                                                           requestBody.getParentGUID(),
+                                                           requestBody.getParentRelationshipTypeName(),
+                                                           requestBody.getParentRelationshipProperties(),
+                                                           requestBody.getParentAtEnd1()));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.createProject(userId,
+                                                           requestBody.getAnchorGUID(),
+                                                           requestBody.getIsOwnAnchor(),
+                                                           requestBody.getAnchorScopeGUID(),
+                                                           optionalClassificationName,
+                                                           null,
+                                                           requestBody.getParentGUID(),
+                                                           requestBody.getParentRelationshipTypeName(),
+                                                           requestBody.getParentRelationshipProperties(),
+                                                           requestBody.getParentAtEnd1()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ProjectProperties.class.getName(), methodName);
+                }
             }
             else
             {

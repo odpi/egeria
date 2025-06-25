@@ -214,29 +214,29 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
         if ((endpointElement.getElementHeader() != null) &&
             (endpointElement.getElementHeader().getGUID() != null) &&
-            (endpointElement.getEndpointProperties() != null) &&
-            (endpointElement.getEndpointProperties().getAddress() != null))
+            (endpointElement.getProperties() != null) &&
+            (endpointElement.getProperties().getAddress() != null))
         {
-            if (endpointElement.getEndpointProperties().getAddress().startsWith(urlMarker))
+            if (endpointElement.getProperties().getAddress().startsWith(urlMarker))
             {
                 try
                 {
                     /*
                      * If this is new endpoint then add it to the restClients being monitored.
                      */
-                    if (restClients.get(endpointElement.getEndpointProperties().getAddress()) == null)
+                    if (restClients.get(endpointElement.getProperties().getAddress()) == null)
                     {
                         if (auditLog != null)
                         {
                             auditLog.logMessage(methodName,
                                                 OpenAPIIntegrationConnectorAuditCode.NEW_ENDPOINT.getMessageDefinition(connectorName,
-                                                                                                                       endpointElement.getEndpointProperties().getDisplayName(),
-                                                                                                                       endpointElement.getEndpointProperties().getAddress()));
+                                                                                                                       endpointElement.getProperties().getDisplayName(),
+                                                                                                                       endpointElement.getProperties().getAddress()));
                         }
 
-                        RESTClient restClient = new RESTClient(connectorName, endpointElement.getEndpointProperties().getAddress(), auditLog);
+                        RESTClient restClient = new RESTClient(connectorName, endpointElement.getProperties().getAddress(), auditLog);
 
-                        restClients.put(endpointElement.getEndpointProperties().getAddress(), restClient);
+                        restClients.put(endpointElement.getProperties().getAddress(), restClient);
                     }
                 }
                 catch (Exception error)
@@ -436,7 +436,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
         {
             for (EndpointElement endpointElement : endpointElements)
             {
-                if (endpointQualifiedName.equals(endpointElement.getEndpointProperties().getQualifiedName()))
+                if (endpointQualifiedName.equals(endpointElement.getProperties().getQualifiedName()))
                 {
                     endpointGUID = endpointElement.getElementHeader().getGUID();
                 }

@@ -614,7 +614,7 @@ public class CreateConnectionTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no EndpointElement from Retrieve)");
             }
 
-            EndpointProperties retrievedEndpoint = retrievedElement.getEndpointProperties();
+            EndpointProperties retrievedEndpoint = retrievedElement.getProperties();
 
             if (retrievedEndpoint == null)
             {
@@ -660,7 +660,7 @@ public class CreateConnectionTest
             }
 
             retrievedElement = endpointList.get(0);
-            retrievedEndpoint = retrievedElement.getEndpointProperties();
+            retrievedEndpoint = retrievedElement.getProperties();
 
             if (! endpointName.equals(retrievedEndpoint.getQualifiedName()))
             {

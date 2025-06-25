@@ -3,17 +3,19 @@
 package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFieldElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFieldElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -21,7 +23,7 @@ import java.util.List;
  * DataFieldConverter generates a DataFieldElement from a DataField entity
  * and related elements.
  */
-public class DataFieldConverter<B> extends OpenMetadataConverterBase<B>
+public class DataFieldConverter<B> extends DataDefinitionConverterBase<B>
 {
     /**
      * Constructor
@@ -170,6 +172,55 @@ public class DataFieldConverter<B> extends OpenMetadataConverterBase<B>
 
 
     /**
+     * Summarize the relationships that have no special processing by the subtype.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @throws PropertyServerException problem in converter
+     */
+    private void addRelationshipsToBean(Class<B>                     beanClass,
+                                        List<RelatedMetadataElement> relatedMetadataElements,
+                                        DataFieldElement             dataFieldElement) throws PropertyServerException
+    {
+        final String methodName = "addRelationshipToBean";
+
+        if (relatedMetadataElements != null)
+        {
+            /*
+             * These are the relationships for the data definition element
+             */
+            List<RelatedMetadataElementSummary> dataClassDefinitions = new ArrayList<>();
+            List<RelatedMetadataElement>        others               = new ArrayList<>();
+
+            /*
+             * Step through the relationships processing those that relate directly to attributed elements
+             */
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        dataClassDefinitions.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
+                    else
+                    {
+                        others.add(relatedMetadataElement);
+                    }
+                }
+            }
+
+            if (! dataClassDefinitions.isEmpty())
+            {
+                dataFieldElement.setAssignedDataClasses(dataClassDefinitions);
+            }
+
+            super.addRelationshipsToBean(beanClass, others, null, dataFieldElement);
+        }
+    }
+
+
+    /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
      * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
      *
@@ -181,7 +232,6 @@ public class DataFieldConverter<B> extends OpenMetadataConverterBase<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unused")
     public B getNewComplexBean(Class<B>                     beanClass,
                                OpenMetadataElement          primaryElement,
                                List<RelatedMetadataElement> relationships,
@@ -212,16 +262,7 @@ public class DataFieldConverter<B> extends OpenMetadataConverterBase<B>
 
                 if (relationships != null)
                 {
-                    bean.setAssignedMeanings(this.getSemanticDefinition(beanClass, relationships));
-                    bean.setAssignedDataClasses(this.getDataClassDefinition(beanClass, relationships));
-                    bean.setExternalReferences(this.getAttribution(beanClass, relationships));
-                    bean.setMemberOfCollections(this.getParentCollectionMembership(beanClass, relationships));
-                    bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
-                                                                              relationships,
-                                                                              Arrays.asList(OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName,
-                                                                                            OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
-                                                                                            OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName,
-                                                                                            OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)));
+                    this.addRelationshipsToBean(beanClass, relationships, bean);
                 }
             }
 

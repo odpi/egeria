@@ -165,7 +165,6 @@ public class OpenMetadataTypesArchive3_15
         updateGovernanceEngines();
         updateEngineActions();
         update0710DigitalServices();
-        update0715DigitalServiceOwnership();
         update0735SolutionPortsAndWires();
     }
 
@@ -275,56 +274,16 @@ public class OpenMetadataTypesArchive3_15
 
     private void update0710DigitalServices()
     {
-        this.archiveBuilder.addRelationshipDef(getDigitalServiceProductRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateDigitalProductClassification());
-    }
-
-    private RelationshipDef getDigitalServiceProductRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DIGITAL_SERVICE_PRODUCT_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "managingDigitalService";
-        final String                     end1AttributeDescription     = "Digital service responsible for the production of the digital product.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_SERVICE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "digitalProducts";
-        final String                     end2AttributeDescription     = "The associated digital products.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
+        this.archiveBuilder.addTypeDefPatch(updateDigitalProductEntity());
     }
 
 
-    private TypeDefPatch updateDigitalProductClassification()
+    private TypeDefPatch updateDigitalProductEntity()
     {
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_PRODUCT.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -334,6 +293,7 @@ public class OpenMetadataTypesArchive3_15
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTRODUCTION_DATE));
@@ -349,44 +309,6 @@ public class OpenMetadataTypesArchive3_15
         return typeDefPatch;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0715DigitalServiceOwnership()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDigitalServiceOperatorRelationship());
-    }
-
-    private TypeDefPatch updateDigitalServiceOperatorRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_SERVICE_OPERATOR_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "digitalServiceOperators";
-        final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
 
 
     /*

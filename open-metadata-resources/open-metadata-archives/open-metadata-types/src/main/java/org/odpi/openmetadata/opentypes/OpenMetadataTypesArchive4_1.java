@@ -163,7 +163,7 @@ public class OpenMetadataTypesArchive4_1
         update0385ControlledGlossaryDevelopment();
         update0423SecurityAccessControl();
         update504ImplementationSnippets();
-        update0710DigitalServices();
+        update0710DigitalProducts();
     }
 
 
@@ -516,18 +516,18 @@ public class OpenMetadataTypesArchive4_1
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void update0710DigitalServices()
+    private void update0710DigitalProducts()
     {
-        this.archiveBuilder.addTypeDefPatch(updateDigitalProductClassification());
+        this.archiveBuilder.addTypeDefPatch(updateDigitalProductEntity());
     }
 
 
-    private TypeDefPatch updateDigitalProductClassification()
+    private TypeDefPatch updateDigitalProductEntity()
     {
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_PRODUCT.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -537,8 +537,8 @@ public class OpenMetadataTypesArchive4_1
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_STATUS));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

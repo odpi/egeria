@@ -3,11 +3,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,8 +31,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class SchemaTypeProperties extends SchemaElementProperties
 {
-    private String versionNumber    = null;
-    private String author           = null;
+    private String versionIdentifier = null;
+    private String author            = null;
     private String usage            = null;
     private String encodingStandard = null;
     private String namespace        = null;
@@ -68,14 +65,14 @@ public class SchemaTypeProperties extends SchemaElementProperties
 
         if (template != null)
         {
-            versionNumber = template.getVersionNumber();
-            author = template.getAuthor();
-            usage = template.getUsage();
-            encodingStandard = template.getEncodingStandard();
-            namespace = template.getNamespace();
-            formula = template.getFormula();
-            formulaType = template.getFormulaType();
-            queries = template.getQueries();
+            versionIdentifier = template.getVersionIdentifier();
+            author            = template.getAuthor();
+            usage             = template.getUsage();
+            encodingStandard  = template.getEncodingStandard();
+            namespace         = template.getNamespace();
+            formula           = template.getFormula();
+            formulaType       = template.getFormulaType();
+            queries           = template.getQueries();
         }
     }
 
@@ -85,17 +82,17 @@ public class SchemaTypeProperties extends SchemaElementProperties
      *
      * @return String version number
      */
-    public String getVersionNumber() { return versionNumber; }
+    public String getVersionIdentifier() { return versionIdentifier; }
 
 
     /**
      * Set up the version number of the schema element - null means no version number.
      *
-     * @param versionNumber String version number
+     * @param versionIdentifier String version number
      */
-    public void setVersionNumber(String versionNumber)
+    public void setVersionIdentifier(String versionIdentifier)
     {
-        this.versionNumber = versionNumber;
+        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -255,7 +252,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
     public String toString()
     {
         return "SchemaTypeProperties{" +
-                "versionNumber='" + versionNumber + '\'' +
+                "versionNumber='" + versionIdentifier + '\'' +
                 ", author='" + author + '\'' +
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
@@ -289,7 +286,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
             return false;
         }
         SchemaTypeProperties that = (SchemaTypeProperties) objectToCompare;
-        return Objects.equals(versionNumber, that.versionNumber) &&
+        return Objects.equals(versionIdentifier, that.versionIdentifier) &&
                 Objects.equals(author, that.author) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
@@ -308,6 +305,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), versionNumber, author, usage, encodingStandard, namespace, formula, formulaType, queries);
+        return Objects.hash(super.hashCode(), versionIdentifier, author, usage, encodingStandard, namespace, formula, formulaType, queries);
     }
 }

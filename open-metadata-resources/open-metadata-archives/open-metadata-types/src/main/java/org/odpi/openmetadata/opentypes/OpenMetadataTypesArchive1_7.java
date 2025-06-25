@@ -459,16 +459,16 @@ public class OpenMetadataTypesArchive1_7
      */
     private void update0440OrganizationalControls()
     {
-        this.archiveBuilder.addTypeDefPatch(updateOrganizationalCapabilityRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityRelationship());
     }
 
 
-    private TypeDefPatch updateOrganizationalCapabilityRelationship()
+    private TypeDefPatch updateBusinessCapabilityRelationship()
     {
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ORGANIZATIONAL_CAPABILITY_RELATIONSHIP.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_CAPABILITY_TEAM_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -673,27 +673,19 @@ public class OpenMetadataTypesArchive1_7
 
     private void add0710DigitalServices()
     {
-        this.archiveBuilder.addEntityDef(getDigitalServiceEntity());
-        this.archiveBuilder.addRelationshipDef(getDigitalServiceDependencyRelationship());
+        this.archiveBuilder.addEntityDef(getDigitalProductEntity());
+        this.archiveBuilder.addRelationshipDef(getDigitalProductDependencyRelationship());
     }
 
 
-    private EntityDef getDigitalServiceEntity()
+    private EntityDef getDigitalProductEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DIGITAL_SERVICE,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DIGITAL_PRODUCT,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
 
         /*
-         * Build the attributes
+         * Set the statuses
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
-
-        entityDef.setPropertiesDefinition(properties);
-
         ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
         validInstanceStatusList.add(InstanceStatus.DRAFT);
         validInstanceStatusList.add(InstanceStatus.PREPARED);
@@ -709,17 +701,17 @@ public class OpenMetadataTypesArchive1_7
         validInstanceStatusList.add(InstanceStatus.DEPRECATED);
         validInstanceStatusList.add(InstanceStatus.OTHER);
         validInstanceStatusList.add(InstanceStatus.DELETED);
-        entityDef.setValidInstanceStatusList(validInstanceStatusList);
 
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
         entityDef.setInitialStatus(InstanceStatus.DRAFT);
 
         return entityDef;
     }
 
 
-    private RelationshipDef getDigitalServiceDependencyRelationship()
+    private RelationshipDef getDigitalProductDependencyRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -728,11 +720,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "callsDigitalServices";
+        final String                     end1AttributeName            = "usedByDigitalProducts";
         final String                     end1AttributeDescription     = "The digital services dependent on the others.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_SERVICE.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_PRODUCT.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -743,11 +735,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "calledByDigitalServices";
-        final String                     end2AttributeDescription     = "The digital services that the others depends on.";
+        final String                     end2AttributeName            = "usesDigitalProducts";
+        final String                     end2AttributeDescription     = "The digital products that the others depends on.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_SERVICE.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_PRODUCT.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -774,23 +766,22 @@ public class OpenMetadataTypesArchive1_7
 
     private void add0715DigitalServiceOwnership()
     {
-        this.archiveBuilder.addEntityDef(getDigitalServiceManagerEntity());
-        this.archiveBuilder.addRelationshipDef(getDigitalServiceManagementRelationship());
+        this.archiveBuilder.addEntityDef(getDigitalProductManagerEntity());
+        this.archiveBuilder.addRelationshipDef(getDigitalProductManagementRelationship());
         this.archiveBuilder.addRelationshipDef(getDigitalSupportRelationship());
-        this.archiveBuilder.addRelationshipDef(getDigitalServiceOperatorRelationship());
     }
 
 
-    private EntityDef getDigitalServiceManagerEntity()
+    private EntityDef getDigitalProductManagerEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DIGITAL_SERVICE_MANAGER,
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DIGITAL_PRODUCT_MANAGER,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName));
     }
 
 
-    private RelationshipDef getDigitalServiceManagementRelationship()
+    private RelationshipDef getDigitalProductManagementRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DIGITAL_SERVICE_MANAGEMENT_RELATIONSHIP,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DIGITAL_PRODUCT_MANAGEMENT_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -799,11 +790,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "managesDigitalServices";
-        final String                     end1AttributeDescription     = "The digital services that this individual manages.";
+        final String                     end1AttributeName            = "managesDigitalProducts";
+        final String                     end1AttributeDescription     = "The digital product that this actor manages.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_SERVICE.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_PRODUCT.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -814,11 +805,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "digitalServiceManager";
-        final String                     end2AttributeDescription     = "The individual responsible for the digital services.";
+        final String                     end2AttributeName            = "digitalProductManager";
+        final String                     end2AttributeDescription     = "The individual responsible for the digital products.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_SERVICE_MANAGER.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -840,52 +831,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "usesDigitalServices";
-        final String                     end1AttributeDescription     = "The digital services that this business capability depends on.";
+        final String                     end1AttributeName            = "consumingBusinessCapabilities";
+        final String                     end1AttributeDescription     = "TThe business capabilities that depend on the digital services.";
         final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_SERVICE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "consumingBusinessCapabilities";
-        final String                     end2AttributeDescription     = "The business capabilities that depend on the digital services.";
-        final String                     end2AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.BUSINESS_CAPABILITY.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
-
-
-    private RelationshipDef getDigitalServiceOperatorRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DIGITAL_SERVICE_OPERATOR_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "operatesDigitalServices";
-        final String                     end1AttributeDescription     = "The digital services that this organization operates.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_SERVICE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -896,28 +846,20 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "digitalServiceOperators";
-        final String                     end2AttributeDescription     = "The organizations that support the digital service's operations.";
+        final String                     end2AttributeName            = "usesDigitalServices";
+        final String                     end2AttributeDescription     = "The digital services used to deliver the business capability,";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ORGANIZATION.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
         return relationshipDef;
     }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -948,21 +890,6 @@ public class OpenMetadataTypesArchive1_7
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ESTIMATED_VOLUMETRICS));
 
         entityDef.setPropertiesDefinition(properties);
-
-        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
-        validInstanceStatusList.add(InstanceStatus.DRAFT);
-        validInstanceStatusList.add(InstanceStatus.PREPARED);
-        validInstanceStatusList.add(InstanceStatus.PROPOSED);
-        validInstanceStatusList.add(InstanceStatus.APPROVED);
-        validInstanceStatusList.add(InstanceStatus.REJECTED);
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DISABLED);
-        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
-        validInstanceStatusList.add(InstanceStatus.OTHER);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
-        entityDef.setValidInstanceStatusList(validInstanceStatusList);
-
-        entityDef.setInitialStatus(InstanceStatus.DRAFT);
 
         return entityDef;
     }
@@ -1327,7 +1254,7 @@ public class OpenMetadataTypesArchive1_7
         this.archiveBuilder.addEntityDef(getSolutionBlueprintEntity());
 
         this.archiveBuilder.addRelationshipDef(getSolutionBlueprintCompositionRelationship());
-        this.archiveBuilder.addRelationshipDef(getDigitalServiceDesignRelationship());
+        this.archiveBuilder.addRelationshipDef(getSolutionDesignRelationship());
     }
 
     private EntityDef getSolutionBlueprintEntity()
@@ -1416,9 +1343,9 @@ public class OpenMetadataTypesArchive1_7
     }
 
 
-    private RelationshipDef getDigitalServiceDesignRelationship()
+    private RelationshipDef getSolutionDesignRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DIGITAL_SERVICE_DESIGN_RELATIONSHIP,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -1427,22 +1354,22 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "describesDigitalService";
+        final String                     end1AttributeName            = "describesDesignOf";
         final String                     end1AttributeDescription     = "Digital service described by the blueprint.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_SERVICE.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "digitalServiceDesigns";
+        final String                     end2AttributeName            = "solutionDesigns";
         final String                     end2AttributeDescription     = "The difference versions of the digital service's designs.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -1450,7 +1377,7 @@ public class OpenMetadataTypesArchive1_7
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;

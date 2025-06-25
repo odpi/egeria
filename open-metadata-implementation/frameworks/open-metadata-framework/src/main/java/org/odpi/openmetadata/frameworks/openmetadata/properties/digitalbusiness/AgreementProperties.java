@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -28,11 +28,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = DigitalSubscriptionProperties.class, name = "DigitalSubscriptionProperties"),
         })
-public class AgreementProperties extends ReferenceableProperties
+public class AgreementProperties extends CollectionProperties
 {
-    private String displayName = null;
-    private String description   = null;
-    private String agreementType = null;
+    private String identifier  = null;
+    private String userDefinedStatus = null;
 
     /**
      * Default constructor
@@ -55,76 +54,53 @@ public class AgreementProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.agreementType = template.getAgreementType();
-            this.displayName = template.getDisplayName();
-            this.description = template.getDescription();
+            this.identifier   = template.getIdentifier();
+            userDefinedStatus = template.getUserDefinedStatus();
         }
     }
 
 
     /**
-     * Return the display name for this asset (normally a shortened form of the qualified name).
+     * Return the status of the agreement.
+     *
+     * @return string
+     */
+    public String getUserDefinedStatus()
+    {
+        return userDefinedStatus;
+    }
+
+
+    /**
+     * Set up the status of the agreement.
+     *
+     * @param userDefinedStatus string
+     */
+    public void setUserDefinedStatus(String userDefinedStatus)
+    {
+        this.userDefinedStatus = userDefinedStatus;
+    }
+
+
+    /**
+     * Return the identifier for this agreement used by the business.
      *
      * @return string name
      */
-    public String getDisplayName()
+    public String getIdentifier()
     {
-        return displayName;
+        return identifier;
     }
 
 
     /**
-     * Set up the display name for this asset (normally a shortened form of the qualified name).
+     * Set up the identifier for this agreement used by the business.
      *
-     * @param displayName string name
+     * @param identifier string name
      */
-    public void setDisplayName(String displayName)
+    public void setIdentifier(String identifier)
     {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for this asset.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for this asset.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the identifier assigned to describe the type of agreement.
-     *
-     * @return String
-     */
-    public String getAgreementType()
-    {
-        return agreementType;
-    }
-
-
-    /**
-     * Set up the identifier assigned to describe the type of agreement.
-     *
-     * @param agreementType String
-     */
-    public void setAgreementType(String agreementType)
-    {
-        this.agreementType = agreementType;
+        this.identifier = identifier;
     }
 
 
@@ -137,9 +113,8 @@ public class AgreementProperties extends ReferenceableProperties
     public String toString()
     {
         return "AgreementProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", agreementType='" + agreementType + '\'' +
+                "identifier='" + identifier + '\'' +
+                ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
 
@@ -165,8 +140,8 @@ public class AgreementProperties extends ReferenceableProperties
         {
             return false;
         }
-        return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) && Objects.equals(agreementType, that.agreementType);
+        return  Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
+                Objects.equals(identifier, that.identifier);
     }
 
 
@@ -178,6 +153,6 @@ public class AgreementProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, agreementType);
+        return Objects.hash(super.hashCode(), userDefinedStatus, identifier);
     }
 }

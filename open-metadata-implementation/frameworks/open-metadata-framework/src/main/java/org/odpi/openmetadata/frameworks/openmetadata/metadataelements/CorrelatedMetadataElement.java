@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 
 import java.util.List;

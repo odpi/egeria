@@ -47,6 +47,16 @@ public enum GovernanceDefinitionStatus implements OpenMetadataEnum
     DEPRECATED   (3,  "Deprecated", "The governance definition has been superseded.", "6726a279-e0aa-47a2-bab2-b95a9e7112b1"),
 
     /**
+     * Approved - The term is approved and ready to be activated.
+     */
+    APPROVED  (4,  "Approved",  "The governance definition is approved and ready to be activated.", "a64d5502-a932-4332-9631-753ec432b7db"),
+
+    /**
+     * Rejected - The term is rejected and should not be used.
+     */
+    REJECTED  (5,  "Rejected",  "The governance definition is rejected and should not be used.", "1cd56141-2e29-4732-8c38-172f23ffde3e"),
+
+    /**
      * Other - The governance definition in a locally defined state.
      */
     OTHER        (99, "Other",      "The governance definition in a locally defined state.", "42b24ef8-b610-44a9-9b41-cb0d5a093ef2");

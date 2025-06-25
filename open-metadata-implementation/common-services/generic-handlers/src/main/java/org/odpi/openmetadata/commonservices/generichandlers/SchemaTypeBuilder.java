@@ -493,7 +493,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.VERSION_NUMBER.name,
+                                                                  OpenMetadataProperty.VERSION_IDENTIFIER.name,
                                                                   versionNumber,
                                                                   methodName);
 

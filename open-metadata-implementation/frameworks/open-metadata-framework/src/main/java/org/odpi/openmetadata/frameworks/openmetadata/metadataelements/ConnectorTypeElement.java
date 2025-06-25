@@ -21,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorTypeElement implements MetadataElement
 {
-    private ConnectorTypeProperties connectorTypeProperties = null;
-    private ElementHeader           elementHeader           = null;
+    private ConnectorTypeProperties properties    = null;
+    private ElementHeader           elementHeader = null;
 
 
     /**
@@ -44,7 +44,7 @@ public class ConnectorTypeElement implements MetadataElement
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            connectorTypeProperties = template.getConnectorTypeProperties();
+            properties    = template.getProperties();
         }
     }
 
@@ -79,20 +79,20 @@ public class ConnectorTypeElement implements MetadataElement
      *
      * @return asset properties (using appropriate subclass)
      */
-    public ConnectorTypeProperties getConnectorTypeProperties()
+    public ConnectorTypeProperties getProperties()
     {
-        return connectorTypeProperties;
+        return properties;
     }
 
 
     /**
      * Set up the properties for the connector type.
      *
-     * @param connectorTypeProperties asset properties
+     * @param properties asset properties
      */
-    public void setConnectorTypeProperties(ConnectorTypeProperties connectorTypeProperties)
+    public void setProperties(ConnectorTypeProperties properties)
     {
-        this.connectorTypeProperties = connectorTypeProperties;
+        this.properties = properties;
     }
 
 
@@ -105,7 +105,7 @@ public class ConnectorTypeElement implements MetadataElement
     public String toString()
     {
         return "ConnectorTypeElement{" +
-                       "connectorTypeProperties=" + connectorTypeProperties +
+                       "connectorTypeProperties=" + properties +
                        ", elementHeader=" + elementHeader +
                        '}';
     }
@@ -129,7 +129,7 @@ public class ConnectorTypeElement implements MetadataElement
             return false;
         }
         ConnectorTypeElement that = (ConnectorTypeElement) objectToCompare;
-        return Objects.equals(getConnectorTypeProperties(), that.getConnectorTypeProperties()) &&
+        return Objects.equals(getProperties(), that.getProperties()) &&
                        Objects.equals(getElementHeader(), that.getElementHeader());
     }
 
@@ -142,6 +142,6 @@ public class ConnectorTypeElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, connectorTypeProperties);
+        return Objects.hash(super.hashCode(), elementHeader, properties);
     }
 }

@@ -83,12 +83,15 @@ public class ActorProfileHandler
      * Create a new client that passes userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
+     * @param localServerName        name of this server (view server)
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
-     * @param maxPageSize           maximum number of results supported by this server
      * @param auditLog              logging destination
+     * @param accessServiceURLMarker which access service to call
+     * @param serviceName            local service name
+     * @param maxPageSize           maximum number of results supported by this server
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */

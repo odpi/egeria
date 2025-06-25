@@ -546,6 +546,72 @@ public class SolutionArchitectResource
     }
 
 
+
+
+    /**
+     * Attach a solution blueprint to the element that is describes.
+     *
+     * @param serverName         name of called server
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{parentGUID}/solution-designs/{solutionBlueprintGUID}/attach")
+    @Operation(summary="linkSolutionDesign",
+            description="Attach a solution blueprint to the element that is describes.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public VoidResponse linkSolutionDesign(@PathVariable
+                                               String                                serverName,
+                                           @PathVariable
+                                           String parentGUID,
+                                           @PathVariable
+                                               String solutionBlueprintGUID,
+                                           @RequestBody (required = false)
+                                               RelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSolutionDesign(serverName, parentGUID, solutionBlueprintGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a solution blueprint from the element it describes.
+     *
+     * @param serverName         name of called server
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the solution blueprint
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{parentGUID}/solution-designs/{solutionBlueprintGUID}/detach")
+    @Operation(summary="detachSolutionDesign",
+            description="Detach a solution blueprint from the element it describes..",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public VoidResponse detachSolutionDesign(@PathVariable
+                                                 String                    serverName,
+                                             @PathVariable
+                                             String parentGUID,
+                                             @PathVariable
+                                                 String solutionBlueprintGUID,
+                                             @RequestBody (required = false)
+                                                 MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachSolutionDesign(serverName, parentGUID, solutionBlueprintGUID, requestBody);
+    }
+
+
     /**
      * Delete a solution blueprint.
      *
@@ -818,15 +884,45 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-component"))
 
     public VoidResponse updateSolutionComponent(@PathVariable
-                                                String                                  serverName,
+                                                String                   serverName,
                                                 @PathVariable
-                                                String                                  solutionComponentGUID,
+                                                String                   solutionComponentGUID,
                                                 @RequestParam (required = false, defaultValue = "false")
-                                                boolean                                 replaceAllProperties,
+                                                boolean                  replaceAllProperties,
                                                 @RequestBody (required = false)
-                                                UpdateSolutionComponentRequestBody requestBody)
+                                                UpdateElementRequestBody requestBody)
     {
         return restAPI.updateSolutionComponent(serverName, solutionComponentGUID, replaceAllProperties, requestBody);
+    }
+
+
+
+    /**
+     * Update the status of a solution blueprint, solution component or solution port.
+     *
+     * @param serverName         name of called server.
+     * @param solutionElementGUID unique identifier of the governance definition (returned from create)
+     * @param requestBody     properties for the new status.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-elements/{solutionElementGUID}/update-status")
+    @Operation(summary="updateSolutionElementStatus",
+            description="Update the status of a solution blueprint, solution component or solution port.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse updateSolutionElementStatus(@PathVariable
+                                                        String                                  serverName,
+                                                    @PathVariable
+                                                    String solutionElementGUID,
+                                                    @RequestBody (required = false)
+                                                        SolutionElementStatusRequestBody requestBody)
+    {
+        return restAPI.updateSolutionElementStatus(serverName, solutionElementGUID, requestBody);
     }
 
 

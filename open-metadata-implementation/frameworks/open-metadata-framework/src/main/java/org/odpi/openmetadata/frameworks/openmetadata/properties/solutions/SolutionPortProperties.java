@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.solutions;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -26,8 +25,9 @@ public class SolutionPortProperties extends ReferenceableProperties
 {
     private String                displayName           = null;
     private String                description           = null;
-    private String                version               = null;
+    private String                versionIdentifier     = null;
     private SolutionPortDirection solutionPortDirection = null;
+    private String                userDefinedStatus     = null;
 
 
     /**
@@ -52,9 +52,10 @@ public class SolutionPortProperties extends ReferenceableProperties
         if (template != null)
         {
             this.displayName = template.getDisplayName();
-            this.description = template.getDescription();
-            this.version = template.getVersion();
+            this.description           = template.getDescription();
+            this.versionIdentifier     = template.getVersionIdentifier();
             this.solutionPortDirection = template.getSolutionPortDirection();
+            this.userDefinedStatus = template.getUserDefinedStatus();
         }
     }
 
@@ -108,20 +109,20 @@ public class SolutionPortProperties extends ReferenceableProperties
      *
      * @return String
      */
-    public String getVersion()
+    public String getVersionIdentifier()
     {
-        return version;
+        return versionIdentifier;
     }
 
 
     /**
      * Set up the version number for this solution port.
      *
-     * @param version String
+     * @param versionIdentifier String
      */
-    public void setVersion(String version)
+    public void setVersionIdentifier(String versionIdentifier)
     {
-        this.version = version;
+        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -148,6 +149,28 @@ public class SolutionPortProperties extends ReferenceableProperties
 
 
     /**
+     * Return the status of the element.
+     *
+     * @return string
+     */
+    public String getUserDefinedStatus()
+    {
+        return userDefinedStatus;
+    }
+
+
+    /**
+     * Set up the status of the element.
+     *
+     * @param userDefinedStatus string
+     */
+    public void setUserDefinedStatus(String userDefinedStatus)
+    {
+        this.userDefinedStatus = userDefinedStatus;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -158,8 +181,9 @@ public class SolutionPortProperties extends ReferenceableProperties
         return "SolutionPortProperties{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", version='" + version + '\'' +
+                ", version='" + versionIdentifier + '\'' +
                 ", solutionPortDirection=" + solutionPortDirection +
+                ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
 
@@ -180,7 +204,8 @@ public class SolutionPortProperties extends ReferenceableProperties
         SolutionPortProperties that = (SolutionPortProperties) objectToCompare;
         return Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(version, that.version) &&
+                Objects.equals(versionIdentifier, that.versionIdentifier) &&
+                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
                 solutionPortDirection == that.solutionPortDirection;
     }
 
@@ -192,6 +217,6 @@ public class SolutionPortProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, version, solutionPortDirection);
+        return Objects.hash(super.hashCode(), displayName, description, versionIdentifier, solutionPortDirection, userDefinedStatus);
     }
 }
