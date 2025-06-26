@@ -190,7 +190,7 @@ public class DataClassConverter<B> extends DataDefinitionConverterBase<B>
                 dataClassElement.setNestedDataClasses(dataClassHierarchy);
             }
 
-            super.addRelationshipsToBean(beanClass, others, null, dataClassElement);
+            super.addRelationshipsToBean(beanClass, others, dataClassElement);
         }
     }
 

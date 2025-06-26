@@ -1497,13 +1497,13 @@ public enum OpenMetadataType
                                   "Links a profile, role or project to the elements that they are responsible for managing."),
 
     /**
-     * Link between a scope - such as a digital service, infrastructure element or organization - and an element restricted the scope.
+     * Link between a scope - such as a digital product, infrastructure element or organization - and an element restricted the scope.
      */
     SCOPED_BY_RELATIONSHIP("3845b5cc-8c85-462f-b7e6-47472a568793",
                            "ScopedBy",
                            OpenMetadataWikiPages.MODEL_0120_ASSIGNMENT_SCOPES,
                            "ffe8adb8-58bd-469c-9077-f4c4088ca1d1",
-                           "Link between a scope - such as a digital service, infrastructure element or organization - and an element restricted the scope, such as a governance definition."),
+                           "Link between a scope - such as a digital product, infrastructure element or organization - and an element restricted the scope, such as a governance definition."),
 
     /**
      * Identifies the Actor that commissioned work (such as a project or a community) or a capability, service or assets.
@@ -5681,13 +5681,13 @@ public enum OpenMetadataType
                     "A digital product is a collection of digital resources that have been designed to meet a specific consumer need."),
 
     /**
-     * A specialized agreement that represents a subscription to a digital service or digital product.
+     * A specialized agreement that represents a subscription to a digital service such as a digital product.
      */
     DIGITAL_SUBSCRIPTION("ad6ed361-af14-458f-8fb7-d4c11baa45d2",
                          "DigitalSubscription",
                          OpenMetadataWikiPages.MODEL_0711_DIGITAL_SUBSCRIPTION,
                          "71fe7c8b-d1de-4090-8b18-1855cb8f89b3",
-                         "A specialized agreement that represents a subscription to a digital service or digital product."),
+                         "A specialized agreement that represents a subscription to a digital service such as a digital product."),
 
     /**
      * The link between a digital subscriber and the subscription details.
@@ -5699,22 +5699,22 @@ public enum OpenMetadataType
                                     "The link between a digital subscriber and the subscription details."),
 
     /**
-     * Relationship identifying the individual responsible for each digital service.
+     * Relationship identifying the individual responsible for the development of the attached digital product.
      */
     DIGITAL_PRODUCT_MANAGEMENT_RELATIONSHIP("91ff7542-c275-4cd3-b367-97eec3360422",
-                                            "DigitalServiceManagement",
+                                            "DigitalProjectManagement",
                                             OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
                                             "ee3fd1ff-0c81-4862-a29d-57b6c4175cce",
-                                            "Relationship identifying the individual responsible for each digital service."),
+                                            "Relationship identifying the individual responsible for the development of the attached digital product."),
 
     /**
-     * Person managing a digital service.
+     * Person managing a digital product.
      */
     DIGITAL_PRODUCT_MANAGER("6dfba6ce-e925-4281-880d-d04100c5b991",
-                            "DigitalServiceManager",
+                            "DigitalProductManager",
                             OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
                             "6057d7a8-4b7f-4d37-95dd-513c131c7381",
-                            "Person managing a digital service."),
+                            "Person managing a digital product."),
 
     /**
      * A description of a managed flow of information between multiple systems.
@@ -5847,13 +5847,13 @@ public enum OpenMetadataType
                                 "Identifies a step in the refinement of digital components and artifacts from design to concrete implementation."),
 
     /**
-     * Collection of solution components that make up a solution or digital service.
+     * Collection of solution components that make up a solution for digital services such as digital products.
      */
     SOLUTION_BLUEPRINT("4aa47799-5128-4eeb-bd72-e357b49f8bfe",
                        "SolutionBlueprint",
                        OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
                        "92042d1e-3717-4343-b111-72a0aaa7f63e",
-                       "Collection of solution components that make up a solution or digital service."),
+                       "Collection of solution components that make up a solution for digital services such as digital products.."),
 
     /**
      * Link between a solution blueprint and a solution component.
@@ -5865,13 +5865,13 @@ public enum OpenMetadataType
                                                 "Link between a solution blueprint and a solution component."),
 
     /**
-     * Relationship identifying the solution blueprint for a digital service.
+     * Relationship identifying the solution blueprint for a digital service such as a digital product.
      */
     SOLUTION_DESIGN_RELATIONSHIP("a43b4c9c-52c2-4819-b3cc-9d07d49a11f2",
                                  "SolutionDesign",
                                  OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
                                  "490e2745-247c-4053-b50c-fff1548908e1",
-                                 "Relationship identifying the solution blueprint for a digital service."),
+                                 "Relationship identifying the solution blueprint for a digital service such as a digital product."),
 
 
     /**

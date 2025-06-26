@@ -21,7 +21,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Coll
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -443,8 +442,10 @@ public class CollectionHandler
                                                                                                   UserNotAuthorizedException
     {
         final String methodName = "getCollectionsByType";
+        final String collectionTypeParameterName = "collectionType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(collectionType, collectionTypeParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<String> propertyNames = List.of(OpenMetadataProperty.COLLECTION_TYPE.name);
@@ -1395,7 +1396,7 @@ public class CollectionHandler
                                                                         forDuplicateProcessing,
                                                                         relationshipProperties.getEffectiveFrom(),
                                                                         relationshipProperties.getEffectiveTo(),
-                                                                        null,
+                                                                        this.getElementProperties(relationshipProperties),
                                                                         effectiveTime);
         }
         else
@@ -1505,7 +1506,7 @@ public class CollectionHandler
                                                                  forDuplicateProcessing,
                                                                  relationshipProperties.getEffectiveFrom(),
                                                                  relationshipProperties.getEffectiveTo(),
-                                                                 null,
+                                                                 this.getElementProperties(relationshipProperties),
                                                                  effectiveTime);
         }
         else
@@ -1621,7 +1622,7 @@ public class CollectionHandler
                                                                  forDuplicateProcessing,
                                                                  relationshipProperties.getEffectiveFrom(),
                                                                  relationshipProperties.getEffectiveTo(),
-                                                                 null,
+                                                                 this.getElementProperties(relationshipProperties),
                                                                  effectiveTime);
         }
         else

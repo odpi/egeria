@@ -37,11 +37,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -70,26 +65,14 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
-###
-# @name createDataStructure
-# Create a data structure.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "DataStructureProperties",
-    "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
-    "description": "add description here",
-    "namespace": "add namespace for this structure",
-    "versionIdentifier": "add version for this structure"
-  }
-}
 
 ###
 # @name createDataStructureFromTemplate

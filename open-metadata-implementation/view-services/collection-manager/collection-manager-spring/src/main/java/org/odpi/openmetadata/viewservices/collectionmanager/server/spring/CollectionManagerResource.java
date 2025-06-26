@@ -446,7 +446,7 @@ public class CollectionManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/event-set-collection")
-    @Operation(summary="createContextEventCollection",
+    @Operation(summary="createEventSetCollection",
             description="Create a new collection with the EventSet classification.  This is used to group event schemas together." +
                     " For example, the collection may describe a set of events emitted by a specific system or to disseminate information about a certain situation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -596,9 +596,6 @@ public class CollectionManagerResource
     }
 
 
-
-
-
     /**
      * Connect an existing collection to an element using the ResourceList relationship (0019).
      *
@@ -622,7 +619,8 @@ public class CollectionManagerResource
     public VoidResponse attachCollection(@PathVariable String                  serverName,
                                          @PathVariable String                  collectionGUID,
                                          @PathVariable String                  parentGUID,
-                                         @RequestParam boolean                 makeAnchor,
+                                         @RequestParam(required = false, defaultValue = "false")
+                                             boolean                 makeAnchor,
                                          @RequestBody(required = false)
                                          RelationshipRequestBody requestBody)
     {
@@ -660,7 +658,7 @@ public class CollectionManagerResource
 
 
     /**
-     * Link two dependent products.
+     * Link two dependent digital products.
      *
      * @param serverName         name of called server
      * @param consumerDigitalProductGUID    unique identifier of the digital product that has the dependency.
@@ -674,7 +672,7 @@ public class CollectionManagerResource
      */
     @PostMapping(path = "/collections/digital-products/{consumerDigitalProductGUID}/product-dependencies/{consumedDigitalProductGUID}/attach")
     @Operation(summary="linkDigitalProductDependency",
-            description="Link two dependent products.",
+            description="Link two dependent digital products.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/digital-product"))
 
@@ -692,7 +690,7 @@ public class CollectionManagerResource
 
 
     /**
-     * Unlink dependent products.
+     * Unlink dependent digital products.
      *
      * @param serverName         name of called server
      * @param consumerDigitalProductGUID    unique identifier of the digital product that has the dependency.
@@ -706,7 +704,7 @@ public class CollectionManagerResource
      */
     @PostMapping(path = "/collections/digital-products/{consumerDigitalProductGUID}/product-dependencies/{consumedDigitalProductGUID}/detach")
     @Operation(summary="detachDigitalProductDependency",
-            description="Unlink dependent products.",
+            description="Unlink dependent digital products.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/digital-product"))
 
@@ -914,7 +912,7 @@ public class CollectionManagerResource
 
 
     /**
-     * Attach an agreement to an element involved in its definition.
+     * Attach an agreement to an element referenced in its definition.
      *
      * @param serverName         name of called server
      * @param agreementGUID  unique identifier of the agreement
