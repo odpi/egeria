@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ResultsRequestBody
     private Date                asOfTime               = null;
     private SequencingOrder     sequencingOrder        = null;
     private String              sequencingProperty     = null;
+    private TemplateFilter      templateFilter         = null;
 
 
     /**
@@ -57,6 +59,7 @@ public class ResultsRequestBody
             asOfTime               = template.getAsOfTime();
             sequencingOrder        = template.getSequencingOrder();
             sequencingProperty     = template.getSequencingProperty();
+            templateFilter         = template.getTemplateFilter();
         }
     }
 
@@ -222,6 +225,28 @@ public class ResultsRequestBody
 
 
     /**
+     * Return the setting of the template filter.
+     *
+     * @return TemplateFilter enum
+     */
+    public TemplateFilter getTemplateFilter()
+    {
+        return templateFilter;
+    }
+
+
+    /**
+     *  Set up the setting of the template filter.
+     *
+     * @param templateFilter enum
+     */
+    public void setTemplateFilter(TemplateFilter templateFilter)
+    {
+        this.templateFilter = templateFilter;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -237,6 +262,7 @@ public class ResultsRequestBody
                 ", asOfTime=" + asOfTime +
                 ", sequencingOrder=" + sequencingOrder +
                 ", sequencingProperty='" + sequencingProperty + '\'' +
+                ", templateFilter=" + templateFilter +
                 '}';
     }
 
@@ -259,7 +285,8 @@ public class ResultsRequestBody
                 Objects.equals(limitResultsByStatus, that.limitResultsByStatus) &&
                 Objects.equals(asOfTime, that.asOfTime) &&
                 sequencingOrder == that.sequencingOrder &&
-                Objects.equals(sequencingProperty, that.sequencingProperty);
+                Objects.equals(sequencingProperty, that.sequencingProperty) &&
+                templateFilter == that.templateFilter;
     }
 
 
@@ -273,6 +300,6 @@ public class ResultsRequestBody
     public int hashCode()
     {
         return Objects.hash(forLineage, forDuplicateProcessing, effectiveTime,
-                            limitResultsByStatus, asOfTime, sequencingOrder, sequencingProperty);
+                            limitResultsByStatus, asOfTime, sequencingOrder, sequencingProperty, templateFilter);
     }
 }

@@ -21,8 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FilterRequestBody extends ResultsRequestBody
 {
-    private String         filter         = null;
-    private TemplateFilter templateFilter = null;
+    private String filter = null;
 
 
     /**
@@ -45,8 +44,7 @@ public class FilterRequestBody extends ResultsRequestBody
 
         if (template != null)
         {
-            filter         = template.getFilter();
-            templateFilter = template.getTemplateFilter();
+            filter = template.getFilter();
         }
     }
 
@@ -74,28 +72,6 @@ public class FilterRequestBody extends ResultsRequestBody
 
 
     /**
-     * Return the setting of the template filter.
-     *
-     * @return TemplateFilter enum
-     */
-    public TemplateFilter getTemplateFilter()
-    {
-        return templateFilter;
-    }
-
-
-    /**
-     *  Set up the setting of the template filter.
-     *
-     * @param templateFilter enum
-     */
-    public void setTemplateFilter(TemplateFilter templateFilter)
-    {
-        this.templateFilter = templateFilter;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -105,7 +81,6 @@ public class FilterRequestBody extends ResultsRequestBody
     {
         return "FilterRequestBody{" +
                 "filter='" + filter + '\'' +
-                ", templateFilter=" + templateFilter +
                 "} " + super.toString();
     }
 
@@ -122,7 +97,7 @@ public class FilterRequestBody extends ResultsRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         FilterRequestBody that = (FilterRequestBody) objectToCompare;
-        return Objects.equals(filter, that.filter) && templateFilter == that.templateFilter;
+        return Objects.equals(filter, that.filter);
     }
 
     /**
@@ -133,6 +108,6 @@ public class FilterRequestBody extends ResultsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), filter, templateFilter);
+        return Objects.hash(super.hashCode(), filter);
     }
 }

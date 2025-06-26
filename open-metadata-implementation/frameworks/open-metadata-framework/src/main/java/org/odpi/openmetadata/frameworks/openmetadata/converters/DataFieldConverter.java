@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -215,7 +214,7 @@ public class DataFieldConverter<B> extends DataDefinitionConverterBase<B>
                 dataFieldElement.setAssignedDataClasses(dataClassDefinitions);
             }
 
-            super.addRelationshipsToBean(beanClass, others, null, dataFieldElement);
+            super.addRelationshipsToBean(beanClass, others, dataFieldElement);
         }
     }
 

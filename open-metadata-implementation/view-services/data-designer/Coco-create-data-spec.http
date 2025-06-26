@@ -1,0 +1,82 @@
+# This list of commands creates a data specification for the Teddy Bear Drop Foot Clinical Trial.
+
+@baseURL=https://localhost:9443
+@viewServer=qs-view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Set up the data spec collection.  This groups all of the information for the data specification.
+
+###
+# @name createDataSpecCollection
+# Create a new collection with the DataSpec classification.  Used to identify a collection of data structures and
+# data fields used to define data requirements for a project or initiative.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-spec-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "DataSpec::ClinicalTrial::PROJ-CT-TBDF::WeeklyMeasurements3",
+    "name" : "Teddy Bear Drop Foot Data Spec for Weekly Weekly Measurements",
+    "description" : "Provides the description of the data for sending patient weekly measurements."
+  }
+}
+
+> {% client.global.set("ctDataSpecGUID", response.body.guid); %}
+
+
+###
+# =====================================================================================================================
+# Set up the data structure collection.  This describes the structure for the weekly measurements data.
+
+
+###
+# @name createDataStructure
+# Create a data structure.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{ctDataSpecGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{ctDataSpecGUID}}",
+  "parentRelationshipTypeName": "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataStructureProperties",
+    "qualifiedName": "DataStructure::ClinicalTrial::PROJ-CT-TBDF::WeeklyMeasurements",
+    "displayName": "Teddy Bear Drop Foot Data Structure for Weekly Weekly Measurements",
+    "description" : "Provides the description of the data structure that must be used when sending patient weekly measurements.",
+    "namespace": "clinical_trials.teddy_bear_drop_foot",
+    "versionIdentifier": "1.0"
+  }
+}
+
+> {% client.global.set("ctDataStructureGUID", response.body.json.guid); %}
+
+
+
+
+

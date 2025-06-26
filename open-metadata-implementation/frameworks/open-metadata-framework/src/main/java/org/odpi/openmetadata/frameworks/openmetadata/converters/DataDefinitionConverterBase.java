@@ -40,12 +40,10 @@ public class DataDefinitionConverterBase<B> extends AttributedElementConverterBa
      *
      * @param beanClass bean class
      * @param relatedMetadataElements elements to summarize
-     * @param processedRelationshipTypes list of relationships that have already been processed by the subtype
      * @throws PropertyServerException problem in converter
      */
     protected void addRelationshipsToBean(Class<B>                     beanClass,
                                           List<RelatedMetadataElement> relatedMetadataElements,
-                                          List<String>                 processedRelationshipTypes,
                                           DataDefinitionElement        dataDefinitionElement) throws PropertyServerException
     {
         final String methodName = "addRelationshipToBean";

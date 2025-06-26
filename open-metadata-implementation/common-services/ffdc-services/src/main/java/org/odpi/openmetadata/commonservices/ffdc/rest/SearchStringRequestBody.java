@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 
 import java.util.Objects;
 
@@ -25,7 +24,6 @@ public class SearchStringRequestBody extends ResultsRequestBody
     private String         searchString              = null;
     private String         searchStringParameterName = null;
     private String         typeName                  = null;
-    private TemplateFilter templateFilter            = TemplateFilter.ALL;
 
 
 
@@ -52,7 +50,6 @@ public class SearchStringRequestBody extends ResultsRequestBody
             searchString              = template.getSearchString();
             searchStringParameterName = template.getSearchStringParameterName();
             typeName                  = template.getTypeName();
-            templateFilter            = template.getTemplateFilter();
         }
     }
 
@@ -123,29 +120,6 @@ public class SearchStringRequestBody extends ResultsRequestBody
     }
 
 
-
-    /**
-     * Return the setting of the template filter.
-     *
-     * @return TemplateFilter enum
-     */
-    public TemplateFilter getTemplateFilter()
-    {
-        return templateFilter;
-    }
-
-
-    /**
-     *  Set up the setting of the template filter.
-     *
-     * @param templateFilter enum
-     */
-    public void setTemplateFilter(TemplateFilter templateFilter)
-    {
-        this.templateFilter = templateFilter;
-    }
-
-
     /**
      * Standard toString method.
      *
@@ -158,7 +132,6 @@ public class SearchStringRequestBody extends ResultsRequestBody
                 "searchString='" + searchString + '\'' +
                 ", searchStringParameterName='" + searchStringParameterName + '\'' +
                 ", typeName='" + typeName + '\'' +
-                ", templateFilter=" + templateFilter +
                 "} " + super.toString();
     }
 
@@ -178,8 +151,7 @@ public class SearchStringRequestBody extends ResultsRequestBody
         SearchStringRequestBody that = (SearchStringRequestBody) objectToCompare;
         return Objects.equals(searchString, that.searchString) &&
                 Objects.equals(searchStringParameterName, that.searchStringParameterName) &&
-                Objects.equals(typeName, that.typeName)&&
-                templateFilter == that.templateFilter;
+                Objects.equals(typeName, that.typeName);
     }
 
     /**
@@ -190,6 +162,6 @@ public class SearchStringRequestBody extends ResultsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), searchString, searchStringParameterName, typeName, templateFilter);
+        return Objects.hash(super.hashCode(), searchString, searchStringParameterName, typeName);
     }
 }

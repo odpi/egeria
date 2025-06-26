@@ -160,7 +160,7 @@ public class DataStructureConverter<B> extends DataDefinitionConverterBase<B>
                 }
             }
 
-            super.addRelationshipsToBean(beanClass, others, null, dataStructureElement);
+            super.addRelationshipsToBean(beanClass, others, dataStructureElement);
         }
     }
 

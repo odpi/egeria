@@ -206,7 +206,7 @@ Content-Type: application/json
                                                               
 ###
 # @name linkPeersInInformationSupplyChain
-# Connect two peer information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain. Rrequest body is optional.
+# Connect two peer information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain. Request body is optional.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{peerOneGUID}}/peer-links/{{peerTwoGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json

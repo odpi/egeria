@@ -3306,6 +3306,13 @@ public class PropertyHelper
     }
 
 
+    /**
+     * Test whether an element has a particular classification.
+     *
+     * @param elementHeader header
+     * @param classificationName classification to search for
+     * @return boolean
+     */
     public boolean isClassified(ElementHeader elementHeader,
                                 String        classificationName)
     {
@@ -3315,6 +3322,33 @@ public class PropertyHelper
         }
 
         for (ElementClassification classification : elementHeader.getClassifications())
+        {
+            if ((classification != null) && (classificationName.equals(classification.getClassificationName())))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Test whether an element has a particular classification.
+     *
+     * @param openMetadataElement element to test
+     * @param classificationName classification to search for
+     * @return boolean
+     */
+    public boolean isClassified(OpenMetadataElement openMetadataElement,
+                                String              classificationName)
+    {
+        if (openMetadataElement == null || openMetadataElement.getClassifications() == null)
+        {
+            return false;
+        }
+
+        for (AttachedClassification classification : openMetadataElement.getClassifications())
         {
             if ((classification != null) && (classificationName.equals(classification.getClassificationName())))
             {

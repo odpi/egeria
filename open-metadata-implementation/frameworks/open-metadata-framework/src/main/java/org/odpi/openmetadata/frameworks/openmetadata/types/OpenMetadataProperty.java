@@ -1304,6 +1304,8 @@ public enum OpenMetadataProperty
      */
     MEMBERSHIP_RATIONALE("membershipRationale", DataType.STRING.getName(), "Description of how the member is used, or why it is useful in this collection.", null, "f4c0da71-f8e8-4d05-a92c-5a1e6b4a263e"),
 
+
+
     /**
      * Defines the sequencing for a collection.
      */
