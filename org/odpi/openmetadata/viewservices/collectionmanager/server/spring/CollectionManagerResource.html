@@ -240,7 +240,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
  <a href="../../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unlink dependent products.</div>
+<div class="block">Unlink dependent digital products.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachProductManager(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">detachProductManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -351,7 +351,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;agreementItemGUID,
  <a href="../../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Attach an agreement to an element involved in its definition.</div>
+<div class="block">Attach an agreement to an element referenced in its definition.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkContract(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkContract</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -367,7 +367,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
  <a href="../../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Link two dependent products.</div>
+<div class="block">Link two dependent digital products.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkProductManager(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkProductManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -955,7 +955,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;makeAnchor,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
@@ -1013,7 +1013,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Link two dependent products.</div>
+<div class="block">Link two dependent digital products.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
@@ -1040,7 +1040,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Unlink dependent products.</div>
+<div class="block">Unlink dependent digital products.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
@@ -1226,7 +1226,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;agreementItemGUID,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Attach an agreement to an element involved in its definition.</div>
+<div class="block">Attach an agreement to an element referenced in its definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
