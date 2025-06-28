@@ -112,13 +112,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)" class="member-name-link">CollectionManagerInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List)" class="member-name-link">CollectionManagerInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserPassword,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerURL)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerURL,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../adminservices/configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;activeViewServices)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Set up the Collection Manager OMVS instance</div>
 </div>
@@ -136,20 +137,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/digitalservice/client/CollectionsClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">CollectionsClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionsClient()" class="member-name-link">getCollectionsClient</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/omf/client/handlers/CollectionHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">CollectionHandler</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionHandler(java.lang.String,java.lang.String)" class="member-name-link">getCollectionHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the collection management client.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/digitalservice/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">ConnectedAssetClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedAssetClient()" class="member-name-link">getConnectedAssetClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the connected asset client.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/digitalservice/client/OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">OpenMetadataStoreClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataStoreClient()" class="member-name-link">getOpenMetadataStoreClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the open metadata store client.</div>
 </div>
 </div>
 </div>
@@ -178,7 +170,7 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List)">
 <h3>CollectionManagerInstance</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">CollectionManagerInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
@@ -186,8 +178,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserPassword,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerURL)</span>
-                          throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerURL,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../adminservices/configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;activeViewServices)</span></div>
 <div class="block">Set up the Collection Manager OMVS instance</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -198,8 +190,7 @@ loadScripts(document, 'script');</script>
 <dd><code>maxPageSize</code> - maximum page size</dd>
 <dd><code>remoteServerName</code> - remote server name</dd>
 <dd><code>remoteServerURL</code> - remote server URL</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - problem with server name or platform URL</dd>
+<dd><code>activeViewServices</code> - list of view services active in this server</dd>
 </dl>
 </section>
 </li>
@@ -212,37 +203,22 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getCollectionsClient()">
-<h3>getCollectionsClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/digitalservice/client/CollectionsClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">CollectionsClient</a></span>&nbsp;<span class="element-name">getCollectionsClient</span>()</div>
-<div class="block">Return the collection management client.  This client is from Digital Service OMAS and is for maintaining collections.</div>
+<section class="detail" id="getCollectionHandler(java.lang.String,java.lang.String)">
+<h3>getCollectionHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworkservices/omf/client/handlers/CollectionHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">CollectionHandler</a></span>&nbsp;<span class="element-name">getCollectionHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                                       throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return the collection management client.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>viewServiceURLMarker</code> - calling view service</dd>
+<dd><code>methodName</code> - calling operation</dd>
 <dt>Returns:</dt>
 <dd>client</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConnectedAssetClient()">
-<h3>getConnectedAssetClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/digitalservice/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">ConnectedAssetClient</a></span>&nbsp;<span class="element-name">getConnectedAssetClient</span>()</div>
-<div class="block">Return the connected asset client.  This client is from Open Connector Framework (OCF) and is for retrieving information about
- assets and creating connectors.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>client</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOpenMetadataStoreClient()">
-<h3>getOpenMetadataStoreClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/digitalservice/client/OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">OpenMetadataStoreClient</a></span>&nbsp;<span class="element-name">getOpenMetadataStoreClient</span>()</div>
-<div class="block">Return the open metadata store client.  This client is from the Governance Action Framework (GAF) and is for accessing and
- maintaining all types of metadata.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>client</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code></dd>
 </dl>
 </section>
 </li>
