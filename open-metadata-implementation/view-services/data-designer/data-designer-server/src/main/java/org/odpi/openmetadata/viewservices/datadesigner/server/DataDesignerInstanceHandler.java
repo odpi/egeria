@@ -23,7 +23,7 @@ public class DataDesignerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public DataDesignerInstanceHandler()
     {
-        super(ViewServiceDescription.DATA_DESIGNER.getViewServiceName());
+        super(ViewServiceDescription.DATA_DESIGNER.getViewServiceFullName());
 
         DataDesignerRegistration.registerViewService();
     }

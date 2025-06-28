@@ -2668,7 +2668,7 @@ public class DataDesignHandler
     {
         try
         {
-            List<MemberDataField>        relatedFields = new ArrayList<>();
+            List<MemberDataField>        nestedDataFields = new ArrayList<>();
             List<RelatedMetadataElement> otherRelatedElements = new ArrayList<>();
 
             int startFrom = 0;
@@ -2693,7 +2693,7 @@ public class DataDesignHandler
                     {
                         if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName)) && (!relatedMetadataElement.getElementAtEnd1()))
                         {
-                            relatedFields.add(this.convertMemberDataField(userId,
+                            nestedDataFields.add(this.convertMemberDataField(userId,
                                                                           relatedMetadataElement,
                                                                           asOfTime,
                                                                           forLineage,
@@ -2731,9 +2731,9 @@ public class DataDesignHandler
                                                                             methodName);
             if (dataFieldElement != null)
             {
-                if (! relatedFields.isEmpty())
+                if (! nestedDataFields.isEmpty())
                 {
-                    dataFieldElement.setNestedDataFields(relatedFields);
+                    dataFieldElement.setNestedDataFields(nestedDataFields);
                 }
 
                 DataFieldMermaidGraphBuilder graphBuilder = new DataFieldMermaidGraphBuilder(dataFieldElement);
@@ -2789,26 +2789,97 @@ public class DataDesignHandler
     {
         if (startingMetadataElement != null)
         {
-            /*
-             * Set up the description of the data field element
-             */
-            MemberDataField memberDataField = new MemberDataField(this.convertDataField(userId,
-                                                                                        startingMetadataElement.getElement(),
-                                                                                        asOfTime,
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing,
-                                                                                        effectiveTime,
-                                                                                        methodName));
+            try
+            {
+                DataFieldConverter<DataFieldElement> converter = new DataFieldConverter<>(propertyHelper, serviceName, serverName);
+
+                /*
+                 * Set up the description of the data field element
+                 */
+                MemberDataField memberDataField = new MemberDataField(converter.getNewBean(DataFieldElement.class,
+                                                                                           startingMetadataElement,
+                                                                                           methodName));
+                memberDataField.setMemberDataFieldProperties(converter.getMemberDataFieldProperties(startingMetadataElement));
+
+                /*
+                 * Add in details of any nested data fields.
+                 */
+                List<MemberDataField> nestedDataFields = new ArrayList<>();
+
+                int startFrom = 0;
+                RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                           startingMetadataElement.getElement().getElementGUID(),
+                                                                                                                           1,
+                                                                                                                           OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                                                                           null,
+                                                                                                                           asOfTime,
+                                                                                                                           null,
+                                                                                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                           forLineage,
+                                                                                                                           forDuplicateProcessing,
+                                                                                                                           effectiveTime,
+                                                                                                                           startFrom,
+                                                                                                                           invalidParameterHandler.getMaxPagingSize());
+                while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+                {
+                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
+                    {
+                        if (relatedMetadataElement != null)
+                        {
+                            nestedDataFields.add(this.convertMemberDataField(userId,
+                                                                             relatedMetadataElement,
+                                                                             asOfTime,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             effectiveTime,
+                                                                             methodName));
+                        }
+                    }
+
+                    startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
+                    relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                    startingMetadataElement.getElement().getElementGUID(),
+                                                                                                    1,
+                                                                                                    OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                                                    null,
+                                                                                                    asOfTime,
+                                                                                                    null,
+                                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                    forLineage,
+                                                                                                    forDuplicateProcessing,
+                                                                                                    effectiveTime,
+                                                                                                    startFrom,
+                                                                                                    invalidParameterHandler.getMaxPagingSize());
+                }
 
 
-            /*
-             * Add in details of the relationship to the caller's element.
-             */
-            DataFieldConverter<DataFieldElement> converter = new DataFieldConverter<>(propertyHelper, serviceName, serverName);
+                if (! nestedDataFields.isEmpty())
+                {
+                    memberDataField.setNestedDataFields(nestedDataFields);
+                }
 
-            memberDataField.setMemberDataFieldProperties(converter.getMemberDataFieldProperties(startingMetadataElement));
+                return memberDataField;
+            }
+            catch (Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName,
+                                          OpenMetadataStoreAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                         methodName,
+                                                                                                                         serviceName,
+                                                                                                                         error.getMessage()),
+                                          error);
+                }
 
-            return memberDataField;
+                throw new PropertyServerException(OpenMetadataStoreErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                                 methodName,
+                                                                                                                                 serviceName,
+                                                                                                                                 error.getMessage()),
+                                                  error.getClass().getName(),
+                                                  methodName,
+                                                  error);
+            }
         }
 
         return null;

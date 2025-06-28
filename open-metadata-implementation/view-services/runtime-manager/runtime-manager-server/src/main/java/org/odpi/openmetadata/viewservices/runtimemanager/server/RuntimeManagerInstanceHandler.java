@@ -26,7 +26,7 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public RuntimeManagerInstanceHandler()
     {
-        super(ViewServiceDescription.RUNTIME_MANAGER.getViewServiceName());
+        super(ViewServiceDescription.RUNTIME_MANAGER.getViewServiceFullName());
 
         RuntimeManagerRegistration.registerViewService();
     }

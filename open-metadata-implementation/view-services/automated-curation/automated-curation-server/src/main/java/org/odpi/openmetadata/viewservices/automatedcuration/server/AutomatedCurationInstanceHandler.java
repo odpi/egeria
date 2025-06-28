@@ -24,7 +24,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
      */
     public AutomatedCurationInstanceHandler()
     {
-        super(ViewServiceDescription.AUTOMATED_CURATION.getViewServiceName());
+        super(ViewServiceDescription.AUTOMATED_CURATION.getViewServiceFullName());
 
         AutomatedCurationRegistration.registerViewService();
     }

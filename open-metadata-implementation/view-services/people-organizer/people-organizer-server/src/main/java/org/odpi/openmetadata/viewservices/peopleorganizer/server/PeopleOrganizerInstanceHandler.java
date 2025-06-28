@@ -20,7 +20,7 @@ public class PeopleOrganizerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public PeopleOrganizerInstanceHandler()
     {
-        super(ViewServiceDescription.PEOPLE_ORGANIZER.getViewServiceName());
+        super(ViewServiceDescription.PEOPLE_ORGANIZER.getViewServiceFullName());
 
         PeopleOrganizerRegistration.registerViewService();
     }

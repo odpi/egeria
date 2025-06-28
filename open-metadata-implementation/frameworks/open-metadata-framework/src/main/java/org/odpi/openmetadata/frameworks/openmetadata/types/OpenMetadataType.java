@@ -333,7 +333,7 @@ public enum OpenMetadataType
     /**
      * A collection that lists elements that have been part of recent activity.
      */
-    RECENT_ACCESS_COMMECTION_CLASSIFICATION("e68d7cdf-08bc-4eee-844b-502f5940082",
+    RECENT_ACCESS_COLLECTION_CLASSIFICATION("e68d7cdf-08bc-4eee-844b-502f5940082",
                                             "RecentAccess",
                                             OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                             "e3c0d70e-8d9c-4575-a21d-dcc7a2bb5dcc",

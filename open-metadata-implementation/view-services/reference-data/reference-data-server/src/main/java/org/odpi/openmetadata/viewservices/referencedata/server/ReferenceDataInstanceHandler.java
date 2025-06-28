@@ -20,7 +20,7 @@ public class ReferenceDataInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ReferenceDataInstanceHandler()
     {
-        super(ViewServiceDescription.REFERENCE_DATA.getViewServiceName());
+        super(ViewServiceDescription.REFERENCE_DATA.getViewServiceFullName());
 
         ReferenceDataRegistration.registerViewService();
     }

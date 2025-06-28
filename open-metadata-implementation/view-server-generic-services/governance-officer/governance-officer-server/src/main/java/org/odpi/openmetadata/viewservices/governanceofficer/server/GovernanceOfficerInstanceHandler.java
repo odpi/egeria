@@ -23,7 +23,7 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public GovernanceOfficerInstanceHandler()
     {
-        super(ViewServiceDescription.GOVERNANCE_OFFICER.getViewServiceName());
+        super(ViewServiceDescription.GOVERNANCE_OFFICER.getViewServiceFullName());
 
         GovernanceOfficerRegistration.registerViewService();
     }

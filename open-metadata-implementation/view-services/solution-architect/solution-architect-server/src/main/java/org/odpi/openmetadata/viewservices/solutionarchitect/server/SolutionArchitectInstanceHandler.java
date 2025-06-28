@@ -24,7 +24,7 @@ public class SolutionArchitectInstanceHandler extends OMVSServiceInstanceHandler
      */
     public SolutionArchitectInstanceHandler()
     {
-        super(ViewServiceDescription.SOLUTION_ARCHITECT.getViewServiceName());
+        super(ViewServiceDescription.SOLUTION_ARCHITECT.getViewServiceFullName());
 
         SolutionArchitectRegistration.registerViewService();
     }

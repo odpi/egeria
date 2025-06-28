@@ -20,7 +20,7 @@ public class TimeKeeperInstanceHandler extends OMVSServiceInstanceHandler
      */
     public TimeKeeperInstanceHandler()
     {
-        super(ViewServiceDescription.TIME_KEEPER.getViewServiceName());
+        super(ViewServiceDescription.TIME_KEEPER.getViewServiceFullName());
 
         TimeKeeperRegistration.registerViewService();
     }

@@ -26,7 +26,7 @@ public class ProjectManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ProjectManagerInstanceHandler()
     {
-        super(ViewServiceDescription.PROJECT_MANAGER.getViewServiceName());
+        super(ViewServiceDescription.PROJECT_MANAGER.getViewServiceFullName());
 
         ProjectManagerRegistration.registerViewService();
     }

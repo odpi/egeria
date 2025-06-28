@@ -1,7 +1,8 @@
-# This list of commands creates a data specification for the Teddy Bear Drop Foot Clinical Trial.
+# This list of commands creates two data specifications for the Teddy Bear Drop Foot Clinical Trial.
+
 
 @baseURL=https://localhost:9443
-@viewServer=qs-view-server
+@viewServer=view-server
 
 ###
 # =====================================================================================================================
@@ -18,16 +19,16 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body); %}
 
-
 ###
 # =====================================================================================================================
-# Set up the data spec collection.  This groups all of the information for the data specification.
+# Create a data dictionary for the data fields/classes. Also provides the anchorScopeGUID for
+# subsequent elements.
 
 ###
-# @name createDataSpecCollection
-# Create a new collection with the DataSpec classification.  Used to identify a collection of data structures and
-# data fields used to define data requirements for a project or initiative.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-spec-collection
+# @name createDataDictionaryCollection
+# Create a new collection with the Data Dictionary classification.  Used to identify a collection of
+# data fields that represent a data store of collection of common data types.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-dictionary-collection
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -36,18 +37,612 @@ Content-Type: application/json
   "isOwnAnchor" : true,
   "properties": {
     "class" : "CollectionProperties",
-    "qualifiedName": "DataSpec::ClinicalTrial::PROJ-CT-TBDF::WeeklyMeasurements3",
-    "name" : "Teddy Bear Drop Foot Data Spec for Weekly Weekly Measurements",
-    "description" : "Provides the description of the data for sending patient weekly measurements."
+    "qualifiedName": "Coco::DataDictionary::ClinicalTrials",
+    "name" : "Data Dictionary for Clinical Trials",
+    "description" : "Holds details of the data fields and classes for clinical trial data.",
+    "collectionType": "Clinical Trials"
   }
 }
 
-> {% client.global.set("ctDataSpecGUID", response.body.guid); %}
+> {% client.global.set("ctDataDictionaryGUID", response.body.guid); %}
+
+
+###
+# @name createFolderCollection
+# Create a new collection with the Folder classification.  This is used to identify the organizing collections in a collection hierarchy.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/folder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID" : "{{ctDataDictionaryGUID}}",
+  "parentRelationshipTypeName" : "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Coco::DataDictionary::ClinicalTrials::General",
+    "name" : "General data definitions",
+    "description" : "These data definitions (data fields and data classes) are used in all types of data structures.",
+    "collectionType": "Clinical Trials"
+  }
+}
+
+> {% client.global.set("ctGeneralDataDictionaryFolderGUID", response.body.guid); %}
+
+
+###
+# @name createFolderCollection
+# Create a new collection with the Folder classification.  This is used to identify the organizing collections in a collection hierarchy.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/folder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID" : "{{ctDataDictionaryGUID}}",
+  "parentRelationshipTypeName" : "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Coco::DataDictionary::ClinicalTrials::Person",
+    "name" : "Person data definitions",
+    "description" : "These data definitions (data fields and data classes) are used to describe a person.",
+    "collectionType": "Clinical Trials"
+  }
+}
+
+> {% client.global.set("ctPersonDataDictionaryFolderGUID", response.body.guid); %}
+
+
+###
+# @name createFolderCollection
+# Create a new collection with the Folder classification.  This is used to identify the organizing collections in a collection hierarchy.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/folder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID" : "{{ctDataDictionaryGUID}}",
+  "parentRelationshipTypeName" : "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Coco::DataDictionary::ClinicalTrials::Medical",
+    "name" : "Medical data definitions",
+    "description" : "These data definitions (data fields and data classes) are used to describe medical conditions and measurments.",
+    "collectionType": "Clinical Trials"
+  }
+}
+
+> {% client.global.set("ctMedicalDataDictionaryFolderGUID", response.body.guid); %}
 
 
 ###
 # =====================================================================================================================
-# Set up the data structure collection.  This describes the structure for the weekly measurements data.
+# Set up the data field definitions. These are anchored in the data dictionary.
+
+###
+# @name createDataField - PatientId
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID": "{{ctPersonDataDictionaryFolderGUID}}",
+  "parentRelationshipTypeName": "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "Coco::DataField::PatientId",
+    "displayName": "Patient Identifier",
+    "description": "Unique identifier for a patient.",
+    "versionIdentifier": "1.0",
+    "aliases": ["Patient Id"],
+    "isDeprecated": false,
+    "isNullable" : false,
+    "defaultValue": "",
+    "dataType": "string",
+    "minimumLength": 1,
+    "sortOrder": "UNSORTED"
+  }
+}
+
+
+###
+# @name createDataField - Address
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID": "{{ctGeneralDataDictionaryFolderGUID}}",
+  "parentRelationshipTypeName": "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "Coco::DataField::PostalAddress",
+    "displayName": "Postal Address",
+    "description": "Address of a physical location.",
+    "versionIdentifier": "1.0",
+    "aliases": ["Address"],
+    "isDeprecated": false,
+    "isNullable" : false,
+    "dataType": "struct"
+  }
+}
+
+> {% client.global.set("ctAddressDataFieldGUID", response.body.guid); %}
+
+###
+# @name createDataField - Street Number
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "NewElementRequestBody",
+    "isOwnAnchor": false,
+    "anchorGUID" : "{{ctDataDictionaryGUID}}",
+    "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+    "parentGUID": "{{ctAddressDataFieldGUID}}",
+    "parentRelationshipTypeName": "NestedDataField",
+    "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "position" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : "1"
+      },
+      "minCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : "0"
+      },
+      "maxCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : "1"
+      }
+    }
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "Coco::DataField::StreetNumber",
+    "displayName": "Street Number",
+    "description": "Building number for a street.",
+    "versionIdentifier": "1.0",
+    "aliases": ["StreetNumber", "HouseNumber"],
+    "isDeprecated": false,
+    "isNullable" : true,
+    "dataType": "string"
+  }
+}
+
+
+###
+# @name createDataField - Street
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID": "{{ctAddressDataFieldGUID}}",
+  "parentRelationshipTypeName": "NestedDataField",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "position" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 2
+      },
+      "minCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 0
+      },
+      "maxCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 1
+      }
+    }
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "Coco::DataField::Street",
+    "displayName": "Street",
+    "description": "Road to access the building.",
+    "versionIdentifier": "1.0",
+    "aliases": ["Street", "Road"],
+    "isDeprecated": false,
+    "isNullable" : true,
+    "dataType": "string"
+  }
+}
+
+
+
+###
+# @name createDataField - District
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID": "{{ctAddressDataFieldGUID}}",
+  "parentRelationshipTypeName": "NestedDataField",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "position" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 3
+      },
+      "minCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 0
+      },
+      "maxCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 1
+      }
+    }
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "Coco::DataField::District",
+    "displayName": "District",
+    "description": "Local area name.",
+    "versionIdentifier": "1.0",
+    "aliases": ["District", "Village", "Parish"],
+    "isDeprecated": false,
+    "isNullable" : true,
+    "dataType": "string"
+  }
+}
+
+
+
+
+###
+# @name createDataField - City
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID": "{{ctAddressDataFieldGUID}}",
+  "parentRelationshipTypeName": "NestedDataField",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "position" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 4
+      },
+      "minCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 1
+      },
+      "maxCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 1
+      }
+    }
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "Coco::DataField::City",
+    "displayName": "City",
+    "description": "City or town.",
+    "versionIdentifier": "1.0",
+    "aliases": ["Town"],
+    "isDeprecated": false,
+    "isNullable" : false,
+    "dataType": "string"
+  }
+}
+
+
+###
+# @name createDataField - Region
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID": "{{ctAddressDataFieldGUID}}",
+  "parentRelationshipTypeName": "NestedDataField",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "position" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 5
+      },
+      "minCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 0
+      },
+      "maxCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 1
+      }
+    }
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "Coco::DataField::Region",
+    "displayName": "Region",
+    "description": "State, County, Province where the city is located",
+    "versionIdentifier": "1.0",
+    "aliases": ["State", "County", "Province"],
+    "isDeprecated": false,
+    "isNullable" : true,
+    "dataType": "string"
+  }
+}
+
+
+###
+# @name createDataField - Postal Code
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID": "{{ctAddressDataFieldGUID}}",
+  "parentRelationshipTypeName": "NestedDataField",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "position" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 6
+      },
+      "minCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 1
+      },
+      "maxCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 1
+      }
+    }
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "Coco::DataField::PostalCode",
+    "displayName": "Postal Code",
+    "description": "Code used to identify location",
+    "versionIdentifier": "1.0",
+    "aliases": ["Postcode", "Zip Code"],
+    "isDeprecated": false,
+    "isNullable" : false,
+    "dataType": "string"
+  }
+}
+
+
+
+###
+# @name createDataField - Country
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "{{ctDataDictionaryGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "parentGUID": "{{ctAddressDataFieldGUID}}",
+  "parentRelationshipTypeName": "NestedDataField",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "position" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 7
+      },
+      "minCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 1
+      },
+      "maxCardinality" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "int",
+        "primitiveValue" : 1
+      }
+    }
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "Coco::DataField::Country",
+    "displayName": "Country",
+    "description": "Country where the building is located.",
+    "versionIdentifier": "1.0",
+    "isDeprecated": false,
+    "isNullable" : false,
+    "dataType": "string"
+  }
+}
+
+###
+# =====================================================================================================================
+# Set up the data class definitions. These are anchored in the data dictionary.
+
+###
+# =====================================================================================================================
+# Set up the overall data sharing agreement collection.  This groups all of the information for
+# a data data sharing agreement between Coco Pharmaceuticals and a hospital.
+
+
+###
+# @name createDataSharingAgreementCollection
+# Create a new collection with the DataSharingAgreement classification.  The collection is typically an agreement
+# which may use the NewElementRequestBody, or the NewAgreementRequestBody if the initial status needs to be set.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/collections/data-sharing-agreement
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewAgreementRequestBody",
+  "isOwnAnchor" : true,
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "properties": {
+    "class" : "AgreementProperties",
+    "qualifiedName": "Agreement::ClinicalTrial::PROJ_CT_TBDF::OakDene::DataSharingAgreement",
+    "name" : "Oak Dene Hospital's data sharing agreement for clinical trial: PROJ-CT-TBDF",
+    "description" : "This is the basis of the agreement to share data between Oak Dene Hospital and Coco Pharmaceuticals for the purpose of performing the Teddy Bear Drop Foot clinical trial. ",
+    "userDefinedStatus" : "UNDER_DISCUSSION",
+    "identifier" : "DSA::ClinicalTrial::PROJ-CT-TBDF::Oak Dene",
+    "collectionType": "Clinical Trials",
+    "additionalProperties": {
+      "dataSpecCount" : "2",
+      "templateCount" : "0"
+    }
+  },
+  "initialStatus" : "OTHER"
+}
+
+> {% client.global.set("ctDataSharingAgreementGUID", response.body.guid); %}
+
+
+###
+# =====================================================================================================================
+# Set up the two data spec collections.  Each groups all of the information for a data specification.
+# There is a data specification for the patient (subject) onboarding and another for the weekly measurements.
+
+###
+# @name createDataSpecCollection
+# Create a new collection with the DataSpec classification.  Used to identify a collection of data structures and
+# data fields used to define data requirements for a project or initiative.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/collections/data-spec-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{ctDataSharingAgreementGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{ctDataSharingAgreementGUID}}",
+  "parentRelationshipTypeName": "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "DataSpec::ClinicalTrial::PROJ-CT-TBDF::Onboarding",
+    "name" : "Teddy Bear Drop Foot Data Spec for patient (subject) onboarding",
+    "description" : "Provides the description of the data for sending basic patient information.",
+    "collectionType": "Clinical Trials"
+ }
+}
+
+> {% client.global.set("ctOnboardingDataSpecGUID", response.body.guid); %}
+
+###
+# @name createDataSpecCollection
+# Create a new collection with the DataSpec classification.  Used to identify a collection of data structures and
+# data fields used to define data requirements for a project or initiative.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/collections/data-spec-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{ctDataSharingAgreementGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{ctDataSharingAgreementGUID}}",
+  "parentRelationshipTypeName": "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "DataSpec::ClinicalTrial::PROJ-CT-TBDF::WeeklyMeasurements",
+    "name" : "Teddy Bear Drop Foot Data Spec for Weekly Weekly Measurements",
+    "description" : "Provides the description of the data for sending patient weekly measurements.",
+    "collectionType": "Clinical Trials"
+ }
+}
+
+> {% client.global.set("ctWeeklyDataSpecGUID", response.body.guid); %}
+
+
+###
+# =====================================================================================================================
+# Set up the data structure collection for the patient onboarding.
 
 
 ###
@@ -59,9 +654,43 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "anchorGUID" : "{{ctDataSpecGUID}}",
+  "anchorGUID" : "{{ctOnboardingDataSpecGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
   "isOwnAnchor": false,
-  "parentGUID": "{{ctDataSpecGUID}}",
+  "parentGUID": "{{ctOnboardingDataSpecGUID}}",
+  "parentRelationshipTypeName": "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataStructureProperties",
+    "qualifiedName": "DataStructure::ClinicalTrial::PROJ-CT-TBDF::Onboarding",
+    "displayName": "Teddy Bear Drop Foot Data Structure for Subject Onboarding",
+    "description" : "Provides the description of the data structure that must be used when sending the initial patient (subject) data).",
+    "namespace": "clinical_trials.teddy_bear_drop_foot",
+    "versionIdentifier": "1.0"
+  }
+}
+
+> {% client.global.set("ctOnboardingDataStructureGUID", response.body.guid); %}
+
+
+###
+# =====================================================================================================================
+# Set up the data structure collection for the weekly measurements data.
+
+
+###
+# @name createDataStructure
+# Create a data structure.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{ctWeeklyDataSpecGUID}}",
+  "anchorScopeGUID" : "{{ctDataDictionaryGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{ctWeeklyDataSpecGUID}}",
   "parentRelationshipTypeName": "CollectionMembership",
   "parentAtEnd1": true,
   "properties": {
@@ -74,9 +703,58 @@ Content-Type: application/json
   }
 }
 
-> {% client.global.set("ctDataStructureGUID", response.body.json.guid); %}
+> {% client.global.set("ctWeeklyDataStructureGUID", response.body.guid); %}
+
+
+###
+# =====================================================================================================================
+# Check all is ok
+
+###
+# @name findCollections
+# Returns the list of collections matching the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+
+###
+# @name getCollectionGraph
+# Return a graph of elements that are the nested members of a collection along
+# with elements immediately connected to the starting collection.  The result
+# includes a mermaid graph of the returned elements.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{ctDataDictionaryGUID}}/graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+
+###
+# @name getCollectionGraph
+# Return a graph of elements that are the nested members of a collection along
+# with elements immediately connected to the starting collection.  The result
+# includes a mermaid graph of the returned elements.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{ctDataSharingAgreementGUID}}/graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
 
 
 
+###
+# @name getDataFieldByGUID
+# Return the properties of a specific data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{ctAddressDataFieldGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
 

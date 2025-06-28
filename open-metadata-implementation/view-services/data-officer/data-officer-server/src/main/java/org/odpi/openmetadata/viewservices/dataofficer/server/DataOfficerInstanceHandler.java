@@ -20,7 +20,7 @@ public class DataOfficerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public DataOfficerInstanceHandler()
     {
-        super(ViewServiceDescription.DATA_OFFICER.getViewServiceName());
+        super(ViewServiceDescription.DATA_OFFICER.getViewServiceFullName());
 
         DataOfficerRegistration.registerViewService();
     }

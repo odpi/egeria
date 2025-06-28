@@ -59,7 +59,7 @@ public class AssetCatalogInstance extends OMVSServiceInstance
                                                                              UserNotAuthorizedException
     {
         super(serverName,
-              myDescription.getViewServiceName(),
+              myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
               localServerUserPassword,

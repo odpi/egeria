@@ -20,7 +20,7 @@ public class DevopsPipelineInstanceHandler extends OMVSServiceInstanceHandler
      */
     public DevopsPipelineInstanceHandler()
     {
-        super(ViewServiceDescription.DEVOPS_PIPELINE.getViewServiceName());
+        super(ViewServiceDescription.DEVOPS_PIPELINE.getViewServiceFullName());
 
         DevopsPipelineRegistration.registerViewService();
     }

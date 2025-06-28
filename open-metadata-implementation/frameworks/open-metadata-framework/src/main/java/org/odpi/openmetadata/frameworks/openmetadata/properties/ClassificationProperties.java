@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
@@ -39,7 +38,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),
                 @JsonSubTypes.Type(value = DatabasePrimaryKeyProperties.class, name = "DatabasePrimaryKeyProperties"),
                 @JsonSubTypes.Type(value = CyberLocationProperties.class, name = "CyberLocationProperties"),
-                @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
                 @JsonSubTypes.Type(value = EditingGlossaryProperties.class, name = "EditingGlossaryProperties"),
                 @JsonSubTypes.Type(value = FixedLocationProperties.class, name = "FixedLocationProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermContextDefinition.class, name = "GlossaryTermContextDefinition"),

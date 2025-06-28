@@ -385,7 +385,7 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/automated-curation" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/collection-manager" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/collection-manager" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/notification-manager" }
                         { include 'Egeria*.http' }

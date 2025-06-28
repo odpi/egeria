@@ -20,7 +20,7 @@ public class CommunityMattersInstanceHandler extends OMVSServiceInstanceHandler
      */
     public CommunityMattersInstanceHandler()
     {
-        super(ViewServiceDescription.COMMUNITY_MATTERS.getViewServiceName());
+        super(ViewServiceDescription.COMMUNITY_MATTERS.getViewServiceFullName());
 
         CommunityMattersRegistration.registerViewService();
     }

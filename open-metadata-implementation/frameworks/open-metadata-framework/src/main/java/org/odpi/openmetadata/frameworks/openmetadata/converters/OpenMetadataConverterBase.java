@@ -13,6 +13,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSubscriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -3941,6 +3944,228 @@ public class OpenMetadataConverterBase<B>
 
         return null;
     }
+
+
+    /**
+     * Extract and delete the product name property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeProductName(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeProductName";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.PRODUCT_NAME.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the product type property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeProductType(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeProductType";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.PRODUCT_TYPE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the maturity property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeMaturity(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeMaturity";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.MATURITY.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the service life property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeServiceLife(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeServiceLife";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.SERVICE_LIFE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the current version property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeCurrentVersion(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCurrentVersion";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.CURRENT_VERSION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the introduction date property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected Date removeIntroductionDate(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeIntroductionDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(serviceName,
+                                                     OpenMetadataProperty.INTRODUCTION_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the next version date property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected Date removeNextVersionDate(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeNextVersionDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(serviceName,
+                                                     OpenMetadataProperty.NEXT_VERSION_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the withdraw date property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected Date removeWithdrawDate(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeWithdrawDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(serviceName,
+                                                     OpenMetadataProperty.WITHDRAW_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the support levels property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeSupportLevel(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeSupportLevel";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.SUPPORT_LEVEL.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the service levels property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected Map<String, String> removeServiceLevels(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeServiceLevels";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(serviceName,
+                                                              OpenMetadataProperty.SERVICE_LEVELS.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
 
 
     /**
@@ -8612,57 +8837,21 @@ public class OpenMetadataConverterBase<B>
         if (primaryElement.getElementProperties() != null)
         {
             ElementProperties    elementProperties    = new ElementProperties(primaryElement.getElementProperties());
-            CollectionProperties collectionProperties = new CollectionProperties();
+            ReferenceableProperties referenceableProperties = new ReferenceableProperties();
 
-            collectionProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
-            collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-            collectionProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
-            collectionProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            collectionProperties.setTypeName(primaryElement.getType().getTypeName());
-            collectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
-
-            return collectionProperties;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the data field properties from the retrieved element.
-     *
-     * @param primaryElement element
-     *
-     * @return dataStructure properties
-     */
-    protected CollectionProperties getCollectionProperties(OpenMetadataElement primaryElement)
-    {
-        if (primaryElement.getElementProperties() != null)
-        {
-            ElementProperties   elementProperties   = new ElementProperties(primaryElement.getElementProperties());
-            CollectionProperties collectionProperties = new CollectionProperties();
-
-            collectionProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
-            collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-            collectionProperties.setName(this.removeName(elementProperties));
-            collectionProperties.setDescription(this.removeDescription(elementProperties));
-            collectionProperties.setCollectionType(this.removeCollectionType(elementProperties));
-            collectionProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
-            collectionProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
+            referenceableProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
+            referenceableProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            referenceableProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
+            referenceableProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
 
             /*
              * Any remaining properties are returned in the extended properties.  They are
              * assumed to be defined in a subtype.
              */
-            collectionProperties.setTypeName(primaryElement.getType().getTypeName());
-            collectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+            referenceableProperties.setTypeName(primaryElement.getType().getTypeName());
+            referenceableProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
 
-            return collectionProperties;
+            return referenceableProperties;
         }
 
         return null;

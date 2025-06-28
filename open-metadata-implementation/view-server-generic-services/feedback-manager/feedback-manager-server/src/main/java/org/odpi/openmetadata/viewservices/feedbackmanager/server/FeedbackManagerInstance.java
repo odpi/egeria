@@ -53,7 +53,7 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                                    List<ViewServiceConfig> activeViewServices) throws InvalidParameterException
     {
         super(serverName,
-              myDescription.getViewServiceName(),
+              myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
               localServerUserPassword,

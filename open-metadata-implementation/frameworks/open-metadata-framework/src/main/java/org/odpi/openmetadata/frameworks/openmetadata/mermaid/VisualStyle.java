@@ -83,6 +83,10 @@ public enum VisualStyle
     PROJECT_RESOURCE(Colour.BLACK.getColourNumber(), Colour.PINKY.getColourNumber(), Colour.BLACK.getColourNumber(), "doc"),
     PROJECT_ROLE(Colour.BLACK.getColourNumber(), Colour.LIGHT_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "trap-t"),
 
+    AGREEMENT(Colour.BLACK.getColourNumber(), Colour.YELLOW_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    DATA_SHARING_AGREEMENT(Colour.WHITE.getColourNumber(), Colour.OLIVE_DRAB.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    DIGITAL_SUBSCRIPTION(Colour.BLACK.getColourNumber(), Colour.DARK_OLIVE_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+
     DATA_DICTIONARY(Colour.BLACK.getColourNumber(), Colour.CHOCOLATE.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     DATA_SPEC(Colour.BLACK.getColourNumber(), Colour.BURLY_WOOD.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     OBJECT_IDENTIFIER(Colour.BLACK.getColourNumber(), Colour.WHITE_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),

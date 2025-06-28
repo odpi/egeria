@@ -62,6 +62,14 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                                    "Either change the connector or the hosting environment because the current combination is not compatible."),
 
     /**
+     * OMAG-MULTI-TENANT-400-005 - The URL marker {0} is not recognized
+     */
+    INVALID_URL_MARKER(400, "OMAG-MULTI-TENANT-400-005",
+                       "The URL marker {0} is not recognized",
+                       "The system is unable to continue with the request because the supplied URL marker does not match the registered services.",
+                       "Update the parameters passed on the request to either remove the URL marker, or set it to a URL marker that is recognized by the OMAG Server Platform."),
+
+    /**
      * OMAG-MULTI-TENANT-404-001 - The OMAG Server {0} is not available to service a request from user {1}
      */
     SERVER_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-001",
@@ -107,6 +115,17 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                     "Correct any errors discovered and retry the request when the open metadata repository services are available."),
 
     /**
+     * OMAG-MULTI-TENANT-500-001 - An unsupported bean class named {0} was passed to the OMAG Server Platform by the {1} request for
+     * open metadata view service {2} on server {3}; error message was: {4}
+     */
+    INVALID_BEAN_CLASS(500, "OMAG-MULTI-TENANT-500-001",
+                       "An unsupported bean class named {0} was passed to the OMAG Server Platform by the {1} request for open metadata view service {2} on " +
+                               "server {3}; error message was: {4}",
+                       "The system is unable to process the request because it is not able to instantiate the bean.",
+                       "Correct the code that initializes the converter during server start up."),
+
+
+    /**
      * OMAG-MULTI-TENANT-500-003 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connection because the connector provider is incorrect.  The error message was {3}
      */
     BAD_TOPIC_CONNECTOR_PROVIDER(500, "OMAG-MULTI-TENANT-500-003",
@@ -114,6 +133,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                                          "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
                                  "This is an internal error.  The access service is not using a valid connector provider.",
                                  "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
+
+
     ;
 
     private final int    httpErrorCode;

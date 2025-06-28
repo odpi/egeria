@@ -34,7 +34,7 @@ public class OMAGViewServiceRegistration
     {
         if (registration != null)
         {
-            String  serviceName = registration.getViewServiceName();
+            String  serviceName = registration.getViewServiceFullName();
 
             if (serviceName != null)
             {

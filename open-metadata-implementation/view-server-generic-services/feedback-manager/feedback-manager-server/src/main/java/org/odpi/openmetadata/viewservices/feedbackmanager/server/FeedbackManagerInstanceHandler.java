@@ -23,7 +23,7 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public FeedbackManagerInstanceHandler()
     {
-        super(ViewServiceDescription.FEEDBACK_MANAGER.getViewServiceName());
+        super(ViewServiceDescription.FEEDBACK_MANAGER.getViewServiceFullName());
 
         FeedbackManagerRegistration.registerViewService();
     }

@@ -24,7 +24,7 @@ public class ActionAuthorInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ActionAuthorInstanceHandler()
     {
-        super(ViewServiceDescription.ACTION_AUTHOR.getViewServiceName());
+        super(ViewServiceDescription.ACTION_AUTHOR.getViewServiceFullName());
 
         ActionAuthorRegistration.registerViewService();
     }

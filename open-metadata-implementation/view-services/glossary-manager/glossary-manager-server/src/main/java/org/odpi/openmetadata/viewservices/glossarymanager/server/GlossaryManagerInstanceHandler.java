@@ -25,7 +25,7 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public GlossaryManagerInstanceHandler()
     {
-        super(ViewServiceDescription.GLOSSARY_MANAGER.getViewServiceName());
+        super(ViewServiceDescription.GLOSSARY_MANAGER.getViewServiceFullName());
 
         GlossaryManagerRegistration.registerViewService();
     }

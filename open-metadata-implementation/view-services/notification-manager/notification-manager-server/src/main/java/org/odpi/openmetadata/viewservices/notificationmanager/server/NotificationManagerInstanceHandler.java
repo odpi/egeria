@@ -20,7 +20,7 @@ public class NotificationManagerInstanceHandler extends OMVSServiceInstanceHandl
      */
     public NotificationManagerInstanceHandler()
     {
-        super(ViewServiceDescription.NOTIFICATION_MANAGER.getViewServiceName());
+        super(ViewServiceDescription.NOTIFICATION_MANAGER.getViewServiceFullName());
 
         NotificationManagerRegistration.registerViewService();
     }

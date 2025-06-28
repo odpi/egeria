@@ -20,7 +20,7 @@ public class PrivacyOfficerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public PrivacyOfficerInstanceHandler()
     {
-        super(ViewServiceDescription.PRIVACY_OFFICER.getViewServiceName());
+        super(ViewServiceDescription.PRIVACY_OFFICER.getViewServiceFullName());
 
         PrivacyOfficerRegistration.registerViewService();
     }

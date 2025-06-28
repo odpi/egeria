@@ -23,7 +23,7 @@ public class ValidMetadataInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ValidMetadataInstanceHandler()
     {
-        super(ViewServiceDescription.VALID_METADATA.getViewServiceName());
+        super(ViewServiceDescription.VALID_METADATA.getViewServiceFullName());
 
         ValidMetadataRegistration.registerViewService();
     }

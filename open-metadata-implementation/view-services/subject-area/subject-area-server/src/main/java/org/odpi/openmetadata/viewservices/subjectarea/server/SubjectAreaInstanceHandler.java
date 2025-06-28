@@ -23,7 +23,7 @@ public class SubjectAreaInstanceHandler extends OMVSServiceInstanceHandler
      */
     public SubjectAreaInstanceHandler()
     {
-        super(ViewServiceDescription.SUBJECT_AREA.getViewServiceName());
+        super(ViewServiceDescription.SUBJECT_AREA.getViewServiceFullName());
 
         SubjectAreaRegistration.registerViewService();
     }
