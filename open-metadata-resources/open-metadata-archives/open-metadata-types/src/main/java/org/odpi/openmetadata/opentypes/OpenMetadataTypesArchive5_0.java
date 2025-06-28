@@ -267,7 +267,7 @@ public class OpenMetadataTypesArchive5_0
 
     private ClassificationDef getRecentAccessClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.RECENT_ACCESS_COMMECTION_CLASSIFICATION,
+        return archiveHelper.getClassificationDef(OpenMetadataType.RECENT_ACCESS_COLLECTION_CLASSIFICATION,
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);

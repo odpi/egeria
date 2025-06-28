@@ -379,7 +379,7 @@ Content-Type: application/json
 ###
 # @name createDataDictionaryCollection
 # Create a new collection with the Data Dictionary classification.  Used to identify a collection of
-# data fields that represent a data store of collection of common data types.
+# data fields/classes that represent a collection of common data types.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-dictionary-collection
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -503,7 +503,7 @@ Content-Type: application/json
 # Create a new collection with the EventSet classification.  This is used to group event schemas together.
 # For example, the collection may describe a set of events emitted by a specific system or to disseminate
 # information about a certain situation.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/context-event-collection
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/event-set-collection
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -642,7 +642,7 @@ Content-Type: application/json
   "parentAtEnd1": true,
   "properties": {
     "class" : "DigitalProductProperties",
-    "qualifiedName": "DigitalProduct:Add product name here",
+    "qualifiedName": "DigitalProduct::Add product name here",
     "name" : "Product contents",
     "description" : "Add description of product and its expected usage here",
     "identifier" : "Add product identifier here",
@@ -688,7 +688,7 @@ Content-Type: application/json
   "parentAtEnd1": true,
   "properties": {
     "class" : "DigitalProductProperties",
-    "qualifiedName": "DigitalProduct:Add product name here",
+    "qualifiedName": "DigitalProduct::Add product name here",
     "userDefinedStatus" : "Optional value here - used when initial status is OTHER",
     "name" : "Product display name",
     "description" : "Add description of product and its expected usage here",
@@ -725,7 +725,7 @@ Content-Type: application/json
   "class" : "UpdateElementRequestBody",
   "properties": {
     "class" : "DigitalProductProperties",
-    "qualifiedName": "DigitalProduct:Add product name here",
+    "qualifiedName": "DigitalProduct::Add product name here",
     "name" : "Product contents",
     "description" : "Add description of product and its expected usage here",
     "userDefinedStatus" : "OBSOLETE",
@@ -870,7 +870,7 @@ Content-Type: application/json
   "parentAtEnd1": true,
   "properties": {
     "class" : "AgreementProperties",
-    "qualifiedName": "Agreement:Add agreement name here",
+    "qualifiedName": "Agreement::Add agreement name here",
     "name" : "display name",
     "description" : "Add description of the agreement here",
     "identifier" : "Add agreement identifier here",
@@ -907,7 +907,7 @@ Content-Type: application/json
   "parentAtEnd1": true,
   "properties": {
     "class" : "AgreementProperties",
-    "qualifiedName": "Agreement:Add agreement name here",
+    "qualifiedName": "Agreement::Add agreement name here",
     "name" : "display name",
     "description" : "Add description of the agreement here",
     "userDefinedStatus" : "NEW",
@@ -929,7 +929,7 @@ Content-Type: application/json
 # @name createDataSharingAgreementCollection 
 # Create a new collection with the DataSharingAgreement classification.  The collection is typically an agreement
 # which may use the NewElementRequestBody, or the NewAgreementRequestBody if the initial status needs to be set.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/namespace-collection
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-sharing-agreement
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -942,7 +942,7 @@ Content-Type: application/json
   "parentAtEnd1": true,
   "properties": {
     "class" : "AgreementProperties",
-    "qualifiedName": "Agreement:Add agreement name here",
+    "qualifiedName": "Agreement::Add agreement name here",
     "name" : "display name",
     "description" : "Add description of the agreement here",
     "userDefinedStatus" : "NEW",
@@ -972,7 +972,7 @@ Content-Type: application/json
   "class" : "UpdateElementRequestBody",
   "properties": {
     "class" : "AgreementProperties",
-    "qualifiedName": "Agreement:Add agreement name here",
+    "qualifiedName": "Agreement::Add agreement name here",
     "name" : "display name",
     "description" : "Add description of the agreement here",
     "userDefinedStatus" : "OBSOLETE",
@@ -1177,7 +1177,7 @@ Content-Type: application/json
   "parentAtEnd1": true,
   "properties": {
     "class" : "DigitalSubscriptionProperties",
-    "qualifiedName": "DigitalSubscription:Add subscription name here",
+    "qualifiedName": "DigitalSubscription::Add subscription name here",
     "name" : "display name",
     "description" : "Add description of the subscription here",
     "userDefinedStatus" : "OBSOLETE",
@@ -1221,7 +1221,7 @@ Content-Type: application/json
   "parentAtEnd1": true,
   "properties": {
     "class" : "DigitalSubscriptionProperties",
-    "qualifiedName": "DigitalSubscription:Add subscription name here",
+    "qualifiedName": "DigitalSubscription::Add subscription name here",
     "name" : "display name",
     "description" : "Add description of the subscription here",
     "userDefinedStatus" : "OBSOLETE",
@@ -1255,7 +1255,7 @@ Content-Type: application/json
   "class" : "UpdateElementRequestBody",
   "properties": {
     "class" : "DigitalSubscriptionProperties",
-    "qualifiedName": "DigitalSubscription:Add subscription name here",
+    "qualifiedName": "DigitalSubscription::Add subscription name here",
     "name" : "display name",
     "description" : "Add description of the subscription here",
     "userDefinedStatus" : "OBSOLETE",

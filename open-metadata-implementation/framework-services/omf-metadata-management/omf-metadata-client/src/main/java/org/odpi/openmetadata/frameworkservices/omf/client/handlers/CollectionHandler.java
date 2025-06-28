@@ -51,8 +51,6 @@ public class CollectionHandler
 
     final private Class<CollectionMember>                     collectionMemberBeanClass = CollectionMember.class;
 
-    final private boolean forLineage = false;
-    final private boolean forDuplicateProcessing = false;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -523,6 +521,8 @@ public class CollectionHandler
      * Create a new generic collection.
      *
      * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
@@ -535,6 +535,8 @@ public class CollectionHandler
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the newly created Collection
@@ -544,6 +546,8 @@ public class CollectionHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createCollection(String               userId,
+                                   String               externalSourceGUID,
+                                   String               externalSourceName,
                                    String               anchorGUID,
                                    boolean              isOwnAnchor,
                                    String               anchorScopeGUID,
@@ -554,6 +558,8 @@ public class CollectionHandler
                                    String               parentRelationshipTypeName,
                                    ElementProperties    parentRelationshipProperties,
                                    boolean              parentAtEnd1,
+                                   boolean              forLineage,
+                                   boolean              forDuplicateProcessing,
                                    Date                 effectiveTime) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
@@ -605,8 +611,8 @@ public class CollectionHandler
         }
 
         return openMetadataStoreClient.createMetadataElementInStore(userId,
-                                                                    null,
-                                                                    null,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
                                                                     collectionTypeName,
                                                                     initialStatus,
                                                                     initialClassifications,
@@ -620,8 +626,8 @@ public class CollectionHandler
                                                                     parentRelationshipTypeName,
                                                                     parentRelationshipProperties,
                                                                     parentAtEnd1,
-                                                                    false,
-                                                                    false,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
                                                                     effectiveTime);
     }
 
@@ -632,6 +638,8 @@ public class CollectionHandler
      * The template defines additional classifications and relationships that should be added to the new collection.
      *
      * @param userId             calling user
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
@@ -648,6 +656,8 @@ public class CollectionHandler
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
@@ -657,6 +667,8 @@ public class CollectionHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createCollectionFromTemplate(String              userId,
+                                               String              externalSourceGUID,
+                                               String              externalSourceName,
                                                String              anchorGUID,
                                                boolean             isOwnAnchor,
                                                String              anchorScopeGUID,
@@ -669,11 +681,15 @@ public class CollectionHandler
                                                String              parentRelationshipTypeName,
                                                ElementProperties   parentRelationshipProperties,
                                                boolean             parentAtEnd1,
+                                               boolean             forLineage,
+                                               boolean             forDuplicateProcessing,
                                                Date                effectiveTime) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
         return openMetadataStoreClient.createMetadataElementFromTemplate(userId,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
                                                                          OpenMetadataType.COLLECTION.typeName,
                                                                          anchorGUID,
                                                                          isOwnAnchor,
@@ -697,10 +713,14 @@ public class CollectionHandler
      * Update the properties of a collection.
      *
      * @param userId         userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
      * @param collectionGUID unique identifier of the collection (returned from create)
      * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
      * @param properties     properties for the collection.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -708,9 +728,13 @@ public class CollectionHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   updateCollection(String               userId,
+                                   String               externalSourceGUID,
+                                   String               externalSourceName,
                                    String               collectionGUID,
                                    boolean              replaceAllProperties,
                                    CollectionProperties properties,
+                                   boolean              forLineage,
+                                   boolean              forDuplicateProcessing,
                                    Date                 effectiveTime) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
@@ -728,6 +752,8 @@ public class CollectionHandler
         }
 
         openMetadataStoreClient.updateMetadataElementInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
                                                              collectionGUID,
                                                              replaceAllProperties,
                                                              forLineage,
@@ -880,10 +906,9 @@ public class CollectionHandler
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
 
-        ElementProperties properties = null;
         if (collectionUse != null)
         {
-            properties = propertyHelper.addStringProperty(null,
+            ElementProperties properties = propertyHelper.addStringProperty(null,
                                                           OpenMetadataProperty.RESOURCE_USE.name,
                                                           collectionUse.getResourceUse());
             properties = propertyHelper.addStringProperty(properties,
@@ -895,20 +920,35 @@ public class CollectionHandler
             properties = propertyHelper.addBooleanProperty(properties,
                                                            OpenMetadataProperty.WATCH_RESOURCE.name,
                                                            collectionUse.getWatchResource());
-        }
 
-        openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                             externalSourceGUID,
-                                                             externalSourceName,
-                                                             OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
-                                                             parentGUID,
-                                                             collectionGUID,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             null,
-                                                             null,
-                                                             properties,
-                                                             new Date());
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                                 parentGUID,
+                                                                 collectionGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 collectionUse.getEffectiveFrom(),
+                                                                 collectionUse.getEffectiveTo(),
+                                                                 properties,
+                                                                 new Date());
+        }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                                 parentGUID,
+                                                                 collectionGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 new Date());
+        }
 
         if (makeAnchor)
         {
@@ -1695,20 +1735,30 @@ public class CollectionHandler
      * then they are also deleted.
      *
      * @param userId         userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
      * @param collectionGUID unique identifier of the collection
      * @param cascadedDelete should any nested collections be deleted? If false, the delete fails if there are nested
      *                       collections.  If true, nested collections are delete - but not member elements
      *                       unless they are anchored to the collection
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteCollection(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
                                  String  collectionGUID,
-                                 boolean cascadedDelete) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+                                 boolean cascadedDelete,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
         final String methodName = "deleteCollection";
         final String collectionGUIDParameterName = "collectionGUID";
@@ -1717,11 +1767,13 @@ public class CollectionHandler
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
 
         openMetadataStoreClient.deleteMetadataElementInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
                                                              collectionGUID,
                                                              cascadedDelete,
-                                                             false,
-                                                             false,
-                                                             new Date());
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
 
 
@@ -2037,9 +2089,13 @@ public class CollectionHandler
      * Add an element to a collection.
      *
      * @param userId               userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
      * @param collectionGUID       unique identifier of the collection.
      * @param membershipProperties properties describing the membership characteristics.
      * @param elementGUID          unique identifier of the element.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -2047,9 +2103,13 @@ public class CollectionHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void addToCollection(String                         userId,
+                                String                         externalSourceGUID,
+                                String                         externalSourceName,
                                 String                         collectionGUID,
                                 CollectionMembershipProperties membershipProperties,
                                 String                         elementGUID,
+                                boolean                        forLineage,
+                                boolean                        forDuplicateProcessing,
                                 Date                           effectiveTime) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -2067,11 +2127,13 @@ public class CollectionHandler
         if (relationshipGUID == null)
         {
             openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
                                                                  OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                  collectionGUID,
                                                                  elementGUID,
-                                                                 false,
-                                                                 false,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
                                                                  null,
                                                                  null,
                                                                  this.getElementProperties(membershipProperties),
@@ -2079,7 +2141,15 @@ public class CollectionHandler
         }
         else
         {
-            this.updateCollectionMembership(userId, relationshipGUID, true, membershipProperties, effectiveTime);
+            this.updateCollectionMembership(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationshipGUID,
+                                            true,
+                                            membershipProperties,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime);
         }
     }
 
@@ -2093,6 +2163,8 @@ public class CollectionHandler
      *                               the individual properties specified on the request.
      * @param membershipProperties properties describing the membership characteristics.
      * @param elementGUID          unique identifier of the element.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -2100,10 +2172,14 @@ public class CollectionHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateCollectionMembership(String                         userId,
+                                           String                         externalSourceGUID,
+                                           String                         externalSourceName,
                                            String                         collectionGUID,
                                            boolean                        replaceAllProperties,
                                            CollectionMembershipProperties membershipProperties,
                                            String                         elementGUID,
+                                           boolean                        forLineage,
+                                           boolean                        forDuplicateProcessing,
                                            Date                           effectiveTime) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
@@ -2121,11 +2197,27 @@ public class CollectionHandler
 
         if (relationshipGUID != null)
         {
-            this.updateCollectionMembership(userId, relationshipGUID, replaceAllProperties, membershipProperties, effectiveTime);
+            this.updateCollectionMembership(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationshipGUID,
+                                            replaceAllProperties,
+                                            membershipProperties,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime);
         }
         else
         {
-            this.addToCollection(userId, collectionGUID, membershipProperties, elementGUID, effectiveTime);
+            this.addToCollection(userId,
+                                 externalSourceGUID,
+                                 externalSourceName,
+                                 collectionGUID,
+                                 membershipProperties,
+                                 elementGUID,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 effectiveTime);
         }
     }
 
@@ -2134,21 +2226,31 @@ public class CollectionHandler
      * Update the properties of a collection membership relationship.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
      * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                               the individual properties specified on the request.
      * @param relationshipGUID unique identifier of the collection
      * @param membershipProperties properties describing the membership characteristics.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      */
     private void updateCollectionMembership(String                         userId,
+                                            String                         externalSourceGUID,
+                                            String                         externalSourceName,
                                             String                         relationshipGUID,
                                             boolean                        replaceAllProperties,
                                             CollectionMembershipProperties membershipProperties,
+                                            boolean                        forLineage,
+                                            boolean                        forDuplicateProcessing,
                                             Date                           effectiveTime) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
         openMetadataStoreClient.updateRelationshipInStore(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
                                                           relationshipGUID,
                                                           replaceAllProperties,
                                                           forLineage,
@@ -2162,18 +2264,26 @@ public class CollectionHandler
      * Remove an element from a collection.
      *
      * @param userId         userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
      * @param collectionGUID unique identifier of the collection.
      * @param elementGUID    unique identifier of the element.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void removeFromCollection(String userId,
-                                     String collectionGUID,
-                                     String elementGUID,
-                                     Date   effectiveTime) throws InvalidParameterException,
+    public void removeFromCollection(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  collectionGUID,
+                                     String  elementGUID,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
@@ -2191,6 +2301,8 @@ public class CollectionHandler
         if (relationshipGUID != null)
         {
             openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
                                                               relationshipGUID,
                                                               forLineage,
                                                               forDuplicateProcessing,

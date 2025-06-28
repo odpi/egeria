@@ -24,7 +24,7 @@ public class GlossaryBrowserInstanceHandler extends OMVSServiceInstanceHandler
      */
     public GlossaryBrowserInstanceHandler()
     {
-        super(ViewServiceDescription.GLOSSARY_BROWSER.getViewServiceName());
+        super(ViewServiceDescription.GLOSSARY_BROWSER.getViewServiceFullName());
 
         GlossaryBrowserRegistration.registerViewService();
     }

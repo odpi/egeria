@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  = */
 
 @RestController
-@RequestMapping("/servers/{serverName}/api/open-metadata/collection-manager")
+@RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
 
 @Tag(name="API: Collection Manager OMVS",
         description="Maintain and explore the contents of nested collections. These collections can be used to represent digital products, or collections of resources for a particular project or team. They can be used to organize assets and other resources into logical groups.",
@@ -44,6 +44,7 @@ public class CollectionManagerResource
      * Returns the list of collections that are linked off of the supplied element.
      *
      * @param serverName     name of called server
+     * @param urlMarker  view service URL marker
      * @param parentGUID     unique identifier of referenceable object (typically a personal profile, project or
      *                       community) that the collections hang off of
      * @param startFrom      index of the list to start from (0 for start)
@@ -62,6 +63,7 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionsResponse getAttachedCollections(@PathVariable String            serverName,
+                                                      @PathVariable String             urlMarker,
                                                       @PathVariable String            parentGUID,
                                                       @RequestParam(required = false, defaultValue = "0")
                                                       int    startFrom,
@@ -70,7 +72,7 @@ public class CollectionManagerResource
                                                       @RequestBody(required = false)
                                                       FilterRequestBody requestBody)
     {
-        return restAPI.getAttachedCollections(serverName, parentGUID, startFrom, pageSize, requestBody);
+        return restAPI.getAttachedCollections(serverName, urlMarker, parentGUID, startFrom, pageSize, requestBody);
     }
 
 
@@ -78,6 +80,7 @@ public class CollectionManagerResource
      * Returns the list of collections matching the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param classificationName option name of a collection classification
      * @param startsWith does the value start with the supplied string?
      * @param endsWith does the value end with the supplied string?
@@ -98,6 +101,7 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionsResponse findCollections(@PathVariable String            serverName,
+                                               @PathVariable String             urlMarker,
                                                @RequestParam(required = false)
                                                String classificationName,
                                                @RequestParam (required = false, defaultValue = "false")
@@ -113,7 +117,7 @@ public class CollectionManagerResource
                                                @RequestBody  (required = false)
                                                FilterRequestBody requestBody)
     {
-        return restAPI.findCollections(serverName, classificationName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findCollections(serverName, urlMarker, classificationName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
 
 
@@ -121,6 +125,7 @@ public class CollectionManagerResource
      * Returns the list of collections with a particular name.
      *
      * @param serverName    name of called server
+     * @param urlMarker  view service URL marker
      * @param classificationName option name of a collection classification
      * @param requestBody      name of the collections to return - match is full text match in qualifiedName or name
      * @param startFrom index of the list to start from (0 for start)
@@ -138,6 +143,7 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionsResponse getCollectionsByName(@PathVariable String            serverName,
+                                                    @PathVariable String             urlMarker,
                                                     @RequestParam(required = false)
                                                     String classificationName,
                                                     @RequestParam(required = false, defaultValue = "0")
@@ -146,7 +152,7 @@ public class CollectionManagerResource
                                                     int    pageSize,
                                                     @RequestBody  FilterRequestBody requestBody)
     {
-        return restAPI.getCollectionsByName(serverName, classificationName, startFrom, pageSize, requestBody);
+        return restAPI.getCollectionsByName(serverName, urlMarker, classificationName, startFrom, pageSize, requestBody);
     }
 
 
@@ -154,6 +160,7 @@ public class CollectionManagerResource
      * Returns the list of collections with a particular collectionType.  This is an optional text field in the collection element.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param classificationName option name of a collection classification
      * @param requestBody the collection type value to match on.  If it is null, all collections with a null collectionType are returned
      * @param startFrom      index of the list to start from (0 for start)
@@ -171,6 +178,7 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionsResponse getCollectionsByType(@PathVariable String            serverName,
+                                                    @PathVariable String             urlMarker,
                                                     @RequestParam(required = false)
                                                     String            classificationName,
                                                     @RequestParam(required = false, defaultValue = "0")
@@ -179,7 +187,7 @@ public class CollectionManagerResource
                                                     int               pageSize,
                                                     @RequestBody(required = false)  FilterRequestBody requestBody)
     {
-        return restAPI.getCollectionsByType(serverName, classificationName, startFrom, pageSize, requestBody);
+        return restAPI.getCollectionsByType(serverName, urlMarker, classificationName, startFrom, pageSize, requestBody);
     }
 
 
@@ -187,6 +195,7 @@ public class CollectionManagerResource
      * Return the properties of a specific collection.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the required collection
      *
      * @return collection properties
@@ -201,9 +210,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionResponse getCollection(@PathVariable String serverName,
+                                            @PathVariable String             urlMarker,
                                             @PathVariable String collectionGUID)
     {
-        return restAPI.getCollection(serverName, collectionGUID, null);
+        return restAPI.getCollection(serverName, urlMarker, collectionGUID, null);
     }
 
 
@@ -211,6 +221,7 @@ public class CollectionManagerResource
      * Return the properties of a specific collection.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the required collection
      *
      * @return collection properties
@@ -225,10 +236,11 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionResponse getCollection(@PathVariable String serverName,
+                                            @PathVariable String             urlMarker,
                                             @PathVariable String collectionGUID,
                                             @RequestBody  AnyTimeRequestBody requestBody)
     {
-        return restAPI.getCollection(serverName, collectionGUID, requestBody);
+        return restAPI.getCollection(serverName, urlMarker, collectionGUID, requestBody);
     }
 
 
@@ -236,6 +248,7 @@ public class CollectionManagerResource
      * Create a new generic collection.
      *
      * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
      * @param classificationName name of collection classification
      * @param requestBody             properties for the collection.
      *
@@ -251,11 +264,12 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createCollection(@PathVariable String                   serverName,
+                                         @PathVariable String             urlMarker,
                                          @RequestParam(required = false)
                                          String                   classificationName,
                                          @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, classificationName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, classificationName, requestBody);
     }
 
 
@@ -264,6 +278,7 @@ public class CollectionManagerResource
      * collection hierarchy.
      *
      * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -278,9 +293,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createRootCollection(@PathVariable String                   serverName,
+                                             @PathVariable String             urlMarker,
                                              @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName, requestBody);
     }
 
 
@@ -289,6 +305,7 @@ public class CollectionManagerResource
      * data fields used to define data requirements for a project or initiative.
      *
      * @param serverName              name of called server.
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -304,9 +321,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/data-specification"))
 
     public GUIDResponse createDataSpecCollection(@PathVariable String                   serverName,
+                                                 @PathVariable String             urlMarker,
                                                  @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION.typeName, requestBody);
     }
 
 
@@ -315,6 +333,7 @@ public class CollectionManagerResource
      * data fields that represent a data store of collection of common data types.
      *
      * @param serverName              name of called server.
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -330,9 +349,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/data-dictionary"))
 
     public GUIDResponse createDataDictionaryCollection(@PathVariable String                   serverName,
+                                                       @PathVariable String             urlMarker,
                                                        @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION.typeName, requestBody);
     }
 
 
@@ -341,6 +361,7 @@ public class CollectionManagerResource
      * in a collection hierarchy.
      *
      * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -355,9 +376,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createFolderCollection(@PathVariable String                   serverName,
+                                               @PathVariable String             urlMarker,
                                                @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName, requestBody);
     }
 
 
@@ -365,6 +387,7 @@ public class CollectionManagerResource
      * Create a new collection with the ContextEventCollection classification.
      *
      * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -380,9 +403,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createContextEventCollection(@PathVariable String                   serverName,
+                                                     @PathVariable String             urlMarker,
                                                      @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, OpenMetadataType.CONTEXT_EVENT_COLLECTION_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.CONTEXT_EVENT_COLLECTION_CLASSIFICATION.typeName, requestBody);
     }
 
 
@@ -390,6 +414,7 @@ public class CollectionManagerResource
      * Create a new collection with the Namespace classification.  This is used to group elements that belong to the same namespace.
      *
      * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -404,9 +429,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createNamespaceCollection(@PathVariable String                   serverName,
+                                                  @PathVariable String             urlMarker,
                                                   @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION.typeName, requestBody);
     }
 
 
@@ -414,6 +440,7 @@ public class CollectionManagerResource
     /**
      * Create a new agreement with the DataSharingAgreement classification.  This is used to identify an agreement as being related to the sharing of data between two parties.     *
      * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -428,9 +455,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createDataSharingAgreement(@PathVariable String                   serverName,
+                                                   @PathVariable String             urlMarker,
                                                    @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName, requestBody);
     }
 
 
@@ -438,6 +466,7 @@ public class CollectionManagerResource
      * Create a new collection with the EventSet classification.
      *
      * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -453,9 +482,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createEventSetCollection(@PathVariable String                   serverName,
+                                                 @PathVariable String             urlMarker,
                                                  @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, OpenMetadataType.EVENT_SET_COLLECTION_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.EVENT_SET_COLLECTION_CLASSIFICATION.typeName, requestBody);
     }
 
 
@@ -463,6 +493,7 @@ public class CollectionManagerResource
      * Create a new collection with the NamingStandardRuleSet classification.
      *
      * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -478,9 +509,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createNamingStandardRuleSetCollection(@PathVariable String                   serverName,
+                                                              @PathVariable String             urlMarker,
                                                               @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, OpenMetadataType.NAMING_STANDARD_RULE_SET_COLLECTION_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.NAMING_STANDARD_RULE_SET_COLLECTION_CLASSIFICATION.typeName, requestBody);
     }
 
 
@@ -489,6 +521,7 @@ public class CollectionManagerResource
      * The template defines additional classifications and relationships that should be added to the new collection.
      *
      * @param serverName             calling user
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -504,9 +537,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createCollectionFromTemplate(@PathVariable String              serverName,
+                                                     @PathVariable String             urlMarker,
                                                      @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createCollectionFromTemplate(serverName, requestBody);
+        return restAPI.createCollectionFromTemplate(serverName, urlMarker, requestBody);
     }
 
 
@@ -514,6 +548,7 @@ public class CollectionManagerResource
      * Update the properties of a collection.
      *
      * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection (returned from create)
      * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
@@ -531,11 +566,12 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse updateCollection(@PathVariable String                  serverName,
+                                         @PathVariable String             urlMarker,
                                          @PathVariable String                  collectionGUID,
                                          @RequestParam boolean                 replaceAllProperties,
                                          @RequestBody  UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateCollection(serverName, collectionGUID, replaceAllProperties, requestBody);
+        return restAPI.updateCollection(serverName, urlMarker, collectionGUID, replaceAllProperties, requestBody);
     }
 
 
@@ -544,6 +580,7 @@ public class CollectionManagerResource
      * Update the status of a digital product.
      *
      * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
      * @param digitalProductGUID unique identifier of the digital product (returned from createCollection)
      * @param requestBody     properties for the new element.
      *
@@ -559,11 +596,12 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/digital-product"))
 
     public VoidResponse updateDigitalProductStatus(@PathVariable String serverName,
+                                                   @PathVariable String             urlMarker,
                                                    @PathVariable String digitalProductGUID,
                                                    @RequestBody (required = false)
                                                    DigitalProductStatusRequestBody requestBody)
     {
-        return restAPI.updateDigitalProductStatus(serverName, digitalProductGUID, requestBody);
+        return restAPI.updateDigitalProductStatus(serverName, urlMarker, digitalProductGUID, requestBody);
     }
 
 
@@ -571,6 +609,7 @@ public class CollectionManagerResource
      * Update the status of an agreement.
      *
      * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
      * @param agreementGUID unique identifier of the agreement (returned from createCollection)
      * @param requestBody     properties for the new status.
      *
@@ -587,12 +626,13 @@ public class CollectionManagerResource
 
     public VoidResponse updateAgreementStatus(@PathVariable
                                               String                                  serverName,
+                                              @PathVariable String             urlMarker,
                                               @PathVariable
                                               String agreementGUID,
                                               @RequestBody (required = false)
                                               AgreementStatusRequestBody requestBody)
     {
-        return restAPI.updateAgreementStatus(serverName, agreementGUID, requestBody);
+        return restAPI.updateAgreementStatus(serverName, urlMarker, agreementGUID, requestBody);
     }
 
 
@@ -600,6 +640,7 @@ public class CollectionManagerResource
      * Connect an existing collection to an element using the ResourceList relationship (0019).
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to
      * @param requestBody  description of how the collection will be used.
@@ -617,6 +658,7 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse attachCollection(@PathVariable String                  serverName,
+                                         @PathVariable String             urlMarker,
                                          @PathVariable String                  collectionGUID,
                                          @PathVariable String                  parentGUID,
                                          @RequestParam(required = false, defaultValue = "false")
@@ -624,7 +666,7 @@ public class CollectionManagerResource
                                          @RequestBody(required = false)
                                          RelationshipRequestBody requestBody)
     {
-        return restAPI.attachCollection(serverName, collectionGUID, parentGUID, makeAnchor, requestBody);
+        return restAPI.attachCollection(serverName, urlMarker, collectionGUID, parentGUID, makeAnchor, requestBody);
     }
 
 
@@ -632,6 +674,7 @@ public class CollectionManagerResource
      * Detach an existing collection from an element.  If the collection is anchored to the element, it is deleted.
      *
      * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection.
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
      *
@@ -647,12 +690,13 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse detachCollection(@PathVariable String                    serverName,
+                                         @PathVariable String             urlMarker,
                                          @PathVariable String                    collectionGUID,
                                          @PathVariable String                    parentGUID,
                                          @RequestBody(required = false)
                                          MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachCollection(serverName, collectionGUID, parentGUID, requestBody);
+        return restAPI.detachCollection(serverName, urlMarker, collectionGUID, parentGUID, requestBody);
     }
 
 
@@ -661,6 +705,7 @@ public class CollectionManagerResource
      * Link two dependent digital products.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param consumerDigitalProductGUID    unique identifier of the digital product that has the dependency.
      * @param consumedDigitalProductGUID    unique identifier of the digital product that it is using.
      * @param requestBody  description of the relationship.
@@ -678,6 +723,7 @@ public class CollectionManagerResource
 
     public VoidResponse linkDigitalProductDependency(@PathVariable
                                                      String                                serverName,
+                                                     @PathVariable String             urlMarker,
                                                      @PathVariable
                                                      String consumerDigitalProductGUID,
                                                      @PathVariable
@@ -685,7 +731,7 @@ public class CollectionManagerResource
                                                      @RequestBody (required = false)
                                                      RelationshipRequestBody requestBody)
     {
-        return restAPI.linkDigitalProductDependency(serverName, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
+        return restAPI.linkDigitalProductDependency(serverName, urlMarker, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
     }
 
 
@@ -693,6 +739,7 @@ public class CollectionManagerResource
      * Unlink dependent digital products.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param consumerDigitalProductGUID    unique identifier of the digital product that has the dependency.
      * @param consumedDigitalProductGUID    unique identifier of the digital product that it is using.
      * @param requestBody  description of the relationship.
@@ -710,6 +757,7 @@ public class CollectionManagerResource
 
     public VoidResponse detachDigitalProductDependency(@PathVariable
                                                        String                    serverName,
+                                                       @PathVariable String             urlMarker,
                                                        @PathVariable
                                                        String consumerDigitalProductGUID,
                                                        @PathVariable
@@ -717,7 +765,7 @@ public class CollectionManagerResource
                                                        @RequestBody (required = false)
                                                        MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachDigitalProductDependency(serverName, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
+        return restAPI.detachDigitalProductDependency(serverName, urlMarker, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
     }
 
 
@@ -725,6 +773,7 @@ public class CollectionManagerResource
      * Attach a subscriber to a subscription.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param digitalSubscriberGUID  unique identifier of the subscriber (referenceable)
      * @param digitalSubscriptionGUID unique identifier of the  digital subscription agreement
      * @param requestBody  description of the relationship.
@@ -742,6 +791,7 @@ public class CollectionManagerResource
 
     public VoidResponse linkSubscriber(@PathVariable
                                        String                                serverName,
+                                       @PathVariable String             urlMarker,
                                        @PathVariable
                                        String digitalSubscriberGUID,
                                        @PathVariable
@@ -749,7 +799,7 @@ public class CollectionManagerResource
                                        @RequestBody (required = false)
                                        RelationshipRequestBody requestBody)
     {
-        return restAPI.linkSubscriber(serverName, digitalSubscriberGUID, digitalSubscriptionGUID, requestBody);
+        return restAPI.linkSubscriber(serverName, urlMarker, digitalSubscriberGUID, digitalSubscriptionGUID, requestBody);
     }
 
 
@@ -757,6 +807,7 @@ public class CollectionManagerResource
      * Detach a subscriber from a subscription.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param digitalSubscriberGUID  unique identifier of the subscriber (referenceable)
      * @param digitalSubscriptionGUID unique identifier of the  digital subscription agreement
      * @param requestBody  description of the relationship.
@@ -774,6 +825,7 @@ public class CollectionManagerResource
 
     public VoidResponse detachSubscriber(@PathVariable
                                          String                    serverName,
+                                         @PathVariable String             urlMarker,
                                          @PathVariable
                                          String digitalSubscriberGUID,
                                          @PathVariable
@@ -781,7 +833,7 @@ public class CollectionManagerResource
                                          @RequestBody (required = false)
                                          MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachSubscriber(serverName, digitalSubscriberGUID, digitalSubscriptionGUID, requestBody);
+        return restAPI.detachSubscriber(serverName, urlMarker, digitalSubscriberGUID, digitalSubscriptionGUID, requestBody);
     }
 
 
@@ -789,6 +841,7 @@ public class CollectionManagerResource
      * Attach a product manager to a digital product.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param digitalProductGUID  unique identifier of the digital product
      * @param digitalProductManagerGUID      unique identifier of the product manager role
      * @param requestBody  description of the relationship.
@@ -806,6 +859,7 @@ public class CollectionManagerResource
 
     public VoidResponse linkProductManager(@PathVariable
                                            String                                serverName,
+                                           @PathVariable String             urlMarker,
                                            @PathVariable
                                            String digitalProductGUID,
                                            @PathVariable
@@ -813,7 +867,7 @@ public class CollectionManagerResource
                                            @RequestBody (required = false)
                                            RelationshipRequestBody requestBody)
     {
-        return restAPI.linkProductManager(serverName, digitalProductGUID, digitalProductManagerGUID, requestBody);
+        return restAPI.linkProductManager(serverName, urlMarker, digitalProductGUID, digitalProductManagerGUID, requestBody);
     }
 
 
@@ -821,6 +875,7 @@ public class CollectionManagerResource
      * Detach a product manager from a digital product.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param digitalProductGUID  unique identifier of the digital product
      * @param digitalProductManagerGUID      unique identifier of the product manager role
      * @param requestBody  description of the relationship.
@@ -838,6 +893,7 @@ public class CollectionManagerResource
 
     public VoidResponse detachProductManager(@PathVariable
                                              String                    serverName,
+                                             @PathVariable String             urlMarker,
                                              @PathVariable
                                              String digitalProductGUID,
                                              @PathVariable
@@ -845,7 +901,7 @@ public class CollectionManagerResource
                                              @RequestBody (required = false)
                                              MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachProductManager(serverName, digitalProductGUID, digitalProductManagerGUID, requestBody);
+        return restAPI.detachProductManager(serverName, urlMarker, digitalProductGUID, digitalProductManagerGUID, requestBody);
     }
 
 
@@ -854,6 +910,7 @@ public class CollectionManagerResource
      * Attach an actor to an agreement.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param agreementGUID  unique identifier of the agreement
      * @param actorGUID      unique identifier of the actor
      * @param requestBody  description of the relationship.
@@ -871,6 +928,7 @@ public class CollectionManagerResource
 
     public GUIDResponse linkAgreementActor(@PathVariable
                                            String                                serverName,
+                                           @PathVariable String             urlMarker,
                                            @PathVariable
                                            String agreementGUID,
                                            @PathVariable
@@ -878,7 +936,7 @@ public class CollectionManagerResource
                                            @RequestBody (required = false)
                                            RelationshipRequestBody requestBody)
     {
-        return restAPI.linkAgreementActor(serverName, agreementGUID, actorGUID, requestBody);
+        return restAPI.linkAgreementActor(serverName, urlMarker, agreementGUID, actorGUID, requestBody);
     }
 
 
@@ -886,6 +944,7 @@ public class CollectionManagerResource
      * Detach an actor from an agreement.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param agreementActorRelationshipGUID  unique identifier of the element being described
      * @param requestBody  description of the relationship.
      *
@@ -902,12 +961,13 @@ public class CollectionManagerResource
 
     public VoidResponse detachAgreementActor(@PathVariable
                                              String                    serverName,
+                                             @PathVariable String             urlMarker,
                                              @PathVariable
                                              String agreementActorRelationshipGUID,
                                              @RequestBody (required = false)
                                              MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachAgreementActor(serverName, agreementActorRelationshipGUID, requestBody);
+        return restAPI.detachAgreementActor(serverName, urlMarker, agreementActorRelationshipGUID, requestBody);
     }
 
 
@@ -915,6 +975,7 @@ public class CollectionManagerResource
      * Attach an agreement to an element referenced in its definition.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param agreementGUID  unique identifier of the agreement
      * @param agreementItemGUID      unique identifier of the agreement item
      * @param requestBody  description of the relationship.
@@ -932,6 +993,7 @@ public class CollectionManagerResource
 
     public VoidResponse linkAgreementItem(@PathVariable
                                           String                                serverName,
+                                          @PathVariable String             urlMarker,
                                           @PathVariable
                                           String agreementGUID,
                                           @PathVariable
@@ -939,7 +1001,7 @@ public class CollectionManagerResource
                                           @RequestBody (required = false)
                                           RelationshipRequestBody requestBody)
     {
-        return restAPI.linkAgreementItem(serverName, agreementGUID, agreementItemGUID, requestBody);
+        return restAPI.linkAgreementItem(serverName, urlMarker, agreementGUID, agreementItemGUID, requestBody);
     }
 
 
@@ -947,6 +1009,7 @@ public class CollectionManagerResource
      * Detach an agreement from an element involved in its definition.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param agreementGUID  unique identifier of the agreement
      * @param agreementItemGUID      unique identifier of the agreement item
      * @param requestBody  description of the relationship.
@@ -964,6 +1027,7 @@ public class CollectionManagerResource
 
     public VoidResponse detachAgreementItem(@PathVariable
                                             String                    serverName,
+                                            @PathVariable String             urlMarker,
                                             @PathVariable
                                             String agreementGUID,
                                             @PathVariable
@@ -971,7 +1035,7 @@ public class CollectionManagerResource
                                             @RequestBody (required = false)
                                             MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachAgreementItem(serverName, agreementGUID, agreementItemGUID, requestBody);
+        return restAPI.detachAgreementItem(serverName, urlMarker, agreementGUID, agreementItemGUID, requestBody);
     }
 
 
@@ -979,6 +1043,7 @@ public class CollectionManagerResource
      * Attach an agreement to an external reference element that describes the location of the contract documents.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param agreementGUID  unique identifier of the agreement
      * @param externalReferenceGUID      unique identifier of the external reference describing the location of the contract
      * @param requestBody  description of the relationship.
@@ -996,6 +1061,7 @@ public class CollectionManagerResource
 
     public VoidResponse linkContract(@PathVariable
                                      String                                serverName,
+                                     @PathVariable String             urlMarker,
                                      @PathVariable
                                      String agreementGUID,
                                      @PathVariable
@@ -1003,7 +1069,7 @@ public class CollectionManagerResource
                                      @RequestBody (required = false)
                                      RelationshipRequestBody requestBody)
     {
-        return restAPI.linkContract(serverName, agreementGUID, externalReferenceGUID, requestBody);
+        return restAPI.linkContract(serverName, urlMarker, agreementGUID, externalReferenceGUID, requestBody);
     }
 
 
@@ -1011,6 +1077,7 @@ public class CollectionManagerResource
      * Detach an agreement from an external reference describing the location of the contract documents.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param agreementGUID  unique identifier of the agreement
      * @param externalReferenceGUID      unique identifier of the external reference describing the location of the contract
      * @param requestBody  description of the relationship.
@@ -1028,6 +1095,7 @@ public class CollectionManagerResource
 
     public VoidResponse detachContract(@PathVariable
                                        String                    serverName,
+                                       @PathVariable String             urlMarker,
                                        @PathVariable
                                        String agreementGUID,
                                        @PathVariable
@@ -1035,7 +1103,7 @@ public class CollectionManagerResource
                                        @RequestBody (required = false)
                                        MetadataSourceRequestBody requestBody)
     {
-        return restAPI.detachContract(serverName, agreementGUID, externalReferenceGUID, requestBody);
+        return restAPI.detachContract(serverName, urlMarker, agreementGUID, externalReferenceGUID, requestBody);
     }
 
 
@@ -1044,6 +1112,7 @@ public class CollectionManagerResource
      * then they are also deleted.
      *
      * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection.
      * @param cascadedDelete should any nested collections be deleted? If false, the delete fails if there are nested
      *                       collections.  If true, nested collections are delete - but not member elements
@@ -1065,12 +1134,13 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse deleteCollection(@PathVariable String          serverName,
+                                         @PathVariable String             urlMarker,
                                          @PathVariable String          collectionGUID,
                                          @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
                                          @RequestBody(required = false)
                                          MetadataSourceRequestBody requestBody)
     {
-        return restAPI.deleteCollection(serverName, collectionGUID, cascadedDelete, requestBody);
+        return restAPI.deleteCollection(serverName, urlMarker, collectionGUID, cascadedDelete, requestBody);
     }
 
 
@@ -1078,6 +1148,7 @@ public class CollectionManagerResource
      * Return a list of elements that are a member of a collection.
      *
      * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection.
      * @param startFrom      index of the list to start from (0 for start)
      * @param pageSize       maximum number of elements to return.
@@ -1094,13 +1165,14 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionMembersResponse getCollectionMembers(@PathVariable String serverName,
+                                                          @PathVariable String             urlMarker,
                                                           @PathVariable String collectionGUID,
                                                           @RequestParam(required = false, defaultValue = "0")
                                                           int    startFrom,
                                                           @RequestParam(required = false, defaultValue = "0")
                                                           int    pageSize)
     {
-        return restAPI.getCollectionMembers(serverName, collectionGUID, startFrom, pageSize, null);
+        return restAPI.getCollectionMembers(serverName, urlMarker, collectionGUID, startFrom, pageSize, null);
     }
 
 
@@ -1108,6 +1180,7 @@ public class CollectionManagerResource
      * Return a list of elements that are a member of a collection.
      *
      * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection.
      * @param startFrom      index of the list to start from (0 for start)
      * @param pageSize       maximum number of elements to return.
@@ -1124,6 +1197,7 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionMembersResponse getCollectionMembers(@PathVariable String serverName,
+                                                          @PathVariable String             urlMarker,
                                                           @PathVariable String collectionGUID,
                                                           @RequestParam(required = false, defaultValue = "0")
                                                           int    startFrom,
@@ -1132,7 +1206,7 @@ public class CollectionManagerResource
                                                           @RequestBody(required = false)
                                                           ResultsRequestBody requestBody)
     {
-        return restAPI.getCollectionMembers(serverName, collectionGUID, startFrom, pageSize, requestBody);
+        return restAPI.getCollectionMembers(serverName, urlMarker, collectionGUID, startFrom, pageSize, requestBody);
     }
 
 
@@ -1142,6 +1216,7 @@ public class CollectionManagerResource
      * includes a mermaid graph of the returned elements.
      *
      * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection
      * @param startFrom      index of the list to start from (0 for start)
      * @param pageSize       maximum number of elements to return
@@ -1159,6 +1234,7 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionGraphResponse getCollectionGraph(@PathVariable String serverName,
+                                                      @PathVariable String             urlMarker,
                                                       @PathVariable String collectionGUID,
                                                       @RequestParam(required = false, defaultValue = "0")
                                                       int    startFrom,
@@ -1167,7 +1243,7 @@ public class CollectionManagerResource
                                                       @RequestBody(required = false)
                                                       ResultsRequestBody requestBody)
     {
-        return restAPI.getCollectionGraph(serverName, collectionGUID, startFrom, pageSize, requestBody);
+        return restAPI.getCollectionGraph(serverName, urlMarker, collectionGUID, startFrom, pageSize, requestBody);
     }
 
 
@@ -1175,6 +1251,7 @@ public class CollectionManagerResource
      * Add an element to a collection.
      *
      * @param serverName               name of called server.
+     * @param urlMarker  view service URL marker
      * @param collectionGUID       unique identifier of the collection.
      * @param requestBody properties describing the membership characteristics.
      * @param elementGUID          unique identifier of the element.
@@ -1191,12 +1268,13 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse addToCollection(@PathVariable String                  serverName,
+                                        @PathVariable String                  urlMarker,
                                         @PathVariable String                  collectionGUID,
                                         @PathVariable String                  elementGUID,
                                         @RequestBody(required = false)
                                         RelationshipRequestBody requestBody)
     {
-        return restAPI.addToCollection(serverName, collectionGUID, elementGUID, requestBody);
+        return restAPI.addToCollection(serverName, urlMarker, collectionGUID, elementGUID, requestBody);
     }
 
 
@@ -1204,6 +1282,7 @@ public class CollectionManagerResource
      * Update an element's membership to a collection.
      *
      * @param serverName               name of called server.
+     * @param urlMarker  view service URL marker
      * @param collectionGUID       unique identifier of the collection.
      * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                               the individual properties specified on the request.
@@ -1222,13 +1301,14 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse updateCollectionMembership(@PathVariable String                  serverName,
+                                                   @PathVariable String                  urlMarker,
                                                    @PathVariable String                  collectionGUID,
                                                    @PathVariable String                  elementGUID,
                                                    @RequestParam boolean                 replaceAllProperties,
                                                    @RequestBody(required = false)
                                                    RelationshipRequestBody requestBody)
     {
-        return restAPI.updateCollectionMembership(serverName, collectionGUID, elementGUID, replaceAllProperties, requestBody);
+        return restAPI.updateCollectionMembership(serverName, urlMarker, collectionGUID, elementGUID, replaceAllProperties, requestBody);
     }
 
 
@@ -1236,6 +1316,7 @@ public class CollectionManagerResource
      * Remove an element from a collection.
      *
      * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection.
      * @param elementGUID    unique identifier of the element.
      * @param requestBody  null request body
@@ -1252,11 +1333,12 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse removeFromCollection(@PathVariable String                    serverName,
+                                             @PathVariable String                    urlMarker,
                                              @PathVariable String                    collectionGUID,
                                              @PathVariable String                    elementGUID,
                                              @RequestBody  MetadataSourceRequestBody requestBody)
     {
-        return restAPI.removeFromCollection(serverName, collectionGUID, elementGUID, requestBody);
+        return restAPI.removeFromCollection(serverName, urlMarker, collectionGUID, elementGUID, requestBody);
     }
 }
 

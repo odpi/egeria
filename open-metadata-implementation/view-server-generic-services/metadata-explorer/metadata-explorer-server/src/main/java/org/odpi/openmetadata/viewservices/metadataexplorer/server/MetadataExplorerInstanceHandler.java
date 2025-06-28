@@ -23,7 +23,7 @@ public class MetadataExplorerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public MetadataExplorerInstanceHandler()
     {
-        super(ViewServiceDescription.METADATA_EXPLORER.getViewServiceName());
+        super(ViewServiceDescription.METADATA_EXPLORER.getViewServiceFullName());
 
         MetadataExplorerRegistration.registerViewService();
     }

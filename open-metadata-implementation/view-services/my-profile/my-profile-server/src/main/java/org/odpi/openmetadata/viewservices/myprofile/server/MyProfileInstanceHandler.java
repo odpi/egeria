@@ -24,7 +24,7 @@ public class MyProfileInstanceHandler extends OMVSServiceInstanceHandler
      */
     public MyProfileInstanceHandler()
     {
-        super(ViewServiceDescription.MY_PROFILE.getViewServiceName());
+        super(ViewServiceDescription.MY_PROFILE.getViewServiceFullName());
 
         MyProfileRegistration.registerViewService();
     }

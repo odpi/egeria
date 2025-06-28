@@ -25,7 +25,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ConnectionMakerInstanceHandler()
     {
-        super(ViewServiceDescription.CONNECTION_MAKER.getViewServiceName());
+        super(ViewServiceDescription.CONNECTION_MAKER.getViewServiceFullName());
 
         ConnectionMakerRegistration.registerViewService();
     }

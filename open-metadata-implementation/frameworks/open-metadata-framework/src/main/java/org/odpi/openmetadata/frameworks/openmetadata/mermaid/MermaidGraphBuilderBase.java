@@ -183,6 +183,10 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.DATA_SPEC;
             }
+            else if (OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return VisualStyle.DATA_SHARING_AGREEMENT;
+            }
             else if (OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.OBJECT_IDENTIFIER;
@@ -203,7 +207,7 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.RESULTS_SET;
             }
-            else if (OpenMetadataType.RECENT_ACCESS_COMMECTION_CLASSIFICATION.typeName.equals(classificationName))
+            else if (OpenMetadataType.RECENT_ACCESS_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.RECENT_ACCESS;
             }
@@ -251,6 +255,10 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
+            else if (OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return true;
+            }
             else if (OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
@@ -271,7 +279,7 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
-            else if (OpenMetadataType.RECENT_ACCESS_COMMECTION_CLASSIFICATION.typeName.equals(classificationName))
+            else if (OpenMetadataType.RECENT_ACCESS_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
@@ -279,7 +287,15 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
-            else if (OpenMetadataType.DIGITAL_PRODUCT.typeName.equals(classificationName))
+            else if (OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return true;
+            }
+            else if (OpenMetadataType.EVENT_SET_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return true;
+            }
+            else if (OpenMetadataType.CONTEXT_EVENT_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
@@ -557,6 +573,21 @@ public class MermaidGraphBuilderBase
     {
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.COLLECTION.typeName))
         {
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName))
+            {
+                return VisualStyle.DIGITAL_PRODUCT;
+            }
+
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.AGREEMENT.typeName))
+            {
+                if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName))
+                {
+                    return VisualStyle.DIGITAL_SUBSCRIPTION;
+                }
+
+                return VisualStyle.AGREEMENT;
+            }
+
             return VisualStyle.COLLECTION;
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.EXTERNAL_REFERENCE.typeName))
@@ -867,9 +898,16 @@ public class MermaidGraphBuilderBase
         mermaidGraph.append(this.lookupNodeName(currentNodeName));
         mermaidGraph.append("(\"`*");
         mermaidGraph.append(addSpacesToTypeName(currentType));
-        mermaidGraph.append("*\n**");
-        mermaidGraph.append(removeDoubleSlash(currentDisplayName));
-        mermaidGraph.append("**`\")\n");
+        mermaidGraph.append("*\n");
+
+        if (currentDisplayName != null)
+        {
+            mermaidGraph.append("**");
+            mermaidGraph.append(removeDoubleSlash(currentDisplayName.trim()));
+            mermaidGraph.append("**");
+        }
+
+        mermaidGraph.append("`\")\n");
     }
 
 
@@ -908,9 +946,14 @@ public class MermaidGraphBuilderBase
             }
             mermaidGraph.append(", label: \"*");
             mermaidGraph.append(addSpacesToTypeName(currentType));
-            mermaidGraph.append("*\n**");
-            mermaidGraph.append(removeDoubleSlash(currentDisplayName));
-            mermaidGraph.append("**\"}\n");
+            mermaidGraph.append("*\n");
+            if (currentDisplayName != null)
+            {
+                mermaidGraph.append("**");
+                mermaidGraph.append(removeDoubleSlash(currentDisplayName.trim()));
+                mermaidGraph.append("**");
+            }
+            mermaidGraph.append("\"}\n");
 
             return true;
         }

@@ -20,7 +20,7 @@ public class DataDiscoveryInstanceHandler extends OMVSServiceInstanceHandler
      */
     public DataDiscoveryInstanceHandler()
     {
-        super(ViewServiceDescription.DATA_DISCOVERY.getViewServiceName());
+        super(ViewServiceDescription.DATA_DISCOVERY.getViewServiceFullName());
 
         DataDiscoveryRegistration.registerViewService();
     }

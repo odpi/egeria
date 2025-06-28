@@ -52,7 +52,7 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
                                     List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
-              myDescription.getViewServiceName(),
+              myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
               localServerUserPassword,

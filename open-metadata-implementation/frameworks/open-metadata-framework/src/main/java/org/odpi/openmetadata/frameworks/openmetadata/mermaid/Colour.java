@@ -57,8 +57,7 @@ public enum Colour
     SPRING_GREEN("#00ff7f"),
     MINT_CREAM("#f5fffa"),
 
-    BURLY_WOOD  ("#deb887"),
-    CHOCOLATE   ("#d2691e"),
+
 
     MUSTARD     ("#e0ab18"),
     DARK_KHAKI  ("#bdb76b"),
@@ -70,12 +69,26 @@ public enum Colour
     SLATE       ("#004563"),
     SAND        ("#F9F7ED"),
 
+    /* Mementos */
     GHOST_WHITE ("#f8f8ff"),
 
+    /* Agreements */
+    OLIVE("#808000"),
+    OLIVE_DRAB("#6b8e23"),
+    YELLOW_GREEN("#9acd32"),
+    DARK_OLIVE_GREEN("#556b2f"),
+
+    /* Data Definitions */
+    SIENNA  ("#a0522d"),
+    SADDLE_BROWN  ("#8b4513"),
+    BURLY_WOOD  ("#deb887"),
+    CHOCOLATE   ("#d2691e"),
     LIGHT_ORANGE("#FFE599"),
     ORANGE      ("#f9845b"),
     WHITE_ORANGE ("#ffe3cc"),
     PALE_ORANGE  ("#ffab66"),
+
+
     ;
 
     private final String colourNumber;

@@ -39,7 +39,7 @@ public class AssetCatalogRESTServices extends TokenController
 
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
-    private final String sourceName = ViewServiceDescription.ASSET_CATALOG.getViewServiceName();
+    private final String sourceName = ViewServiceDescription.ASSET_CATALOG.getViewServiceFullName();
 
     private final List<ElementStatus>  activeElementsOnly = new ArrayList<>(Collections.singleton(ElementStatus.ACTIVE));
 

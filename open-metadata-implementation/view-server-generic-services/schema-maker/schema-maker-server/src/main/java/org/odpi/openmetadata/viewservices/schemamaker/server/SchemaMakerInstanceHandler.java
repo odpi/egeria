@@ -24,7 +24,7 @@ public class SchemaMakerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public SchemaMakerInstanceHandler()
     {
-        super(ViewServiceDescription.SCHEMA_MAKER.getViewServiceName());
+        super(ViewServiceDescription.SCHEMA_MAKER.getViewServiceFullName());
 
         SchemaMakerRegistration.registerViewService();
     }

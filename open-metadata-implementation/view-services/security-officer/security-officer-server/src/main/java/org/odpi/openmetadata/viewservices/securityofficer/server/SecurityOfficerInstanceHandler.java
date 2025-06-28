@@ -20,7 +20,7 @@ public class SecurityOfficerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public SecurityOfficerInstanceHandler()
     {
-        super(ViewServiceDescription.SECURITY_OFFICER.getViewServiceName());
+        super(ViewServiceDescription.SECURITY_OFFICER.getViewServiceFullName());
 
         SecurityOfficerRegistration.registerViewService();
     }

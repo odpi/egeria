@@ -26,7 +26,7 @@ public class AssetCatalogInstanceHandler extends OMVSServiceInstanceHandler
      */
     public AssetCatalogInstanceHandler()
     {
-        super(ViewServiceDescription.ASSET_CATALOG.getViewServiceName());
+        super(ViewServiceDescription.ASSET_CATALOG.getViewServiceFullName());
 
         AssetCatalogRegistration.registerViewService();
     }

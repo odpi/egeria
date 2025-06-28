@@ -24,7 +24,7 @@ public class ClassificationExplorerInstanceHandler extends OMVSServiceInstanceHa
      */
     public ClassificationExplorerInstanceHandler()
     {
-        super(ViewServiceDescription.CLASSIFICATION_EXPLORER.getViewServiceName());
+        super(ViewServiceDescription.CLASSIFICATION_EXPLORER.getViewServiceFullName());
 
         ClassificationExplorerRegistration.registerViewService();
     }

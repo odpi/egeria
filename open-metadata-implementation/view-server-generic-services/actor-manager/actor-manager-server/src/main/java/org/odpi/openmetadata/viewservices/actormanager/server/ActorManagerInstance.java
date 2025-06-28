@@ -59,7 +59,7 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                 List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
-              myDescription.getViewServiceName(),
+              myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
               localServerUserPassword,
@@ -75,6 +75,8 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * actor profile artifacts.
      *
+     * @param viewServiceURLMarker calling view service
+     * @param methodName calling operation
      * @return client
      */
     public ActorProfileHandler getActorProfileHandler(String viewServiceURLMarker,
@@ -151,6 +153,8 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * actor role artifacts.
      *
+     * @param viewServiceURLMarker calling view service
+     * @param methodName calling operation
      * @return client
      */
     public ActorRoleHandler getActorRoleHandler(String viewServiceURLMarker,
@@ -229,6 +233,8 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * governance definition artifacts.
      *
+     * @param viewServiceURLMarker calling view service
+     * @param methodName calling operation
      * @return client
      */
     public UserIdentityHandler getUserIdentityHandler(String viewServiceURLMarker,

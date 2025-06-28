@@ -18,9 +18,9 @@ import java.util.List;
  */
 public class ActorManagerAdmin extends ViewServerGenericServiceAdmin
 {
-    private AuditLog              auditLog   = null;
+    private AuditLog             auditLog   = null;
     private ActorManagerInstance instance   = null;
-    private String                serverName = null;
+    private String               serverName = null;
 
     /**
      * Default constructor

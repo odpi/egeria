@@ -346,13 +346,9 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
+  "anchorGUID" : "add guid here",
+  "anchorScopeGUID" : "add guid here",
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
@@ -389,44 +385,15 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
-###
-# @name createDataField
-# Create a data field.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
-{
-  "properties": {
-    "class": "DataFieldProperties",
-    "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
-    "namespace": "",
-    "description": "add description here",
-    "versionIdentifier": "add version",
-    "aliases": [
-      "alias1",
-      "alias2"
-    ],
-    "namePatterns": [],
-    "isDeprecated": false,
-    "isNullable": false,
-    "defaultValue": "",
-    "dataType": "",
-    "minimumLength": 0,
-    "length": 0,
-    "precision": 0,
-    "orderedValues": false,
-    "sortOrder": "UNSORTED",
-    "additionalProperties": {
-      "property1": "propertyValue1",
-      "property2": "propertyValue2"
-    }
-  }
-}
 
 ###
 # @name createDataFieldFromTemplate
@@ -437,13 +404,9 @@ Content-Type: application/json
 
 {
   "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
+  "anchorGUID" : "add guid here",
+  "anchorScopeGUID" : "add guid here",
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
@@ -471,7 +434,12 @@ Content-Type: application/json
   "placeholderPropertyValues":  {
     "placeholder1" : "propertyValue1",
     "placeholder2" : "propertyValue2"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -484,11 +452,6 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class" : "DataFieldProperties",
     "qualifiedName": "add unique name here",
@@ -513,7 +476,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -763,46 +731,6 @@ Content-Type: application/json
   }
 }
 
-###
-# @name createDataClass
-# Create an data class.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class": "DataClassProperties",
-    "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
-    "description": "add description here",
-    "namespace": "add scope of this data class's applicability.",
-    "matchPropertyNames": [
-      "name1",
-      "name2"
-    ],
-    "matchThreshold": 0,
-    "specification": "",
-    "specificationDetails": {
-      "property1": "propertyValue1",
-      "property2": "propertyValue2"
-    },
-    "dataType": "",
-    "allowsDuplicateValues": true,
-    "isNullable": false,
-    "defaultValue": "",
-    "averageValue": "",
-    "valueList": [],
-    "valueRangeFrom": "",
-    "valueRangeTo": "",
-    "sampleValues": [],
-    "dataPatterns": [],
-    "additionalProperties": {
-      "property1": "propertyValue1",
-      "property2": "propertyValue2"
-    }
-  }
-}
 
 ###
 # @name createDataClassFromTemplate
@@ -931,7 +859,6 @@ Content-Type: application/json
 }
 
 
-
 ###
 # @name linkSpecializedDataClass
 #  Connect two data classes to show that one provides a more specialist evaluation. Request body is optional.
@@ -947,7 +874,6 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
-
 
 ###
 

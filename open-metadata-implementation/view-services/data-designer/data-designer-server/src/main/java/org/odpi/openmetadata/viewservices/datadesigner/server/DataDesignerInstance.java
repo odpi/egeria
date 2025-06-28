@@ -43,7 +43,7 @@ public class DataDesignerInstance extends OMVSServiceInstance
                                 String       remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
-              myDescription.getViewServiceName(),
+              myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
               localServerUserPassword,

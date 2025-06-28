@@ -25,7 +25,7 @@ public class ClassificationManagerInstanceHandler extends OMVSServiceInstanceHan
      */
     public ClassificationManagerInstanceHandler()
     {
-        super(ViewServiceDescription.CLASSIFICATION_MANAGER.getViewServiceName());
+        super(ViewServiceDescription.CLASSIFICATION_MANAGER.getViewServiceFullName());
 
         ClassificationManagerRegistration.registerViewService();
     }

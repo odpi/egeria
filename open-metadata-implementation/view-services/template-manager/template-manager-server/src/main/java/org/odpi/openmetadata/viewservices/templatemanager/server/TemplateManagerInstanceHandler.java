@@ -24,7 +24,7 @@ public class TemplateManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public TemplateManagerInstanceHandler()
     {
-        super(ViewServiceDescription.TEMPLATE_MANAGER.getViewServiceName());
+        super(ViewServiceDescription.TEMPLATE_MANAGER.getViewServiceFullName());
 
         TemplateManagerRegistration.registerViewService();
     }

@@ -25,7 +25,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ActorManagerInstanceHandler()
     {
-        super(ViewServiceDescription.ACTOR_MANAGER.getViewServiceName());
+        super(ViewServiceDescription.ACTOR_MANAGER.getViewServiceFullName());
 
         ActorManagerRegistration.registerViewService();
     }
