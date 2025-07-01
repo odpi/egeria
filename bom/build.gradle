@@ -112,7 +112,7 @@ ext {
     //  TODO: cassandraVersion 5.0.1 and 5.0.2 don't work
     cassandraVersion = '4.1.5'
     protobufVersion = '3.25.5' //ok working
-    log4jVersion = '2.24.1'
+    log4jVersion = '2.25.0'
 //    TODO: log4jVersion = '2.24.3' Monday - doesn't build'
     jacksonjdk8Version = '2.18.0'
 //    TODO: jacksonjdk8Version = '2.18.2'monday - failed at runtime
