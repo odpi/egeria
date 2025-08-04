@@ -48,7 +48,6 @@ public class BasicFolderProvider extends ConnectorProviderBase
         connectorInterfaces.add(BasicFileStore.class.getName());
 
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorTypeName);

@@ -285,7 +285,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 
     /**
      * Sets up a default EntityDef.  Calling methods can override the default values.  This EntityDef
-     * has no attribute defined.
+     * has no attributes defined.
      *
      * @param type type description enum
      * @param superType Super type for this entity (null for top-level)
@@ -299,8 +299,41 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 
 
     /**
+     * Sets up an EntityDef with the standard lifecycle states for an entity that goes through a document review.
+     * Calling methods can override the default values.  This EntityDef has no attributes defined.
+     *
+     * @param type type description enum
+     * @param superType Super type for this entity (null for top-level)
+     * @return Initialized EntityDef
+     */
+    public EntityDef  getDocumentLifecycleEntityDef(OpenMetadataType type,
+                                                    TypeDefLink      superType)
+    {
+        EntityDef entityDef = this.getDefaultEntityDef(type.typeGUID, type.typeName, superType, type.description, type.descriptionGUID, type.wikiURL);
+
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PREPARED);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.REJECTED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
+        validInstanceStatusList.add(InstanceStatus.OTHER);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
+
+        return entityDef;
+    }
+
+
+    /**
      * Sets up a default EntityDef.  Calling methods can override the default values.  This EntityDef
-     * has no attribute defined.
+     * has no attributes defined.
      *
      * @param guid unique identifier for the entity
      * @param name name of the entity

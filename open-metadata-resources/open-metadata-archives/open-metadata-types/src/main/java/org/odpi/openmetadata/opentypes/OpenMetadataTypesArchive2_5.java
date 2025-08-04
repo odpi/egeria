@@ -175,136 +175,14 @@ public class OpenMetadataTypesArchive2_5
      * -------------------------------------------------------------------------------------------------------
      */
 
-
     /**
      * 0010 Add a common root entity
      */
     private void update0010BaseEntity()
     {
-        this.archiveBuilder.addEntityDef(addOpenMetadataRootEntity());
-
-        this.archiveBuilder.addTypeDefPatch(updateReferenceable());
-        this.archiveBuilder.addTypeDefPatch(updateSearchKeyword());
-        this.archiveBuilder.addTypeDefPatch(updateLike());
-        this.archiveBuilder.addTypeDefPatch(updateRating());
-        this.archiveBuilder.addTypeDefPatch(updateInformalTag());
-        this.archiveBuilder.addTypeDefPatch(updateAnnotation());
-        this.archiveBuilder.addTypeDefPatch(updateAnnotationReview());
 
         this.archiveBuilder.addTypeDefPatch(updateAnchorsClassification());
 
-    }
-
-
-    private EntityDef addOpenMetadataRootEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.OPEN_METADATA_ROOT,
-                                                 null);
-    }
-
-
-    private TypeDefPatch updateReferenceable()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.REFERENCEABLE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateSearchKeyword()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SEARCH_KEYWORD.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateLike()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LIKE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateRating()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RATING.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateInformalTag()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.INFORMAL_TAG.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateAnnotation()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ANNOTATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateAnnotationReview()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ANNOTATION_REVIEW.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
-
-        return typeDefPatch;
     }
 
 
@@ -392,7 +270,6 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -458,7 +335,7 @@ public class OpenMetadataTypesArchive2_5
     private ClassificationDef addAssetManagerClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.ASSET_MANAGER,
-                                                  null,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }

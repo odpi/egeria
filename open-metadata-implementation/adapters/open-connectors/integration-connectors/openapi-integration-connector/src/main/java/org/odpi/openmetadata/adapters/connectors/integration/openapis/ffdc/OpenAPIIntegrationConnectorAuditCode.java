@@ -59,7 +59,7 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
     RETRIEVED_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0006",
                           AuditLogRecordSeverityLevel.INFO,
                           "The {0} integration connector retrieved the Open API Specification from URL {1}.  The API retrieved was {2}",
-                          "The exception is passed back to the API Integrator OMIS in the integration daemon that is hosting " +
+                          "The exception is passed back to the integration daemon that is hosting " +
                                   "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
                                   "error handling that was performed.  These can help to determine how to recover from this error",
                           "This message contains the exception that was the original cause of the problem. Use the information from the " +

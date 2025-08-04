@@ -2,23 +2,27 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * A subject area defines a group of definitions for governing assets related to a specific topic.  The subject area definition defines
  * how the assets related to the topic should be managed.
  */
-public class SubjectAreaProperties extends ReferenceableProperties
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class SubjectAreaProperties extends ClassificationBeanProperties
 {
     private String subjectAreaName  = null;
-    private String displayName      = null;
-    private String description      = null;
-    private String usage            = null;
-    private String scope            = null;
-    private int    domainIdentifier = 0;
 
 
     /**
@@ -27,7 +31,7 @@ public class SubjectAreaProperties extends ReferenceableProperties
     public SubjectAreaProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName);
+        super.setTypeName(OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName);
     }
 
 
@@ -43,11 +47,6 @@ public class SubjectAreaProperties extends ReferenceableProperties
         if (template != null)
         {
             this.subjectAreaName = template.getSubjectAreaName();
-            this.displayName = template.getDisplayName();
-            this.description = template.getDescription();
-            this.usage = template.getUsage();
-            this.scope = template.getScope();
-            this.domainIdentifier = template.getDomainIdentifier();
         }
     }
 
@@ -75,116 +74,6 @@ public class SubjectAreaProperties extends ReferenceableProperties
 
 
     /**
-     * Return the short name for the governance zone.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the short name for the governance zone.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for the governance zone
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the governance zone
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return details of the usage of this subject area.
-     *
-     * @return text
-     */
-    public String getUsage()
-    {
-        return usage;
-    }
-
-
-    /**
-     * Set up the details of the usage of this subject area.
-     *
-     * @param usage text
-     */
-    public void setUsage(String usage)
-    {
-        this.usage = usage;
-    }
-
-
-    /**
-     * Return the definition of the scope of this subject area
-     *
-     * @return scope definition
-     */
-    public String getScope()
-    {
-        return scope;
-    }
-
-
-    /**
-     * Set up the scope definition
-     *
-     * @param scope string definition
-     */
-    public void setScope(String scope)
-    {
-        this.scope = scope;
-    }
-
-
-    /**
-     * Return the identifier of the governance domain that this subject area is managed by.
-     *
-     * @return int identifier
-     */
-    public int getDomainIdentifier()
-    {
-        return domainIdentifier;
-    }
-
-
-    /**
-     * Set up the identifier of the governance domain that this subject area is managed by.
-     *
-     * @param domainIdentifier int identifier
-     */
-    public void setDomainIdentifier(int domainIdentifier)
-    {
-        this.domainIdentifier = domainIdentifier;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -193,19 +82,8 @@ public class SubjectAreaProperties extends ReferenceableProperties
     public String toString()
     {
         return "SubjectAreaProperties{" +
-                       "qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", subjectAreaName='" + subjectAreaName + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", usage='" + usage + '\'' +
-                       ", scope='" + scope + '\'' +
-                       ", domainIdentifier=" + domainIdentifier +
-                       '}';
+                "subjectAreaName='" + subjectAreaName + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -222,21 +100,15 @@ public class SubjectAreaProperties extends ReferenceableProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof SubjectAreaProperties that))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        SubjectAreaProperties that = (SubjectAreaProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
-                       Objects.equals(subjectAreaName, that.subjectAreaName) &&
-                       Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(usage, that.usage) &&
-                       Objects.equals(scope, that.scope);
+        return Objects.equals(subjectAreaName, that.subjectAreaName);
     }
 
 
@@ -248,6 +120,6 @@ public class SubjectAreaProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getSubjectAreaName(), getDisplayName(), getDescription(), getUsage(), getScope(), getDomainIdentifier());
+        return Objects.hash(super.hashCode(), getSubjectAreaName());
     }
 }

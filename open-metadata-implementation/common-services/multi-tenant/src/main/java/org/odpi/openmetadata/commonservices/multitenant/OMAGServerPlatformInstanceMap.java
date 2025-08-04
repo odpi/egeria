@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerInstanceHistory;
@@ -145,7 +144,7 @@ public class OMAGServerPlatformInstanceMap
                     if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                     {
                         response.add(getServiceDescription(registration.getAccessServiceCode(),
-                                                           registration.getAccessServiceFullName(),
+                                                           registration.getAccessServiceName(),
                                                            registration.getAccessServiceDevelopmentStatus(),
                                                            registration.getAccessServiceURLMarker(),
                                                            registration.getAccessServiceDescription(),
@@ -219,22 +218,6 @@ public class OMAGServerPlatformInstanceMap
         }
 
         return response;
-    }
-
-
-    /**
-     * Return the list of access services that are registered (supported) in this OMAG Server Platform
-     * and can be configured in an integration daemon.
-     *
-     * @param userId calling user
-     * @return list of access service descriptions
-     * @throws UserNotAuthorizedException user not authorized
-     */
-    public List<RegisteredOMAGService> getRegisteredIntegrationServices(String userId) throws UserNotAuthorizedException
-    {
-        validateUserAsInvestigatorForPlatform(userId);
-
-        return IntegrationServiceRegistry.getRegisteredIntegrationServices();
     }
 
 
@@ -397,13 +380,6 @@ public class OMAGServerPlatformInstanceMap
         }
 
         services = getRegisteredAccessServices(userId);
-
-        if ((services != null) && (! services.isEmpty()))
-        {
-            response.addAll(services);
-        }
-
-        services = getRegisteredIntegrationServices(userId);
 
         if ((services != null) && (! services.isEmpty()))
         {

@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.viewservices.subjectarea.server.SubjectAreaRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,9 +52,9 @@ public class SubjectAreaResource
                     url="https://egeria-project.org/concepts/subject-area"))
 
     public GUIDResponse createSubjectArea(@PathVariable
-                                            String                               serverName,
-                                            @RequestBody (required = false)
-                                            NewElementRequestBody requestBody)
+                                          String                               serverName,
+                                          @RequestBody (required = false)
+                                          NewElementRequestBody requestBody)
     {
         return restAPI.createSubjectArea(serverName, requestBody);
     }
@@ -79,9 +79,9 @@ public class SubjectAreaResource
                     url="https://egeria-project.org/concepts/subject-area"))
 
     public GUIDResponse createSubjectAreaFromTemplate(@PathVariable
-                                                        String              serverName,
-                                                        @RequestBody (required = false)
-                                                        TemplateRequestBody requestBody)
+                                                      String              serverName,
+                                                      @RequestBody (required = false)
+                                                      TemplateRequestBody requestBody)
     {
         return restAPI.createSubjectAreaFromTemplate(serverName, requestBody);
     }
@@ -92,8 +92,6 @@ public class SubjectAreaResource
      *
      * @param serverName         name of called server.
      * @param subjectAreaGUID unique identifier of the subject area definition (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -108,15 +106,13 @@ public class SubjectAreaResource
                     url="https://egeria-project.org/concepts/subject-area"))
 
     public VoidResponse updateSubjectArea(@PathVariable
-                                            String                                  serverName,
-                                            @PathVariable
-                                            String                                  subjectAreaGUID,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                            boolean                                 replaceAllProperties,
-                                            @RequestBody (required = false)
-                                            UpdateElementRequestBody requestBody)
+                                          String                                  serverName,
+                                          @PathVariable
+                                          String                                  subjectAreaGUID,
+                                          @RequestBody (required = false)
+                                          UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateSubjectArea(serverName, subjectAreaGUID, replaceAllProperties, requestBody);
+        return restAPI.updateSubjectArea(serverName, subjectAreaGUID, requestBody);
     }
 
 
@@ -140,13 +136,13 @@ public class SubjectAreaResource
                     url="https://egeria-project.org/concepts/subject-area"))
 
     public VoidResponse linkSubjectAreas(@PathVariable
-                                            String                  serverName,
-                                            @PathVariable
-                                            String                  subjectAreaGUID,
-                                            @PathVariable
-                                            String                  nestedSubjectAreaGUID,
-                                            @RequestBody (required = false)
-                                            RelationshipRequestBody requestBody)
+                                         String                  serverName,
+                                         @PathVariable
+                                         String                  subjectAreaGUID,
+                                         @PathVariable
+                                         String                  nestedSubjectAreaGUID,
+                                         @RequestBody (required = false)
+                                             NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSubjectAreas(serverName, subjectAreaGUID, nestedSubjectAreaGUID, requestBody);
     }
@@ -172,13 +168,13 @@ public class SubjectAreaResource
                     url="https://egeria-project.org/concepts/subject-area"))
 
     public VoidResponse detachSubjectAreas(@PathVariable
-                                              String                    serverName,
-                                              @PathVariable
-                                              String parentSubjectAreaGUID,
-                                              @PathVariable
-                                              String memberDataFieldGUID,
-                                              @RequestBody (required = false)
-                                              MetadataSourceRequestBody requestBody)
+                                           String                    serverName,
+                                           @PathVariable
+                                           String parentSubjectAreaGUID,
+                                           @PathVariable
+                                           String memberDataFieldGUID,
+                                           @RequestBody (required = false)
+                                               DeleteRequestBody requestBody)
     {
         return restAPI.detachSubjectAreas(serverName, parentSubjectAreaGUID, memberDataFieldGUID, requestBody);
     }
@@ -189,7 +185,6 @@ public class SubjectAreaResource
      *
      * @param serverName         name of called server
      * @param subjectAreaGUID  unique identifier of the element to delete
-     * @param cascadedDelete can subject area definitions be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -204,15 +199,13 @@ public class SubjectAreaResource
                     url="https://egeria-project.org/concepts/subject-area"))
 
     public VoidResponse deleteSubjectArea(@PathVariable
-                                            String                    serverName,
-                                            @PathVariable
-                                            String                    subjectAreaGUID,
-                                            @RequestParam(required = false, defaultValue = "false")
-                                            boolean                   cascadedDelete,
-                                            @RequestBody (required = false)
-                                            MetadataSourceRequestBody requestBody)
+                                          String                    serverName,
+                                          @PathVariable
+                                          String                    subjectAreaGUID,
+                                          @RequestBody (required = false)
+                                              DeleteRequestBody requestBody)
     {
-        return restAPI.deleteSubjectArea(serverName, subjectAreaGUID, cascadedDelete, requestBody);
+        return restAPI.deleteSubjectArea(serverName, subjectAreaGUID, requestBody);
     }
 
 
@@ -220,8 +213,6 @@ public class SubjectAreaResource
      * Returns the list of subject area definitions with a particular name.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -235,16 +226,12 @@ public class SubjectAreaResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/subject-area"))
 
-    public SubjectAreasResponse getSubjectAreasByName(@PathVariable
-                                                          String            serverName,
-                                                          @RequestParam (required = false, defaultValue = "0")
-                                                          int                     startFrom,
-                                                          @RequestParam (required = false, defaultValue = "0")
-                                                          int                     pageSize,
-                                                          @RequestBody (required = false)
-                                                          FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getSubjectAreasByName(@PathVariable
+                                                                  String            serverName,
+                                                                  @RequestBody (required = false)
+                                                                  FilterRequestBody requestBody)
     {
-        return restAPI.getSubjectAreasByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getSubjectAreasByName(serverName, requestBody);
     }
 
 
@@ -252,11 +239,6 @@ public class SubjectAreaResource
      * Retrieve the list of subject area definition metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -270,22 +252,12 @@ public class SubjectAreaResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/subject-area"))
 
-    public SubjectAreasResponse findSubjectAreas(@PathVariable
-                                                     String                  serverName,
-                                                     @RequestParam (required = false, defaultValue = "0")
-                                                     int                     startFrom,
-                                                     @RequestParam (required = false, defaultValue = "0")
-                                                     int                     pageSize,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                 startsWith,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                 endsWith,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                 ignoreCase,
-                                                     @RequestBody (required = false)
-                                                     FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findSubjectAreas(@PathVariable
+                                                             String                  serverName,
+                                                             @RequestBody (required = false)
+                                                             SearchStringRequestBody requestBody)
     {
-        return restAPI.findSubjectAreas(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findSubjectAreas(serverName, requestBody);
     }
 
 
@@ -307,12 +279,12 @@ public class SubjectAreaResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/subject-area"))
 
-    public SubjectAreaResponse getSubjectAreaByGUID(@PathVariable
-                                                        String             serverName,
-                                                        @PathVariable
-                                                        String             subjectAreaGUID,
-                                                        @RequestBody (required = false)
-                                                        AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getSubjectAreaByGUID(@PathVariable
+                                                                String             serverName,
+                                                                @PathVariable
+                                                                String             subjectAreaGUID,
+                                                                @RequestBody (required = false)
+                                                                    GetRequestBody requestBody)
     {
         return restAPI.getSubjectAreaByGUID(serverName, subjectAreaGUID, requestBody);
     }

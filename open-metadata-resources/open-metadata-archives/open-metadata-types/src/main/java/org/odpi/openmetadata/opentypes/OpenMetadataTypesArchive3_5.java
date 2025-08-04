@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -12,14 +11,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -184,9 +181,7 @@ public class OpenMetadataTypesArchive3_5
      */
     private void update00420045SoftwareCapabilities()
     {
-        this.archiveBuilder.addEntityDef(getSoftwareCapabilityEntity());
         this.archiveBuilder.addRelationshipDef(getSupportedSoftwareCapabilityRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateSoftwareServerCapabilityEntity());
         this.archiveBuilder.addTypeDefPatch(updateFileSystemClassification());
         this.archiveBuilder.addTypeDefPatch(updateFileManagerClassification());
         this.archiveBuilder.addTypeDefPatch(updateNotificationManagerClassification());
@@ -200,33 +195,9 @@ public class OpenMetadataTypesArchive3_5
     }
 
 
-    private EntityDef getSoftwareCapabilityEntity()
-    {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CAPABILITY_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CAPABILITY_VERSION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PATCH_LEVEL));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
-    }
-
-
     private RelationshipDef getSupportedSoftwareCapabilityRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -279,19 +250,6 @@ public class OpenMetadataTypesArchive3_5
     }
 
 
-    private TypeDefPatch updateSoftwareServerCapabilityEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
-
-        return typeDefPatch;
-    }
 
 
     private TypeDefPatch updateFileSystemClassification()
@@ -370,7 +328,7 @@ public class OpenMetadataTypesArchive3_5
     private ClassificationDef addSourceControlLibraryClassification()
     {
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SOURCE_CONTROL_LIBRARY_CLASSIFICATION,
-                                                                                 null,
+                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  true);
 
@@ -390,7 +348,7 @@ public class OpenMetadataTypesArchive3_5
     private ClassificationDef addChangeManagementLibraryClassification()
     {
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CHANGE_MANAGEMENT_LIBRARY_CLASSIFICATION,
-                                                                                 null,
+                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  true);
 
@@ -411,7 +369,7 @@ public class OpenMetadataTypesArchive3_5
     private ClassificationDef addSoftwareLibraryClassification()
     {
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SOFTWARE_LIBRARY_CLASSIFICATION,
-                                                                                 null,
+                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  true);
 
@@ -469,7 +427,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -536,21 +494,10 @@ public class OpenMetadataTypesArchive3_5
 
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
 
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION,
-                                                                                 null,
-                                                                                 linkedToEntities,
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
+        return archiveHelper.getClassificationDef(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION,
+                                                  null,
+                                                  linkedToEntities,
+                                                  false);
     }
 
 

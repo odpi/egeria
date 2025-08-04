@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.engineservices.repositorygovernance.admin;
 
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -11,6 +10,7 @@ import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.Repository
 import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.RepositoryGovernanceErrorCode;
 import org.odpi.openmetadata.engineservices.repositorygovernance.server.RepositoryGovernanceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 
@@ -30,7 +30,7 @@ public class RepositoryGovernanceAdmin extends EngineServiceAdmin
      * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages
      * @param localServerPassword password for this server to use if sending REST requests
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
-     * @param configurationClient client used by the engine host services to connect to the Governance Engine OMAS to retrieve the governance engine definitions
+     * @param configurationClient client used by the engine host services to connect to the Open Metadata Store to retrieve the governance engine definitions
      * @param engineServiceConfig details of the options and the engines to run
      * @param governanceEngineMap map of configured engines
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
@@ -43,7 +43,7 @@ public class RepositoryGovernanceAdmin extends EngineServiceAdmin
                            String                              localServerUserId,
                            String                              localServerPassword,
                            int                                 maxPageSize,
-                           GovernanceConfigurationClient configurationClient,
+                           GovernanceConfigurationClient       configurationClient,
                            EngineServiceConfig                 engineServiceConfig,
                            GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException
     {

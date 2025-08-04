@@ -97,7 +97,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                                                                    OpenMetadataType.COLLECTION.typeName,
                                                                    OpenMetadataType.COLLECTION.typeName,
                                                                    null,
-                                                                   OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION.typeName,
+                                                                   OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName,
                                                                    "DataDictionary::" + model.getModelName(),
                                                                    model.getModelName(),
                                                                    model.getModelSummary(),
@@ -376,7 +376,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                 }
 
                 /*
-                 * Add linkages
+                 * Add linkages - todo need to divided up this archive
 
                 for (SubjectArea subjectArea : subjectAreaMap.values())
                 {
@@ -446,6 +446,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
              */
             String propertyGroupsCategoryId = archiveHelper.addGlossaryCategory(glossaryId,
                                                                                 true,
+                                                                                null,
                                                                                 "GlossaryCategory::PropertyGroups-" + model.getModelTechnicalName(),
                                                                                 "Property Groups for the " + model.getModelName(),
                                                                                 "Collections of properties found in the CIM Model.",
@@ -466,9 +467,12 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                      * linked to the data fields representing each of the attributes linked to the property description.
                      */
                     String propertyGroupCategoryId = archiveHelper.addGlossaryCategory(glossaryId,
+                                                                                       false,
+                                                                                       propertyGroupsCategoryId,
                                                                                        "GlossaryCategory::" + propertyGroup.getGUID() + "::" + propertyGroup.getTechnicalName(),
                                                                                        propertyGroup.getDisplayName(),
                                                                                        propertyGroup.getDescription(),
+                                                                                       null,
                                                                                        null);
 
                     archiveHelper.addCategoryToCategory(propertyGroupsCategoryId, propertyGroupCategoryId);

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -46,9 +46,10 @@ public class SurveyReportService extends GeneralGovernanceActionService
      * Indicates that the survey action service is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws UserNotAuthorizedException connector disconnected
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String  methodName = "start";
 
@@ -160,7 +161,7 @@ public class SurveyReportService extends GeneralGovernanceActionService
         outputReport.printReportLine(reportIndentLevel, "* Report Start Time: " + surveyReportElement.getVersions().getCreateTime());
         outputReport.printReportLine(reportIndentLevel, "* Report Completion Time: " +
                 propertyHelper.getDateProperty(governanceServiceName,
-                                               OpenMetadataProperty.COMPLETION_DATE.name,
+                                               OpenMetadataProperty.COMPLETION_TIME.name,
                                                surveyReportElement.getElementProperties(),
                                                methodName));
 

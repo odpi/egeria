@@ -37,8 +37,9 @@ public class OMAGServerAdminForAccessServices
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForAccessServices.class),
                                                                             CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
-    private static final String      defaultInTopicName = "InTopic";
-    private static final String      defaultOutTopicName = "OutTopic";
+    private static final String defaultInTopicName           = "InTopic";
+    private static final String defaultOutTopicName          = "OutTopic";
+    private static final String defaultOpenMetadataTopicName = "openmetadata.outTopic";
 
     private final OMAGServerAdminStoreServices configStore      = new OMAGServerAdminStoreServices();
     private final OMAGServerErrorHandler     errorHandler     = new OMAGServerErrorHandler();
@@ -98,7 +99,7 @@ public class OMAGServerAdminForAccessServices
                         RegisteredOMAGService service = new RegisteredOMAGService();
 
                         service.setServiceId(accessServiceConfig.getAccessServiceId());
-                        service.setServiceName(accessServiceConfig.getAccessServiceFullName());
+                        service.setServiceName(accessServiceConfig.getAccessServiceName());
                         service.setServiceDevelopmentStatus(accessServiceConfig.getAccessServiceDevelopmentStatus());
                         service.setServiceDescription(accessServiceConfig.getAccessServiceDescription());
                         service.setServiceURLMarker(accessServiceConfig.getAccessServiceURLMarker());
@@ -184,7 +185,9 @@ public class OMAGServerAdminForAccessServices
 
 
     /**
-     * Enable a single access service.
+     * Enable a single access service.   If the enterprise repository services are not set up, they are enabled
+     * If openMetadataOutTopic is null, a default connection for this topic is created.  It can be removed using
+     * clearOpenMetadataOutTopic.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -584,13 +587,6 @@ public class OMAGServerAdminForAccessServices
 
         if (eventBusConfig != null)
         {
-            accessServiceConfig.setAccessServiceInTopic(
-                    connectorConfigurationFactory.getDefaultEventBusConnection(eventBusConfig.getConnectorProvider(),
-                                                                               eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                                                               registration.getAccessServiceInTopic(),
-                                                                               localServerId,
-                                                                               null, // direction restricted at runtime
-                                                                               eventBusConfig.getConfigurationProperties()));
             accessServiceConfig.setAccessServiceOutTopic(
                     connectorConfigurationFactory.getDefaultEventBusConnection(eventBusConfig.getConnectorProvider(),
                                                                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
@@ -878,17 +874,10 @@ public class OMAGServerAdminForAccessServices
                              */
                             Map<String, String>  topicNames = new HashMap<>();
 
-                            if ((accessServiceConfig.getAccessServiceInTopic() != null) &&
-                                    (accessServiceConfig.getAccessServiceInTopic().getEndpoint() != null))
-                            {
-                                topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultInTopicName,
-                                               accessServiceConfig.getAccessServiceInTopic().getEndpoint().getAddress());
-                            }
-
                             if ((accessServiceConfig.getAccessServiceOutTopic() != null) &&
                                     (accessServiceConfig.getAccessServiceOutTopic().getEndpoint() != null))
                             {
-                                topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultOutTopicName,
+                                topicNames.put(accessServiceConfig.getAccessServiceName() + " " + defaultOutTopicName,
                                                accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
                             }
 
@@ -955,111 +944,16 @@ public class OMAGServerAdminForAccessServices
                 {
                     if (accessServiceConfig != null)
                     {
-                        if ((accessServiceConfig.getAccessServiceInTopic() != null) &&
-                                (accessServiceConfig.getAccessServiceInTopic().getEndpoint() != null))
-                        {
-                            topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultInTopicName,
-                                           accessServiceConfig.getAccessServiceInTopic().getEndpoint().getAddress());
-                        }
-
                         if ((accessServiceConfig.getAccessServiceOutTopic() != null) &&
                                 (accessServiceConfig.getAccessServiceOutTopic().getEndpoint() != null))
                         {
-                            topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultOutTopicName,
+                            topicNames.put(accessServiceConfig.getAccessServiceName() + " " + defaultOutTopicName,
                                            accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
                         }
                     }
                 }
 
                 response.setStringMap(topicNames);
-            }
-        }
-        catch (OMAGInvalidParameterException  error)
-        {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-
-    /**
-     * Update the in topic name for a specific access service.
-     *
-     * @param userId                user that is issuing the request.
-     * @param serverName            local server name.
-     * @param serviceURLMarker string indicating which access service it requested
-     * @param topicName string for new topic name
-     *
-     * @return map of topic names or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
-     */
-    public VoidResponse  overrideAccessServiceInTopicName(String userId,
-                                                          String serverName,
-                                                          String serviceURLMarker,
-                                                          String topicName)
-    {
-        final String methodName   = "overrideAccessServiceInTopicName";
-        final String serviceURLMarkerPropertyName = "serviceURLMarker";
-        final String topicPropertyName = "topicName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            /*
-             * Validate and set up the userName and server name.
-             */
-            errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validatePropertyNotNull(topicName, topicPropertyName, serverName, methodName);
-            errorHandler.validatePropertyNotNull(serviceURLMarker, serviceURLMarkerPropertyName, serverName, methodName);
-
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-            List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
-
-            if (configuredAccessServices != null)
-            {
-                for (AccessServiceConfig accessServiceConfig : configuredAccessServices)
-                {
-                    if (accessServiceConfig != null)
-                    {
-                        if (serviceURLMarker.equals(accessServiceConfig.getAccessServiceURLMarker()))
-                        {
-                            /*
-                             * Found it - just need to set up topic Name
-                             */
-                            Connection connection = accessServiceConfig.getAccessServiceInTopic();
-
-                            if (connection != null)
-                            {
-                                Endpoint endpoint = connection.getEndpoint();
-
-                                if (endpoint != null)
-                                {
-                                    endpoint.setAddress(topicName);
-                                    connection.setEndpoint(endpoint);
-                                    accessServiceConfig.setAccessServiceInTopic(connection);
-                                    setAccessServicesConfig(userId, serverName, configuredAccessServices);
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
         catch (OMAGInvalidParameterException  error)

@@ -142,7 +142,7 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
     INITIATE_ENGINE_ACTION("OMAG-GENERIC-HANDLERS-0020",
                            AuditLogRecordSeverityLevel.STARTUP,
                            "Initializing a new engine action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7}",
-                           "A new EngineAction entity is created.  This will be picked up by the Governance Engine OMASs running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the engine action.",
+                           "A new EngineAction entity is created.  This will be picked up by the Open Metadata Stores running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the engine action.",
                            "Validate that this engine action should be initialized.  If so, check that the Governance Engine OMASs running in the connected cohorts publish the engine action to their connected engine host(s)."),
 
     /**

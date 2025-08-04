@@ -8,10 +8,11 @@ import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.
 import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc.CSVLineageImporterErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
@@ -21,21 +22,19 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
-import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-public class CSVLineageImporterConnector extends LineageIntegratorConnector
+public class CSVLineageImporterConnector extends IntegrationConnectorBase
 {
     private String fileName = null;
 
     private final Map<String, String> columnToTypeName = new HashMap<>();
 
-    private OpenMetadataAccess openMetadataAccess = null;
-    private final PropertyHelper propertyHelper = new PropertyHelper();
+    private       OpenMetadataStore openMetadataStore = null;
+    private final PropertyHelper    propertyHelper    = new PropertyHelper();
 
 
 
@@ -44,27 +43,26 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
      * This call can be used to register with non-blocking services.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
-
-        final String methodName = "start";
 
         loadTypeMaps();
 
         /*
          * Extract the configuration
          */
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint != null)
         {
             fileName = endpoint.getAddress();
         }
 
-        openMetadataAccess = integrationContext.getIntegrationGovernanceContext().getOpenMetadataAccess();
+        openMetadataStore = integrationContext.getOpenMetadataStore();
     }
 
 
@@ -216,7 +214,7 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
         {
             String qualifiedName = inputType + "::" + inputInstanceName;
 
-            OpenMetadataElement openMetadataElement = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+            OpenMetadataElement openMetadataElement = openMetadataStore.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
             if (openMetadataElement == null)
             {
@@ -224,11 +222,11 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                        qualifiedName);
 
-                return openMetadataAccess.createMetadataElementInStore(openMetadataType,
-                                                                       ElementStatus.ACTIVE,
-                                                                       null,
-                                                                       null,
-                                                                       elementProperties);
+                return openMetadataStore.createMetadataElementInStore(openMetadataType,
+                                                                      ElementStatus.ACTIVE,
+                                                                      null,
+                                                                      null,
+                                                                      elementProperties);
 
             }
             else
@@ -261,11 +259,11 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
             }
 
 
-            OpenMetadataRelationshipList existingRelationships = openMetadataAccess.getMetadataElementRelationships(end1GUID,
-                                                                                                                    end2GUID,
-                                                                                                                    openMetadataRelationshipType,
-                                                                                                                    0,
-                                                                                                                    0);
+            OpenMetadataRelationshipList existingRelationships = openMetadataStore.getMetadataElementRelationships(end1GUID,
+                                                                                                                   end2GUID,
+                                                                                                                   openMetadataRelationshipType,
+                                                                                                                   0,
+                                                                                                                   0);
             if ((existingRelationships == null) || (existingRelationships.getElementList() == null))
             {
                 ElementProperties properties = null;
@@ -273,12 +271,12 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
                 {
                     properties = propertyHelper.addStringProperty(null, "description", mode);
                 }
-                openMetadataAccess.createRelatedElementsInStore(openMetadataRelationshipType,
-                                                                end1GUID,
-                                                                end2GUID,
-                                                                null,
-                                                                null,
-                                                                properties);
+                openMetadataStore.createRelatedElementsInStore(openMetadataRelationshipType,
+                                                               end1GUID,
+                                                               end2GUID,
+                                                               null,
+                                                               null,
+                                                               properties);
             }
         }
     }
@@ -330,7 +328,6 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
 
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setType(Endpoint.getEndpointType());
         endpoint.setGUID(endpointGUID);
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
@@ -345,7 +342,6 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
 
         ConnectorType connectorType = new ConnectorType();
 
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeName);
         connectorType.setDisplayName(connectorTypeName);
@@ -359,7 +355,6 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
 
         Connection connection = new Connection();
 
-        connection.setType(Connection.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);

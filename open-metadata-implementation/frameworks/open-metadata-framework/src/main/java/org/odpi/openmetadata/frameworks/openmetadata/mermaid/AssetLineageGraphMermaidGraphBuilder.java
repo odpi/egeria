@@ -28,15 +28,16 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
         final Set<String> end1Elements = new HashSet<>();
         final Set<String> end2Elements = new HashSet<>();
 
+        String currentNodeName    = assetLineageGraph.getElementHeader().getGUID();
+        String currentDisplayName = super.getNodeDisplayName(assetLineageGraph);
+
+
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Lineage Analysis Graph for Asset - ");
-        mermaidGraph.append(assetLineageGraph.getProperties().getDisplayName());
+        mermaidGraph.append(currentDisplayName);
         mermaidGraph.append(" [");
         mermaidGraph.append(assetLineageGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
-
-        String currentNodeName    = assetLineageGraph.getElementHeader().getGUID();
-        String currentDisplayName = assetLineageGraph.getProperties().getDisplayName();
 
         extractAnchorInfo(assetLineageGraph.getElementHeader());
 
@@ -52,19 +53,7 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
                 if (node != null)
                 {
                     currentNodeName = node.getElementHeader().getGUID();
-                    currentDisplayName   = node.getProperties().getDisplayName();
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getName();
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getResourceName();
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getQualifiedName();
-                    }
+                    currentDisplayName   = super.getNodeDisplayName(node);
 
                     extractAnchorInfo(node.getElementHeader());
 

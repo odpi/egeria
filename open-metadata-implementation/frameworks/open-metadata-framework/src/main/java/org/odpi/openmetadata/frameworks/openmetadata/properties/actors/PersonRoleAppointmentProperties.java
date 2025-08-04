@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.actors;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -20,9 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonRoleAppointmentProperties extends RelationshipProperties
+public class PersonRoleAppointmentProperties extends RelationshipBeanProperties
 {
-    boolean isPublic                      = true;
     int     expectedTimeAllocationPercent = 100;
 
     /**
@@ -46,31 +45,8 @@ public class PersonRoleAppointmentProperties extends RelationshipProperties
 
         if (template != null)
         {
-            this.isPublic                      = template.getIsPublic();
             this.expectedTimeAllocationPercent = template.getExpectedTimeAllocationPercent();
         }
-    }
-
-
-    /**
-     * Return whether the appointment is public or not.
-     *
-     * @return boolean
-     */
-    public boolean getIsPublic()
-    {
-        return isPublic;
-    }
-
-
-    /**
-     * Set up whether the appointment is public or not.
-     *
-     * @param isPublic boolean
-     */
-    public void setIsPublic(boolean isPublic)
-    {
-        this.isPublic = isPublic;
     }
 
 
@@ -105,8 +81,7 @@ public class PersonRoleAppointmentProperties extends RelationshipProperties
     public String toString()
     {
         return "PersonRoleAppointmentProperties{" +
-                "isPublic=" + isPublic +
-                ", expectedTimeAllocationPercent=" + expectedTimeAllocationPercent +
+                "expectedTimeAllocationPercent=" + expectedTimeAllocationPercent +
                 "} " + super.toString();
     }
 
@@ -133,7 +108,7 @@ public class PersonRoleAppointmentProperties extends RelationshipProperties
             return false;
         }
         PersonRoleAppointmentProperties that = (PersonRoleAppointmentProperties) objectToCompare;
-        return Objects.equals(isPublic, that.isPublic) && Objects.equals(expectedTimeAllocationPercent, that.expectedTimeAllocationPercent);
+        return  Objects.equals(expectedTimeAllocationPercent, that.expectedTimeAllocationPercent);
     }
 
 
@@ -145,6 +120,6 @@ public class PersonRoleAppointmentProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), isPublic, expectedTimeAllocationPercent);
+        return Objects.hash(super.hashCode(), expectedTimeAllocationPercent);
     }
 }

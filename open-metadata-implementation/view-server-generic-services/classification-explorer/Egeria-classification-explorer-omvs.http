@@ -27,14 +27,6 @@ Content-Type: application/json
 # The URL marker is derived from the name of the requested service - take the short two-word service name, convert to
 # lower case and add a hyphen between the two words - so Automated Curation's OMVS's URL Marker is automated-curation.
 #
-# There are optional request parameters for lineage and duplicate processing requests.
-#
-# * forLineage (default=false) - set this request parameter to true if this request is to support a lineage query -
-#                                it will include the mementos representing elements in the graph that are deleted.
-# * forDuplicateProcessing (default=false) - set this request parameter to true if the query is supporting
-#                                            deduplication processing and so it turns off the automatic
-#                                            deduplicate processing
-#
 
 ###
 #==================================================
@@ -49,9 +41,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NameRequestBody",
+  "class" : "UniqueNameRequestBody",
   "name" : "active-metadata-store",
-  "namePropertyName" : "name"
+  "namePropertyName" : "displayName"
 }
 
 > {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
@@ -89,7 +81,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NameRequestBody",
+  "class" : "UniqueNameRequestBody",
   "name" : "Glossary:CloudInformationModel",
   "namePropertyName" : "qualifiedName"
 }
@@ -107,6 +99,30 @@ Content-Type: application/json
 
 
 ###
+# @name getImpactClassifiedElements
+# Return information about the elements classified with the impact classification.
+#
+# https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-impact?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "LevelIdentifierQueryProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "openMetadataTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "returnSpecificLevel" : true,
+    "levelIdentifier" : 3
+}
+
+
+###
 # @name getConfidenceClassifiedElements
 # Return information about the elements classified with the confidence classification.
 #
@@ -119,11 +135,13 @@ Content-Type: application/json
     "class" : "LevelIdentifierQueryProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
-    "returnSpecificLevel" : false,
+    "returnSpecificLevel" : true,
     "levelIdentifier" : 3
 }
 
@@ -140,11 +158,13 @@ Content-Type: application/json
     "class" : "LevelIdentifierQueryProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
-    "returnSpecificLevel" : false,
+    "returnSpecificLevel" : true,
     "levelIdentifier" : 2
 }
 
@@ -162,11 +182,13 @@ Content-Type: application/json
     "class" : "LevelIdentifierQueryProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
-    "returnSpecificLevel" : false,
+    "returnSpecificLevel" : true,
     "levelIdentifier" : 2
 }
 
@@ -184,11 +206,13 @@ Content-Type: application/json
     "class" : "LevelIdentifierQueryProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
-    "returnSpecificLevel" : false,
+    "returnSpecificLevel" : true,
     "levelIdentifier" : 2
 }
 
@@ -206,6 +230,8 @@ Content-Type: application/json
     "class" : "SecurityTagQueryProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -233,6 +259,8 @@ Content-Type: application/json
     "class" : "FindNameProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -254,6 +282,8 @@ Content-Type: application/json
     "class" : "FindNameProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -263,18 +293,20 @@ Content-Type: application/json
 
 
 ###
-# @name getAssetsByOrigin
-# Return information about the assets from a specific origin.
+# @name getElementsByOrigin
+# Return information about the digital resources from a specific origin.
 #
 # https://egeria-project.org/types/4/0440-Organizational-Controls/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-asset-origin?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-digital-resource-origin?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindAssetOriginProperties",
+    "class" : "FindDigitalResourceOriginProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -303,6 +335,8 @@ Content-Type: application/json
     "class" : "SemanticAssignmentQueryProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -332,6 +366,8 @@ Content-Type: application/json
     "class" : "SemanticAssignmentQueryProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -364,6 +400,8 @@ Content-Type: application/json
     "class" : "FindProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -383,6 +421,8 @@ Content-Type: application/json
     "class" : "FindProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -403,6 +443,8 @@ Content-Type: application/json
     "class" : "FindProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -423,6 +465,8 @@ Content-Type: application/json
     "class" : "FindProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -446,6 +490,8 @@ Content-Type: application/json
     "class" : "FindProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -465,6 +511,8 @@ Content-Type: application/json
     "class" : "FindProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -488,6 +536,8 @@ Content-Type: application/json
     "class" : "FindProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -507,6 +557,8 @@ Content-Type: application/json
     "class" : "FindProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "openMetadataTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
@@ -625,7 +677,9 @@ Content-Type: application/json
 {
     "class" : "FindRequest",
     "effectiveTime" : "{{$isoTimestamp}}",
-    "asOfTime" : "{{$isoTimestamp}}"
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false
 }
 
 
@@ -642,6 +696,8 @@ Content-Type: application/json
     "class" : "FindPropertyNameProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "propertyValue" : "????",
     "propertyName" : "qualifiedName"
 }
@@ -651,14 +707,16 @@ Content-Type: application/json
 # Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.
 #
 # https://egeria-project.org/services/gaf-metadata-management/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/guid-by-unique-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/guid-by-unique-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindPropertyNameProperties",
+    "class" : "UniqueNameProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "propertyValue" : "???",
     "propertyName" : "qualifiedName"
 }
@@ -677,6 +735,8 @@ Content-Type: application/json
 {
     "class" : "FindProperties",
     "openMetadataTypeName" : "CertificationType",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -697,6 +757,8 @@ Content-Type: application/json
     "openMetadataTypeName" : "Project",
     "propertyValue" : "Campaign:Clinical Trials Management",
     "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -718,6 +780,8 @@ Content-Type: application/json
     "openMetadataTypeName" : "CertificationType",
     "propertyValue" : "Approved Hospital",
     "propertyNames" : ["name", "qualifiedName", "title"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -736,6 +800,8 @@ Content-Type: application/json
 
 {
     "class" : "FindProperties",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -753,6 +819,8 @@ Content-Type: application/json
 {
     "class" : "FindProperties",
     "openMetadataTypeName" : "Project",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -771,6 +839,8 @@ Content-Type: application/json
     "openMetadataTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -789,6 +859,8 @@ Content-Type: application/json
     "openMetadataTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -805,6 +877,8 @@ Content-Type: application/json
 {
     "class" : "FindProperties",
     "openMetadataTypeName" : "Project",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -821,6 +895,8 @@ Content-Type: application/json
 
 {
     "class" : "FindProperties",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -841,6 +917,8 @@ Content-Type: application/json
 
 {
     "class" : "FindProperties",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -857,6 +935,8 @@ Content-Type: application/json
 {
     "class" : "FindProperties",
     "openMetadataTypeName" : "CertificationType",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -875,6 +955,8 @@ Content-Type: application/json
     "openMetadataTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -892,6 +974,8 @@ Content-Type: application/json
     "openMetadataTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -905,6 +989,8 @@ Content-Type: application/json
 
 {
     "class" : "FindProperties",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -921,6 +1007,8 @@ Content-Type: application/json
     "class" : "FindPropertyNamesProperties",
     "propertyValue" : "Organization:Hampton Hospital",
     "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -938,6 +1026,8 @@ Content-Type: application/json
     "openMetadataTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 

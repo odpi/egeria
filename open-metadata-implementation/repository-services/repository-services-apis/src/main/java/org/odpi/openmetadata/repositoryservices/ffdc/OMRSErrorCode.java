@@ -801,14 +801,6 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Retry the request when the connection configuration for this repository is corrected."),
 
     /**
-     * OMRS-CONNECTOR-400-002 - The connection passed to OMASConnectedAssetProperties for connector {0} is null
-     */
-    NULL_CONNECTION(400, "OMRS-CONNECTOR-400-002",
-            "The connection passed to OMASConnectedAssetProperties for connector {0} is null",
-            "The system is unable to populate the ConnectedAssetDetails object because it needs the connection to identify the asset.",
-            "Look for other error messages to identify what caused this error.  When the issue is resolved, retry the request."),
-
-    /**
      * OMRS-CONNECTOR-400-003 - The connection passed to the EnterpriseOMRSRepositoryConnector is null
      */
     NULL_OMRS_CONNECTION(400, "OMRS-CONNECTOR-400-003",

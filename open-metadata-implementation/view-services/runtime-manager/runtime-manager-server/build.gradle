@@ -13,16 +13,15 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors')
-    implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-api')
-    implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
     implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-api')
     implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
-    implementation project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
-    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
+    implementation project(':open-metadata-implementation:access-services:ocf-metadata-management:ocf-metadata-api')
+    implementation project(':open-metadata-implementation:access-services:ocf-metadata-management:ocf-metadata-client')
+    implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-api')
+    implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.slf4j:slf4j-api'
 }

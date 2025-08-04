@@ -94,7 +94,7 @@ public abstract class OpenMetadataTopicListenerConnectorBase extends OpenMetadat
          */
         for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
         {
-            eventBusConnector.start();
+            eventBusConnector.disconnect();
         }
     }
 }

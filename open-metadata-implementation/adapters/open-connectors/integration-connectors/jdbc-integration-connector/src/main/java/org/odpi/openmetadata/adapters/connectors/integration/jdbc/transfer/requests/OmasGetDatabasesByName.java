@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +19,16 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the getDatabasesByName call to access service
  */
-class OmasGetDatabasesByName implements Function<String, List<DatabaseElement>>
+class OmasGetDatabasesByName implements Function<String, List<OpenMetadataRootElement>>
 {
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final AssetClient databaseClient;
+    private final AuditLog    auditLog;
 
-    OmasGetDatabasesByName(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasGetDatabasesByName(AssetClient databaseClient, AuditLog auditLog)
+    {
+        this.databaseClient = databaseClient;
+        this.auditLog       = auditLog;
     }
 
     /**
@@ -38,16 +39,22 @@ class OmasGetDatabasesByName implements Function<String, List<DatabaseElement>>
      * @return databases
      */
     @Override
-    public List<DatabaseElement> apply(String databaseQualifiedName){
+    public List<OpenMetadataRootElement> apply(String databaseQualifiedName)
+    {
         String methodName = "OmasGetDatabasesByName";
-        try{
+        try
+        {
             return Optional.ofNullable(
-                    databaseIntegratorContext.getDatabasesByName(databaseQualifiedName, 0, 0))
+                            databaseClient.getAssetsByName(databaseQualifiedName,
+                                                           databaseClient.getQueryOptions()))
                     .orElseGet(ArrayList::new);
-        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+        }
+        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
+        {
             auditLog.logMessage("Reading database with qualified name " + databaseQualifiedName,
                     EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()));
         }
+
         return new ArrayList<>();
     }
 

@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction;
 
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 
 import java.util.Date;
@@ -43,10 +43,10 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
-    void registerListener(WatchdogGovernanceListener listener,
-                          List<WatchdogEventType>    interestingEventTypes,
-                          List<String>               interestingMetadataTypes,
-                          String                     specificInstance) throws InvalidParameterException;
+    void registerListener(WatchdogGovernanceListener  listener,
+                          List<OpenMetadataEventType> interestingEventTypes,
+                          List<String>                interestingMetadataTypes,
+                          String                      specificInstance) throws InvalidParameterException;
 
 
     /**

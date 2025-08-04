@@ -147,8 +147,6 @@ Content-Type: application/json
 # Update the properties of a actor profile.
 #
 # @param actorProfileGUID unique identifier of the actor profile (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or
@@ -162,11 +160,7 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "mergeUpdate": true,
   "properties": {
     "class" : "ActorProfileProperties",
     "typeName" : "enter the type of the element",
@@ -183,7 +177,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -208,7 +207,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -241,7 +240,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -272,7 +272,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -304,7 +304,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -335,7 +336,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -368,7 +369,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -399,7 +401,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -430,7 +432,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -460,7 +463,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -493,7 +496,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -520,7 +524,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -553,7 +557,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
  {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -580,7 +585,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "cascadeDelete" : false,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -669,7 +675,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -797,8 +803,6 @@ Content-Type: application/json
 # Update the properties of a actor role.
 #
 # @param actorRoleGUID unique identifier of the actor role (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or
@@ -812,11 +816,7 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "mergeUpdate": true,
   "properties": {
     "class" : "ActorRoleProperties",
     "typeName" : "enter the type of the element",
@@ -835,7 +835,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -861,7 +866,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -895,7 +900,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -926,7 +932,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -959,7 +965,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -986,7 +993,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -999,6 +1006,9 @@ Content-Type: application/json
   }
 }
 
+###
+
+@itProfileRoleGUID=add guid here
 
 ###
 # @name detachITProfileRoleFromProfile
@@ -1018,7 +1028,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1045,7 +1055,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "cascadeDelete" : false,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1134,7 +1145,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -1263,8 +1274,6 @@ Content-Type: application/json
 # Update the properties of a user identity.
 #
 # @param userIdentityGUID unique identifier of the user identity (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or
@@ -1278,11 +1287,7 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "mergeUpdate": true,
   "properties": {
     "class" : "UserIdentityProperties",
     "typeName" : "enter the type of the element",
@@ -1299,7 +1304,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -1321,7 +1331,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1356,7 +1366,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
  {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1383,18 +1394,52 @@ Content-Type: application/json
 
 
 {
-  "class" : "ClassificationRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "class" : "NewClassificationRequestBody",
   "properties": {
     "class": "SecurityGroupMembershipProperties",
     "groups": [""],
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateSecurityGroupMembership
+# Update the SecurityGroupMembership classification to the user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/security-group-memberships/reclassify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+{
+  "class" : "UpdateClassificationRequestBody",
+  "mergeUpdate" : true,
+  "properties": {
+    "class": "SecurityGroupMembershipProperties",
+    "groups": [""],
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -1441,7 +1486,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "cascadeDelete" : false,
+  "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1530,7 +1577,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,

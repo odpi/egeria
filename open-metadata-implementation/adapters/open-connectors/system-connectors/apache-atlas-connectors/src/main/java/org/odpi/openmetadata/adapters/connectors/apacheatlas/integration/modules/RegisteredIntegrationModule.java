@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules;
 
-import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 
 import java.util.List;
 
@@ -52,5 +52,5 @@ public interface RegisteredIntegrationModule
      *
      * @param event event object
      */
-    void processEvent(AssetManagerOutTopicEvent event);
+    void processEvent(OpenMetadataOutTopicEvent event);
 }

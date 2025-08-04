@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+
 import java.util.List;
 
 
@@ -103,9 +105,10 @@ public abstract class RepositoryGovernanceServiceConnector extends ConnectorBase
      * be sure to call super.start() in your version.
      *
      * @throws ConnectorCheckedException there is a problem within the archive service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public synchronized void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 

@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ExternalReferenceProperties extends ReferenceableProperties
 {
     private String localReferenceId           = null;
-    private String displayName                = null;
     private String linkDescription            = null;
     private String resourceDescription        = null;
     private String uri                        = null;
@@ -56,7 +55,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
              */
             localReferenceId     = template.getLocalReferenceId();
             linkDescription      = template.getLinkDescription();
-            displayName          = template.getDisplayName();
             uri                  = template.getURI();
             resourceDescription        = template.getResourceDescription();
             referenceVersionIdentifier = template.getReferenceVersionIdentifier();
@@ -84,25 +82,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     public void setLocalReferenceId(String localReferenceId)
     {
         this.localReferenceId = localReferenceId;
-    }
-
-
-    /**
-     * Return the display name of this external reference.
-     *
-     * @return String display name.
-     */
-    public String getDisplayName() { return displayName; }
-
-
-    /**
-     * Set up the display name of this external reference.
-     *
-     * @param displayName - string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
     }
 
 
@@ -212,13 +191,11 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     {
         return "ExternalReferenceProperties{" +
                 "localReferenceId='" + localReferenceId + '\'' +
-                ", displayName='" + displayName + '\'' +
                 ", linkDescription='" + linkDescription + '\'' +
                 ", resourceDescription='" + resourceDescription + '\'' +
                 ", uri='" + uri + '\'' +
                 ", referenceVersionIdentifier='" + referenceVersionIdentifier + '\'' +
                 ", organization='" + organization + '\'' +
-                ", URI='" + getURI() + '\'' +
                 "} " + super.toString();
     }
 
@@ -247,7 +224,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
         }
         ExternalReferenceProperties that = (ExternalReferenceProperties) objectToCompare;
         return Objects.equals(localReferenceId, that.localReferenceId) &&
-                       Objects.equals(displayName, that.displayName) &&
                        Objects.equals(linkDescription, that.linkDescription) &&
                        Objects.equals(resourceDescription, that.resourceDescription) &&
                        Objects.equals(uri, that.uri) &&
@@ -264,6 +240,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(localReferenceId, displayName, linkDescription, resourceDescription, uri, referenceVersionIdentifier, organization);
+        return Objects.hash(localReferenceId, linkDescription, resourceDescription, uri, referenceVersionIdentifier, organization);
     }
 }

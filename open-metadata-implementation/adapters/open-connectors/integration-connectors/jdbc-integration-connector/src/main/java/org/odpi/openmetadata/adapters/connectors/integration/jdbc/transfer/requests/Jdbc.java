@@ -3,12 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.JdbcMetadata;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcCatalog;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcColumn;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcForeignKey;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcPrimaryKey;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcSchema;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcTable;
+import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import java.util.List;

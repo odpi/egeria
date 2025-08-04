@@ -1365,7 +1365,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.NAME.name, subjectAreaName, methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.DISPLAY_NAME.name, subjectAreaName, methodName);
 
         this.setClassificationInRepository(userId,
                                            externalSourceGUID,
@@ -1509,7 +1509,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         InstanceProperties classificationMatchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                         null,
-                                                                                                        OpenMetadataProperty.NAME.name,
+                                                                                                        OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                                         subjectAreaName,
                                                                                                         methodName);
 
@@ -4891,8 +4891,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                      referenceableGUID,
                                                                      referenceableGUIDParameter,
                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                     OpenMetadataType.REFERENCEABLE_FACET.typeGUID,
-                                                                     OpenMetadataType.REFERENCEABLE_FACET.typeName,
+                                                                     OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName,
                                                                      OpenMetadataType.PROPERTY_FACET.typeName,
                                                                      null,
                                                                      null,
@@ -4988,8 +4988,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                      forLineage,
                                      forDuplicateProcessing,
                                      supportedZones,
-                                     OpenMetadataType.REFERENCEABLE_FACET.typeGUID,
-                                     OpenMetadataType.REFERENCEABLE_FACET.typeName,
+                                     OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeGUID,
+                                     OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName,
                                      relationshipProperties,
                                      null,
                                      null,
@@ -5066,8 +5066,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                      referenceableGUID,
                                                                      referenceableGUIDParameter,
                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                     OpenMetadataType.REFERENCEABLE_FACET.typeGUID,
-                                                                     OpenMetadataType.REFERENCEABLE_FACET.typeName,
+                                                                     OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName,
                                                                      OpenMetadataType.PROPERTY_FACET.typeName,
                                                                      null,
                                                                      null,

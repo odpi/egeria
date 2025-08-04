@@ -66,10 +66,15 @@ public class InformalTagConverter<B> extends OpenMetadataConverterBase<B>
                 {
                     elementProperties = new ElementProperties(openMetadataElement.getElementProperties());
 
-                    properties.setIsPrivateTag(! this.removeIsPublic(elementProperties));
-                    properties.setName(this.removeTagName(elementProperties));
-                    properties.setDescription(this.removeTagDescription(elementProperties));
-                    properties.setUser(openMetadataElement.getVersions().getCreatedBy());
+                    properties.setDisplayName(this.removeDisplayName(elementProperties));
+                    properties.setDescription(this.removeDescription(elementProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    properties.setTypeName(openMetadataElement.getType().getTypeName());
+                    properties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
                 }
                 else
                 {

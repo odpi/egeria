@@ -156,7 +156,7 @@ public class ProjectHierarchyConverter<B> extends ProjectConverter<B>
                     projectProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
                     projectProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
                     projectProperties.setIdentifier(this.removeIdentifier(elementProperties));
-                    projectProperties.setName(this.removeName(elementProperties));
+                    projectProperties.setDisplayName(this.removeDisplayName(elementProperties));
                     projectProperties.setDescription(this.removeDescription(elementProperties));
                     projectProperties.setProjectStatus(this.removeProjectStatus(elementProperties));
                     projectProperties.setProjectHealth(this.removeProjectHealth(elementProperties));

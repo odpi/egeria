@@ -6,8 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Objects;
 
@@ -21,8 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PeerDefinitionProperties extends RelationshipProperties
+public class PeerDefinitionProperties extends RelationshipBeanProperties
 {
+    String  label   = null;
     String  description   = null;
 
     /**
@@ -45,13 +45,35 @@ public class PeerDefinitionProperties extends RelationshipProperties
 
         if (template != null)
         {
+            this.label = template.getLabel();
             this.description = template.getDescription();
         }
     }
 
 
     /**
-     * Return the reason why the governance definitions are related.
+     * Return the label.
+     *
+     * @return string
+     */
+    public String getLabel()
+    {
+        return label;
+    }
+
+
+    /**
+     * Set up the label.
+     *
+     * @param label string
+     */
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
+
+    /**
+     * Return the reasons why the governance definitions are related.
      *
      * @return description
      */
@@ -81,13 +103,10 @@ public class PeerDefinitionProperties extends RelationshipProperties
     public String toString()
     {
         return "PeerDefinitionProperties{" +
-                       "description='" + description + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "label='" + label + '\'' +
+                ", description='" + description + '\'' +
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -111,7 +130,8 @@ public class PeerDefinitionProperties extends RelationshipProperties
             return false;
         }
         PeerDefinitionProperties that = (PeerDefinitionProperties) objectToCompare;
-        return Objects.equals(description, that.description);
+        return Objects.equals(label, that.label) &&
+                Objects.equals(description, that.description);
     }
 
 
@@ -123,6 +143,6 @@ public class PeerDefinitionProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), description);
+        return Objects.hash(super.hashCode(), label, description);
     }
 }

@@ -6,10 +6,12 @@ import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.Op
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 
@@ -22,20 +24,25 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
      * Copy/clone constructor
      *
      * @param template object to copy
+     * @param catalogTargetContext specialized context for this catalog target
      * @param connectorToTarget connector to access the target resource
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
      * @param listener listener
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     public OpenLineageEventReceiverCatalogTargetProcessor(CatalogTarget             template,
+                                                          CatalogTargetContext      catalogTargetContext,
                                                           Connector                 connectorToTarget,
                                                           String                    connectorName,
                                                           AuditLog                  auditLog,
-                                                          OpenMetadataTopicListener listener) throws ConnectorCheckedException
+                                                          OpenMetadataTopicListener listener) throws ConnectorCheckedException,
+                                                                                                     UserNotAuthorizedException
     {
-        super(template, connectorToTarget, connectorName, auditLog);
+        super(template, catalogTargetContext, connectorToTarget, connectorName, auditLog);
 
-        if (super.getCatalogTargetConnector() instanceof OpenMetadataTopicConnector topicConnector)
+        if (super.getConnectorToTarget() instanceof OpenMetadataTopicConnector topicConnector)
         {
             this.registerTopicConnector(topicConnector, listener);
         }
@@ -47,9 +54,12 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
      *
      * @param topicConnector connector
      * @param listener event listener
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     private void registerTopicConnector(OpenMetadataTopicConnector topicConnector,
-                                        OpenMetadataTopicListener  listener) throws ConnectorCheckedException
+                                        OpenMetadataTopicListener  listener) throws ConnectorCheckedException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName = "registerTopicConnector";
 
@@ -58,18 +68,18 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
          */
         topicConnector.registerListener(listener);
 
-        ConnectionDetails connectionDetails = topicConnector.getConnection();
+        Connection connectionDetails = topicConnector.getConnection();
 
         if (connectionDetails != null)
         {
-            EndpointDetails endpoint = connectionDetails.getEndpoint();
+            Endpoint endpoint = connectionDetails.getEndpoint();
 
             if (endpoint != null)
             {
                 auditLog.logMessage(methodName,
                                     OpenLineageIntegrationConnectorAuditCode.KAFKA_RECEIVER_CONFIGURATION.getMessageDefinition(connectorName,
                                                                                                                                endpoint.getAddress(),
-                                                                                                                               connectionDetails.getConnectionName()));
+                                                                                                                               connectionDetails.getDisplayName()));
             }
 
 

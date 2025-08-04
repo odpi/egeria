@@ -3,13 +3,13 @@
 
 package org.odpi.openmetadata.governanceservers.enginehostservices.threads;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
-import org.odpi.openmetadata.governanceservers.enginehostservices.listener.GovernanceServerOutTopicListener;
+import org.odpi.openmetadata.governanceservers.enginehostservices.listener.OpenMetadataOutTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,15 +23,15 @@ import java.util.List;
  */
 public class EngineConfigurationRefreshThread implements Runnable
 {
-    private final GovernanceEngineMap         engineHandlers;
-    private final GovernanceServerEventClient eventClient;
-    private final AuditLog                    auditLog;
-    private final String                      localServerUserId;
-    private final String                      localServerName;
-    private final String                      accessServiceServerName;
-    private final String                      accessServiceRootURL;
+    private final GovernanceEngineMap     engineHandlers;
+    private final OpenMetadataEventClient eventClient;
+    private final AuditLog                auditLog;
+    private final String                  localServerUserId;
+    private final String                  localServerName;
+    private final String                  accessServiceServerName;
+    private final String                  accessServiceRootURL;
 
-    private volatile boolean                  keepTrying = true;
+    private volatile boolean              keepTrying = true;
 
     private static final Logger log = LoggerFactory.getLogger(EngineConfigurationRefreshThread.class);
 
@@ -48,13 +48,13 @@ public class EngineConfigurationRefreshThread implements Runnable
      * @param accessServiceServerName metadata server's name
      * @param accessServiceRootURL platform location for metadata server
      */
-    public EngineConfigurationRefreshThread(GovernanceEngineMap                  engineHandlers,
-                                            GovernanceServerEventClient          eventClient,
-                                            AuditLog                             auditLog,
-                                            String                               localServerUserId,
-                                            String                               localServerName,
-                                            String                               accessServiceServerName,
-                                            String                               accessServiceRootURL)
+    public EngineConfigurationRefreshThread(GovernanceEngineMap      engineHandlers,
+                                            OpenMetadataEventClient  eventClient,
+                                            AuditLog                 auditLog,
+                                            String                   localServerUserId,
+                                            String                   localServerName,
+                                            String                   accessServiceServerName,
+                                            String                   accessServiceRootURL)
     {
         this.engineHandlers          = engineHandlers;
         this.eventClient             = eventClient;
@@ -85,7 +85,7 @@ public class EngineConfigurationRefreshThread implements Runnable
             {
                 try
                 {
-                    eventClient.registerListener(localServerUserId, new GovernanceServerOutTopicListener(engineHandlers, auditLog));
+                    eventClient.registerListener(localServerUserId, new OpenMetadataOutTopicListener(engineHandlers, auditLog));
                     listenerRegistered = true;
 
                     auditLog.logMessage(actionDescription,

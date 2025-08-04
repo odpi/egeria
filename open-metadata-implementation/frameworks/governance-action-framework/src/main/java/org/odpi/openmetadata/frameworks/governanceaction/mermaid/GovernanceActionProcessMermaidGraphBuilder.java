@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.frameworks.governanceaction.mermaid;
 
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.MermaidGraphBuilderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -54,7 +54,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
                 currentDisplayName = processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getQualifiedName();
             }
 
-            if (processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getActionStatus() == EngineActionStatus.FAILED)
+            if (processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getActionStatus() == ActivityStatus.FAILED)
             {
                 appendNewMermaidNode(currentNodeName,
                                      currentDisplayName,
@@ -91,7 +91,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
                         currentDisplayName = node.getProcessStepProperties().getProcessStepName();
                     }
 
-                    if (node.getProcessStepProperties().getActionStatus() == EngineActionStatus.FAILED)
+                    if (node.getProcessStepProperties().getActionStatus() == ActivityStatus.FAILED)
                     {
                         appendNewMermaidNode(currentNodeName,
                                              currentDisplayName,
@@ -137,7 +137,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
 
             if (processStep.getProcessStepProperties().getActionStatus() != null)
             {
-                additionalProperties.put(OpenMetadataProperty.ACTION_STATUS.name,
+                additionalProperties.put(OpenMetadataProperty.ACTIVITY_STATUS.name,
                                          processStep.getProcessStepProperties().getActionStatus().getName());
             }
             if ((processStep.getProcessStepProperties().getCompletionGuards() != null) &&

@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.*;
 import org.odpi.openmetadata.viewservices.myprofile.server.MyProfileRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +49,7 @@ public class MyProfileResource
             externalDocs=@ExternalDocumentation(description="Personal Profiles",
                     url="https://egeria-project.org/concepts/personal-profile"))
 
-    public PersonalProfileResponse getMyProfile(@PathVariable String serverName)
+    public OpenMetadataRootElementResponse getMyProfile(@PathVariable String serverName)
     {
         return restAPI.getMyProfile(serverName);
     }
@@ -75,10 +74,11 @@ public class MyProfileResource
                     url="https://egeria-project.org/concepts/to-do"))
 
     public GUIDResponse createToDo(@PathVariable String          serverName,
-                                   @RequestBody  ToDoRequestBody requestBody)
+                                   @RequestBody(required = false)  ToDoRequestBody requestBody)
     {
         return restAPI.createToDo(serverName, requestBody);
     }
+
 
 
     /**
@@ -86,8 +86,7 @@ public class MyProfileResource
      *
      * @param serverName name of the server instances for this request
      * @param toDoGUID unique identifier of the to do
-     * @param isMergeUpdate should the toDoProperties overlay the existing stored properties or replace them
-     * @param toDoProperties properties to change
+     * @param requestBody properties to change
      *
      * @return void or
      * InvalidParameterException a parameter is invalid
@@ -101,12 +100,11 @@ public class MyProfileResource
             externalDocs=@ExternalDocumentation(description="To Dos",
                     url="https://egeria-project.org/concepts/to-do"))
 
-    public VoidResponse updateToDo(@PathVariable String         serverName,
-                                   @PathVariable String         toDoGUID,
-                                   @RequestParam boolean        isMergeUpdate,
-                                   @RequestBody  ToDoProperties toDoProperties)
+    public VoidResponse updateToDo(@PathVariable String                   serverName,
+                                   @PathVariable String                   toDoGUID,
+                                   @RequestBody (required = false)  UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateToDo(serverName, toDoGUID, isMergeUpdate, toDoProperties);
+        return restAPI.updateToDo(serverName, toDoGUID, requestBody);
     }
 
 
@@ -115,8 +113,7 @@ public class MyProfileResource
      *
      * @param serverName name of the server instances for this request
      * @param actionTargetGUID               unique identifier of the action target relationship
-     * @param isMergeUpdate should the actionTargetProperties overlay the existing stored properties or replace them
-     * @param actionTargetProperties properties to change
+     * @param requestBody properties to change
      *
      * @return void or
      * InvalidParameterException a parameter is invalid
@@ -131,11 +128,10 @@ public class MyProfileResource
                     url="https://egeria-project.org/concepts/to-do"))
 
     public VoidResponse updateActionTargetProperties(@PathVariable String                 serverName,
-                                                     @PathVariable String                 actionTargetGUID,
-                                                     @RequestParam boolean                isMergeUpdate,
-                                                     @RequestBody ToDoActionTargetProperties actionTargetProperties)
+                                                     @PathVariable String                        actionTargetGUID,
+                                                     @RequestBody(required = false)  UpdateRelationshipRequestBody requestBody)
     {
-        return restAPI.updateActionTargetProperties(serverName, actionTargetGUID, isMergeUpdate, actionTargetProperties);
+        return restAPI.updateActionTargetProperties(serverName, actionTargetGUID, requestBody);
     }
 
 
@@ -163,7 +159,7 @@ public class MyProfileResource
                                      @PathVariable String         toDoGUID,
                                      @PathVariable String         actorGUID,
                                      @RequestBody (required = false)
-                                                   NullRequestBody requestBody)
+                                                   UpdateRelationshipRequestBody requestBody)
     {
         return restAPI.reassignToDo(serverName, toDoGUID, actorGUID, requestBody);
     }
@@ -191,7 +187,7 @@ public class MyProfileResource
     public VoidResponse deleteToDo(@PathVariable String          serverName,
                                    @PathVariable String          toDoGUID,
                                    @RequestBody (required = false)
-                                                 NullRequestBody requestBody)
+                                       DeleteRequestBody requestBody)
     {
         return restAPI.deleteToDo(serverName, toDoGUID, requestBody);
     }
@@ -248,7 +244,7 @@ public class MyProfileResource
                                                    @RequestParam int                   startFrom,
                                                    @RequestParam int                   pageSize,
                                                    @RequestBody  (required = false)
-                                                                    ToDoStatusRequestBody requestBody)
+                                                       ActivityStatusRequestBody requestBody)
     {
         return restAPI.getActionsForActionTarget(serverName, elementGUID, startFrom, pageSize, requestBody);
     }
@@ -280,7 +276,7 @@ public class MyProfileResource
                                               @RequestParam int                   startFrom,
                                               @RequestParam int                   pageSize,
                                               @RequestBody  (required = false)
-                                                             ToDoStatusRequestBody requestBody)
+                                                  ActivityStatusRequestBody requestBody)
     {
         return restAPI.getActionsForSponsor(serverName, elementGUID, startFrom, pageSize, requestBody);
     }
@@ -312,7 +308,7 @@ public class MyProfileResource
                                             @RequestParam int                   startFrom,
                                             @RequestParam int                   pageSize,
                                             @RequestBody  (required = false)
-                                                             ToDoStatusRequestBody requestBody)
+                                                ActivityStatusRequestBody requestBody)
     {
         return restAPI.getAssignedActions(serverName, actorGUID, startFrom, pageSize, requestBody);
     }
@@ -322,11 +318,6 @@ public class MyProfileResource
      * Retrieve the "To Dos" that match the search string.
      *
      * @param serverName name of the server instances for this request
-     * @param startFrom initial position of the results to return
-     * @param pageSize maximum number of results to return
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
      * @param requestBody     status of the to do (null means current active)
      *
      * @return list of to do beans or
@@ -342,17 +333,9 @@ public class MyProfileResource
                     url="https://egeria-project.org/concepts/to-do"))
 
     public ToDosResponse findToDos(@PathVariable String                          serverName,
-                                   @RequestParam int                             startFrom,
-                                   @RequestParam int                             pageSize,
-                                   @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                        startsWith,
-                                   @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                        endsWith,
-                                   @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                        ignoreCase,
-                                   @RequestBody  ToDoStatusSearchString         requestBody)
+                                   @RequestBody ActivityStatusSearchString requestBody)
     {
-        return restAPI.findToDos(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, requestBody);
+        return restAPI.findToDos(serverName,  requestBody);
     }
 
 
@@ -360,7 +343,7 @@ public class MyProfileResource
      * Retrieve the "To Dos" that match the type name and status.
      *
      * @param serverName name of the server instances for this request
-     * @param toDoType   type to search for
+     * @param category   type to search for
      * @param startFrom initial position of the results to return
      * @param pageSize maximum number of results to return
      * @param requestBody     status of the to do (null means current active)
@@ -370,20 +353,20 @@ public class MyProfileResource
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/to-dos/types/{toDoType}")
+    @PostMapping(path = "/to-dos/categories/{category}")
 
     @Operation(summary="getToDosByType",
             description="Retrieve the to dos that match the supplied toDoType.",
             externalDocs=@ExternalDocumentation(description="To Dos",
                     url="https://egeria-project.org/concepts/to-do"))
 
-    public ToDosResponse getToDosByType(@PathVariable String                serverName,
-                                        @PathVariable String                toDoType,
-                                        @RequestParam int                   startFrom,
-                                        @RequestParam int                   pageSize,
-                                        @RequestBody  (required = false)
-                                                         ToDoStatusRequestBody requestBody)
+    public ToDosResponse getToDosByCategory(@PathVariable String                serverName,
+                                            @PathVariable String                category,
+                                            @RequestParam int                   startFrom,
+                                            @RequestParam int                   pageSize,
+                                            @RequestBody  (required = false)
+                                                ActivityStatusRequestBody requestBody)
     {
-        return restAPI.getToDosByType(serverName, toDoType, startFrom, pageSize, requestBody);
+        return restAPI.getToDosByCategory(serverName, category, startFrom, pageSize, requestBody);
     }
 }

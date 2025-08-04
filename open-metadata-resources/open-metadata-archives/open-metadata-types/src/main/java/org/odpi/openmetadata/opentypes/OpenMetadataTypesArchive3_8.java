@@ -431,7 +431,7 @@ public class OpenMetadataTypesArchive3_8
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESS));

@@ -146,7 +146,7 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
                        ", externalScopeTypeName='" + externalScopeTypeName + '\'' +
                        ", synchronizationDirection=" + getSynchronizationDirection() +
                        ", synchronizationDescription='" + getSynchronizationDescription() + '\'' +
-                       ", externalIdentifier='" + getExternalIdentifier() + '\'' +
+                       ", externalIdentifier='" + getIdentifier() + '\'' +
                        ", externalIdentifierName='" + getExternalIdentifierName() + '\'' +
                        ", externalIdentifierUsage='" + getExternalIdentifierUsage() + '\'' +
                        ", externalIdentifierSource='" + getExternalIdentifierSource() + '\'' +

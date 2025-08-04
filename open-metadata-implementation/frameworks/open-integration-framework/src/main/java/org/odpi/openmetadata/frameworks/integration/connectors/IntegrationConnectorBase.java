@@ -9,8 +9,10 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
@@ -30,7 +32,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 {
     protected AuditLog                 auditLog                    = null;
     protected String                   connectorName               = null;
-    protected IntegrationContext       integrationContext          = null;
+    public    IntegrationContext       integrationContext          = null;
 
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -95,12 +97,13 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
      * This call can be used to register with non-blocking services.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
-        catalogTargetsManager = new RequestedCatalogTargetsManager(connectionDetails.getConfigurationProperties(),
+        catalogTargetsManager = new RequestedCatalogTargetsManager(connectionBean.getConfigurationProperties(),
                                                                    connectorName,
                                                                    auditLog);
     }
@@ -114,11 +117,11 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
      */
     protected String getNetworkAddress(Connector assetConnector)
     {
-        ConnectionDetails assetConnection = assetConnector.getConnection();
+        Connection assetConnection = assetConnector.getConnection();
 
         if (assetConnection != null)
         {
-            EndpointDetails endpointDetails = assetConnection.getEndpoint();
+            Endpoint endpointDetails = assetConnection.getEndpoint();
 
             if (endpointDetails != null)
             {
@@ -142,7 +145,9 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 
 
     /**
-     * Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.
+     * Retrieve the list of catalog targets for the connector.  These are extracted from the metadata store.
+     * For each one, integrateCatalogTarget() is called on the supplied catalog target integrator to perform the
+     * refresh.
      *
      * @param catalogTargetIntegrator the integration component that will process each catalog target
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
@@ -164,23 +169,10 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
             {
                 for (RequestedCatalogTarget requestedCatalogTarget : requestedCatalogTargets)
                 {
-                    boolean savedExternalSourceIsHome        = integrationContext.getExternalSourceIsHome();
-                    String  savedMetadataSourceQualifiedName = integrationContext.getMetadataSourceQualifiedName();
-
                     if ((requestedCatalogTarget != null) && (super.isActive()))
                     {
                         try
                         {
-                            if (requestedCatalogTarget.getMetadataSourceQualifiedName() == null)
-                            {
-                                integrationContext.setExternalSourceIsHome(false);
-                            }
-                            else
-                            {
-                                integrationContext.setMetadataSourceQualifiedName(requestedCatalogTarget.getMetadataSourceQualifiedName());
-                                integrationContext.setExternalSourceIsHome(true);
-                            }
-
                             auditLog.logMessage(methodName,
                                                 OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
                                                                                                             requestedCatalogTarget.getCatalogTargetName()));
@@ -195,9 +187,68 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
                                                                                                        error.getMessage()));
                         }
                     }
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           methodName,
+                                                                                           error.getMessage()));
+            }
 
-                    integrationContext.setExternalSourceIsHome(savedExternalSourceIsHome);
-                    integrationContext.setMetadataSourceQualifiedName(savedMetadataSourceQualifiedName);
+            auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
+                                                                                                        Integer.toString(requestedCatalogTargets.size())));
+        }
+    }
+
+
+
+    /**
+     * Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.
+     *
+     * @param catalogTargetEventProcessor the integration component that will process each catalog target
+     * @param event event to process
+     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     */
+    protected void passEventToCatalogTargets(CatalogTargetEventProcessor catalogTargetEventProcessor,
+                                             OpenMetadataOutTopicEvent   event) throws ConnectorCheckedException
+    {
+        final String methodName = "passEventToCatalogTargets";
+
+        List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.refreshKnownCatalogTargets(integrationContext,
+                                                                                                                catalogTargetEventProcessor);
+
+        if ((requestedCatalogTargets == null) || (requestedCatalogTargets.isEmpty()))
+        {
+            auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
+        }
+        else
+        {
+            try
+            {
+                for (RequestedCatalogTarget requestedCatalogTarget : requestedCatalogTargets)
+                {
+
+                    if ((requestedCatalogTarget != null) && (super.isActive()))
+                    {
+                        try
+                        {
+                            auditLog.logMessage(methodName,
+                                                OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                                            requestedCatalogTarget.getCatalogTargetName()));
+                            catalogTargetEventProcessor.passEventToCatalogTarget(requestedCatalogTarget, event);
+                        }
+                        catch (Exception error)
+                        {
+                            auditLog.logMessage(methodName,
+                                                OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName + "::" + requestedCatalogTarget.getCatalogTargetName(),
+                                                                                                       error.getMessage()));
+                        }
+                    }
                 }
             }
             catch (Exception error)

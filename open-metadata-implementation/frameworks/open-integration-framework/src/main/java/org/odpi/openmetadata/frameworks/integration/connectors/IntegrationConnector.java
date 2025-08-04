@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.integration.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 /**
  * IntegrationConnector is the abstract interface for a connector that is managed by the integration services.
@@ -35,7 +36,7 @@ public interface IntegrationConnector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    void start() throws ConnectorCheckedException;
+    void start() throws ConnectorCheckedException, UserNotAuthorizedException;
 
 
     /**

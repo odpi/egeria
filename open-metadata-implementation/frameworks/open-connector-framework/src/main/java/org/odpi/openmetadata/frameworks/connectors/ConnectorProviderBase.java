@@ -8,8 +8,6 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.slf4j.Logger;
@@ -129,26 +127,6 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
 
 
     /**
-     * Returns the properties about the type of connector that this Connector Provider supports.
-     *
-     * @return properties including the name of the connector type, the connector provider class
-     * and any specific connection properties that are recognized by this connector.
-     */
-    @Override
-    public ConnectorTypeDetails getConnectorTypeProperties()
-    {
-        if (connectorTypeBean == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new ConnectorTypeDetails(this.getConnectorType());
-        }
-    }
-
-
-    /**
      * Returns the properties about the type of connector that this ConnectorProvider supports.
      *
      * @return properties including the name of the connector type, the connector provider class
@@ -163,11 +141,6 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
         if (connectorTypeBean == null)
         {
             connectorTypeBean = new ConnectorType();
-        }
-
-        if (connectorTypeBean.getType() == null)
-        {
-            connectorTypeBean.setType(ConnectorType.getConnectorTypeType());
         }
 
         if (connectorTypeBean.getQualifiedName() == null)
@@ -261,21 +234,6 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
 
 
     /**
-     * Creates a new instance of a connector using the name of the connector provider in the supplied connection.
-     *
-     * @param connection   properties for the connector and connector provider.
-     * @return new connector instance.
-     * @throws ConnectionCheckedException an error with the connection.
-     * @throws ConnectorCheckedException an error initializing the connector.
-     */
-    @Override
-    public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
-    {
-        return this.getConnector(new ConnectionDetails(connection));
-    }
-
-
-    /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
      * @param connection   connection that should have all the properties needed by the Connector Provider
@@ -285,7 +243,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
     @Override
-    public Connector getConnector(ConnectionDetails connection) throws ConnectionCheckedException, ConnectorCheckedException
+    public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         final String             methodName = "getConnector";
 
@@ -362,7 +320,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
              * Wrap exception in the ConnectionCheckedException with a suitable message
              */
             throw new ConnectionCheckedException(OCFErrorCode.UNKNOWN_CONNECTOR.getMessageDefinition(connectorClassName,
-                                                                                                     connection.getConnectionName()),
+                                                                                                     connection.getDisplayName()),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  classException);
@@ -373,7 +331,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
              * Wrap class cast exception in a connection exception with error message to say that
              */
             throw new ConnectionCheckedException(OCFErrorCode.NOT_CONNECTOR.getMessageDefinition(connectorClassName,
-                                                                                                 connection.getConnectionName()),
+                                                                                                 connection.getDisplayName()),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  castException);
@@ -385,7 +343,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
              * the connector implementation.
              */
             throw new ConnectionCheckedException(OCFErrorCode.INVALID_CONNECTOR.getMessageDefinition(connectorClassName,
-                                                                                                     connection.getConnectionName(),
+                                                                                                     connection.getDisplayName(),
                                                                                                      unexpectedSomething.getClass().getName(),
                                                                                                      unexpectedSomething.getMessage()),
                                                  this.getClass().getName(),
@@ -398,7 +356,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
          * Return the initialized connector ready for use.
          */
 
-        log.debug("getConnector returns: " + connector.getConnectorInstanceId() + ", " + connection.getConnectionName());
+        log.debug("getConnector returns: " + connector.getConnectorInstanceId() + ", " + connection.getDisplayName());
 
         return connector;
     }

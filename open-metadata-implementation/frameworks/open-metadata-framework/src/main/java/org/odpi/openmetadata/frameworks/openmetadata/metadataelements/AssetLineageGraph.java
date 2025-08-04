@@ -14,7 +14,6 @@ public class AssetLineageGraph extends AssetLineageGraphNode
 {
     private List<AssetLineageGraphNode>         linkedAssets         = null;
     private List<AssetLineageGraphRelationship> lineageRelationships = null;
-    private String                              mermaidGraph         = null;
     private String                              edgeMermaidGraph     = null;
 
 
@@ -50,7 +49,6 @@ public class AssetLineageGraph extends AssetLineageGraphNode
         {
             linkedAssets         = template.getLinkedAssets();
             lineageRelationships = template.getLineageRelationships();
-            mermaidGraph         = template.getMermaidGraph();
             edgeMermaidGraph     = template.getEdgeMermaidGraph();
         }
     }
@@ -101,28 +99,6 @@ public class AssetLineageGraph extends AssetLineageGraphNode
 
 
     /**
-     * Return the mermaid string used to render a graph.
-     *
-     * @return string in Mermaid markdown
-     */
-    public String getMermaidGraph()
-    {
-        return mermaidGraph;
-    }
-
-
-    /**
-     * Set up mermaid string used to render a graph.
-     *
-     * @param mermaidGraph string in Mermaid markdown
-     */
-    public void  setMermaidGraph(String mermaidGraph)
-    {
-        this.mermaidGraph = mermaidGraph;
-    }
-
-
-    /**
      * Return the ultimate sources and destinations found within the lineage graph.
      *
      * @return string in Mermaid markdown
@@ -155,7 +131,6 @@ public class AssetLineageGraph extends AssetLineageGraphNode
         return "AssetLineageGraph{" +
                 "linkedAssets=" + linkedAssets +
                 ", lineageRelationships=" + lineageRelationships +
-                ", mermaidGraph='" + mermaidGraph + '\'' +
                 ", edgeMermaidGraph='" + edgeMermaidGraph + '\'' +
                 "} " + super.toString();
     }
@@ -176,7 +151,6 @@ public class AssetLineageGraph extends AssetLineageGraphNode
         AssetLineageGraph that = (AssetLineageGraph) objectToCompare;
         return Objects.equals(linkedAssets, that.linkedAssets) &&
                 Objects.equals(lineageRelationships, that.lineageRelationships) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph) &&
                 Objects.equals(edgeMermaidGraph, that.edgeMermaidGraph);
     }
 
@@ -189,6 +163,6 @@ public class AssetLineageGraph extends AssetLineageGraphNode
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), linkedAssets, lineageRelationships, mermaidGraph, edgeMermaidGraph);
+        return Objects.hash(super.hashCode(), linkedAssets, lineageRelationships, edgeMermaidGraph);
     }
 }

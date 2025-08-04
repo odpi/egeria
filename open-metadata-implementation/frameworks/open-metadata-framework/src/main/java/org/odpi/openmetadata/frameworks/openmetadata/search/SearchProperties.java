@@ -24,7 +24,6 @@ public class SearchProperties
 {
     private List<PropertyCondition> conditions     = null;
     private MatchCriteria           matchCriteria  = MatchCriteria.ALL;
-    private TemplateFilter          templateFilter = TemplateFilter.ALL;
 
     /**
      * Typical constructor
@@ -50,8 +49,6 @@ public class SearchProperties
             this.matchCriteria = templateProperties.getMatchCriteria();
             this.conditions = new ArrayList<>();
             this.conditions.addAll(templateProperties.getConditions());
-            this.templateFilter = templateProperties.getTemplateFilter();
-
         }
     }
 
@@ -98,28 +95,6 @@ public class SearchProperties
 
 
     /**
-     * Return the setting of the template filter.
-     *
-     * @return TemplateFilter enum
-     */
-    public TemplateFilter getTemplateFilter()
-    {
-        return templateFilter;
-    }
-
-
-    /**
-     *  Set up the setting of the template filter.
-     *
-     * @param templateFilter enum
-     */
-    public void setTemplateFilter(TemplateFilter templateFilter)
-    {
-        this.templateFilter = templateFilter;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -130,7 +105,6 @@ public class SearchProperties
         return "SearchProperties{" +
                 "matchCriteria=" + matchCriteria +
                 ", conditions=" + conditions +
-                ", templateFilter=" + templateFilter +
                 '}';
     }
 
@@ -153,8 +127,7 @@ public class SearchProperties
             return false;
         }
         return getMatchCriteria() == that.getMatchCriteria() &&
-                Objects.equals(conditions, that.conditions) &&
-                templateFilter == that.templateFilter;
+                Objects.equals(conditions, that.conditions);
     }
 
 
@@ -166,7 +139,7 @@ public class SearchProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(getMatchCriteria(), getConditions(), templateFilter);
+        return Objects.hash(getMatchCriteria(), getConditions());
     }
 
 }

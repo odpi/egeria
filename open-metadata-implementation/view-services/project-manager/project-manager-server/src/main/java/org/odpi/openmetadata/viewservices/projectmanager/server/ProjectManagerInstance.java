@@ -2,13 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.projectmanager.server;
 
-import org.odpi.openmetadata.accessservices.projectmanagement.client.ProjectManagement;
-import org.odpi.openmetadata.accessservices.projectmanagement.client.ConnectedAssetClient;
-import org.odpi.openmetadata.accessservices.projectmanagement.client.OpenMetadataStoreClient;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ProjectHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
  * ProjectManagerInstance caches references to objects it needs for a specific server.
@@ -19,9 +21,8 @@ public class ProjectManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.PROJECT_MANAGER;
 
-    private final ProjectManagement    projectManagement;
-    private final ConnectedAssetClient connectedAssetClient;
-    private final OpenMetadataStoreClient openMetadataStoreClient;
+    private final ProjectHandler          projectHandler;
+
 
     /**
      * Set up the Project Manager OMVS instance
@@ -52,18 +53,28 @@ public class ProjectManagerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient;
         if (localServerUserPassword == null)
         {
-            projectManagement       = new ProjectManagement(remoteServerName, remoteServerURL, maxPageSize);
-            connectedAssetClient    = new ConnectedAssetClient(remoteServerName, remoteServerURL, maxPageSize);
-            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
+
         }
         else
         {
-            projectManagement       = new ProjectManagement(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-            connectedAssetClient    = new ConnectedAssetClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword);
-            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
         }
+
+        projectHandler = new ProjectHandler(serverName,
+                                            auditLog,
+                                            myDescription.getViewServiceFullName(),
+                                            openMetadataClient);
+
     }
 
 
@@ -72,32 +83,8 @@ public class ProjectManagerInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public ProjectManagement getProjectManagement()
+    public ProjectHandler getProjectHandler()
     {
-        return projectManagement;
-    }
-
-
-    /**
-     * Return the connected asset client.  This client is from Open Connector Framework (OCF) and is for retrieving information about
-     * assets and creating connectors.
-     *
-     * @return client
-     */
-    public ConnectedAssetClient getConnectedAssetClient()
-    {
-        return connectedAssetClient;
-    }
-
-
-    /**
-     * Return the open metadata store client.  This client is from the Governance Action Framework (GAF) and is for accessing and
-     * maintaining all types of metadata.
-     *
-     * @return client
-     */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient()
-    {
-        return openMetadataStoreClient;
+        return projectHandler;
     }
 }

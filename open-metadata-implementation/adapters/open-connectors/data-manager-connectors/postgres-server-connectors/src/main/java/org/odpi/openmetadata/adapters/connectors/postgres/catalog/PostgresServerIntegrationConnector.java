@@ -10,6 +10,9 @@ import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -18,16 +21,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElem
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.infrastructure.connector.InfrastructureIntegratorConnector;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -42,7 +44,7 @@ import java.util.Map;
  * PostgresServerIntegrationConnector retrieves details of the databases hosted on a PostgreSQL Database Server
  * and creates associated data assets/server capabilities/connections for them.
  */
-public class PostgresServerIntegrationConnector extends InfrastructureIntegratorConnector implements CatalogTargetIntegrator
+public class PostgresServerIntegrationConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator
 {
     final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -56,22 +58,23 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
         super.start();
 
         defaultExcludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                      connectionDetails.getConfigurationProperties(),
+                                                                      connectionBean.getConfigurationProperties(),
                                                                       Collections.singletonList("postgres"));
 
         defaultIncludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                      connectionDetails.getConfigurationProperties());
+                                                                      connectionBean.getConfigurationProperties());
 
-        defaultFriendshipGUID = this.getFriendshipGUID(connectionDetails.getConfigurationProperties());
+        defaultFriendshipGUID = this.getFriendshipGUID(connectionBean.getConfigurationProperties());
 
         if (defaultFriendshipGUID != null)
         {
@@ -115,7 +118,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                         catalogDatabases(null,
                                          null,
                                          defaultTemplates,
-                                         connectionDetails.getConfigurationProperties(),
+                                         connectionBean.getConfigurationProperties(),
                                          jdbcResourceConnector);
                     }
                     catch (ConnectorCheckedException exception)
@@ -156,7 +159,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
             String databaseManagerGUID = this.getDatabaseManagerGUID(databaseServerGUID, requestedCatalogTarget.getCatalogTargetElement().getUniqueName());
             try
             {
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(databaseServerGUID, auditLog);
+                Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(databaseServerGUID, auditLog);
 
                 JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
 
@@ -200,7 +203,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
      * @throws ConnectorCheckedException there is an unrecoverable error and the connector should stop processing.
      */
     private String getDatabaseManagerGUID(String databaseServerGUID,
-                                          String databaseServerQualifiedName) throws ConnectorCheckedException
+                                          String databaseServerQualifiedName)
     {
         final String methodName = "getDatabaseManagerGUID";
 
@@ -208,14 +211,14 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
         try
         {
-            OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
+            OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
 
             int                          startFrom = 0;
-            RelatedMetadataElementList relatedCapabilities = openMetadataAccess.getRelatedMetadataElements(databaseServerGUID,
+            RelatedMetadataElementList relatedCapabilities = openMetadataStore.getRelatedMetadataElements(databaseServerGUID,
                                                                                                            1,
-                                                                                                           OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                                           OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
                                                                                                            startFrom,
-                                                                                                           getContext().getMaxPageSize());
+                                                                                                           integrationContext.getMaxPageSize());
             while ((relatedCapabilities != null) && (relatedCapabilities.getElementList() != null))
             {
                 for (RelatedMetadataElement relatedCapability : relatedCapabilities.getElementList())
@@ -227,39 +230,37 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                     }
                 }
 
-                startFrom           = startFrom + getContext().getMaxPageSize();
-                relatedCapabilities = openMetadataAccess.getRelatedMetadataElements(databaseServerGUID,
+                startFrom           = startFrom + integrationContext.getMaxPageSize();
+                relatedCapabilities = openMetadataStore.getRelatedMetadataElements(databaseServerGUID,
                                                                                     1,
-                                                                                    OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
                                                                                     startFrom,
-                                                                                    getContext().getMaxPageSize());
+                                                                                    integrationContext.getMaxPageSize());
             }
 
             if (databaseManagerGUID == null)
             {
-                databaseManagerGUID = openMetadataAccess.createMetadataElementInStore(OpenMetadataType.DATABASE_MANAGER.typeName,
-                                                                                      ElementStatus.ACTIVE,
-                                                                                      null,
-                                                                                      databaseServerGUID,
-                                                                                      false,
-                                                                                      null,
-                                                                                      null,
-                                                                                      null,
-                                                                                      propertyHelper.addStringProperty(null,
-                                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                                       databaseServerQualifiedName + ":DBMS"),
-                                                                                      databaseServerGUID,
-                                                                                      OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
-                                                                                      propertyHelper.addEnumProperty(null,
+                NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
+
+                newElementOptions.setOpenMetadataTypeName(OpenMetadataType.DATABASE_MANAGER.typeName);
+                newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+                newElementOptions.setAnchorGUID(databaseServerGUID);
+                newElementOptions.setIsOwnAnchor(false);
+                newElementOptions.setAnchorScopeGUID(null);
+                newElementOptions.setParentGUID(databaseServerGUID);
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
+
+                databaseManagerGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+                                                                                     null,
+                                                                                     new NewElementProperties(propertyHelper.addStringProperty(null,
+                                                                                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                                                databaseServerQualifiedName + ":DBMS")),
+                                                                                     new NewElementProperties(propertyHelper.addEnumProperty(null,
                                                                                                                      OpenMetadataProperty.OPERATIONAL_STATUS.name,
                                                                                                                      OperationalStatus.getOpenTypeName(),
-                                                                                                                     OperationalStatus.ENABLED.getName()),
-                                                                                      true);
+                                                                                                                     OperationalStatus.ENABLED.getName())));
             }
-        }
-        catch (ConnectorCheckedException exception)
-        {
-            throw exception;
         }
         catch (Exception exception)
         {
@@ -329,7 +330,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                 {
                     String databaseName = resultSet.getString("datname");
 
-                    if (getContext().elementShouldBeCatalogued(databaseName, excludedDatabases, includedDatabases))
+                    if (integrationContext.elementShouldBeCatalogued(databaseName, excludedDatabases, includedDatabases))
                     {
                         catalogDatabase(databaseName,
                                         databaseServerGUID,
@@ -386,11 +387,11 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
         String friendshipConnectorGUID = getFriendshipGUID(configurationProperties);
 
-        OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
-        ElementProperties   serverAssetUseProperties = propertyHelper.addEnumProperty(null,
-                                                                                      OpenMetadataProperty.USE_TYPE.name,
-                                                                                      ServerAssetUseType.getOpenTypeName(),
-                                                                                      ServerAssetUseType.OWNS.getName());
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+        ElementProperties serverAssetUseProperties = propertyHelper.addEnumProperty(null,
+                                                                                    OpenMetadataProperty.USE_TYPE.name,
+                                                                                    CapabilityAssetUseType.getOpenTypeName(),
+                                                                                    CapabilityAssetUseType.OWNS.getName());
 
         String databaseTemplateGUID = templates.get(PostgreSQLTemplateType.POSTGRES_DATABASE_TEMPLATE.getTemplateGUID());
 
@@ -408,14 +409,14 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
         placeholderProperties.put(PostgresConfigurationProperty.DATABASE_NAME.getName(), databaseName);
 
-        OpenMetadataElement templateElement = openMetadataAccess.getMetadataElementByGUID(databaseTemplateGUID);
+        OpenMetadataElement templateElement = openMetadataStore.getMetadataElementByGUID(databaseTemplateGUID);
 
         String qualifiedName = propertyHelper.getResolvedStringPropertyFromTemplate(connectorName,
                                                                                     templateElement,
                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                     placeholderProperties);
 
-        OpenMetadataElement databaseElement = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+        OpenMetadataElement databaseElement = openMetadataStore.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
         if (databaseElement != null)
         {
@@ -425,7 +426,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         }
         else
         {
-            String databaseGUID = openMetadataAccess.getMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE.typeName,
+            String databaseGUID = openMetadataStore.getMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE.typeName,
                                                                                     databaseServerGUID,
                                                                                     false,
                                                                                     null,
@@ -435,7 +436,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                     null,
                                                                                     placeholderProperties,
                                                                                     databaseManagerGUID,
-                                                                                    OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
                                                                                     serverAssetUseProperties,
                                                                                     true);
 
@@ -466,7 +467,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         if ((configurationProperties != null) &&
                 (configurationProperties.get(PostgresConfigurationProperty.FRIENDSHIP_GUID.getName()) != null))
         {
-            friendshipGUID = connectionDetails.getConfigurationProperties().get(PostgresConfigurationProperty.FRIENDSHIP_GUID.getName()).toString();
+            friendshipGUID = connectionBean.getConfigurationProperties().get(PostgresConfigurationProperty.FRIENDSHIP_GUID.getName()).toString();
         }
 
         return friendshipGUID;
@@ -521,7 +522,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
                 catalogTargetProperties.setConfigurationProperties(targetConfigurationProperties);
 
-                String relationshipGUID = integrationContext.addCatalogTarget(friendshipConnectorGUID, databaseGUID, catalogTargetProperties);
+                String relationshipGUID = integrationContext.getConnectorConfigClient().addCatalogTarget(friendshipConnectorGUID, databaseGUID, catalogTargetProperties);
 
                 auditLog.logMessage(methodName,
                                     PostgresAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,

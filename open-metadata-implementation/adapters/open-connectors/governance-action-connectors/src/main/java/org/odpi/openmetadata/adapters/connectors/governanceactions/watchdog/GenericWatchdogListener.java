@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
-import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 
 
 /**
@@ -39,7 +39,7 @@ public class GenericWatchdogListener extends WatchdogGovernanceListener
      *                                    called until the watchdog governance action service declares it is complete
      *                                    or administrator action shuts down the service.
      */
-    public void processEvent(WatchdogGovernanceEvent event) throws GovernanceServiceException
+    public void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException
     {
         connector.processEvent(event);
     }

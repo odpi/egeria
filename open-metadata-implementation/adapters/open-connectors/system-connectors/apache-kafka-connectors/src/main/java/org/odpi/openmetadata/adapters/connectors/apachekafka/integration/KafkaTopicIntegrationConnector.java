@@ -4,42 +4,45 @@
 package org.odpi.openmetadata.adapters.connectors.apachekafka.integration;
 
 
-import org.apache.kafka.clients.admin.Admin;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.TopicElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.ffdc.KafkaIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminConnector;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
-import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
-import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorConnector;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 
 /**
  * KafkaTopicIntegrationConnector catalogues active topics in a kafka broker.
  */
-public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector implements CatalogTargetIntegrator
+public class KafkaTopicIntegrationConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator
 {
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -110,7 +113,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
             /*
              * Retrieve the configuration
              */
-            EndpointDetails endpoint = apacheKafkaAdminConnector.getConnection().getEndpoint();
+            Endpoint endpoint = apacheKafkaAdminConnector.getConnection().getEndpoint();
 
             if ((endpoint != null) && (endpoint.getAddress() != null))
             {
@@ -123,7 +126,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
                     templateGUID = templateIdentifiers.get(templateQualifiedName);
                 }
 
-                this.refreshEventBroker(targetRootURL, templateGUID, templateQualifiedName);
+                // todo this.refreshEventBroker(targetRootURL, templateGUID, templateQualifiedName);
             }
         }
         catch (ConnectorCheckedException error)
@@ -167,25 +170,25 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
             {
                 try
                 {
-                    List<TopicElement> templateElements = getContext().getTopicsByName(templateQualifiedName, 0, 0);
+                    AssetClient                   assetClient      = integrationContext.getAssetClient();
+                    List<OpenMetadataRootElement> templateElements = assetClient.getAssetsByName(templateQualifiedName, assetClient.getQueryOptions());
 
                     if (templateElements != null)
                     {
-                        for (TopicElement templateElement : templateElements)
+                        for (OpenMetadataRootElement templateElement : templateElements)
                         {
-                            String qualifiedName = templateElement.getProperties().getQualifiedName();
-
-                            if (templateQualifiedName.equals(qualifiedName))
+                            if ((templateElement != null) && (templateElement.getProperties() instanceof AssetProperties assetProperties))
                             {
-                                templateGUID = templateElement.getElementHeader().getGUID();
-                                templateIdentifiers.put(templateQualifiedName, templateGUID);
+                                String qualifiedName = assetProperties.getQualifiedName();
+
+                                if (templateQualifiedName.equals(qualifiedName))
+                                {
+                                    templateGUID = templateElement.getElementHeader().getGUID();
+                                    templateIdentifiers.put(templateQualifiedName, templateGUID);
+                                }
                             }
                         }
                     }
-                }
-                catch (ConnectorCheckedException error)
-                {
-                    throw error;
                 }
                 catch (Exception error)
                 {
@@ -218,12 +221,12 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
         {
             try
             {
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
+                Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
 
                 if ((connector != null) && (connector.getConnection() != null) && (connector.getConnection().getEndpoint() != null))
                 {
                     String targetRootURL         = connector.getConnection().getEndpoint().getAddress();
-                    String templateQualifiedName = getTemplateQualifiedName(connectionDetails.getConfigurationProperties());
+                    String templateQualifiedName = getTemplateQualifiedName(connectionBean.getConfigurationProperties());
                     String templateGUID          = null;
 
                     if (templateQualifiedName != null)
@@ -231,18 +234,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
                         templateGUID = templateIdentifiers.get(templateQualifiedName);
                     }
 
-                    if (integrationContext.getMetadataSourceQualifiedName() == null)
-                    {
-                        /*
-                         * The metadata source qualified name should be the qualified name of an event broker.
-                         * If it is null, the getMyTopics method will fail.  The code that follows queries
-                         * to see if there is an event broker.  If it is, its qualified name is set into
-                         * the metadataSourceQualifiedName.  If there is no event broker then one is created.
-                         */
-                        integrationContext.setMetadataSourceQualifiedName(this.getEventBrokerQualifiedName(requestedCatalogTarget.getCatalogTargetElement()));
-                    }
-
-                    this.refreshEventBroker(targetRootURL, templateGUID, templateQualifiedName);
+                   // todo this.refreshEventBroker(targetRootURL, templateGUID, templateQualifiedName);
                 }
             }
             catch (Exception exception)
@@ -282,11 +274,11 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
     {
         final String methodName = "getEventBrokerQualifiedName";
 
-        OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
 
-        RelatedMetadataElementList capabilities = openMetadataAccess.getRelatedMetadataElements(server.getGUID(),
+        RelatedMetadataElementList capabilities = openMetadataStore.getRelatedMetadataElements(server.getGUID(),
                                                                                                 1,
-                                                                                                OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                                OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
                                                                                                 0,
                                                                                                 0);
 
@@ -314,7 +306,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
          */
         String eventBrokerQualifiedName = server.getUniqueName() + ":EventBroker";
 
-        OpenMetadataElement eventBroker = openMetadataAccess.getMetadataElementByUniqueName(eventBrokerQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+        OpenMetadataElement eventBroker = openMetadataStore.getMetadataElementByUniqueName(eventBrokerQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
         ElementProperties supportedCapabilityProperties = propertyHelper.addEnumProperty(null,
                                                                                          OpenMetadataProperty.OPERATIONAL_STATUS.name,
@@ -330,26 +322,28 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                        eventBrokerQualifiedName);
 
-            openMetadataAccess.createMetadataElementInStore(OpenMetadataType.EVENT_BROKER.typeName,
-                                                            ElementStatus.ACTIVE,
-                                                            null,
-                                                            server.getGUID(),
-                                                            false,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            eventBrokerProperties,
-                                                            server.getGUID(),
-                                                            OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
-                                                            supportedCapabilityProperties,
-                                                            true);
+            NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
+
+            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+            newElementOptions.setOpenMetadataTypeName(OpenMetadataType.EVENT_BROKER.typeName);
+            newElementOptions.setAnchorGUID(server.getGUID());
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorScopeGUID(null);
+            newElementOptions.setParentGUID(server.getGUID());
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
+
+            openMetadataStore.createMetadataElementInStore(newElementOptions,
+                                                           null,
+                                                           new NewElementProperties(eventBrokerProperties),
+                                                           new NewElementProperties(supportedCapabilityProperties));
         }
         else
         {
             /*
              * Connect the event broker to the server
              */
-            openMetadataAccess.createRelatedElementsInStore(OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
                                                             server.getGUID(),
                                                             eventBroker.getElementGUID(),
                                                             null,
@@ -359,148 +353,6 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
 
         return eventBrokerQualifiedName;
     }
-
-
-    /**
-     * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
-     * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
-     * as well as any external REST API calls to explicitly refresh the connector.
-     * This method performs two sweeps. It first retrieves the topics from the event broker (Kafka) and validates that are in the
-     * catalog - adding or updating them if necessary. The second sweep is to ensure that all the topics catalogued
-     * actually exist in the event broker.
-     *
-     * @param targetRootURL URL to the Kafka Broker
-     * @param templateGUID optional template to use when creating new topics
-     * @param templateQualifiedName qualifiedName for template - only set if templateGUID is set
-     *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
-     */
-    public void refreshEventBroker(String targetRootURL,
-                                   String templateGUID,
-                                   String templateQualifiedName) throws ConnectorCheckedException
-    {
-        final String methodName = "refreshEventBroker";
-
-        auditLog.logMessage(methodName,
-                            KafkaIntegrationConnectorAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                            targetRootURL,
-                                                                                                            templateQualifiedName));
-
-        try
-        {
-            /*
-             * Retrieve the list of active topics from Kafka.
-             */
-            Properties properties = new Properties();
-            properties.put("bootstrap.servers", targetRootURL);
-            Admin            admin            = Admin.create(properties);
-            Set<String>      activeTopicNames = admin.listTopics().names().get();
-            admin.close();
-
-            if (activeTopicNames != null)
-            {
-                auditLog.logMessage(methodName,
-                                    KafkaIntegrationConnectorAuditCode.RETRIEVED_TOPICS.getMessageDefinition(connectorName,
-                                                                                                             targetRootURL,
-                                                                                                             Integer.toString(activeTopicNames.size())));
-
-                /*
-                 * Retrieve the topics that are catalogued for this event broker.
-                 * Remove the topics from the catalog that are no longer present in the event broker.
-                 * Remove the names of the topics that are cataloged from the active topic names.
-                 * At the end of this loop, the active topic names will just contain the names of the
-                 * topics that are not catalogued.
-                 */
-                int startFrom = 0;
-                List<TopicElement> cataloguedTopics = getContext().getMyTopics(startFrom, getContext().getMaxPageSize());
-
-                while (cataloguedTopics != null)
-                {
-                    startFrom = startFrom + getContext().getMaxPageSize();
-
-                    for (TopicElement topicElement : cataloguedTopics)
-                    {
-                        String topicName = topicElement.getProperties().getQualifiedName();
-                        String topicGUID = topicElement.getElementHeader().getGUID();
-
-                        if (! activeTopicNames.contains(topicName))
-                        {
-                            /*
-                             * The topic no longer exists so delete it from the catalog.
-                             */
-                            getContext().removeTopic(topicGUID, topicName);
-
-                            auditLog.logMessage(methodName,
-                                                KafkaIntegrationConnectorAuditCode.TOPIC_DELETED.getMessageDefinition(connectorName,
-                                                                                                                      topicName,
-                                                                                                                      topicGUID));
-                        }
-                        else
-                        {
-                            activeTopicNames.remove(topicName);
-                        }
-                    }
-
-                    cataloguedTopics = getContext().getMyTopics(startFrom, getContext().getMaxPageSize());
-                }
-
-
-                String topicGUID;
-
-                /*
-                 * Add the remaining active topics to the catalog.
-                 */
-                for (String topicName : activeTopicNames)
-                {
-                    if (templateGUID == null)
-                    {
-                        TopicProperties topicProperties = new TopicProperties();
-
-                        topicProperties.setQualifiedName(topicName);
-                        topicProperties.setTypeName(OpenMetadataType.KAFKA_TOPIC.typeName);
-
-                        topicGUID = getContext().createTopic(topicProperties);
-
-                        if (topicGUID != null)
-                        {
-                            auditLog.logMessage(methodName,
-                                                KafkaIntegrationConnectorAuditCode.TOPIC_CREATED.getMessageDefinition(connectorName,
-                                                                                                                      topicName,
-                                                                                                                      topicGUID));
-                        }
-                    }
-                    else
-                    {
-                        TemplateProperties templateProperties = new TemplateProperties();
-
-                        templateProperties.setQualifiedName(topicName);
-
-                        topicGUID = getContext().createTopicFromTemplate(templateGUID, templateProperties);
-
-                        if (topicGUID != null)
-                        {
-                            auditLog.logMessage(methodName,
-                                                KafkaIntegrationConnectorAuditCode.TOPIC_CREATED_FROM_TEMPLATE.getMessageDefinition(connectorName,
-                                                                                                                                    topicName,
-                                                                                                                                    topicGUID,
-                                                                                                                                    templateQualifiedName,
-                                                                                                                                    templateGUID));
-                        }
-                    }
-                }
-            }
-        }
-        catch (Exception error)
-        {
-            auditLog.logException(methodName,
-                                  KafkaIntegrationConnectorAuditCode.UNABLE_TO_RETRIEVE_TOPICS.getMessageDefinition(connectorName,
-                                                                                                                    targetRootURL,
-                                                                                                                    error.getClass().getName(),
-                                                                                                                    error.getMessage()),
-                                  error);
-        }
-    }
-
 
 
     /**

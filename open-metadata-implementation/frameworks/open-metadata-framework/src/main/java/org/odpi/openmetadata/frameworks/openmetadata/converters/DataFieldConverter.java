@@ -107,11 +107,10 @@ public class DataFieldConverter<B> extends DataDefinitionConverterBase<B>
             dataFieldProperties.setAliases(this.removeAliases(elementProperties));
             dataFieldProperties.setNamePatterns(this.removeNamePatterns(elementProperties));
             dataFieldProperties.setDescription(this.removeDescription(elementProperties));
-            dataFieldProperties.setIsDeprecated(this.removeIsDeprecated(elementProperties));
+            dataFieldProperties.setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
             dataFieldProperties.setVersionIdentifier(this.removeVersionIdentifier(elementProperties));
             dataFieldProperties.setDefaultValue(this.removeDefaultValue(elementProperties));
             dataFieldProperties.setIsNullable(this.removeIsNullable(elementProperties));
-            dataFieldProperties.setIsDeprecated(this.removeIsDeprecated(elementProperties));
             dataFieldProperties.setDataType(this.removeDataType(elementProperties));
             dataFieldProperties.setUnits(this.removeUnits(elementProperties));
             dataFieldProperties.setMinimumLength(this.removeMinimumLength(elementProperties));
@@ -150,7 +149,7 @@ public class DataFieldConverter<B> extends DataDefinitionConverterBase<B>
             ElementProperties         elementProperties   = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
             MemberDataFieldProperties dataFieldProperties = new MemberDataFieldProperties();
 
-            dataFieldProperties.setDataFieldPosition(this.removePosition(elementProperties));
+            dataFieldProperties.setPosition(this.removePosition(elementProperties));
             dataFieldProperties.setMaxCardinality(this.removeMaxCardinality(elementProperties));
             dataFieldProperties.setMinCardinality(this.removeMinCardinality(elementProperties));
 

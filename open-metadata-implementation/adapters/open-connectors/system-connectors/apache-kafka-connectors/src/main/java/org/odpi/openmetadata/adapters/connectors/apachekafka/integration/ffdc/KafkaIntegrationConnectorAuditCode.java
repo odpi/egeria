@@ -38,7 +38,7 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
     BAD_CONFIGURATION("APACHE-KAFKA-INTEGRATION-CONNECTOR-0002",
                       AuditLogRecordSeverityLevel.EXCEPTION,
                       "The {0} integration connector encountered an {1} exception when opening event broker {2} during the {3} method.  The exception message included was {4}",
-                      "The exception is passed back to the Topic Integrator OMIS in the integration daemon that is hosting " +
+                      "The exception is passed back to the integration daemon that is hosting " +
                               "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
                               "error handling that was performed.  These can help to determine how to recover from this error",
                       "This message contains the exception that was the original cause of the problem. Use the information from the " +

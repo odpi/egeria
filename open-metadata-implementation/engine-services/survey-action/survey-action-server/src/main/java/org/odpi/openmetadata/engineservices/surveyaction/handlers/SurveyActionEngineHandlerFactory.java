@@ -3,19 +3,17 @@
 
 package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
-import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
-import org.odpi.openmetadata.accessservices.assetowner.client.FileSystemAssetOwner;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.GovernanceEngineHandlerFactory;
-
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 /**
  * GovernanceEngineHandler factory class for the Survey Action OMES.
  */
@@ -37,61 +35,48 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
      * @throws InvalidParameterException unable to connect to the clients
      */
     @Override
-    public GovernanceEngineHandler createGovernanceEngineHandler(EngineConfig                        engineConfig,
-                                                                 String                              localServerName,
-                                                                 String                              localServerUserId,
-                                                                 String                              localServerPassword,
-                                                                 String                              partnerServerName,
-                                                                 String                              partnerURLRoot,
+    public GovernanceEngineHandler createGovernanceEngineHandler(EngineConfig                  engineConfig,
+                                                                 String                        localServerName,
+                                                                 String                        localServerUserId,
+                                                                 String                        localServerPassword,
+                                                                 String                        partnerServerName,
+                                                                 String                        partnerURLRoot,
                                                                  GovernanceConfigurationClient configurationClient,
-                                                                 GovernanceContextClient             serverClient,
-                                                                 AuditLog                            auditLog,
-                                                                 int                                 maxPageSize) throws InvalidParameterException
+                                                                 GovernanceContextClient       serverClient,
+                                                                 AuditLog                      auditLog,
+                                                                 int                           maxPageSize) throws InvalidParameterException
     {
         if (engineConfig != null)
         {
             ConnectedAssetClient surveyActionEngineClient;
-            FileSystemAssetOwner fileSystemAssetOwner;
-            CSVFileAssetOwner    csvFileAssetOwner;
             OpenMetadataClient   openMetadataClient;
 
             if (localServerPassword == null)
             {
-                surveyActionEngineClient = new ConnectedAssetClient(partnerServerName,
-                                                                    partnerURLRoot);
+                surveyActionEngineClient = new EgeriaConnectedAssetClient(partnerServerName,
+                                                                          partnerURLRoot,
+                                                                          maxPageSize,
+                                                                          auditLog);
 
-                fileSystemAssetOwner = new FileSystemAssetOwner(partnerServerName,
-                                                                partnerURLRoot);
-
-                csvFileAssetOwner = new CSVFileAssetOwner(partnerServerName,
-                                                          partnerURLRoot);
-
-                openMetadataClient = new OpenMetadataStoreClient(partnerServerName,
-                                                                 partnerURLRoot,
-                                                                 maxPageSize);
+                openMetadataClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
+                                                                       partnerURLRoot,
+                                                                       maxPageSize);
             }
             else
             {
-                surveyActionEngineClient = new ConnectedAssetClient(partnerServerName,
-                                                                    partnerURLRoot,
-                                                                    localServerUserId,
-                                                                    localServerPassword);
+                surveyActionEngineClient = new EgeriaConnectedAssetClient(partnerServerName,
+                                                                          partnerURLRoot,
+                                                                          localServerUserId,
+                                                                          localServerPassword,
+                                                                          maxPageSize,
+                                                                          auditLog);
 
-                fileSystemAssetOwner = new FileSystemAssetOwner(partnerServerName,
-                                                                partnerURLRoot,
-                                                                localServerUserId,
-                                                                localServerPassword);
 
-                csvFileAssetOwner = new CSVFileAssetOwner(partnerServerName,
-                                                          partnerURLRoot,
-                                                          localServerUserId,
-                                                          localServerPassword);
-
-                openMetadataClient = new OpenMetadataStoreClient(partnerServerName,
-                                                                 partnerURLRoot,
-                                                                 localServerUserId,
-                                                                 localServerPassword,
-                                                                 maxPageSize);
+                openMetadataClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
+                                                                       partnerURLRoot,
+                                                                       localServerUserId,
+                                                                       localServerPassword,
+                                                                       maxPageSize);
             }
 
             return new SurveyActionEngineHandler(engineConfig,
@@ -100,8 +85,6 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
                                                  configurationClient,
                                                  serverClient,
                                                  surveyActionEngineClient,
-                                                 fileSystemAssetOwner,
-                                                 csvFileAssetOwner,
                                                  openMetadataClient,
                                                  auditLog,
                                                  maxPageSize);

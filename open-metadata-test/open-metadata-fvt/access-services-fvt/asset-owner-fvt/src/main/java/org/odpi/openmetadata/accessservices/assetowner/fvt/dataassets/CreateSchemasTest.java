@@ -380,7 +380,7 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
+            if (! assetDescription.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -413,7 +413,7 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
+            if (! assetDescription.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -455,7 +455,7 @@ public class CreateSchemasTest
 
             properties.setQualifiedName(assetName);
             properties.setDisplayName(assetDisplayName);
-            properties.setResourceDescription(assetDescription);
+            properties.setDescription(assetDescription);
             
             properties.setTypeName("AvroFile");
 
@@ -1144,9 +1144,9 @@ public class CreateSchemasTest
     {
         if (metadataElement.getElementHeader() != null)
         {
-            if (metadataElement.getElementHeader().getClassifications() != null)
+            if (metadataElement.getElementHeader().getOtherClassifications() != null)
             {
-                for (ElementClassification classification : metadataElement.getElementHeader().getClassifications())
+                for (ElementClassification classification : metadataElement.getElementHeader().getOtherClassifications())
                 {
                     if ("Anchors".equals(classification.getClassificationName()))
                     {

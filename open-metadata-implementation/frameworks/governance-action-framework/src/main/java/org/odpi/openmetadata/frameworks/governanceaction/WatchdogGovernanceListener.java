@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction;
 
-import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 
 /**
- * WatchdogGovernanceListener defines the listener interface implemented by a WatchdogGovernanceActionService.
+ * WatchdogGovernanceListener defines the listener interface implemented by a GovernanceActionService.
  */
 public abstract class WatchdogGovernanceListener
 {
@@ -23,5 +23,5 @@ public abstract class WatchdogGovernanceListener
      *                                    called until the watchdog governance action service declares it is complete
      *                                    or administrator action shuts down the service.
      */
-    public abstract void processEvent(WatchdogGovernanceEvent  event) throws GovernanceServiceException;
+    public abstract void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException;
 }

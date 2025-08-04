@@ -11,9 +11,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTyp
 import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -175,8 +172,8 @@ public class CreateAssetTest
 
             properties.setTypeName("Asset");
             properties.setQualifiedName(assetQualifiedName);
-            properties.setName(assetResourceName);
-            properties.setResourceDescription(assetResourceDescription);
+            properties.setDisplayName(assetResourceName);
+            properties.setDescription(assetResourceDescription);
             properties.setAdditionalProperties(additionalProperties);
 
             String assetGUID = client.addAssetToCatalog(userId, properties);
@@ -230,8 +227,8 @@ public class CreateAssetTest
 
             properties.setTypeName("Asset");
             properties.setQualifiedName(assetQualifiedName);
-            properties.setName(assetResourceName + " - 2");
-            properties.setResourceDescription(assetResourceDescription + " - 2");
+            properties.setDisplayName(assetResourceName + " - 2");
+            properties.setDescription(assetResourceDescription + " - 2");
             properties.setDisplayName(assetDisplayName + " - 2");
             properties.setDisplaySummary(assetDisplaySummary + " - 2");
             properties.setDisplayDescription(assetDisplayDescription + " - 2");
@@ -290,9 +287,9 @@ public class CreateAssetTest
 
             properties.setTypeName("Asset");
             properties.setQualifiedName(assetFullQualifiedName);
-            properties.setName(assetResourceName);
+            properties.setDisplayName(assetResourceName);
             properties.setVersionIdentifier(assetVersionIdentifier);
-            properties.setResourceDescription(assetResourceDescription);
+            properties.setDescription(assetResourceDescription);
             properties.setDisplayName(assetDisplayName);
             properties.setDisplaySummary(assetDisplaySummary);
             properties.setDisplayDescription(assetDisplayDescription);
@@ -363,7 +360,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! name.equals(retrievedAsset.getName()))
+            if (! name.equals(retrievedAsset.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from Retrieve)");
             }
@@ -378,7 +375,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from Retrieve)");
             }
-            if (! description.equals(retrievedAsset.getResourceDescription()))
+            if (! description.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -425,7 +422,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! name.equals(retrievedAsset.getName()))
+            if (! name.equals(retrievedAsset.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from RetrieveByName)");
             }
@@ -440,7 +437,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from RetrieveByName)");
             }
-            if (! description.equals(retrievedAsset.getResourceDescription()))
+            if (! description.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -508,7 +505,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! name.equals(retrievedAsset.getName()))
+            if (! name.equals(retrievedAsset.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from Retrieve)");
             }
@@ -523,7 +520,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from Retrieve)");
             }
-            if (! description.equals(retrievedAsset.getResourceDescription()))
+            if (! description.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -590,7 +587,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! name.equals(retrievedAsset.getName()))
+            if (! name.equals(retrievedAsset.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from RetrieveByName)");
             }
@@ -605,7 +602,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from RetrieveByName)");
             }
-            if (! description.equals(retrievedAsset.getResourceDescription()))
+            if (! description.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }

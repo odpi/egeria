@@ -60,7 +60,7 @@ public class TechnologyTypeSummaryConverter<B> extends AutomatedCurationConverte
                     ElementProperties elementProperties = new ElementProperties(openMetadataElement.getElementProperties());
 
                     bean.setTechnologyTypeGUID(openMetadataElement.getElementGUID());
-                    bean.setName(super.removeName(elementProperties));
+                    bean.setDisplayName(super.removeDisplayName(elementProperties));
                     bean.setQualifiedName(this.removeQualifiedName(elementProperties));
                     bean.setCategory(this.removeCategory(elementProperties));
                     bean.setDescription(this.removeDescription(elementProperties));

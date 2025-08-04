@@ -1,20 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project */
-/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.classificationmanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -40,6 +38,112 @@ public class ClassificationManagerRESTServices extends TokenController
     }
 
 
+    /**
+     * Classify/reclassify the element (typically a context event, to do or incident report) to indicate the level of
+     * impact that the event is expected to have on the organization
+     *  The level of impact is expressed by the
+     * levelIdentifier property.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public VoidResponse setImpactClassification(String                    serverName,
+                                                String                    elementGUID,
+                                                NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setImpactClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+                    handler.setImpactClassification(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the impact classification from the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearImpactClassification(String                    serverName,
+                                                  String                    elementGUID,
+                                                  MetadataSourceRequestBody requestBody)
+    {
+        final String   methodName = "clearImpactClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            handler.clearImpactClassification(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
 
     /**
      * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
@@ -48,8 +152,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to classify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -59,9 +161,7 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse setConfidenceClassification(String                    serverName,
                                                     String                    elementGUID,
-                                                    boolean                   forLineage,
-                                                    boolean                   forDuplicateProcessing,
-                                                    ClassificationRequestBody requestBody)
+                                                    NewClassificationRequestBody requestBody)
     {
         final String methodName = "setConfidenceClassification";
 
@@ -82,17 +182,9 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
                 {
-                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-                    handler.setConfidenceClassification(userId,
-                                                        requestBody.getExternalSourceGUID(),
-                                                        requestBody.getExternalSourceName(),
-                                                        elementGUID,
-                                                        null,
-                                                        properties,
-                                                        requestBody.getEffectiveTime(),
-                                                        (forLineage || requestBody.getForLineage()),
-                                                        (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                    handler.setConfidenceClassification(userId, elementGUID, properties, requestBody);
                 }
                 else
                 {
@@ -120,8 +212,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to declassify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -131,8 +221,6 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse clearConfidenceClassification(String                    serverName,
                                                       String                    elementGUID,
-                                                      boolean                   forLineage,
-                                                      boolean                   forDuplicateProcessing,
                                                       MetadataSourceRequestBody requestBody)
     {
         final String   methodName = "clearConfidenceClassification";
@@ -149,30 +237,9 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.clearConfidenceClassification(userId,
-                                                      requestBody.getExternalSourceGUID(),
-                                                      requestBody.getExternalSourceName(),
-                                                      elementGUID,
-                                                      null,
-                                                      requestBody.getEffectiveTime(),
-                                                      (forLineage || requestBody.getForLineage()),
-                                                      (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
-            }
-            else
-            {
-                handler.clearConfidenceClassification(userId,
-                                                      null,
-                                                      null,
-                                                      elementGUID,
-                                                      null,
-                                                      new Date(),
-                                                      forLineage,
-                                                      forDuplicateProcessing);
-            }
+            handler.clearConfidenceClassification(userId, elementGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -190,8 +257,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to classify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -201,9 +266,7 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse setCriticalityClassification(String                    serverName,
                                                      String                    elementGUID,
-                                                     boolean                   forLineage,
-                                                     boolean                   forDuplicateProcessing,
-                                                     ClassificationRequestBody requestBody)
+                                                     NewClassificationRequestBody requestBody)
     {
         final String methodName = "setCriticalityClassification";
 
@@ -224,17 +287,9 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
                 {
-                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-                    handler.setCriticalityClassification(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
-                                                         elementGUID,
-                                                         properties,
-                                                         null,
-                                                         requestBody.getEffectiveTime(),
-                                                         (forLineage || requestBody.getForLineage()),
-                                                         (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                    handler.setCriticalityClassification(userId, elementGUID, properties, requestBody);
                 }
                 else
                 {
@@ -262,8 +317,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to declassify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -273,8 +326,6 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse clearCriticalityClassification(String                    serverName,
                                                        String                    elementGUID,
-                                                       boolean                   forLineage,
-                                                       boolean                   forDuplicateProcessing,
                                                        MetadataSourceRequestBody requestBody)
     {
         final String   methodName = "clearCriticalityClassification";
@@ -294,16 +345,9 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+                StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-                handler.clearCriticalityClassification(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
-                                                       elementGUID,
-                                                       null,
-                                                       requestBody.getEffectiveTime(),
-                                                       (forLineage || requestBody.getForLineage()),
-                                                       (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                handler.clearCriticalityClassification(userId, elementGUID, requestBody);
             }
             else
             {
@@ -328,8 +372,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to classify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -339,9 +381,7 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse setConfidentialityClassification(String                    serverName,
                                                          String                    elementGUID,
-                                                         boolean                   forLineage,
-                                                         boolean                   forDuplicateProcessing,
-                                                         ClassificationRequestBody requestBody)
+                                                         NewClassificationRequestBody requestBody)
     {
         final String methodName = "setConfidentialityClassification";
 
@@ -362,17 +402,9 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
                 {
-                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-                    handler.setConfidentialityClassification(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             elementGUID,
-                                                             null,
-                                                             properties,
-                                                             requestBody.getEffectiveTime(),
-                                                             (forLineage || requestBody.getForLineage()),
-                                                             (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                    handler.setConfidentialityClassification(userId, elementGUID, properties, requestBody);
                 }
                 else
                 {
@@ -400,8 +432,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to declassify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -411,8 +441,6 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse clearConfidentialityClassification(String                    serverName,
                                                            String                    elementGUID,
-                                                           boolean                   forLineage,
-                                                           boolean                   forDuplicateProcessing,
                                                            MetadataSourceRequestBody requestBody)
     {
         final String   methodName = "clearConfidentialityClassification";
@@ -430,29 +458,9 @@ public class ClassificationManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.clearConfidentialityClassification(userId,
-                                                           requestBody.getExternalSourceGUID(),
-                                                           requestBody.getExternalSourceName(),
-                                                           elementGUID,
-                                                           null,
-                                                           requestBody.getEffectiveTime(),
-                                                           (forLineage || requestBody.getForLineage()),
-                                                           (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
-            }
-            else
-            {
-                handler.clearConfidentialityClassification(userId,
-                                                           null,
-                                                           null,
-                                                           elementGUID,
-                                                           null,
-                                                           new Date(),
-                                                           forLineage,
-                                                           forDuplicateProcessing);            }
+            handler.clearConfidentialityClassification(userId, elementGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -472,8 +480,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to classify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -483,9 +489,7 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse setRetentionClassification(String                    serverName,
                                                    String                    elementGUID,
-                                                   boolean                   forLineage,
-                                                   boolean                   forDuplicateProcessing,
-                                                   ClassificationRequestBody requestBody)
+                                                   NewClassificationRequestBody requestBody)
     {
         final String methodName = "setRetentionClassification";
 
@@ -506,17 +510,9 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof RetentionClassificationProperties properties)
                 {
-                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-                    handler.setRetentionClassification(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
-                                                       elementGUID,
-                                                       null,
-                                                       properties,
-                                                       requestBody.getEffectiveTime(),
-                                                       (forLineage || requestBody.getForLineage()),
-                                                       (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                    handler.setRetentionClassification(userId, elementGUID, properties, requestBody);
                 }
                 else
                 {
@@ -544,8 +540,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to declassify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -555,8 +549,6 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse clearRetentionClassification(String                    serverName,
                                                      String                    elementGUID,
-                                                     boolean                   forLineage,
-                                                     boolean                   forDuplicateProcessing,
                                                      MetadataSourceRequestBody requestBody)
     {
         final String   methodName = "clearRetentionClassification";
@@ -574,29 +566,67 @@ public class ClassificationManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            handler.clearRetentionClassification(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add the governance expectations classification to  an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addGovernanceExpectations(String                    serverName,
+                                                  String                    elementGUID,
+                                                  NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "addGovernanceExpectations";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.clearRetentionClassification(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     elementGUID,
-                                                     null,
-                                                     requestBody.getEffectiveTime(),
-                                                     (forLineage || requestBody.getForLineage()),
-                                                     (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                if (requestBody.getProperties() instanceof GovernanceExpectationsProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+                    handler.addGovernanceExpectations(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SecurityTagsProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                handler.clearRetentionClassification(userId,
-                                                     null,
-                                                     null,
-                                                     elementGUID,
-                                                     null,
-                                                     new Date(),
-                                                     forLineage,
-                                                     forDuplicateProcessing);
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Throwable error)
@@ -610,12 +640,261 @@ public class ClassificationManagerRESTServices extends TokenController
 
 
     /**
-     * Add or replace the security tags for an element.
+     * Remove the governance expectations classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID   unique identifier of element
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearGovernanceExpectations(String                    serverName,
+                                                    String                    elementGUID,
+                                                    MetadataSourceRequestBody requestBody)
+    {
+        final String methodName             = "clearGovernanceExpectations";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            handler.clearGovernanceExpectations(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Add the governance measurements for an element.
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of element to attach to
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addGovernanceMeasurements(String                    serverName,
+                                                  String                    elementGUID,
+                                                  NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "addGovernanceMeasurements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof GovernanceMeasurementsProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+                    handler.addGovernanceMeasurements(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SecurityTagsProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the governance measurements classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID   unique identifier of element
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearGovernanceMeasurements(String                    serverName,
+                                                    String                    elementGUID,
+                                                    MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "clearGovernanceMeasurements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            handler.clearGovernanceMeasurements(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add the governance measurements results data set classification to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addGovernanceMeasurementsResultsDataSet(String                    serverName,
+                                                                String                    elementGUID,
+                                                                NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "addGovernanceMeasurementsResultsDataSet";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof GovernanceMeasurementsResultsDataSetProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+                    handler.addGovernanceMeasurementsResultsDataSet(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SecurityTagsProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the governance measurements results data set classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID   unique identifier of element
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearGovernanceMeasurementsResultsDataSet(String                    serverName,
+                                                                  String                    elementGUID,
+                                                                  MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "clearGovernanceMeasurementsResultsDataSet";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            handler.clearGovernanceMeasurementsResultsDataSet(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add the security tags for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
      * @param requestBody list of security labels and properties
      *
      * @return void or
@@ -625,9 +904,7 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse addSecurityTags(String                    serverName,
                                         String                    elementGUID,
-                                        boolean                   forLineage,
-                                        boolean                   forDuplicateProcessing,
-                                        ClassificationRequestBody requestBody)
+                                        NewClassificationRequestBody requestBody)
     {
         final String methodName = "addSecurityTags";
 
@@ -648,17 +925,9 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof SecurityTagsProperties properties)
                 {
-                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-                    handler.addSecurityTags(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
-                                            elementGUID,
-                                            null,
-                                            properties,
-                                            requestBody.getEffectiveTime(),
-                                            (forLineage || requestBody.getForLineage()),
-                                            (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                    handler.addSecurityTags(userId, elementGUID, properties, requestBody);
                 }
                 else
                 {
@@ -685,8 +954,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID   unique identifier of element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -696,8 +963,6 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse clearSecurityTags(String                    serverName,
                                           String                    elementGUID,
-                                          boolean                   forLineage,
-                                          boolean                   forDuplicateProcessing,
                                           MetadataSourceRequestBody requestBody)
     {
         final String methodName             = "clearSecurityTags";
@@ -714,30 +979,9 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.clearSecurityTags(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          elementGUID,
-                                          null,
-                                          requestBody.getEffectiveTime(),
-                                          (forLineage || requestBody.getForLineage()),
-                                          (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
-            }
-            else
-            {
-                handler.clearSecurityTags(userId,
-                                          null,
-                                          null,
-                                          elementGUID,
-                                          null,
-                                          new Date(),
-                                          forLineage,
-                                          forDuplicateProcessing);
-            }
+            handler.clearSecurityTags(userId, elementGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -750,12 +994,10 @@ public class ClassificationManagerRESTServices extends TokenController
 
 
     /**
-     * Add or replace the ownership classification for an element.
+     * Add the ownership classification for an element.
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID element to link it to - its type must inherit from Referenceable.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for classification request
      *
      * @return void or
@@ -765,9 +1007,7 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse addOwnership(String                    serverName,
                                      String                    elementGUID,
-                                     boolean                   forLineage,
-                                     boolean                   forDuplicateProcessing,
-                                     ClassificationRequestBody requestBody)
+                                     NewClassificationRequestBody requestBody)
     {
         final String   methodName = "addOwnership";
 
@@ -788,17 +1028,9 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof OwnershipProperties properties)
                 {
-                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-                    handler.addOwnership(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
-                                         elementGUID,
-                                         null,
-                                         properties,
-                                         requestBody.getEffectiveTime(),
-                                         (forLineage || requestBody.getForLineage()),
-                                         (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                    handler.addOwnership(userId, elementGUID, properties, requestBody);
                 }
                 else
                 {
@@ -825,8 +1057,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID element where the classification needs to be cleared from.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for classification request
      *
      * @return void or
@@ -836,8 +1066,6 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse clearOwnership(String                    serverName,
                                        String                    elementGUID,
-                                       boolean                   forLineage,
-                                       boolean                   forDuplicateProcessing,
                                        MetadataSourceRequestBody requestBody)
     {
         final String   methodName = "clearOwnership";
@@ -854,30 +1082,216 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            handler.clearOwnership(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add the DigitalResourceOrigin classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addOrigin(String                    serverName,
+                                  String                    elementGUID,
+                                  NewClassificationRequestBody requestBody)
+    {
+        final String   methodName = "addOrigin";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.clearOwnership(userId,
-                                       requestBody.getExternalSourceGUID(),
-                                       requestBody.getExternalSourceName(),
-                                       elementGUID,
-                                       null,
-                                       requestBody.getEffectiveTime(),
-                                       (forLineage || requestBody.getForLineage()),
-                                       (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                if (requestBody.getProperties() instanceof DigitalResourceOriginProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+                    handler.addDigitalResourceOrigin(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DigitalResourceOriginProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                handler.clearOwnership(userId,
-                                       null,
-                                       null,
-                                       elementGUID,
-                                       null,
-                                       new Date(),
-                                       forLineage,
-                                       forDuplicateProcessing);
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the DigitalResourceOrigin classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID element where the classification needs to be cleared from.
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearOrigin(String                    serverName,
+                                    String                    elementGUID,
+                                    MetadataSourceRequestBody requestBody)
+    {
+        final String   methodName = "clearOrigin";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            handler.clearDigitalResourceOrigin(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Add the zone membership classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addZoneMembership(String                    serverName,
+                                          String                    elementGUID,
+                                          NewClassificationRequestBody requestBody)
+    {
+        final String   methodName = "addZoneMembership";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ZoneMembershipProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+                    handler.addZoneMembership(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(OwnershipProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the zone membership classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID element where the classification needs to be cleared from.
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearZoneMembership(String                    serverName,
+                                            String                    elementGUID,
+                                            MetadataSourceRequestBody requestBody)
+    {
+        final String   methodName = "clearZoneMembership";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            handler.clearZoneMembership(userId, elementGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -894,8 +1308,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to update
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for classification request
      *
      * @return void or
@@ -905,9 +1317,7 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse addElementToSubjectArea(String                    serverName,
                                                 String                    elementGUID,
-                                                boolean                   forLineage,
-                                                boolean                   forDuplicateProcessing,
-                                                ClassificationRequestBody requestBody)
+                                                NewClassificationRequestBody requestBody)
     {
         final String methodName = "addElementToSubjectArea";
 
@@ -926,23 +1336,15 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof SubjectAreaClassificationProperties properties)
+                if (requestBody.getProperties() instanceof SubjectAreaProperties properties)
                 {
-                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-                    handler.addElementToSubjectArea(userId,
-                                                    requestBody.getExternalSourceGUID(),
-                                                    requestBody.getExternalSourceName(),
-                                                    elementGUID,
-                                                    null,
-                                                    properties,
-                                                    requestBody.getEffectiveTime(),
-                                                    (forLineage || requestBody.getForLineage()),
-                                                    (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                    handler.addElementToSubjectArea(userId, elementGUID, properties, requestBody);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaClassificationProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaProperties.class.getName(), methodName);
                 }
             }
             else
@@ -965,8 +1367,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to update
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for classification request
      *
      * @return void or
@@ -974,11 +1374,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse removeElementFromSubjectArea(String                    serverName,
-                                                     String                    elementGUID,
-                                                     boolean                   forLineage,
-                                                     boolean                   forDuplicateProcessing,
-                                                     MetadataSourceRequestBody requestBody)
+    public VoidResponse removeElementFromSubjectArea(String                   serverName,
+                                                     String                   elementGUID,
+                                                     DeleteRequestBody requestBody)
     {
         final String   methodName = "removeElementFromSubjectArea";
 
@@ -994,30 +1392,9 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody == null)
-            {
-                handler.removeElementFromSubjectArea(userId,
-                                                     null,
-                                                     null,
-                                                     elementGUID,
-                                                     null,
-                                                     new Date(),
-                                                     forLineage,
-                                                     forDuplicateProcessing);
-            }
-            else
-            {
-                handler.removeElementFromSubjectArea(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     elementGUID,
-                                                     null,
-                                                     requestBody.getEffectiveTime(),
-                                                     (forLineage || requestBody.getForLineage()),
-                                                     (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
-            }
+            handler.removeElementFromSubjectArea(userId, elementGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1036,8 +1413,6 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -1048,9 +1423,7 @@ public class ClassificationManagerRESTServices extends TokenController
     public VoidResponse setupSemanticAssignment(String                  serverName,
                                                 String                  elementGUID,
                                                 String                  glossaryTermGUID,
-                                                boolean                 forLineage,
-                                                boolean                 forDuplicateProcessing,
-                                                RelationshipRequestBody requestBody)
+                                                NewRelationshipRequestBody requestBody)
     {
         final String methodName = "setupSemanticAssignment";
 
@@ -1066,34 +1439,25 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof SemanticAssignmentProperties properties)
                 {
-
                     handler.setupSemanticAssignment(userId,
-                                                    requestBody.getExternalSourceGUID(),
-                                                    requestBody.getExternalSourceName(),
                                                     elementGUID,
                                                     glossaryTermGUID,
                                                     properties,
-                                                    requestBody.getEffectiveTime(),
-                                                    (forLineage || requestBody.getForLineage()),
-                                                    (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                                                    requestBody);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.setupSemanticAssignment(userId,
-                                                    null,
-                                                    null,
                                                     elementGUID,
                                                     glossaryTermGUID,
                                                     null,
-                                                    new Date(),
-                                                    forLineage,
-                                                    forDuplicateProcessing);
+                                                    requestBody);
                 }
                 else
                 {
@@ -1103,14 +1467,10 @@ public class ClassificationManagerRESTServices extends TokenController
             else
             {
                 handler.setupSemanticAssignment(userId,
-                                                null,
-                                                null,
                                                 elementGUID,
                                                 glossaryTermGUID,
                                                 null,
-                                                new Date(),
-                                                forLineage,
-                                                forDuplicateProcessing);
+                                                null);
             }
         }
         catch (Throwable error)
@@ -1137,12 +1497,10 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearSemanticAssignment(String                    serverName,
-                                                String                    elementGUID,
-                                                String                    glossaryTermGUID,
-                                                boolean                   forLineage,
-                                                boolean                   forDuplicateProcessing,
-                                                MetadataSourceRequestBody requestBody)
+    public VoidResponse clearSemanticAssignment(String                   serverName,
+                                                String                   elementGUID,
+                                                String                   glossaryTermGUID,
+                                                DeleteRequestBody requestBody)
     {
         final String methodName = "clearSemanticAssignment";
 
@@ -1158,30 +1516,9 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody == null)
-            {
-                handler.clearSemanticAssignment(userId,
-                                                null,
-                                                null,
-                                                elementGUID,
-                                                glossaryTermGUID,
-                                                new Date(),
-                                                forLineage,
-                                                forDuplicateProcessing);
-            }
-            else
-            {
-                handler.clearSemanticAssignment(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
-                                                elementGUID,
-                                                glossaryTermGUID,
-                                                requestBody.getEffectiveTime(),
-                                                (forLineage | requestBody.getForLineage()),
-                                                (forDuplicateProcessing | requestBody.getForDuplicateProcessing()));
-            }
+            handler.clearSemanticAssignment(userId, elementGUID, glossaryTermGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1209,9 +1546,7 @@ public class ClassificationManagerRESTServices extends TokenController
     public VoidResponse addGovernanceDefinitionToElement(String                  serverName,
                                                          String                  elementGUID,
                                                          String                  definitionGUID,
-                                                         boolean                 forLineage,
-                                                         boolean                 forDuplicateProcessing,
-                                                         RelationshipRequestBody requestBody)
+                                                         NewRelationshipRequestBody requestBody)
     {
         final String methodName = "addGovernanceDefinitionToElement";
 
@@ -1227,30 +1562,34 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if (requestBody == null)
             {
-
                 handler.addGovernanceDefinitionToElement(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
                                                          elementGUID,
                                                          definitionGUID,
-                                                         requestBody.getEffectiveTime(),
-                                                         (forLineage || requestBody.getForLineage()),
-                                                         (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                                                         null,
+                                                         null);
             }
             else
             {
-                handler.addGovernanceDefinitionToElement(userId,
-                                                         null,
-                                                         null,
-                                                         elementGUID,
-                                                         definitionGUID,
-                                                         new Date(),
-                                                         forLineage,
-                                                         forDuplicateProcessing);
+                if (requestBody.getProperties() instanceof GovernedByProperties governedByProperties)
+                {
+                    handler.addGovernanceDefinitionToElement(userId,
+                                                             elementGUID,
+                                                             definitionGUID,
+                                                             requestBody,
+                                                             governedByProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addGovernanceDefinitionToElement(userId,
+                                                             elementGUID,
+                                                             definitionGUID,
+                                                             requestBody,
+                                                             null);
+                }
             }
         }
         catch (Throwable error)
@@ -1277,12 +1616,10 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse removeGovernanceDefinitionFromElement(String                    serverName,
-                                                              String                    elementGUID,
-                                                              String                    definitionGUID,
-                                                              boolean                   forLineage,
-                                                              boolean                   forDuplicateProcessing,
-                                                              MetadataSourceRequestBody requestBody)
+    public VoidResponse removeGovernanceDefinitionFromElement(String                   serverName,
+                                                              String                   elementGUID,
+                                                              String                   definitionGUID,
+                                                              DeleteRequestBody requestBody)
     {
         final String methodName = "removeGovernanceDefinitionFromElement";
 
@@ -1298,30 +1635,9 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody == null)
-            {
-                handler.removeGovernanceDefinitionFromElement(userId,
-                                                              null,
-                                                              null,
-                                                              elementGUID,
-                                                              definitionGUID,
-                                                              new Date(),
-                                                              forLineage,
-                                                              forDuplicateProcessing);
-            }
-            else
-            {
-                handler.removeGovernanceDefinitionFromElement(userId,
-                                                              requestBody.getExternalSourceGUID(),
-                                                              requestBody.getExternalSourceName(),
-                                                              elementGUID,
-                                                              definitionGUID,
-                                                              requestBody.getEffectiveTime(),
-                                                              (forLineage || requestBody.getForLineage()),
-                                                              (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
-            }
+            handler.removeGovernanceDefinitionFromElement(userId, elementGUID, definitionGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1349,9 +1665,7 @@ public class ClassificationManagerRESTServices extends TokenController
     public VoidResponse addStakeholderToElement(String                  serverName,
                                                 String                  elementGUID,
                                                 String                  stakeholderGUID,
-                                                boolean                 forLineage,
-                                                boolean                 forDuplicateProcessing,
-                                                RelationshipRequestBody requestBody)
+                                                NewRelationshipRequestBody requestBody)
     {
         final String methodName = "addStakeholderToElement";
 
@@ -1367,47 +1681,38 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-
                 if (requestBody.getProperties() instanceof StakeholderProperties stakeholderProperties)
                 {
                     handler.addStakeholderToElement(userId,
-                                                    requestBody.getExternalSourceGUID(),
-                                                    requestBody.getExternalSourceName(),
                                                     elementGUID,
                                                     stakeholderGUID,
-                                                    stakeholderProperties.getStakeholderRole(),
-                                                    requestBody.getEffectiveTime(),
-                                                    (forLineage || requestBody.getForLineage()),
-                                                    (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                                                    requestBody,
+                                                    stakeholderProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addStakeholderToElement(userId,
+                                                    elementGUID,
+                                                    stakeholderGUID,
+                                                    requestBody,
+                                                    null);
                 }
                 else
                 {
-                    handler.addStakeholderToElement(userId,
-                                                    requestBody.getExternalSourceGUID(),
-                                                    requestBody.getExternalSourceName(),
-                                                    elementGUID,
-                                                    stakeholderGUID,
-                                                    null,
-                                                    requestBody.getEffectiveTime(),
-                                                    (forLineage || requestBody.getForLineage()),
-                                                    (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                    restExceptionHandler.handleInvalidPropertiesObject(StakeholderProperties.class.getName(), methodName);
                 }
             }
             else
             {
                 handler.addStakeholderToElement(userId,
-                                                null,
-                                                null,
                                                 elementGUID,
                                                 stakeholderGUID,
                                                 null,
-                                                new Date(),
-                                                forLineage,
-                                                forDuplicateProcessing);
+                                                null);
             }
         }
         catch (Throwable error)
@@ -1434,12 +1739,10 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse removeStakeholderFromElement(String                    serverName,
-                                                     String                    elementGUID,
-                                                     String                    stakeholderGUID,
-                                                     boolean                   forLineage,
-                                                     boolean                   forDuplicateProcessing,
-                                                     MetadataSourceRequestBody requestBody)
+    public VoidResponse removeStakeholderFromElement(String                   serverName,
+                                                     String                   elementGUID,
+                                                     String                   stakeholderGUID,
+                                                     DeleteRequestBody requestBody)
     {
         final String methodName = "removeStakeholderFromElement";
 
@@ -1455,30 +1758,9 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody == null)
-            {
-                handler.removeStakeholderFromElement(userId,
-                                                     null,
-                                                     null,
-                                                     elementGUID,
-                                                     stakeholderGUID,
-                                                     new Date(),
-                                                     forLineage,
-                                                     forDuplicateProcessing);
-            }
-            else
-            {
-                handler.removeStakeholderFromElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     elementGUID,
-                                                     stakeholderGUID,
-                                                     requestBody.getEffectiveTime(),
-                                                     (forLineage || requestBody.getForLineage()),
-                                                     (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
-            }
+            handler.removeStakeholderFromElement(userId, elementGUID, stakeholderGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1507,9 +1789,7 @@ public class ClassificationManagerRESTServices extends TokenController
     public VoidResponse addScopeToElement(String                  serverName,
                                           String                  elementGUID,
                                           String                  scopeGUID,
-                                          boolean                 forLineage,
-                                          boolean                 forDuplicateProcessing,
-                                          RelationshipRequestBody requestBody)
+                                          NewRelationshipRequestBody requestBody)
     {
         final String methodName = "addScopeToElement";
 
@@ -1525,29 +1805,38 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.addScopeToElement(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          elementGUID,
-                                          scopeGUID,
-                                          requestBody.getEffectiveTime(),
-                                          (forLineage || requestBody.getForLineage()),
-                                          (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                if (requestBody.getProperties() instanceof ScopedByProperties scopedByProperties)
+                {
+                    handler.addScopeToElement(userId,
+                                              elementGUID,
+                                              scopeGUID,
+                                              requestBody,
+                                              scopedByProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addScopeToElement(userId,
+                                              elementGUID,
+                                              scopeGUID,
+                                              requestBody,
+                                              null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ScopedByProperties.class.getName(), methodName);
+                }
             }
             else
             {
                 handler.addScopeToElement(userId,
-                                          null,
-                                          null,
                                           elementGUID,
                                           scopeGUID,
-                                          new Date(),
-                                          forLineage,
-                                          forDuplicateProcessing);
+                                          null,
+                                          null);
             }
         }
         catch (Throwable error)
@@ -1577,9 +1866,7 @@ public class ClassificationManagerRESTServices extends TokenController
     public VoidResponse removeScopeFromElement(String                    serverName,
                                                String                    elementGUID,
                                                String                    scopeGUID,
-                                               boolean                   forLineage,
-                                               boolean                   forDuplicateProcessing,
-                                               MetadataSourceRequestBody requestBody)
+                                               DeleteRequestBody requestBody)
     {
         final String methodName = "removeScopeFromElement";
 
@@ -1595,30 +1882,133 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody == null)
+            handler.removeScopeFromElement(userId, elementGUID, scopeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Link a resource to an element using the ResourceList relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param resourceGUID identifier of the resource to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addResourceListToElement(String                  serverName,
+                                                 String                  elementGUID,
+                                                 String                  resourceGUID,
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "addResourceListToElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
             {
-                handler.removeScopeFromElement(userId,
-                                               null,
-                                               null,
-                                               elementGUID,
-                                               scopeGUID,
-                                               new Date(),
-                                               forLineage,
-                                               forDuplicateProcessing);
+                if (requestBody.getProperties() instanceof ResourceListProperties resourceListProperties)
+                {
+                    handler.addResourceListToElement(userId,
+                                                     elementGUID,
+                                                     resourceGUID,
+                                                     requestBody,
+                                                     resourceListProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addResourceListToElement(userId,
+                                                     elementGUID,
+                                                     resourceGUID,
+                                                     requestBody,
+                                                     null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ScopedByProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                handler.removeScopeFromElement(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               elementGUID,
-                                               scopeGUID,
-                                               requestBody.getEffectiveTime(),
-                                               (forLineage || requestBody.getForLineage()),
-                                               (forDuplicateProcessing || requestBody.getForDuplicateProcessing()));
+                handler.addResourceListToElement(userId,
+                                                 elementGUID,
+                                                 resourceGUID,
+                                                 null,
+                                                 null);
             }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the ResourceList relationship between a resource and an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param resourceGUID identifier of the resource to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse removeResourceListFromElement(String                    serverName,
+                                                      String                    elementGUID,
+                                                      String                    resourceGUID,
+                                                      DeleteRequestBody requestBody)
+    {
+        final String methodName = "removeResourceListFromElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+            handler.removeResourceListFromElement(userId, elementGUID, resourceGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1650,7 +2040,7 @@ public class ClassificationManagerRESTServices extends TokenController
     public GUIDResponse licenseElement(String                  serverName,
                                        String                  elementGUID,
                                        String                  licenseTypeGUID,
-                                       RelationshipRequestBody requestBody)
+                                       NewRelationshipRequestBody requestBody)
     {
         final String methodName = "licenseElement";
 
@@ -1666,36 +2056,17 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof LicenseProperties properties)
                 {
                     response.setGUID(handler.licenseElement(userId,
-                                                            requestBody.getExternalSourceGUID(),
-                                                            requestBody.getExternalSourceName(),
                                                             elementGUID,
                                                             licenseTypeGUID,
-                                                            properties.getLicenseId(),
-                                                            properties.getStartDate(),
-                                                            properties.getEndDate(),
-                                                            properties.getConditions(),
-                                                            properties.getLicensedBy(),
-                                                            properties.getLicensedByTypeName(),
-                                                            properties.getLicensedByPropertyName(),
-                                                            properties.getCustodian(),
-                                                            properties.getCustodianTypeName(),
-                                                            properties.getCustodianPropertyName(),
-                                                            properties.getLicensee(),
-                                                            properties.getLicenseeTypeName(),
-                                                            properties.getLicenseePropertyName(),
-                                                            properties.getNotes(),
-                                                            properties.getEffectiveFrom(),
-                                                            properties.getEffectiveTo(),
-                                                            requestBody.getForLineage(),
-                                                            requestBody.getForDuplicateProcessing(),
-                                                            requestBody.getEffectiveTime()));
+                                                            requestBody,
+                                                            properties));
                 }
                 else
                 {
@@ -1723,8 +2094,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName name of the server instance to connect to
      * @param licenseGUID unique identifier for the license type
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody the properties of the license
      *
      * @return void or
@@ -1734,8 +2103,7 @@ public class ClassificationManagerRESTServices extends TokenController
      */
     public VoidResponse updateLicense(String                  serverName,
                                       String                  licenseGUID,
-                                      boolean                 replaceAllProperties,
-                                      RelationshipRequestBody requestBody)
+                                      UpdateRelationshipRequestBody requestBody)
     {
         final String methodName = "updateLicense";
 
@@ -1751,34 +2119,13 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof LicenseProperties properties)
+                if (requestBody.getProperties() instanceof LicenseProperties licenseProperties)
                 {
-                    handler.updateLicense(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          licenseGUID,
-                                          properties.getLicenseId(),
-                                          properties.getStartDate(),
-                                          properties.getEndDate(),
-                                          properties.getConditions(),
-                                          properties.getLicensedBy(),
-                                          properties.getLicensedByTypeName(),
-                                          properties.getLicensedByPropertyName(),
-                                          properties.getCustodian(),
-                                          properties.getCustodianTypeName(),
-                                          properties.getCustodianPropertyName(),
-                                          properties.getLicensee(),
-                                          properties.getLicenseeTypeName(),
-                                          properties.getLicenseePropertyName(),
-                                          properties.getNotes(),
-                                          replaceAllProperties,
-                                          requestBody.getForLineage(),
-                                          requestBody.getForDuplicateProcessing(),
-                                          requestBody.getEffectiveTime());
+                    handler.updateLicense(userId, licenseGUID, requestBody, licenseProperties);
                 }
                 else
                 {
@@ -1812,9 +2159,9 @@ public class ClassificationManagerRESTServices extends TokenController
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse unlicenseElement(String                    serverName,
-                                         String                    licenseGUID,
-                                         MetadataSourceRequestBody requestBody)
+    public VoidResponse unlicenseElement(String                   serverName,
+                                         String                   licenseGUID,
+                                         DeleteRequestBody requestBody)
     {
         final String methodName = "unlicenseElement";
 
@@ -1830,28 +2177,9 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody == null)
-            {
-                handler.unlicenseElement(userId,
-                                         null,
-                                         null,
-                                         licenseGUID,
-                                         false,
-                                         false,
-                                         new Date());
-            }
-            else
-            {
-                handler.unlicenseElement(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
-                                         licenseGUID,
-                                         requestBody.getForLineage(),
-                                         requestBody.getForDuplicateProcessing(),
-                                         requestBody.getEffectiveTime());
-            }
+            handler.unlicenseElement(userId, licenseGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1884,7 +2212,7 @@ public class ClassificationManagerRESTServices extends TokenController
     public GUIDResponse certifyElement(String                  serverName,
                                        String                  elementGUID,
                                        String                  certificationTypeGUID,
-                                       RelationshipRequestBody requestBody)
+                                       NewRelationshipRequestBody requestBody)
     {
         final String methodName = "certifyElement";
 
@@ -1900,36 +2228,17 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof CertificationProperties properties)
+                if (requestBody.getProperties() instanceof CertificationProperties certificationProperties)
                 {
                     response.setGUID(handler.certifyElement(userId,
-                                                            requestBody.getExternalSourceGUID(),
-                                                            requestBody.getExternalSourceName(),
                                                             elementGUID,
                                                             certificationTypeGUID,
-                                                            properties.getCertificateId(),
-                                                            properties.getStartDate(),
-                                                            properties.getEndDate(),
-                                                            properties.getConditions(),
-                                                            properties.getCertifiedBy(),
-                                                            properties.getCertifiedByTypeName(),
-                                                            properties.getCertifiedByPropertyName(),
-                                                            properties.getCustodian(),
-                                                            properties.getCustodianTypeName(),
-                                                            properties.getCustodianPropertyName(),
-                                                            properties.getRecipient(),
-                                                            properties.getRecipientTypeName(),
-                                                            properties.getRecipientPropertyName(),
-                                                            properties.getNotes(),
-                                                            properties.getEffectiveFrom(),
-                                                            properties.getEffectiveTo(),
-                                                            requestBody.getForLineage(),
-                                                            requestBody.getForDuplicateProcessing(),
-                                                            requestBody.getEffectiveTime()));
+                                                            requestBody,
+                                                            certificationProperties));
                 }
                 else
                 {
@@ -1957,8 +2266,6 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @param serverName name of the server instance to connect to
      * @param certificationGUID unique identifier for the certification type
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody the properties of the certification
      *
      * @return void or
@@ -1966,10 +2273,9 @@ public class ClassificationManagerRESTServices extends TokenController
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse updateCertification(String                  serverName,
-                                            String                  certificationGUID,
-                                            boolean                 replaceAllProperties,
-                                            RelationshipRequestBody requestBody)
+    public VoidResponse updateCertification(String                        serverName,
+                                            String                        certificationGUID,
+                                            UpdateRelationshipRequestBody requestBody)
     {
         final String methodName = "updateCertification";
 
@@ -1985,34 +2291,16 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof CertificationProperties properties)
                 {
                     handler.updateCertification(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
                                                 certificationGUID,
-                                                properties.getCertificateId(),
-                                                properties.getStartDate(),
-                                                properties.getEndDate(),
-                                                properties.getConditions(),
-                                                properties.getCertifiedBy(),
-                                                properties.getCertifiedByTypeName(),
-                                                properties.getCertifiedByPropertyName(),
-                                                properties.getCustodian(),
-                                                properties.getCustodianTypeName(),
-                                                properties.getCustodianPropertyName(),
-                                                properties.getRecipient(),
-                                                properties.getRecipientTypeName(),
-                                                properties.getRecipientPropertyName(),
-                                                properties.getNotes(),
-                                                replaceAllProperties,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                                                requestBody,
+                                                properties);
                 }
                 else
                 {
@@ -2046,9 +2334,9 @@ public class ClassificationManagerRESTServices extends TokenController
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse decertifyElement(String                    serverName,
-                                         String                    certificationGUID,
-                                         MetadataSourceRequestBody requestBody)
+    public VoidResponse decertifyElement(String                   serverName,
+                                         String                   certificationGUID,
+                                         DeleteRequestBody requestBody)
     {
         final String methodName = "decertifyElement";
 
@@ -2064,28 +2352,9 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.decertifyElement(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
-                                         certificationGUID,
-                                         requestBody.getForLineage(),
-                                         requestBody.getForDuplicateProcessing(),
-                                         requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.decertifyElement(userId,
-                                         null,
-                                         null,
-                                         certificationGUID,
-                                         false,
-                                         false,
-                                         new Date());
-            }
+            handler.decertifyElement(userId, certificationGUID, requestBody);
         }
         catch (Throwable error)
         {

@@ -18,7 +18,7 @@ public enum FileMetric implements SurveyMetric
     FILE_EXTENSION (OpenMetadataProperty.FILE_EXTENSION.name, OpenMetadataProperty.FILE_EXTENSION.type, "File Extension", OpenMetadataProperty.FILE_EXTENSION.description),
     FILE_TYPE (OpenMetadataProperty.FILE_TYPE.name, OpenMetadataProperty.FILE_TYPE.type, "File type", OpenMetadataProperty.FILE_TYPE.description),
     DEPLOYED_IMPLEMENTATION_TYPE (OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.type, "Deployed Implementation Type",  OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description),
-    ENCODING (OpenMetadataProperty.ENCODING.name, OpenMetadataProperty.ENCODING.type, "File encoding", OpenMetadataProperty.ENCODING.description),
+    ENCODING (OpenMetadataProperty.ENCODING_TYPE.name, OpenMetadataProperty.ENCODING_TYPE.type, "File encoding", OpenMetadataProperty.ENCODING_TYPE.description),
     ASSET_TYPE_NAME ("assetTypeName", "string","Open metadata type name for asset", "The open metadata type used to catalog this type of file."),
     CAN_READ ("canRead", "boolean", "Readable file?", "Can this file be read?"),
     CAN_WRITE ("canWrite", "boolean", "Writeable file?", "Can this file be updated?"),

@@ -38,7 +38,7 @@ public enum CompletionStatus
     OTHER           (99, 99, "Other",      "Undefined or unknown completion status.");
 
     private static final String ENUM_TYPE_GUID  = "a6e698b0-a4f7-4a39-8c80-db0bb0f972e";
-    private static final String ENUM_TYPE_NAME  = "EngineActionStatus";
+    private static final String ENUM_TYPE_NAME  = "ActivityStatus";
 
     private final String statusName;
     private final String statusDescription;

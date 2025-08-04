@@ -124,81 +124,22 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
             if (anchorEntity != null)
             {
-                if (OpenMetadataType.ASSET.typeName.equals(anchorEntity.getType().getTypeDefName()))
-                {
-                    /*
-                     * This method will throw an exception if the asset is not in the supported zones - it will look like
-                     * the asset is not known.
-                     */
-                    invalidParameterHandler.validateAssetInSupportedZone(anchorEntity.getGUID(),
-                                                                         anchorGUIDParameterName,
-                                                                         serviceSuppliedSupportedZones,
-                                                                         securityVerifier.getSupportedZones(userId, serviceSuppliedSupportedZones),
-                                                                         serviceName,
-                                                                         methodName);
-                }
+
+                /*
+                 * This method will throw an exception if the element is not in the supported zones - it will look like
+                 * the element is not known.
+                 */
+                invalidParameterHandler.validateElementInSupportedZone(anchorEntity.getGUID(),
+                                                                       anchorGUIDParameterName,
+                                                                       serviceSuppliedSupportedZones,
+                                                                       securityVerifier.getVisibleZones(userId),
+                                                                       serviceName,
+                                                                       methodName);
+
             }
         }
     }
 
-
-
-
-    /**
-     * Work out whether the relationship permits the requesting user to traverse along the relationship.  This is determined by the
-     * isPublic property on relationships that represent feedback on another object.
-     *
-     * @param userId calling user
-     * @param relationship relationship to the feedback content
-     * @param methodName calling method
-     * @return boolean - true if allowed
-     */
-    protected boolean visibleToUserThroughRelationship(String       userId,
-                                                       Relationship relationship,
-                                                       String       methodName)
-    {
-        if (relationship == null)
-        {
-            return false;
-        }
-
-        String relationshipTypeName = null;
-
-        if (relationship.getType() != null)
-        {
-            relationshipTypeName = relationship.getType().getTypeDefName();
-        }
-
-        if (relationshipTypeName == null)
-        {
-            /*
-             * Strictly speaking this relationship is in error. Returning false will cause it to be ignored.
-             */
-            return false;
-        }
-
-        /*
-         * These are the feedback relationships.  They have a property called "isPrivate".  If it is set to true, only the user
-         * that created it can see it (or update or delete it).
-         */
-        if ((repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName)))
-        {
-            if (userId.equals(relationship.getCreatedBy()))
-            {
-                return true;
-            }
-
-            return repositoryHelper.getBooleanProperty(serviceName,
-                                                       OpenMetadataProperty.IS_PUBLIC.name,
-                                                       relationship.getProperties(),
-                                                       methodName);
-        }
-
-        return true;
-    }
 
 
     /**
@@ -229,42 +170,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         /*
          * This first processing looks at the retrieved entity itself to ensure it is visible.
          */
-        if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG.typeName))
-        {
-            /*
-             * InformalTags have a property that says whether they are public or private
-             */
-            if (! repositoryHelper.getBooleanProperty(serviceName,
-                                                      OpenMetadataProperty.IS_PUBLIC.name,
-                                                      connectToEntity.getProperties(),
-                                                      methodName))
-            {
-                /*
-                 * This is a private tag - if the user did not create this we pretend it is not known.
-                 */
-                if (!userId.equals(connectToEntity.getCreatedBy()))
-                {
-                    invalidParameterHandler.throwUnknownElement(userId,
-                                                                connectToEntity.getGUID(),
-                                                                connectToType,
-                                                                serviceName,
-                                                                serverName,
-                                                                methodName);
-                }
-            }
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.ASSET.typeName))
-        {
-            /*
-             * Assets need to be in the correct zone.
-             */
-            invalidParameterHandler.validateAssetInSupportedZone(connectToEntity.getGUID(),
-                                                                 connectToGUIDParameterName,
-                                                                 suppliedSupportedZones,
-                                                                 securityVerifier.getSupportedZones(userId, suppliedSupportedZones),
-                                                                 serviceName,
-                                                                 methodName);
-        }
+        invalidParameterHandler.validateElementInSupportedZone(connectToEntity.getGUID(),
+                                                               connectToGUIDParameterName,
+                                                               suppliedSupportedZones,
+                                                               securityVerifier.getVisibleZones(userId),
+                                                               serviceName,
+                                                               methodName);
 
         /*
          * Even if the request is an update request, the security module is first called for read - the update
@@ -782,23 +693,18 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                 (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING.typeName)) ||
                                 (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE.typeName));
 
+
                 /*
-                 * Determine if the element is attached directly or indirectly to an asset (or is an asset) so it is possible to determine
-                 * if this asset is in a supported zone or if the user is allowed to change its attachments.
+                 * This method will throw an exception if the element is not in the supported zones - it will look like
+                 * the asset is not known.
                  */
-                if (OpenMetadataType.ASSET.typeName.equals(anchorEntityType.getTypeDefName()))
-                {
-                    /*
-                     * This method will throw an exception if the asset is not in the supported zones - it will look like
-                     * the asset is not known.
-                     */
-                    invalidParameterHandler.validateAssetInSupportedZone(anchorEntity.getGUID(),
-                                                                         anchorGUIDParameterName,
-                                                                         suppliedSupportedZones,
-                                                                         securityVerifier.getSupportedZones(userId, suppliedSupportedZones),
-                                                                         serviceName,
-                                                                         methodName);
-                }
+                invalidParameterHandler.validateElementInSupportedZone(anchorEntity.getGUID(),
+                                                                       anchorGUIDParameterName,
+                                                                       suppliedSupportedZones,
+                                                                       securityVerifier.getVisibleZones(userId),
+                                                                       serviceName,
+                                                                       methodName);
+
 
                 if (isFeedbackEntity)
                 {
@@ -2666,7 +2572,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                  methodName);
 
                         repositoryHandler.createRelationship(userId,
-                                                             OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeGUID,
+                                                             OpenMetadataType.PARENT_GLOSSARY_RELATIONSHIP.typeGUID,
                                                              null,
                                                              null,
                                                              glossaryGUID,
@@ -4879,8 +4785,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                        userId,
                                                                                        glossaryGUID,
                                                                                        OpenMetadataType.GLOSSARY.typeName,
-                                                                                       OpenMetadataType.CATEGORY_ANCHOR_RELATIONSHIP.typeGUID,
-                                                                                       OpenMetadataType.CATEGORY_ANCHOR_RELATIONSHIP.typeName,
+                                                                                       OpenMetadataType.CATEGORY_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.CATEGORY_HIERARCHY_RELATIONSHIP.typeName,
                                                                                        2,
                                                                                        null,
                                                                                        null,
@@ -4924,8 +4830,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                        userId,
                                                        glossaryGUID,
                                                        OpenMetadataType.GLOSSARY.typeName,
-                                                       OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeGUID,
-                                                       OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeName,
+                                                       OpenMetadataType.PARENT_GLOSSARY_RELATIONSHIP.typeGUID,
+                                                       OpenMetadataType.PARENT_GLOSSARY_RELATIONSHIP.typeName,
                                                        2,
                                                        null,
                                                        null,
@@ -5460,8 +5366,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                        userId,
                                                                                        glossaryCategoryGUID,
                                                                                        OpenMetadataType.GLOSSARY_CATEGORY.typeName,
-                                                                                       OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeGUID,
-                                                                                       OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
+                                                                                       OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                        2,
                                                                                        null,
                                                                                        null,
@@ -5805,8 +5711,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     startingEntity.getGUID(),
                                                                                     startingEntity.getType().getTypeDefName(),
-                                                                                    OpenMetadataType.CATEGORY_ANCHOR_RELATIONSHIP.typeGUID,
-                                                                                    OpenMetadataType.CATEGORY_ANCHOR_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.CATEGORY_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.CATEGORY_HIERARCHY_RELATIONSHIP.typeName,
                                                                                     2,
                                                                                     null,
                                                                                     null,
@@ -5837,8 +5743,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                  startingEntity.getGUID(),
                                                                  startingEntity.getType().getTypeDefName(),
-                                                                 OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeGUID,
-                                                                 OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeName,
+                                                                 OpenMetadataType.PARENT_GLOSSARY_RELATIONSHIP.typeGUID,
+                                                                 OpenMetadataType.PARENT_GLOSSARY_RELATIONSHIP.typeName,
                                                                  2,
                                                                  null,
                                                                  null,
@@ -5893,8 +5799,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     startingEntity.getGUID(),
                                                                                     startingEntity.getType().getTypeDefName(),
-                                                                                    OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeGUID,
-                                                                                    OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                     2,
                                                                                     null,
                                                                                     null,
@@ -6534,31 +6440,28 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
     {
-        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
-        {
-            final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
-            final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
+        final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
+        final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-            validateEntityProxyAnchor(userId,
-                                      relationship.getEntityOneProxy(),
-                                      entityOneParameterName,
-                                      validatedAnchorGUIDs,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+        validateEntityProxyAnchor(userId,
+                                  relationship.getEntityOneProxy(),
+                                  entityOneParameterName,
+                                  validatedAnchorGUIDs,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  serviceSupportedZones,
+                                  effectiveTime,
+                                  methodName);
 
-            validateEntityProxyAnchor(userId,
-                                      relationship.getEntityTwoProxy(),
-                                      entityTwoParameterName,
-                                      validatedAnchorGUIDs,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
-        }
+        validateEntityProxyAnchor(userId,
+                                  relationship.getEntityTwoProxy(),
+                                  entityTwoParameterName,
+                                  validatedAnchorGUIDs,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  serviceSupportedZones,
+                                  effectiveTime,
+                                  methodName);
     }
 
 
@@ -6678,174 +6581,125 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
-        {
-            final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
-            final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
+        final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
+        final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-            String relationshipGUIDTypeName = relationship.getType().getTypeDefName();
+        String relationshipGUIDTypeName = relationship.getType().getTypeDefName();
 
-            /*
-             * Retrieve the end entities using the repository handler as calls to validate the anchor
-             * via the security verifier are done here.
-             */
-            EntityDetail bean1Entity = repositoryHandler.getEntityByGUID(userId,
-                                                                         relationship.getEntityOneProxy().getGUID(),
+        /*
+         * Retrieve the end entities using the repository handler as calls to validate the anchor
+         * via the security verifier are done here.
+         */
+        EntityDetail bean1Entity = repositoryHandler.getEntityByGUID(userId,
+                                                                     relationship.getEntityOneProxy().getGUID(),
+                                                                     entityOneParameterName,
+                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     effectiveTime,
+                                                                     methodName);
+
+        EntityDetail anchor1Entity = this.validateEntityAndAnchorForRead(userId,
+                                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                         bean1Entity,
                                                                          entityOneParameterName,
-                                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                         true,
+                                                                         false,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
+                                                                         serviceSupportedZones,
                                                                          effectiveTime,
                                                                          methodName);
 
-            EntityDetail anchor1Entity = this.validateEntityAndAnchorForRead(userId,
-                                                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                             bean1Entity,
-                                                                             entityOneParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             serviceSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail bean2Entity = repositoryHandler.getEntityByGUID(userId,
+                                                                     relationship.getEntityTwoProxy().getGUID(),
+                                                                     entityTwoParameterName,
+                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     effectiveTime,
+                                                                     methodName);
 
-            EntityDetail bean2Entity = repositoryHandler.getEntityByGUID(userId,
-                                                                         relationship.getEntityTwoProxy().getGUID(),
+        EntityDetail anchor2Entity = this.validateEntityAndAnchorForRead(userId,
+                                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                         bean2Entity,
                                                                          entityTwoParameterName,
-                                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                         true,
+                                                                         false,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
+                                                                         serviceSupportedZones,
                                                                          effectiveTime,
                                                                          methodName);
 
-            EntityDetail anchor2Entity = this.validateEntityAndAnchorForRead(userId,
-                                                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                             bean2Entity,
-                                                                             entityTwoParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             serviceSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
-
-            if ((repositoryHelper.isTypeOf(serviceName, relationshipGUIDTypeName, OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName)) ||
-                    (repositoryHelper.isTypeOf(serviceName, relationshipGUIDTypeName, OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName)) ||
-                    (repositoryHelper.isTypeOf(serviceName, relationshipGUIDTypeName, OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName)) ||
-                    (repositoryHelper.isTypeOf(serviceName, relationshipGUIDTypeName, OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName)))
+        if ((repositoryHelper.isTypeOf(serviceName, relationshipGUIDTypeName, OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName)) ||
+                (repositoryHelper.isTypeOf(serviceName, relationshipGUIDTypeName, OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName)) ||
+                (repositoryHelper.isTypeOf(serviceName, relationshipGUIDTypeName, OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName)) ||
+                (repositoryHelper.isTypeOf(serviceName, relationshipGUIDTypeName, OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName)))
+        {
+            if (anchor1Entity != null)
             {
-                if (anchor1Entity != null)
+                if (isDelete)
                 {
-                    if (isDelete)
-                    {
-                        securityVerifier.validateUserForAnchorDeleteFeedback(userId,
-                                                                             anchor1Entity,
-                                                                             bean2Entity,
-                                                                             repositoryHelper,
-                                                                             serviceName,
-                                                                             methodName);
-                    }
-                    else
-                    {
-                        securityVerifier.validateUserForAnchorAddFeedback(userId,
-                                                                          anchor1Entity,
+                    securityVerifier.validateUserForAnchorDeleteFeedback(userId,
+                                                                         anchor1Entity,
+                                                                         bean2Entity,
+                                                                         repositoryHelper,
+                                                                         serviceName,
+                                                                         methodName);
+                }
+                else
+                {
+                    securityVerifier.validateUserForAnchorAddFeedback(userId,
+                                                                      anchor1Entity,
+                                                                      bean2Entity,
+                                                                      repositoryHelper,
+                                                                      serviceName,
+                                                                      methodName);
+                }
+            }
+            else
+            {
+                if (isDelete)
+                {
+                    securityVerifier.validateUserForElementDeleteFeedback(userId,
+                                                                          bean1Entity,
                                                                           bean2Entity,
                                                                           repositoryHelper,
                                                                           serviceName,
                                                                           methodName);
-                    }
                 }
                 else
                 {
-                    if (isDelete)
-                    {
-                        securityVerifier.validateUserForElementDeleteFeedback(userId,
-                                                                              bean1Entity,
-                                                                              bean2Entity,
-                                                                              repositoryHelper,
-                                                                              serviceName,
-                                                                              methodName);
-                    }
-                    else
-                    {
-                        securityVerifier.validateUserForElementAddFeedback(userId,
-                                                                           bean1Entity,
-                                                                           bean2Entity,
-                                                                           repositoryHelper,
-                                                                           serviceName,
-                                                                           methodName);
-                    }
-                }
-            }
-            else if (anchor1Entity != null)
-            {
-                if ((anchor2Entity != null) && (anchor1Entity.getGUID().equals(anchor2Entity.getGUID())))
-                {
-                    /*
-                     * Both ends of the relationship have the same anchor so they are members of the anchor
-                     */
-                    securityVerifier.validateUserForAnchorMemberUpdate(userId,
-                                                                       anchor1Entity,
+                    securityVerifier.validateUserForElementAddFeedback(userId,
+                                                                       bean1Entity,
+                                                                       bean2Entity,
                                                                        repositoryHelper,
                                                                        serviceName,
                                                                        methodName);
                 }
-                else
-                {
-                    if (isDelete)
-                    {
-                        securityVerifier.validateUserForAnchorDetach(userId,
-                                                                     anchor1Entity,
-                                                                     bean2Entity,
-                                                                     relationshipGUIDTypeName,
-                                                                     repositoryHelper,
-                                                                     serviceName,
-                                                                     methodName);
-                    }
-                    else
-                    {
-                        securityVerifier.validateUserForAnchorAttach(userId,
-                                                                     anchor1Entity,
-                                                                     bean2Entity,
-                                                                     relationshipGUIDTypeName,
-                                                                     repositoryHelper,
-                                                                     serviceName,
-                                                                     methodName);
-                    }
-                }
             }
-            else if (anchor2Entity == null)
+        }
+        else if (anchor1Entity != null)
+        {
+            if ((anchor2Entity != null) && (anchor1Entity.getGUID().equals(anchor2Entity.getGUID())))
             {
-                if (isDelete)
-                {
-                    securityVerifier.validateUserForElementDetach(userId,
-                                                                  bean1Entity,
-                                                                  bean2Entity,
-                                                                  relationshipGUIDTypeName,
-                                                                  repositoryHelper,
-                                                                  serviceName,
-                                                                  methodName);
-                }
-                else
-                {
-                    securityVerifier.validateUserForElementAttach(userId,
-                                                                  bean1Entity,
-                                                                  bean2Entity,
-                                                                  relationshipGUIDTypeName,
-                                                                  repositoryHelper,
-                                                                  serviceName,
-                                                                  methodName);
-                }
+                /*
+                 * Both ends of the relationship have the same anchor so they are members of the anchor
+                 */
+                securityVerifier.validateUserForAnchorMemberUpdate(userId,
+                                                                   anchor1Entity,
+                                                                   repositoryHelper,
+                                                                   serviceName,
+                                                                   methodName);
             }
-            else // anchor1 is null but anchor2 is not
+            else
             {
                 if (isDelete)
                 {
                     securityVerifier.validateUserForAnchorDetach(userId,
-                                                                 anchor2Entity,
-                                                                 bean1Entity,
+                                                                 anchor1Entity,
+                                                                 bean2Entity,
                                                                  relationshipGUIDTypeName,
                                                                  repositoryHelper,
                                                                  serviceName,
@@ -6854,31 +6708,65 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 else
                 {
                     securityVerifier.validateUserForAnchorAttach(userId,
-                                                                 anchor2Entity,
-                                                                 bean1Entity,
+                                                                 anchor1Entity,
+                                                                 bean2Entity,
                                                                  relationshipGUIDTypeName,
                                                                  repositoryHelper,
                                                                  serviceName,
                                                                  methodName);
                 }
             }
-
-            /*
-             * User has permission to proceed
-             */
         }
-        else
+        else if (anchor2Entity == null)
         {
-            /*
-             * Relationship is not visible to the user
-             */
-            invalidParameterHandler.throwUnknownElement(userId,
-                                                        relationship.getGUID(),
-                                                        relationship.getType().getTypeDefName(),
-                                                        serviceName,
-                                                        serverName,
-                                                        methodName);
+            if (isDelete)
+            {
+                securityVerifier.validateUserForElementDetach(userId,
+                                                              bean1Entity,
+                                                              bean2Entity,
+                                                              relationshipGUIDTypeName,
+                                                              repositoryHelper,
+                                                              serviceName,
+                                                              methodName);
+            }
+            else
+            {
+                securityVerifier.validateUserForElementAttach(userId,
+                                                              bean1Entity,
+                                                              bean2Entity,
+                                                              relationshipGUIDTypeName,
+                                                              repositoryHelper,
+                                                              serviceName,
+                                                              methodName);
+            }
         }
+        else // anchor1 is null but anchor2 is not
+        {
+            if (isDelete)
+            {
+                securityVerifier.validateUserForAnchorDetach(userId,
+                                                             anchor2Entity,
+                                                             bean1Entity,
+                                                             relationshipGUIDTypeName,
+                                                             repositoryHelper,
+                                                             serviceName,
+                                                             methodName);
+            }
+            else
+            {
+                securityVerifier.validateUserForAnchorAttach(userId,
+                                                             anchor2Entity,
+                                                             bean1Entity,
+                                                             relationshipGUIDTypeName,
+                                                             repositoryHelper,
+                                                             serviceName,
+                                                             methodName);
+            }
+        }
+
+        /*
+         * User has permission to proceed
+         */
     }
 
 
@@ -7187,43 +7075,37 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                    methodName);
         }
 
-        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
-        {
-            final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
-            final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
+        final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
+        final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-            /*
-             * Check that both ends are readable
-             */
-            this.validateEntityAndAnchorForRead(userId,
-                                                relationship.getEntityOneProxy().getGUID(),
-                                                entityOneParameterName,
-                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                true,
-                                                false,
-                                                forLineage,
-                                                forDuplicateProcessing,
-                                                serviceSupportedZones,
-                                                effectiveTime,
-                                                methodName);
+        /*
+         * Check that both ends are readable
+         */
+        this.validateEntityAndAnchorForRead(userId,
+                                            relationship.getEntityOneProxy().getGUID(),
+                                            entityOneParameterName,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                            true,
+                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            serviceSupportedZones,
+                                            effectiveTime,
+                                            methodName);
 
-            this.validateEntityAndAnchorForRead(userId,
-                                                relationship.getEntityTwoProxy().getGUID(),
-                                                entityTwoParameterName,
-                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                true,
-                                                false,
-                                                forLineage,
-                                                forDuplicateProcessing,
-                                                serviceSupportedZones,
-                                                effectiveTime,
-                                                methodName);
+        this.validateEntityAndAnchorForRead(userId,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            entityTwoParameterName,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                            true,
+                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            serviceSupportedZones,
+                                            effectiveTime,
+                                            methodName);
 
-            return relationship;
-        }
-
-
-        return null;
+        return relationship;
     }
 
 
@@ -7776,7 +7658,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
              */
             for (Relationship relationship : retrievedRelationships)
             {
-                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+                if (relationship != null)
                 {
                     EntityProxy otherEnd = repositoryHandler.getOtherEnd(startingEntity.getGUID(), startingTypeName, relationship, attachmentEntityEnd, methodName);
 
@@ -8037,7 +7919,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
              */
             for (Relationship relationship : retrievedRelationships)
             {
-                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+                if (relationship != null)
                 {
                     EntityProxy otherEnd = repositoryHandler.getOtherEnd(startingEntity.getGUID(), startingTypeName, relationship, attachmentEntityEnd, methodName);
 
@@ -8464,12 +8346,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         while (iterator.moreToReceive())
         {
-            Relationship relationship = iterator.getNext();
+            iterator.getNext();
 
-            if (visibleToUserThroughRelationship(userId, relationship, methodName))
-            {
-                count ++;
-            }
+            count ++;
         }
 
         return count;
@@ -8679,7 +8558,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
             for (Relationship relationship : relationships)
             {
-                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+                if (relationship != null)
                 {
                     EntityProxy entityProxy = repositoryHandler.getOtherEnd(startingElement.getGUID(), startingElementTypeName, relationship, attachmentEntityEnd, methodName);
 
@@ -9401,7 +9280,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         {
             for (Relationship relationship : relationships)
             {
-                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+                if (relationship != null)
                 {
                     try
                     {
@@ -9669,7 +9548,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
             for (Relationship  relationship : relationships)
             {
-                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+                if (relationship != null)
                 {
                     try
                     {
@@ -15345,14 +15224,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if ((!onlyCreatorPermitted) || (userId.equals(relationship.getCreatedBy())))
         {
-            if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
-            {
-                repositoryHandler.removeRelationship(userId,
-                                                     externalSourceGUID,
-                                                     externalSourceName,
-                                                     relationship,
-                                                     methodName);
-            }
+            repositoryHandler.removeRelationship(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 relationship,
+                                                 methodName);
         }
         else
         {
@@ -15962,7 +15838,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                                               UserNotAuthorizedException
     {
         final String methodName = "getSpecification";
-        final String parameterName = "refDataRelationship.getEntityTwoProxy().getGUID()";
 
         EntityDetail startingEntity = this.getEntityFromRepository(userId,
                                                                    elementGUID,

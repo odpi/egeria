@@ -5,11 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.cust
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.controls.JDBCConfigurationProperty;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * TransferCustomizations manages the settings of the configuration properties that select which

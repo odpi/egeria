@@ -7,8 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties;
 
 import java.util.Objects;
 

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * CatalogTargetAssetGovernanceActionProvider is the OCF connector provider for the "catalog-asset"
@@ -37,13 +38,12 @@ public class CatalogTargetAssetGovernanceActionProvider extends GovernanceAction
 
         super.supportedRequestParameters = ManageAssetRequestParameter.getRequestParameterTypes();
         super.producedGuards = CatalogTargetAssetGuard.getGuardTypes();
-        super.supportedActionTargetTypes = Arrays.asList(new ActionTargetType[]{ActionTarget.INTEGRATION_CONNECTOR.getActionTargetType()});
-        super.producedActionTargetTypes = Arrays.asList(new ActionTargetType[]{ActionTarget.NEW_ASSET.getActionTargetType()});
+        super.supportedActionTargetTypes = List.of(ActionTarget.INTEGRATION_CONNECTOR.getActionTargetType());
+        super.producedActionTargetTypes = List.of(ActionTarget.NEW_ASSET.getActionTargetType());
 
         super.setConnectorClassName(connectorClassName);
 
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeQualifiedName);
         connectorType.setDisplayName(connectorTypeDisplayName);

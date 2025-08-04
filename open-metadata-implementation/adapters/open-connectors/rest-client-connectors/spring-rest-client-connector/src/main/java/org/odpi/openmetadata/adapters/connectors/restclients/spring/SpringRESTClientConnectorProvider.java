@@ -27,7 +27,6 @@ public class SpringRESTClientConnectorProvider extends RESTClientConnectorProvid
         super.setConnectorClassName(connectorClass.getName());
 
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeName);
         connectorType.setDisplayName(connectorTypeName);

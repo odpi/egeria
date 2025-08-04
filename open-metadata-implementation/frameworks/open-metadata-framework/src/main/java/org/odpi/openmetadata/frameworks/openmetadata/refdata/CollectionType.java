@@ -126,7 +126,7 @@ public enum CollectionType
     public String getQualifiedName()
     {
         return constructValidValueQualifiedName(null,
-                                                OpenMetadataProperty.COLLECTION_TYPE.name,
+                                                OpenMetadataProperty.CATEGORY.name,
                                                 null,
                                                 name);
     }
@@ -140,7 +140,7 @@ public enum CollectionType
     public String getCategory()
     {
         return constructValidValueCategory(null,
-                                           OpenMetadataProperty.COLLECTION_TYPE.name,
+                                           OpenMetadataProperty.CATEGORY.name,
                                            null);
     }
 

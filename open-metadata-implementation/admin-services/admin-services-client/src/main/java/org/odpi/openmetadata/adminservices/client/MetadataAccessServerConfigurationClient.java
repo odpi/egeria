@@ -405,42 +405,6 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
     }
 
 
-    /**
-     * Override the topic name for the in topic of a single access service.
-     *
-     * @param serviceURLMarker string indicating which access service it is configuring
-     * @param topicName new topic name
-     *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    public void overrideAccessServiceInTopic(String  serviceURLMarker,
-                                             String  topicName) throws OMAGNotAuthorizedException,
-                                                                       OMAGInvalidParameterException,
-                                                                       OMAGConfigurationErrorException
-    {
-        final String methodName    = "overrideAccessServiceInTopic";
-        final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}/topic-names/in-topic";
-
-        try
-        {
-            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        topicName,
-                                        adminUserId,
-                                        serverName,
-                                        serviceURLMarker);
-    }
-
 
     /**
      * Override the topic name for the in topic of a single access service.

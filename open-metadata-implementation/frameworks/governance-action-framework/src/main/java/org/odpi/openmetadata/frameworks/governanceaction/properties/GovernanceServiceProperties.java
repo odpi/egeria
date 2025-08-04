@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedConnectorProperties;
 
 import java.util.*;
 
@@ -27,10 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = RegisteredGovernanceService.class, name = "RegisteredGovernanceService")
         })
 
-public class GovernanceServiceProperties extends ReferenceableProperties
+public class GovernanceServiceProperties extends DeployedConnectorProperties
 {
-    private String              displayName                  = null;
-    private String              description                  = null;
     private String              owner                        = null;
     private String              ownerTypeName                = null;
     private String              ownerPropertyName            = null;
@@ -62,8 +61,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName                  = template.getDisplayName();
-            description                  = template.getDescription();
             owner                        = template.getOwner();
             ownerTypeName                = template.getOwnerTypeName();
             ownerPropertyName            = template.getOwnerPropertyName();
@@ -73,52 +70,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
             otherOriginValues            = template.getOtherOriginValues();
             connection                   = template.getConnection();
         }
-    }
-
-
-    /**
-     * Returns the stored display name property for the asset.
-     * If no display name is available then null is returned.
-     *
-     * @return String name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the stored display name property for the asset.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Returns the stored description property for the asset.
-     * If no description is provided then null is returned.
-     *
-     * @return description String text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the stored description property associated with the asset.
-     *
-     * @param description String text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -308,19 +259,15 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     public String toString()
     {
         return "GovernanceServiceProperties{" +
-                       "qualifiedName='" + getQualifiedName() + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", owner='" + owner + '\'' +
-                       ", ownerTypeName='" + ownerTypeName + '\'' +
-                       ", ownerPropertyName='" + ownerPropertyName + '\'' +
-                       ", zoneMembership=" + zoneMembership +
-                       ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                       ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                       ", otherOriginValues=" + otherOriginValues +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", connection=" + connection +
-                       '}';
+                "owner='" + owner + '\'' +
+                ", ownerTypeName='" + ownerTypeName + '\'' +
+                ", ownerPropertyName='" + ownerPropertyName + '\'' +
+                ", zoneMembership=" + zoneMembership +
+                ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
+                ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
+                ", otherOriginValues=" + otherOriginValues +
+                ", connection=" + connection +
+                "} " + super.toString();
     }
 
 
@@ -346,9 +293,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
             return false;
         }
         GovernanceServiceProperties that = (GovernanceServiceProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(owner, that.owner) &&
+        return Objects.equals(owner, that.owner) &&
                        Objects.equals(ownerTypeName, that.ownerTypeName) &&
                        Objects.equals(ownerPropertyName, that.ownerPropertyName) &&
                        Objects.equals(zoneMembership, that.zoneMembership) &&
@@ -367,7 +312,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, owner, ownerTypeName, ownerPropertyName, zoneMembership, originOrganizationGUID,
+        return Objects.hash(super.hashCode(), owner, ownerTypeName, ownerPropertyName, zoneMembership, originOrganizationGUID,
                             originBusinessCapabilityGUID, otherOriginValues, connection);
     }
 }

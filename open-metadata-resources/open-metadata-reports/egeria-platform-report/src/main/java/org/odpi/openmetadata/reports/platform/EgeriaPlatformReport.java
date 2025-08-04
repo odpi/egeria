@@ -6,14 +6,7 @@ package org.odpi.openmetadata.reports.platform;
 import org.odpi.openmetadata.adminservices.client.ConfigurationManagementClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerPlatformConfigurationClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationConnectorConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.reports.EgeriaReport;
@@ -457,18 +450,17 @@ public class EgeriaPlatformReport
                     {
                         if (accessServiceConfig != null)
                         {
-                            OMAGServiceDetails currentDetails = serviceDetailsMap.get(accessServiceConfig.getAccessServiceFullName());
+                            OMAGServiceDetails currentDetails = serviceDetailsMap.get(accessServiceConfig.getAccessServiceName());
 
                             if (currentDetails == null)
                             {
-                                currentDetails = new OMAGServiceDetails(accessServiceConfig.getAccessServiceFullName());
+                                currentDetails = new OMAGServiceDetails(accessServiceConfig.getAccessServiceName());
                             }
 
                             currentDetails.setServiceOptions(accessServiceConfig.getAccessServiceOptions());
-                            currentDetails.setConnection("InTopic", accessServiceConfig.getAccessServiceInTopic());
-                            currentDetails.setConnection("OutTopic", accessServiceConfig.getAccessServiceInTopic());
+                            currentDetails.setConnection("OutTopic", accessServiceConfig.getAccessServiceOutTopic());
 
-                            serviceDetailsMap.put(accessServiceConfig.getAccessServiceFullName(), currentDetails);
+                            serviceDetailsMap.put(accessServiceConfig.getAccessServiceName(), currentDetails);
                         }
                     }
                 }
@@ -484,7 +476,7 @@ public class EgeriaPlatformReport
 
                     currentDetails.setPartnerService(configuration.getEngineHostServicesConfig().getOMAGServerName(),
                                                      configuration.getEngineHostServicesConfig().getOMAGServerPlatformRootURL(),
-                                                     AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName());
+                                                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName());
 
                     if (configuration.getEngineHostServicesConfig().getEngineServiceConfigs() != null)
                     {
@@ -526,44 +518,24 @@ public class EgeriaPlatformReport
                     }
                 }
 
-                if (configuration.getIntegrationServicesConfig() != null)
+                if (configuration.getDynamicIntegrationGroupsConfig() != null)
                 {
-                    for (IntegrationServiceConfig integrationServiceConfig : configuration.getIntegrationServicesConfig())
+                    for (IntegrationGroupConfig integrationGroupConfig : configuration.getDynamicIntegrationGroupsConfig())
                     {
-                        if (integrationServiceConfig != null)
+                        if (integrationGroupConfig != null)
                         {
-                            OMAGServiceDetails currentDetails = serviceDetailsMap.get(integrationServiceConfig.getIntegrationServiceFullName());
+                            OMAGServiceDetails currentDetails = serviceDetailsMap.get(integrationGroupConfig.getIntegrationGroupQualifiedName());
 
                             if (currentDetails == null)
                             {
-                                currentDetails = new OMAGServiceDetails(integrationServiceConfig.getIntegrationServiceFullName());
+                                currentDetails = new OMAGServiceDetails(integrationGroupConfig.getIntegrationGroupQualifiedName());
                             }
 
-                            currentDetails.setServiceOptions(integrationServiceConfig.getIntegrationServiceOptions());
-                            currentDetails.setPartnerService(integrationServiceConfig.getOMAGServerName(),
-                                                             integrationServiceConfig.getOMAGServerPlatformRootURL(),
-                                                             integrationServiceConfig.getIntegrationServicePartnerOMAS());
+                            currentDetails.setPartnerService(integrationGroupConfig.getOMAGServerName(),
+                                                             integrationGroupConfig.getOMAGServerPlatformRootURL(),
+                                                             AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName());
 
-                            if (integrationServiceConfig.getIntegrationConnectorConfigs() != null)
-                            {
-                                for (IntegrationConnectorConfig connectorConfig : integrationServiceConfig.getIntegrationConnectorConfigs())
-                                {
-                                    if (connectorConfig != null)
-                                    {
-                                        String nestedServiceName = "Integration Connector: " + connectorConfig.getConnectorName();
-
-                                        OMAGServiceDetails connectorConfigDetails = new OMAGServiceDetails(nestedServiceName);
-
-                                        connectorConfigDetails.setServiceUserId(connectorConfig.getConnectorUserId());
-                                        connectorConfigDetails.setServiceId(connectorConfig.getConnectorId());
-                                        connectorConfigDetails.setConnection("Integration Connector Implementation", connectorConfig.getConnection());
-
-                                        currentDetails.addNestedService(nestedServiceName, connectorConfigDetails);
-                                    }
-                                }
-                            }
-
-                            serviceDetailsMap.put(integrationServiceConfig.getIntegrationServiceFullName(), currentDetails);
+                            serviceDetailsMap.put(integrationGroupConfig.getIntegrationGroupQualifiedName(), currentDetails);
                         }
                     }
                 }

@@ -13,14 +13,13 @@ import java.util.Objects;
  */
 public class AssetGraph extends AssetElement
 {
-    private List<MetadataElementSummary> anchoredElements                   = null;
-    private List<MetadataRelationship>   relationships                      = null;
-    private String                       mermaidGraph                       = null;
-    private List<MetadataElementSummary> informationSupplyChains            = null;
-    private String                       informationSupplyChainMermaidGraph = null;
-    private String                       fieldLevelLineageGraph             = null;
-    private String                       actionMermaidGraph                 = null;
-    private String                       localLineageGraph                  = null;
+    private List<MetadataElementSummary>     anchoredElements                   = null;
+    private List<RelatedMetadataNodeSummary> relationships                      = null;
+    private List<MetadataElementSummary>     informationSupplyChains            = null;
+    private String                           informationSupplyChainMermaidGraph = null;
+    private String                           fieldLevelLineageGraph             = null;
+    private String                           actionMermaidGraph                 = null;
+    private String                           localLineageGraph                  = null;
 
     /**
      * Default constructor
@@ -54,7 +53,6 @@ public class AssetGraph extends AssetElement
         {
             anchoredElements                   = template.getAnchoredElements();
             relationships                      = template.getRelationships();
-            mermaidGraph                       = template.getMermaidGraph();
             informationSupplyChains            = template.getInformationSupplyChains();
             informationSupplyChainMermaidGraph = template.getInformationSupplyChainMermaidGraph();
             fieldLevelLineageGraph             = template.getFieldLevelLineageGraph();
@@ -92,7 +90,7 @@ public class AssetGraph extends AssetElement
      *
      * @return relationships
      */
-    public List<MetadataRelationship> getRelationships()
+    public List<RelatedMetadataNodeSummary> getRelationships()
     {
         return relationships;
     }
@@ -104,31 +102,9 @@ public class AssetGraph extends AssetElement
      *
      * @param relationships relationships
      */
-    public void setRelationships(List<MetadataRelationship> relationships)
+    public void setRelationships(List<RelatedMetadataNodeSummary> relationships)
     {
         this.relationships = relationships;
-    }
-
-
-    /**
-     * Return the mermaid string used to render a graph.
-     *
-     * @return string in Mermaid markdown
-     */
-    public String getMermaidGraph()
-    {
-        return mermaidGraph;
-    }
-
-
-    /**
-     * Set up mermaid string used to render a graph.
-     *
-     * @param mermaidGraph string in Mermaid markdown
-     */
-    public void setMermaidGraph(String mermaidGraph)
-    {
-        this.mermaidGraph = mermaidGraph;
     }
 
 
@@ -255,7 +231,6 @@ public class AssetGraph extends AssetElement
         return "AssetGraph{" +
                 "anchoredElements=" + anchoredElements +
                 ", relationships=" + relationships +
-                ", mermaidGraph='" + mermaidGraph + '\'' +
                 ", informationSupplyChains=" + informationSupplyChains +
                 ", informationSupplyChainMermaidGraph='" + informationSupplyChainMermaidGraph + '\'' +
                 ", fieldLevelLineageGraph='" + fieldLevelLineageGraph + '\'' +
@@ -280,7 +255,6 @@ public class AssetGraph extends AssetElement
         AssetGraph that = (AssetGraph) objectToCompare;
         return Objects.equals(anchoredElements, that.anchoredElements) &&
                 Objects.equals(relationships, that.relationships) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph) &&
                 Objects.equals(informationSupplyChainMermaidGraph, that.informationSupplyChainMermaidGraph) &&
                 Objects.equals(actionMermaidGraph, that.actionMermaidGraph) &&
                 Objects.equals(localLineageGraph, that.localLineageGraph) &&
@@ -296,7 +270,7 @@ public class AssetGraph extends AssetElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchoredElements, relationships, mermaidGraph,
+        return Objects.hash(super.hashCode(), anchoredElements, relationships,
                             informationSupplyChainMermaidGraph, fieldLevelLineageGraph,
                             actionMermaidGraph, localLineageGraph);
     }

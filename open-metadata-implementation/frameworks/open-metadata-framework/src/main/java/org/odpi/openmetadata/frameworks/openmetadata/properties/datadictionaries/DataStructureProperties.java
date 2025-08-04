@@ -21,10 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataStructureProperties extends ReferenceableProperties
 {
-    private String displayName       = null;
-    private String namespace         = null;
-    private String versionIdentifier = null;
-    private String description       = null;
+    private String namespace = null;
+    private String userDefinedStatus = null;
+
 
 
     /**
@@ -48,55 +47,9 @@ public class DataStructureProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName       = template.getDisplayName();
-            description       = template.getDescription();
             namespace         = template.getNamespace();
-            versionIdentifier = template.getVersionIdentifier();
+            userDefinedStatus = template.getUserDefinedStatus();
         }
-    }
-
-
-    /**
-     * Return the display name of the file
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name of the file.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the data structure.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the data structure.
-     *
-     * @param description string description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -121,25 +74,26 @@ public class DataStructureProperties extends ReferenceableProperties
         this.namespace = namespace;
     }
 
+
     /**
-     * Return the version of this data structure.
+     * Return the status used when element status is OTHER.
      *
      * @return string
      */
-    public String getVersionIdentifier()
+    public String getUserDefinedStatus()
     {
-        return versionIdentifier;
+        return userDefinedStatus;
     }
 
 
     /**
-     * Set up the version of this data structure.
+     * Set up the status used when element status is OTHER.
      *
-     * @param versionIdentifier string
+     * @param userDefinedStatus string
      */
-    public void setVersionIdentifier(String versionIdentifier)
+    public void setUserDefinedStatus(String userDefinedStatus)
     {
-        this.versionIdentifier = versionIdentifier;
+        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -152,10 +106,8 @@ public class DataStructureProperties extends ReferenceableProperties
     public String toString()
     {
         return "DataStructureProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", namespace='" + namespace + '\'' +
-                ", versionIdentifier='" + versionIdentifier + '\'' +
-                ", description='" + description + '\'' +
+                "namespace='" + namespace + '\'' +
+                ", userDefinedStatus='" + userDefinedStatus + '\'' +
                 "} " + super.toString();
     }
 
@@ -169,19 +121,13 @@ public class DataStructureProperties extends ReferenceableProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         DataStructureProperties that = (DataStructureProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription());
+        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
+                Objects.equals(namespace, that.namespace);
     }
-
 
     /**
      * Return hash code for this object
@@ -191,6 +137,6 @@ public class DataStructureProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(getDisplayName(), getDescription());
+        return Objects.hash(super.hashCode(), namespace, userDefinedStatus);
     }
 }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
 
 import java.util.UUID;
 
@@ -21,17 +22,21 @@ public class ToDoActionMermaidGraphBuilder extends MermaidGraphBuilderBase
     public ToDoActionMermaidGraphBuilder(ToDoElement toDoElement)
     {
         mermaidGraph.append("---\n");
-        mermaidGraph.append("title: Governance Definition - ");
-        mermaidGraph.append(toDoElement.getProperties().getName());
+        mermaidGraph.append("title: To Do Action - ");
+
+        if (toDoElement.getProperties() instanceof ToDoProperties toDoProperties)
+        {
+            mermaidGraph.append(toDoProperties.getDisplayName());
+        }
+
         mermaidGraph.append(" [");
         mermaidGraph.append(toDoElement.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        String currentNodeName = toDoElement.getElementHeader().getGUID();
-        String currentDisplayName = toDoElement.getProperties().getName();
+        String currentNodeName    = toDoElement.getElementHeader().getGUID();
 
         appendNewMermaidNode(currentNodeName,
-                             currentDisplayName,
+                             super.getNodeDisplayName(toDoElement),
                              this.getTypeNameForEntity(toDoElement.getElementHeader()),
                              getVisualStyleForEntity(toDoElement.getElementHeader(), VisualStyle.TO_DO));
 
@@ -112,30 +117,30 @@ public class ToDoActionMermaidGraphBuilder extends MermaidGraphBuilderBase
      */
     private void addDescription(ToDoElement toDoElement)
     {
-        if (toDoElement.getProperties() != null)
+        if (toDoElement.getProperties() instanceof ToDoProperties toDoProperties)
         {
             super.startSubgraph("Properties", VisualStyle.DESCRIPTION, "TB");
 
             String lastNodeName = null;
 
-            if (toDoElement.getProperties().getToDoType() != null)
+            if (toDoProperties.getUserDefinedActivityStatus() != null)
             {
                 String descriptionNodeName = UUID.randomUUID().toString();
 
                 appendNewMermaidNode(descriptionNodeName,
-                                     toDoElement.getProperties().getToDoType(),
+                                     toDoProperties.getUserDefinedActivityStatus(),
                                      "Type",
                                      VisualStyle.DESCRIPTION);
 
                 lastNodeName = descriptionNodeName;
             }
 
-            if (toDoElement.getProperties().getDescription() != null)
+            if (toDoProperties.getDescription() != null)
             {
                 String descriptionNodeName = UUID.randomUUID().toString();
 
                 appendNewMermaidNode(descriptionNodeName,
-                                     toDoElement.getProperties().getDescription(),
+                                     toDoProperties.getDescription(),
                                      "Description",
                                      VisualStyle.DESCRIPTION);
 
@@ -147,12 +152,12 @@ public class ToDoActionMermaidGraphBuilder extends MermaidGraphBuilderBase
                 lastNodeName = descriptionNodeName;
             }
 
-            if (toDoElement.getProperties().getToDoStatus() != null)
+            if (toDoProperties.getActivityStatus() != null)
             {
                 String descriptionNodeName = UUID.randomUUID().toString();
 
                 appendNewMermaidNode(descriptionNodeName,
-                                     toDoElement.getProperties().getToDoStatus().getName(),
+                                     toDoProperties.getActivityStatus().getName(),
                                      "Status",
                                      VisualStyle.DESCRIPTION);
 
@@ -164,12 +169,12 @@ public class ToDoActionMermaidGraphBuilder extends MermaidGraphBuilderBase
                 lastNodeName = descriptionNodeName;
             }
 
-            if (toDoElement.getProperties().getCreationTime() != null)
+            if (toDoProperties.getRequestedTime() != null)
             {
                 String descriptionNodeName = UUID.randomUUID().toString();
 
                 appendNewMermaidNode(descriptionNodeName,
-                                     toDoElement.getProperties().getCreationTime().toString(),
+                                     toDoProperties.getRequestedTime().toString(),
                                      "Creation Time",
                                      VisualStyle.DESCRIPTION);
 
@@ -181,12 +186,12 @@ public class ToDoActionMermaidGraphBuilder extends MermaidGraphBuilderBase
                 lastNodeName = descriptionNodeName;
             }
 
-            if (toDoElement.getProperties().getDueTime() != null)
+            if (toDoProperties.getDueTime() != null)
             {
                 String descriptionNodeName = UUID.randomUUID().toString();
 
                 appendNewMermaidNode(descriptionNodeName,
-                                     toDoElement.getProperties().getDueTime().toString(),
+                                     toDoProperties.getDueTime().toString(),
                                      "Due Time",
                                      VisualStyle.DESCRIPTION);
 
@@ -198,12 +203,12 @@ public class ToDoActionMermaidGraphBuilder extends MermaidGraphBuilderBase
                 lastNodeName = descriptionNodeName;
             }
 
-            if (toDoElement.getProperties().getLastReviewTime() != null)
+            if (toDoProperties.getLastReviewTime() != null)
             {
                 String descriptionNodeName = UUID.randomUUID().toString();
 
                 appendNewMermaidNode(descriptionNodeName,
-                                     toDoElement.getProperties().getLastReviewTime().toString(),
+                                     toDoProperties.getLastReviewTime().toString(),
                                      "Last Review Time",
                                      VisualStyle.DESCRIPTION);
 
@@ -215,12 +220,12 @@ public class ToDoActionMermaidGraphBuilder extends MermaidGraphBuilderBase
                 lastNodeName = descriptionNodeName;
             }
 
-            if (toDoElement.getProperties().getCompletionTime() != null)
+            if (toDoProperties.getLastPauseTime() != null)
             {
                 String descriptionNodeName = UUID.randomUUID().toString();
 
                 appendNewMermaidNode(descriptionNodeName,
-                                     toDoElement.getProperties().getCompletionTime().toString(),
+                                     toDoProperties.getLastPauseTime().toString(),
                                      "Completion Time",
                                      VisualStyle.DESCRIPTION);
 

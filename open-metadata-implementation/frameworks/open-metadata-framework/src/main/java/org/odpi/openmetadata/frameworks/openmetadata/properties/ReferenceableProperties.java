@@ -4,20 +4,22 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecord;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
@@ -28,16 +30,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.Gloss
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.MeaningProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainSegmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AuthorizationManagerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataSourceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SecurityManagerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 
 import java.util.Map;
 import java.util.Objects;
@@ -57,29 +58,34 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = ActorProfileProperties.class, name = "ActorProfileProperties"),
-                @JsonSubTypes.Type(value = ActorRoleProperties.class, name = "ActorRoleProperties"),
+                @JsonSubTypes.Type(value = ActorProperties.class, name = "ActorProperties"),
                 @JsonSubTypes.Type(value = AgreementProperties.class, name = "AgreementProperties"),
+                @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
                 @JsonSubTypes.Type(value = BusinessCapabilityProperties.class, name = "BusinessCapabilityProperties"),
                 @JsonSubTypes.Type(value = CollectionProperties.class, name = "CollectionProperties"),
                 @JsonSubTypes.Type(value = CommentProperties.class, name = "CommentProperties"),
                 @JsonSubTypes.Type(value = CommunityProperties.class, name = "CommunityProperties"),
                 @JsonSubTypes.Type(value = ConnectionProperties.class, name = "ConnectionProperties"),
                 @JsonSubTypes.Type(value = ConnectorTypeProperties.class, name = "ConnectorTypeProperties"),
-                @JsonSubTypes.Type(value = ContributionRecord.class, name = "ContributionRecord"),
+                @JsonSubTypes.Type(value = ContactDetailsProperties.class, name = "ContactDetailsProperties"),
+                @JsonSubTypes.Type(value = ContributionRecordProperties.class, name = "ContributionRecordProperties"),
                 @JsonSubTypes.Type(value = DataClassProperties.class, name = "DataClassProperties"),
                 @JsonSubTypes.Type(value = DataFieldProperties.class, name = "DataFieldProperties"),
+                @JsonSubTypes.Type(value = DataProcessingActionProperties.class, name = "DataProcessingActionProperties"),
+                @JsonSubTypes.Type(value = DataProcessingDescriptionProperties.class, name = "DataProcessingDescriptionProperties"),
                 @JsonSubTypes.Type(value = DataStructureProperties.class, name = "DataStructureProperties"),
-                @JsonSubTypes.Type(value = DatabaseSchemaTypeProperties.class, name = "DatabaseSchemaTypeProperties"),
+                @JsonSubTypes.Type(value = RelationalDBSchemaTypeProperties.class, name = "RelationalDBSchemaTypeProperties"),
+                @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = ExecutionPointProperties.class, name = "ExecutionPointProperties"),
+                @JsonSubTypes.Type(value = ExternalIdProperties.class, name = "ExternalIdProperties"),
                 @JsonSubTypes.Type(value = ExternalReferenceProperties.class, name = "ExternalReferenceProperties"),
                 @JsonSubTypes.Type(value = GlossaryProperties.class, name = "GlossaryProperties"),
                 @JsonSubTypes.Type(value = GlossaryCategoryProperties.class, name = "GlossaryCategoryProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermProperties.class, name = "GlossaryTermProperties"),
+                @JsonSubTypes.Type(value = GovernanceDefinitionProperties.class, name = "GovernanceDefinitionProperties"),
                 @JsonSubTypes.Type(value = GovernanceMetricProperties.class, name = "GovernanceMetricProperties"),
                 @JsonSubTypes.Type(value = GovernanceZoneProperties.class, name = "GovernanceZoneProperties"),
                 @JsonSubTypes.Type(value = InformationSupplyChainProperties.class, name = "InformationSupplyChainProperties"),
-                @JsonSubTypes.Type(value = InformationSupplyChainSegmentProperties.class, name = "InformationSupplyChainSegmentProperties"),
                 @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
                 @JsonSubTypes.Type(value = MeaningProperties.class, name = "MeaningProperties"),
                 @JsonSubTypes.Type(value = MetadataSourceProperties.class, name = "MetadataSourceProperties"),
@@ -88,20 +94,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PortProperties.class, name = "PortProperties"),
                 @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties"),
-                @JsonSubTypes.Type(value = SecurityManagerProperties.class, name = "SecurityManagerProperties"),
+                @JsonSubTypes.Type(value = AuthorizationManagerProperties.class, name = "AuthorizationManagerProperties"),
+                @JsonSubTypes.Type(value = SoftwareCapabilityProperties.class, name = "SoftwareCapabilityProperties"),
                 @JsonSubTypes.Type(value = SolutionComponentProperties.class, name = "SolutionComponentProperties"),
-                @JsonSubTypes.Type(value = SubjectAreaProperties.class, name = "SubjectAreaProperties"),
+                @JsonSubTypes.Type(value = SubjectAreaDefinitionProperties.class, name = "SubjectAreaDefinitionProperties"),
                 @JsonSubTypes.Type(value = ToDoProperties.class, name = "ToDoProperties"),
-                @JsonSubTypes.Type(value = UserIdentityProperties.class, name = "UserIdentityProperties"),
-                @JsonSubTypes.Type(value = SupplementaryProperties.class, name = "SupplementaryProperties"),
-                @JsonSubTypes.Type(value = ValidValueProperties.class, name = "ValidValueProperties"),
-                @JsonSubTypes.Type(value = ValidValueSetProperties.class, name = "ValidValueSetProperties"),
+                @JsonSubTypes.Type(value = ValidValueDefinitionProperties.class, name = "ValidValueDefinitionProperties"),
         })
 public class ReferenceableProperties extends OpenMetadataRootProperties
 {
-    private String               qualifiedName        = null;
-    private Map<String, String>  additionalProperties = null;
-    private Map<String, String>  vendorProperties     = null;
+    private String              qualifiedName        = null;
+    private String              displayName          = null;
+    private String              description          = null;
+    private String              versionIdentifier    = null;
+    private String              category             = null;
+    private Map<String, String> additionalProperties = null;
+
 
     /**
      * Default constructor
@@ -124,9 +132,11 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
         if (template != null)
         {
             qualifiedName        = template.getQualifiedName();
+            displayName          = template.getDisplayName();
+            description          = template.getDescription();
+            versionIdentifier    = template.getVersionIdentifier();
+            category             = template.getCategory();
             additionalProperties = template.getAdditionalProperties();
-
-            vendorProperties     = template.getVendorProperties();
         }
     }
 
@@ -155,6 +165,97 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
 
 
     /**
+     * Returns the stored display name property for the element.
+     * If no display name is available then null is returned.
+     *
+     * @return String name
+     */
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+
+    /**
+     * Set up the stored display name property for the element.
+     *
+     * @param displayName String name
+     */
+    public void setDisplayName(String displayName)
+    {
+        this.displayName = displayName;
+    }
+
+
+    /**
+     * Returns the stored description property for the element.
+     * If no description is provided then null is returned.
+     *
+     * @return  String text
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Set up the stored description property for the element.
+     *
+     * @param description String text
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+
+    /**
+     * Return the author-controlled version identifier.
+     *
+     * @return version identifier
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the author-controlled version identifier.
+     *
+     * @param versionIdentifier version identifier
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
+     * Return a descriptive name for the element's category.
+     *
+     * @return string name
+     */
+    public String getCategory()
+    {
+        return category;
+    }
+
+
+    /**
+     * Set up a descriptive name for the element's category. This field can be used to group related elements together
+     * that are used for the same activity, event through they may be different types.
+     *
+     * @param category string name
+     */
+    public void setCategory(String category)
+    {
+        this.category = category;
+    }
+
+
+    /**
      * Set up additional properties.
      *
      * @param additionalProperties Additional properties object
@@ -177,28 +278,6 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
 
 
     /**
-     * Return specific properties for the data manager vendor.
-     *
-     * @return name value pairs
-     */
-    public Map<String, String> getVendorProperties()
-    {
-        return vendorProperties;
-    }
-
-
-    /**
-     * Set up specific properties for the data manager vendor.
-     *
-     * @param vendorProperties name value pairs
-     */
-    public void setVendorProperties(Map<String, String> vendorProperties)
-    {
-        this.vendorProperties = vendorProperties;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -208,8 +287,11 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     {
         return "ReferenceableProperties{" +
                 "qualifiedName='" + qualifiedName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", category='" + category + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", vendorProperties=" + vendorProperties +
                 "} " + super.toString();
     }
 
@@ -228,9 +310,13 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
         if (!super.equals(objectToCompare)) return false;
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(vendorProperties, that.vendorProperties);
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(versionIdentifier, that.versionIdentifier) &&
+                Objects.equals(category, that.category) &&
+                Objects.equals(additionalProperties, that.additionalProperties);
     }
+
 
     /**
      * Return hash code based on properties.
@@ -240,6 +326,6 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), qualifiedName, additionalProperties, vendorProperties);
+        return Objects.hash(super.hashCode(), qualifiedName, displayName, description, versionIdentifier, category, additionalProperties);
     }
 }

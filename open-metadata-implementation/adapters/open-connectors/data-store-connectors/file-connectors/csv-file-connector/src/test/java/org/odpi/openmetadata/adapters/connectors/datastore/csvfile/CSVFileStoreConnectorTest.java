@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -40,7 +39,6 @@ public class CSVFileStoreConnectorTest
 
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setType(Endpoint.getEndpointType());
         endpoint.setGUID(endpointGUID);
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
@@ -55,7 +53,6 @@ public class CSVFileStoreConnectorTest
 
         ConnectorType connectorType = new ConnectorType();
 
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeName);
         connectorType.setDisplayName(connectorTypeName);
@@ -69,7 +66,6 @@ public class CSVFileStoreConnectorTest
 
         Connection connection = new Connection();
 
-        connection.setType(Connection.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
@@ -81,9 +77,9 @@ public class CSVFileStoreConnectorTest
     }
 
 
-    private ConnectionDetails getConnectionProperties(String   fileName)
+    private Connection getConnectionProperties(String   fileName)
     {
-        return new ConnectionDetails(getConnection(fileName));
+        return new Connection(getConnection(fileName));
     }
 
 
@@ -186,7 +182,7 @@ public class CSVFileStoreConnectorTest
 
 
             connectionBean.setConfigurationProperties(configurationProperties);
-            ConnectionDetails connectionDetails = new ConnectionDetails(connectionBean);
+            Connection connectionDetails = new Connection(connectionBean);
 
             connector.initialize(UUID.randomUUID().toString(), connectionDetails);
             assertFalse(connector.isActive());

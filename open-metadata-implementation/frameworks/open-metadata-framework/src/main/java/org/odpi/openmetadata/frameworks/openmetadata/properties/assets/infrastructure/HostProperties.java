@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DatabaseManagerProperties is a class for representing a database platform.
+ * HostProperties is a class for representing a host.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,32 +49,6 @@ public class HostProperties extends ITInfrastructureProperties
     public HostProperties(AssetProperties template)
     {
         super(template);
-    }
-
-
-    /**
-     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
-     * into the extended properties.
-     *
-     * @return asset properties
-     */
-    public AssetProperties cloneToAsset()
-    {
-        return super.cloneToAsset("Host");
-    }
-
-
-    /**
-     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
-     * into the extended properties.
-     *
-     * @param subTypeName subtype name
-     * @return asset properties
-     */
-    @Override
-    public AssetProperties cloneToAsset(String subTypeName)
-    {
-        return super.cloneToAsset(subTypeName);
     }
 
 

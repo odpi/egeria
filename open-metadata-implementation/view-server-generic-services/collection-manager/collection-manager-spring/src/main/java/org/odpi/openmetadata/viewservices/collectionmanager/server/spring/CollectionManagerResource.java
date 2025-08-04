@@ -6,8 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.viewservices.collectionmanager.server.CollectionManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +46,6 @@ public class CollectionManagerResource
      * @param urlMarker  view service URL marker
      * @param parentGUID     unique identifier of referenceable object (typically a personal profile, project or
      *                       community) that the collections hang off of
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
      * @param requestBody filter response by collection type - if null, any value will do
      *
      * @return a list of collections
@@ -62,17 +59,14 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionsResponse getAttachedCollections(@PathVariable String            serverName,
-                                                      @PathVariable String             urlMarker,
-                                                      @PathVariable String            parentGUID,
-                                                      @RequestParam(required = false, defaultValue = "0")
-                                                      int    startFrom,
-                                                      @RequestParam(required = false, defaultValue = "0")
-                                                      int    pageSize,
-                                                      @RequestBody(required = false)
-                                                      FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getAttachedCollections(@PathVariable String            serverName,
+                                                                   @PathVariable String             urlMarker,
+                                                                   @PathVariable String            parentGUID,
+                                                                   @RequestParam(required = false, defaultValue = "0")
+                                                                   @RequestBody(required = false)
+                                                                   ResultsRequestBody requestBody)
     {
-        return restAPI.getAttachedCollections(serverName, urlMarker, parentGUID, startFrom, pageSize, requestBody);
+        return restAPI.getAttachedCollections(serverName, urlMarker, parentGUID, requestBody);
     }
 
 
@@ -81,12 +75,6 @@ public class CollectionManagerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param classificationName option name of a collection classification
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return a list of collections
@@ -100,24 +88,12 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionsResponse findCollections(@PathVariable String            serverName,
-                                               @PathVariable String             urlMarker,
-                                               @RequestParam(required = false)
-                                               String classificationName,
-                                               @RequestParam (required = false, defaultValue = "false")
-                                               boolean           startsWith,
-                                               @RequestParam (required = false, defaultValue = "false")
-                                               boolean           endsWith,
-                                               @RequestParam (required = false, defaultValue = "false")
-                                               boolean           ignoreCase,
-                                               @RequestParam (required = false, defaultValue = "0")
-                                               int               startFrom,
-                                               @RequestParam (required = false, defaultValue = "0")
-                                               int               pageSize,
-                                               @RequestBody  (required = false)
-                                               FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findCollections(@PathVariable String            serverName,
+                                                            @PathVariable String             urlMarker,
+                                                            @RequestBody  (required = false)
+                                                            SearchStringRequestBody requestBody)
     {
-        return restAPI.findCollections(serverName, urlMarker, classificationName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findCollections(serverName, urlMarker, requestBody);
     }
 
 
@@ -126,10 +102,8 @@ public class CollectionManagerResource
      *
      * @param serverName    name of called server
      * @param urlMarker  view service URL marker
-     * @param classificationName option name of a collection classification
      * @param requestBody      name of the collections to return - match is full text match in qualifiedName or name
-     * @param startFrom index of the list to start from (0 for start)
-     * @param pageSize  maximum number of elements to return
+
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -142,17 +116,11 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionsResponse getCollectionsByName(@PathVariable String            serverName,
-                                                    @PathVariable String             urlMarker,
-                                                    @RequestParam(required = false)
-                                                    String classificationName,
-                                                    @RequestParam(required = false, defaultValue = "0")
-                                                    int    startFrom,
-                                                    @RequestParam(required = false, defaultValue = "0")
-                                                    int    pageSize,
-                                                    @RequestBody  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getCollectionsByName(@PathVariable String            serverName,
+                                                                 @PathVariable String             urlMarker,
+                                                                 @RequestBody(required = false)  FilterRequestBody requestBody)
     {
-        return restAPI.getCollectionsByName(serverName, urlMarker, classificationName, startFrom, pageSize, requestBody);
+        return restAPI.getCollectionsByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -161,59 +129,24 @@ public class CollectionManagerResource
      *
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
-     * @param classificationName option name of a collection classification
      * @param requestBody the collection type value to match on.  If it is null, all collections with a null collectionType are returned
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/collections/by-collection-type")
-    @Operation(summary="getCollectionsByType",
-            description="Returns the list of collections with a particular collectionType.  This is an optional text field in the collection element.",
+    @PostMapping(path = "/collections/by-collection-category")
+    @Operation(summary="getCollectionsByCategory",
+            description="Returns the list of collections with a particular category.  This is an optional text field in the collection element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionsResponse getCollectionsByType(@PathVariable String            serverName,
-                                                    @PathVariable String             urlMarker,
-                                                    @RequestParam(required = false)
-                                                    String            classificationName,
-                                                    @RequestParam(required = false, defaultValue = "0")
-                                                    int               startFrom,
-                                                    @RequestParam(required = false, defaultValue = "0")
-                                                    int               pageSize,
-                                                    @RequestBody(required = false)  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getCollectionsByType(@PathVariable String            serverName,
+                                                                 @PathVariable String             urlMarker,
+                                                                 @RequestBody(required = false)  FilterRequestBody requestBody)
     {
-        return restAPI.getCollectionsByType(serverName, urlMarker, classificationName, startFrom, pageSize, requestBody);
-    }
-
-
-    /**
-     * Return the properties of a specific collection.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param collectionGUID unique identifier of the required collection
-     *
-     * @return collection properties
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @GetMapping(path = "/collections/{collectionGUID}")
-    @Operation(summary="getCollection",
-            description="Return the properties of a specific collection.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
-
-    public CollectionResponse getCollection(@PathVariable String serverName,
-                                            @PathVariable String             urlMarker,
-                                            @PathVariable String collectionGUID)
-    {
-        return restAPI.getCollection(serverName, urlMarker, collectionGUID, null);
+        return restAPI.getCollectionsByCategory(serverName, urlMarker, requestBody);
     }
 
 
@@ -230,17 +163,17 @@ public class CollectionManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/{collectionGUID}")
-    @Operation(summary="getCollection",
+    @Operation(summary="getCollectionByGUID",
             description="Return the properties of a specific collection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionResponse getCollection(@PathVariable String serverName,
-                                            @PathVariable String             urlMarker,
-                                            @PathVariable String collectionGUID,
-                                            @RequestBody  AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getCollectionByGUID(@PathVariable String serverName,
+                                                               @PathVariable String             urlMarker,
+                                                               @PathVariable String collectionGUID,
+                                                               @RequestBody GetRequestBody requestBody)
     {
-        return restAPI.getCollection(serverName, urlMarker, collectionGUID, requestBody);
+        return restAPI.getCollectionByGUID(serverName, urlMarker, collectionGUID, requestBody);
     }
 
 
@@ -249,7 +182,6 @@ public class CollectionManagerResource
      *
      * @param serverName                 name of called server.
      * @param urlMarker  view service URL marker
-     * @param classificationName name of collection classification
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -265,254 +197,9 @@ public class CollectionManagerResource
 
     public GUIDResponse createCollection(@PathVariable String                   serverName,
                                          @PathVariable String             urlMarker,
-                                         @RequestParam(required = false)
-                                         String                   classificationName,
                                          @RequestBody  NewElementRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, urlMarker, classificationName, requestBody);
-    }
-
-
-    /**
-     * Create a new collection with the RootCollection classification.  Used to identify the top of a
-     * collection hierarchy.
-     *
-     * @param serverName                 name of called server.
-     * @param urlMarker  view service URL marker
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/root-collection")
-    @Operation(summary="createRootCollection",
-            description="Create a new collection with the RootCollection classification.  Used to identify the top of a collection hierarchy.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
-
-    public GUIDResponse createRootCollection(@PathVariable String                   serverName,
-                                             @PathVariable String             urlMarker,
-                                             @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName, requestBody);
-    }
-
-
-    /**
-     * Create a new collection with the DataSpec classification.  Used to identify a collection of data structures and
-     * data fields used to define data requirements for a project or initiative.
-     *
-     * @param serverName              name of called server.
-     * @param urlMarker  view service URL marker
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/data-spec-collection")
-    @Operation(summary="createDataSpecCollection",
-            description="Create a new collection with the DataSpec classification.  Used to identify a collection of data structures and " +
-                    "data fields used to define data requirements for a project or initiative.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/data-specification"))
-
-    public GUIDResponse createDataSpecCollection(@PathVariable String                   serverName,
-                                                 @PathVariable String             urlMarker,
-                                                 @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION.typeName, requestBody);
-    }
-
-
-    /**
-     * Create a new collection with the Data Dictionary classification.  Used to identify a collection of
-     * data fields that represent a data store of collection of common data types.
-     *
-     * @param serverName              name of called server.
-     * @param urlMarker  view service URL marker
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/data-dictionary-collection")
-    @Operation(summary="createDataDictionaryCollection",
-            description="Create a new collection with the Data Dictionary classification.  Used to identify a collection of " +
-                    "data fields that represent a data store of collection of common data types.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/data-dictionary"))
-
-    public GUIDResponse createDataDictionaryCollection(@PathVariable String                   serverName,
-                                                       @PathVariable String             urlMarker,
-                                                       @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION.typeName, requestBody);
-    }
-
-
-    /**
-     * Create a new collection with the Folder classification.  This is used to identify the organizing collections
-     * in a collection hierarchy.
-     *
-     * @param serverName                 name of called server.
-     * @param urlMarker  view service URL marker
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/folder")
-    @Operation(summary="createFolderCollection",
-            description="Create a new collection with the Folder classification.  This is used to identify the organizing collections in a collection hierarchy.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
-
-    public GUIDResponse createFolderCollection(@PathVariable String                   serverName,
-                                               @PathVariable String             urlMarker,
-                                               @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName, requestBody);
-    }
-
-
-    /**
-     * Create a new collection with the ContextEventCollection classification.
-     *
-     * @param serverName                 name of called server.
-     * @param urlMarker  view service URL marker
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/context-event-collection")
-    @Operation(summary="createContextEventCollection",
-            description="Create a new collection with the ContextEventCollection classification.  This is used to group context events together." +
-                    " For example, the collection may describe a series of events that affect a set of resources.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
-
-    public GUIDResponse createContextEventCollection(@PathVariable String                   serverName,
-                                                     @PathVariable String             urlMarker,
-                                                     @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.CONTEXT_EVENT_COLLECTION_CLASSIFICATION.typeName, requestBody);
-    }
-
-
-    /**
-     * Create a new collection with the Namespace classification.  This is used to group elements that belong to the same namespace.
-     *
-     * @param serverName                 name of called server.
-     * @param urlMarker  view service URL marker
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/namespace-collection")
-    @Operation(summary="createNamespaceCollection",
-            description="Create a new collection with the Namespace classification.  This is used to group elements that belong to the same namespace.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
-
-    public GUIDResponse createNamespaceCollection(@PathVariable String                   serverName,
-                                                  @PathVariable String             urlMarker,
-                                                  @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION.typeName, requestBody);
-    }
-
-
-
-    /**
-     * Create a new agreement with the DataSharingAgreement classification.  This is used to identify an agreement as being related to the sharing of data between two parties.     *
-     * @param serverName                 name of called server.
-     * @param urlMarker  view service URL marker
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/data-sharing-agreement")
-    @Operation(summary="createDataSharingAgreement",
-            description="Create a new agreement with the DataSharingAgreement classification.  This is used to identify an agreement as being related to the sharing of data between two parties.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
-
-    public GUIDResponse createDataSharingAgreement(@PathVariable String                   serverName,
-                                                   @PathVariable String             urlMarker,
-                                                   @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName, requestBody);
-    }
-
-
-    /**
-     * Create a new collection with the EventSet classification.
-     *
-     * @param serverName                 name of called server.
-     * @param urlMarker  view service URL marker
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/event-set-collection")
-    @Operation(summary="createEventSetCollection",
-            description="Create a new collection with the EventSet classification.  This is used to group event schemas together." +
-                    " For example, the collection may describe a set of events emitted by a specific system or to disseminate information about a certain situation.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
-
-    public GUIDResponse createEventSetCollection(@PathVariable String                   serverName,
-                                                 @PathVariable String             urlMarker,
-                                                 @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.EVENT_SET_COLLECTION_CLASSIFICATION.typeName, requestBody);
-    }
-
-
-    /**
-     * Create a new collection with the NamingStandardRuleSet classification.
-     *
-     * @param serverName                 name of called server.
-     * @param urlMarker  view service URL marker
-     * @param requestBody             properties for the collection.
-     *
-     * @return unique identifier of the newly created Collection
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/naming-standard-rule-set-collection")
-    @Operation(summary="createNamingStandardRuleSetCollection",
-            description="Create a new collection with the NamingStandardRuleSet classification.  This is used to group event schemas together." +
-                    " For example, the collection may describe a set of naming standard rule definitions.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
-
-    public GUIDResponse createNamingStandardRuleSetCollection(@PathVariable String                   serverName,
-                                                              @PathVariable String             urlMarker,
-                                                              @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createCollection(serverName, urlMarker, OpenMetadataType.NAMING_STANDARD_RULE_SET_COLLECTION_CLASSIFICATION.typeName, requestBody);
+        return restAPI.createCollection(serverName, urlMarker, requestBody);
     }
 
 
@@ -550,8 +237,6 @@ public class CollectionManagerResource
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the collection.
      *
      * @return void or
@@ -566,73 +251,11 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse updateCollection(@PathVariable String                  serverName,
-                                         @PathVariable String             urlMarker,
+                                         @PathVariable String                  urlMarker,
                                          @PathVariable String                  collectionGUID,
-                                         @RequestParam boolean                 replaceAllProperties,
                                          @RequestBody  UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateCollection(serverName, urlMarker, collectionGUID, replaceAllProperties, requestBody);
-    }
-
-
-
-    /**
-     * Update the status of a digital product.
-     *
-     * @param serverName         name of called server.
-     * @param urlMarker  view service URL marker
-     * @param digitalProductGUID unique identifier of the digital product (returned from createCollection)
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/digital-products/{digitalProductGUID}/update-status")
-    @Operation(summary="updateDigitalProductStatus",
-            description="Update the status of a digital product.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/digital-product"))
-
-    public VoidResponse updateDigitalProductStatus(@PathVariable String serverName,
-                                                   @PathVariable String             urlMarker,
-                                                   @PathVariable String digitalProductGUID,
-                                                   @RequestBody (required = false)
-                                                   DigitalProductStatusRequestBody requestBody)
-    {
-        return restAPI.updateDigitalProductStatus(serverName, urlMarker, digitalProductGUID, requestBody);
-    }
-
-
-    /**
-     * Update the status of an agreement.
-     *
-     * @param serverName         name of called server.
-     * @param urlMarker  view service URL marker
-     * @param agreementGUID unique identifier of the agreement (returned from createCollection)
-     * @param requestBody     properties for the new status.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/collections/agreements/{agreementGUID}/update-status")
-    @Operation(summary="updateAgreementStatus",
-            description="Update the status of an agreement.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
-
-    public VoidResponse updateAgreementStatus(@PathVariable
-                                              String                                  serverName,
-                                              @PathVariable String             urlMarker,
-                                              @PathVariable
-                                              String agreementGUID,
-                                              @RequestBody (required = false)
-                                              AgreementStatusRequestBody requestBody)
-    {
-        return restAPI.updateAgreementStatus(serverName, urlMarker, agreementGUID, requestBody);
+        return restAPI.updateCollection(serverName, urlMarker, collectionGUID, requestBody);
     }
 
 
@@ -644,7 +267,6 @@ public class CollectionManagerResource
      * @param collectionGUID unique identifier of the collection
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to
      * @param requestBody  description of how the collection will be used.
-     * @param makeAnchor     like the lifecycle of the collection to that of the parent so that if the parent is deleted, so is the collection
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -661,12 +283,10 @@ public class CollectionManagerResource
                                          @PathVariable String             urlMarker,
                                          @PathVariable String                  collectionGUID,
                                          @PathVariable String                  parentGUID,
-                                         @RequestParam(required = false, defaultValue = "false")
-                                             boolean                 makeAnchor,
                                          @RequestBody(required = false)
-                                         RelationshipRequestBody requestBody)
+                                             NewRelationshipRequestBody requestBody)
     {
-        return restAPI.attachCollection(serverName, urlMarker, collectionGUID, parentGUID, makeAnchor, requestBody);
+        return restAPI.attachCollection(serverName, urlMarker, collectionGUID, parentGUID, requestBody);
     }
 
 
@@ -694,7 +314,7 @@ public class CollectionManagerResource
                                          @PathVariable String                    collectionGUID,
                                          @PathVariable String                    parentGUID,
                                          @RequestBody(required = false)
-                                         MetadataSourceRequestBody requestBody)
+                                             DeleteRequestBody requestBody)
     {
         return restAPI.detachCollection(serverName, urlMarker, collectionGUID, parentGUID, requestBody);
     }
@@ -729,7 +349,7 @@ public class CollectionManagerResource
                                                      @PathVariable
                                                      String consumedDigitalProductGUID,
                                                      @RequestBody (required = false)
-                                                     RelationshipRequestBody requestBody)
+                                                         NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkDigitalProductDependency(serverName, urlMarker, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
     }
@@ -763,7 +383,7 @@ public class CollectionManagerResource
                                                        @PathVariable
                                                        String consumedDigitalProductGUID,
                                                        @RequestBody (required = false)
-                                                       MetadataSourceRequestBody requestBody)
+                                                           DeleteRequestBody requestBody)
     {
         return restAPI.detachDigitalProductDependency(serverName, urlMarker, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
     }
@@ -797,7 +417,7 @@ public class CollectionManagerResource
                                        @PathVariable
                                        String digitalSubscriptionGUID,
                                        @RequestBody (required = false)
-                                       RelationshipRequestBody requestBody)
+                                           NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSubscriber(serverName, urlMarker, digitalSubscriberGUID, digitalSubscriptionGUID, requestBody);
     }
@@ -831,7 +451,7 @@ public class CollectionManagerResource
                                          @PathVariable
                                          String digitalSubscriptionGUID,
                                          @RequestBody (required = false)
-                                         MetadataSourceRequestBody requestBody)
+                                             DeleteRequestBody requestBody)
     {
         return restAPI.detachSubscriber(serverName, urlMarker, digitalSubscriberGUID, digitalSubscriptionGUID, requestBody);
     }
@@ -843,7 +463,7 @@ public class CollectionManagerResource
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param digitalProductGUID  unique identifier of the digital product
-     * @param digitalProductManagerGUID      unique identifier of the product manager role
+     * @param digitalProductManagerRoleGUID      unique identifier of the product manager role
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -851,7 +471,7 @@ public class CollectionManagerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/collections/digital-products/{digitalProductGUID}/product-managers/{digitalProductManagerGUID}/attach")
+    @PostMapping(path = "/collections/digital-products/{digitalProductGUID}/product-managers/{digitalProductManagerRoleGUID}/attach")
     @Operation(summary="linkProductManager",
             description="Attach a product manager to a digital product.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -863,11 +483,11 @@ public class CollectionManagerResource
                                            @PathVariable
                                            String digitalProductGUID,
                                            @PathVariable
-                                           String digitalProductManagerGUID,
+                                           String digitalProductManagerRoleGUID,
                                            @RequestBody (required = false)
-                                           RelationshipRequestBody requestBody)
+                                               NewRelationshipRequestBody requestBody)
     {
-        return restAPI.linkProductManager(serverName, urlMarker, digitalProductGUID, digitalProductManagerGUID, requestBody);
+        return restAPI.linkProductManager(serverName, urlMarker, digitalProductGUID, digitalProductManagerRoleGUID, requestBody);
     }
 
 
@@ -877,7 +497,7 @@ public class CollectionManagerResource
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param digitalProductGUID  unique identifier of the digital product
-     * @param digitalProductManagerGUID      unique identifier of the product manager role
+     * @param digitalProductManagerRoleGUID      unique identifier of the product manager role
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -885,7 +505,7 @@ public class CollectionManagerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/collection/digital-products/{digitalProductGUID}/product-managers/{digitalProductManagerGUID}/detach")
+    @PostMapping(path = "/collection/digital-products/{digitalProductGUID}/product-managers/{digitalProductManagerRoleGUID}/detach")
     @Operation(summary="detachProductManager",
             description="Detach a product manager from a digital product.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -897,11 +517,11 @@ public class CollectionManagerResource
                                              @PathVariable
                                              String digitalProductGUID,
                                              @PathVariable
-                                             String digitalProductManagerGUID,
+                                             String digitalProductManagerRoleGUID,
                                              @RequestBody (required = false)
-                                             MetadataSourceRequestBody requestBody)
+                                                 DeleteRequestBody requestBody)
     {
-        return restAPI.detachProductManager(serverName, urlMarker, digitalProductGUID, digitalProductManagerGUID, requestBody);
+        return restAPI.detachProductManager(serverName, urlMarker, digitalProductGUID, digitalProductManagerRoleGUID, requestBody);
     }
 
 
@@ -934,7 +554,7 @@ public class CollectionManagerResource
                                            @PathVariable
                                            String actorGUID,
                                            @RequestBody (required = false)
-                                           RelationshipRequestBody requestBody)
+                                               NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkAgreementActor(serverName, urlMarker, agreementGUID, actorGUID, requestBody);
     }
@@ -965,7 +585,7 @@ public class CollectionManagerResource
                                              @PathVariable
                                              String agreementActorRelationshipGUID,
                                              @RequestBody (required = false)
-                                             MetadataSourceRequestBody requestBody)
+                                                 DeleteRequestBody requestBody)
     {
         return restAPI.detachAgreementActor(serverName, urlMarker, agreementActorRelationshipGUID, requestBody);
     }
@@ -999,7 +619,7 @@ public class CollectionManagerResource
                                           @PathVariable
                                           String agreementItemGUID,
                                           @RequestBody (required = false)
-                                          RelationshipRequestBody requestBody)
+                                              NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkAgreementItem(serverName, urlMarker, agreementGUID, agreementItemGUID, requestBody);
     }
@@ -1033,7 +653,7 @@ public class CollectionManagerResource
                                             @PathVariable
                                             String agreementItemGUID,
                                             @RequestBody (required = false)
-                                            MetadataSourceRequestBody requestBody)
+                                                DeleteRequestBody requestBody)
     {
         return restAPI.detachAgreementItem(serverName, urlMarker, agreementGUID, agreementItemGUID, requestBody);
     }
@@ -1067,7 +687,7 @@ public class CollectionManagerResource
                                      @PathVariable
                                      String externalReferenceGUID,
                                      @RequestBody (required = false)
-                                     RelationshipRequestBody requestBody)
+                                         NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkContract(serverName, urlMarker, agreementGUID, externalReferenceGUID, requestBody);
     }
@@ -1101,7 +721,7 @@ public class CollectionManagerResource
                                        @PathVariable
                                        String externalReferenceGUID,
                                        @RequestBody (required = false)
-                                       MetadataSourceRequestBody requestBody)
+                                           DeleteRequestBody requestBody)
     {
         return restAPI.detachContract(serverName, urlMarker, agreementGUID, externalReferenceGUID, requestBody);
     }
@@ -1114,10 +734,7 @@ public class CollectionManagerResource
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection.
-     * @param cascadedDelete should any nested collections be deleted? If false, the delete fails if there are nested
-     *                       collections.  If true, nested collections are delete - but not member elements
-     *                       unless they are anchored to the collection
-     *
+     * @param requestBody delete options
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1136,11 +753,10 @@ public class CollectionManagerResource
     public VoidResponse deleteCollection(@PathVariable String          serverName,
                                          @PathVariable String             urlMarker,
                                          @PathVariable String          collectionGUID,
-                                         @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
                                          @RequestBody(required = false)
-                                         MetadataSourceRequestBody requestBody)
+                                             DeleteRequestBody requestBody)
     {
-        return restAPI.deleteCollection(serverName, urlMarker, collectionGUID, cascadedDelete, requestBody);
+        return restAPI.deleteCollection(serverName, urlMarker, collectionGUID, requestBody);
     }
 
 
@@ -1150,40 +766,6 @@ public class CollectionManagerResource
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection.
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return.
-     *
-     * @return list of collection details
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @GetMapping(path = "/collections/{collectionGUID}/members")
-    @Operation(summary="getCollectionMembers",
-            description="Return a list of elements that are a member of a collection.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
-
-    public CollectionMembersResponse getCollectionMembers(@PathVariable String serverName,
-                                                          @PathVariable String             urlMarker,
-                                                          @PathVariable String collectionGUID,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                          int    startFrom,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                          int    pageSize)
-    {
-        return restAPI.getCollectionMembers(serverName, urlMarker, collectionGUID, startFrom, pageSize, null);
-    }
-
-
-    /**
-     * Return a list of elements that are a member of a collection.
-     *
-     * @param serverName         name of called server.
-     * @param urlMarker  view service URL marker
-     * @param collectionGUID unique identifier of the collection.
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return.
      *
      * @return list of collection details
      *  InvalidParameterException  one of the parameters is invalid.
@@ -1196,30 +778,22 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionMembersResponse getCollectionMembers(@PathVariable String serverName,
-                                                          @PathVariable String             urlMarker,
-                                                          @PathVariable String collectionGUID,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                          int    startFrom,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                          int    pageSize,
-                                                          @RequestBody(required = false)
-                                                          ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getCollectionMembers(@PathVariable String serverName,
+                                                                 @PathVariable String urlMarker,
+                                                                 @PathVariable String collectionGUID,
+                                                                 @RequestBody(required = false)
+                                                                     ResultsRequestBody requestBody)
     {
-        return restAPI.getCollectionMembers(serverName, urlMarker, collectionGUID, startFrom, pageSize, requestBody);
+        return restAPI.getCollectionMembers(serverName, urlMarker, collectionGUID, requestBody);
     }
 
 
     /**
-     * Return a graph of elements that are the nested members of a collection along
-     * with elements immediately connected to the starting collection.  The result
-     * includes a mermaid graph of the returned elements.
+     * Return a hierarchy of nested collections.
      *
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
      * @param requestBody additional properties for the search
      *
      * @return graph of collection details
@@ -1227,23 +801,19 @@ public class CollectionManagerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/collections/{collectionGUID}/graph")
-    @Operation(summary="getCollectionGraph",
+    @PostMapping(path = "/collections/{collectionGUID}/hierarchy")
+    @Operation(summary="getCollectionHierarchy",
             description="Return a graph of elements that are the nested members of a collection along with elements immediately connected to the starting collection.  The result includes a mermaid graph of the returned elements.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionGraphResponse getCollectionGraph(@PathVariable String serverName,
-                                                      @PathVariable String             urlMarker,
-                                                      @PathVariable String collectionGUID,
-                                                      @RequestParam(required = false, defaultValue = "0")
-                                                      int    startFrom,
-                                                      @RequestParam(required = false, defaultValue = "0")
-                                                      int    pageSize,
-                                                      @RequestBody(required = false)
-                                                      ResultsRequestBody requestBody)
+    public OpenMetadataRootElementResponse getCollectionHierarchy(@PathVariable String serverName,
+                                                                  @PathVariable String urlMarker,
+                                                                  @PathVariable String collectionGUID,
+                                                                  @RequestBody(required = false)
+                                                                      ResultsRequestBody requestBody)
     {
-        return restAPI.getCollectionGraph(serverName, urlMarker, collectionGUID, startFrom, pageSize, requestBody);
+        return restAPI.getCollectionHierarchy(serverName, urlMarker, collectionGUID, requestBody);
     }
 
 
@@ -1272,7 +842,7 @@ public class CollectionManagerResource
                                         @PathVariable String                  collectionGUID,
                                         @PathVariable String                  elementGUID,
                                         @RequestBody(required = false)
-                                        RelationshipRequestBody requestBody)
+                                            NewRelationshipRequestBody requestBody)
     {
         return restAPI.addToCollection(serverName, urlMarker, collectionGUID, elementGUID, requestBody);
     }
@@ -1284,8 +854,6 @@ public class CollectionManagerResource
      * @param serverName               name of called server.
      * @param urlMarker  view service URL marker
      * @param collectionGUID       unique identifier of the collection.
-     * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                               the individual properties specified on the request.
      * @param requestBody properties describing the membership characteristics.
      * @param elementGUID          unique identifier of the element.
      *
@@ -1304,11 +872,10 @@ public class CollectionManagerResource
                                                    @PathVariable String                  urlMarker,
                                                    @PathVariable String                  collectionGUID,
                                                    @PathVariable String                  elementGUID,
-                                                   @RequestParam boolean                 replaceAllProperties,
                                                    @RequestBody(required = false)
-                                                   RelationshipRequestBody requestBody)
+                                                   UpdateRelationshipRequestBody requestBody)
     {
-        return restAPI.updateCollectionMembership(serverName, urlMarker, collectionGUID, elementGUID, replaceAllProperties, requestBody);
+        return restAPI.updateCollectionMembership(serverName, urlMarker, collectionGUID, elementGUID, requestBody);
     }
 
 
@@ -1336,7 +903,7 @@ public class CollectionManagerResource
                                              @PathVariable String                    urlMarker,
                                              @PathVariable String                    collectionGUID,
                                              @PathVariable String                    elementGUID,
-                                             @RequestBody  MetadataSourceRequestBody requestBody)
+                                             @RequestBody DeleteRequestBody requestBody)
     {
         return restAPI.removeFromCollection(serverName, urlMarker, collectionGUID, elementGUID, requestBody);
     }

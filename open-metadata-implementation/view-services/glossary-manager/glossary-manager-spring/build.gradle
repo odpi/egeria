@@ -7,8 +7,8 @@
 dependencies {
     implementation project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:view-services:glossary-manager:glossary-manager-server')
-    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-api')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

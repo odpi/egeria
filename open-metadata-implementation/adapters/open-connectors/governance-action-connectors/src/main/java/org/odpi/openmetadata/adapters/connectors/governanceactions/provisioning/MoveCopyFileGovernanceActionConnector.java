@@ -9,21 +9,22 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
@@ -36,7 +37,7 @@ import java.util.*;
 /**
  * MoveCopyFileGovernanceActionConnector moves or copies files from one location to another and optionally creates lineage between them.
  */
-public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceActionService
+public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /*
      * This map remembers the index of the last file that was created in a destination folder.
@@ -208,9 +209,10 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -229,7 +231,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             deleteFile = true;
         }
 
-        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
 
         /*
          * Retrieve the configuration properties from the Connection object.  These properties affect all requests to this connector.
@@ -497,8 +499,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
      *
      * @param asset metadata element
      * @return pathname
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
-    private String getPathName(OpenMetadataElement asset)
+    private String getPathName(OpenMetadataElement asset) throws UserNotAuthorizedException
     {
         final String methodName = "getPathName";
         final String connectionRelationshipName = "ConnectionToAsset";
@@ -754,7 +757,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         OpenMetadataStore metadataStore = governanceContext.getOpenMetadataStore();
 
-        FileClassifier     fileClassifier = new FileClassifier(metadataStore);
+        FileClassifier     fileClassifier = new FileClassifier(governanceContext);
         FileClassification destinationFileClassification = fileClassifier.classifyFile(destinationFilePathName);
 
         String newFileGUID;
@@ -839,7 +842,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (parentElement == null)
         {
-            parentElement = governanceContext.getOpenMetadataStore().getMetadataElementByUniqueName(destinationFolderName, OpenMetadataProperty.NAME.name);
+            parentElement = governanceContext.getOpenMetadataStore().getMetadataElementByUniqueName(destinationFolderName, OpenMetadataProperty.DISPLAY_NAME.name);
         }
 
         String parentGUID = null;
@@ -859,7 +862,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         }
 
         ElementProperties destinationFileProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
-        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.NAME.name, destinationFileClassification.getFileName());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.DISPLAY_NAME.name, destinationFileClassification.getFileName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.RESOURCE_NAME.name, destinationFileClassification.getPathName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.PATH_NAME.name, destinationFileClassification.getPathName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_NAME.name, destinationFileClassification.getFileName());
@@ -936,9 +939,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                      null,
                                                                      true,
                                                                      null,
-                                                                     null,
-                                                                     null,
-                                                                     destinationFileProperties,
+                                                                     new NewElementProperties(destinationFileProperties),
                                                                      parentGUID,
                                                                      OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
                                                                      null,
@@ -1015,7 +1016,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             RelatedMetadataElement schemaType = metadataStore.getRelatedMetadataElement(sourceFileGUID,
                                                                                         1,
                                                                                         OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
-                                                                                        new Date());
+                                                                                        metadataStore.getGetOptions());
 
             if (schemaType != null)
             {
@@ -1086,7 +1087,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 RelatedMetadataElement schemaType = metadataStore.getRelatedMetadataElement(assetGUID,
                                                                                             1,
                                                                                             OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
-                                                                                            new Date());
+                                                                                            metadataStore.getGetOptions());
 
                 if (schemaType != null)
                 {

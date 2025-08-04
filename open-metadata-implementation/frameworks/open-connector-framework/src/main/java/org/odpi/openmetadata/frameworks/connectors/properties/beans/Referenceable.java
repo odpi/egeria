@@ -22,26 +22,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = Certification.class, name = "Certification"),
-                @JsonSubTypes.Type(value = Comment.class, name = "Comment"),
                 @JsonSubTypes.Type(value = Connection.class, name = "Connection"),
                 @JsonSubTypes.Type(value = ConnectorType.class, name = "ConnectorType"),
                 @JsonSubTypes.Type(value = Endpoint.class, name = "Endpoint"),
-                @JsonSubTypes.Type(value = ExternalIdentifier.class, name = "ExternalIdentifier"),
-                @JsonSubTypes.Type(value = ExternalReference.class, name = "ExternalReference"),
-                @JsonSubTypes.Type(value = License.class, name = "License"),
-                @JsonSubTypes.Type(value = Location.class, name = "Location"),
-                @JsonSubTypes.Type(value = Note.class, name = "Note"),
-                @JsonSubTypes.Type(value = NoteLogHeader.class, name = "NoteLogHeader"),
-                @JsonSubTypes.Type(value = RelatedMediaReference.class, name = "RelatedMediaReference"),
-                @JsonSubTypes.Type(value = GovernedReferenceable.class, name = "GovernedReferenceable"),
-                @JsonSubTypes.Type(value = ValidValue.class, name = "ValidValue")
         })
 public class Referenceable extends ElementBase
 {
-    protected String              qualifiedName        = null;
-    protected Map<String, String> additionalProperties = null;
-
+    private String              qualifiedName        = null;
+    private String              displayName          = null;
+    private String              description          = null;
+    private String              versionIdentifier    = null;
+    private Map<String, String> additionalProperties = null;
 
     /**
      * Default constructor
@@ -64,6 +55,7 @@ public class Referenceable extends ElementBase
         if (template != null)
         {
             qualifiedName                           = template.getQualifiedName();
+
             additionalProperties                    = template.getAdditionalProperties();
         }
     }
@@ -90,6 +82,72 @@ public class Referenceable extends ElementBase
     {
         return qualifiedName;
     }
+
+
+    /**
+     * Returns the stored display name property for the element.
+     * Null means that no displayName is available.
+     *
+     * @return displayName
+     */
+    public String getDisplayName() { return displayName; }
+
+
+    /**
+     * Set up the display name for UIs and reports.
+     *
+     * @param displayName String name
+     */
+    public void setDisplayName(String displayName)
+    {
+        this.displayName = displayName;
+    }
+
+
+    /**
+     * Set up description of the element.
+     *
+     * @param description String
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+
+    /**
+     * Returns the stored description property for the element.
+     * If no description is provided then null is returned.
+     *
+     * @return description
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
 
 
     /**
@@ -124,17 +182,12 @@ public class Referenceable extends ElementBase
     public String toString()
     {
         return "Referenceable{" +
-                       "extendedProperties=" + getExtendedProperties() +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       ", qualifiedName='" + qualifiedName + '\'' +
-                       ", additionalProperties=" + additionalProperties +
-                       '}';
+                "qualifiedName='" + qualifiedName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                "} " + super.toString();
     }
 
 
@@ -161,6 +214,9 @@ public class Referenceable extends ElementBase
         }
         Referenceable that = (Referenceable) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
+                Objects.equals(versionIdentifier, that.versionIdentifier) &&
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
     }
 
@@ -173,6 +229,6 @@ public class Referenceable extends ElementBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), qualifiedName, additionalProperties);
+        return Objects.hash(super.hashCode(), qualifiedName, versionIdentifier, displayName, description, additionalProperties);
     }
 }

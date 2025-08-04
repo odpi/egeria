@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.connections;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -23,11 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EndpointProperties extends SupplementaryProperties
+public class EndpointProperties extends ReferenceableProperties
 {
-    private String name             = null;
-    private String description      = null;
-    private String address          = null;
+    private String networkAddress   = null;
     private String protocol         = null;
     private String encryptionMethod = null;
 
@@ -53,68 +51,21 @@ public class EndpointProperties extends SupplementaryProperties
 
         if (template != null)
         {
-            name             = template.getName();
-            description      = template.getResourceDescription();
-            address          = template.getAddress();
-            protocol         = template.getProtocol();
+            networkAddress = template.getNetworkAddress();
+            protocol       = template.getProtocol();
             encryptionMethod = template.getEncryptionMethod();
         }
     }
 
 
     /**
-     * Set up the technical name for the endpoint.
-     *
-     * @param name String name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-     * Returns the stored technical name property for the endpoint.
-     * If no technical name is available then null is returned.
-     *
-     * @return String name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the technical description of the endpoint.
-     *
-     * @param resourceDescription String
-     */
-    public void setResourceDescription(String resourceDescription)
-    {
-        this.description = resourceDescription;
-    }
-
-
-    /**
-     * Return the technical description for the endpoint.
-     *
-     * @return String technicalDescription
-     */
-    public String getResourceDescription()
-    {
-        return description;
-    }
-
-
-    /**
      * Set up the network address of the endpoint.
      *
-     * @param address String resource name
+     * @param networkAddress String resource name
      */
-    public void setAddress(String address)
+    public void setNetworkAddress(String networkAddress)
     {
-        this.address = address;
+        this.networkAddress = networkAddress;
     }
 
 
@@ -124,9 +75,9 @@ public class EndpointProperties extends SupplementaryProperties
      *
      * @return address
      */
-    public String getAddress()
+    public String getNetworkAddress()
     {
-        return address;
+        return networkAddress;
     }
 
 
@@ -187,16 +138,10 @@ public class EndpointProperties extends SupplementaryProperties
     public String toString()
     {
         return "EndpointProperties{" +
-                       "name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       ", address='" + address + '\'' +
-                       ", protocol='" + protocol + '\'' +
-                       ", encryptionMethod='" + encryptionMethod + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "networkAddress='" + networkAddress + '\'' +
+                ", protocol='" + protocol + '\'' +
+                ", encryptionMethod='" + encryptionMethod + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -222,9 +167,7 @@ public class EndpointProperties extends SupplementaryProperties
             return false;
         }
         EndpointProperties that = (EndpointProperties) objectToCompare;
-        return Objects.equals(name, that.name) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(address, that.address) &&
+        return Objects.equals(networkAddress, that.networkAddress) &&
                        Objects.equals(protocol, that.protocol) &&
                        Objects.equals(encryptionMethod, that.encryptionMethod);
     }
@@ -238,6 +181,6 @@ public class EndpointProperties extends SupplementaryProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, description, address, protocol, encryptionMethod);
+        return Objects.hash(super.hashCode(), networkAddress, protocol, encryptionMethod);
     }
 }

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafk
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.controls.KafkaAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc.KafkaSurveyErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
@@ -30,9 +31,10 @@ public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnect
      * be sure to call super.start() in your version.
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 

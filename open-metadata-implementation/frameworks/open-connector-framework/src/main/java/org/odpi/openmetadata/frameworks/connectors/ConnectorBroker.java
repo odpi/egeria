@@ -8,13 +8,12 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollecti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.EmbeddedConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.VirtualConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +61,7 @@ public class ConnectorBroker
      * @param connection connection properties
      * @throws ConnectionCheckedException null connection detected
      */
-    private void  validateConnectionNotNull(ConnectionDetails connection) throws ConnectionCheckedException
+    private void  validateConnectionNotNull(Connection connection) throws ConnectionCheckedException
     {
         final String methodName = "validateConnectionNotNull";
 
@@ -76,13 +75,13 @@ public class ConnectorBroker
                                                  methodName);
         }
 
-        if (connection instanceof VirtualConnectionDetails virtualConnection)
+        if (connection instanceof VirtualConnection virtualConnection)
         {
-            List<EmbeddedConnectionDetails> embeddedConnections = virtualConnection.getEmbeddedConnections();
+            List<EmbeddedConnection> embeddedConnections = virtualConnection.getEmbeddedConnections();
 
             if ((embeddedConnections == null) || (embeddedConnections.isEmpty()))
             {
-                throw new ConnectionCheckedException(OCFErrorCode.INVALID_VIRTUAL_CONNECTION.getMessageDefinition(connection.getConnectionName()),
+                throw new ConnectionCheckedException(OCFErrorCode.INVALID_VIRTUAL_CONNECTION.getMessageDefinition(connection.getDisplayName()),
                                                      this.getClass().getName(),
                                                      methodName);
             }
@@ -98,10 +97,10 @@ public class ConnectorBroker
      * @return ConnectorType object
      * @throws ConnectionCheckedException connector type not defined in connection
      */
-    private ConnectorTypeDetails getConnectorType(ConnectionDetails connection,
-                                                  String                methodName) throws ConnectionCheckedException
+    private ConnectorType getConnectorType(Connection connection,
+                                           String     methodName) throws ConnectionCheckedException
     {
-        ConnectorTypeDetails requestedConnectorType = connection.getConnectorType();
+        ConnectorType requestedConnectorType = connection.getConnectorType();
 
         if (requestedConnectorType == null)
         {
@@ -109,7 +108,7 @@ public class ConnectorBroker
              * It is not possible to create a connector without a connector type since it
              * holds the name of the connector provider's Java class.  Build an exception.
              */
-            throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTOR_TYPE.getMessageDefinition(connection.getConnectionName()),
+            throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTOR_TYPE.getMessageDefinition(connection.getDisplayName()),
                                                  this.getClass().getName(),
                                                  methodName);
         }
@@ -127,9 +126,9 @@ public class ConnectorBroker
      * @return ConnectorProvider object
      * @throws ConnectionCheckedException unable to create the connector provider from the supplied information
      */
-    private ConnectorProvider  getConnectorProvider(ConnectorTypeDetails requestedConnectorType,
-                                                    String                    connectionName,
-                                                    String                    methodName) throws ConnectionCheckedException
+    private ConnectorProvider  getConnectorProvider(ConnectorType requestedConnectorType,
+                                                    String        connectionName,
+                                                    String        methodName) throws ConnectionCheckedException
     {
         /*
          * The class name for the connector provider is in the connectorType properties
@@ -207,30 +206,28 @@ public class ConnectorBroker
 
     /**
      * Extract the connection from the embedded connection and push any arguments into the
-     * AdditionalProperties for the connection.
+     * ConfigurationProperties for the connection.
      *
      * @param embeddedConnection embedded connection object.
      * @return connection object augmented with the arguments from the embedded connection.
      */
-    private ConnectionDetails getConnection(EmbeddedConnectionDetails embeddedConnection)
+    private Connection getConnection(EmbeddedConnection embeddedConnection)
     {
         if (embeddedConnection != null)
         {
-            if (embeddedConnection.getConnectionProperties() instanceof VirtualConnectionDetails virtualConnectionDetails)
+            if (embeddedConnection.getEmbeddedConnection() instanceof VirtualConnection virtualConnectionDetails)
             {
                 AccessibleVirtualConnection accessibleConnection = new AccessibleVirtualConnection(virtualConnectionDetails);
-                VirtualConnection connectionBean = accessibleConnection.getConnectionBean();
-                connectionBean.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
-                                                                                                     connectionBean.getConfigurationProperties()));
-                return new VirtualConnectionDetails(connectionBean);
+                accessibleConnection.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
+                                                                                                     accessibleConnection.getConfigurationProperties()));
+                return new VirtualConnection(accessibleConnection);
             }
             else
             {
-                AccessibleConnection accessibleConnection = new AccessibleConnection(embeddedConnection.getConnectionProperties());
-                Connection connectionBean = accessibleConnection.getConnectionBean();
-                connectionBean.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
-                                                                                                     connectionBean.getConfigurationProperties()));
-                return new ConnectionDetails(connectionBean);
+                AccessibleConnection accessibleConnection = new AccessibleConnection(embeddedConnection.getEmbeddedConnection());
+                accessibleConnection.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
+                                                                                                           accessibleConnection.getConfigurationProperties()));
+                return accessibleConnection;
             }
         }
 
@@ -269,6 +266,7 @@ public class ConnectorBroker
         return configurationProperties;
     }
 
+
     /**
      * Validate that the connection has sufficient properties to attempt to create a connector.
      * Any problems found are expressed as a ConnectionCheckedException.
@@ -278,63 +276,20 @@ public class ConnectorBroker
      */
     public void validateConnection(Connection connection) throws ConnectionCheckedException
     {
-        if (connection == null)
-        {
-            this.validateConnection((ConnectionDetails)null);
-        }
-        else
-        {
-            this.validateConnection(new ConnectionDetails(connection));
-        }
-    }
-
-
-    /**
-     * Validate that the connection has sufficient properties to attempt to create a connector.
-     * Any problems found are expressed as a ConnectionCheckedException.
-     *
-     * @param connection connection properties
-     * @throws ConnectionCheckedException an error with the connection.
-     */
-    public void validateConnection(ConnectionDetails connection) throws ConnectionCheckedException
-    {
         final String   methodName = "validateConnection";
 
         log.debug("==> ConnectorBroker." + methodName);
 
         validateConnectionNotNull(connection);
 
-        ConnectorTypeDetails requestedConnectorType = this.getConnectorType(connection, methodName);
+        ConnectorType requestedConnectorType = this.getConnectorType(connection, methodName);
 
-        getConnectorProvider(requestedConnectorType, connection.getConnectionName(), methodName);
+        getConnectorProvider(requestedConnectorType, connection.getDisplayName(), methodName);
 
         log.debug("<== ConnectorBroker." + methodName);
     }
 
 
-    /**
-     * Creates a new instance of a connector using the name of the connector provider in the supplied connection.
-     *
-     * @param connection   properties for the connector and connector provider.
-     * @return new connector instance.
-     * @throws ConnectionCheckedException an error with the connection.
-     * @throws ConnectorCheckedException an error initializing the connector.
-     */
-    public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
-    {
-        if (connection == null)
-        {
-            return this.getConnector((ConnectionDetails)null);
-        }
-        else if (connection instanceof VirtualConnection)
-        {
-            return this.getConnector(new VirtualConnectionDetails((VirtualConnection)connection));
-        }
-        else
-        {
-            return this.getConnector(new ConnectionDetails(connection));
-        }
-    }
 
 
     /**
@@ -344,9 +299,11 @@ public class ConnectorBroker
      * @return new connector instance.
      * @throws ConnectionCheckedException an error with the connection.
      * @throws ConnectorCheckedException an error initializing the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
-    public Connector getConnector(ConnectionDetails connection) throws ConnectionCheckedException,
-                                                                       ConnectorCheckedException
+    public Connector getConnector(Connection connection) throws ConnectionCheckedException,
+                                                                ConnectorCheckedException,
+                                                                UserNotAuthorizedException
     {
         final String         methodName = "getConnector";
         String               connectionName;
@@ -354,14 +311,14 @@ public class ConnectorBroker
         log.debug("==> ConnectorBroker." + methodName);
 
         this.validateConnection(connection);
-        connectionName = connection.getConnectionName();
+        connectionName = connection.getDisplayName();
 
 
         /*
          * Within the connection is a structure called the connector type.  This defines the factory for a new
          * connector instance.  This factory is called the Connector Provider.
          */
-        ConnectorTypeDetails requestedConnectorType = this.getConnectorType(connection, methodName);
+        ConnectorType requestedConnectorType = this.getConnectorType(connection, methodName);
 
 
         /*
@@ -382,18 +339,16 @@ public class ConnectorBroker
         }
 
         List<Connector>                    embeddedConnectors       = new ArrayList<>();
-        ConnectionDetails                  processedConnection      = connection;
+        Connection                         processedConnection      = connection;
         Map<String, SecretsStoreConnector> secretsStoreConnectorMap = new HashMap<>();
 
         /*
          * If a virtual connection was passed to the connector broker then the connector broker needs to create
          * connectors for its embedded connections.
          */
-        if (connection instanceof VirtualConnectionDetails virtualConnectionDetails)
+        if (connection instanceof VirtualConnection virtualConnectionDetails)
         {
             AccessibleConnection accessibleConnection = new AccessibleConnection(connection);
-            Connection           connectionBean       = accessibleConnection.getConnectionBean();
-
             processedConnection = accessibleConnection;
 
             /*
@@ -403,9 +358,9 @@ public class ConnectorBroker
              */
             log.debug("Creating embedded connectors for connection name: " + connectionName);
 
-            List<EmbeddedConnectionDetails> embeddedConnections = virtualConnectionDetails.getEmbeddedConnections();
+            List<EmbeddedConnection> embeddedConnections = virtualConnectionDetails.getEmbeddedConnections();
 
-            for (EmbeddedConnectionDetails embeddedConnection : embeddedConnections)
+            for (EmbeddedConnection embeddedConnection : embeddedConnections)
             {
                 Connector embeddedConnector = getConnector(this.getConnection(embeddedConnection));
 
@@ -418,39 +373,39 @@ public class ConnectorBroker
                 {
                     secretsStoreConnector.start();
 
-                    if (connectionBean.getUserId() == null)
+                    if (accessibleConnection.getUserId() == null)
                     {
-                        connectionBean.setUserId(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.USER_ID.getName()));
+                        accessibleConnection.setUserId(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.USER_ID.getName()));
 
-                        if (connectionBean.getUserId() == null)
+                        if (accessibleConnection.getUserId() == null)
                         {
                             if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName()) != null))
                             {
-                                connectionBean.setUserId(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName())));
+                                accessibleConnection.setUserId(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName())));
                             }
                         }
                     }
                     if (connection.getClearPassword() == null)
                     {
-                        connectionBean.setClearPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()));
+                        accessibleConnection.setClearPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()));
 
-                        if (connectionBean.getClearPassword() == null)
+                        if (accessibleConnection.getClearPassword() == null)
                         {
                             if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()) != null))
                             {
-                                connectionBean.setClearPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName())));
+                                accessibleConnection.setClearPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName())));
                             }
                         }
                     }
                     if (connection.getEncryptedPassword() == null)
                     {
-                        connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()));
+                        accessibleConnection.setEncryptedPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()));
 
-                        if (connectionBean.getEncryptedPassword() == null)
+                        if (accessibleConnection.getEncryptedPassword() == null)
                         {
                             if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()) != null))
                             {
-                                connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName())));
+                                accessibleConnection.setEncryptedPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName())));
                             }
                         }
                     }
@@ -518,7 +473,7 @@ public class ConnectorBroker
              * Build and throw exception.
              */
             throw new OMFRuntimeException(OCFErrorCode.NULL_CONNECTOR.getMessageDefinition(requestedConnectorType.getConnectorProviderClassName(),
-                                                                                           connection.getConnectionName()),
+                                                                                           connection.getDisplayName()),
                                           this.getClass().getName(),
                                           methodName);
         }
@@ -572,21 +527,12 @@ public class ConnectorBroker
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    private static class AccessibleConnection extends ConnectionDetails
+    private static class AccessibleConnection extends Connection
     {
-        AccessibleConnection(ConnectionDetails templateConnection)
+        // todo remove
+        AccessibleConnection(Connection templateConnection)
         {
             super(templateConnection);
-        }
-
-        /**
-         * Return a copy of the ConnectionBean.
-         *
-         * @return Connection bean
-         */
-        protected Connection getConnectionBean()
-        {
-            return super.getConnectionBean();
         }
     }
 
@@ -595,21 +541,12 @@ public class ConnectorBroker
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    private static class AccessibleVirtualConnection extends VirtualConnectionDetails
+    private static class AccessibleVirtualConnection extends VirtualConnection
     {
-        AccessibleVirtualConnection(VirtualConnectionDetails templateConnection)
+        // todo remove
+        AccessibleVirtualConnection(VirtualConnection templateConnection)
         {
             super(templateConnection);
-        }
-
-        /**
-         * Return a copy of the ConnectionBean.
-         *
-         * @return Connection bean
-         */
-        protected VirtualConnection getConnectionBean()
-        {
-            return super.getConnectionBean();
         }
     }
 }

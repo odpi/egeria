@@ -22,7 +22,8 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-registration')
     implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
-    implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-registration')
+    implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-api')
+    implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }

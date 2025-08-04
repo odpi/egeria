@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = EngineServiceConfig.class,             name = "EngineServiceConfig"),
-        @JsonSubTypes.Type(value = IntegrationServiceConfig.class,        name = "IntegrationServiceConfig"),
+        @JsonSubTypes.Type(value = IntegrationGroupConfig.class,        name = "IntegrationGroupConfig"),
         @JsonSubTypes.Type(value = ViewServiceConfig.class,               name = "ViewServiceConfig")
 })
 public class OMAGServerClientConfig extends AdminServicesConfigHeader

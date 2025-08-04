@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ProjectProperties extends ReferenceableProperties
 {
     private String identifier     = null;
-    private String name           = null;
-    private String description    = null;
     private String projectPhase   = null;
     private String projectHealth  = null;
     private String projectStatus  = null;
@@ -55,8 +53,6 @@ public class ProjectProperties extends ReferenceableProperties
         if (template != null)
         {
             this.identifier = template.getIdentifier();
-            this.name = template.getName();
-            this.description   = template.getDescription();
             this.projectPhase = template.getProjectPhase();
             this.projectHealth = template.getProjectHealth();
             this.projectStatus = template.getProjectStatus();
@@ -86,51 +82,6 @@ public class ProjectProperties extends ReferenceableProperties
     public void setIdentifier(String identifier)
     {
         this.identifier = identifier;
-    }
-
-
-
-    /**
-     * Return the name of the project.
-     *
-     * @return string name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the name of the project.
-     *
-     * @param name string name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-     * Return the description of the project.
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the project.
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -228,14 +179,7 @@ public class ProjectProperties extends ReferenceableProperties
      */
     public Date getStartDate()
     {
-        if (startDate == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(startDate.getTime());
-        }
+        return startDate;
     }
 
 
@@ -257,14 +201,7 @@ public class ProjectProperties extends ReferenceableProperties
      */
     public Date getPlannedEndDate()
     {
-        if (plannedEndDate == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(plannedEndDate.getTime());
-        }
+        return plannedEndDate;
     }
 
 
@@ -289,8 +226,6 @@ public class ProjectProperties extends ReferenceableProperties
     {
         return "ProjectProperties{" +
                 "identifier='" + identifier + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 ", projectPhase='" + projectPhase + '\'' +
                 ", projectHealth='" + projectHealth + '\'' +
                 ", projectStatus='" + projectStatus + '\'' +
@@ -314,7 +249,7 @@ public class ProjectProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ProjectProperties that = (ProjectProperties) objectToCompare;
-        return priority == that.priority && Objects.equals(identifier, that.identifier) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(projectPhase, that.projectPhase) && Objects.equals(projectHealth, that.projectHealth) && Objects.equals(projectStatus, that.projectStatus) && Objects.equals(startDate, that.startDate) && Objects.equals(plannedEndDate, that.plannedEndDate);
+        return priority == that.priority && Objects.equals(identifier, that.identifier) && Objects.equals(projectPhase, that.projectPhase) && Objects.equals(projectHealth, that.projectHealth) && Objects.equals(projectStatus, that.projectStatus) && Objects.equals(startDate, that.startDate) && Objects.equals(plannedEndDate, that.plannedEndDate);
     }
 
     /**
@@ -325,6 +260,6 @@ public class ProjectProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, name, description, projectPhase, projectHealth, projectStatus, priority, startDate, plannedEndDate);
+        return Objects.hash(super.hashCode(), identifier, projectPhase, projectHealth, projectStatus, priority, startDate, plannedEndDate);
     }
 }

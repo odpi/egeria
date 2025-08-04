@@ -263,7 +263,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         final String methodName = "getDisplayName";
 
         String currentDisplayName = propertyHelper.getStringProperty(sourceName,
-                                                                     OpenMetadataProperty.NAME.name,
+                                                                     OpenMetadataProperty.DISPLAY_NAME.name,
                                                                      elementProperties,
                                                                      methodName);
         if (currentDisplayName == null)
@@ -325,15 +325,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         if (currentDisplayName == null)
         {
             currentDisplayName = propertyHelper.getStringProperty(sourceName,
-                                                                  OpenMetadataProperty.TAG_NAME.name,
-                                                                  elementProperties,
-                                                                  methodName);
-        }
-
-        if (currentDisplayName == null)
-        {
-            currentDisplayName = propertyHelper.getStringProperty(sourceName,
-                                                                  OpenMetadataProperty.TITLE.name,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   elementProperties,
                                                                   methodName);
         }

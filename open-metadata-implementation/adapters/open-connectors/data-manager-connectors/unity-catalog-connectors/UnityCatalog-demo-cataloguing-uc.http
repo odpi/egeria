@@ -184,13 +184,15 @@ Content-Type: application/json
 # @name createElementFromTemplate (Unity Catalog Server 1)
 # Create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/get-element
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "class" : "TemplateRequestBody",
   "templateGUID" : "{{ucServerTemplateGUID}}",
   "isOwnAnchor" : true,
+  "allowRetrieve": true,
   "placeholderPropertyValues" : {
     "hostURL" : "http://localhost",
     "portNumber" : "8080",
@@ -213,8 +215,10 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "templateGUID" : "3f7f62f6-4abc-424e-9f92-523306e7d5d5",
+  "class" : "TemplateRequestBody",
+  "templateGUID" : "{{ucServerTemplateGUID}}",
   "isOwnAnchor" : true,
+  "allowRetrieve": true,
   "placeholderPropertyValues" : {
     "serverName" : "Databricks UC",
     "hostURL" : "http://localhost",
@@ -651,7 +655,7 @@ Content-Type: application/json
 # @name deleteMetadataElement
 # Delete a specific metadata element.
 
-POST {{baseURL}}/servers/active-metadata-store/open-metadata/framework-services/asset-owner/open-metadata-store/users/peterprofile/metadata-elements/{{catalogGUID}}/delete
+POST {{baseURL}}/servers/active-metadata-store/open-metadata/access-services/asset-owner/open-metadata-store/users/peterprofile/metadata-elements/{{catalogGUID}}/delete
 Content-Type: application/json
 
 

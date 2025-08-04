@@ -16,25 +16,12 @@ The Egeria core repository contains the core Egeria functionality, and is organi
 * **[open-metadata-distribution](open-metadata-distribution)** - contains scripts to extract the completed artifacts from the other modules and stores them together to make it easy to find them.
 
 * **[open-metadata-implementation](open-metadata-implementation)** - implementation of standards, frameworks and connectors.
-  
-  * **[access-services](open-metadata-implementation/access-services)** - domain specific APIs known as the Open Metadata Access Services (OMAS).
-    * **[asset-consumer](open-metadata-implementation/access-services/asset-consumer)** - create connectors to access assets.
-    * **[asset-manager](open-metadata-implementation/access-services/asset-manager)** - provide a synchronization interface for asset managers and catalogs.
-    * **[asset-owner](open-metadata-implementation/access-services/asset-owner)** - manage metadata and feedback for owned assets.
-    * **[community-profile](open-metadata-implementation/access-services/community-profile)** - manage personal profiles and communities.
-    * **[data-manager](open-metadata-implementation/access-services/data-manager)** - exchange metadata with a technology that manages collections of data.
-    * **[data-science](open-metadata-implementation/access-services/data-science)** - manage metadata for analytics.
-    * **[design-model](open-metadata-implementation/access-services/design-model)** - manage content from design models.
-    * **[digital-architecture](open-metadata-implementation/access-services/digital-architecture)** - support the definition of data standards and models.
-    * **[digital-service](open-metadata-implementation/access-services/digital-service)** - manage metadata for a Digital Service.
-    * **[governance-engine](open-metadata-implementation/access-services/governance-engine)** - manage metadata for an operational governance engine.
-    * **[governance-program](open-metadata-implementation/access-services/governance-program)** - set up and manage a governance program.
-    * **[it-infrastructure](open-metadata-implementation/access-services/it-infrastructure)** - manage metadata about deployed infrastructure.
-    * **[project-management](open-metadata-implementation/access-services/project-management)** - manage definitions of projects for metadata management and governance.
-    * **[security-manager](open-metadata-implementation/access-services/security-manager)** - synchronization of metadata with security services.
-    * **[software-developer](open-metadata-implementation/access-services/software-developer)** - deliver useful metadata to software developers.
-    * **[stewardship-action](open-metadata-implementation/access-services/stewardship-action)** - manage metadata as part of a data steward's work to improve the data landscape.
- 
+
+  * **[access-services](open-metadata-implementation/access-services)** - client support for the frameworks
+    * **[ocf-metadata-management](open-metadata-implementation/access-services/ocf-metadata-management)** - provides metadata management for the [Open Connector Framework (OCF)](open-metadata-implementation/frameworks/open-connector-framework) properties and APIs.
+    * **[oif-metadata-management](open-metadata-implementation/access-services/oif-metadata-management)** - provides metadata management for the [Open Integration Framework (OCF)](open-metadata-implementation/frameworks/open-integration-framework) properties and APIs.
+    * **[gaf-metadata-management](open-metadata-implementation/access-services/gaf-metadata-management)** - provides metadata management for the [Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework) properties and APIs.
+
   * **[adapters](open-metadata-implementation/adapters)** - pluggable component implementations.
     * **[authentication-plugins](open-metadata-implementation/adapters/authentication-plugins)** support extensions to technology such as LDAP that are used to verify the identity of an individual or service requesting access to data/metadata.
     * **[open-connectors](open-metadata-implementation/adapters/open-connectors)** are connectors that support the Open Connector Framework (OCF).
@@ -81,27 +68,9 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[open-discovery-framework](open-metadata-implementation/frameworks/open-discovery-framework)** provides the interfaces and base implementations for components (called discovery services) that access data-related assets and extract characteristics about the data that can be stored in an open metadata repository.
     * **[governance-action-framework](open-metadata-implementation/frameworks/governance-action-framework)** provides the interfaces and base implementations for components (called governance actions) that take action to correct a situation that is harmful the data, or the organization in some way.
  
-  * **[framework-services](open-metadata-implementation/framework-services)** - client support for the frameworks
-    * **[ocf-metadata-management](open-metadata-implementation/framework-services/ocf-metadata-management)** - provides metadata management for the [Open Connector Framework (OCF)](open-metadata-implementation/frameworks/open-connector-framework) properties and APIs.
-    * **[oif-metadata-management](open-metadata-implementation/framework-services/oif-metadata-management)** - provides metadata management for the [Open Integration Framework (OCF)](open-metadata-implementation/frameworks/open-integration-framework) properties and APIs.
-    * **[gaf-metadata-management](open-metadata-implementation/framework-services/gaf-metadata-management)** - provides metadata management for the [Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework) properties and APIs.
-
 * **[governance-servers](open-metadata-implementation/governance-servers)** - servers and daemons to run open metadata and governance function.
     * **[engine-host-services](open-metadata-implementation/governance-servers/engine-host-services)** - supports the core function of the [Engine Host](https://egeria-project.org/concepts/engine-host) OMAG Server.
     * **[integration-daemon-services](open-metadata-implementation/governance-servers/integration-daemon-services)** - supports the core function of the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon) OMAG Server.
-
-  * **[integration-services](open-metadata-implementation/integration-services)** - services that host integration connectors.  These run in the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon) OMAG Server.
-    * **[analytics-integrator](open-metadata-implementation/integration-services/analytics-integrator)** - services to catalog analytics services.
-    * **[api-integrator](open-metadata-implementation/integration-services/api-integrator)** - services to catalog APIs supported by API Managers.
-    * **[catalog-integrator](open-metadata-implementation/integration-services/catalog-integrator)** - services to exchange metadata with asset managers and catalogs.
-    * **[database-integrator](open-metadata-implementation/integration-services/database-integrator)** - services to capture metadata from file systems and file management applications.
-    * **[files-integrator](open-metadata-implementation/integration-services/files-integrator)** - services to exchange metadata with relational databases.
-    * **[infrastructure-integrator](open-metadata-implementation/integration-services/infrastructure-integrator)** - services to describe deployed IT infrastructure as metadata.
-    * **[lineage-integrator](open-metadata-implementation/integration-services/lineage-integrator)** - services to load lineage metadata.
-    * **[organization-integrator](open-metadata-implementation/integration-services/organization-integrator)** - services to load metadata about the organization, including user identifiers, profiles, team structures and department hierarchy.
-    * **[search-integrator](open-metadata-implementation/integration-services/search-integrator)** - services to maintain search indexes about open metadata.
-    * **[security-integrator](open-metadata-implementation/integration-services/security-integrator)** - services to push security tags to an external security enforcement point.
-    * **[topic-integrator](open-metadata-implementation/integration-services/topic-integrator)** - services to catalog topics and their event types from an Event Broker.
 
   * **[platform-services](open-metadata-implementation/platform-services)** - the platform services support REST APIs for the OMAG Server Platform.
 

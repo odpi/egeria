@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,11 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareCapabilityElement implements MetadataElement
+public class SoftwareCapabilityElement extends OpenMetadataRootElement
 {
-    private SoftwareCapabilityProperties properties    = null;
-    private ElementHeader                elementHeader = null;
-
+    private List<RelatedMetadataElementSummary> assetUse = null;
+    private List<RelatedMetadataElementSummary> hostedBy = null;
 
     /**
      * Default constructor
@@ -42,58 +42,70 @@ public class SoftwareCapabilityElement implements MetadataElement
      */
     public SoftwareCapabilityElement(SoftwareCapabilityElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties = template.getProperties();
+            assetUse = template.getAssetUse();
+            hostedBy = template.getHostedBy();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Copy/clone constructor
      *
-     * @return element header object
+     * @param template object to copy
      */
-    @Override
-    public ElementHeader getElementHeader()
+    public SoftwareCapabilityElement(OpenMetadataRootElement template)
     {
-        return elementHeader;
+        super(template);
     }
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Return the assets used by this capability.
      *
-     * @param elementHeader element header object
+     * @return list of related assets
      */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
+    public List<RelatedMetadataElementSummary> getAssetUse()
     {
-        this.elementHeader = elementHeader;
+        return assetUse;
     }
 
 
     /**
-     * Return the properties for the software server capability.
+     * Set up the assets used by this capability.
      *
-     * @return asset properties (using appropriate subclass)
+     * @param assetUse list of related assets
      */
-    public SoftwareCapabilityProperties getProperties()
+    public void setAssetUse(List<RelatedMetadataElementSummary> assetUse)
     {
-        return properties;
+        this.assetUse = assetUse;
     }
 
 
     /**
-     * Set up the properties for the software server capability.
+     * Return the IT Infrastructure that is hosting this capability.
      *
-     * @param properties asset properties
+     * @return list of hosting servers
      */
-    public void setProperties(SoftwareCapabilityProperties properties)
+    public List<RelatedMetadataElementSummary> getHostedBy()
     {
-        this.properties = properties;
+        return hostedBy;
     }
+
+
+    /**
+     * Set up the IT Infrastructure that is hosting this capability.
+     *
+     * @param hostedBy list of hosting servers
+     */
+    public void setHostedBy(List<RelatedMetadataElementSummary> hostedBy)
+    {
+        this.hostedBy = hostedBy;
+    }
+
 
 
     /**
@@ -105,9 +117,9 @@ public class SoftwareCapabilityElement implements MetadataElement
     public String toString()
     {
         return "SoftwareCapabilityElement{" +
-                       "properties=" + properties +
-                       ", elementHeader=" + elementHeader +
-                       '}';
+                "assetUse=" + assetUse +
+                ", hostedBy=" + hostedBy +
+                "} " + super.toString();
     }
 
 
@@ -128,9 +140,10 @@ public class SoftwareCapabilityElement implements MetadataElement
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
         SoftwareCapabilityElement that = (SoftwareCapabilityElement) objectToCompare;
-        return Objects.equals(getProperties(), that.getProperties()) &&
-                       Objects.equals(getElementHeader(), that.getElementHeader());
+        return Objects.equals(assetUse, that.assetUse) &&
+                       Objects.equals(hostedBy, that.hostedBy);
     }
 
 
@@ -142,6 +155,6 @@ public class SoftwareCapabilityElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), assetUse, hostedBy);
     }
 }

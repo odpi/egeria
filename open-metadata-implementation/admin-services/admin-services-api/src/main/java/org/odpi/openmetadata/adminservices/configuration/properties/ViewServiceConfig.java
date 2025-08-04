@@ -5,8 +5,6 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
@@ -23,14 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = SolutionViewServiceConfig.class, name = "SolutionViewServiceConfig"),
-        @JsonSubTypes.Type(value = IntegrationViewServiceConfig.class, name = "IntegrationViewServiceConfig")
-})
 public class ViewServiceConfig extends OMAGServerClientConfig
 {
     private int                            viewServiceId                = 0;

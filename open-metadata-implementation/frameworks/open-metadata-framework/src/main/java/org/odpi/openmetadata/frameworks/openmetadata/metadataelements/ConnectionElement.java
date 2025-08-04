@@ -6,9 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,13 +19,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ConnectionElement implements MetadataElement
+public class ConnectionElement extends OpenMetadataRootElement
 {
-    private ConnectionProperties     properties          = null;
-    private ElementHeader            elementHeader       = null;
-    private ElementStub              connectorType       = null;
-    private ElementStub              endpoint            = null;
-    private List<EmbeddedConnection> embeddedConnections = null;
+    private RelatedMetadataElementSummary       connectorType       = null;
+    private RelatedMetadataElementSummary       endpoint            = null;
+    private List<RelatedMetadataElementSummary> embeddedConnections = null;
+    private List<RelatedMetadataElementSummary> parentConnections   = null;
+    private List<RelatedMetadataElementSummary> assets              = null;
 
 
     /**
@@ -46,60 +44,27 @@ public class ConnectionElement implements MetadataElement
      */
     public ConnectionElement(ConnectionElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties    = template.getProperties();
             connectorType = template.getConnectorType();
             endpoint = template.getEndpoint();
+            assets = template.getAssets();
+            parentConnections = template.getParentConnections();
             embeddedConnections = template.getEmbeddedConnections();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Copy/clone constructor
      *
-     * @return element header object
+     * @param template object to copy
      */
-    @Override
-    public ElementHeader getElementHeader()
+    public ConnectionElement(OpenMetadataRootElement template)
     {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
-    }
-
-
-    /**
-     * Return the properties for the connection.
-     *
-     * @return asset properties (using appropriate subclass)
-     */
-    public ConnectionProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up the properties for the connection.
-     *
-     * @param properties asset properties
-     */
-    public void setProperties(ConnectionProperties properties)
-    {
-        this.properties = properties;
+        super(template);
     }
 
 
@@ -108,7 +73,7 @@ public class ConnectionElement implements MetadataElement
      *
      * @param connectorType ConnectorType properties object
      */
-    public void setConnectorType(ElementStub connectorType)
+    public void setConnectorType(RelatedMetadataElementSummary connectorType)
     {
         this.connectorType = connectorType;
     }
@@ -120,7 +85,7 @@ public class ConnectionElement implements MetadataElement
      *
      * @return connector type for the connection
      */
-    public ElementStub getConnectorType()
+    public RelatedMetadataElementSummary getConnectorType()
     {
         return connectorType;
     }
@@ -131,7 +96,7 @@ public class ConnectionElement implements MetadataElement
      *
      * @param endpoint Endpoint properties object
      */
-    public void setEndpoint(ElementStub endpoint)
+    public void setEndpoint(RelatedMetadataElementSummary endpoint)
     {
         this.endpoint = endpoint;
     }
@@ -143,7 +108,7 @@ public class ConnectionElement implements MetadataElement
      *
      * @return endpoint for the connection
      */
-    public ElementStub getEndpoint()
+    public RelatedMetadataElementSummary getEndpoint()
     {
         return endpoint;
     }
@@ -154,20 +119,9 @@ public class ConnectionElement implements MetadataElement
      *
      * @return list of EmbeddedConnection objects
      */
-    public List<EmbeddedConnection> getEmbeddedConnections()
+    public List<RelatedMetadataElementSummary> getEmbeddedConnections()
     {
-        if (embeddedConnections == null)
-        {
-            return null;
-        }
-        else if (embeddedConnections.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(embeddedConnections);
-        }
+        return embeddedConnections;
     }
 
 
@@ -176,10 +130,55 @@ public class ConnectionElement implements MetadataElement
      *
      * @param embeddedConnections list of EmbeddedConnection objects
      */
-    public void setEmbeddedConnections(List<EmbeddedConnection> embeddedConnections)
+    public void setEmbeddedConnections(List<RelatedMetadataElementSummary> embeddedConnections)
     {
         this.embeddedConnections = embeddedConnections;
     }
+
+
+    /**
+     * Return the list of connections that this connection is embedded in.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getParentConnections()
+    {
+        return parentConnections;
+    }
+
+
+    /**
+     * Set up the list of connections that this connection is embedded in.
+     *
+     * @param parentConnections list
+     */
+    public void setParentConnections(List<RelatedMetadataElementSummary> parentConnections)
+    {
+        this.parentConnections = parentConnections;
+    }
+
+
+    /**
+     * Return the assets reached through this connection.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getAssets()
+    {
+        return assets;
+    }
+
+
+    /**
+     * Set up the assets reached through this connection.
+     *
+     * @param assets list
+     */
+    public void setAssets(List<RelatedMetadataElementSummary> assets)
+    {
+        this.assets = assets;
+    }
+
 
 
     /**
@@ -191,13 +190,14 @@ public class ConnectionElement implements MetadataElement
     public String toString()
     {
         return "ConnectionElement{" +
-                       "connectionProperties=" + properties +
-                       ", elementHeader=" + elementHeader +
-                       ", connectorType=" + connectorType +
-                       ", endpoint=" + endpoint +
-                       ", embeddedConnections=" + embeddedConnections +
-                       '}';
+                "connectorType=" + connectorType +
+                ", endpoint=" + endpoint +
+                ", embeddedConnections=" + embeddedConnections +
+                ", parentConnections=" + parentConnections +
+                ", assets=" + assets +
+                "} " + super.toString();
     }
+
 
 
     /**
@@ -209,19 +209,16 @@ public class ConnectionElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         ConnectionElement that = (ConnectionElement) objectToCompare;
-        return Objects.equals(getProperties(), that.getProperties()) &&
-                       Objects.equals(getElementHeader(), that.getElementHeader());
+        return Objects.equals(connectorType, that.connectorType) &&
+                Objects.equals(endpoint, that.endpoint) &&
+                Objects.equals(assets, that.assets) &&
+                Objects.equals(parentConnections, that.parentConnections) &&
+                Objects.equals(embeddedConnections, that.embeddedConnections);
     }
-
 
     /**
      * Return hash code for this object
@@ -231,6 +228,6 @@ public class ConnectionElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), connectorType, endpoint, parentConnections, assets, embeddedConnections);
     }
 }

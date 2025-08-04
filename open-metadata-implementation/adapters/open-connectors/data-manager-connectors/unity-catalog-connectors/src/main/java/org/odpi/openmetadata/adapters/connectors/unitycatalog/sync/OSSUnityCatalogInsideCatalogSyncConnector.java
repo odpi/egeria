@@ -3,8 +3,6 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
-import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
-import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
@@ -15,14 +13,17 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -32,8 +33,8 @@ import java.util.Map;
 /**
  * OSSUnityCatalogInsideCatalogSyncConnector synchronizes metadata within a specific catalog between Unity Catalog and the Open Metadata Ecosystem.
  */
-public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator,
-                                                                                                     AssetManagerEventListener
+public class OSSUnityCatalogInsideCatalogSyncConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator,
+                                                                                                   OpenMetadataEventListener
 {
     private List<String> defaultExcludeSchemaNames   = null;
     private List<String> defaultIncludeSchemaNames   = null;
@@ -52,15 +53,16 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
         super.start();
 
-        if (connectionDetails.getEndpoint() != null)
+        if (connectionBean.getEndpoint() != null)
         {
             auditLog.logMessage(methodName,
                                 UCAuditCode.IGNORING_ENDPOINT.getMessageDefinition(connectorName));
@@ -79,25 +81,25 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
         }
 
         this.defaultExcludeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
-                                                                             connectionDetails.getConfigurationProperties());
+                                                                             connectionBean.getConfigurationProperties());
         this.defaultIncludeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
-                                                                             connectionDetails.getConfigurationProperties());
+                                                                             connectionBean.getConfigurationProperties());
         this.defaultExcludeTableNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_TABLE_NAMES.getName(),
-                                                                            connectionDetails.getConfigurationProperties());
+                                                                            connectionBean.getConfigurationProperties());
         this.defaultIncludeTableNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_TABLE_NAMES.getName(),
-                                                                            connectionDetails.getConfigurationProperties());
+                                                                            connectionBean.getConfigurationProperties());
         this.defaultExcludeFunctionNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_FUNCTION_NAMES.getName(),
-                                                                               connectionDetails.getConfigurationProperties());
+                                                                               connectionBean.getConfigurationProperties());
         this.defaultIncludeFunctionNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_FUNCTION_NAMES.getName(),
-                                                                               connectionDetails.getConfigurationProperties());
+                                                                               connectionBean.getConfigurationProperties());
         this.defaultExcludeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_VOLUME_NAMES.getName(),
-                                                                             connectionDetails.getConfigurationProperties());
+                                                                             connectionBean.getConfigurationProperties());
         this.defaultIncludeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_VOLUME_NAMES.getName(),
-                                                                             connectionDetails.getConfigurationProperties());
+                                                                             connectionBean.getConfigurationProperties());
         this.defaultExcludeModelNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_MODEL_NAMES.getName(),
-                                                                            connectionDetails.getConfigurationProperties());
+                                                                            connectionBean.getConfigurationProperties());
         this.defaultIncludeModelNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_MODEL_NAMES.getName(),
-                                                                            connectionDetails.getConfigurationProperties());
+                                                                            connectionBean.getConfigurationProperties());
     }
 
 
@@ -123,10 +125,10 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
          *
          * A listener is registered only if metadata is flowing from the open metadata ecosystem to Unity Catalog (UC).
          */
-        if ((! super.getContext().isListenerRegistered()) &&
+        if ((integrationContext.noListenerRegistered()) &&
                 (lastRefreshCompleteTime != null) &&
-                (super.getContext().getPermittedSynchronization() == PermittedSynchronization.BOTH_DIRECTIONS) ||
-                (super.getContext().getPermittedSynchronization() == PermittedSynchronization.TO_THIRD_PARTY))
+                (integrationContext.getPermittedSynchronization() == PermittedSynchronization.BOTH_DIRECTIONS) ||
+                (integrationContext.getPermittedSynchronization() == PermittedSynchronization.TO_THIRD_PARTY))
         {
             try
             {
@@ -134,7 +136,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                  * This request registers this connector to receive events from the open metadata ecosystem.  When an event occurs,
                  * the processEvent() method is called.
                  */
-                super.getContext().registerListener(this);
+                integrationContext.registerListener(this);
             }
             catch (Exception error)
             {
@@ -169,7 +171,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
      * @param event event object
      */
     @Override
-    public void processEvent(AssetManagerOutTopicEvent event)
+    public void processEvent(OpenMetadataOutTopicEvent event)
     {
         final String methodName = "processEvent";
 
@@ -177,7 +179,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
          * Only process events if refresh() is not running because the refresh() process creates lots of events and proceeding with event processing
          * at this time causes elements to be processed multiple times.
          */
-        if (! integrationContext.isRefreshInProgress())
+        if (integrationContext.noRefreshInProgress())
         {
             /*
              * Call the appropriate registered module that matches the type.  Notice that multiple modules can be registered for the same type.
@@ -197,7 +199,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
             {
                 if ((elementHeader.getOrigin().getOriginCategory() == ElementOriginCategory.EXTERNAL_SOURCE) &&
                         (lastUpdateTime.after(lastRefreshCompleteTime)) &&
-                        (! lastUpdateUser.equals(super.getContext().getMyUserId())) &&
+                        (! lastUpdateUser.equals(integrationContext.getMyUserId())) &&
                         (elementHeader.getOrigin().getHomeMetadataCollectionName() != null) &&
                         ((propertyHelper.isTypeOf(elementHeader, OpenMetadataType.SOFTWARE_CAPABILITY.typeName)) ||
                                 (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.ASSET.typeName)) ||
@@ -205,7 +207,9 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                 {
                     int startFrom = 0;
 
-                    List<CatalogTarget> catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
+                    List<CatalogTarget> catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                                            startFrom,
+                                                                                                                            integrationContext.getMaxPageSize());
 
                     while (catalogTargetList != null)
                     {
@@ -215,34 +219,28 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                                     (super.isActive()) &&
                                     (elementHeader.getOrigin().getHomeMetadataCollectionName().equals(catalogTarget.getMetadataSourceQualifiedName())))
                             {
-                                boolean savedExternalSourceIsHome        = integrationContext.getExternalSourceIsHome();
-                                String  savedMetadataSourceQualifiedName = integrationContext.getMetadataSourceQualifiedName();
-
-                                integrationContext.setMetadataSourceQualifiedName(catalogTarget.getMetadataSourceQualifiedName());
-                                integrationContext.setExternalSourceIsHome(true);
-
-                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget, null);
-
-                                requestedCatalogTarget.setConfigurationProperties(super.combineConfigurationProperties(catalogTarget.getConfigurationProperties()));
+                                Connector catalogTargetConnector = null;
 
                                 if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
                                 {
-                                    requestedCatalogTarget.setCatalogTargetConnector(integrationContext.getConnectedAssetContext().getConnectorToAsset(catalogTarget.getCatalogTargetElement().getGUID(),
-                                                                                                                                                       auditLog));
+                                    catalogTargetConnector = integrationContext.getConnectedAssetContext().getConnectorForAsset(catalogTarget.getCatalogTargetElement().getGUID(), auditLog);
                                 }
+
+                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget,
+                                                                                                           integrationContext.getCatalogTargetContext(catalogTarget),
+                                                                                                           catalogTargetConnector);
 
                                 auditLog.logMessage(methodName,
                                                     OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
                                                                                                                 requestedCatalogTarget.getCatalogTargetName()));
                                 this.integrateCatalogTarget(requestedCatalogTarget);
-
-                                integrationContext.setExternalSourceIsHome(savedExternalSourceIsHome);
-                                integrationContext.setMetadataSourceQualifiedName(savedMetadataSourceQualifiedName);
                             }
                         }
 
                         startFrom         = startFrom + integrationContext.getMaxPageSize();
-                        catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
+                        catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                            startFrom,
+                                                                                                            integrationContext.getMaxPageSize());
                     }
                 }
             }
@@ -281,7 +279,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                     String catalogQualifiedName = requestedCatalogTarget.getMetadataSourceQualifiedName();
                     String catalogGUID = requestedCatalogTarget.getConfigurationProperties().get(OpenMetadataProperty.GUID.name).toString();
 
-                    Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
+                    Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
 
                     OSSUnityCatalogResourceConnector assetConnector = (OSSUnityCatalogResourceConnector) connector;
 
@@ -290,7 +288,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
 
                     String ucServerEndpoint = this.getNetworkAddress(assetConnector);
 
-                    PermittedSynchronization permittedSynchronization = this.getContext().getPermittedSynchronization();
+                    PermittedSynchronization permittedSynchronization = integrationContext.getPermittedSynchronization();
 
                     if (requestedCatalogTarget.getPermittedSynchronization() != null)
                     {
@@ -401,7 +399,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
         try
         {
             OSSUnityCatalogInsideCatalogSyncSchema syncSchema = new OSSUnityCatalogInsideCatalogSyncSchema(connectorName,
-                                                                                                           this.getContext(),
+                                                                                                           integrationContext,
                                                                                                            catalogName,
                                                                                                            catalogGUID,
                                                                                                            catalogQualifiedName,
@@ -418,7 +416,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
             ucFullNameToEgeriaGUID.putAll(syncSchema.refresh());
 
             OSSUnityCatalogInsideCatalogSyncVolumes syncVolumes = new OSSUnityCatalogInsideCatalogSyncVolumes(connectorName,
-                                                                                                              this.getContext(),
+                                                                                                              integrationContext,
                                                                                                               catalogName,
                                                                                                               catalogGUID,
                                                                                                               catalogQualifiedName,
@@ -435,7 +433,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
             ucFullNameToEgeriaGUID.putAll(syncVolumes.refresh());
 
             OSSUnityCatalogInsideCatalogSyncTables syncTables = new OSSUnityCatalogInsideCatalogSyncTables(connectorName,
-                                                                                                           this.getContext(),
+                                                                                                           integrationContext,
                                                                                                            catalogName,
                                                                                                            catalogGUID,
                                                                                                            catalogQualifiedName,
@@ -452,7 +450,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
             ucFullNameToEgeriaGUID.putAll(syncTables.refresh());
 
             OSSUnityCatalogInsideCatalogSyncFunctions syncFunctions = new OSSUnityCatalogInsideCatalogSyncFunctions(connectorName,
-                                                                                                                    this.getContext(),
+                                                                                                                    integrationContext,
                                                                                                                     catalogName,
                                                                                                                     catalogGUID,
                                                                                                                     catalogQualifiedName,
@@ -469,7 +467,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
             ucFullNameToEgeriaGUID.putAll(syncFunctions.refresh());
 
             OSSUnityCatalogInsideCatalogSyncRegisteredModels syncRegisteredModels = new OSSUnityCatalogInsideCatalogSyncRegisteredModels(connectorName,
-                                                                                                                                         this.getContext(),
+                                                                                                                                         integrationContext,
                                                                                                                                          catalogName,
                                                                                                                                          catalogGUID,
                                                                                                                                          catalogQualifiedName,

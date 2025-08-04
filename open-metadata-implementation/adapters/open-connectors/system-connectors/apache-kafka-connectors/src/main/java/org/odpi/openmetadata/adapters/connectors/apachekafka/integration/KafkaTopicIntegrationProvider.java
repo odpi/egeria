@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.apachekafka.integration;
 
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaTemplateType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -71,7 +73,6 @@ public class KafkaTopicIntegrationProvider extends IntegrationConnectorProvider
          * Set up the connector type that should be included in a connection used to configure this connector.
          */
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorDisplayName);
@@ -82,6 +83,7 @@ public class KafkaTopicIntegrationProvider extends IntegrationConnectorProvider
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
         connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.TOPIC_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+
 
         super.connectorTypeBean = connectorType;
 
@@ -104,10 +106,8 @@ public class KafkaTopicIntegrationProvider extends IntegrationConnectorProvider
         catalogTargetType.setTypeName(KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName());
         catalogTargetType.setDeployedImplementationType(KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType());
 
-        super.catalogTargets = new ArrayList<>();
-        super.catalogTargets.add(catalogTargetType);
-
+        super.catalogTargets           = Collections.singletonList(catalogTargetType);
+        super.supportedTemplateTypes   = Collections.singletonList(KafkaTemplateType.KAFKA_TOPIC_TEMPLATE.getTemplateType());
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{KafkaDeployedImplementationType.APACHE_KAFKA_SERVER, KafkaDeployedImplementationType.APACHE_KAFKA_EVENT_BROKER, DeployedImplementationType.APACHE_KAFKA_TOPIC});
-
     }
 }

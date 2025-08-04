@@ -157,52 +157,9 @@ public class OpenMetadataTypesArchive2_10
         /*
          * Calls for new and changed types go here
          */
-        update0130Projects();
         update0360Contexts();
         update04xxGovernanceDefinitions();
     }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * A variety of changes to improve consistency and flexibility of the governance definitions
-     */
-    private void update0130Projects()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateCampaignClassification());
-    }
-
-
-
-    /**
-     * This change means that the campaign classification connects to a referenceable.  It should have connected to a project -but
-     * a mistake connected it to a Collection.  This change allows it to be connected to a Project without breaking backward compatibility.
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateCampaignClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.REFERENCEABLE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-
-        return typeDefPatch;
-    }
-
 
 
     /*
@@ -441,6 +398,16 @@ public class OpenMetadataTypesArchive2_10
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }

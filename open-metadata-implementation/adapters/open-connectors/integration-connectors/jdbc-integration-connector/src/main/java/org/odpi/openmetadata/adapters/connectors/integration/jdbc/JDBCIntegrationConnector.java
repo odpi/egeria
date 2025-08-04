@@ -9,12 +9,13 @@ import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.custo
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorConnector;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -26,7 +27,7 @@ import java.util.Map;
 /**
  * JDBCIntegrationConnector supports the cataloguing of database schema via the JDBC interface.
  */
-public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implements CatalogTargetIntegrator
+public class JDBCIntegrationConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator
 {
     final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -50,9 +51,9 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
                     try
                     {
                         refreshDatabase(jdbcResourceConnector,
-                                        jdbcResourceConnector.getConnection().getConnectionName(),
+                                        jdbcResourceConnector.getConnection().getDisplayName(),
                                         null,
-                                        connectionDetails.getConfigurationProperties());
+                                        connectionBean.getConfigurationProperties());
                     }
                     catch (ConnectorCheckedException exception)
                     {
@@ -64,7 +65,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
                                               JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                           exception.getClass().getName(),
                                                                                                                           methodName,
-                                                                                                                          jdbcResourceConnector.getConnection().getConnectionName(),
+                                                                                                                          jdbcResourceConnector.getConnection().getDisplayName(),
                                                                                                                           exception.getMessage()),
                                               exception);
                     }
@@ -94,9 +95,11 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
 
             try
             {
-                DatabaseElement databaseElement = getContext().getDatabaseByGUID(databaseGUID);
+                AssetClient     databaseClient = integrationContext.getAssetClient(OpenMetadataType.DATABASE.typeName);
 
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(databaseGUID, auditLog);
+                OpenMetadataRootElement databaseElement = databaseClient.getAssetByGUID(databaseGUID, databaseClient.getGetOptions());
+
+                Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(databaseGUID, auditLog);
 
                 JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
 
@@ -137,7 +140,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
      */
     public void refreshDatabase(JDBCResourceConnector jdbcResourceConnector,
                                 String                databaseName,
-                                DatabaseElement       databaseElement,
+                                OpenMetadataRootElement          databaseElement,
                                 Map<String, Object>   configurationProperties) throws ConnectorCheckedException
     {
         final String methodName = "JDBCIntegrationConnector.refresh";
@@ -180,7 +183,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
                 }
 
                 JdbcMetadataTransfer jdbcMetadataTransfer = new JdbcMetadataTransfer(new JdbcMetadata(databaseMetaData),
-                                                                                     getContext(),
+                                                                                     integrationContext,
                                                                                      databaseElement,
                                                                                      address,
                                                                                      catalog,
@@ -199,10 +202,6 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
                 auditLog.logException(methodName,
                                       JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()),
                                       sqlException);
-            }
-            catch (ConnectorCheckedException error)
-            {
-                throw error;
             }
             catch (Exception exception)
             {

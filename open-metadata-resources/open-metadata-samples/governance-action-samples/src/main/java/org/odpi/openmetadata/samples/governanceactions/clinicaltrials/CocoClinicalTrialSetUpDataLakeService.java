@@ -9,15 +9,18 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCata
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
@@ -44,9 +47,10 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -103,7 +107,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                actionTargetElement.getTargetElement().getElementProperties(),
                                                                                methodName);
                             clinicalTrialName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
-                                                                                 OpenMetadataProperty.NAME.name,
+                                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                  actionTargetElement.getTargetElement().getElementProperties(),
                                                                                  methodName);
                         }
@@ -487,28 +491,30 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), description);
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
 
-        governanceContext.getOpenMetadataStore().setExternalSourceIds(externalSourceGUID, externalSourceName);
+        OpenMetadataStore openMetadataStore = governanceContext.getOpenMetadataStore();
 
-        String schemaGUID =  governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
-                                                                                                     catalogGUID,
-                                                                                                     false,
-                                                                                                     topLevelProjectGUID,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     templateGUID,
-                                                                                                     null,
-                                                                                                     placeholderProperties,
-                                                                                                     catalogGUID,
-                                                                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                                                     propertyHelper.addEnumProperty(null,
-                                                                                                                                    OpenMetadataProperty.USE_TYPE.name,
-                                                                                                                                    ServerAssetUseType.getOpenTypeName(),
-                                                                                                                                    ServerAssetUseType.OWNS.getName()),
-                                                                                                       true);
+        TemplateOptions templateOptions = new TemplateOptions(openMetadataStore.getMetadataSourceOptions());
 
-        governanceContext.getOpenMetadataStore().setExternalSourceIds(null, null);
+        templateOptions.setExternalSourceGUID(externalSourceGUID);
+        templateOptions.setExternalSourceName(externalSourceName);
+        templateOptions.setOpenMetadataTypeName(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName());
+        templateOptions.setIsOwnAnchor(false);
+        templateOptions.setAnchorGUID(catalogGUID);
+        templateOptions.setAnchorScopeGUID(topLevelProjectGUID);
+        templateOptions.setAllowRetrieve(true);
+        templateOptions.setParentGUID(catalogGUID);
+        templateOptions.setParentAtEnd1(true);
+        templateOptions.setParentRelationshipTypeName(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
 
-        return schemaGUID;
+        return openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+                                                                   templateGUID,
+                                                                   null,
+                                                                   placeholderProperties,
+                                                                   new NewElementProperties(propertyHelper.addEnumProperty(null,
+                                                                                                                           OpenMetadataProperty.USE_TYPE.name,
+                                                                                                                           CapabilityAssetUseType.getOpenTypeName(),
+                                                                                                                           CapabilityAssetUseType.OWNS.getName())));
+
     }
 
 
@@ -555,23 +561,27 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), dataLakePathName);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), "EXTERNAL");
 
-        governanceContext.getOpenMetadataStore().setExternalSourceIds(externalSourceGUID, externalSourceName);
+        OpenMetadataStore openMetadataStore = governanceContext.getOpenMetadataStore();
 
-        String volumeGUID =  governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
-                                                                                                     schemaGUID,
-                                                                                                     false,
-                                                                                                     schemaGUID,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     templateGUID,
-                                                                                                     null,
-                                                                                                     placeholderProperties,
-                                                                                                     schemaGUID,
-                                                                                                     OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
-                                                                                                     null,
-                                                                                                     true);
+        TemplateOptions templateOptions = new TemplateOptions(openMetadataStore.getMetadataSourceOptions());
 
-        governanceContext.getOpenMetadataStore().setExternalSourceIds(null, null);
+        templateOptions.setExternalSourceGUID(externalSourceGUID);
+        templateOptions.setExternalSourceName(externalSourceName);
+        templateOptions.setOpenMetadataTypeName(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName());
+        templateOptions.setIsOwnAnchor(false);
+        templateOptions.setAnchorGUID(schemaGUID);
+        templateOptions.setAnchorScopeGUID(null);
+        templateOptions.setAllowRetrieve(true);
+        templateOptions.setParentGUID(schemaGUID);
+        templateOptions.setParentAtEnd1(true);
+        templateOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
+
+        String volumeGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(templateOptions,
+                                                                                                        templateGUID,
+                                                                                                        null,
+                                                                                                        placeholderProperties,
+                                                                                                        null);
+
 
         this.provisionVolume(dataLakePathName, volumeGUID);
 
@@ -675,7 +685,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
             catalogTargetProperties.setCatalogTargetName("dataFolder");
 
-            governanceContext.addCatalogTarget(integrationConnectorGUID,
+            governanceContext.getConnectorConfigClient().addCatalogTarget(integrationConnectorGUID,
                                                volumeAssetGUID,
                                                catalogTargetProperties);
         }
@@ -707,7 +717,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         RelatedMetadataElement processFlowRelationship = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(hospitalOnboardingProcessGUID,
                                                                                                                             1,
                                                                                                                             OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
-                                                                                                                            new Date());
+                                                                                                                            null);
 
         if (processFlowRelationship != null)
         {
@@ -727,7 +737,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
             requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName(), destinationDirectory);
 
             governanceContext.getOpenMetadataStore().updateRelatedElementsInStore(processFlowRelationship.getRelationshipGUID(),
-                                                                                  false,
+                                                                                  governanceContext.getOpenMetadataStore().getUpdateOptions(false),
                                                                                   propertyHelper.addStringMapProperty(null,
                                                                                                                       OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                                                                       requestParameters));

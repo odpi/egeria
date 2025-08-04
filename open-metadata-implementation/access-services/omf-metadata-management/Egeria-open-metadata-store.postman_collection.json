@@ -1,0 +1,586 @@
+{
+	"info": {
+		"_postman_id": "a078b46d-0589-40e9-a300-b35e65264f89",
+		"name": "Egeria-open-metadata-store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
+	},
+	"item": [
+		{
+			"name": "Valid Metadata Values",
+			"item": [
+				{
+					"name": "setUpValidMetadataValue",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"ValidMetadataValue\",\n    \"displayName\" : \"Clinical Trial\",\n    \"description\" : \"A controlled validation of the efficacy of a particular treatment with selected patients.\",\n    \"usage\" : \"For projects that validate new treatment\",\n    \"scope\" : \"Coco Pharmaceuticals research\",\n    \"preferredValue\" : \"clinical-trial\",\n    \"isDeprecated\" : \"false\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/setup-value/projectType?typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"setup-value",
+								"projectType"
+							],
+							"query": [
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clearValidMetadataValue",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"NullRequestBody\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/clear-value/projectType?typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"clear-value",
+								"projectType"
+							],
+							"query": [
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validateMetadataValue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/validate-value/projectType?actualValue=clinical-trial&typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"validate-value",
+								"projectType"
+							],
+							"query": [
+								{
+									"key": "actualValue",
+									"value": "clinical-trial"
+								},
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getValidMetadataValue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-value/projectType?preferredValue=clinical-trial&typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"get-value",
+								"projectType"
+							],
+							"query": [
+								{
+									"key": "preferredValue",
+									"value": "clinical-trial"
+								},
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setUpValidMetadataMapName",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"ValidMetadataValue\",\n    \"displayName\" : \"Expected Duration\",\n    \"description\" : \"An estimate of the duration of the project.\",\n    \"usage\" : \"Used to estimate the relative sizes of projects.\",\n    \"scope\" : \"Coco Pharmaceuticals\",\n    \"preferredValue\" : \"expectedDuration\",\n    \"isDeprecated\" : \"false\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/setup-map-name/additionalProperties?typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"setup-map-name",
+								"additionalProperties"
+							],
+							"query": [
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clearValidMetadataMapName",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"NullRequestBody\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/clear-map-name/additionalProperties?typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"clear-map-name",
+								"additionalProperties"
+							],
+							"query": [
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validateMetadataMapName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/validate-map-name/additionalProperties?actualValue=expectedDuration&typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"validate-map-name",
+								"additionalProperties"
+							],
+							"query": [
+								{
+									"key": "actualValue",
+									"value": "expectedDuration"
+								},
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getValidMetadataMapName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-map-name/additionalProperties?preferredValue=expectedDuration&typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"get-map-name",
+								"additionalProperties"
+							],
+							"query": [
+								{
+									"key": "preferredValue",
+									"value": "expectedDuration"
+								},
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setUpValidMetadataMapValue",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"ValidMetadataValue\",\n    \"displayName\" : \"One month project\",\n    \"description\" : \"A project that is expected to take about a month.\",\n    \"usage\" : \"Used to estimate the relative sizes of projects.\",\n    \"scope\" : \"Coco Pharmaceuticals\",\n    \"preferredValue\" : \"1 month\",\n    \"isDeprecated\" : \"false\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/setup-map-value/additionalProperties/expectedDuration?typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"setup-map-value",
+								"additionalProperties",
+								"expectedDuration"
+							],
+							"query": [
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clearValidMetadataMapValue",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"NullRequestBody\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/clear-map-value/additionalProperties/expectedDuration?typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"clear-map-value",
+								"additionalProperties",
+								"expectedDuration"
+							],
+							"query": [
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validateMetadataMapValue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/validate-map-value/additionalProperties/expectedDuration?actualValue=1 month&typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"validate-map-value",
+								"additionalProperties",
+								"expectedDuration"
+							],
+							"query": [
+								{
+									"key": "actualValue",
+									"value": "1 month"
+								},
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getValidMetadataMapValue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-map-value/additionalProperties/expectedDuration?preferredValue=1 month&typeName=ProjectCharter",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"get-map-value",
+								"additionalProperties",
+								"expectedDuration"
+							],
+							"query": [
+								{
+									"key": "preferredValue",
+									"value": "1 month"
+								},
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getValidMetadataValues",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"ValidMetadataValue\",\n    \"displayName\" : \"Clinical Trial\",\n    \"description\" : \"A controlled validation of the efficacy of a particular treatment with selected patients.\",\n    \"usage\" : \"For projects that validate new treatment\",\n    \"scope\" : \"Coco Pharmaceuticals research\",\n    \"preferredValue\" : \"clinical-trial\",\n    \"isDeprecated\" : \"false\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-valid-metadata-values/projectType?typeName=ProjectCharter&startFrom=0&pageSize=0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"{{serviceURLName}}",
+								"open-metadata-store",
+								"users",
+								"{{user}}",
+								"valid-metadata-values",
+								"get-valid-metadata-values",
+								"projectType"
+							],
+							"query": [
+								{
+									"key": "typeName",
+									"value": "ProjectCharter"
+								},
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getMetadataElement",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/metadata-elements/{{guid}}?forLineage=false&forDuplicateProcessing=false&effectiveTime=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"{{serviceURLName}}",
+						"open-metadata-store",
+						"users",
+						"{{user}}",
+						"metadata-elements",
+						"{{guid}}"
+					],
+					"query": [
+						{
+							"key": "forLineage",
+							"value": "false"
+						},
+						{
+							"key": "forDuplicateProcessing",
+							"value": "false"
+						},
+						{
+							"key": "effectiveTime",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValueAssignmentProperties extends RelationshipProperties
+public class ValidValueAssignmentProperties extends RelationshipBeanProperties
 {
     private boolean              strictRequirement = true;
 
@@ -82,11 +82,8 @@ public class ValidValueAssignmentProperties extends RelationshipProperties
     public String toString()
     {
         return "ValidValueAssignmentProperties{" +
-                       "effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", strictRequirement=" + strictRequirement +
-                       '}';
+                "strictRequirement=" + strictRequirement +
+                "} " + super.toString();
     }
 
 
@@ -110,6 +107,7 @@ public class ValidValueAssignmentProperties extends RelationshipProperties
         ValidValueAssignmentProperties that = (ValidValueAssignmentProperties) objectToCompare;
         return strictRequirement == that.strictRequirement;
     }
+
 
     /**
      * Return hash code for this object

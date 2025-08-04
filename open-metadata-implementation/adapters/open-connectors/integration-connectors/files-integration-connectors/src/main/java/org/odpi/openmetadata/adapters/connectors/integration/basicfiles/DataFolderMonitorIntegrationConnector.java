@@ -3,10 +3,9 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
-import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.io.File;
@@ -59,12 +58,11 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
      * @param dataFolderFile the directory to retrieve the folder from
      * @throws ConnectorCheckedException there is a problem retrieving the folder element.
      */
-    FileFolderElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException
+    OpenMetadataRootElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException
     {
         return super.getFolderElement(dataFolderFile,
                                       DeployedImplementationType.DATA_FOLDER.getAssociatedTypeName(),
-                                      DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType(),
-                                      DataFolderProvider.class.getName());
+                                      DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
     }
 
 

@@ -6,24 +6,22 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ActorRoleElement contains the properties and header for an actor role assigned to a profile retrieved
- * from the metadata repository.
+ * ActorRoleElement contains the properties and header for an actor role assigned to a solution retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ActorRoleElement extends AttributedMetadataElement
+public class ActorRoleElement extends OpenMetadataRootElement
 {
-    private ActorRoleProperties properties    = null;
+    private List<RelatedMetadataElementSummary> solutionComponents = null;
 
 
     /**
@@ -42,35 +40,44 @@ public class ActorRoleElement extends AttributedMetadataElement
      */
     public ActorRoleElement(ActorRoleElement template)
     {
-        super(template);
+        super (template);
 
         if (template != null)
         {
-            properties = template.getProperties();
+            solutionComponents = template.getSolutionComponents();
         }
     }
 
-
-
     /**
-     * Return the properties of the role.
+     * Copy/clone constructor
      *
-     * @return properties
+     * @param template object to copy
      */
-    public ActorRoleProperties getProperties()
+    public ActorRoleElement(OpenMetadataRootElement template)
     {
-        return properties;
+        super (template);
     }
 
 
     /**
-     * Set up the role properties.
+     * Return details of the relationships to solution components.
      *
-     * @param properties  properties
+     * @return list of element stubs
      */
-    public void setProperties(ActorRoleProperties properties)
+    public List<RelatedMetadataElementSummary> getSolutionComponents()
     {
-        this.properties = properties;
+        return solutionComponents;
+    }
+
+
+    /**
+     * Set up details of the relationships to solution components.
+     *
+     * @param solutionComponents relationship details
+     */
+    public void setSolutionComponents(List<RelatedMetadataElementSummary> solutionComponents)
+    {
+        this.solutionComponents = solutionComponents;
     }
 
 
@@ -83,7 +90,7 @@ public class ActorRoleElement extends AttributedMetadataElement
     public String toString()
     {
         return "ActorRoleElement{" +
-                "properties=" + properties +
+                "solutionComponents=" + solutionComponents +
                 "} " + super.toString();
     }
 
@@ -107,7 +114,7 @@ public class ActorRoleElement extends AttributedMetadataElement
         }
         if (!super.equals(objectToCompare)) return false;
         ActorRoleElement that = (ActorRoleElement) objectToCompare;
-        return Objects.equals(properties, that.properties);
+        return Objects.equals(solutionComponents, that.solutionComponents);
     }
 
 
@@ -119,6 +126,6 @@ public class ActorRoleElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(super.hashCode(), solutionComponents);
     }
 }

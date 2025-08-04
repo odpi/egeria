@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;
@@ -18,7 +18,7 @@ public class CSVFileStoreProviderTest
 
         assertTrue(provider.getConnectorClassName().equals(CSVFileStoreConnector.class.getName()));
 
-        ConnectorTypeDetails connectorTypeDetails = provider.getConnectorTypeProperties();
+        ConnectorType connectorTypeDetails = provider.getConnectorType();
 
         assertTrue(connectorTypeDetails != null);
 

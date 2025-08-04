@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -34,7 +33,6 @@ public class TestFileBasedRegistryStoreConnector
 
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setType(Endpoint.getEndpointType());
         endpoint.setGUID(endpointGUID);
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
@@ -49,7 +47,6 @@ public class TestFileBasedRegistryStoreConnector
 
         ConnectorType connectorType = new ConnectorType();
 
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeName);
         connectorType.setDisplayName(connectorTypeName);
@@ -63,7 +60,6 @@ public class TestFileBasedRegistryStoreConnector
 
         Connection connection = new Connection();
 
-        connection.setType(Connection.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
@@ -75,14 +71,7 @@ public class TestFileBasedRegistryStoreConnector
     }
 
 
-    private ConnectionDetails getGoodConnectionProperties()
-    {
-        Connection  connection = getGoodConnection();
-
-        return new ConnectionDetails(connection);
-    }
-
-    private ConnectionDetails getNullEndpointConnectionProperties()
+    private Connection getNullEndpointConnectionProperties()
     {
         Connection  connection = getGoodConnection();
         Endpoint    endpoint   = connection.getEndpoint();
@@ -90,7 +79,7 @@ public class TestFileBasedRegistryStoreConnector
         endpoint.setAddress(null);
         connection.setEndpoint(endpoint);
 
-        return new ConnectionDetails(connection);
+        return connection;
     }
 
 
@@ -178,7 +167,7 @@ public class TestFileBasedRegistryStoreConnector
         FileBasedRegistryStoreConnector connector = new FileBasedRegistryStoreConnector();
 
 
-        connector.initialize(UUID.randomUUID().toString(), getGoodConnectionProperties());
+        connector.initialize(UUID.randomUUID().toString(), getGoodConnection());
         assertFalse(connector.isActive());
 
         try
@@ -232,7 +221,7 @@ public class TestFileBasedRegistryStoreConnector
 
         try
         {
-            connector.initialize(UUID.randomUUID().toString(), getGoodConnectionProperties());
+            connector.initialize(UUID.randomUUID().toString(), getGoodConnection());
             assertFalse(connector.isActive());
 
             connector.start();

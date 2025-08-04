@@ -483,7 +483,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! databaseDescription.equals(retrievedDatabase.getResourceDescription()))
+            if (! databaseDescription.equals(retrievedDatabase.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -527,7 +527,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! databaseDescription.equals(retrievedDatabase.getResourceDescription()))
+            if (! databaseDescription.equals(retrievedDatabase.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -579,7 +579,7 @@ public class CreateDatabaseTest
 
             properties.setQualifiedName(databaseName);
             properties.setDisplayName(databaseDisplayName);
-            properties.setResourceDescription(databaseDescription);
+            properties.setDescription(databaseDescription);
 
             properties.setTypeName(OpenMetadataType.DATABASE.typeName);
 
@@ -720,7 +720,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! databaseSchemaDescription.equals(retrievedSchema.getResourceDescription()))
+            if (! databaseSchemaDescription.equals(retrievedSchema.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -754,7 +754,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! databaseSchemaDescription.equals(retrievedSchema.getResourceDescription()))
+            if (! databaseSchemaDescription.equals(retrievedSchema.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -811,7 +811,7 @@ public class CreateDatabaseTest
 
             properties.setQualifiedName(databaseSchemaName);
             properties.setDisplayName(databaseSchemaDisplayName);
-            properties.setResourceDescription(databaseSchemaDescription);
+            properties.setDescription(databaseSchemaDescription);
             properties.setTypeName(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName);
 
             String databaseSchemaGUID = client.addAssetToCatalog(userId, properties);
@@ -1314,9 +1314,9 @@ public class CreateDatabaseTest
     {
         if (metadataElement.getElementHeader() != null)
         {
-            if (metadataElement.getElementHeader().getClassifications() != null)
+            if (metadataElement.getElementHeader().getOtherClassifications() != null)
             {
-                for (ElementClassification classification : metadataElement.getElementHeader().getClassifications())
+                for (ElementClassification classification : metadataElement.getElementHeader().getOtherClassifications())
                 {
                     if ("Anchors".equals(classification.getClassificationName()))
                     {

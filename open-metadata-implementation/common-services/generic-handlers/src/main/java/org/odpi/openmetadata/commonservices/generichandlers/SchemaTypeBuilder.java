@@ -497,12 +497,6 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                                                                   versionNumber,
                                                                   methodName);
 
-        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   OpenMetadataProperty.IS_DEPRECATED.name,
-                                                                   isDeprecated,
-                                                                   methodName);
-
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataProperty.AUTHOR.name,

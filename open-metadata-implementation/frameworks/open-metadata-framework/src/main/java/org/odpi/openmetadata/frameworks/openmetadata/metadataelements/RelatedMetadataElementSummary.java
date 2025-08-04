@@ -81,7 +81,6 @@ public class RelatedMetadataElementSummary
     }
 
 
-
     /**
      * Return the date/time that this instance should start to be used (null means it can be used from creationTime).
      *
@@ -197,11 +196,11 @@ public class RelatedMetadataElementSummary
     @Override
     public String toString()
     {
-        return "RelatedBy{" +
+        return "RelatedMetadataElementSummary{" +
                 "relationshipHeader=" + relationshipHeader +
+                ", relationshipProperties=" + relationshipProperties +
                 ", effectiveFromTime=" + effectiveFromTime +
                 ", effectiveToTime=" + effectiveToTime +
-                ", relationshipProperties=" + relationshipProperties +
                 ", relatedElement=" + relatedElement +
                 ", relatedElementAtEnd1=" + relatedElementAtEnd1 +
                 '}';

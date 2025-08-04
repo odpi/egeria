@@ -55,7 +55,6 @@ public class OSSUnityCatalogInsideVolumeSurveyProvider extends SurveyActionServi
         super.setConnectorClassName(connectorClass);
 
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeQualifiedName);
         connectorType.setDisplayName(connectorTypeName);

@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BusinessCapabilityProperties extends ReferenceableProperties
 {
-    private String                 displayName                = null;
-    private String                 description                = null;
     private String                 identifier                 = null;
     private BusinessCapabilityType businessCapabilityType     = null;
     private String                 businessImplementationType = null;
@@ -51,8 +49,6 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
         if (template != null)
         {
             this.identifier = template.getIdentifier();
-            this.displayName = template.getDisplayName();
-            this.description = template.getDescription();
             this.businessCapabilityType = template.getBusinessCapabilityType();
             this.businessImplementationType = template.getBusinessImplementationType();
         }
@@ -78,50 +74,6 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
     public void setIdentifier(String identifier)
     {
         this.identifier = identifier;
-    }
-
-
-    /**
-     * Return the display name for this business capability.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for this business capability.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for this asset.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for this asset.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -177,9 +129,7 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
     public String toString()
     {
         return "BusinessCapabilityProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", identifier='" + identifier + '\'' +
+                "identifier='" + identifier + '\'' +
                 ", businessCapabilityType=" + businessCapabilityType +
                 ", businessImplementationType='" + businessImplementationType + '\'' +
                 "} " + super.toString();
@@ -207,9 +157,7 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
         {
             return false;
         }
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(businessCapabilityType, that.businessCapabilityType) &&
+        return Objects.equals(businessCapabilityType, that.businessCapabilityType) &&
                 Objects.equals(businessImplementationType, that.businessImplementationType) &&
                 Objects.equals(identifier, that.identifier);
     }
@@ -223,6 +171,6 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, identifier, businessCapabilityType, businessImplementationType);
+        return Objects.hash(super.hashCode(), identifier, businessCapabilityType, businessImplementationType);
     }
 }

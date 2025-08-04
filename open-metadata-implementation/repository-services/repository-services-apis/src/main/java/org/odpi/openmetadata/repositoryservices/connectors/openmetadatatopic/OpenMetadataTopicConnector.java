@@ -12,7 +12,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.InternalOMRSEventProcessingContext;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -231,9 +232,9 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
         {
             topicListeners.add(topicListener);
 
-            if (super.connectionDetails != null)
+            if (super.connectionBean != null)
             {
-                EndpointDetails endpoint = super.connectionDetails.getEndpoint();
+                Endpoint endpoint = super.connectionBean.getEndpoint();
 
                 if (endpoint != null)
                 {
@@ -256,17 +257,18 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
         keepRunning = true;
 
-        if (super.connectionDetails != null)
+        if (super.connectionBean != null)
         {
-            EndpointDetails endpoint = super.connectionDetails.getEndpoint();
+            Endpoint endpoint = super.connectionBean.getEndpoint();
 
             if (endpoint != null)
             {
@@ -274,7 +276,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
                 listenerThreadName = defaultThreadName + ": " + topicName;
             }
 
-            Map<String, Object> configurationProperties = super.connectionDetails.getConfigurationProperties();
+            Map<String, Object> configurationProperties = super.connectionBean.getConfigurationProperties();
 
             if (configurationProperties != null)
             {

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataClassAssignmentStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -21,16 +21,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataClassAssignmentProperties extends RelationshipProperties
+public class DataClassAssignmentProperties extends RelationshipBeanProperties
 {
-    private String                    method         = null;
-    private DataClassAssignmentStatus status         = DataClassAssignmentStatus.PROPOSED;
-    private boolean                   partialMatch   = false;
-    private int                       confidence     = 0;
-    private float                     threshold      = 0F;
-    private long                      valueFrequency = 0L;
-    private String                    steward        = null;
-    private String                    source         = null;
+    private String                    method              = null;
+    private DataClassAssignmentStatus status              = DataClassAssignmentStatus.PROPOSED;
+    private int                       confidence          = 0;
+    private int                       threshold           = 0;
+    private long                      valueFrequency      = 0L;
+    private String                    steward             = null;
+    private String                    stewardTypeName     = null;
+    private String                    stewardPropertyName = null;
+    private String                    source              = null;
 
 
     /**
@@ -54,14 +55,15 @@ public class DataClassAssignmentProperties extends RelationshipProperties
 
         if (template != null)
         {
-            method         = template.getMethod();
-            partialMatch   = template.getPartialMatch();
-            status         = template.getStatus();
-            confidence     = template.getConfidence();
-            threshold      = template.getThreshold();
-            valueFrequency = template.getValueFrequency();
-            steward        = template.getSteward();
-            source         = template.getSource();
+            method              = template.getMethod();
+            status              = template.getStatus();
+            confidence          = template.getConfidence();
+            threshold           = template.getThreshold();
+            valueFrequency      = template.getValueFrequency();
+            steward             = template.getSteward();
+            stewardTypeName     = template.getStewardTypeName();
+            stewardPropertyName = template.getStewardPropertyName();
+            source              = template.getSource();
         }
     }
 
@@ -85,28 +87,6 @@ public class DataClassAssignmentProperties extends RelationshipProperties
     public String getMethod()
     {
         return method;
-    }
-
-
-    /**
-     * Set up whether there data values outside the data class specification.
-     *
-     * @param partialMatch boolean
-     */
-    public void setPartialMatch(boolean partialMatch)
-    {
-        this.partialMatch = partialMatch;
-    }
-
-
-    /**
-     * Return whether there data values outside the data class specification.
-     *
-     * @return boolean
-     */
-    public boolean getPartialMatch()
-    {
-        return partialMatch;
     }
 
 
@@ -159,9 +139,9 @@ public class DataClassAssignmentProperties extends RelationshipProperties
     /**
      * Return the threshold result used to determine that the data class matched.
      *
-     * @return float
+     * @return int
      */
-    public Float getThreshold()
+    public int getThreshold()
     {
         return threshold;
     }
@@ -170,9 +150,9 @@ public class DataClassAssignmentProperties extends RelationshipProperties
     /**
      * Set up the threshold result used to determine that the data class matched.
      *
-     * @param threshold float
+     * @param threshold int
      */
-    public void setThreshold(Float threshold)
+    public void setThreshold(int threshold)
     {
         this.threshold = threshold;
     }
@@ -221,6 +201,25 @@ public class DataClassAssignmentProperties extends RelationshipProperties
         return steward;
     }
 
+    public String getStewardTypeName()
+    {
+        return stewardTypeName;
+    }
+
+    public void setStewardTypeName(String stewardTypeName)
+    {
+        this.stewardTypeName = stewardTypeName;
+    }
+
+    public String getStewardPropertyName()
+    {
+        return stewardPropertyName;
+    }
+
+    public void setStewardPropertyName(String stewardPropertyName)
+    {
+        this.stewardPropertyName = stewardPropertyName;
+    }
 
     /**
      * Set up the id of the source of the knowledge of the relationship.
@@ -255,11 +254,12 @@ public class DataClassAssignmentProperties extends RelationshipProperties
         return "DataClassAssignmentProperties{" +
                 "method='" + method + '\'' +
                 ", status=" + status +
-                ", partialMatch=" + partialMatch +
                 ", confidence=" + confidence +
                 ", threshold=" + threshold +
                 ", valueFrequency=" + valueFrequency +
                 ", steward='" + steward + '\'' +
+                ", stewardTypeName='" + stewardTypeName + '\'' +
+                ", stewardPropertyName='" + stewardPropertyName + '\'' +
                 ", source='" + source + '\'' +
                 "} " + super.toString();
     }
@@ -288,11 +288,12 @@ public class DataClassAssignmentProperties extends RelationshipProperties
         }
         return confidence == that.confidence &&
                 Objects.equals(method, that.method) &&
-                Objects.equals(partialMatch, that.partialMatch) &&
                 Objects.equals(valueFrequency, that.valueFrequency) &&
                 status == that.status &&
                 Objects.equals(threshold, that.threshold) &&
                 Objects.equals(steward, that.steward) &&
+                Objects.equals(stewardTypeName, that.stewardTypeName) &&
+                Objects.equals(stewardPropertyName, that.stewardPropertyName) &&
                 Objects.equals(source, that.source);
     }
 
@@ -305,6 +306,6 @@ public class DataClassAssignmentProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), method, partialMatch, status, confidence, threshold, valueFrequency, steward, source);
+        return Objects.hash(super.hashCode(), method, status, confidence, threshold, valueFrequency, steward, stewardTypeName, stewardPropertyName, source);
     }
 }

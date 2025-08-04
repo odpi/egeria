@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project */
-/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.classificationmanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -42,15 +41,72 @@ public class ClassificationManagerResource
      * and its associated resources.
      */
 
+
+
     /**
-     * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
+     * Classify the element  to indicate the level of impact it is having or likely to have on the organization.
+     * The level of impact is expressed by the
+     * levelIdentifier property.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/impact")
+
+    @Operation(summary="setImpactClassification",
+            description="Classify the element (typically a context event, to do or incident report) to indicate the level of impact that it is having/likely to have on the organization.  The level of impact is expressed by the levelIdentifier property.",
+            externalDocs=@ExternalDocumentation(description="Governed Data Classifications",
+                    url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
+
+    public VoidResponse setImpactClassification(@PathVariable String                    serverName,
+                                                @PathVariable String                    elementGUID,
+                                                @RequestBody  (required = false) NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setImpactClassification(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the impact classification from the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/impact/remove")
+
+    @Operation(summary="clearImpactClassification",
+            description="Remove the impact classification from the element.",
+            externalDocs=@ExternalDocumentation(description="Governed Data Classifications",
+                    url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
+
+    public VoidResponse clearImpactClassification(@PathVariable String                    serverName,
+                                                  @PathVariable String                    elementGUID,
+                                                  @RequestBody  (required = false)
+                                                  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearImpactClassification(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify the element (typically an asset) to indicate the level of confidence that the organization
      * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
      * levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to classify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -61,20 +117,16 @@ public class ClassificationManagerResource
     @PostMapping(path = "/elements/{elementGUID}/confidence")
 
     @Operation(summary="setConfidenceClassification",
-            description="Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the levelIdentifier property.",
+            description="Classify the element (typically an asset) to indicate the level of confidence that the organization has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the levelIdentifier property.",
             externalDocs=@ExternalDocumentation(description="Governed Data Classifications",
                     url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
 
     public VoidResponse setConfidenceClassification(@PathVariable String                    serverName,
                                                     @PathVariable String                    elementGUID,
-                                                    @RequestParam(required = false, defaultValue = "false")
-                                                    boolean                   forLineage,
-                                                    @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                   forDuplicateProcessing,
                                                     @RequestBody  (required = false)
-                                                    ClassificationRequestBody requestBody)
+                                                        NewClassificationRequestBody requestBody)
     {
-        return restAPI.setConfidenceClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setConfidenceClassification(serverName, elementGUID, requestBody);
     }
 
 
@@ -84,8 +136,6 @@ public class ClassificationManagerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to declassify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -102,25 +152,19 @@ public class ClassificationManagerResource
 
     public VoidResponse clearConfidenceClassification(@PathVariable String                    serverName,
                                                       @PathVariable String                    elementGUID,
-                                                      @RequestParam(required = false, defaultValue = "false")
-                                                      boolean                   forLineage,
-                                                      @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                   forDuplicateProcessing,
                                                       @RequestBody  (required = false)
-                                                          MetadataSourceRequestBody requestBody)
+                                                      MetadataSourceRequestBody requestBody)
     {
-        return restAPI.clearConfidenceClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearConfidenceClassification(serverName, elementGUID, requestBody);
     }
 
 
     /**
-     * Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
+     * Classify the element (typically an asset) to indicate how critical the element (or associated resource)
      * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to classify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -131,20 +175,16 @@ public class ClassificationManagerResource
     @PostMapping(path = "/elements/{elementGUID}/criticality")
 
     @Operation(summary="setCriticalityClassification",
-            description="Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource) is to the organization.  The level of criticality is expressed by the levelIdentifier property.",
+            description="Classify the element (typically an asset) to indicate how critical the element (or associated resource) is to the organization.  The level of criticality is expressed by the levelIdentifier property.",
             externalDocs=@ExternalDocumentation(description="Governed Data Classifications",
                     url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
 
     public VoidResponse setCriticalityClassification(@PathVariable String                    serverName,
                                                      @PathVariable String                    elementGUID,
-                                                     @RequestParam(required = false, defaultValue = "false")
-                                                     boolean                   forLineage,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                     ClassificationRequestBody requestBody)
+                                                         NewClassificationRequestBody requestBody)
     {
-        return restAPI.setCriticalityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setCriticalityClassification(serverName, elementGUID, requestBody);
     }
 
 
@@ -154,8 +194,6 @@ public class ClassificationManagerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to declassify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -172,27 +210,21 @@ public class ClassificationManagerResource
 
     public VoidResponse clearCriticalityClassification(@PathVariable String                    serverName,
                                                        @PathVariable String                    elementGUID,
-                                                       @RequestParam(required = false, defaultValue = "false")
-                                                       boolean                   forLineage,
-                                                       @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                   forDuplicateProcessing,
                                                        @RequestBody  (required = false)
-                                                           MetadataSourceRequestBody requestBody)
+                                                       MetadataSourceRequestBody requestBody)
     {
-        return restAPI.clearCriticalityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearCriticalityClassification(serverName, elementGUID, requestBody);
     }
 
 
     /**
-     * Classify/reclassify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality
+     * Classify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality
      * that any data associated with the element should be given.  If the classification is attached to a glossary term, the level
      * of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification.
      * The level of confidence is expressed by the levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to classify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -203,20 +235,16 @@ public class ClassificationManagerResource
     @PostMapping(path = "/elements/{elementGUID}/confidentiality")
 
     @Operation(summary="setConfidentialityClassification",
-            description="Classify/reclassify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality that any data associated with the element should be given.  If the classification is attached to a glossary term, the level of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification. The level of confidence is expressed by the levelIdentifier property.",
+            description="Classify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality that any data associated with the element should be given.  If the classification is attached to a glossary term, the level of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification. The level of confidence is expressed by the levelIdentifier property.",
             externalDocs=@ExternalDocumentation(description="Governed Data Classifications",
                     url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
 
     public VoidResponse setConfidentialityClassification(@PathVariable String                    serverName,
                                                          @PathVariable String                    elementGUID,
-                                                         @RequestParam(required = false, defaultValue = "false")
-                                                         boolean                   forLineage,
-                                                         @RequestParam (required = false, defaultValue = "false")
-                                                         boolean                   forDuplicateProcessing,
                                                          @RequestBody  (required = false)
-                                                         ClassificationRequestBody requestBody)
+                                                             NewClassificationRequestBody requestBody)
     {
-        return restAPI.setConfidentialityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setConfidentialityClassification(serverName, elementGUID, requestBody);
     }
 
 
@@ -226,8 +254,6 @@ public class ClassificationManagerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to declassify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -244,27 +270,21 @@ public class ClassificationManagerResource
 
     public VoidResponse clearConfidentialityClassification(@PathVariable String                    serverName,
                                                            @PathVariable String                    elementGUID,
-                                                           @RequestParam(required = false, defaultValue = "false")
-                                                           boolean                   forLineage,
-                                                           @RequestParam (required = false, defaultValue = "false")
-                                                           boolean                   forDuplicateProcessing,
                                                            @RequestBody  (required = false)
-                                                               MetadataSourceRequestBody requestBody)
+                                                           MetadataSourceRequestBody requestBody)
     {
-        return restAPI.clearConfidentialityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearConfidentialityClassification(serverName, elementGUID, requestBody);
     }
 
 
     /**
-     * Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource)
+     * Classify the element (typically an asset) to indicate how long the element (or associated resource)
      * is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis
      * property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
      * properties respectively.
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to classify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -275,20 +295,16 @@ public class ClassificationManagerResource
     @PostMapping(path = "/elements/{elementGUID}/retention")
 
     @Operation(summary="setRetentionClassification",
-            description="Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource) is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter properties respectively.",
+            description="Classify the element (typically an asset) to indicate how long the element (or associated resource) is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter properties respectively.",
             externalDocs=@ExternalDocumentation(description="Governed Data Classifications",
                     url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
 
     public VoidResponse setRetentionClassification(@PathVariable String                    serverName,
                                                    @PathVariable String                    elementGUID,
-                                                   @RequestParam(required = false, defaultValue = "false")
-                                                   boolean                   forLineage,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                   forDuplicateProcessing,
                                                    @RequestBody  (required = false)
-                                                   ClassificationRequestBody requestBody)
+                                                       NewClassificationRequestBody requestBody)
     {
-        return restAPI.setRetentionClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setRetentionClassification(serverName, elementGUID, requestBody);
     }
 
 
@@ -298,8 +314,6 @@ public class ClassificationManagerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to declassify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -316,24 +330,189 @@ public class ClassificationManagerResource
 
     public VoidResponse clearRetentionClassification(@PathVariable String                    serverName,
                                                      @PathVariable String                    elementGUID,
-                                                     @RequestParam(required = false, defaultValue = "false")
-                                                     boolean                   forLineage,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                         MetadataSourceRequestBody requestBody)
+                                                     MetadataSourceRequestBody requestBody)
     {
-        return restAPI.clearRetentionClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearRetentionClassification(serverName, elementGUID, requestBody);
     }
 
 
     /**
-     * Add or replace the security tags for an element.
+     * Add the governance expectations classification to an element.
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of element to attach to
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governance-expectations")
+
+    @Operation(summary="addGovernanceExpectations",
+            description="Add the governance expectations classification to an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Rollout",
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout//"))
+
+    public VoidResponse addGovernanceExpectations(@PathVariable String                    serverName,
+                                                  @PathVariable String                    elementGUID,
+                                                  @RequestBody  (required = false)
+                                                      NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addGovernanceExpectations(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the governance expectations classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID   unique identifier of element
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governance-expectations/remove")
+
+    @Operation(summary="clearGovernanceExpectations",
+            description="Clear the governance expectations classification from an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Rollout",
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout/"))
+
+    public VoidResponse clearGovernanceExpectations(@PathVariable String          serverName,
+                                                    @PathVariable String          elementGUID,
+                                                    @RequestBody(required = false)
+                                                    MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearGovernanceExpectations(serverName, elementGUID, requestBody);
+    }
+
+
+
+
+    /**
+     * Add the governance measurements classification to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governance-measurements")
+
+    @Operation(summary="addGovernanceMeasurements",
+            description="Add the governance measurements classification to an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Rollout",
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout//"))
+
+    public VoidResponse addGovernanceMeasurements(@PathVariable String                    serverName,
+                                                  @PathVariable String                    elementGUID,
+                                                  @RequestBody  (required = false)
+                                                      NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addGovernanceMeasurements(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the governance measurements  classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID   unique identifier of element
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governance-measurements/remove")
+
+    @Operation(summary="clearGovernanceMeasurements",
+            description="Clear the governance measurements classification from an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Rollout",
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout/"))
+
+    public VoidResponse clearGovernanceMeasurements(@PathVariable String          serverName,
+                                                    @PathVariable String          elementGUID,
+                                                    @RequestBody(required = false)
+                                                    MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearGovernanceMeasurements(serverName, elementGUID, requestBody);
+    }
+
+
+
+    /**
+     * Add the governance measurements results data set classification to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governance-measurements-results-data-set")
+
+    @Operation(summary="addGovernanceMeasurementsResultsDataSet",
+            description="Add the governance measurements results data set classification to an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Rollout",
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout//"))
+
+    public VoidResponse addGovernanceMeasurementsResultsDataSet(@PathVariable String                    serverName,
+                                                                @PathVariable String                    elementGUID,
+                                                                @RequestBody  (required = false)
+                                                                    NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addGovernanceMeasurementsResultsDataSet(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the governance measurements results data set classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID   unique identifier of element
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governance-measurements-results-data-set/remove")
+
+    @Operation(summary="clearGovernanceMeasurementsResultsDataSet",
+            description="Clear the governance measurements results data set classification from an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Rollout",
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout/"))
+
+    public VoidResponse clearGovernanceMeasurementsResultsDataSet(@PathVariable String          serverName,
+                                                                  @PathVariable String          elementGUID,
+                                                                  @RequestBody(required = false)
+                                                                  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearGovernanceMeasurementsResultsDataSet(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Add the security tags for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
      * @param requestBody list of security labels and properties
      *
      * @return void or
@@ -344,20 +523,16 @@ public class ClassificationManagerResource
     @PostMapping(path = "/elements/{elementGUID}/security-tags")
 
     @Operation(summary="addSecurityTags",
-            description="Add or replace the security tags for an element.",
+            description="Add the security tags for an element.",
             externalDocs=@ExternalDocumentation(description="Security Tags",
                     url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
 
     public VoidResponse addSecurityTags(@PathVariable String                    serverName,
                                         @PathVariable String                    elementGUID,
-                                        @RequestParam(required = false, defaultValue = "false")
-                                        boolean                   forLineage,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                        boolean                   forDuplicateProcessing,
                                         @RequestBody  (required = false)
-                                        ClassificationRequestBody requestBody)
+                                            NewClassificationRequestBody requestBody)
     {
-        return restAPI.addSecurityTags(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addSecurityTags(serverName, elementGUID, requestBody);
     }
 
 
@@ -366,8 +541,6 @@ public class ClassificationManagerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID   unique identifier of element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody null request body
      *
      * @return void or
@@ -384,24 +557,18 @@ public class ClassificationManagerResource
 
     public VoidResponse clearSecurityTags(@PathVariable String          serverName,
                                           @PathVariable String          elementGUID,
-                                          @RequestParam (required = false, defaultValue = "false")
-                                          boolean                   forLineage,
-                                          @RequestParam (required = false, defaultValue = "false")
-                                          boolean                   forDuplicateProcessing,
                                           @RequestBody(required = false)
                                           MetadataSourceRequestBody requestBody)
     {
-        return restAPI.clearSecurityTags(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearSecurityTags(serverName, elementGUID, requestBody);
     }
 
 
     /**
-     * Add or replace the ownership classification for an element.
+     * Add the ownership classification for an element.
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID element to link it to - its type must inherit from Referenceable.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for classification request
      *
      * @return void or
@@ -412,20 +579,16 @@ public class ClassificationManagerResource
     @PostMapping(path = "/elements/{elementGUID}/ownership")
 
     @Operation(summary="addOwnership",
-            description="Add or replace the ownership classification for an element.",
+            description="Add the ownership classification for an element.",
             externalDocs=@ExternalDocumentation(description="Ownership",
                     url="https://egeria-project.org/types/4/0445-Governance-Roles/"))
 
     public VoidResponse addOwnership(@PathVariable String                    serverName,
                                      @PathVariable String                    elementGUID,
-                                     @RequestParam(required = false, defaultValue = "false")
-                                     boolean                   forLineage,
-                                     @RequestParam (required = false, defaultValue = "false")
-                                     boolean                   forDuplicateProcessing,
                                      @RequestBody  (required = false)
-                                     ClassificationRequestBody requestBody)
+                                         NewClassificationRequestBody requestBody)
     {
-        return restAPI.addOwnership(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addOwnership(serverName, elementGUID, requestBody);
     }
 
 
@@ -434,8 +597,6 @@ public class ClassificationManagerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID element where the classification needs to be removed.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for classification request
      *
      * @return void or
@@ -446,20 +607,130 @@ public class ClassificationManagerResource
     @PostMapping(path = "/elements/{elementGUID}/ownership/remove")
 
     @Operation(summary="clearOwnership",
-            description="Add or replace the ownership classification for an element.",
+            description="Remove the ownership classification for an element.",
             externalDocs=@ExternalDocumentation(description="Ownership",
                     url="https://egeria-project.org/types/4/0445-Governance-Roles/"))
 
     public VoidResponse clearOwnership(@PathVariable String                    serverName,
                                        @PathVariable String                    elementGUID,
-                                       @RequestParam(required = false, defaultValue = "false")
-                                       boolean                   forLineage,
-                                       @RequestParam (required = false, defaultValue = "false")
-                                       boolean                   forDuplicateProcessing,
                                        @RequestBody  (required = false)
                                        MetadataSourceRequestBody requestBody)
     {
-        return restAPI.clearOwnership(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearOwnership(serverName, elementGUID, requestBody);
+    }
+
+
+
+    /**
+     * Add the digital resource origin classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/digital-resource-origin")
+
+    @Operation(summary="addDigitalResourceOrigin",
+            description="Add the digital resource origin classification for an element.",
+            externalDocs=@ExternalDocumentation(description="Origin",
+                    url="https://egeria-project.org/types/4/0440-Organizational-Controls/"))
+
+    public VoidResponse addDigitalResourceOrigin(@PathVariable String                    serverName,
+                                                 @PathVariable String                    elementGUID,
+                                                 @RequestBody  (required = false)
+                                                     NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addOrigin(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the digital resource origin classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID element where the classification needs to be removed.
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/digital-resource-origin/remove")
+
+    @Operation(summary="clearDigitalResourceOrigin",
+            description="Remove the digital resource origin classification for an element.",
+            externalDocs=@ExternalDocumentation(description="Origin",
+                    url="https://egeria-project.org/types/4/0440-Organizational-Controls/"))
+
+    public VoidResponse clearDigitalResourceOrigin(@PathVariable String                    serverName,
+                                                   @PathVariable String                    elementGUID,
+                                                   @RequestBody  (required = false)
+                                                   MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearOrigin(serverName, elementGUID, requestBody);
+    }
+
+
+
+    /**
+     * Add the zone membership classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/zone-membership")
+
+    @Operation(summary="addZoneMembership",
+            description="Add the zone membership classification for an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Zones",
+                    url="https://egeria-project.org/types/4/0424-Governance-Zones/"))
+
+    public VoidResponse addZoneMembership(@PathVariable String                    serverName,
+                                          @PathVariable String                    elementGUID,
+                                          @RequestBody  (required = false)
+                                              NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addZoneMembership(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the ownership classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID element where the classification needs to be removed.
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/zone-membership/remove")
+
+    @Operation(summary="clearZoneMembership",
+            description="Remove the zone membership classification from an element to make it visible to all.",
+            externalDocs=@ExternalDocumentation(description="Governance Zones",
+                    url="https://egeria-project.org/types/4/0424-Governance-Zones/"))
+
+    public VoidResponse clearZoneMembership(@PathVariable String                    serverName,
+                                            @PathVariable String                    elementGUID,
+                                            @RequestBody  (required = false)
+                                            MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearZoneMembership(serverName, elementGUID, requestBody);
     }
 
 
@@ -468,8 +739,6 @@ public class ClassificationManagerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to update
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for classification request
      *
      * @return void or
@@ -486,14 +755,10 @@ public class ClassificationManagerResource
 
     public VoidResponse addElementToSubjectArea(@PathVariable String                    serverName,
                                                 @PathVariable String                    elementGUID,
-                                                @RequestParam(required = false, defaultValue = "false")
-                                                boolean                   forLineage,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                boolean                   forDuplicateProcessing,
                                                 @RequestBody  (required = false)
-                                                ClassificationRequestBody requestBody)
+                                                    NewClassificationRequestBody requestBody)
     {
-        return restAPI.addElementToSubjectArea(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addElementToSubjectArea(serverName, elementGUID, requestBody);
     }
 
 
@@ -502,8 +767,6 @@ public class ClassificationManagerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to update
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for classification request
      *
      * @return void or
@@ -520,14 +783,10 @@ public class ClassificationManagerResource
 
     public VoidResponse removeElementFromSubjectArea(@PathVariable String                    serverName,
                                                      @PathVariable String                    elementGUID,
-                                                     @RequestParam(required = false, defaultValue = "false")
-                                                     boolean                   forLineage,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                     MetadataSourceRequestBody requestBody)
+                                                         DeleteRequestBody requestBody)
     {
-        return restAPI.removeElementFromSubjectArea(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeElementFromSubjectArea(serverName, elementGUID, requestBody);
     }
 
 
@@ -538,8 +797,6 @@ public class ClassificationManagerResource
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -557,14 +814,10 @@ public class ClassificationManagerResource
     public VoidResponse setupSemanticAssignment(@PathVariable String                  serverName,
                                                 @PathVariable String                  elementGUID,
                                                 @PathVariable String                  glossaryTermGUID,
-                                                @RequestParam(required = false, defaultValue = "false")
-                                                boolean                 forLineage,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                boolean                 forDuplicateProcessing,
                                                 @RequestBody  (required = false)
-                                                RelationshipRequestBody requestBody)
+                                                    NewRelationshipRequestBody requestBody)
     {
-        return restAPI.setupSemanticAssignment(serverName, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setupSemanticAssignment(serverName, elementGUID, glossaryTermGUID, requestBody);
     }
 
 
@@ -574,8 +827,6 @@ public class ClassificationManagerResource
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -593,14 +844,10 @@ public class ClassificationManagerResource
     public VoidResponse clearSemanticAssignment(@PathVariable String                        serverName,
                                                 @PathVariable String                        elementGUID,
                                                 @PathVariable String                        glossaryTermGUID,
-                                                @RequestParam(required = false, defaultValue = "false")
-                                                boolean                       forLineage,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                boolean                       forDuplicateProcessing,
                                                 @RequestBody  (required = false)
-                                                MetadataSourceRequestBody requestBody)
+                                                    DeleteRequestBody requestBody)
     {
-        return restAPI.clearSemanticAssignment(serverName, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearSemanticAssignment(serverName, elementGUID, glossaryTermGUID, requestBody);
     }
 
 
@@ -610,8 +857,6 @@ public class ClassificationManagerResource
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to link
      * @param definitionGUID identifier of the governance definition to link
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -629,14 +874,10 @@ public class ClassificationManagerResource
     public VoidResponse addGovernanceDefinitionToElement(@PathVariable String                  serverName,
                                                          @PathVariable String                  elementGUID,
                                                          @PathVariable String                  definitionGUID,
-                                                         @RequestParam(required = false, defaultValue = "false")
-                                                         boolean                 forLineage,
-                                                         @RequestParam (required = false, defaultValue = "false")
-                                                         boolean                 forDuplicateProcessing,
                                                          @RequestBody  (required = false)
-                                                         RelationshipRequestBody requestBody)
+                                                             NewRelationshipRequestBody requestBody)
     {
-        return restAPI.addGovernanceDefinitionToElement(serverName, elementGUID, definitionGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addGovernanceDefinitionToElement(serverName, elementGUID, definitionGUID, requestBody);
     }
 
 
@@ -646,8 +887,6 @@ public class ClassificationManagerResource
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to update
      * @param definitionGUID identifier of the governance definition to link
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -665,14 +904,10 @@ public class ClassificationManagerResource
     public VoidResponse removeGovernanceDefinitionFromElement(@PathVariable String                        serverName,
                                                               @PathVariable String                        elementGUID,
                                                               @PathVariable String                        definitionGUID,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean                       forLineage,
-                                                              @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                       forDuplicateProcessing,
                                                               @RequestBody  (required = false)
-                                                              MetadataSourceRequestBody requestBody)
+                                                                  DeleteRequestBody requestBody)
     {
-        return restAPI.removeGovernanceDefinitionFromElement(serverName, elementGUID, definitionGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeGovernanceDefinitionFromElement(serverName, elementGUID, definitionGUID, requestBody);
     }
 
 
@@ -682,8 +917,6 @@ public class ClassificationManagerResource
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to link
      * @param stakeholderGUID identifier of the stakeholder to link
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -699,16 +932,12 @@ public class ClassificationManagerResource
                     url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
 
     public VoidResponse addStakeholderToElement(@PathVariable String                  serverName,
-                                                         @PathVariable String                  elementGUID,
-                                                         @PathVariable String                  stakeholderGUID,
-                                                         @RequestParam(required = false, defaultValue = "false")
-                                                         boolean                 forLineage,
-                                                         @RequestParam (required = false, defaultValue = "false")
-                                                         boolean                 forDuplicateProcessing,
-                                                         @RequestBody  (required = false)
-                                                         RelationshipRequestBody requestBody)
+                                                @PathVariable String                  elementGUID,
+                                                @PathVariable String                  stakeholderGUID,
+                                                @RequestBody  (required = false)
+                                                    NewRelationshipRequestBody requestBody)
     {
-        return restAPI.addStakeholderToElement(serverName, elementGUID, stakeholderGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addStakeholderToElement(serverName, elementGUID, stakeholderGUID, requestBody);
     }
 
 
@@ -718,8 +947,6 @@ public class ClassificationManagerResource
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to update
      * @param stakeholderGUID identifier of the stakeholder to link
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -735,16 +962,12 @@ public class ClassificationManagerResource
                     url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
 
     public VoidResponse removeStakeholderFromElement(@PathVariable String                        serverName,
-                                                              @PathVariable String                        elementGUID,
-                                                              @PathVariable String                        stakeholderGUID,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean                       forLineage,
-                                                              @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                       forDuplicateProcessing,
-                                                              @RequestBody  (required = false)
-                                                              MetadataSourceRequestBody requestBody)
+                                                     @PathVariable String                        elementGUID,
+                                                     @PathVariable String                        stakeholderGUID,
+                                                     @RequestBody  (required = false)
+                                                         DeleteRequestBody requestBody)
     {
-        return restAPI.removeStakeholderFromElement(serverName, elementGUID, stakeholderGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeStakeholderFromElement(serverName, elementGUID, stakeholderGUID, requestBody);
     }
 
 
@@ -754,8 +977,6 @@ public class ClassificationManagerResource
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to link
      * @param scopeGUID identifier of the scope to link
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -771,16 +992,12 @@ public class ClassificationManagerResource
                     url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
 
     public VoidResponse addScopeToElement(@PathVariable String                  serverName,
-                                                         @PathVariable String                  elementGUID,
-                                                         @PathVariable String scopeGUID,
-                                                         @RequestParam(required = false, defaultValue = "false")
-                                                         boolean                 forLineage,
-                                                         @RequestParam (required = false, defaultValue = "false")
-                                                         boolean                 forDuplicateProcessing,
-                                                         @RequestBody  (required = false)
-                                                         RelationshipRequestBody requestBody)
+                                          @PathVariable String                  elementGUID,
+                                          @PathVariable String scopeGUID,
+                                          @RequestBody  (required = false)
+                                              NewRelationshipRequestBody requestBody)
     {
-        return restAPI.addScopeToElement(serverName, elementGUID, scopeGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addScopeToElement(serverName, elementGUID, scopeGUID, requestBody);
     }
 
 
@@ -790,8 +1007,6 @@ public class ClassificationManagerResource
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of the metadata element to update
      * @param scopeGUID identifier of the scope to link
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -809,16 +1024,72 @@ public class ClassificationManagerResource
     public VoidResponse removeScopeFromElement(@PathVariable String                        serverName,
                                                @PathVariable String                        elementGUID,
                                                @PathVariable String                        scopeGUID,
-                                               @RequestParam(required = false, defaultValue = "false")
-                                                   boolean                       forLineage,
-                                               @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                       forDuplicateProcessing,
                                                @RequestBody  (required = false)
-                                                   MetadataSourceRequestBody requestBody)
+                                                   DeleteRequestBody requestBody)
     {
-        return restAPI.removeScopeFromElement(serverName, elementGUID, scopeGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeScopeFromElement(serverName, elementGUID, scopeGUID, requestBody);
     }
 
+
+
+    /**
+     * Link a resource to an element using the ResourceList relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param resourceGUID identifier of the resource to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/resource-list/{resourceGUID}")
+
+    @Operation(summary="addResourceListToElement",
+            description="Link a resource to an element using the ResourceList relationship.",
+            externalDocs=@ExternalDocumentation(description="Resource Lists",
+                    url="https://egeria-project.org/types/0/0019-More-Information/"))
+
+    public VoidResponse addResourceListToElement(@PathVariable String                  serverName,
+                                                 @PathVariable String                  elementGUID,
+                                                 @PathVariable String resourceGUID,
+                                                 @RequestBody  (required = false)
+                                                     NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.addResourceListToElement(serverName, elementGUID, resourceGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the ResourceList relationship between a resource and an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param resourceGUID identifier of the resource to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/resource-list/{resourceGUID}/remove")
+
+    @Operation(summary="removeResourceListFromElement",
+            description="Remove the ResourceList relationship between a resource and an element.",
+            externalDocs=@ExternalDocumentation(description="Resource Lists",
+                    url="https://egeria-project.org/types/0/0019-More-Information/"))
+
+    public VoidResponse removeResourceListFromElement(@PathVariable String                        serverName,
+                                                      @PathVariable String                        elementGUID,
+                                                      @PathVariable String resourceGUID,
+                                                      @RequestBody  (required = false)
+                                                          DeleteRequestBody requestBody)
+    {
+        return restAPI.removeResourceListFromElement(serverName, elementGUID, resourceGUID, requestBody);
+    }
 
 
     /* =======================================
@@ -843,7 +1114,7 @@ public class ClassificationManagerResource
     public GUIDResponse licenseElement(@PathVariable String                  serverName,
                                        @PathVariable String                  elementGUID,
                                        @PathVariable String                  licenseTypeGUID,
-                                       @RequestBody  RelationshipRequestBody requestBody)
+                                       @RequestBody NewRelationshipRequestBody requestBody)
     {
         return restAPI.licenseElement(serverName, elementGUID, licenseTypeGUID, requestBody);
     }
@@ -855,8 +1126,6 @@ public class ClassificationManagerResource
      *
      * @param serverName name of the server instance to connect to
      * @param licenseGUID unique identifier for the license relationship
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody the properties of the license
      *
      * @return void or
@@ -868,10 +1137,9 @@ public class ClassificationManagerResource
 
     public VoidResponse updateLicense(@PathVariable String                  serverName,
                                       @PathVariable String                  licenseGUID,
-                                      @RequestParam boolean                 replaceAllProperties,
-                                      @RequestBody  RelationshipRequestBody requestBody)
+                                      @RequestBody  UpdateRelationshipRequestBody requestBody)
     {
-        return restAPI.updateLicense(serverName, licenseGUID, replaceAllProperties, requestBody);
+        return restAPI.updateLicense(serverName, licenseGUID, requestBody);
     }
 
 
@@ -889,9 +1157,9 @@ public class ClassificationManagerResource
      */
     @PostMapping (path = "/licenses/{licenseGUID}/delete")
 
-    public VoidResponse unlicenseElement(@PathVariable String                    serverName,
-                                         @PathVariable String                    licenseGUID,
-                                         @RequestBody  MetadataSourceRequestBody requestBody)
+    public VoidResponse unlicenseElement(@PathVariable String                   serverName,
+                                         @PathVariable String                   licenseGUID,
+                                         @RequestBody DeleteRequestBody requestBody)
     {
         return restAPI.unlicenseElement(serverName, licenseGUID, requestBody);
     }
@@ -920,7 +1188,7 @@ public class ClassificationManagerResource
     public GUIDResponse certifyElement(@PathVariable String                  serverName,
                                        @PathVariable String                  elementGUID,
                                        @PathVariable String                  certificationTypeGUID,
-                                       @RequestBody  RelationshipRequestBody requestBody)
+                                       @RequestBody NewRelationshipRequestBody requestBody)
     {
         return restAPI.certifyElement(serverName, elementGUID, certificationTypeGUID, requestBody);
     }
@@ -932,8 +1200,6 @@ public class ClassificationManagerResource
      *
      * @param serverName name of the server instance to connect to
      * @param certificationGUID unique identifier for the certification relationship
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody the properties of the certification
      *
      * @return void or
@@ -943,12 +1209,11 @@ public class ClassificationManagerResource
      */
     @PostMapping (path = "/certifications/{certificationGUID}/update")
 
-    public VoidResponse updateCertification(@PathVariable String                  serverName,
-                                            @PathVariable String                  certificationGUID,
-                                            @RequestParam boolean                 replaceAllProperties,
-                                            @RequestBody  RelationshipRequestBody requestBody)
+    public VoidResponse updateCertification(@PathVariable String                        serverName,
+                                            @PathVariable String                        certificationGUID,
+                                            @RequestBody  UpdateRelationshipRequestBody requestBody)
     {
-        return restAPI.updateCertification(serverName, certificationGUID, replaceAllProperties, requestBody);
+        return restAPI.updateCertification(serverName, certificationGUID, requestBody);
     }
 
 
@@ -966,12 +1231,10 @@ public class ClassificationManagerResource
      */
     @PostMapping (path = "/certifications/{certificationGUID}/delete")
 
-    public VoidResponse decertifyElement(@PathVariable String                    serverName,
-                                         @PathVariable String                    certificationGUID,
-                                         @RequestBody  MetadataSourceRequestBody requestBody)
+    public VoidResponse decertifyElement(@PathVariable String                   serverName,
+                                         @PathVariable String                   certificationGUID,
+                                         @RequestBody DeleteRequestBody requestBody)
     {
         return restAPI.decertifyElement(serverName, certificationGUID, requestBody);
     }
-
-
 }

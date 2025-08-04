@@ -8,10 +8,12 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
-import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 
 
@@ -19,8 +21,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
  * OpenLineageEventReceiverIntegrationConnector receives open lineage events from an event broker such as an Apache Kafka topic.
  * It publishes them to other listening lineage integration connectors.
  */
-public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegratorConnector implements OpenMetadataTopicListener,
-                                                                                                        CatalogTargetIntegrator
+public class OpenLineageEventReceiverIntegrationConnector extends IntegrationConnectorBase implements OpenMetadataTopicListener,
+                                                                                                      CatalogTargetIntegrator
 {
     /**
      * Default constructor
@@ -31,7 +33,7 @@ public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegra
 
 
     /**
-     * Method to pass an event received on topic to the Lineage Integrator OMIS to be published to listening integration connectors.
+     * Method to pass an event received on topic to the integration daemon to be published to listening integration connectors.
      *
      * @param event inbound event
      */
@@ -41,7 +43,7 @@ public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegra
 
         try
         {
-            LineageIntegratorContext myContext = super.getContext();
+            IntegrationContext myContext = integrationContext;
 
             if (myContext != null)
             {
@@ -90,22 +92,28 @@ public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegra
      * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).
      *
      * @param retrievedCatalogTarget details of the open metadata elements describing the catalog target
+     * @param catalogTargetContext specialized context for this catalog target
      * @param connectorToTarget connector to access the target resource
      * @return new processor based on the catalog target information
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget,
-                                                                       Connector     connectorToTarget) throws ConnectorCheckedException
+    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget        retrievedCatalogTarget,
+                                                                       CatalogTargetContext catalogTargetContext,
+                                                                       Connector            connectorToTarget) throws ConnectorCheckedException,
+                                                                                                                      UserNotAuthorizedException
     {
         if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
         {
             return new OpenLineageEventReceiverCatalogTargetProcessor(retrievedCatalogTarget,
+                                                                      catalogTargetContext,
                                                                       connectorToTarget,
                                                                       connectorName,
                                                                       auditLog,
                                                                       this);
         }
 
-        return new RequestedCatalogTarget(retrievedCatalogTarget, connectorToTarget);
+        return new RequestedCatalogTarget(retrievedCatalogTarget, catalogTargetContext, connectorToTarget);
     }
 }

@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -21,11 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NoteLogProperties extends ReferenceableProperties
 {
-
-    protected String     displayName = null;
-    protected String     description = null;
-
-
     /**
      * Default constructor
      */
@@ -38,63 +31,11 @@ public class NoteLogProperties extends ReferenceableProperties
     /**
      * Copy/clone constructor.
      *
-     * @param template   note log to copy
+     * @param template note log to copy
      */
-    public NoteLogProperties(NoteLogProperties template)
+    public NoteLogProperties(ReferenceableProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-        }
-    }
-
-
-    /**
-     * Return the stored display name property for the note log.
-     * If no display name is available then null is returned.
-     *
-     * @return String Name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the stored display name property for the note log.
-     *
-     * @param displayName - String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the stored description property for the note log.
-     * If no description is provided then null is returned.
-     *
-     * @return description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the stored description property for the note log.
-     *
-     * @param description String text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -107,46 +48,6 @@ public class NoteLogProperties extends ReferenceableProperties
     public String toString()
     {
         return "NoteLogProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
                 "} " + super.toString();
-    }
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        NoteLogProperties noteLog = (NoteLogProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), noteLog.getDisplayName()) &&
-                       Objects.equals(getDescription(), noteLog.getDescription());
-    }
-
-
-    /**
-     * Hash of properties
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription());
     }
 }

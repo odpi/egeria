@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -108,18 +107,7 @@ public class EmbeddedConnection
      */
     public Map<String, Object> getArguments()
     {
-        if (arguments == null)
-        {
-            return null;
-        }
-        else if (arguments.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(arguments);
-        }
+        return arguments;
     }
 
 

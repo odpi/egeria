@@ -57,7 +57,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
 
     /**
-     * Retrieve all the definitions for the requested governance engine from the Governance Engine OMAS
+     * Retrieve all the definitions for the requested governance engine from the OMF
      * running in a metadata server.
      *
      * @param governanceEngineName qualifiedName of the requested governance engine

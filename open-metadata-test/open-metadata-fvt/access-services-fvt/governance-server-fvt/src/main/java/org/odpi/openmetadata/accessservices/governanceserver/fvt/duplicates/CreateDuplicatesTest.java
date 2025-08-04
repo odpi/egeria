@@ -5,18 +5,20 @@ package org.odpi.openmetadata.accessservices.governanceserver.fvt.duplicates;
 
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
@@ -35,20 +37,8 @@ public class CreateDuplicatesTest
 {
     private final static String testCaseName                 = "CreateDuplicatesTest";
     private final static String testCaseNameProperty         = "TestCaseName";
-    private final static String qualifiedNameProperty        = "qualifiedName";
-    private final static String nameProperty                 = "name";
-    private final static String displayNameProperty          = "displayName";
-    private final static String keywordProperty              = "keyword";
-    private final static String descriptionProperty          = "description";
-    private final static String additionalPropertiesProperty = "additionalProperties";
-
+    
     private final static int    maxPageSize        = 100;
-
-    private final static String assetTypeName           = "Asset";
-    private final static String keywordTypeName         = "SearchKeyword";
-    private final static String keywordLinkTypeName     = "SearchKeywordLink";
-    private final static String schemaTypeTypeName      = "SchemaType";
-    private final static String assetSchemaTypeTypeName = "AssetSchemaType";
 
     private final static String firstAssetName        = "FirstAsset";
     private final static String firstAssetDescription = "FirstAssetDescription";
@@ -109,11 +99,11 @@ public class CreateDuplicatesTest
         CreateDuplicatesTest thisTest = new CreateDuplicatesTest();
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
-                                         AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceCode(),
-                                         AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceDevelopmentStatus(),
-                                         AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceName(),
-                                         AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceDescription(),
-                                         AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceWiki());
+                                         CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceCode(),
+                                         CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
+                                         CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(),
+                                         CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceDescription(),
+                                         CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceWiki());
 
         GAFRESTClient           restClient              = new GAFRESTClient(serverName, serverPlatformRootURL, auditLog);
         GovernanceContextClient governanceContextClient = new GovernanceContextClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
@@ -122,7 +112,7 @@ public class CreateDuplicatesTest
         String activityName;
 
         activityName = "SimpleDuplicate - create first entity";
-        String firstAssetGUID = thisTest.createAsset(openMetadataStoreClient, userId, assetTypeName, "", firstAssetName, firstAssetDescription, null, null, null, activityName, testCaseName);
+        String firstAssetGUID = thisTest.createAsset(openMetadataStoreClient, userId, OpenMetadataType.ASSET.typeName, "", firstAssetName, firstAssetDescription, null, null, null, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - create duplicate entity";
         try
@@ -137,7 +127,7 @@ public class CreateDuplicatesTest
             System.out.println("Interrupted sleep in: " + activityName + " Exception: " + interruption);
         }
 
-        String firstAssetDuplicateGUID = thisTest.createAsset(openMetadataStoreClient, userId, assetTypeName, duplicatePrefix, firstAssetName, firstAssetDescription, null, null, null, activityName, testCaseName);
+        String firstAssetDuplicateGUID = thisTest.createAsset(openMetadataStoreClient, userId, OpenMetadataType.ASSET.typeName, duplicatePrefix, firstAssetName, firstAssetDescription, null, null, null, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - link duplicate entities";
 
@@ -147,7 +137,7 @@ public class CreateDuplicatesTest
 
         OpenMetadataElement firstAsset = thisTest.getMetadataElementByGUID(openMetadataStoreClient,
                                                                            userId,
-                                                                           assetTypeName,
+                                                                           OpenMetadataType.ASSET.typeName,
                                                                            firstAssetGUID,
                                                                            firstAssetGUID,
                                                                            "",
@@ -157,13 +147,13 @@ public class CreateDuplicatesTest
                                                                            null,
                                                                            activityName,
                                                                            testCaseName);
-        thisTest.validateMetadataElement(firstAsset, assetTypeName, firstAssetGUID, "", firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElement(firstAsset, OpenMetadataType.ASSET.typeName, firstAssetGUID, "", firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - retrieve second entity - deDup=true";
 
         OpenMetadataElement firstAssetDuplicate = thisTest.getMetadataElementByGUID(openMetadataStoreClient,
                                                                                     userId,
-                                                                                    assetTypeName,
+                                                                                    OpenMetadataType.ASSET.typeName,
                                                                                     firstAssetDuplicateGUID,
                                                                                     firstAssetDuplicateGUID,
                                                                                     duplicatePrefix,
@@ -174,31 +164,37 @@ public class CreateDuplicatesTest
                                                                                     activityName,
                                                                                     testCaseName);
 
-        thisTest.validateMetadataElement(firstAssetDuplicate, assetTypeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElement(firstAssetDuplicate, OpenMetadataType.ASSET.typeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false - second entity returned";
 
-        OpenMetadataElement deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null, null);
+        GetOptions getOptions = new GetOptions();
+        
+        OpenMetadataElement deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, getOptions);
 
-        thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElement(deDuplicatedAsset, OpenMetadataType.ASSET.typeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
 
-        List<OpenMetadataElement> retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, TemplateFilter.ALL, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, false, null, 0 , 0);
+        QueryOptions queryOptions = new QueryOptions();
 
-        thisTest.validateMetadataElements(retrievedElements, assetTypeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
+        List<OpenMetadataElement> retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, OpenMetadataType.ASSET.typeName, queryOptions, 0 , 0);
+
+        thisTest.validateMetadataElements(retrievedElements, OpenMetadataType.ASSET.typeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - create memento asset";
 
-        String mementoAssetGUID = thisTest.createAsset(openMetadataStoreClient, userId, assetTypeName, mementoPrefix, firstAssetName, firstAssetDescription, null, null, null, activityName, testCaseName);
+        String mementoAssetGUID = thisTest.createAsset(openMetadataStoreClient, userId, OpenMetadataType.ASSET.typeName, mementoPrefix, firstAssetName, firstAssetDescription, null, null, null, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - link memento entity as duplicate";
 
         thisTest.linkDuplicates(governanceContextClient, userId, firstAssetGUID, mementoAssetGUID, 1, testCaseName, activityName);
 
-        openMetadataStoreClient.classifyMetadataElementInStore(userId, mementoAssetGUID, "Memento", true, true, null, null, null, null);
+        openMetadataStoreClient.classifyMetadataElementInStore(userId, mementoAssetGUID, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName, true, true, null, null, null, null);
 
         try
         {
-            openMetadataStoreClient.getMetadataElementByGUID(userId, mementoAssetGUID, false, true, null, null);
+            getOptions.setForDuplicateProcessing(true);
+            openMetadataStoreClient.getMetadataElementByGUID(userId, mementoAssetGUID, getOptions);
+
             throw new FVTUnexpectedCondition(testCaseName, "Memento metadata element returned by " + activityName);
         }
         catch (Exception exception)
@@ -206,41 +202,50 @@ public class CreateDuplicatesTest
             System.out.println(activityName + ": metadata element " + mementoAssetGUID + " hidden by memento classification");
         }
 
-        OpenMetadataElement mementoElement = openMetadataStoreClient.getMetadataElementByGUID(userId, mementoAssetGUID, true, true, null , null);
+        getOptions.setForLineage(true);
 
-        thisTest.validateMetadataElement(mementoElement, assetTypeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
+        OpenMetadataElement mementoElement = openMetadataStoreClient.getMetadataElementByGUID(userId, mementoAssetGUID, getOptions);
+
+        thisTest.validateMetadataElement(mementoElement, OpenMetadataType.ASSET.typeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false - second entity returned because not lineage";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null, null);
+        getOptions = new GetOptions();
 
-        thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, getOptions);
 
-        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, TemplateFilter.ALL, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, false, null, 0 , 0);
+        thisTest.validateMetadataElement(deDuplicatedAsset, OpenMetadataType.ASSET.typeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
 
-        thisTest.validateMetadataElements(retrievedElements, assetTypeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
+        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, null, queryOptions, 0 , 0);
+
+        thisTest.validateMetadataElements(retrievedElements, OpenMetadataType.ASSET.typeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=true - memento entity returned";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, true, false, null, null);
+        getOptions.setForLineage(true);
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, getOptions);
 
-        thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElement(deDuplicatedAsset, OpenMetadataType.ASSET.typeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
 
-        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, TemplateFilter.ALL, null, null, null, SequencingOrder.CREATION_DATE_RECENT, true, false, null, 0 , 0);
+        queryOptions.setForLineage(true);
+        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, null, queryOptions, 0 , 0);
 
-        thisTest.validateMetadataElements(retrievedElements, assetTypeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElements(retrievedElements, OpenMetadataType.ASSET.typeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - create ineffective asset";
 
-        String ineffectiveAssetGUID = thisTest.createAsset(openMetadataStoreClient, userId, assetTypeName, ineffectivePrefix, firstAssetName, firstAssetDescription, null, new Date(10), null, activityName, testCaseName);
+        String ineffectiveAssetGUID = thisTest.createAsset(openMetadataStoreClient, userId, OpenMetadataType.ASSET.typeName, ineffectivePrefix, firstAssetName, firstAssetDescription, null, new Date(10), null, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - link ineffective entity as duplicate";
 
         thisTest.linkDuplicates(governanceContextClient, userId, firstAssetGUID, ineffectiveAssetGUID, 1, testCaseName, activityName);
 
+        getOptions = new GetOptions();
+        getOptions.setForDuplicateProcessing(true);
+        getOptions.setEffectiveTime(new Date());
         try
         {
-            openMetadataStoreClient.getMetadataElementByGUID(userId, ineffectiveAssetGUID, false, true, null, new Date());
+            openMetadataStoreClient.getMetadataElementByGUID(userId, ineffectiveAssetGUID, getOptions);
             throw new FVTUnexpectedCondition(testCaseName, "Ineffective metadata element returned by " + activityName);
         }
         catch (Exception exception)
@@ -248,55 +253,69 @@ public class CreateDuplicatesTest
             System.out.println(activityName + ": metadata element " + ineffectiveAssetGUID + " hidden by effectivity date");
         }
 
-        OpenMetadataElement ineffectiveElement = openMetadataStoreClient.getMetadataElementByGUID(userId, ineffectiveAssetGUID, true, true, null, null);
+        getOptions.setForLineage(true);
+        getOptions.setEffectiveTime(null);
+        OpenMetadataElement ineffectiveElement = openMetadataStoreClient.getMetadataElementByGUID(userId, ineffectiveAssetGUID, getOptions);
 
-        thisTest.validateMetadataElement(ineffectiveElement, assetTypeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElement(ineffectiveElement, OpenMetadataType.ASSET.typeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
 
         System.out.println("Effective Date: " + ineffectiveElement.getEffectiveToTime());
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=false; effectivity date now  - second entity returned because not lineage and NOW";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null, new Date());
+        getOptions = new GetOptions();
+        getOptions.setEffectiveTime(new Date());
+
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, getOptions);
 
         System.out.println(" firstAssetGUID: " + firstAssetGUID);
         System.out.println(" firstAssetDuplicateGUID: " + firstAssetDuplicateGUID);
         System.out.println(" mementoAssetGUID: " + mementoAssetGUID);
         System.out.println(" ineffectiveAssetGUID: " + ineffectiveAssetGUID);
 
-        thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElement(deDuplicatedAsset, OpenMetadataType.ASSET.typeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
 
-        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, TemplateFilter.ALL, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, false, new Date(), 0 , 0);
+        queryOptions = new QueryOptions();
 
-        thisTest.validateMetadataElements(retrievedElements, assetTypeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
+        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, null, queryOptions, 0 , 0);
+
+        thisTest.validateMetadataElements(retrievedElements, OpenMetadataType.ASSET.typeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=true; effectivity date now - memento entity returned";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, true, false,null,  new Date());
+        getOptions.setForLineage(true);
 
-        thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, getOptions);
 
-        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, TemplateFilter.ALL, null, null, null, SequencingOrder.CREATION_DATE_RECENT, true, false, new Date(), 0 , 0);
+        thisTest.validateMetadataElement(deDuplicatedAsset, OpenMetadataType.ASSET.typeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
 
-        thisTest.validateMetadataElements(retrievedElements, assetTypeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
+        queryOptions.setForLineage(true);
+        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, null, queryOptions, 0 , 0);
+
+        thisTest.validateMetadataElements(retrievedElements, OpenMetadataType.ASSET.typeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=false; no effectivity date - ineffective entity returned";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null, null);
+        getOptions = new GetOptions();
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, getOptions);
 
-        thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElement(deDuplicatedAsset, OpenMetadataType.ASSET.typeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
 
-        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, TemplateFilter.ALL, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, false, null, 0 , 0);
+        queryOptions = new QueryOptions();
+        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, null, queryOptions, 0 , 0);
 
-        thisTest.validateMetadataElements(retrievedElements, assetTypeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElements(retrievedElements, OpenMetadataType.ASSET.typeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=true; no effectivity date - ineffective entity returned";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, true, false,null,  null);
+        getOptions.setForLineage(true);
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, getOptions);
 
-        thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElement(deDuplicatedAsset, OpenMetadataType.ASSET.typeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
 
-        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, TemplateFilter.ALL, null, null, null, SequencingOrder.CREATION_DATE_RECENT, true, false, null, 0 , 0);
+        queryOptions.setForLineage(true);
+        retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, firstAssetName, null, queryOptions, 0 , 0);
 
-        thisTest.validateMetadataElements(retrievedElements, assetTypeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
+        thisTest.validateMetadataElements(retrievedElements, OpenMetadataType.ASSET.typeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
 
         /*---------------------------------
         * Keywords are many-to-many
@@ -311,7 +330,9 @@ public class CreateDuplicatesTest
         RelatedMetadataElementList relatedMetadataElements;
 
         activityName = "Keyword test - all returned";
-        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, true, false, null, 0, 0);
+        queryOptions = new QueryOptions();
+        queryOptions.setForLineage(true);
+        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName, queryOptions, 0, 0);
 
         if ((relatedMetadataElements == null) || (relatedMetadataElements.getElementList() == null))
         {
@@ -323,7 +344,8 @@ public class CreateDuplicatesTest
         }
 
         activityName = "Keyword test - memento not returned";
-        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, false, null, 0, 0);
+        queryOptions = new QueryOptions();
+        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName, queryOptions, 0, 0);
         if ((relatedMetadataElements == null) || (relatedMetadataElements.getElementList() == null))
         {
             throw new FVTUnexpectedCondition(testCaseName, "No keywords returned by " + activityName);
@@ -334,14 +356,21 @@ public class CreateDuplicatesTest
         }
 
         activityName = "Keyword test - none returned";
-        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, true, new Date(), 0, 0);
+        queryOptions = new QueryOptions();
+        queryOptions.setForDuplicateProcessing(true);
+        queryOptions.setEffectiveTime(new Date());
+
+        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName, queryOptions, 0, 0);
         if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null) && (! relatedMetadataElements.getElementList().isEmpty()))
         {
             throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.getElementList().size() + " unexpected keywords returned by " + activityName);
         }
 
         activityName = "Keyword test - ineffective not returned";
-        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, true, false, new Date(), 0, 0);
+        queryOptions = new QueryOptions();
+        queryOptions.setForLineage(true);
+        queryOptions.setEffectiveTime(new Date());
+        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName, queryOptions, 0, 0);
         if ((relatedMetadataElements == null) || (relatedMetadataElements.getElementList() == null))
         {
             throw new FVTUnexpectedCondition(testCaseName, "No keywords returned by " + activityName);
@@ -352,7 +381,8 @@ public class CreateDuplicatesTest
         }
 
         activityName = "Keyword test - active returned";
-        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, false, new Date(), 0, 0);
+        queryOptions = new QueryOptions();
+        relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName, queryOptions,0, 0);
         if ((relatedMetadataElements == null) || (relatedMetadataElements.getElementList() == null))
         {
             throw new FVTUnexpectedCondition(testCaseName, "No keywords returned by " + activityName);
@@ -381,10 +411,10 @@ public class CreateDuplicatesTest
                                                                             FVTUnexpectedCondition
     {
         ElementProperties properties;
-        properties = propertyHelper.addStringProperty(null, qualifiedNameProperty, getQualifiedName(typeName, prefix, name));
-        properties = propertyHelper.addStringProperty(properties, nameProperty, name);
-        properties = propertyHelper.addStringProperty(properties, descriptionProperty, description);
-        properties = propertyHelper.addStringMapProperty(properties, additionalPropertiesProperty, getAdditionalProperties(testCaseName));
+        properties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, getQualifiedName(typeName, prefix, name));
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, name);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, description);
+        properties = propertyHelper.addStringMapProperty(properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, getAdditionalProperties(testCaseName));
 
         String assetGUID = openMetadataStoreClient.createMetadataElementInStore(userId, typeName, ElementStatus.ACTIVE, effectiveFrom, effectiveTo, properties);
 
@@ -410,19 +440,19 @@ public class CreateDuplicatesTest
     {
         ElementProperties properties;
 
-        properties = propertyHelper.addStringProperty(null, keywordProperty, keyword);
-        properties = propertyHelper.addStringProperty(properties, descriptionProperty, description);
+        properties = propertyHelper.addStringProperty(null, OpenMetadataProperty.KEYWORD.name, keyword);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, description);
 
-        String keywordGUID = openMetadataStoreClient.createMetadataElementInStore(userId, keywordTypeName, ElementStatus.ACTIVE, effectiveFrom, effectiveTo, properties);
+        String keywordGUID = openMetadataStoreClient.createMetadataElementInStore(userId, OpenMetadataType.SEARCH_KEYWORD.typeName, ElementStatus.ACTIVE, effectiveFrom, effectiveTo, properties);
 
-        OpenMetadataElement retrievedElement = openMetadataStoreClient.getMetadataElementByGUID(userId, keywordGUID, false, false,null, null);
+        OpenMetadataElement retrievedElement = openMetadataStoreClient.getMetadataElementByGUID(userId, keywordGUID, new GetOptions());
 
         if (! keywordGUID.equals(retrievedElement.getElementGUID()))
         {
             throw new FVTUnexpectedCondition(testCaseName, "Different Keyword GUID - Metadata element GUID of " + retrievedElement.getElementGUID() + " rather than " + keywordGUID + " returned by " + activityName);
         }
 
-        openMetadataStoreClient.createRelatedElementsInStore(userId, keywordLinkTypeName, assetGUID, keywordGUID, true, true, effectiveFrom, effectiveTo, null, null);
+        openMetadataStoreClient.createRelatedElementsInStore(userId, OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName, assetGUID, keywordGUID, true, true, effectiveFrom, effectiveTo, null, null);
 
         return keywordGUID;
     }
@@ -443,17 +473,17 @@ public class CreateDuplicatesTest
                                                                                  FVTUnexpectedCondition
     {
         ElementProperties properties;
-        properties = propertyHelper.addStringProperty(null, qualifiedNameProperty, getQualifiedName(keywordTypeName, prefix, name));
-        properties = propertyHelper.addStringProperty(properties, displayNameProperty, prefix+name);
-        properties = propertyHelper.addStringProperty(properties, descriptionProperty, description);
-        properties = propertyHelper.addStringMapProperty(properties, additionalPropertiesProperty, getAdditionalProperties(testCaseName));
+        properties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, getQualifiedName(OpenMetadataType.SEARCH_KEYWORD.typeName, prefix, name));
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, prefix+name);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, description);
+        properties = propertyHelper.addStringMapProperty(properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, getAdditionalProperties(testCaseName));
 
-        String schemaTypeGUID = openMetadataStoreClient.createMetadataElementInStore(userId, keywordTypeName, ElementStatus.ACTIVE, effectiveFrom, effectiveTo, properties);
+        String schemaTypeGUID = openMetadataStoreClient.createMetadataElementInStore(userId, OpenMetadataType.SEARCH_KEYWORD.typeName, ElementStatus.ACTIVE, effectiveFrom, effectiveTo, properties);
 
-        this.getMetadataElementByGUID(openMetadataStoreClient, userId, schemaTypeTypeName, schemaTypeGUID, schemaTypeGUID, prefix, name, false, false, null, activityName, testCaseName);
-        this.getMetadataElementByName(openMetadataStoreClient, userId, schemaTypeTypeName, name, schemaTypeGUID, prefix, name, false, false, null, activityName, testCaseName);
+        this.getMetadataElementByGUID(openMetadataStoreClient, userId, OpenMetadataType.SCHEMA_TYPE.typeName, schemaTypeGUID, schemaTypeGUID, prefix, name, false, false, null, activityName, testCaseName);
+        this.getMetadataElementByName(openMetadataStoreClient, userId, OpenMetadataType.SCHEMA_TYPE.typeName, name, schemaTypeGUID, prefix, name, false, false, null, activityName, testCaseName);
 
-        openMetadataStoreClient.createRelatedElementsInStore(userId, assetSchemaTypeTypeName, assetGUID, schemaTypeGUID, true, true, null, null, null, null);
+        openMetadataStoreClient.createRelatedElementsInStore(userId, OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName, assetGUID, schemaTypeGUID, true, true, null, null, null, null);
 
         return schemaTypeGUID;
     }
@@ -475,7 +505,13 @@ public class CreateDuplicatesTest
                                                                                                       PropertyServerException,
                                                                                                       FVTUnexpectedCondition
     {
-        OpenMetadataElement retrievedElement = openMetadataStoreClient.getMetadataElementByGUID(userId, guid, forLineage, forDeduplication, null, effectiveDate);
+        GetOptions  getOptions = new GetOptions();
+        
+        getOptions.setForLineage(forLineage);
+        getOptions.setForDuplicateProcessing(forDeduplication);
+        getOptions.setEffectiveTime(effectiveDate);
+        
+        OpenMetadataElement retrievedElement = openMetadataStoreClient.getMetadataElementByGUID(userId, guid, getOptions);
 
         validateMetadataElement(retrievedElement, typeName, retrievedGUID, retrievedPrefix, retrievedName, activityName, testCaseName);
 
@@ -499,7 +535,11 @@ public class CreateDuplicatesTest
                                                                                                       PropertyServerException,
                                                                                                       FVTUnexpectedCondition
     {
-        List<OpenMetadataElement> retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, name, TemplateFilter.ALL, null, null, null, SequencingOrder.CREATION_DATE_RECENT, forLineage, forDeduplication, effectiveDate, 0 , 0);
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setForLineage(forLineage);
+        queryOptions.setForDuplicateProcessing(forDeduplication);
+        queryOptions.setEffectiveTime(effectiveDate);
+        List<OpenMetadataElement> retrievedElements = openMetadataStoreClient.findMetadataElementsWithString(userId, name,typeName, queryOptions, 0 , 0);
 
         return validateMetadataElements(retrievedElements, typeName, retrievedGUID, retrievedPrefix, retrievedName, activityName, testCaseName);
     }
@@ -555,9 +595,9 @@ public class CreateDuplicatesTest
             throw new FVTUnexpectedCondition(testCaseName, "Null metadata element properties returned by " + activityName);
         }
 
-        validateQualifiedName(typeName, retrievedPrefix, retrievedName, activityName,  testCaseName, propertyHelper.getStringProperty(testCaseName, qualifiedNameProperty, metadataElement.getElementProperties(), methodName));
-        validateDisplayName(retrievedName, activityName, testCaseName, propertyHelper.getStringProperty(testCaseName, nameProperty, metadataElement.getElementProperties(), methodName));
-        validateAdditionalProperties(activityName, testCaseName, propertyHelper.getStringMapFromProperty(testCaseName, additionalPropertiesProperty, metadataElement.getElementProperties(), methodName));
+        validateQualifiedName(typeName, retrievedPrefix, retrievedName, activityName,  testCaseName, propertyHelper.getStringProperty(testCaseName, OpenMetadataProperty.QUALIFIED_NAME.name, metadataElement.getElementProperties(), methodName));
+        validateDisplayName(retrievedName, activityName, testCaseName, propertyHelper.getStringProperty(testCaseName, OpenMetadataProperty.DISPLAY_NAME.name, metadataElement.getElementProperties(), methodName));
+        validateAdditionalProperties(activityName, testCaseName, propertyHelper.getStringMapFromProperty(testCaseName, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, metadataElement.getElementProperties(), methodName));
     }
 
 

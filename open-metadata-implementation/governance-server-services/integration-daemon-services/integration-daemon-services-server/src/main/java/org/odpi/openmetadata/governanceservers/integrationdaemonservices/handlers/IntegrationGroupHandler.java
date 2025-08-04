@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -11,12 +10,12 @@ import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationCo
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationGroupElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationGroupProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorElement;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +40,7 @@ public class IntegrationGroupHandler
     private final GovernanceConfigurationClient configurationClient;        /* Initialized in constructor */
 
     private final IntegrationConnectorCacheMap           integrationConnectorLookupTable;
-    private final Map<String, IntegrationContextManager> contextManagerMap;
-    private final Map<String, String>                    integrationServiceNameMap;
+    private final IntegrationContextManager              integrationContextManager;
     private List<IntegrationConnectorHandler>      connectorHandlers = new ArrayList<>();
 
     /**
@@ -50,8 +48,7 @@ public class IntegrationGroupHandler
      *
      * @param integrationGroupName the properties of the integration group.
      * @param integrationConnectorCacheMap manages the dynamic map of connectors.
-     * @param contextManagerMap details of the context manager for each registered integration service.
-     * @param integrationServiceNameMap details of the full name for each registered integration service.
+     * @param integrationContextManager details of the context manager that creates new integration contexts for the integration connectors.
      * @param serverName the name of the integration daemon server where the integration group is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
@@ -59,8 +56,7 @@ public class IntegrationGroupHandler
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
     public IntegrationGroupHandler(String                                 integrationGroupName,
-                                   Map<String, IntegrationContextManager> contextManagerMap,
-                                   Map<String, String>                    integrationServiceNameMap,
+                                   IntegrationContextManager              integrationContextManager,
                                    IntegrationConnectorCacheMap           integrationConnectorCacheMap,
                                    String                                 serverName,
                                    String                                 serverUserId,
@@ -69,8 +65,7 @@ public class IntegrationGroupHandler
                                    int                                    maxPageSize)
     {
         this.integrationGroupName            = integrationGroupName;
-        this.contextManagerMap               = contextManagerMap;
-        this.integrationServiceNameMap       = integrationServiceNameMap;
+        this.integrationContextManager       = integrationContextManager;
         this.integrationConnectorLookupTable = integrationConnectorCacheMap;
         this.serverName                      = serverName;
         this.serverUserId                    = serverUserId;
@@ -164,15 +159,15 @@ public class IntegrationGroupHandler
         return integrationGroupGUID;
     }
 
+
     /**
-     * Return the context manager for the requested service.
+     * Return the context manager.
      *
-     * @param serviceURLMarker identifier for the service
      * @return context manager or null
      */
-    public IntegrationContextManager getContextManager(String serviceURLMarker)
+    public IntegrationContextManager getContextManager()
     {
-        return contextManagerMap.get(serviceURLMarker);
+        return integrationContextManager;
     }
 
 
@@ -375,14 +370,7 @@ public class IntegrationGroupHandler
             {
                 try
                 {
-                    String serviceURLMarker =
-                            IntegrationServiceRegistry.getIntegrationServiceURLMarker(registeredIntegrationConnectorElement.getProperties().getConnection().getConnectorType().getConnectorProviderClassName());
-
-                    if (serviceURLMarker != null)
-                    {
-                        IntegrationContextManager contextManager = contextManagerMap.get(serviceURLMarker);
-                        String                    integrationServiceName = integrationServiceNameMap.get(serviceURLMarker);
-                        String                    userId = serverUserId;
+                    String                    userId = serverUserId;
 
                         if (registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId() != null)
                         {
@@ -401,9 +389,8 @@ public class IntegrationGroupHandler
                                                                            registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getGenerateIntegrationReports(),
-                                                                           integrationServiceName,
                                                                            serverName,
-                                                                           contextManager,
+                                                                           integrationContextManager,
                                                                            auditLog);
                         /*
                          * This is a local list for status reporting
@@ -416,13 +403,6 @@ public class IntegrationGroupHandler
                         integrationConnectorLookupTable.putHandlerByConnectorId(registeredIntegrationConnectorElement.getConnectorId(),
                                                                                 connectorHandler,
                                                                                 false);
-                    }
-                    else
-                    {
-                        auditLog.logMessage(methodName,
-                                            IntegrationDaemonServicesAuditCode.UNKNOWN_CONNECTOR_INTERFACE.getMessageDefinition(registeredIntegrationConnectorElement.getElementHeader().getGUID()),
-                                            registeredIntegrationConnectorElement.toString());
-                    }
                 }
                 catch (Exception error)
                 {

@@ -6,18 +6,15 @@ package org.odpi.openmetadata.viewservices.metadataexplorer.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.OpenMetadataStoreHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -58,7 +55,7 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataElementResponse getMetadataElementByGUID(String             serverName,
                                                                 String             elementGUID,
                                                                 String             viewServiceURLMarker,
-                                                                AnyTimeRequestBody requestBody)
+                                                                GetRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
 
@@ -75,26 +72,9 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getMetadataElementByGUID(userId,
-                                                                     elementGUID,
-                                                                     requestBody.getForLineage(),
-                                                                     requestBody.getForDuplicateProcessing(),
-                                                                     requestBody.getAsOfTime(),
-                                                                     requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getMetadataElementByGUID(userId,
-                                                                     elementGUID,
-                                                                     false,
-                                                                     false,
-                                                                     null,
-                                                                     new Date()));
-            }
+            response.setElement(handler.getMetadataElementByGUID(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -118,9 +98,9 @@ public class MetadataExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public OpenMetadataElementResponse getMetadataElementByUniqueName(String          serverName,
-                                                                      String          viewServiceURLMarker,
-                                                                      NameRequestBody requestBody)
+    public OpenMetadataElementResponse getMetadataElementByUniqueName(String                serverName,
+                                                                      String                viewServiceURLMarker,
+                                                                      UniqueNameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByUniqueName";
 
@@ -139,15 +119,12 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElement(handler.getMetadataElementByUniqueName(userId,
                                                                            requestBody.getName(),
                                                                            requestBody.getNamePropertyName(),
-                                                                           requestBody.getForLineage(),
-                                                                           requestBody.getForDuplicateProcessing(),
-                                                                           requestBody.getAsOfTime(),
-                                                                           requestBody.getEffectiveTime()));
+                                                                           requestBody));
             }
             else
             {
@@ -176,9 +153,9 @@ public class MetadataExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not able to access the element or
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public GUIDResponse getMetadataElementGUIDByUniqueName(String          serverName,
-                                                           String          viewServiceURLMarker,
-                                                           NameRequestBody requestBody)
+    public GUIDResponse getMetadataElementGUIDByUniqueName(String                serverName,
+                                                           String                viewServiceURLMarker,
+                                                           UniqueNameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementGUIDByUniqueName";
 
@@ -197,15 +174,12 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
                                                                             requestBody.getName(),
                                                                             requestBody.getNamePropertyName(),
-                                                                            requestBody.getForLineage(),
-                                                                            requestBody.getForDuplicateProcessing(),
-                                                                            requestBody.getAsOfTime(),
-                                                                            requestBody.getEffectiveTime()));
+                                                                            requestBody));
             }
             else
             {
@@ -228,9 +202,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param elementGUID unique identifier for the metadata element
      * @param viewServiceURLMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param oldestFirst  defining how the results should be ordered.
      * @param requestBody the time window required
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -241,9 +212,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataElementsResponse getMetadataElementHistory(String             serverName,
                                                                   String             elementGUID,
                                                                   String             viewServiceURLMarker,
-                                                                  int                startFrom,
-                                                                  int                pageSize,
-                                                                  boolean            oldestFirst,
                                                                   HistoryRequestBody requestBody)
     {
         final String methodName = "getMetadataElementHistory";
@@ -261,34 +229,9 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElementList(handler.getMetadataElementHistory(userId,
-                                                                          elementGUID,
-                                                                          requestBody.getFromTime(),
-                                                                          requestBody.getToTime(),
-                                                                          oldestFirst,
-                                                                          requestBody.getForLineage(),
-                                                                          requestBody.getForDuplicateProcessing(),
-                                                                          requestBody.getEffectiveTime(),
-                                                                          startFrom,
-                                                                          pageSize));
-            }
-            else
-            {
-                response.setElementList(handler.getMetadataElementHistory(userId,
-                                                                          elementGUID,
-                                                                          null,
-                                                                          null,
-                                                                          oldestFirst,
-                                                                          false,
-                                                                          false,
-                                                                          null,
-                                                                          startFrom,
-                                                                          pageSize));
-            }
+            response.setElementList(handler.getMetadataElementHistory(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -305,8 +248,6 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -316,8 +257,6 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataElementsResponse findMetadataElementsWithString(String                  serverName,
                                                                        String                  viewServiceURLMarker,
-                                                                       int                     startFrom,
-                                                                       int                     pageSize,
                                                                        SearchStringRequestBody requestBody)
     {
         final String methodName = "findMetadataElementsWithString";
@@ -337,21 +276,11 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElementList(handler.findMetadataElementsWithString(userId,
                                                                                requestBody.getSearchString(),
-                                                                               requestBody.getTemplateFilter(),
-                                                                               requestBody.getTypeName(),
-                                                                               requestBody.getLimitResultsByStatus(),
-                                                                               requestBody.getAsOfTime(),
-                                                                               requestBody.getSequencingProperty(),
-                                                                               requestBody.getSequencingOrder(),
-                                                                               requestBody.getForLineage(),
-                                                                               requestBody.getForDuplicateProcessing(),
-                                                                               requestBody.getEffectiveTime(),
-                                                                               startFrom,
-                                                                               pageSize));
+                                                                               requestBody));
             }
             else
             {
@@ -378,8 +307,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
      * @param anchorGUID unique identifier of anchor
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -390,8 +317,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public AnchorSearchMatchesResponse findElementsForAnchor(String                  serverName,
                                                              String                  viewServiceURLMarker,
                                                              String                  anchorGUID,
-                                                             int                     startFrom,
-                                                             int                     pageSize,
                                                              SearchStringRequestBody requestBody)
     {
         final String methodName = "findElementsForAnchor";
@@ -411,21 +336,12 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElement(handler.findElementsForAnchor(userId,
                                                                   requestBody.getSearchString(),
                                                                   anchorGUID,
-                                                                  requestBody.getTypeName(),
-                                                                  requestBody.getLimitResultsByStatus(),
-                                                                  requestBody.getAsOfTime(),
-                                                                  requestBody.getSequencingProperty(),
-                                                                  requestBody.getSequencingOrder(),
-                                                                  requestBody.getForLineage(),
-                                                                  requestBody.getForDuplicateProcessing(),
-                                                                  requestBody.getEffectiveTime(),
-                                                                  startFrom,
-                                                                  pageSize));
+                                                                  requestBody));
             }
             else
             {
@@ -483,21 +399,12 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElements(handler.findElementsInAnchorDomain(userId,
                                                                         requestBody.getSearchString(),
                                                                         anchorDomainName,
-                                                                        requestBody.getTypeName(),
-                                                                        requestBody.getLimitResultsByStatus(),
-                                                                        requestBody.getAsOfTime(),
-                                                                        requestBody.getSequencingProperty(),
-                                                                        requestBody.getSequencingOrder(),
-                                                                        requestBody.getForLineage(),
-                                                                        requestBody.getForDuplicateProcessing(),
-                                                                        requestBody.getEffectiveTime(),
-                                                                        startFrom,
-                                                                        pageSize));
+                                                                        requestBody));
             }
             else
             {
@@ -555,21 +462,12 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElements(handler.findElementsInAnchorScope(userId,
                                                                        requestBody.getSearchString(),
                                                                        anchorScopeGUID,
-                                                                       requestBody.getTypeName(),
-                                                                       requestBody.getLimitResultsByStatus(),
-                                                                       requestBody.getAsOfTime(),
-                                                                       requestBody.getSequencingProperty(),
-                                                                       requestBody.getSequencingOrder(),
-                                                                       requestBody.getForLineage(),
-                                                                       requestBody.getForDuplicateProcessing(),
-                                                                       requestBody.getEffectiveTime(),
-                                                                       startFrom,
-                                                                       pageSize));
+                                                                       requestBody));
             }
             else
             {
@@ -627,40 +525,13 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setRelatedElementList(handler.getRelatedMetadataElements(userId,
-                                                                                  elementGUID,
-                                                                                  startingAtEnd,
-                                                                                  relationshipTypeName,
-                                                                                  requestBody.getLimitResultsByStatus(),
-                                                                                  requestBody.getAsOfTime(),
-                                                                                  requestBody.getSequencingProperty(),
-                                                                                  requestBody.getSequencingOrder(),
-                                                                                  requestBody.getForLineage(),
-                                                                                  requestBody.getForDuplicateProcessing(),
-                                                                                  requestBody.getEffectiveTime(),
-                                                                                  startFrom,
-                                                                                  pageSize));
-            }
-            else
-            {
-                response.setRelatedElementList(handler.getRelatedMetadataElements(userId,
-                                                                                  elementGUID,
-                                                                                  startingAtEnd,
-                                                                                  relationshipTypeName,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  SequencingOrder.CREATION_DATE_RECENT,
-                                                                                  false,
-                                                                                  false,
-                                                                                  null,
-                                                                                  startFrom,
-                                                                                  pageSize));
-            }
+            response.setRelatedElementList(handler.getRelatedMetadataElements(userId,
+                                                                              elementGUID,
+                                                                              startingAtEnd,
+                                                                              relationshipTypeName,
+                                                                              requestBody));
         }
         catch (Throwable error)
         {
@@ -677,7 +548,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
      *
      * @param serverName name of the server instances for this request
-     * @param viewServiceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param viewServiceURLMarker      the identifier of the view service
      * @param elementGUID  unique identifier for the element
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
@@ -693,7 +564,7 @@ public class MetadataExplorerRESTServices extends TokenController
                                                               String             elementGUID,
                                                               int                startFrom,
                                                               int                pageSize,
-                                                              AnyTimeRequestBody requestBody)
+                                                              ResultsRequestBody requestBody)
     {
         final String methodName    = "getAnchoredElementsGraph";
 
@@ -710,30 +581,9 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElementGraph(handler.getAnchoredElementsGraph(userId,
-                                                                          elementGUID,
-                                                                          requestBody.getForLineage(),
-                                                                          requestBody.getForDuplicateProcessing(),
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          requestBody.getAsOfTime(),
-                                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElementGraph(handler.getAnchoredElementsGraph(userId,
-                                                                          elementGUID,
-                                                                          false,
-                                                                          false,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          null,
-                                                                          new Date()));
-            }
+            response.setElementGraph(handler.getAnchoredElementsGraph(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -786,40 +636,13 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setRelationshipList(handler.getMetadataElementRelationships(userId,
-                                                                                     metadataElementAtEnd1GUID,
-                                                                                     metadataElementAtEnd2GUID,
-                                                                                     relationshipTypeName,
-                                                                                     requestBody.getLimitResultsByStatus(),
-                                                                                     requestBody.getAsOfTime(),
-                                                                                     requestBody.getSequencingProperty(),
-                                                                                     requestBody.getSequencingOrder(),
-                                                                                     requestBody.getForLineage(),
-                                                                                     requestBody.getForDuplicateProcessing(),
-                                                                                     requestBody.getEffectiveTime(),
-                                                                                     startFrom,
-                                                                                     pageSize));
-            }
-            else
-            {
-                response.setRelationshipList(handler.getMetadataElementRelationships(userId,
-                                                                                     metadataElementAtEnd1GUID,
-                                                                                     metadataElementAtEnd2GUID,
-                                                                                     relationshipTypeName,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     false,
-                                                                                     false,
-                                                                                     null,
-                                                                                     startFrom,
-                                                                                     pageSize));
-            }
+            response.setRelationshipList(handler.getMetadataElementRelationships(userId,
+                                                                                 metadataElementAtEnd1GUID,
+                                                                                 metadataElementAtEnd2GUID,
+                                                                                 relationshipTypeName,
+                                                                                 requestBody));
         }
         catch (Throwable error)
         {
@@ -868,22 +691,12 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElementList(handler.findMetadataElements(userId,
-                                                                     requestBody.getMetadataElementTypeName(),
-                                                                     requestBody.getMetadataElementSubtypeNames(),
                                                                      requestBody.getSearchProperties(),
-                                                                     requestBody.getLimitResultsByStatus(),
-                                                                     requestBody.getAsOfTime(),
                                                                      requestBody.getMatchClassifications(),
-                                                                     requestBody.getSequencingProperty(),
-                                                                     requestBody.getSequencingOrder(),
-                                                                     requestBody.getForLineage(),
-                                                                     requestBody.getForDuplicateProcessing(),
-                                                                     requestBody.getEffectiveTime(),
-                                                                     startFrom,
-                                                                     pageSize));
+                                                                     requestBody));
             }
             else
             {
@@ -937,20 +750,12 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setRelationshipList(handler.findRelationshipsBetweenMetadataElements(userId,
                                                                                               requestBody.getRelationshipTypeName(),
                                                                                               requestBody.getSearchProperties(),
-                                                                                              requestBody.getLimitResultsByStatus(),
-                                                                                              requestBody.getAsOfTime(),
-                                                                                              requestBody.getSequencingProperty(),
-                                                                                              requestBody.getSequencingOrder(),
-                                                                                              requestBody.getForLineage(),
-                                                                                              requestBody.getForDuplicateProcessing(),
-                                                                                              requestBody.getEffectiveTime(),
-                                                                                              startFrom,
-                                                                                              pageSize));
+                                                                                              requestBody));
             }
             else
             {
@@ -985,7 +790,7 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataRelationshipResponse getRelationshipByGUID(String             serverName,
                                                                   String             relationshipGUID,
                                                                   String             viewServiceURLMarker,
-                                                                  AnyTimeRequestBody requestBody)
+                                                                  GetRequestBody requestBody)
     {
         final String methodName = "getRelationshipByGUID";
         final String guidParameterName = "relationshipGUID";
@@ -1003,26 +808,9 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getRelationshipByGUID(userId,
-                                                                  relationshipGUID,
-                                                                  requestBody.getForLineage(),
-                                                                  requestBody.getForDuplicateProcessing(),
-                                                                  requestBody.getAsOfTime(),
-                                                                  requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getRelationshipByGUID(userId,
-                                                                  relationshipGUID,
-                                                                  false,
-                                                                  false,
-                                                                  null,
-                                                                  new Date()));
-            }
+            response.setElement(handler.getRelationshipByGUID(userId, relationshipGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -1043,7 +831,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param viewServiceURLMarker  view service URL marker
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param oldestFirst  defining how the results should be ordered.
      * @param requestBody the time window required
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -1056,7 +843,6 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                        String             viewServiceURLMarker,
                                                                        int                startFrom,
                                                                        int                pageSize,
-                                                                       boolean            oldestFirst,
                                                                        HistoryRequestBody requestBody)
     {
         final String methodName = "getRelationshipHistory";
@@ -1074,34 +860,9 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setRelationshipList(handler.getRelationshipHistory(userId,
-                                                                            relationshipGUID,
-                                                                            requestBody.getFromTime(),
-                                                                            requestBody.getToTime(),
-                                                                            oldestFirst,
-                                                                            requestBody.getForLineage(),
-                                                                            requestBody.getForDuplicateProcessing(),
-                                                                            requestBody.getEffectiveTime(),
-                                                                            startFrom,
-                                                                            pageSize));
-            }
-            else
-            {
-                response.setRelationshipList(handler.getRelationshipHistory(userId,
-                                                                            relationshipGUID,
-                                                                            null,
-                                                                            null,
-                                                                            oldestFirst,
-                                                                            false,
-                                                                            false,
-                                                                            null,
-                                                                            startFrom,
-                                                                            pageSize));
-            }
+            response.setRelationshipList(handler.getRelationshipHistory(userId, relationshipGUID, requestBody));
         }
         catch (Throwable error)
         {

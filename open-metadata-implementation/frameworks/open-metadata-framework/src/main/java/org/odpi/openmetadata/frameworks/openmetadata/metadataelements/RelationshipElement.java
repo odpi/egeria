@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Objects;
 
@@ -21,9 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelationshipElement
 {
-    private ElementHeader          relationshipHeader     = null;
-    private RelationshipProperties relationshipProperties = null;
-    private ElementStub            end1                   = null;
+    private ElementHeader              relationshipHeader     = null;
+    private RelationshipBeanProperties relationshipProperties = null;
+    private ElementStub                end1                   = null;
     private ElementStub            end2                   = null;
 
     /**
@@ -79,7 +79,7 @@ public class RelationshipElement
      *
      * @return relationship properties
      */
-    public RelationshipProperties getRelationshipProperties()
+    public RelationshipBeanProperties getRelationshipProperties()
     {
         return relationshipProperties;
     }
@@ -90,7 +90,7 @@ public class RelationshipElement
      *
      * @param relationshipProperties relationship properties
      */
-    public void setRelationshipProperties(RelationshipProperties relationshipProperties)
+    public void setRelationshipProperties(RelationshipBeanProperties relationshipProperties)
     {
         this.relationshipProperties = relationshipProperties;
     }

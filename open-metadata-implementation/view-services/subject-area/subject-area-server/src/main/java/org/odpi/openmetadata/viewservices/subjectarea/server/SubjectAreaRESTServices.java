@@ -8,15 +8,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SubjectAreaHandler;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SubjectAreaHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaDefinitionProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -73,43 +68,17 @@ public class SubjectAreaRESTServices extends TokenController
             {
                 SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
 
-                if (requestBody.getProperties() instanceof SubjectAreaProperties subjectAreaProperties)
+                if (requestBody.getProperties() instanceof SubjectAreaDefinitionProperties subjectAreaDefinitionProperties)
                 {
                     response.setGUID(handler.createSubjectArea(userId,
-                                                               requestBody.getExternalSourceGUID(),
-                                                               requestBody.getExternalSourceName(),
-                                                               requestBody.getAnchorGUID(),
-                                                               requestBody.getIsOwnAnchor(),
-                                                               requestBody.getAnchorScopeGUID(),
-                                                               subjectAreaProperties,
-                                                               requestBody.getParentGUID(),
-                                                               requestBody.getParentRelationshipTypeName(),
-                                                               requestBody.getParentRelationshipProperties(),
-                                                               requestBody.getParentAtEnd1(),
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getEffectiveTime()));
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    response.setGUID(handler.createSubjectArea(userId,
-                                                               requestBody.getExternalSourceGUID(),
-                                                               requestBody.getExternalSourceName(),
-                                                               requestBody.getAnchorGUID(),
-                                                               requestBody.getIsOwnAnchor(),
-                                                               requestBody.getAnchorScopeGUID(),
-                                                               null,
-                                                               requestBody.getParentGUID(),
-                                                               requestBody.getParentRelationshipTypeName(),
-                                                               requestBody.getParentRelationshipProperties(),
-                                                               requestBody.getParentAtEnd1(),
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getEffectiveTime()));
+                                                               requestBody,
+                                                               requestBody.getInitialClassifications(),
+                                                               subjectAreaDefinitionProperties,
+                                                               requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaDefinitionProperties.class.getName(), methodName);
                 }
             }
             else
@@ -163,23 +132,11 @@ public class SubjectAreaRESTServices extends TokenController
                 SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
 
                 response.setGUID(handler.createSubjectAreaFromTemplate(userId,
-                                                                       requestBody.getExternalSourceGUID(),
-                                                                       requestBody.getExternalSourceName(),
-                                                                       requestBody.getAnchorGUID(),
-                                                                       requestBody.getIsOwnAnchor(),
-                                                                       requestBody.getAnchorScopeGUID(),
-                                                                       null,
-                                                                       null,
+                                                                       requestBody,
                                                                        requestBody.getTemplateGUID(),
                                                                        requestBody.getReplacementProperties(),
                                                                        requestBody.getPlaceholderPropertyValues(),
-                                                                       requestBody.getParentGUID(),
-                                                                       requestBody.getParentRelationshipTypeName(),
-                                                                       requestBody.getParentRelationshipProperties(),
-                                                                       requestBody.getParentAtEnd1(),
-                                                                       requestBody.getForLineage(),
-                                                                       requestBody.getForDuplicateProcessing(),
-                                                                       requestBody.getEffectiveTime()));
+                                                                       requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -201,8 +158,6 @@ public class SubjectAreaRESTServices extends TokenController
      *
      * @param serverName         name of called server.
      * @param subjectAreaGUID unique identifier of the data structure (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -212,7 +167,6 @@ public class SubjectAreaRESTServices extends TokenController
      */
     public VoidResponse updateSubjectArea(String                   serverName,
                                           String                   subjectAreaGUID,
-                                          boolean                  replaceAllProperties,
                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateSubjectArea";
@@ -234,33 +188,17 @@ public class SubjectAreaRESTServices extends TokenController
             {
                 SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
 
-                if (requestBody.getProperties() instanceof SubjectAreaProperties subjectAreaProperties)
+                if (requestBody.getProperties() instanceof SubjectAreaDefinitionProperties subjectAreaDefinitionProperties)
                 {
-                    handler.updateSubjectArea(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
-                                              subjectAreaGUID,
-                                              replaceAllProperties,
-                                              subjectAreaProperties,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
+                    handler.updateSubjectArea(userId, subjectAreaGUID, requestBody, subjectAreaDefinitionProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.updateSubjectArea(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
-                                              subjectAreaGUID,
-                                              replaceAllProperties,
-                                              null,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
+                    handler.updateSubjectArea(userId, subjectAreaGUID, requestBody, null);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaDefinitionProperties.class.getName(), methodName);
                 }
             }
             else
@@ -294,7 +232,7 @@ public class SubjectAreaRESTServices extends TokenController
     public VoidResponse linkSubjectAreas(String                  serverName,
                                          String                  subjectAreaGUID,
                                          String                  nestedSubjectAreaGUID,
-                                         RelationshipRequestBody requestBody)
+                                         NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkSubjectAreas";
 
@@ -315,26 +253,18 @@ public class SubjectAreaRESTServices extends TokenController
             if (requestBody != null)
             {
                 handler.linkSubjectAreas(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
                                          subjectAreaGUID,
                                          nestedSubjectAreaGUID,
-                                         requestBody.getProperties(),
-                                         requestBody.getForLineage(),
-                                         requestBody.getForDuplicateProcessing(),
-                                         requestBody.getEffectiveTime());
+                                         requestBody,
+                                         requestBody.getProperties());
             }
             else
             {
                 handler.linkSubjectAreas(userId,
-                                         null,
-                                         null,
                                          subjectAreaGUID,
                                          nestedSubjectAreaGUID,
                                          null,
-                                         false,
-                                         false,
-                                         new Date());
+                                         null);
             }
         }
         catch (Throwable error)
@@ -360,10 +290,10 @@ public class SubjectAreaRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSubjectAreas(String                    serverName,
-                                           String                    subjectAreaGUID,
-                                           String                    dataFieldGUID,
-                                           MetadataSourceRequestBody requestBody)
+    public VoidResponse detachSubjectAreas(String                   serverName,
+                                           String                   subjectAreaGUID,
+                                           String                   dataFieldGUID,
+                                           DeleteRequestBody requestBody)
     {
         final String methodName = "detachSubjectAreas";
 
@@ -382,28 +312,7 @@ public class SubjectAreaRESTServices extends TokenController
 
             SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachSubjectAreas(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
-                                           subjectAreaGUID,
-                                           dataFieldGUID,
-                                           requestBody.getForLineage(),
-                                           requestBody.getForDuplicateProcessing(),
-                                           requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachSubjectAreas(userId,
-                                           null,
-                                           null,
-                                           subjectAreaGUID,
-                                           dataFieldGUID,
-                                           false,
-                                           false,
-                                           new Date());
-            }
+            handler.detachSubjectAreas(userId, subjectAreaGUID, dataFieldGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -420,7 +329,6 @@ public class SubjectAreaRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param subjectAreaGUID  unique identifier of the element to delete
-     * @param cascadedDelete can data structures be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -428,10 +336,9 @@ public class SubjectAreaRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteSubjectArea(String                    serverName,
-                                          String                    subjectAreaGUID,
-                                          boolean                   cascadedDelete,
-                                          MetadataSourceRequestBody requestBody)
+    public VoidResponse deleteSubjectArea(String                   serverName,
+                                          String                   subjectAreaGUID,
+                                          DeleteRequestBody requestBody)
     {
         final String methodName = "deleteSubjectArea";
 
@@ -450,28 +357,7 @@ public class SubjectAreaRESTServices extends TokenController
 
             SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteSubjectArea(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          subjectAreaGUID,
-                                          cascadedDelete,
-                                          requestBody.getForLineage(),
-                                          requestBody.getForDuplicateProcessing(),
-                                          requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteSubjectArea(userId,
-                                          null,
-                                          null,
-                                          subjectAreaGUID,
-                                          cascadedDelete,
-                                          false,
-                                          false,
-                                          new Date());
-            }
+            handler.deleteSubjectArea(userId, subjectAreaGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -487,8 +373,6 @@ public class SubjectAreaRESTServices extends TokenController
      * Retrieve the list of data structure metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -496,17 +380,15 @@ public class SubjectAreaRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SubjectAreasResponse getSubjectAreasByName(String            serverName,
-                                                      int               startFrom,
-                                                      int               pageSize,
-                                                      FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getSubjectAreasByName(String            serverName,
+                                                                  FilterRequestBody requestBody)
     {
         final String methodName = "getSubjectAreasByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SubjectAreasResponse response = new SubjectAreasResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -520,18 +402,7 @@ public class SubjectAreaRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getSubjectAreasByName(userId,
-                                                                   requestBody.getFilter(),
-                                                                   requestBody.getTemplateFilter(),
-                                                                   requestBody.getLimitResultsByStatus(),
-                                                                   requestBody.getAsOfTime(),
-                                                                   requestBody.getSequencingOrder(),
-                                                                   requestBody.getSequencingProperty(),
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   requestBody.getForLineage(),
-                                                                   requestBody.getForDuplicateProcessing(),
-                                                                   requestBody.getEffectiveTime()));
+                response.setElements(handler.getSubjectAreasByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -560,16 +431,16 @@ public class SubjectAreaRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SubjectAreaResponse getSubjectAreaByGUID(String             serverName,
-                                                    String             subjectAreaGUID,
-                                                    AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getSubjectAreaByGUID(String             serverName,
+                                                                String             subjectAreaGUID,
+                                                                GetRequestBody requestBody)
     {
         final String methodName = "getSubjectAreaByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SubjectAreaResponse response = new SubjectAreaResponse();
-        AuditLog                      auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -581,24 +452,7 @@ public class SubjectAreaRESTServices extends TokenController
 
             SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getSubjectAreaByGUID(userId,
-                                                                 subjectAreaGUID,
-                                                                 requestBody.getAsOfTime(),
-                                                                 requestBody.getForLineage(),
-                                                                 requestBody.getForDuplicateProcessing(),
-                                                                 requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getSubjectAreaByGUID(userId,
-                                                                 subjectAreaGUID,
-                                                                 null,
-                                                                 false,
-                                                                 false,
-                                                                 new Date()));
-            }
+            response.setElement(handler.getSubjectAreaByGUID(userId, subjectAreaGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -614,11 +468,6 @@ public class SubjectAreaRESTServices extends TokenController
      * Retrieve the list of data structure metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -626,20 +475,15 @@ public class SubjectAreaRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SubjectAreasResponse findSubjectAreas(String            serverName,
-                                                 boolean           startsWith,
-                                                 boolean           endsWith,
-                                                 boolean           ignoreCase,
-                                                 int               startFrom,
-                                                 int               pageSize,
-                                                 FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findSubjectAreas(String                  serverName,
+                                                             SearchStringRequestBody requestBody)
     {
         final String methodName = "findSubjectAreas";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SubjectAreasResponse response = new SubjectAreasResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -654,32 +498,12 @@ public class SubjectAreaRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.findSubjectAreas(userId,
-                                                              instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                              requestBody.getTemplateFilter(),
-                                                              requestBody.getLimitResultsByStatus(),
-                                                              requestBody.getAsOfTime(),
-                                                              requestBody.getSequencingOrder(),
-                                                              requestBody.getSequencingProperty(),
-                                                              startFrom,
-                                                              pageSize,
-                                                              requestBody.getForLineage(),
-                                                              requestBody.getForDuplicateProcessing(),
-                                                              requestBody.getEffectiveTime()));
+                                                              requestBody.getSearchString(),
+                                                              requestBody));
             }
             else
             {
-                response.setElements(handler.findSubjectAreas(userId,
-                                                              instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                              TemplateFilter.ALL,
-                                                              null,
-                                                              null,
-                                                              SequencingOrder.CREATION_DATE_RECENT,
-                                                              null,
-                                                              startFrom,
-                                                              pageSize,
-                                                              false,
-                                                              false,
-                                                              new Date()));
+                response.setElements(handler.findSubjectAreas(userId, null, null));
             }
         }
         catch (Throwable error)

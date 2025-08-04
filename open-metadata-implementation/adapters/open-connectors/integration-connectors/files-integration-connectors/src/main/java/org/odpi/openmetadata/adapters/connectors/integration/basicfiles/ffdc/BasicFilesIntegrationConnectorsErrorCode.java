@@ -54,10 +54,10 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
 
     /**
      * BASIC-FILES-INTEGRATION-CONNECTORS-400-004 - An unexpected {0} exception was returned to the {1} integration
-     * connector by the Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}
+     * connector by the {2} method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}
      */
     UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-004",
-                                                  "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
+                                                  "An unexpected {0} exception was returned to the {1} integration connector by the {2} " +
                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
                                                   "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
                                                   "Use the message in the nested exception to determine the root cause of the error. Once this is " +
@@ -100,24 +100,24 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
 
     /**
      * BASIC-FILES-INTEGRATION-CONNECTORS-500-003 - An unexpected {0} exception was returned to the {1}
-     * integration connector by the Files Integrator OMIS {2} method when trying to retrieve the FileFolder
+     * integration connector by the {2} method when trying to retrieve the FileFolder
      * asset {3}.  The error message was {4}
      */
     UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-003",
              "An unexpected {0} exception was returned to the {1} integration connector by the " +
-                     "Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset {3}.  The error message was {4}",
+                     "{2} method when trying to retrieve the FileFolder asset {3}.  The error message was {4}",
              "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
                      "perform error handling since this is likely to be a logic error.",
              "Use the message in the nested exception to determine the root cause of the error. Report the situation to the Egeria community."),
 
     /**
      * BASIC-FILES-INTEGRATION-CONNECTORS-500-004 - An unexpected {0} exception was returned to the {1}
-     * integration connector by the Files Integrator OMIS {2} method when trying to retrieve the catalog
+     * integration connector by the {2} method when trying to retrieve the catalog
      * targets for connector {3}.  The error message was {4}
      */
     UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-004",
              "An unexpected {0} exception was returned to the {1} integration connector by the " +
-                              "Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}",
+                              "{2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}",
              "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
                                                      "perform error handling since this is likely to be a set up error. This exception is not expected if there are no catalog targets.",
              "Use the message in the nested exception to determine the root cause of the error. Fix the configuration error and restart the connector."),

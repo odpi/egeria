@@ -73,7 +73,8 @@ public class CommentConverter<B> extends OpenMetadataConverterBase<B>
 
                     properties.setQualifiedName(this.removeQualifiedName(elementProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-                    properties.setCommentText(this.removeCommentText(elementProperties));
+                    properties.setDisplayName(this.removeDisplayName(elementProperties));
+                    properties.setDescription(this.removeDescription(elementProperties));
                     properties.setCommentType(this.removeCommentType(elementProperties));
                     properties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
                     properties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
@@ -104,32 +105,4 @@ public class CommentConverter<B> extends OpenMetadataConverterBase<B>
     }
 
 
-    /**
-     * Extract and delete the CommentType property from the supplied element properties.
-     *
-     * @param elementProperties properties from entity
-     * @return enum
-     */
-    CommentType removeCommentType(ElementProperties elementProperties)
-    {
-        final String methodName = "removeCommentType";
-
-        if (elementProperties != null)
-        {
-            String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
-                                                                         OpenMetadataProperty.COMMENT_TYPE.name,
-                                                                         elementProperties,
-                                                                         methodName);
-
-            for (CommentType commentType : CommentType.values())
-            {
-                if (commentType.getName().equals(retrievedProperty))
-                {
-                    return commentType;
-                }
-            }
-        }
-
-        return null;
-    }
 }

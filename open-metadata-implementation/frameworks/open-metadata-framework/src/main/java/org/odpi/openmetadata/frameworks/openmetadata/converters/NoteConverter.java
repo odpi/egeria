@@ -71,8 +71,8 @@ public class NoteConverter<B> extends OpenMetadataConverterBase<B>
 
                     properties.setQualifiedName(this.removeQualifiedName(elementProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-                    properties.setText(this.removeText(elementProperties));
-                    properties.setTitle(this.removeTitle(elementProperties));
+                    properties.setDescription(this.removeDescription(elementProperties));
+                    properties.setDisplayName(this.removeDisplayName(elementProperties));
                     properties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
                     properties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
 

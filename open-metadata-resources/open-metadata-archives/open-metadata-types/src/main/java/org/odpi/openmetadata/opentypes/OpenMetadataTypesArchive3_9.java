@@ -176,7 +176,6 @@ public class OpenMetadataTypesArchive3_9
         this.archiveBuilder.addTypeDefPatch(updateExternalReferenceLinkRelationship());
         this.archiveBuilder.addTypeDefPatch(updateMediaReferenceRelationship());
         this.archiveBuilder.addTypeDefPatch(updateRelatedMediaEntity());
-        this.archiveBuilder.addTypeDefPatch(updateExternalReferenceEntity());
     }
 
     private TypeDefPatch updateExternalReferenceLinkRelationship()
@@ -194,7 +193,7 @@ public class OpenMetadataTypesArchive3_9
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PAGES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -248,48 +247,6 @@ public class OpenMetadataTypesArchive3_9
         return typeDefPatch;
     }
 
-    private TypeDefPatch updateExternalReferenceEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_REFERENCE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFERENCE_TITLE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFERENCE_ABSTRACT));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AUTHORS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NUMBER_OF_PAGES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PAGE_RANGE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORGANIZATION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES_VOLUME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EDITION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFERENCE_VERSION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.URL));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLISHER));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FIRST_PUB_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_CITY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_YEAR));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_NUMBERS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LICENSE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COPYRIGHT));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTRIBUTION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
     /*

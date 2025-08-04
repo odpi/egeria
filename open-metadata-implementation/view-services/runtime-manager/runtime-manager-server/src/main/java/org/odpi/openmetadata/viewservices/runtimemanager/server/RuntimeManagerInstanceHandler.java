@@ -3,15 +3,14 @@
 package org.odpi.openmetadata.viewservices.runtimemanager.server;
 
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectedAssetClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 
 
 /**
@@ -33,7 +32,7 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns the object for the tenant to use to work with the IT Infrastructure API.
+     * This method returns the object for the tenant to use to work with software platforms.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -43,9 +42,9 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public PlatformManagerClient getPlatformManagerClient(String userId,
-                                                          String serverName,
-                                                          String serviceOperationName) throws InvalidParameterException,
+    public AssetHandler getSoftwarePlatformHandler(String userId,
+                                                   String serverName,
+                                                   String serviceOperationName) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
@@ -53,7 +52,7 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getPlatformManagerClient();
+            return instance.getSoftwarePlatformHandler();
         }
 
         return null;
@@ -63,7 +62,7 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns the object for the tenant to use to work with the IT Infrastructure API.
+     * This method returns the object for the tenant to use to work with software servers.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -73,9 +72,9 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public ServerManagerClient getServerManagerClient(String userId,
-                                                      String serverName,
-                                                      String serviceOperationName) throws InvalidParameterException,
+    public AssetHandler getSoftwareServerHandler(String userId,
+                                                 String serverName,
+                                                 String serviceOperationName) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
@@ -83,7 +82,7 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getServerManagerClient();
+            return instance.getSoftwareServerHandler();
         }
 
         return null;
@@ -130,9 +129,9 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient(String userId,
-                                                              String serverName,
-                                                              String serviceOperationName) throws InvalidParameterException,
+    public OpenMetadataClient getOpenMetadataClient(String userId,
+                                                    String serverName,
+                                                    String serviceOperationName) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
@@ -140,7 +139,7 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getOpenMetadataStoreClient();
+            return instance.getOpenMetadataClient();
         }
 
         return null;

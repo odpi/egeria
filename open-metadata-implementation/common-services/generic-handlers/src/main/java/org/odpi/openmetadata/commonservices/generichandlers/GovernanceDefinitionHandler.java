@@ -868,7 +868,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.TITLE.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         String typeName = OpenMetadataType.GOVERNANCE_DEFINITION.typeName;
 

@@ -4,53 +4,36 @@ package org.odpi.openmetadata.adapters.connectors.apacheatlas.survey;
 
 
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTConnector;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasAttributeDef;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasBusinessMetadataDef;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasCardinality;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasClassification;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasClassificationDef;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntityDef;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntityHeader;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntityWithExtInfo;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasMetrics;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasMetricsGeneral;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasMetricsTag;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasRelationship;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasRelationshipDef;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasRelationshipEndDef;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasStructDef;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasTypesDef;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasVersion;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.*;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasMetric;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSurveyAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSurveyErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.SchemaAttributes;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceMeasureAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.SchemaAnalysisAnnotation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This connector builds a profile of the types and instances in an Apache Atlas server.
@@ -78,17 +61,18 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * be sure to call super.start() in your version.
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
         final String methodName = "start";
 
-        if (connectionDetails.getConfigurationProperties() != null)
+        if (connectionBean.getConfigurationProperties() != null)
         {
-            Object finalAnalysisStepPropertyObject = connectionDetails.getConfigurationProperties().get(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
+            Object finalAnalysisStepPropertyObject = connectionBean.getConfigurationProperties().get(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
 
             if (finalAnalysisStepPropertyObject != null)
             {
@@ -126,7 +110,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                             OpenMetadataType.SOFTWARE_SERVER.typeName);
 
             ApacheAtlasRESTConnector atlasConnector = (ApacheAtlasRESTConnector)connector;
-            AssetUniverse assetUniverse = assetStore.getAssetProperties();
+            AssetElement             assetUniverse  = assetStore.getAssetProperties();
 
 
             AnnotationStore   annotationStore   = surveyContext.getAnnotationStore();
@@ -219,19 +203,19 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 /*
                  * Load the existing schema attributes representing the Atlas types.
                  */
-                if ((assetUniverse != null) && (assetUniverse.getRootSchemaType() != null))
+                OpenMetadataRootElement rootSchemaType = super.getRootSchemaType(assetUniverse, OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName);
+
+                if ((rootSchemaType != null) && (rootSchemaType.getSchemaAttributes() != null))
                 {
-                    if (assetUniverse.getRootSchemaType() instanceof NestedSchemaType graphSchemaType)
+                    for (RelatedMetadataElementSummary schemaAttribute : rootSchemaType.getSchemaAttributes())
                     {
-                        SchemaAttributes existingTypeSchemaAttributes = graphSchemaType.getSchemaAttributes();
-
-                        if (existingTypeSchemaAttributes != null)
+                        if (schemaAttribute != null)
                         {
-                            while (existingTypeSchemaAttributes.hasNext())
-                            {
-                                SchemaAttribute existingType = existingTypeSchemaAttributes.next();
+                            String schemaAttributeDisplayName = schemaAttribute.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
 
-                                typeNameToDataFieldGUIDMap.put(existingType.getDisplayName(), existingType.getGUID());
+                            if (schemaAttributeDisplayName != null)
+                            {
+                                typeNameToDataFieldGUIDMap.put(schemaAttributeDisplayName, schemaAttribute.getRelatedElement().getElementHeader().getGUID());
                             }
                         }
                     }
@@ -720,7 +704,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws ConnectorCheckedException the connector is not able to process because the existing asset information is invalid
      */
     private void upsertRootSchemaType(String            assetGUID,
-                                      AssetUniverse     assetUniverse,
+                                      AssetElement      assetUniverse,
                                       OpenMetadataStore openMetadataStore) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException,
@@ -735,7 +719,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 /*
                  * The root schema type is already in place - check it is of the correct type.
                  */
-                if (propertyHelper.isTypeOf(assetUniverse.getRootSchemaType(), OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName))
+                if (propertyHelper.isTypeOf(assetUniverse.getRootSchemaType().getRelatedElement().getElementHeader(), OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName))
                 {
                     /*
                      * The root schema type is already defined and set up.
@@ -750,14 +734,14 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 {
                     auditLog.logMessage(methodName,
                                         AtlasSurveyAuditCode.WRONG_ROOT_SCHEMA_TYPE.getMessageDefinition(assetGUID,
-                                                                                                         assetUniverse.getRootSchemaType().getType().getTypeName(),
+                                                                                                         assetUniverse.getRootSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
                                                                                                          OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName,
                                                                                                          surveyActionServiceName,
                                                                                                          assetUniverse.getRootSchemaType().toString()));
                 }
 
                 throw new ConnectorCheckedException(AtlasSurveyErrorCode.WRONG_ROOT_SCHEMA_TYPE.getMessageDefinition(assetGUID,
-                                                                                                                     assetUniverse.getRootSchemaType().getType().getTypeName(),
+                                                                                                                     assetUniverse.getRootSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
                                                                                                                      OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName,
                                                                                                                      surveyActionServiceName,
                                                                                                                      assetUniverse.getRootSchemaType().toString()),
@@ -769,31 +753,35 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 /*
                  * The root schema type is not set up yet.
                  */
-                ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                assetUniverse.getQualifiedName() + "_rootSchemaType");
+                if (assetUniverse.getProperties() instanceof AssetProperties assetProperties)
+                {
+                    ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                    assetProperties.getQualifiedName() + "_rootSchemaType");
 
-                properties = propertyHelper.addStringProperty(properties,
-                                                              OpenMetadataProperty.DISPLAY_NAME.name,
-                                                              "Root schema type for " + assetUniverse.getResourceName());
+                    properties = propertyHelper.addStringProperty(properties,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                  "Root schema type for " + assetProperties.getResourceName());
 
-                properties = propertyHelper.addStringProperty(properties,
-                                                              OpenMetadataProperty.DESCRIPTION.name,
-                                                              "Graph schema showing the Apache Atlas Types and how they link together.");
+                    properties = propertyHelper.addStringProperty(properties,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                  "Graph schema showing the Apache Atlas Types and how they link together.");
 
-                openMetadataStore.createMetadataElementInStore(OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName,
-                                                               ElementStatus.ACTIVE,
-                                                               null,
-                                                               assetGUID,
-                                                               false,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               properties,
-                                                               assetGUID,
-                                                               OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
-                                                               null,
-                                                               true);
+                    NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
+
+                    newElementOptions.setOpenMetadataTypeName(OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName);
+                    newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+                    newElementOptions.setAnchorGUID(assetGUID);
+                    newElementOptions.setIsOwnAnchor(false);
+                    newElementOptions.setParentGUID(assetGUID);
+                    newElementOptions.setParentAtEnd1(true);
+                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName);
+
+                    openMetadataStore.createMetadataElementInStore(newElementOptions,
+                                                                   null,
+                                                                   new NewElementProperties(properties),
+                                                                   null);
+                }
             }
         }
         else
@@ -824,7 +812,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws PropertyServerException there was a problem  adding the data field to the Annotation store.
      */
     private void getSchemaAttributeForAtlasEntityDef(AtlasEntityDef    atlasEntityDef,
-                                                     AssetUniverse     assetUniverse,
+                                                     AssetElement      assetUniverse,
                                                      OpenMetadataStore openMetadataStore) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -849,7 +837,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws PropertyServerException there was a problem  adding the schema attribute to the open metadata repository.
      */
     private void getSchemaAttributeForAtlasClassificationDef(AtlasClassificationDef atlasClassificationDef,
-                                                             AssetUniverse          assetUniverse,
+                                                             AssetElement           assetUniverse,
                                                              OpenMetadataStore      openMetadataStore) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException
@@ -890,7 +878,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws PropertyServerException there was a problem  adding the schema attribute to the open metadata repository.
      */
     private void getSchemaAttributeForAtlasBusinessMetadataDef(AtlasBusinessMetadataDef atlasBusinessMetadataDef,
-                                                               AssetUniverse            assetUniverse,
+                                                               AssetElement             assetUniverse,
                                                                OpenMetadataStore        openMetadataStore) throws InvalidParameterException,
                                                                                                                 PropertyServerException,
                                                                                                                 UserNotAuthorizedException
@@ -915,7 +903,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws PropertyServerException there was a problem  adding the schema attribute to the open metadata repository.
      */
     private void getSchemaAttributeForAtlasRelationshipDef(AtlasRelationshipDef     atlasRelationshipDef,
-                                                           AssetUniverse            assetUniverse,
+                                                           AssetElement             assetUniverse,
                                                            OpenMetadataStore        openMetadataStore) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException
@@ -953,7 +941,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
         if (endDef != null)
         {
             ElementProperties linkProperties = propertyHelper.addStringProperty(null,
-                                                                                OpenMetadataProperty.NAME.name,
+                                                                                OpenMetadataProperty.LINK_TYPE_NAME.name,
                                                                                 endDef.getName());
             linkProperties = propertyHelper.addStringProperty(linkProperties,
                                                               OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name,
@@ -1009,7 +997,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws PropertyServerException there was a problem  adding the data field to the Annotation store.
      */
     private String getSchemaAttributeForTypeDef(String                   openMetadataTypeName,
-                                                AssetUniverse            assetUniverse,
+                                                AssetElement            assetUniverse,
                                                 AtlasStructDef           atlasTypeDef,
                                                 String                   atlasCategoryName,
                                                 Set<String>              atlasSuperTypes,
@@ -1026,74 +1014,79 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 /*
                  * This is a new type
                  */
-                String qualifiedName = assetUniverse.getQualifiedName() + "_" + atlasCategoryName + "_" + atlasTypeDef.getName();
-                ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                       qualifiedName);
+                if (assetUniverse.getProperties() instanceof AssetProperties assetProperties)
+                {
+                    String qualifiedName = assetProperties.getQualifiedName() + "_" + atlasCategoryName + "_" + atlasTypeDef.getName();
+                    ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                           qualifiedName);
 
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                     atlasTypeDef.getName());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                         atlasTypeDef.getName());
 
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.DESCRIPTION.name,
-                                                                     atlasTypeDef.getDescription());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DESCRIPTION.name,
+                                                                         atlasTypeDef.getDescription());
 
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.DESCRIPTION.name,
-                                                                     atlasTypeDef.getDescription());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DESCRIPTION.name,
+                                                                         atlasTypeDef.getDescription());
 
-                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
-                                                                          OpenMetadataProperty.ALIASES.name,
-                                                                          new ArrayList<>(atlasSuperTypes));
+                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                              OpenMetadataProperty.ALIASES.name,
+                                                                              new ArrayList<>(atlasSuperTypes));
 
 
-                ElementProperties typeProperties = propertyHelper.addStringProperty(null,
-                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                    qualifiedName + "_type");
+                    ElementProperties typeProperties = propertyHelper.addStringProperty(null,
+                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                        qualifiedName + "_type");
 
-                typeProperties = propertyHelper.addStringProperty(typeProperties,
-                                                                  OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
-                                                                  OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName);
+                    typeProperties = propertyHelper.addStringProperty(typeProperties,
+                                                                      OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
+                                                                      OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName);
 
-                typeProperties = propertyHelper.addStringProperty(typeProperties,
-                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                  atlasCategoryName);
+                    typeProperties = propertyHelper.addStringProperty(typeProperties,
+                                                                      OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                      atlasCategoryName);
 
-                typeProperties = propertyHelper.addStringProperty(typeProperties,
-                                                                  OpenMetadataProperty.NAMESPACE.name,
-                                                                  atlasTypeDef.getServiceType());
+                    typeProperties = propertyHelper.addStringProperty(typeProperties,
+                                                                      OpenMetadataProperty.NAMESPACE.name,
+                                                                      atlasTypeDef.getServiceType());
 
-                typeProperties = propertyHelper.addStringProperty(typeProperties,
-                                                                  OpenMetadataProperty.VERSION_IDENTIFIER.name,
-                                                                  atlasTypeDef.getTypeVersion());
+                    typeProperties = propertyHelper.addStringProperty(typeProperties,
+                                                                      OpenMetadataProperty.VERSION_IDENTIFIER.name,
+                                                                      atlasTypeDef.getTypeVersion());
 
-                Map<String, ElementProperties> initialClassifications = new HashMap<>();
+                    Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
-                initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
-                                           typeProperties);
+                    initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
+                                               new NewElementProperties(typeProperties));
 
-                typeAttributeGUID = openMetadataStore.createMetadataElementInStore(openMetadataTypeName,
-                                                                                   ElementStatus.ACTIVE,
-                                                                                   initialClassifications,
-                                                                                   assetUniverse.getGUID(),
-                                                                                   false,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   elementProperties,
-                                                                                   assetUniverse.getRootSchemaType().getGUID(),
-                                                                                   OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
-                                                                                   null,
-                                                                                   true);
+                    NewElementOptions newElementOptions = new NewElementOptions();
 
-                typeNameToDataFieldGUIDMap.put(atlasTypeDef.getName(), typeAttributeGUID);
+                    newElementOptions.setOpenMetadataTypeName(openMetadataTypeName);
+                    newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+                    newElementOptions.setAnchorGUID(assetUniverse.getElementHeader().getGUID());
+                    newElementOptions.setIsOwnAnchor(false);
 
-                this.setUpAttributeSchemaAttributes(typeAttributeGUID,
-                                                    qualifiedName,
-                                                    assetUniverse.getGUID(),
-                                                    atlasTypeDef.getAttributeDefs(),
-                                                    openMetadataStore);
+                    newElementOptions.setParentGUID(assetUniverse.getRootSchemaType().getRelatedElement().getElementHeader().getGUID());
+                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
+                    newElementOptions.setParentAtEnd1(true);
+
+                    typeAttributeGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+                                                                                       initialClassifications,
+                                                                                       new NewElementProperties(elementProperties),
+                                                                                       null);
+
+                    typeNameToDataFieldGUIDMap.put(atlasTypeDef.getName(), typeAttributeGUID);
+
+                    this.setUpAttributeSchemaAttributes(typeAttributeGUID,
+                                                        qualifiedName,
+                                                        assetUniverse.getElementHeader().getGUID(),
+                                                        atlasTypeDef.getAttributeDefs(),
+                                                        openMetadataStore);
+                }
             }
 
             return typeAttributeGUID;
@@ -1179,7 +1172,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                OpenMetadataProperty.POSITION.name,
                                                                0);
 
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+        Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
                                                                                       OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
@@ -1194,21 +1187,24 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                     attributeDef.getDefaultValue());
 
         initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
-                                   classificationProperties);
+                                   new NewElementProperties(classificationProperties));
 
-        String schemaAttributeGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                                                    ElementStatus.ACTIVE,
+        NewElementOptions newElementOptions = new NewElementOptions();
+
+        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
+        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+
+        newElementOptions.setAnchorGUID(anchorGUID);
+        newElementOptions.setIsOwnAnchor(false);
+
+        newElementOptions.setParentGUID(typeSchemaAttributeGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName);
+        newElementOptions.setParentAtEnd1(true);
+
+        String schemaAttributeGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
                                                                                     initialClassifications,
-                                                                                    anchorGUID,
-                                                                                    false,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    elementProperties,
-                                                                                    typeSchemaAttributeGUID,
-                                                                                    OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
-                                                                                    relationshipProperties,
-                                                                                    true);
+                                                                                    new NewElementProperties(elementProperties),
+                                                                                    new NewElementProperties(relationshipProperties));
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
                                                        typeSchemaAttributeGUID,

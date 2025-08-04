@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LikeProperties extends OpenMetadataRootProperties
 {
-    private String     user       = null;
+    private String emoji = null;
 
 
     /**
@@ -46,29 +46,29 @@ public class LikeProperties extends OpenMetadataRootProperties
 
         if (template != null)
         {
-            user = template.getUser();
+            emoji = template.getEmoji();
         }
     }
 
 
     /**
-     * Return the user id of the person who created the like.  Null means the user id is not known.
+     * Return an emotion or additional reaction.
      *
-     * @return String liking user
+     * @return String
      */
-    public String getUser() {
-        return user;
+    public String getEmoji() {
+        return emoji;
     }
 
 
     /**
-     * Set up the user id of the person who created the like.  Null means the user id is not known.
+     * Set up an emotion or additional reaction.
      *
-     * @param user String liking user
+     * @param emoji String
      */
-    public void setUser(String user)
+    public void setEmoji(String emoji)
     {
-        this.user = user;
+        this.emoji = emoji;
     }
 
     /**
@@ -80,7 +80,7 @@ public class LikeProperties extends OpenMetadataRootProperties
     public String toString()
     {
         return "LikeProperties{" +
-                "user='" + user + '\'' +
+                "emoji='" + emoji + '\'' +
                 "} " + super.toString();
     }
 
@@ -104,7 +104,7 @@ public class LikeProperties extends OpenMetadataRootProperties
         }
         if (!super.equals(objectToCompare)) return false;
         LikeProperties like = (LikeProperties) objectToCompare;
-        return Objects.equals(getUser(), like.getUser());
+        return Objects.equals(getEmoji(), like.getEmoji());
     }
 
 
@@ -116,6 +116,6 @@ public class LikeProperties extends OpenMetadataRootProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), user);
+        return Objects.hash(super.hashCode(), emoji);
     }
 }

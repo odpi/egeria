@@ -3,13 +3,9 @@
 package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMember;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -17,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * CollectionMemberConverter generates a CollectionMember bean from a RelatedMetadataElement.
  */
-public class CollectionMemberConverter<B> extends OpenMetadataConverterBase<B>
+public class CollectionMemberConverter<B> extends OpenMetadataRootConverter<B>
 {
     /**
      * Constructor
@@ -66,7 +62,7 @@ public class CollectionMemberConverter<B> extends OpenMetadataConverterBase<B>
 
                 bean.setRelationshipProperties(super.getCollectionMembershipProperties(relatedMetadataElement));
                 bean.setElementHeader(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
-                bean.setProperties(super.getReferenceableProperties(relatedMetadataElement.getElement()));
+                bean.setProperties(super.getBeanProperties(beanClass, relatedMetadataElement.getElement(), methodName));
             }
 
             return returnBean;

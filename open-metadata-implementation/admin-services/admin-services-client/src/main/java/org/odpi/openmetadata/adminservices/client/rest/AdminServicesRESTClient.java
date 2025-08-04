@@ -554,66 +554,13 @@ public class AdminServicesRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a IntegrationServicesResponse object.
+     * Issue a GET REST call that returns a IntegrationGroupsResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return IntegrationServicesResponse
-     * @throws OMAGInvalidParameterException one of the parameters is invalid.
-     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
-     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
-     */
-    public IntegrationServicesResponse callIntegrationServicesGetRESTCall(String    methodName,
-                                                                          String    urlTemplate,
-                                                                          Object... params) throws OMAGInvalidParameterException,
-                                                                                                   OMAGNotAuthorizedException,
-                                                                                                   OMAGConfigurationErrorException
-    {
-        IntegrationServicesResponse restResult = this.callGetRESTCall(methodName, IntegrationServicesResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowAdminExceptions(restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a IntegrationServiceConfigResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return IntegrationServiceConfigResponse
-     * @throws OMAGInvalidParameterException one of the parameters is invalid.
-     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
-     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
-     */
-    public IntegrationServiceConfigResponse callIntegrationServiceConfigGetRESTCall(String    methodName,
-                                                                                    String    urlTemplate,
-                                                                                    Object... params) throws OMAGInvalidParameterException,
-                                                                                                             OMAGNotAuthorizedException,
-                                                                                                             OMAGConfigurationErrorException
-    {
-        IntegrationServiceConfigResponse restResult = this.callGetRESTCall(methodName, IntegrationServiceConfigResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowAdminExceptions(restResult);
-
-        return restResult;
-    }
-
-
-
-    /**
-     * Issue a GET REST call that returns a IntegrationServicesResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return IntegrationServicesResponse
+     * @return IntegrationGroupsResponse
      * @throws OMAGInvalidParameterException one of the parameters is invalid.
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.

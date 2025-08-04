@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.viewservices.myprofile.server;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ToDoActionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ToDoActionHandler;
 
 
 /**
@@ -41,17 +41,17 @@ public class MyProfileInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public OrganizationManagement getOrganizationManagementClient(String userId,
-                                                                  String serverName,
-                                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                                      PropertyServerException,
-                                                                                                      UserNotAuthorizedException
+    public ActorProfileHandler getActorProfileHandler(String userId,
+                                                      String serverName,
+                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         MyProfileInstance instance = (MyProfileInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getOrganizationManagement();
+            return instance.getActorProfileHandler();
         }
 
         return null;

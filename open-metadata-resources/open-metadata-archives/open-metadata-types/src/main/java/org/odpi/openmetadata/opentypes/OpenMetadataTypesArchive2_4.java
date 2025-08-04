@@ -165,11 +165,9 @@ public class OpenMetadataTypesArchive2_4
         update0012SearchKeywords();
         update0030HostsAndPlatforms();
         add0057IntegrationCapabilities();
-        update0150Feedback();
         update0215SoftwareComponents();
         update04xxGovernanceEnums();
         update05xxSchemaAttributes();
-        update0545ReferenceData();
         updateClashingControlProperties();
     }
 
@@ -369,7 +367,7 @@ public class OpenMetadataTypesArchive2_4
     private EntityDef getSearchKeywordEntity()
     {
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SEARCH_KEYWORD,
-                                                                null);
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
 
         /*
          * Build the attributes
@@ -481,7 +479,7 @@ public class OpenMetadataTypesArchive2_4
     private EntityDef addSoftwareServiceEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
     }
 
     private EntityDef addMetadataIntegrationServiceEntity()
@@ -506,41 +504,6 @@ public class OpenMetadataTypesArchive2_4
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.USER_VIEW_SERVICE,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * 0150 Feedback - deprecate anchorGUID.
-     */
-    private void update0150Feedback()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateCommentEntity());
-    }
-
-    private TypeDefPatch updateCommentEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COMMENT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.COMMENT_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
     }
 
 
@@ -1046,42 +1009,6 @@ public class OpenMetadataTypesArchive2_4
      * -------------------------------------------------------------------------------------------------------
      */
 
-    /**
-     * 0545 - Add the isDeprecated boolean attribute to ValidValueDefinition.
-     */
-    private void update0545ReferenceData()
-    {
-        this.archiveBuilder.addTypeDefPatch(addIsDeprecated());
-
-    }
-
-    private TypeDefPatch addIsDeprecated()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_DEPRECATED));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
 
     /**
      * A number of types have attributes whose names clash with header (control) attributes. It is not possible to
@@ -1090,78 +1017,20 @@ public class OpenMetadataTypesArchive2_4
      */
     private void updateClashingControlProperties()
     {
-        this.archiveBuilder.addTypeDefPatch(updateSoftwareServerPlatformEntity());
-        this.archiveBuilder.addTypeDefPatch(updateSoftwareServerEntity());
         this.archiveBuilder.addTypeDefPatch(updateCloudPlatformClassification());
         this.archiveBuilder.addTypeDefPatch(updateCloudTenantClassification());
         this.archiveBuilder.addTypeDefPatch(updateCloudServiceClassification());
         // Comment entity's clashing properties are updated as part of other updates to Comment above
         this.archiveBuilder.addTypeDefPatch(updateLogFileEntity());
         this.archiveBuilder.addTypeDefPatch(updateDatabaseEntity());
-        this.archiveBuilder.addTypeDefPatch(updateDatabaseServerClassification());
         this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityEntity());
-        this.archiveBuilder.addTypeDefPatch(updateExternalReferenceEntity());
         this.archiveBuilder.addTypeDefPatch(updatePropertyFacetEntity());
         this.archiveBuilder.addTypeDefPatch(updateCohortMemberEntity());
-        this.archiveBuilder.addTypeDefPatch(updateImplementationSnippetEntity());
         this.archiveBuilder.addTypeDefPatch(updatePolicyAdministrationPointClassification());
         this.archiveBuilder.addTypeDefPatch(updatePolicyDecisionPointClassification());
         this.archiveBuilder.addTypeDefPatch(updatePolicyEnforcementPointClassification());
         this.archiveBuilder.addTypeDefPatch(updatePolicyInformationPointClassification());
         this.archiveBuilder.addTypeDefPatch(updatePolicyRetrievalPointClassification());
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateSoftwareServerPlatformEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLATFORM_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateSoftwareServerEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOFTWARE_SERVER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVER_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 
@@ -1301,32 +1170,6 @@ public class OpenMetadataTypesArchive2_4
      * Deprecate clashing properties and add new ones to replace them.
      * @return the type def patch
      */
-    private TypeDefPatch updateDatabaseServerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOFTWARE_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
     private TypeDefPatch updateBusinessCapabilityEntity()
     {
         /*
@@ -1345,33 +1188,6 @@ public class OpenMetadataTypesArchive2_4
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateExternalReferenceEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_REFERENCE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFERENCE_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
         return typeDefPatch;
     }
 
@@ -1422,32 +1238,6 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROTOCOL_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateImplementationSnippetEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.IMPLEMENTATION_SNIPPET.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;

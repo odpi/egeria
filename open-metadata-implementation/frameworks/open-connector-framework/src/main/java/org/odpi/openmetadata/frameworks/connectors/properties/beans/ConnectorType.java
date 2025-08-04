@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 
 import java.util.List;
 import java.util.Objects;
@@ -98,8 +99,6 @@ public class ConnectorType extends Referenceable
     /*
      * Attributes of a connector type
      */
-    private String       displayName                         = null;
-    private String       description                         = null;
     private String       supportedAssetTypeName              = null;
     private String       supportedDeployedImplementationType = null;
     private String       expectedDataFormat                  = null;
@@ -134,6 +133,7 @@ public class ConnectorType extends Referenceable
         elementType.setTypeName(elementTypeName);
         elementType.setTypeVersion(elementTypeVersion);
         elementType.setTypeDescription(elementTypeDescription);
+        elementType.setTypeCategory(OpenMetadataTypeDefCategory.ENTITY_DEF);
 
         return elementType;
     }
@@ -159,8 +159,6 @@ public class ConnectorType extends Referenceable
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
             supportedAssetTypeName              = template.getSupportedAssetTypeName();
             supportedDeployedImplementationType = template.getSupportedDeployedImplementationType();
             expectedDataFormat                  = template.getExpectedDataFormat();
@@ -176,52 +174,6 @@ public class ConnectorType extends Referenceable
             recognizedConfigurationProperties = template.getRecognizedConfigurationProperties();
             recognizedSecuredProperties = template.getRecognizedSecuredProperties();
         }
-    }
-
-
-    /**
-     * Set up the display name for UIs and reports.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Returns the stored display name property for the connector type.
-     * If no display name is available then null is returned.
-     *
-     * @return displayName
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up description of the element.
-     *
-     * @param description String
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Returns the stored description property for the connector type.
-     * If no description is available then null is returned.
-     *
-     * @return description
-     */
-    public String getDescription()
-    {
-        return description;
     }
 
 
@@ -553,29 +505,21 @@ public class ConnectorType extends Referenceable
     public String toString()
     {
         return "ConnectorType{" +
-                       "displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", supportedAssetTypeName='" + supportedAssetTypeName + '\'' +
-                       ", deployedImplementationType='" + supportedDeployedImplementationType + '\'' +
-                       ", expectedDataFormat='" + expectedDataFormat + '\'' +
-                       ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
-                       ", connectorFrameworkName='" + connectorFrameworkName + '\'' +
-                       ", connectorInterfaceLanguage='" + connectorInterfaceLanguage + '\'' +
-                       ", connectorInterfaces=" + connectorInterfaces +
-                       ", targetTechnologySource='" + targetTechnologySource + '\'' +
-                       ", targetTechnologyName='" + targetTechnologyName + '\'' +
-                       ", targetTechnologyInterfaces=" + targetTechnologyInterfaces +
-                       ", targetTechnologyVersions=" + targetTechnologyVersions +
-                       ", recognizedAdditionalProperties=" + recognizedAdditionalProperties +
-                       ", recognizedConfigurationProperties=" + recognizedConfigurationProperties +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", type=" + getType() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       '}';
+                "supportedAssetTypeName='" + supportedAssetTypeName + '\'' +
+                ", supportedDeployedImplementationType='" + supportedDeployedImplementationType + '\'' +
+                ", expectedDataFormat='" + expectedDataFormat + '\'' +
+                ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
+                ", connectorFrameworkName='" + connectorFrameworkName + '\'' +
+                ", connectorInterfaceLanguage='" + connectorInterfaceLanguage + '\'' +
+                ", connectorInterfaces=" + connectorInterfaces +
+                ", targetTechnologySource='" + targetTechnologySource + '\'' +
+                ", targetTechnologyName='" + targetTechnologyName + '\'' +
+                ", targetTechnologyInterfaces=" + targetTechnologyInterfaces +
+                ", targetTechnologyVersions=" + targetTechnologyVersions +
+                ", recognizedAdditionalProperties=" + recognizedAdditionalProperties +
+                ", recognizedConfigurationProperties=" + recognizedConfigurationProperties +
+                ", recognizedSecuredProperties=" + recognizedSecuredProperties +
+                "} " + super.toString();
     }
 
 
@@ -601,9 +545,7 @@ public class ConnectorType extends Referenceable
             return false;
         }
         ConnectorType that = (ConnectorType) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(supportedAssetTypeName, that.supportedAssetTypeName) &&
+        return Objects.equals(supportedAssetTypeName, that.supportedAssetTypeName) &&
                        Objects.equals(supportedDeployedImplementationType, that.supportedDeployedImplementationType) &&
                        Objects.equals(expectedDataFormat, that.expectedDataFormat) &&
                        Objects.equals(connectorProviderClassName, that.connectorProviderClassName) &&
@@ -628,7 +570,7 @@ public class ConnectorType extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, supportedAssetTypeName, supportedDeployedImplementationType, expectedDataFormat,
+        return Objects.hash(super.hashCode(), supportedAssetTypeName, supportedDeployedImplementationType, expectedDataFormat,
                             connectorProviderClassName, connectorFrameworkName, connectorInterfaceLanguage, connectorInterfaces,
                             targetTechnologySource, targetTechnologyName, targetTechnologyInterfaces, targetTechnologyVersions,
                             recognizedAdditionalProperties, recognizedConfigurationProperties, recognizedSecuredProperties);

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.glossarybrowser.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Objects;
 
@@ -15,14 +15,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * RelationshipRequestBody describes the request body used when linking elements together.
+ * NewRelationshipRequestBody describes the request body used when linking elements together.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
 {
-    private RelationshipProperties properties = null;
+    private RelationshipBeanProperties properties = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
      *
      * @return properties object
      */
-    public RelationshipProperties getProperties()
+    public RelationshipBeanProperties getProperties()
     {
         return properties;
     }
@@ -66,7 +66,7 @@ public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
      *
      * @param properties properties object
      */
-    public void setProperties(RelationshipProperties properties)
+    public void setProperties(RelationshipBeanProperties properties)
     {
         this.properties = properties;
     }
@@ -80,7 +80,7 @@ public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
     @Override
     public String toString()
     {
-        return "RelationshipRequestBody{" +
+        return "NewRelationshipRequestBody{" +
                        "effectiveTime=" + getEffectiveTime() +
                        ", properties=" + properties +
                        '}';

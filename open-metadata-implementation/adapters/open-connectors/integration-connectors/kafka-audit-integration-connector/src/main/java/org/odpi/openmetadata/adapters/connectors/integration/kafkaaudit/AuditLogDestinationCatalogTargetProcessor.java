@@ -11,10 +11,11 @@ import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
 
@@ -30,20 +31,22 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
      * Copy/clone constructor
      *
      * @param template object to copy
+     * @param catalogTargetContext specialized context for this catalog target
      * @param connectorToTarget connector to access the target resource
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
      */
-    public AuditLogDestinationCatalogTargetProcessor(CatalogTarget template,
-                                                     Connector     connectorToTarget,
-                                                     String        connectorName,
-                                                     AuditLog      auditLog)
+    public AuditLogDestinationCatalogTargetProcessor(CatalogTarget        template,
+                                                     CatalogTargetContext catalogTargetContext,
+                                                     Connector            connectorToTarget,
+                                                     String               connectorName,
+                                                     AuditLog             auditLog)
     {
-        super(template, connectorToTarget, connectorName, auditLog);
+        super(template, catalogTargetContext, connectorToTarget, connectorName, auditLog);
 
         final String methodName = "AuditLogDestinationCatalogTargetProcessor constructor";
 
-        ConnectionDetails auditLogConnection;
+        Connection auditLogConnection;
 
         if (connectorToTarget instanceof JDBCResourceConnector)
         {
@@ -85,10 +88,14 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
      * @param auditLogConnectorType appropriate audit log connector
      * @return connection
      */
-    private ConnectionDetails getAuditLogConnection(Connector     assetConnector,
-                                                    ConnectorType auditLogConnectorType)
+    private Connection getAuditLogConnection(Connector     assetConnector,
+                                             ConnectorType auditLogConnectorType)
     {
-        return new ConnectionDetails(assetConnector.getConnection(), auditLogConnectorType);
+        Connection newConnection = new Connection(assetConnector.getConnection());
+
+        newConnection.setConnectorType(auditLogConnectorType);
+
+        return newConnection;
     }
 
 

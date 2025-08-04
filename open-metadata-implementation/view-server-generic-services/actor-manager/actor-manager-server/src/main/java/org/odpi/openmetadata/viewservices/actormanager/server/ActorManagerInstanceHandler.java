@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.actormanager.server;
 
-
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorRoleHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.UserIdentityHandler;
 
 
 /**

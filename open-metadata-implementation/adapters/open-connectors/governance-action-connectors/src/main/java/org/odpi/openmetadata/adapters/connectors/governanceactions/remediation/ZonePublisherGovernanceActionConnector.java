@@ -6,14 +6,16 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -24,7 +26,7 @@ import java.util.*;
  * If there is at least one asset, their zones are updated, and the output guard is set to zone-assigned.
  * If no Assets are passed as action targets the output guard is no-targets-detected.
  */
-public class ZonePublisherGovernanceActionConnector extends RemediationGovernanceActionService
+public class ZonePublisherGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /**
      * Value used to set up the zones.
@@ -37,15 +39,16 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
         super.start();
 
-        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
 
         /*
          * Retrieve the configuration properties from the Connection object.  These properties affect all requests to this connector.
@@ -110,11 +113,9 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                                                                                                                        "<null>"));
                         }
 
-                        governanceContext.declassifyMetadataElement(element.getElementGUID(),
-                                                                    OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                    true,
-                                                                    false,
-                                                                    new Date());
+                        governanceContext.getOpenMetadataStore().declassifyMetadataElementInStore(element.getElementGUID(),
+                                                                                                  OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                  governanceContext.getOpenMetadataStore().getMetadataSourceOptions());
                     }
                 }
 
@@ -130,8 +131,9 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                 {
                     if ((actionTarget != null) &&
                             (actionTarget.getTargetElement() != null) &&
-                            (ActionTarget.NEW_ASSET.getName().equals(actionTarget.getActionTargetName()) &&
-                            (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.ASSET.typeName))))
+                            ((ActionTarget.NEW_ASSET.getName().equals(actionTarget.getActionTargetName()) ||
+                                    (ActionTarget.ANY_ELEMENT.getName().equals(actionTarget.getActionTargetName()))) &&
+                            (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.OPEN_METADATA_ROOT.typeName))))
                     {
                         OpenMetadataElement element = actionTarget.getTargetElement();
 
@@ -141,12 +143,10 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                                                                                                                    element.getElementGUID(),
                                                                                                                    publishZones.toString()));
 
-                        governanceContext.classifyMetadataElement(element.getElementGUID(),
-                                                                  OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                  true,
-                                                                  false,
-                                                                  properties,
-                                                                  new Date());
+                        governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(element.getElementGUID(),
+                                                                                                OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                governanceContext.getOpenMetadataStore().getMetadataSourceOptions(),
+                                                                                                new NewElementProperties(properties));
                     }
                 }
 

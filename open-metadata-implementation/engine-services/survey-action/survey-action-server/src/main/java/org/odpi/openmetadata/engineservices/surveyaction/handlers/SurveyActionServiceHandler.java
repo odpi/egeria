@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionAuditCode;
@@ -17,6 +16,7 @@ import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnecto
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyContext;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.ArrayList;

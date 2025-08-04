@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.validmetadata.server;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 /**
  * ValidMetadataInstance caches references to the objects it needs for a specific server.
@@ -17,7 +17,7 @@ public class ValidMetadataInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.VALID_METADATA;
 
-    private final OpenMetadataStoreClient openMetadataStoreClient;
+    private final EgeriaOpenMetadataStoreClient openMetadataStoreClient;
 
     /**
      * Set up theValid Metadata OMVS instance
@@ -50,11 +50,11 @@ public class ValidMetadataInstance extends OMVSServiceInstance
 
         if (localServerUserPassword == null)
         {
-            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+            openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
         }
         else
         {
-            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
         }
 
     }
@@ -65,7 +65,7 @@ public class ValidMetadataInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient()
+    public EgeriaOpenMetadataStoreClient getOpenMetadataStoreClient()
     {
         return openMetadataStoreClient;
     }

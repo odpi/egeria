@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 
 import java.lang.reflect.InvocationTargetException;
@@ -58,6 +59,7 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
      * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      * @throws NoSuchMethodException the default constructor is missing
      * @throws InvocationTargetException unable to call the default constructor
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     public ConnectorReport validateConnector(String   connectorProviderClassName,
                                              Class<?> requiredConnectorInterface,
@@ -68,7 +70,8 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
                                                                           InstantiationException,
                                                                           IllegalAccessException,
                                                                           NoSuchMethodException,
-                                                                          InvocationTargetException
+                                                                          InvocationTargetException,
+                                                                          UserNotAuthorizedException
     {
         final String providerClassNameParameterName = "connectorProviderClassName";
         final String requiredConnectorInterfaceParameterName = "requiredConnectorInterface";

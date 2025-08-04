@@ -20,23 +20,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = ControlledGlossaryTermProperties.class, name = "ControlledGlossaryTermProperties"),
-        })
 public class GlossaryTermProperties extends ReferenceableProperties
 {
-    private String       displayName              = null;
-    private List<String> aliases                  = null;
-    private String       summary                  = null;
-    private String       description              = null;
-    private String       examples                 = null;
-    private String       abbreviation             = null;
-    private String       usage                    = null;
-    private String       publishVersionIdentifier = null;
+    private List<String> aliases           = null;
+    private String       summary           = null;
+    private String       examples          = null;
+    private String       abbreviation      = null;
+    private String       usage             = null;
+    private String       userDefinedStatus = null;
+
 
 
     /**
@@ -60,38 +52,13 @@ public class GlossaryTermProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
-            aliases = template.getAliases();
-            summary = template.getSummary();
-            description = template.getDescription();
-            examples = template.getExamples();
-            abbreviation = template.getAbbreviation();
-            usage = template.getUsage();
-            publishVersionIdentifier = template.getPublishVersionIdentifier();
+            userDefinedStatus = template.getUserDefinedStatus();
+            aliases           = template.getAliases();
+            summary           = template.getSummary();
+            examples          = template.getExamples();
+            abbreviation      = template.getAbbreviation();
+            usage             = template.getUsage();
         }
-    }
-
-
-    /**
-     * Returns the stored display name property for the term.
-     * If no display name is available then null is returned.
-     *
-     * @return String name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the stored display name property for the term.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
     }
 
 
@@ -136,29 +103,6 @@ public class GlossaryTermProperties extends ReferenceableProperties
     public void setSummary(String summary)
     {
         this.summary = summary;
-    }
-
-
-    /**
-     * Returns the stored description property for the term.
-     * If no description is provided then null is returned.
-     *
-     * @return  String text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the stored description property for the term.
-     *
-     * @param description String text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -229,24 +173,24 @@ public class GlossaryTermProperties extends ReferenceableProperties
 
 
     /**
-     * Return the author-controlled version identifier.
+     * Return any user defined status beyond the standard element status values.
      *
-     * @return version identifier
+     * @return string
      */
-    public String getPublishVersionIdentifier()
+    public String getUserDefinedStatus()
     {
-        return publishVersionIdentifier;
+        return userDefinedStatus;
     }
 
 
     /**
-     * Set up the author-controlled version identifier.
+     * Set up  any user defined status beyond the standard element status values.
      *
-     * @param publishVersionIdentifier version identifier
+     * @param userDefinedStatus string
      */
-    public void setPublishVersionIdentifier(String publishVersionIdentifier)
+    public void setUserDefinedStatus(String userDefinedStatus)
     {
-        this.publishVersionIdentifier = publishVersionIdentifier;
+        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -259,14 +203,12 @@ public class GlossaryTermProperties extends ReferenceableProperties
     public String toString()
     {
         return "GlossaryTermProperties{" +
-                "displayName='" + displayName + '\'' +
+                "userDefinedStatus='" + userDefinedStatus + '\'' +
                 ", aliases=" + aliases +
                 ", summary='" + summary + '\'' +
-                ", description='" + description + '\'' +
                 ", examples='" + examples + '\'' +
                 ", abbreviation='" + abbreviation + '\'' +
                 ", usage='" + usage + '\'' +
-                ", publishVersionIdentifier='" + publishVersionIdentifier + '\'' +
                 "} " + super.toString();
     }
 
@@ -280,29 +222,17 @@ public class GlossaryTermProperties extends ReferenceableProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         GlossaryTermProperties that = (GlossaryTermProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getSummary(), that.getSummary()) &&
-                Objects.equals(getAliases(), that.getAliases()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getExamples(), that.getExamples()) &&
-                Objects.equals(getAbbreviation(), that.getAbbreviation()) &&
-                Objects.equals(getUsage(), that.getUsage()) &&
-                Objects.equals(getPublishVersionIdentifier(), that.getPublishVersionIdentifier());
+        return Objects.equals(aliases, that.aliases) &&
+                Objects.equals(summary, that.summary) &&
+                Objects.equals(examples, that.examples) &&
+                Objects.equals(abbreviation, that.abbreviation) &&
+                Objects.equals(usage, that.usage) &&
+                Objects.equals(userDefinedStatus, that.userDefinedStatus);
     }
-
 
     /**
      * Return hash code for this object
@@ -312,6 +242,6 @@ public class GlossaryTermProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, aliases, summary, description, examples, abbreviation, usage, publishVersionIdentifier);
+        return Objects.hash(super.hashCode(), userDefinedStatus, aliases, summary, examples, abbreviation, usage);
     }
 }

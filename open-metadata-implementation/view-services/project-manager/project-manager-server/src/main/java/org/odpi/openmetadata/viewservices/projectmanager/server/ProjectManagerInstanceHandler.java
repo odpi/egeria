@@ -3,15 +3,12 @@
 package org.odpi.openmetadata.viewservices.projectmanager.server;
 
 
-import org.odpi.openmetadata.accessservices.projectmanagement.client.ProjectManagement;
-import org.odpi.openmetadata.accessservices.projectmanagement.client.ConnectedAssetClient;
-import org.odpi.openmetadata.accessservices.projectmanagement.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ProjectHandler;
 
 
 /**
@@ -43,74 +40,17 @@ public class ProjectManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public ProjectManagement getProjectManagement(String userId,
-                                                  String serverName,
-                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+    public ProjectHandler getProjectHandler(String userId,
+                                            String serverName,
+                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         ProjectManagerInstance instance = (ProjectManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getProjectManagement();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * This method returns the object for the tenant to use to work with the Project Management API.
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public ConnectedAssetClient getConnectedAssetClient(String userId,
-                                                        String serverName,
-                                                        String serviceOperationName) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
-    {
-        ProjectManagerInstance instance = (ProjectManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getConnectedAssetClient();
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * This method returns the object for the tenant to use to work with the Project Management API.
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient(String userId,
-                                                              String serverName,
-                                                              String serviceOperationName) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
-    {
-        ProjectManagerInstance instance = (ProjectManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getOpenMetadataStoreClient();
+            return instance.getProjectHandler();
         }
 
         return null;

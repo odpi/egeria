@@ -4,8 +4,9 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.governanceaction.VerificationGovernanceActionService;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
@@ -20,7 +21,7 @@ import java.util.List;
  * VerifyAssetGovernanceActionConnector evaluates an asset to be sure it has zones, an origin and
  * an owner.
  */
-public class VerifyAssetGovernanceActionConnector extends VerificationGovernanceActionService
+public class VerifyAssetGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
@@ -28,9 +29,10 @@ public class VerifyAssetGovernanceActionConnector extends VerificationGovernance
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -70,7 +72,7 @@ public class VerifyAssetGovernanceActionConnector extends VerificationGovernance
                         {
                             if (classification != null)
                             {
-                                if (propertyHelper.isTypeOf(classification, OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName))
+                                if (propertyHelper.isTypeOf(classification, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName))
                                 {
                                     noZones = false;
                                 }
@@ -78,7 +80,7 @@ public class VerifyAssetGovernanceActionConnector extends VerificationGovernance
                                 {
                                     noOwner = false;
                                 }
-                                else if (propertyHelper.isTypeOf(classification, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName))
+                                else if (propertyHelper.isTypeOf(classification, OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName))
                                 {
                                     noOrigin = false;
                                 }

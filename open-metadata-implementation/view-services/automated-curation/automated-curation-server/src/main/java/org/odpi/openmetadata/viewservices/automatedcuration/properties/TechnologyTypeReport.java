@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 
 import java.util.List;
 
@@ -21,9 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TechnologyTypeReport extends TechnologyTypeSummary
 {
-    private List<CatalogTemplate>          catalogTemplates    = null;
-    private List<ResourceDescription>      resourceList        = null;
-    private List<ExternalReferenceElement> externalReferences  = null;
+    private List<CatalogTemplate>               catalogTemplates    = null;
+    private List<RelatedMetadataElementSummary> resourceList        = null;
+    private List<RelatedMetadataElementSummary> externalReferences  = null;
 
     /**
      * Default constructor
@@ -70,7 +71,7 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
      *
      * @return list
      */
-    public List<ResourceDescription> getResourceList()
+    public List<RelatedMetadataElementSummary> getResourceList()
     {
         return resourceList;
     }
@@ -81,7 +82,7 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
      *
      * @param resourceList list
      */
-    public void setResourceList(List<ResourceDescription> resourceList)
+    public void setResourceList(List<RelatedMetadataElementSummary> resourceList)
     {
         this.resourceList = resourceList;
     }
@@ -92,7 +93,7 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
      *
      * @return list
      */
-    public List<ExternalReferenceElement> getExternalReferences()
+    public List<RelatedMetadataElementSummary> getExternalReferences()
     {
         return externalReferences;
     }
@@ -103,7 +104,7 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
      *
      * @param externalReferences list
      */
-    public void setExternalReferences(List<ExternalReferenceElement> externalReferences)
+    public void setExternalReferences(List<RelatedMetadataElementSummary> externalReferences)
     {
         this.externalReferences = externalReferences;
     }

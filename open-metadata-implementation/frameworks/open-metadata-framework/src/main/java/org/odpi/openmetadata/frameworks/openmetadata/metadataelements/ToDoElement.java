@@ -20,11 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ToDoElement extends AttributedMetadataElement
+public class ToDoElement extends OpenMetadataRootElement
 {
-    private ToDoProperties                      properties     = null;
     private RelatedMetadataElementSummary       toDoSource     = null;
-    private List<RelatedMetadataElementSummary> assignedActors = null;
     private List<RelatedMetadataElementSummary> sponsors       = null;
     private List<ToDoActionTargetElement>       actionTargets  = null;
 
@@ -46,36 +44,13 @@ public class ToDoElement extends AttributedMetadataElement
     public ToDoElement(ToDoElement template)
     {
         super(template);
+
         if (template != null)
         {
-            properties     = template.getProperties();
             toDoSource     = template.getToDoSource();
-            assignedActors = template.getAssignedActors();
             sponsors       = template.getSponsors();
             actionTargets  = template.getActionTargets();
         }
-    }
-
-
-    /**
-     * Return the properties of the to do.
-     *
-     * @return properties
-     */
-    public ToDoProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up the to do properties.
-     *
-     * @param properties  properties
-     */
-    public void setProperties(ToDoProperties properties)
-    {
-        this.properties = properties;
     }
 
 
@@ -98,28 +73,6 @@ public class ToDoElement extends AttributedMetadataElement
     public void setToDoSource(RelatedMetadataElementSummary toDoSource)
     {
         this.toDoSource = toDoSource;
-    }
-
-
-    /**
-     * Return the list of actors assigned to this work item.
-     *
-     * @return list of actors
-     */
-    public List<RelatedMetadataElementSummary> getAssignedActors()
-    {
-        return assignedActors;
-    }
-
-
-    /**
-     * Set up the list of actors assigned to this work item.
-     *
-     * @param assignedActors list of actors
-     */
-    public void setAssignedActors(List<RelatedMetadataElementSummary> assignedActors)
-    {
-        this.assignedActors = assignedActors;
     }
 
 
@@ -176,9 +129,7 @@ public class ToDoElement extends AttributedMetadataElement
     public String toString()
     {
         return "ToDoElement{" +
-                "properties=" + properties +
-                ", toDoSource=" + toDoSource +
-                ", assignedActors=" + assignedActors +
+                "toDoSource=" + toDoSource +
                 ", sponsors=" + sponsors +
                 ", actionTargets=" + actionTargets +
                 "} " + super.toString();
@@ -198,9 +149,7 @@ public class ToDoElement extends AttributedMetadataElement
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ToDoElement that = (ToDoElement) objectToCompare;
-        return Objects.equals(properties, that.properties) &&
-                Objects.equals(toDoSource, that.toDoSource) &&
-                Objects.equals(assignedActors, that.assignedActors) &&
+        return Objects.equals(toDoSource, that.toDoSource) &&
                 Objects.equals(sponsors, that.sponsors) &&
                 Objects.equals(actionTargets, that.actionTargets);
     }
@@ -213,6 +162,6 @@ public class ToDoElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, toDoSource, sponsors, assignedActors, actionTargets);
+        return Objects.hash(super.hashCode(), toDoSource, sponsors, actionTargets);
     }
 }

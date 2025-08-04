@@ -51,27 +51,6 @@ public class HostElement implements MetadataElement
 
 
     /**
-     * Copy/clone constructor
-     *
-     * @param template object to copy
-     */
-    public HostElement(AssetElement template)
-    {
-        if (template != null)
-        {
-            elementHeader = template.getElementHeader();
-
-            AssetProperties assetProperties = template.getProperties();
-
-            if (assetProperties != null)
-            {
-                properties = new HostProperties(assetProperties);
-            }
-        }
-    }
-
-
-    /**
      * Return the element header associated with the properties.
      *
      * @return element header object

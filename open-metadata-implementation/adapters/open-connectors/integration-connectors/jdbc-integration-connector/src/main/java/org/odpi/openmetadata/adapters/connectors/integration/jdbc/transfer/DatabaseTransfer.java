@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer;
 
 import org.apache.commons.lang3.StringUtils;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Jdbc;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 
 import java.util.List;
 
@@ -23,13 +23,13 @@ public class DatabaseTransfer {
     private final String databaseManagerName;
     private final String address;
     private final String          catalog;
-    private final DatabaseElement databaseElement;
+    private final OpenMetadataRootElement databaseElement;
     private final Omas            omas;
     private final AuditLog auditLog;
 
     public DatabaseTransfer(Jdbc jdbc,
                             String databaseManagerName,
-                            DatabaseElement databaseElement,
+                            OpenMetadataRootElement databaseElement,
                             String address,
                             String catalog,
                             Omas omas,
@@ -49,7 +49,7 @@ public class DatabaseTransfer {
      *
      * @return database element
      */
-    public DatabaseElement execute()
+    public OpenMetadataRootElement execute()
     {
         /*
          * If the database element is already known, just return it.
@@ -67,7 +67,7 @@ public class DatabaseTransfer {
             String multipleDatabasesFoundMessage = "Querying for a database with qualified name "
                     + databaseProperties.getQualifiedName() + " and found multiple. Expecting only one";
 
-            List<DatabaseElement> databasesInOmas = omas.getDatabasesByName(databaseProperties.getQualifiedName());
+            List<OpenMetadataRootElement> databasesInOmas = omas.getDatabasesByName(databaseProperties.getQualifiedName());
             if (databasesInOmas.isEmpty())
             {
                 omas.createDatabase(databaseProperties);
@@ -89,6 +89,7 @@ public class DatabaseTransfer {
                                     TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
                 return databasesInOmas.get(0);
             }
+
             auditLog.logMessage(multipleDatabasesFoundMessage, null);
         }
         return null;
@@ -108,7 +109,7 @@ public class DatabaseTransfer {
 
         DatabaseProperties databaseProperties = new DatabaseProperties();
         databaseProperties.setQualifiedName(databaseManagerName + "::" + address);
-        databaseProperties.setName(StringUtils.isBlank(catalog) ? address : catalog);
+        databaseProperties.setDisplayName(StringUtils.isBlank(catalog) ? address : catalog);
         databaseProperties.setDatabaseInstance(driverName);
         databaseProperties.setDatabaseVersion(databaseProductVersion);
         databaseProperties.setDeployedImplementationType(databaseProductName);

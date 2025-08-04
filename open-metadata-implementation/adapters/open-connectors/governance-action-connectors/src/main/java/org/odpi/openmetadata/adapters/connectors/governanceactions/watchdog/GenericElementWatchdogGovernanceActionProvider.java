@@ -21,7 +21,7 @@ import java.util.List;
 public class GenericElementWatchdogGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "8145967e-bb83-44b2-bc8c-68112c6a5a06";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Watchdog:GenericElement";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Watchdog:OpenMetadataRootElement";
     private static final String  connectorTypeDisplayName = "Generic Element Watchdog Governance Action Service";
     private static final String  connectorTypeDescription =
             """
@@ -71,7 +71,6 @@ public class GenericElementWatchdogGovernanceActionProvider extends GovernanceAc
         super.setConnectorClassName(connectorClassName);
 
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeQualifiedName);
         connectorType.setDisplayName(connectorTypeDisplayName);

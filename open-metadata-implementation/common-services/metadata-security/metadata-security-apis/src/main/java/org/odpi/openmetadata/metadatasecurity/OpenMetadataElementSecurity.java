@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.metadatasecurity;
 
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -30,7 +32,9 @@ public interface OpenMetadataElementSecurity
      * @param repositoryHelper manipulates repository service objects
      * @param serviceName calling service
      * @param methodName calling method
-     * @throws UserNotAuthorizedException the user is not authorized to perform this command
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void validateUserForElementCreate(String               userId,
                                       String               entityTypeGUID,
@@ -40,7 +44,9 @@ public interface OpenMetadataElementSecurity
                                       InstanceStatus       instanceStatus,
                                       OMRSRepositoryHelper repositoryHelper,
                                       String               serviceName,
-                                      String               methodName) throws UserNotAuthorizedException;
+                                      String               methodName) throws UserNotAuthorizedException,
+                                                                              InvalidParameterException,
+                                                                              PropertyServerException;
 
 
     /**
@@ -51,13 +57,17 @@ public interface OpenMetadataElementSecurity
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
-     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void validateUserForElementRead(String               userId,
                                     EntityDetail         requestedEntity,
                                     OMRSRepositoryHelper repositoryHelper,
                                     String               serviceName,
-                                    String               methodName) throws UserNotAuthorizedException;
+                                    String               methodName) throws UserNotAuthorizedException,
+                                                                            InvalidParameterException,
+                                                                            PropertyServerException;
 
 
     /**

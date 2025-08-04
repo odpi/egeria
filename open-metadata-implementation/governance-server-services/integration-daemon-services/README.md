@@ -7,8 +7,7 @@
 
 The integration daemon services provide the implementation
 of the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon)
-OMAG Server which is responsible for operating the 
-[Open Metadata Integration Services (OMISs)](../../integration-services).
+OMAG Server which is responsible for operating the dynamic integration groups.
 
 * [Documentation](https://egeria-project.org/services/integration-daemon-services)
 

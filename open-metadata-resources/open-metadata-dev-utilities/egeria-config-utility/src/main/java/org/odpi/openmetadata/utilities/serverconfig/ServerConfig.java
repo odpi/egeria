@@ -6,16 +6,12 @@ import org.odpi.openmetadata.adminservices.client.IntegrationDaemonConfiguration
 import org.odpi.openmetadata.adminservices.client.CohortMemberConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.MetadataAccessStoreConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationConnectorConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
@@ -28,7 +24,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * ServerConfig creates configuration documents that used by servers to define the subsystems and connectors
@@ -459,78 +454,6 @@ public class ServerConfig
     }
 
 
-
-    /**
-     * Add a new Integrator Connector to an Integration Daemon server.
-     *
-     * @param serverName integration daemon server name
-     * @param metadataStoreName name of metadata store
-     * @param serviceURLMarker URL for the integration service
-     * @param connectorProviderClassName  connector provider name
-     * @param networkAddress optional network address
-     */
-    private void addIntegrationConnector(String serverName,
-                                         String metadataStoreName,
-                                         String serviceURLMarker,
-                                         String connectorProviderClassName,
-                                         String networkAddress)
-    {
-        Connection    connection    = new Connection();
-        ConnectorType connectorType = new ConnectorType();
-        Endpoint      endpoint      = new Endpoint();
-
-        connectorType.setConnectorProviderClassName(connectorProviderClassName);
-        connection.setConnectorType(connectorType);
-
-        /*
-         * The endpoint is only set up if the network address is supplied
-         */
-        if (networkAddress != null)
-        {
-            endpoint.setAddress(networkAddress);
-            connection.setEndpoint(endpoint);
-        }
-
-        IntegrationConnectorConfig integrationConnectorConfig = new IntegrationConnectorConfig();
-
-        integrationConnectorConfig.setConnectorId(UUID.randomUUID().toString());
-        integrationConnectorConfig.setConnectorName("Integration Connector for " + connectorProviderClassName);
-        integrationConnectorConfig.setConnectorUserId(systemUserId);
-        integrationConnectorConfig.setConnection(connection);
-        integrationConnectorConfig.setRefreshTimeInterval(1);
-        integrationConnectorConfig.setMetadataSourceQualifiedName("Egeria Catalog Thyself Demo");
-        integrationConnectorConfig.setPermittedSynchronization(PermittedSynchronization.BOTH_DIRECTIONS);
-
-        try
-        {
-            IntegrationDaemonConfigurationClient client = new IntegrationDaemonConfigurationClient(clientUserId, serverName, platformURLRoot);
-
-            IntegrationServiceConfig serviceConfiguration = client.getIntegrationServiceConfiguration(serviceURLMarker);
-
-            serviceConfiguration.setOMAGServerName(metadataStoreName);
-            serviceConfiguration.setOMAGServerPlatformRootURL(platformURLRoot);
-            serviceConfiguration.setDefaultPermittedSynchronization(PermittedSynchronization.BOTH_DIRECTIONS);
-
-            List<IntegrationConnectorConfig> connectorList = serviceConfiguration.getIntegrationConnectorConfigs();
-
-            if (connectorList == null)
-            {
-                connectorList = new ArrayList<>();
-            }
-
-            connectorList.add(integrationConnectorConfig);
-
-            serviceConfiguration.setIntegrationConnectorConfigs(connectorList);
-
-            client.configureIntegrationService(serviceConfiguration);
-        }
-        catch (Exception error)
-        {
-            System.out.println("There was an " + error.getClass().getName() + " exception when calling the platform.  Error message is: " + error.getMessage());
-        }
-    }
-
-
     /**
      * Add a server to the named cohort.  This will fail if the event bus is not set up.
      *
@@ -664,81 +587,6 @@ public class ServerConfig
                 System.out.println("  Error: include a server name");
             }
         }
-        else if ("add-topic-connector".equals(mode))
-        {
-            final String serviceURLMarker = "topic-integrator";
-
-            if (options.length == 2)
-            {
-                this.addIntegrationConnector(options[0],
-                                             options[1],
-                                             serviceURLMarker,
-                                             defaultTopicIntegrationConnectorProvider,
-                                             eventBusURLRoot);
-            }
-            else if (options.length == 3)
-            {
-                this.addIntegrationConnector(options[0], options[1], serviceURLMarker, options[2], null);
-            }
-            else if (options.length > 3)
-            {
-                this.addIntegrationConnector(options[0], options[1], serviceURLMarker, options[2], options[3]);
-            }
-            else
-            {
-                System.out.println("  Error: include both integration daemon and metadata server name with 'add-topic-connector' request");
-            }
-        }
-        else if ("add-api-connector".equals(mode))
-        {
-            final String serviceURLMarker = "api-integrator";
-
-            if (options.length == 2)
-            {
-                this.addIntegrationConnector(options[0],
-                                             options[1],
-                                             serviceURLMarker,
-                                             defaultAPIIntegrationConnectorProvider,
-                                             null);
-            }
-            else if (options.length == 3)
-            {
-                this.addIntegrationConnector(options[0], options[1], serviceURLMarker, options[2], null);
-            }
-            else if (options.length > 3)
-            {
-                this.addIntegrationConnector(options[0], options[1], serviceURLMarker, options[2], options[3]);
-            }
-            else
-            {
-                System.out.println("  Error: include both integration daemon and metadata server name with 'add-api-connector' request");
-            }
-        }
-        else if ("add-infra-connector".equals(mode))
-        {
-            final String serviceURLMarker = "infrastructure-integrator";
-
-            if (options.length == 2)
-            {
-                this.addIntegrationConnector(options[0],
-                                             options[1],
-                                             serviceURLMarker,
-                                             defaultInfraIntegrationConnectorProvider,
-                                             null);
-            }
-            else if (options.length == 3)
-            {
-                this.addIntegrationConnector(options[0], options[1], serviceURLMarker, options[2], null);
-            }
-            else if (options.length > 3)
-            {
-                this.addIntegrationConnector(options[0], options[1], serviceURLMarker, options[2], options[3]);
-            }
-            else
-            {
-                System.out.println("  Error: include both integration daemon and metadata server name with 'add-infra-connector' request");
-            }
-        }
         else if ("add-cohort-member".equals(mode))
         {
             if (options.length == 1)
@@ -859,9 +707,6 @@ public class ServerConfig
                     System.out.println("Enter a command along with the server name and any optional parameters. Press enter to execute request.");
                     System.out.println("  - create-metadata-store     <serverName>  ");
                     System.out.println("  - create-integration-daemon <serverName>  ");
-                    System.out.println("  - add-api-connector         <serverName> <metadataStoreServerName> <optionalConnectorProviderClassName> <optionalNetworkAddress>");
-                    System.out.println("  - add-infra-connector       <serverName> <metadataStoreServerName> <optionalConnectorProviderClassName> <optionalNetworkAddress>");
-                    System.out.println("  - add-topic-connector       <serverName> <metadataStoreServerName> <optionalConnectorProviderClassName> <optionalNetworkAddress>");
                     System.out.println("  - log-event-contents        <serverName> <optionalConnectorProviderClassName> ");
                     System.out.println("  - add-cohort-member         <serverName> <optionalCohortName> ");
                     System.out.println("  - add-startup-archive       <serverName> <archiveFileName> ");

@@ -164,48 +164,14 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Calls for new and changed types go here
          */
-        update0010BaseModel();
         update0022Translations();
         addArea1Actors();
         add0222DataFilesAndFolders();
-        add0223DataFeed();
         add0430ServiceLevelObjectives();
         update0481Licenses();
         add0483TermsAndConditions();
         add0484Agreements();
         add00711DigitalSubscription();
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0010BaseModel()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateAsset());
-    }
-
-
-    private TypeDefPatch updateAsset()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
     /*
@@ -255,7 +221,6 @@ public class OpenMetadataTypesArchive3_13
         this.archiveBuilder.addTypeDefPatch(updateUserIdentity());
         this.archiveBuilder.addTypeDefPatch(updatePersonRole());
         this.archiveBuilder.addTypeDefPatch(updateProjectTeam());
-        this.archiveBuilder.addTypeDefPatch(updateToDo());
         this.archiveBuilder.addTypeDefPatch(updateActionAssignment());
         this.archiveBuilder.addTypeDefPatch(updateCrowdSourcingContribution());
     }
@@ -341,30 +306,6 @@ public class OpenMetadataTypesArchive3_13
 
         return typeDefPatch;
     }
-
-
-    private TypeDefPatch updateToDo()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TO_DO.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TO_DO_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
     private TypeDefPatch updateActionAssignment()
     {
@@ -469,22 +410,6 @@ public class OpenMetadataTypesArchive3_13
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0223DataFeed()
-    {
-        this.archiveBuilder.addEntityDef(getDataFeedEntity());
-
-    }
-
-    private EntityDef getDataFeedEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_FEED,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_ASSET.typeName));
-    }
 
 
     /*
@@ -558,8 +483,6 @@ public class OpenMetadataTypesArchive3_13
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENTITLEMENTS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESTRICTIONS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OBLIGATIONS));
@@ -627,41 +550,23 @@ public class OpenMetadataTypesArchive3_13
         this.archiveBuilder.addEntityDef(getAgreementEntity());
         this.archiveBuilder.addRelationshipDef(getAgreementActorRelationship());
         this.archiveBuilder.addRelationshipDef(getAgreementItemRelationship());
-        this.archiveBuilder.addRelationshipDef(getContractLinkRelationship());
     }
 
 
     private EntityDef getAgreementEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.AGREEMENT,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+        EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.AGREEMENT,
+                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
 
         entityDef.setPropertiesDefinition(properties);
-
-        /*
-         * Set the statuses
-         */
-        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
-        validInstanceStatusList.add(InstanceStatus.DRAFT);
-        validInstanceStatusList.add(InstanceStatus.PREPARED);
-        validInstanceStatusList.add(InstanceStatus.PROPOSED);
-        validInstanceStatusList.add(InstanceStatus.APPROVED);
-        validInstanceStatusList.add(InstanceStatus.REJECTED);
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
-        validInstanceStatusList.add(InstanceStatus.OTHER);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
-
-        entityDef.setValidInstanceStatusList(validInstanceStatusList);
-        entityDef.setInitialStatus(InstanceStatus.DRAFT);
 
         return entityDef;
     }
@@ -771,59 +676,6 @@ public class OpenMetadataTypesArchive3_13
 
         return relationshipDef;
     }
-
-
-    private RelationshipDef getContractLinkRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONTRACT_LINK_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "agreements";
-        final String                     end1AttributeDescription     = "Agreements related to the contract.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.AGREEMENT.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "contracts";
-        final String                     end2AttributeDescription     = "Details of the contract documents.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_REFERENCE.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTRACT_ID));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTRACT_LIAISON));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTRACT_LIAISON_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTRACT_LIAISON_PROPERTY_NAME));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------

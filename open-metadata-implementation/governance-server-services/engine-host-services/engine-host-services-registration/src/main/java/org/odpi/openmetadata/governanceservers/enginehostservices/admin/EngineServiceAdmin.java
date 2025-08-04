@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
@@ -41,15 +41,15 @@ public abstract class EngineServiceAdmin
      * @param governanceEngineMap map of configured engines
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
-    public abstract void initialize(String                              localServerId,
-                                    String                              localServerName,
-                                    AuditLog                            auditLog,
-                                    String                              localServerUserId,
-                                    String                              localServerPassword,
-                                    int                                 maxPageSize,
+    public abstract void initialize(String                        localServerId,
+                                    String                        localServerName,
+                                    AuditLog                      auditLog,
+                                    String                        localServerUserId,
+                                    String                        localServerPassword,
+                                    int                           maxPageSize,
                                     GovernanceConfigurationClient configurationClient,
-                                    EngineServiceConfig                 engineServiceConfig,
-                                    GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException;
+                                    EngineServiceConfig           engineServiceConfig,
+                                    GovernanceEngineMap           governanceEngineMap) throws OMAGConfigurationErrorException;
 
 
 

@@ -23,9 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionPortProperties extends ReferenceableProperties
 {
-    private String                displayName           = null;
-    private String                description           = null;
-    private String                versionIdentifier     = null;
     private SolutionPortDirection solutionPortDirection = null;
     private String                userDefinedStatus     = null;
 
@@ -51,78 +48,9 @@ public class SolutionPortProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.displayName = template.getDisplayName();
-            this.description           = template.getDescription();
-            this.versionIdentifier     = template.getVersionIdentifier();
             this.solutionPortDirection = template.getSolutionPortDirection();
             this.userDefinedStatus = template.getUserDefinedStatus();
         }
-    }
-
-
-    /**
-     * Return a human memorable name for the port.
-     *
-     * @return string  name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up a human memorable name for the port.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for this port.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for this port.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the version identifier for this solution port.
-     *
-     * @return String
-     */
-    public String getVersionIdentifier()
-    {
-        return versionIdentifier;
-    }
-
-
-    /**
-     * Set up the version number for this solution port.
-     *
-     * @param versionIdentifier String
-     */
-    public void setVersionIdentifier(String versionIdentifier)
-    {
-        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -179,10 +107,7 @@ public class SolutionPortProperties extends ReferenceableProperties
     public String toString()
     {
         return "SolutionPortProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", version='" + versionIdentifier + '\'' +
-                ", solutionPortDirection=" + solutionPortDirection +
+                "solutionPortDirection=" + solutionPortDirection +
                 ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
@@ -202,10 +127,7 @@ public class SolutionPortProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         SolutionPortProperties that = (SolutionPortProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(versionIdentifier, that.versionIdentifier) &&
-                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
+        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
                 solutionPortDirection == that.solutionPortDirection;
     }
 
@@ -217,6 +139,6 @@ public class SolutionPortProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, versionIdentifier, solutionPortDirection, userDefinedStatus);
+        return Objects.hash(super.hashCode(), solutionPortDirection, userDefinedStatus);
     }
 }

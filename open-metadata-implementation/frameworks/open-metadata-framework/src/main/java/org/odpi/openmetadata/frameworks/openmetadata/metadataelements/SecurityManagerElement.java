@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SecurityManagerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AuthorizationManagerProperties;
 
 import java.util.Objects;
 
@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecurityManagerElement implements MetadataElement
 {
-    private ElementHeader             elementHeader             = null;
-    private SecurityManagerProperties securityManagerProperties = null;
+    private ElementHeader                  elementHeader                  = null;
+    private AuthorizationManagerProperties authorizationManagerProperties = null;
 
 
     /**
@@ -44,8 +44,8 @@ public class SecurityManagerElement implements MetadataElement
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            securityManagerProperties = template.getSecurityManagerProperties();
+            elementHeader                  = template.getElementHeader();
+            authorizationManagerProperties = template.getSecurityManagerProperties();
         }
     }
 
@@ -79,20 +79,20 @@ public class SecurityManagerElement implements MetadataElement
      *
      * @return properties bean
      */
-    public SecurityManagerProperties getSecurityManagerProperties()
+    public AuthorizationManagerProperties getSecurityManagerProperties()
     {
-        return securityManagerProperties;
+        return authorizationManagerProperties;
     }
 
 
     /**
      * Set up the properties of the software server capability.
      *
-     * @param securityManagerProperties properties bean
+     * @param authorizationManagerProperties properties bean
      */
-    public void setSecurityManagerProperties(SecurityManagerProperties securityManagerProperties)
+    public void setSecurityManagerProperties(AuthorizationManagerProperties authorizationManagerProperties)
     {
-        this.securityManagerProperties = securityManagerProperties;
+        this.authorizationManagerProperties = authorizationManagerProperties;
     }
 
 
@@ -106,7 +106,7 @@ public class SecurityManagerElement implements MetadataElement
     {
         return "SecurityManagerElement{" +
                 "elementHeader=" + elementHeader +
-                ", securityManagerProperties=" + securityManagerProperties +
+                ", authorizationManagerProperties=" + authorizationManagerProperties +
                 '}';
     }
 
@@ -134,7 +134,7 @@ public class SecurityManagerElement implements MetadataElement
         }
         SecurityManagerElement that = (SecurityManagerElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(securityManagerProperties, that.securityManagerProperties);
+                Objects.equals(authorizationManagerProperties, that.authorizationManagerProperties);
     }
 
 
@@ -146,6 +146,6 @@ public class SecurityManagerElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, securityManagerProperties);
+        return Objects.hash(super.hashCode(), elementHeader, authorizationManagerProperties);
     }
 }

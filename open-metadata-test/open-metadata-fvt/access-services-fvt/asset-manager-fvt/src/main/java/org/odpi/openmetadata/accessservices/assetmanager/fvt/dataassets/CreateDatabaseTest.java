@@ -413,10 +413,10 @@ public class CreateDatabaseTest
 
             AssetManagerProperties properties = new AssetManagerProperties();
             properties.setQualifiedName(assetManagerName);
-            properties.setResourceName(assetManagerDisplayName);
-            properties.setResourceDescription(assetManagerDescription);
+            properties.setDisplayName(assetManagerDisplayName);
+            properties.setDescription(assetManagerDescription);
             properties.setDeployedImplementationType(assetManagerTypeDescription);
-            properties.setVersion(assetManagerVersion);
+            properties.setVersionIdentifier(assetManagerVersion);
 
             String assetManagerGUID = client.createExternalAssetManager(userId, properties);
 
@@ -1370,9 +1370,9 @@ public class CreateDatabaseTest
     {
         if (metadataElement.getElementHeader() != null)
         {
-            if (metadataElement.getElementHeader().getClassifications() != null)
+            if (metadataElement.getElementHeader().getOtherClassifications() != null)
             {
-                for (ElementClassification classification : metadataElement.getElementHeader().getClassifications())
+                for (ElementClassification classification : metadataElement.getElementHeader().getOtherClassifications())
                 {
                     if ("Anchors".equals(classification.getClassificationName()))
                     {

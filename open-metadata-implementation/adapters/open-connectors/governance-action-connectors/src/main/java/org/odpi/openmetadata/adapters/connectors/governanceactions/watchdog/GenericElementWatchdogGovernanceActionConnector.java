@@ -5,13 +5,18 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -22,19 +27,18 @@ import java.util.*;
  */
 public class GenericElementWatchdogGovernanceActionConnector extends GenericWatchdogGovernanceActionConnector
 {
-
-
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
-        super.start("OpenMetadataRoot");
+        super.start(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
     }
 
 
@@ -49,7 +53,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
      *                                    called until the watchdog governance action service declares it is complete
      *                                    or administrator action shuts down the service.
      */
-    void processEvent(WatchdogGovernanceEvent event) throws GovernanceServiceException
+    void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException
     {
         final String methodName = "processEvent";
 
@@ -57,9 +61,9 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
         {
             try
             {
-                if (event instanceof WatchdogMetadataElementEvent metadataElementEvent)
+                if (event.getElementHeader().getType().getTypeCategory() == OpenMetadataTypeDefCategory.ENTITY_DEF)
                 {
-                    String elementGUID = metadataElementEvent.getMetadataElement().getElementGUID();
+                    String elementGUID = event.getElementHeader().getGUID();
 
                     Map<String, String>   requestParameters = new HashMap<>();
                     List<NewActionTarget> actionTargets     = new ArrayList<>();
@@ -72,30 +76,23 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
                     if ((instancesToListenTo == null) || (instancesToListenTo.contains(elementGUID)))
                     {
-                        if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
+                        if (event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED)
                         {
                             initiateProcess(newElementProcessName,
                                             null,
                                             actionTargets);
                         }
-                        else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
+                        else if (event.getEventType() == OpenMetadataEventType.ELEMENT_UPDATED)
                         {
-                            ElementProperties previousElementProperties = null;
-
-                            if (metadataElementEvent.getPreviousMetadataElement() != null)
-                            {
-                                previousElementProperties = metadataElementEvent.getPreviousMetadataElement().getElementProperties();
-                            }
-
                             requestParameters.put(GenericElementRequestParameter.CHANGED_PROPERTIES.getName(),
-                                                  this.diffProperties(previousElementProperties,
-                                                                      metadataElementEvent.getMetadataElement().getElementProperties()));
+                                                  this.diffProperties(event.getPreviousElementProperties(),
+                                                                      event.getElementProperties()));
 
                             initiateProcess(updatedElementProcessName,
                                             requestParameters,
                                             actionTargets);
                         }
-                        else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
+                        else if (event.getEventType() == OpenMetadataEventType.ELEMENT_DELETED)
                         {
                             initiateProcess(deletedElementProcessName,
                                             null,
@@ -103,34 +100,25 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                         }
                         else
                         {
-                            WatchdogClassificationEvent classificationEvent = (WatchdogClassificationEvent) event;
+                            requestParameters.put("ClassificationName", event.getClassificationName());
 
-                            requestParameters.put("ClassificationName", classificationEvent.getChangedClassification().getClassificationName());
-
-                            if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_CLASSIFICATION)
+                            if (event.getEventType() == OpenMetadataEventType.ELEMENT_CLASSIFIED)
                             {
                                 initiateProcess(classifiedElementProcessName,
                                                 requestParameters,
                                                 actionTargets);
                             }
-                            else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
+                            else if (event.getEventType() == OpenMetadataEventType.ELEMENT_RECLASSIFIED)
                             {
-                                ElementProperties previousElementProperties = null;
-
-                                if (classificationEvent.getPreviousClassification() != null)
-                                {
-                                    previousElementProperties = classificationEvent.getPreviousClassification().getClassificationProperties();
-                                }
-
-                                requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                               classificationEvent.getChangedClassification().getClassificationProperties()));
-
+                                requestParameters.put("ChangedProperties", this.diffProperties(event.getPreviousClassificationProperties(),
+                                                                                               event.getClassificationProperties()));
 
                                 initiateProcess(reclassifiedElementProcessName,
                                                 requestParameters,
                                                 actionTargets);
+
                             }
-                            else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_CLASSIFICATION)
+                            else if (event.getEventType() == OpenMetadataEventType.ELEMENT_DECLASSIFIED)
                             {
                                 initiateProcess(declassifiedElementProcessName,
                                                 requestParameters,
@@ -144,71 +132,60 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                         }
                     }
                 }
-                else if (event instanceof WatchdogRelatedElementsEvent relatedElementsEvent)
+                else // Relationship event
                 {
-                    OpenMetadataRelationship openMetadataRelationship = relatedElementsEvent.getRelatedMetadataElements();
+                    String end1GUID = event.getEndOneElementHeader().getGUID();
+                    String end2GUID = event.getEndTwoElementHeader().getGUID();
 
-                if (openMetadataRelationship != null)
-                {
-                    String end1GUID = openMetadataRelationship.getElementGUIDAtEnd1();
-                    String end2GUID = openMetadataRelationship.getElementGUIDAtEnd2();
+                    if ((instancesToListenTo == null) ||
+                            (instancesToListenTo.contains(end1GUID)) ||
+                            (instancesToListenTo.contains(end2GUID)))
+                    {
+                        Map<String, String> requestParameters = new HashMap<>();
 
-                        if ((instancesToListenTo == null) ||
-                                    (instancesToListenTo.contains(end1GUID)) ||
-                                    (instancesToListenTo.contains(end2GUID)))
+                        requestParameters.put("RelationshipGUID", event.getElementHeader().getGUID());
+                        requestParameters.put("RelationshipTypeName", event.getElementHeader().getType().getTypeName());
+
+                        List<NewActionTarget> actionTargets = new ArrayList<>();
+
+                        NewActionTarget actionTarget = new NewActionTarget();
+
+                        actionTarget.setActionTargetName(actionTargetName);
+                        actionTarget.setActionTargetGUID(end1GUID);
+                        actionTargets.add(actionTarget);
+
+                        actionTarget = new NewActionTarget();
+
+                        actionTarget.setActionTargetName(actionTargetTwoName);
+                        actionTarget.setActionTargetGUID(end2GUID);
+                        actionTargets.add(actionTarget);
+
+                        if (event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED)
                         {
-                            Map<String, String> requestParameters = new HashMap<>();
+                            initiateProcess(newRelationshipProcessName,
+                                            requestParameters,
+                                            actionTargets);
+                        }
+                        else if (event.getEventType() == OpenMetadataEventType.ELEMENT_UPDATED)
+                        {
+                            requestParameters.put("ChangedProperties", this.diffProperties(event.getPreviousElementProperties(),
+                                                                                           event.getElementProperties()));
 
-                            requestParameters.put("RelationshipGUID", openMetadataRelationship.getRelationshipGUID());
-                            requestParameters.put("RelationshipTypeName", openMetadataRelationship.getRelationshipType().getTypeName());
+                            initiateProcess(updatedRelationshipProcessName,
+                                            requestParameters,
+                                            actionTargets);
+                        }
+                        else if (event.getEventType() == OpenMetadataEventType.ELEMENT_DELETED)
+                        {
+                            initiateProcess(deletedRelationshipProcessName,
+                                            requestParameters,
+                                            actionTargets);
+                        }
 
-                            List<NewActionTarget> actionTargets = new ArrayList<>();
+                        if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(governanceContext.getRequestType()))
+                        {
+                            completed = true;
 
-                            NewActionTarget actionTarget = new NewActionTarget();
-
-                            actionTarget.setActionTargetName(actionTargetName);
-                            actionTarget.setActionTargetGUID(end1GUID);
-                            actionTargets.add(actionTarget);
-
-                            actionTarget = new NewActionTarget();
-
-                            actionTarget.setActionTargetName(actionTargetTwoName);
-                            actionTarget.setActionTargetGUID(end2GUID);
-                            actionTargets.add(actionTarget);
-
-                            if (relatedElementsEvent.getEventType() == WatchdogEventType.NEW_RELATIONSHIP)
-                            {
-                                initiateProcess(newRelationshipProcessName,
-                                                requestParameters,
-                                                actionTargets);
-                            }
-                            else if (relatedElementsEvent.getEventType() == WatchdogEventType.UPDATED_RELATIONSHIP_PROPERTIES)
-                            {
-                                ElementProperties previousElementProperties = null;
-
-                                if (relatedElementsEvent.getPreviousRelatedMetadataElements() != null)
-                                {
-                                    previousElementProperties = relatedElementsEvent.getPreviousRelatedMetadataElements().getRelationshipProperties();
-                                }
-
-                                requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                               openMetadataRelationship.getRelationshipProperties()));
-
-                                initiateProcess(updatedRelationshipProcessName,
-                                                requestParameters,
-                                                actionTargets);
-                            }
-                            else if (relatedElementsEvent.getEventType() == WatchdogEventType.DELETED_RELATIONSHIP)
-                            {
-                                initiateProcess(deletedRelationshipProcessName,
-                                                requestParameters,
-                                                actionTargets);
-                            }
-
-                            if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(governanceContext.getRequestType()))
-                            {
-                                completed = true;
-                            }
                         }
                     }
                 }

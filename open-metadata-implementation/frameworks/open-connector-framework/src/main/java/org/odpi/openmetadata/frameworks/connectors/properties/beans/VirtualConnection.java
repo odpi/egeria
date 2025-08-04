@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +47,7 @@ public class VirtualConnection extends Connection
         elementType.setTypeName(elementTypeName);
         elementType.setTypeVersion(elementTypeVersion);
         elementType.setTypeDescription(elementTypeDescription);
+        elementType.setTypeCategory(OpenMetadataTypeDefCategory.ENTITY_DEF);
 
         return elementType;
     }

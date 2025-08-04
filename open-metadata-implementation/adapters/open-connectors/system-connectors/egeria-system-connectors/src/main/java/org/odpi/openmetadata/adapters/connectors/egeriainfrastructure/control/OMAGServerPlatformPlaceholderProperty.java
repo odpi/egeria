@@ -108,7 +108,7 @@ public enum OMAGServerPlatformPlaceholderProperty
      */
     public String getPlaceholder()
     {
-        return "{{" + name + "}}";
+        return "~{" + name + "}~";
     }
 
 

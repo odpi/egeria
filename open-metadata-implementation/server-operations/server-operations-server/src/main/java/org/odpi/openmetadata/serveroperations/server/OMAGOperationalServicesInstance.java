@@ -3,23 +3,19 @@
 package org.odpi.openmetadata.serveroperations.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
+import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.registration.ViewServerGenericServiceAdmin;
 import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
-import org.odpi.openmetadata.frameworkservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
-import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
-import org.odpi.openmetadata.frameworkservices.oif.admin.OIFMetadataOperationalServices;
-import org.odpi.openmetadata.frameworkservices.omf.admin.OMFMetadataOperationalServices;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
+import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
-import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,12 +33,8 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private final ServerTypeClassification        serverTypeClassification;
 
     private OMAGServerConfig                     operationalConfiguration                     = null;
-    private OMRSOperationalServices              operationalRepositoryServices                = null;
-    private OMFMetadataOperationalServices       operationalOMFMetadataServices               = null;
-    private OCFMetadataOperationalServices       operationalOCFMetadataServices               = null;
-    private GAFMetadataOperationalServices       operationalGAFMetadataServices               = null;
-    private OIFMetadataOperationalServices       operationalOIFMetadataServices               = null;
-    private List<AccessServiceAdmin>             operationalAccessServiceAdminList            = new ArrayList<>();
+    private OMRSOperationalServices operationalRepositoryServices  = null;
+    private List<AccessServiceAdmin> operationalAccessServiceAdminList = new ArrayList<>();
     private List<ViewServiceAdmin>               operationalViewServiceAdminList              = new ArrayList<>();
     private List<ViewServerGenericServiceAdmin>  operationalViewServerGenericServiceAdminList = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices          = null;
@@ -211,94 +203,6 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     void setOperationalRepositoryServices(OMRSOperationalServices operationalRepositoryServices)
     {
         this.operationalRepositoryServices = operationalRepositoryServices;
-    }
-
-
-    /**
-     * Return the running instance of the Open Metadata Framework (OMF) metadata services.
-     *
-     * @return OMFMetadataOperationalServices object
-     */
-    public OMFMetadataOperationalServices getOperationalOMFMetadataServices()
-    {
-        return operationalOMFMetadataServices;
-    }
-
-
-    /**
-     * Set up the running instance of the Open Metadata Framework (OMF) metadata services.
-     *
-     * @param operationalOMFMetadataServices OMFMetadataOperationalServices object
-     */
-    public void setOperationalOMFMetadataServices(OMFMetadataOperationalServices operationalOMFMetadataServices)
-    {
-        this.operationalOMFMetadataServices = operationalOMFMetadataServices;
-    }
-
-
-    /**
-     * Return the running instance of the Open Connector Framework (OCF) metadata services.
-     *
-     * @return OCFMetadataOperationalServices object
-     */
-    OCFMetadataOperationalServices getOperationalOCFMetadataServices()
-    {
-        return operationalOCFMetadataServices;
-    }
-
-
-    /**
-     * Set up the running instance of the Open Connector Framework (OCF) metadata services.
-     *
-     * @param operationalOCFMetadataServices OCFMetadataOperationalServices object
-     */
-    void setOperationalOCFMetadataServices(OCFMetadataOperationalServices operationalOCFMetadataServices)
-    {
-        this.operationalOCFMetadataServices = operationalOCFMetadataServices;
-    }
-
-
-    /**
-     * Return the running instance of the Open Integration Framework (OIF) metadata services.
-     *
-     * @return OIFMetadataOperationalServices object
-     */
-    OIFMetadataOperationalServices getOperationalOIFMetadataServices()
-    {
-        return operationalOIFMetadataServices;
-    }
-
-
-    /**
-     * Set up the running instance of the Open Integration Framework (OIF) metadata services.
-     *
-     * @param operationalOIFMetadataServices OIFMetadataOperationalServices object
-     */
-    void setOperationalOIFMetadataServices(OIFMetadataOperationalServices operationalOIFMetadataServices)
-    {
-        this.operationalOIFMetadataServices = operationalOIFMetadataServices;
-    }
-
-
-    /**
-     * Return the running instance of the Governance Action Framework (GAF) metadata services.
-     *
-     * @return GAFMetadataOperationalServices object
-     */
-    GAFMetadataOperationalServices getOperationalGAFMetadataServices()
-    {
-        return operationalGAFMetadataServices;
-    }
-
-
-    /**
-     * Set up the running instance of the Governance Action Framework (GAF) metadata services.
-     *
-     * @param operationalGAFMetadataServices GAFMetadataOperationalServices object
-     */
-    void setOperationalGAFMetadataServices(GAFMetadataOperationalServices operationalGAFMetadataServices)
-    {
-        this.operationalGAFMetadataServices = operationalGAFMetadataServices;
     }
 
 

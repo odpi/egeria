@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.actors;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -26,14 +25,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PersonRoleProperties.class, name = "PersonRoleProperties"),
                 @JsonSubTypes.Type(value = TeamRoleProperties.class, name = "TeamRoleProperties"),
                 @JsonSubTypes.Type(value = ITProfileRoleProperties.class, name = "ITProfileRoleProperties"),
-                @JsonSubTypes.Type(value = SolutionRoleProperties.class, name = "SolutionRoleProperties"),
+                @JsonSubTypes.Type(value = SolutionActorRoleProperties.class, name = "SolutionActorRoleProperties"),
         })
-public class ActorRoleProperties extends ReferenceableProperties
+public class ActorRoleProperties extends ActorProperties
 {
     private String identifier = null; /* identifier */
     private String scope       = null; /* scope */
-    private String name        = null; /* name */
-    private String description = null; /* description */
 
 
 
@@ -52,6 +49,17 @@ public class ActorRoleProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
+    public ActorRoleProperties(ActorProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public ActorRoleProperties(ActorRoleProperties template)
     {
         super(template);
@@ -60,8 +68,6 @@ public class ActorRoleProperties extends ReferenceableProperties
         {
             this.identifier    = template.getIdentifier();
             this.scope       = template.getScope();
-            this.name        = template.getName();
-            this.description = template.getDescription();
         }
     }
 
@@ -115,52 +121,6 @@ public class ActorRoleProperties extends ReferenceableProperties
 
 
     /**
-     * Return the job role title.
-     *
-     * @return string name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the job role title.
-     *
-     * @param name string name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-     * Return the description of the job role.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the job role.
-     *
-     * @param description string description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-
-
-    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -171,8 +131,6 @@ public class ActorRoleProperties extends ReferenceableProperties
         return "ActorRoleProperties{" +
                 "identifier='" + identifier + '\'' +
                 ", scope='" + scope + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 "} " + super.toString();
     }
 
@@ -200,9 +158,7 @@ public class ActorRoleProperties extends ReferenceableProperties
         }
         ActorRoleProperties that = (ActorRoleProperties) objectToCompare;
         return Objects.equals(identifier, that.identifier) &&
-                       Objects.equals(scope, that.scope) &&
-                       Objects.equals(name, that.name) &&
-                       Objects.equals(description, that.description) ;
+                       Objects.equals(scope, that.scope);
     }
 
 
@@ -214,6 +170,6 @@ public class ActorRoleProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(identifier, scope, name, description);
+        return Objects.hash(identifier, scope);
     }
 }

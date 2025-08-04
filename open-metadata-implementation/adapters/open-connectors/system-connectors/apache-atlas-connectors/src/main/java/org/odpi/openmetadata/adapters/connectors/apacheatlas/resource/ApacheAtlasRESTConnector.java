@@ -14,8 +14,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyValue;
@@ -94,30 +95,31 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
      * This call can be used to register with non-blocking services.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
         final String methodName = "start";
         
-        if ((connectionDetails.getUserId() == null) || (connectionDetails.getClearPassword() == null))
+        if ((connectionBean.getUserId() == null) || (connectionBean.getClearPassword() == null))
         {
             throw new ConnectorCheckedException(ApacheAtlasErrorCode.NULL_USER.getMessageDefinition(connectorName),
                                                 this.getClass().getName(),
                                                 methodName);
         }
         
-        if (connectionDetails.getConnectionName() != null)
+        if (connectionBean.getDisplayName() != null)
         {
-            connectorName = connectionDetails.getConnectionName();
+            connectorName = connectionBean.getDisplayName();
         }
 
         /*
          * Retrieve the configuration
          */
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint != null)
         {
@@ -131,7 +133,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
                                                 methodName);
         }
 
-        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
 
         if (configurationProperties != null)
         {
@@ -148,8 +150,8 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
              */
             RESTClientFactory  factory = new RESTClientFactory(atlasServerName,
                                                                targetRootURL,
-                                                               connectionDetails.getUserId(),
-                                                               connectionDetails.getClearPassword(),
+                                                               connectionBean.getUserId(),
+                                                               connectionBean.getClearPassword(),
                                                                secretsStoreConnectorMap,
                                                                auditLog);
 

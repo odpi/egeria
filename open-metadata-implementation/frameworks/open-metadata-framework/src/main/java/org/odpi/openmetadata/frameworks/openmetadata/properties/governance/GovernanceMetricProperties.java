@@ -19,11 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceMetricProperties extends ReferenceableProperties
 {
-    private int                 domainIdentifier     = 0;
-    private String              displayName          = null;
-    private String              description          = null;
-    private String              measurement          = null;
-    private String              target               = null;
+    private int    domainIdentifier = 0;
+    private String measurement      = null;
+    private String target           = null;
 
 
     /**
@@ -51,8 +49,6 @@ public class GovernanceMetricProperties extends ReferenceableProperties
              * Copy the values from the supplied template.
              */
             domainIdentifier = template.getDomainIdentifier();
-            displayName      = template.getDisplayName();
-            description      = template.getDescription();
             measurement      = template.getMeasurement();
             target           = template.getTarget();
         }
@@ -79,44 +75,6 @@ public class GovernanceMetricProperties extends ReferenceableProperties
     public void setDomainIdentifier(int domainIdentifier)
     {
         this.domainIdentifier = domainIdentifier;
-    }
-
-
-    /**
-     * Return the display name of this governance metric.
-     *
-     * @return String display name.
-     */
-    public String getDisplayName() { return displayName; }
-
-
-    /**
-     * Set up the display name of this governance metric.
-     *
-     * @param displayName - string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of this governance metric.
-     *
-     * @return String resource description
-     */
-    public String getDescription() { return description; }
-
-
-    /**
-     * Set up the description of this governance metric.
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -170,8 +128,6 @@ public class GovernanceMetricProperties extends ReferenceableProperties
     {
         return "GovernanceMetricProperties{" +
                 "domainIdentifier=" + domainIdentifier +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
                 ", measurement='" + measurement + '\'' +
                 ", target='" + target + '\'' +
                 "} " + super.toString();
@@ -201,8 +157,6 @@ public class GovernanceMetricProperties extends ReferenceableProperties
         }
         GovernanceMetricProperties that = (GovernanceMetricProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
-                       Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
                        Objects.equals(measurement, that.measurement) &&
                        Objects.equals(target, that.target);
     }
@@ -216,6 +170,6 @@ public class GovernanceMetricProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, measurement, target);
+        return Objects.hash(super.hashCode(), domainIdentifier, measurement, target);
     }
 }

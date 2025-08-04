@@ -147,4 +147,5 @@ public enum SustainabilitySubjectAreaDefinition
     {
         return "CocoSubjectAreaDefinition{" +
                        "subjectAreaName='" + subjectAreaName + '\'' + '}';
-    }}
+    }
+}

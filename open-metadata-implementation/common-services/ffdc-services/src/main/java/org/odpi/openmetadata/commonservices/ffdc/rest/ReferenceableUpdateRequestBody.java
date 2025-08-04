@@ -19,9 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
+public class ReferenceableUpdateRequestBody extends UpdateElementRequestBody
 {
-    private Date   effectiveTime     = null;
     private String updateDescription = null;
 
     /**
@@ -44,31 +43,8 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
 
         if (template != null)
         {
-            effectiveTime = template.getEffectiveTime();
             updateDescription = template.getUpdateDescription();
         }
-    }
-
-
-    /**
-     * Return the date/time to use for the query.
-     *
-     * @return date object
-     */
-    public Date getEffectiveTime()
-    {
-        return effectiveTime;
-    }
-
-
-    /**
-     * Set up  the date/time to use for the query.
-     *
-     * @param effectiveTime date object
-     */
-    public void setEffectiveTime(Date effectiveTime)
-    {
-        this.effectiveTime = effectiveTime;
     }
 
 
@@ -103,7 +79,6 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
     public String toString()
     {
         return "ReferenceableUpdateRequestBody{" +
-                "effectiveTime=" + effectiveTime +
                 ", updateDescription='" + updateDescription + '\'' +
                 "} " + super.toString();
     }
@@ -130,8 +105,7 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
         {
             return false;
         }
-        return Objects.equals(effectiveTime, that.effectiveTime) &&
-                Objects.equals(updateDescription, that.updateDescription);
+        return Objects.equals(updateDescription, that.updateDescription);
     }
 
 
@@ -143,6 +117,6 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), effectiveTime, updateDescription);
+        return Objects.hash(super.hashCode(), updateDescription);
     }
 }

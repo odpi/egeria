@@ -158,7 +158,6 @@ public class OpenMetadataTypesArchive2_9
          * Calls for new and changed types go here
          */
         update0056AssetManagers();
-        update0137ToDos();
         update0450GovernanceRollout();
         update0217Ports();
     }
@@ -183,7 +182,7 @@ public class OpenMetadataTypesArchive2_9
     private ClassificationDef getUserProfileManagerClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.USER_PROFILE_MANAGER,
-                                                  null,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
@@ -191,7 +190,7 @@ public class OpenMetadataTypesArchive2_9
     private ClassificationDef getUserAccessDirectoryClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.USER_ACCESS_DIRECTORY,
-                                                  null,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
@@ -199,64 +198,9 @@ public class OpenMetadataTypesArchive2_9
     private ClassificationDef getMasterDataManagerClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.MASTER_DATA_MANAGER,
-                                                  null,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Add ActionTarget relationship for ToDos.
-     */
-    private void update0137ToDos()
-    {
-        this.archiveBuilder.addRelationshipDef(getActionTargetRelationship());
-    }
-
-
-    private RelationshipDef getActionTargetRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ACTION_TARGET_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "identifiedToDoActions";
-        final String                     end1AttributeDescription     = "Actions that have been identified for this element.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TO_DO.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "elementsToWorkOn";
-        final String                     end2AttributeDescription     = "Elements that will be updated or used to complete the action.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
     }
 
 

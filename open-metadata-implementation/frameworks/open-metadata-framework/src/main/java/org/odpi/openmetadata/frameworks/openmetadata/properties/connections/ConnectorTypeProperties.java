@@ -91,21 +91,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorTypeProperties extends ReferenceableProperties
 {
-    private String       displayName                       = null;
-    private String       description                       = null;
-    private String       supportedAssetTypeName            = null;
-    private String       expectedDataFormat                = null;
-    private String       connectorProviderClassName        = null;
-    private String       connectorFrameworkName            = null;
-    private String       connectorInterfaceLanguage        = null;
-    private List<String> connectorInterfaces               = null;
-    private String       targetTechnologySource            = null;
-    private String       targetTechnologyName              = null;
-    private List<String> targetTechnologyInterfaces        = null;
-    private List<String> targetTechnologyVersions          = null;
-    private List<String> recognizedAdditionalProperties    = null;
-    private List<String> recognizedConfigurationProperties = null;
-    private List<String> recognizedSecuredProperties       = null;
+    private String       supportedAssetTypeName              = null;
+    private String       supportedDeployedImplementationType = null;
+    private String       expectedDataFormat                  = null;
+    private String       connectorProviderClassName          = null;
+    private String       connectorFrameworkName              = null;
+    private String       connectorInterfaceLanguage          = null;
+    private List<String> connectorInterfaces                 = null;
+    private String       targetTechnologySource              = null;
+    private String       targetTechnologyName                = null;
+    private List<String> targetTechnologyInterfaces          = null;
+    private List<String> targetTechnologyVersions            = null;
+    private List<String> recognizedAdditionalProperties      = null;
+    private List<String> recognizedConfigurationProperties   = null;
+    private List<String> recognizedSecuredProperties         = null;
 
 
 
@@ -130,9 +129,8 @@ public class ConnectorTypeProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
             supportedAssetTypeName = template.getSupportedAssetTypeName();
+            supportedDeployedImplementationType = template.getSupportedDeployedImplementationType();
             expectedDataFormat = template.getExpectedDataFormat();
             connectorProviderClassName = template.getConnectorProviderClassName();
             connectorFrameworkName = template.getConnectorFrameworkName();
@@ -146,51 +144,6 @@ public class ConnectorTypeProperties extends ReferenceableProperties
             recognizedConfigurationProperties = template.getRecognizedConfigurationProperties();
             recognizedSecuredProperties = template.getRecognizedSecuredProperties();
         }
-    }
-
-    /**
-     * Set up the display name for UIs and reports.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Returns the stored display name property for the connector type.
-     * If no display name is available then null is returned.
-     *
-     * @return displayName
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up description of the element.
-     *
-     * @param description String
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Returns the stored description property for the connector type.
-     * If no description is available then null is returned.
-     *
-     * @return description
-     */
-    public String getDescription()
-    {
-        return description;
     }
 
 
@@ -213,6 +166,28 @@ public class ConnectorTypeProperties extends ReferenceableProperties
     public void setSupportedAssetTypeName(String supportedAssetTypeName)
     {
         this.supportedAssetTypeName = supportedAssetTypeName;
+    }
+
+
+    /**
+     * Return the type of asset that the connector implementation supports.
+     *
+     * @return string name
+     */
+    public String getSupportedDeployedImplementationType()
+    {
+        return supportedDeployedImplementationType;
+    }
+
+
+    /**
+     * Set up the type of asset that the connector implementation supports.
+     *
+     * @param supportedDeployedImplementationType string name
+     */
+    public void setSupportedDeployedImplementationType(String supportedDeployedImplementationType)
+    {
+        this.supportedDeployedImplementationType = supportedDeployedImplementationType;
     }
 
 
@@ -435,18 +410,7 @@ public class ConnectorTypeProperties extends ReferenceableProperties
      */
     public List<String> getRecognizedAdditionalProperties()
     {
-        if (recognizedAdditionalProperties == null)
-        {
-            return null;
-        }
-        else if (recognizedAdditionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return recognizedAdditionalProperties;
-        }
+        return recognizedAdditionalProperties;
     }
 
 
@@ -471,18 +435,7 @@ public class ConnectorTypeProperties extends ReferenceableProperties
      */
     public List<String> getRecognizedConfigurationProperties()
     {
-        if (recognizedConfigurationProperties == null)
-        {
-            return null;
-        }
-        else if (recognizedConfigurationProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return recognizedConfigurationProperties;
-        }
+        return recognizedConfigurationProperties;
     }
 
 
@@ -506,18 +459,7 @@ public class ConnectorTypeProperties extends ReferenceableProperties
      */
     public List<String> getRecognizedSecuredProperties()
     {
-        if (recognizedSecuredProperties == null)
-        {
-            return null;
-        }
-        else if (recognizedSecuredProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return recognizedSecuredProperties;
-        }
+        return recognizedSecuredProperties;
     }
 
 
@@ -530,26 +472,21 @@ public class ConnectorTypeProperties extends ReferenceableProperties
     public String toString()
     {
         return "ConnectorTypeProperties{" +
-                       "displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", supportedAssetTypeName='" + supportedAssetTypeName + '\'' +
-                       ", expectedDataFormat='" + expectedDataFormat + '\'' +
-                       ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
-                       ", connectorFrameworkName='" + connectorFrameworkName + '\'' +
-                       ", connectorInterfaceLanguage='" + connectorInterfaceLanguage + '\'' +
-                       ", connectorInterfaces=" + connectorInterfaces +
-                       ", targetTechnologySource='" + targetTechnologySource + '\'' +
-                       ", targetTechnologyName='" + targetTechnologyName + '\'' +
-                       ", targetTechnologyInterfaces=" + targetTechnologyInterfaces +
-                       ", targetTechnologyVersions=" + targetTechnologyVersions +
-                       ", recognizedAdditionalProperties=" + recognizedAdditionalProperties +
-                       ", recognizedConfigurationProperties=" + recognizedConfigurationProperties +
-                       ", recognizedSecuredProperties=" + recognizedSecuredProperties +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "supportedAssetTypeName='" + supportedAssetTypeName + '\'' +
+                ", supportedDeployedImplementationType='" + supportedDeployedImplementationType + '\'' +
+                ", expectedDataFormat='" + expectedDataFormat + '\'' +
+                ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
+                ", connectorFrameworkName='" + connectorFrameworkName + '\'' +
+                ", connectorInterfaceLanguage='" + connectorInterfaceLanguage + '\'' +
+                ", connectorInterfaces=" + connectorInterfaces +
+                ", targetTechnologySource='" + targetTechnologySource + '\'' +
+                ", targetTechnologyName='" + targetTechnologyName + '\'' +
+                ", targetTechnologyInterfaces=" + targetTechnologyInterfaces +
+                ", targetTechnologyVersions=" + targetTechnologyVersions +
+                ", recognizedAdditionalProperties=" + recognizedAdditionalProperties +
+                ", recognizedConfigurationProperties=" + recognizedConfigurationProperties +
+                ", recognizedSecuredProperties=" + recognizedSecuredProperties +
+                "} " + super.toString();
     }
 
 
@@ -575,9 +512,8 @@ public class ConnectorTypeProperties extends ReferenceableProperties
             return false;
         }
         ConnectorTypeProperties that = (ConnectorTypeProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(supportedAssetTypeName, that.supportedAssetTypeName) &&
+        return Objects.equals(supportedAssetTypeName, that.supportedAssetTypeName) &&
+                       Objects.equals(supportedDeployedImplementationType, that.supportedDeployedImplementationType) &&
                        Objects.equals(expectedDataFormat, that.expectedDataFormat) &&
                        Objects.equals(connectorProviderClassName, that.connectorProviderClassName) &&
                        Objects.equals(connectorFrameworkName, that.connectorFrameworkName) &&
@@ -601,9 +537,12 @@ public class ConnectorTypeProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, supportedAssetTypeName, expectedDataFormat, connectorProviderClassName,
-                            connectorFrameworkName, connectorInterfaceLanguage, connectorInterfaces, targetTechnologySource, targetTechnologyName,
-                            targetTechnologyInterfaces, targetTechnologyVersions, recognizedAdditionalProperties, recognizedConfigurationProperties,
+        return Objects.hash(super.hashCode(), supportedAssetTypeName, supportedDeployedImplementationType,
+                            expectedDataFormat, connectorProviderClassName, connectorFrameworkName,
+                            connectorInterfaceLanguage, connectorInterfaces,
+                            targetTechnologySource, targetTechnologyName,
+                            targetTechnologyInterfaces, targetTechnologyVersions,
+                            recognizedAdditionalProperties, recognizedConfigurationProperties,
                             recognizedSecuredProperties);
     }
 }

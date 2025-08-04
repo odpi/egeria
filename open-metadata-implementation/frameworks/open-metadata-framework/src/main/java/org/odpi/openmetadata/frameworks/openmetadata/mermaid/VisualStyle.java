@@ -10,6 +10,9 @@ public enum VisualStyle
 {
     DESCRIPTION(Colour.BLACK.getColourNumber(), Colour.SAND.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), "text"),
 
+    EXTERNAL_ID(Colour.WHITE.getColourNumber(), Colour.MEDIUM_VIOLET_RED.getColourNumber(), Colour.SLATE.getColourNumber(),"sl-rect"),
+    FEEDBACK(Colour.BLACK.getColourNumber(), Colour.MEDIUM_PURPLE.getColourNumber(), Colour.SLATE.getColourNumber(),"flag"),
+    TAG(Colour.YELLOW_GREEN.getColourNumber(), Colour.DARK_MAGENTA.getColourNumber(), Colour.SLATE.getColourNumber(),"delay"),
     MEMENTO(Colour.SLATE.getColourNumber(), Colour.GHOST_WHITE.getColourNumber(), Colour.SLATE.getColourNumber(),"notch-pent"),
     TEMPLATE(Colour.SLATE.getColourNumber(), Colour.POWDER_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(),"card"),
     VALID_VALUE(Colour.SLATE.getColourNumber(), Colour.POWDER_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(),"hex"),
@@ -76,6 +79,7 @@ public enum VisualStyle
     GOVERNED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "rounded"),
     GOVERNANCE_ACTOR(Colour.BLACK.getColourNumber(), Colour.LIGHT_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "trap-t"),
     GOVERNANCE_TEAM(Colour.BLACK.getColourNumber(), Colour.LIGHT_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "tri"),
+    USER_IDENTITY(Colour.BLACK.getColourNumber(), Colour.DARK_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "bow-rect"),
 
 
     PRINCIPAL_PROJECT(Colour.WHITE.getColourNumber(), Colour.DUSKY_ROSE.getColourNumber(), Colour.BLACK.getColourNumber(), "notch-rect"),

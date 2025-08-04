@@ -27,7 +27,11 @@ Content-Type: application/json
 # https://egeria-project.org/concepts/connection
 
 @connectionGUID=add guid here
+@embeddedConnectionGUID=add guid here
+@connectorTypeGUID=add guid here
+@endpointGUID=add guid here
 
+@assetGUID=add guid here
 
 ###
 # @name createConnection
@@ -46,11 +50,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -70,9 +69,14 @@ Content-Type: application/json
     "class" : "ConnectionProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name": "add short name here",
+    "displayName": "add short name here",
     "description": "add description here",
+    "userId": "add user id here",
     "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "configurationProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
     },
@@ -82,7 +86,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -104,11 +113,6 @@ Content-Type: application/json
 
 {
   "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -138,7 +142,12 @@ Content-Type: application/json
   "placeholderPropertyValues":  {
     "placeholder1" : "propertyValue1",
     "placeholder2" : "propertyValue2"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -147,8 +156,6 @@ Content-Type: application/json
 # Update the properties of a connection.
 #
 # @param connectionGUID unique identifier of the connection (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or
@@ -162,17 +169,14 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "mergeUpdate": true,
   "properties": {
     "class" : "ConnectionProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name": "add short name here",
+    "displayName": "add short name here",
     "description": "add description here",
+    "userId": "add user id here",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -183,52 +187,21 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-###
-
-@locationGUID=add guid here
-
-###
-# @name linkLocationToProfile
-# Attach a profile to a location.
-#
-# @param locationGUID           unique identifier of the location
-# @param connectionGUID       unique identifier of the connection
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{connectionGUID}}/profile-locations/{{locationGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "RelationshipRequestBody",
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "ProfileLocationProperties",
-    "associationType": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 
 ###
-# @name detachLocationFromProfile
-# Detach a connection from a location.
+# @name linkConnectionConnectorType
+# Create a ConnectionConnectorType relationship between a connection and a connector type.
 #
 # @param connectionGUID       unique identifier of the connection
-# @param locationGUID           unique identifier of the location
+# @param connectorTypeGUID           unique identifier of the connector type
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -236,50 +209,19 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{connectionGUID}}/profile-locations/{{locationGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{connectionGUID}}/connector-types/{{connectorTypeGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@personOneGUID=add guid here
-@personTwoGUID=add guid here
-
-###
-# @name linkPeerPerson
-# Attach a person profile to one of its peers.
-#
-# @param personOneGUID          unique identifier of the first person profile
-# @param personTwoGUID          unique identifier of the second person profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
-    "class": "RelationshipProperties",
+    "class": "ConnectionConnectorTypeProperties",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   }
@@ -287,11 +229,11 @@ Content-Type: application/json
 
 
 ###
-# @name detachSupportingDefinition
-# Detach a person profile from one of its peers.
+# @name detachConnectionConnectorType
+# Remove the ConnectionConnectorType relationship between a connection and a connector type.
 #
-# @param personOneGUID          unique identifier of the first person profile
-# @param personTwoGUID          unique identifier of the second person profile
+# @param connectionGUID       unique identifier of the connection
+# @param connectorTypeGUID           unique identifier of the connector type
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -299,12 +241,14 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{connectionGUID}}/connector-types/{{connectorTypeGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "cascadedDelete" : false,
+  "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -313,16 +257,11 @@ Content-Type: application/json
 }
 
 ###
-
-@superTeamGUID=add guid here
-@subteamGUID=add guid here
-
-###
-# @name linkTeamStructure
-# Attach a super team to a subteam.
+# @name linkConnectionEndpoint
+# Create a ConnectToEndpoint relationship between a connection and an endpoint.
 #
-# @param superTeamGUID          unique identifier of the super team
-# @param subteamGUID            unique identifier of the subteam
+# @param connectionGUID unique identifier of the connection
+# @param endpointGUID unique identifier of the endpoint
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -330,32 +269,31 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{superTeamGUID}}/team-structures/{{subteamGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{connectionGUID}}/endpoints/{{endpointGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "class" : "NewRelationshipRequestBody",
   "properties": {
-    "class": "TeamStructureProperties",
-    "delegationEscalationAuthority": true,
+    "class": "ConnectionEndpointProperties",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
 ###
-# @name detachTeamStructure
-# Detach a super team from a subteam.
+# @name detachConnectionEndpoint
+# Remove the ConnectToEndpoint relationship between a connection and an endpoint.
 #
-# @param superTeamGUID          unique identifier of the super team
-# @param subteamGUID            unique identifier of the subteam
+# @param connectionGUID unique identifier of the connection
+# @param endpointGUID unique identifier of the endpoint
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -363,12 +301,14 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{superTeamGUID}}/team-structures/{{subteamGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{connectionGUID}}/endpoints/{{endpointGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "cascadedDelete" : false,
+  "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -377,16 +317,78 @@ Content-Type: application/json
 }
 
 ###
+# @name linkEmbeddedConnection
+# Create an EmbeddedConnection relationship between a virtual connection and an embedded connection.
+#
+# @param connectionGUID unique identifier of the virtual connection
+# @param embeddedConnectionGUID unique identifier of the embedded connection
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{connectionGUID}}/embedded-connections/{{embeddedConnectionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
-@assetGUID=add guid here
-@itProfileGUID=add guid here
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "EmbeddedConnectionProperties",
+    "position": 0,
+    "displayName" : "Add name here",
+    "arguments" : {
+      "argument1" : "argument1Value",
+      "argument2" : "arcument2Value"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 
 ###
-# @name linkAssetToProfile
-# Attach an asset to an IT profile.
+# @name detachEmbeddedConnection
+# Remove an EmbeddedConnection relationship between a virtual connection and an embedded connection.
+#
+# @param connectionGUID unique identifier of the virtual connection
+# @param embeddedConnectionGUID unique identifier of the embedded connection
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{connectionGUID}}/embedded-connections/{{embeddedConnectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRequestBody",
+  "cascadedDelete" : false,
+  "deleteMethod" : "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkAssetToConnection
+# Attach an asset to a connection.
 #
 # @param assetGUID       unique identifier of the asset
-# @param itProfileGUID            unique identifier of the IT profile
+# @param connectionGUID            unique identifier of the connection
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -394,30 +396,30 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/assets/{{assetGUID}}/connections/{{connectionGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "AssetConnectionProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "RelationshipProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 ###
-# @name detachAssetFromProfile
-# Detach an asset from an IT profile.
+# @name detachAssetFromConnection
+# Detach an asset from a connection.
 #
 # @param assetGUID       unique identifier of the asset
-# @param itProfileGUID            unique identifier of the IT profile
+# @param connectionGUID            unique identifier of the connection
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -425,75 +427,14 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/assets/{{assetGUID}}/connections/{{connectionGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@teamGUID=add guid here
-
-###
-# @name linkTeamToMembershipRole
-# Attach a team to its membership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{teamGUID}}/team-membership-roles/{{personRoleGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamMembershipProperties",
-    "positionName": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachTeamFromMembershipRole
-# Detach a team profile from its membership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{teamGUID}}/team-membership-roles/{{personRoleGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "cascadedDelete" : false,
+  "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -503,11 +444,11 @@ Content-Type: application/json
 
 
 ###
-# @name linkTeamToLeadershipRole
-# Attach a team to its leadership role.
+# @name linkEndpointToITAsset
+# Attach an endpoint to an infrastructure asset.
 #
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
+# @param assetGUID             unique identifier of the infrastructure asset
+# @param endpointGUID            unique identifier of the endpoint
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -515,29 +456,28 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{teamGUID}}/team-leadership-roles/{{personRoleGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/assets/{{assetGUID}}/endpoints/{{endpointGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ServerEndpointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamLeadershipProperties",
-    "positionName": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 
 ###
-# @name detachTeamFromLeadershipRole
-# Detach a team profile from its leadership role.
+# @name detachEndpointFromITAsset
+# Detach an endpoint from an infrastructure asset.
 #
 # @param teamGUID               unique identifier of the team
 # @param personRoleGUID         unique identifier of the associated person role
@@ -548,12 +488,13 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{teamGUID}}/team-leadership-roles/{{personRoleGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/assets/{{assetGUID}}/endpoints/{{endpointGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
- {
-  "class" : "MetadataSourceRequestBody",
+{
+  "class" : "DeleteRequestBody",
+  "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -567,7 +508,6 @@ Content-Type: application/json
 # Delete a connection.
 #
 # @param connectionGUID  unique identifier of the element to delete
-# @param cascadedDelete ca connections be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -580,7 +520,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "cascadedDelete" : false,
+  "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -669,13 +611,17 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Work with Connector Types
+# https://egeria-project.org/concepts/connector-type
 
 ###
 # @name createConnectorType
@@ -688,17 +634,12 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -718,10 +659,11 @@ Content-Type: application/json
     "class" : "ConnectorTypeProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name":"add name here",
-    "identifier": "add name here",
+    "displayName":"add name here",
     "description": "add description here",
-    "scope": "add scope here",
+    "connectorProviderClassName": "add name here",
+    "supportedAssetType": "add type name here",
+    "supportedDeployedImplementationType": "add type name here",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -732,7 +674,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -748,17 +695,12 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/from-template
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/from-template
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -788,7 +730,12 @@ Content-Type: application/json
   "placeholderPropertyValues":  {
     "placeholder1" : "propertyValue1",
     "placeholder2" : "propertyValue2"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -797,8 +744,6 @@ Content-Type: application/json
 # Update the properties of a connectorType.
 #
 # @param connectorTypeGUID unique identifier of the connectorType (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or
@@ -806,25 +751,22 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/update
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "mergeUpdate" : true,
   "properties": {
     "class" : "ConnectorTypeProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name":"add name here",
-    "identifier": "add name here",
+    "displayName":"add name here",
     "description": "add description here",
-    "scope": "add scope here",
+    "connectorProviderClassName": "add name here",
+    "supportedAssetType": "add type name here",
+    "supportedDeployedImplementationType": "add type name here",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -835,190 +777,7 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-###
-
-@personRoleGUID=add guid here
-@personProfileGUID=add guid here
-
-###
-# @name linkPersonRoleToProfile
-# Attach a person role to a person profile.
-#
-# @param personRoleGUID       unique identifier of the person role
-# @param personProfileGUID            unique identifier of the person profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "PersonRoleAppointmentProperties",
-    "isPublic": true,
-    "expectedTimeAllocationPercent": 100,
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachPersonRoleFromProfile
-# Detach a person role from a profile.
-#
-# @param personRoleGUID       unique identifier of the person role
-# @param personProfileGUID            unique identifier of the person profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@teamRoleGUID=add guid here
-@teamProfileGUID=add guid here
-
-###
-# @name linkTeamRoleToProfile
-# Attach a team role to a team profile.
-#
-# @param teamRoleGUID           unique identifier of the team role
-# @param teamProfileGUID        unique identifier of the team profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamRoleAppointmentProperties",
-    "expectedTimeAllocationPercent": 100,
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name Detach a team role from a team profile.
-# Detach a team role from a team profile.
-#
-# @param teamRoleGUID           unique identifier of the team role
-# @param teamProfileGUID        unique identifier of the team profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name linkITProfileRoleToProfile
-# Attach an IT profile role to an IT profile.
-#
-# @param itProfileRoleGUID      unique identifier of the IT profile role
-# @param itProfileGUID          unique identifier of the IT profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "ITProfileRoleAppointmentProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachITProfileRoleFromProfile
-# Detach an IT profile role from an IT profile.
-#
-# @param itProfileRoleGUID      unique identifier of the IT profile role
-# @param itProfileGUID          unique identifier of the IT profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1032,7 +791,6 @@ Content-Type: application/json
 # Delete a connectorType.
 #
 # @param connectorTypeGUID  unique identifier of the element to delete
-# @param cascadedDelete ca connectorTypes be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -1040,12 +798,14 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "cascadedDelete" : false,
+  "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1067,20 +827,20 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/by-name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -1100,20 +860,20 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -1129,12 +889,12 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/actor-roles/{{connectorTypeGUID}}/retrieve"})
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/{{connectorTypeGUID}}/retrieve"})
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -1142,12 +902,13 @@ Content-Type: application/json
 }
 
 ###
-
-@endpointGUID=add guid here
+# =====================================================================================================================
+# Work with Endpoints
+# https://egeria-project.org/concepts/endpoint
 
 ###
 # @name createEndpoint
-# Create a endpoint.
+# Create an endpoint.
 #
 # Request body provides             properties for the endpoint.
 #
@@ -1162,11 +923,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -1186,8 +942,11 @@ Content-Type: application/json
     "class" : "EndpointProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "userId":"add name here",
-    "distinguishedName": "add name here",
+    "name":"add name here",
+    "description": "add description here",
+    "networkAddress": "add address here",
+    "protocol": "add protocol here",
+    "encryptionMethod": "add method here",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -1198,13 +957,18 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
 ###
 # @name createEndpointFromTemplate
-# Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+# Create a new metadata element to represent an endpoint using an existing metadata element as a template.
 # The template defines additional classifications and relationships that should be added to the new element.
 #
 # Request body provides properties that override the template
@@ -1220,11 +984,6 @@ Content-Type: application/json
 
 {
   "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -1254,17 +1013,20 @@ Content-Type: application/json
   "placeholderPropertyValues":  {
     "placeholder1" : "propertyValue1",
     "placeholder2" : "propertyValue2"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
 ###
 # @name updateEndpoint
-# Update the properties of a endpoint.
+# Update the properties of an endpoint.
 #
 # @param endpointGUID unique identifier of the endpoint (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or
@@ -1278,17 +1040,16 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "mergeUpdate" : true,
   "properties": {
     "class" : "EndpointProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "userId":"add name here",
-    "distinguishedName": "add name here",
+    "name":"add name here",
+    "description": "add description here",
+    "networkAddress": "add address here",
+    "protocol": "add protocol here",
+    "encryptionMethod": "add method here",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -1299,122 +1060,7 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name linkIdentityToProfile
-# Attach a profile to a endpoint.
-#
-# @param endpointGUID unique identifier of the endpoint
-# @param profileGUID unique identifier of the connection
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/{{endpointGUID}}/profile-identity/{{connectionGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "ProfileIdentityProperties",
-    "roleTypeName": "",
-    "roleGUID": "",
-    "description": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachProfileIdentity
-# Detach a connection from a endpoint.
-#
-# @param endpointGUID unique identifier of the endpoint
-# @param profileGUID unique identifier of the connection
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/{{endpointGUID}}/profile-identity/{{connectionGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
- {
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name addSecurityGroupMembership
-# Add the SecurityGroupMembership classification to the endpoint.
-#
-# @param endpointGUID unique identifier of the endpoint
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/{{endpointGUID}}/security-group-memberships/classify
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-
-{
-  "class" : "ClassificationRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "SecurityGroupMembershipProperties",
-    "groups": [""],
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-###
-# @name removeAllSecurityGroupMembership
-# Remove the SecurityGroupMembership classification from the endpoint.
-#
-# @param endpointGUID unique identifier of the endpoint
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/{{endpointGUID}}/security-group-memberships/declassify
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1425,10 +1071,9 @@ Content-Type: application/json
 
 ###
 # @name deleteEndpoint
-# Delete a endpoint.
+# Delete an endpoint.
 #
 # @param endpointGUID  unique identifier of the element to delete
-# @param cascadedDelete can endpoints be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -1441,7 +1086,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
+  "cascadedDelete" : false,
+  "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1451,7 +1098,7 @@ Content-Type: application/json
 
 
 ###
-# @name getUserIdentitiesByName
+# @name getEndpointsByName
 # Returns the list of endpoints with a particular name.
 #
 # @param startFrom paging start point
@@ -1469,19 +1116,80 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getEndpointsByNetworkAddress
+# Retrieve the list of endpoint metadata elements with a matching networkAddress.
+# There are no wildcards supported on this request.
+#
+# @param startFrom paging start point
+# @param pageSize maximum results that can be returned
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/by-network-address
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
 ###
-# @name findUserIdentities
+# @name getEndpointsByName
+# Retrieve the list of endpoint metadata elements that are attached to a specific infrastructure element.
+#
+# @param assetGUID element to search for
+# @param startFrom paging start point
+# @param pageSize maximum results that can be returned
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/assets/{{assetGUID}}/endpoints/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findEndpoints
 # Retrieve the list of endpoint metadata elements that contain the search string.
 #
 # @param startsWith does the value start with the supplied string?
@@ -1530,7 +1238,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,

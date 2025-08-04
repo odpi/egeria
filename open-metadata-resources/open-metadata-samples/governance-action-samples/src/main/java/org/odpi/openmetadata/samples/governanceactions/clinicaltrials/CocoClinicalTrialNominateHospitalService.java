@@ -36,9 +36,10 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -223,7 +224,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
         while ((existingCertifications != null) && (existingCertifications.getElementList() != null))
         {
             ElementProperties updatedProperties = propertyHelper.addDateProperty(null,
-                                                                                 OpenMetadataProperty.END.name,
+                                                                                 OpenMetadataProperty.COVERAGE_END.name,
                                                                                  new Date());
 
             for (OpenMetadataRelationship certification : existingCertifications.getElementList())
@@ -231,7 +232,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
                 if (certification != null)
                 {
                     governanceContext.getOpenMetadataStore().updateRelatedElementsInStore(certification.getRelationshipGUID(),
-                                                                                          false,
+                                                                                          governanceContext.getOpenMetadataStore().getUpdateOptions(false),
                                                                                           updatedProperties);
                 }
             }
@@ -248,7 +249,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
          * Create the new certification relationship
          */
         ElementProperties elementProperties = propertyHelper.addDateProperty(null,
-                                                                             OpenMetadataProperty.START.name,
+                                                                             OpenMetadataProperty.COVERAGE_START.name,
                                                                              null);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,

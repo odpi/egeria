@@ -4,41 +4,35 @@ package org.odpi.openmetadata.frameworks.surveyaction;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFAuditCode;
-import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFErrorCode;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 /**
  * SurveyContext provides a survey action service with access to information about
  * the survey request along with access to the open metadata repository interfaces.
  */
-public class SurveyContext
+public class SurveyContext extends ConnectorContextBase
 {
-    private final String                    userId;
     private final String                    assetGUID;
     private final Map<String, String>       requestParameters;
     private final List<ActionTargetElement> actionTargetElements;
     private final SurveyAssetStore          assetStore;
     private final AnnotationStore           annotationStore;
-    private final SurveyOpenMetadataStore   openMetadataStore;
     private final String                    surveyActionServiceName;
     private final String                    requesterUserId;
     private final AuditLog                  auditLog;
-    private final FileClassifier            fileClassifier;
 
-    private       boolean                   isActive = true;
 
 
     /*
@@ -54,40 +48,69 @@ public class SurveyContext
     /**
      * Constructor sets up the key parameters for using the context.
      *
-     * @param userId calling user
+     * @param localServerName name of local server
+     * @param localServiceName name of the service to call
+     * @param externalSourceGUID metadata collection unique id
+     * @param externalSourceName metadata collection unique name
+     * @param connectorId id of this connector instance
+     * @param connectorName name of this connector instance
+     * @param connectorUserId userId to use when issuing open metadata requests
+     * @param connectorGUID unique identifier of the connector element that describes this connector in the open metadata store(s)
+     * @param generateIntegrationReport should the context generate an integration report?
+     * @param openMetadataClient client to access open metadata store
+     * @param auditLog logging destination
+     * @param maxPageSize max number of results
+     * @param deleteMethod default delete method
      * @param assetGUID unique identifier of the asset that the annotations should be attached to
      * @param requestParameters name-value properties to control the survey action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param assetStore survey asset store for the survey action service
      * @param annotationStore annotation store for the survey action service
-     * @param openMetadataStore generic metadata API from the Governance Action Framework (GAF)
      * @param surveyActionServiceName name of the running service
      * @param requesterUserId original user requesting this governance service
-     * @param auditLog logging destination
      */
-    public SurveyContext(String                     userId,
+    public SurveyContext(String                     localServerName,
+                         String                     localServiceName,
+                         String                     externalSourceGUID,
+                         String                     externalSourceName,
+                         String                     connectorId,
+                         String                     connectorName,
+                         String                     connectorUserId,
+                         String                     connectorGUID,
+                         boolean                    generateIntegrationReport,
+                         OpenMetadataClient         openMetadataClient,
+                         AuditLog                   auditLog,
+                         int                        maxPageSize,
+                         DeleteMethod               deleteMethod,
                          String                     assetGUID,
                          Map<String, String>        requestParameters,
                          List<ActionTargetElement>  actionTargetElements,
                          SurveyAssetStore           assetStore,
                          AnnotationStore            annotationStore,
-                         SurveyOpenMetadataStore    openMetadataStore,
                          String                     surveyActionServiceName,
-                         String                     requesterUserId,
-                         AuditLog                   auditLog)
+                         String                     requesterUserId)
     {
-        this.userId                  = userId;
+        super(localServerName,
+              localServiceName,
+              externalSourceGUID,
+              externalSourceName,
+              connectorId,
+              connectorName,
+              connectorUserId,
+              connectorGUID,
+              generateIntegrationReport,
+              openMetadataClient,
+              auditLog,
+              maxPageSize,
+              deleteMethod);
+
         this.assetGUID               = assetGUID;
         this.requestParameters       = requestParameters;
         this.actionTargetElements    = actionTargetElements;
         this.assetStore              = assetStore;
         this.annotationStore         = annotationStore;
-        this.openMetadataStore       = openMetadataStore;
         this.surveyActionServiceName = surveyActionServiceName;
         this.requesterUserId         = requesterUserId;
         this.auditLog                = auditLog;
-
-        this.fileClassifier          = new FileClassifier(openMetadataStore);
     }
 
 
@@ -95,9 +118,9 @@ public class SurveyContext
      * Return the unique identifier of the asset being discovered.
      *
      * @return string guid
-     * @throws ConnectorCheckedException exception thrown if connector is no longer active
+     * @throws UserNotAuthorizedException exception thrown if connector is no longer active
      */
-    public String getAssetGUID() throws ConnectorCheckedException
+    public String getAssetGUID() throws UserNotAuthorizedException
     {
         final String methodName = "getAssetGUID";
 
@@ -111,9 +134,9 @@ public class SurveyContext
      * Return the properties that hold the parameters used to drive the survey action service's analysis.
      *
      * @return AdditionalProperties object storing the analysis parameters
-     * @throws ConnectorCheckedException exception thrown if connector is no longer active
+     * @throws UserNotAuthorizedException exception thrown if connector is no longer active
      */
-    public Map<String, String> getRequestParameters() throws ConnectorCheckedException
+    public Map<String, String> getRequestParameters() throws UserNotAuthorizedException
     {
         final String methodName = "getRequestParameters";
 
@@ -150,9 +173,9 @@ public class SurveyContext
      * configured with the properties of the asset from a property server.
      *
      * @return asset store
-     * @throws ConnectorCheckedException exception thrown if connector is no longer active
+     * @throws UserNotAuthorizedException exception thrown if connector is no longer active
      */
-    public SurveyAssetStore getAssetStore() throws ConnectorCheckedException
+    public SurveyAssetStore getAssetStore() throws UserNotAuthorizedException
     {
         final String methodName = "getAssetStore";
 
@@ -167,47 +190,15 @@ public class SurveyContext
      * retrieved from.
      *
      * @return annotation store
-     * @throws ConnectorCheckedException exception thrown if connector is no longer active
+     * @throws UserNotAuthorizedException exception thrown if connector is no longer active
      */
-    public AnnotationStore getAnnotationStore() throws ConnectorCheckedException
+    public AnnotationStore getAnnotationStore() throws UserNotAuthorizedException
     {
         final String methodName = "getAnnotationStore";
 
         validateIsActive(methodName);
 
         return annotationStore;
-    }
-
-
-    /**
-     * Return a generic interface for accessing and updating open metadata elements, classifications and relationships.
-     *
-     * @return open metadata store
-     * @throws ConnectorCheckedException exception thrown if connector is no longer active
-     */
-    public SurveyOpenMetadataStore getOpenMetadataStore() throws ConnectorCheckedException
-    {
-        final String methodName = "getOpenMetadataStore";
-
-        validateIsActive(methodName);
-
-        return openMetadataStore;
-    }
-
-
-    /**
-     * Return the file classifier that retrieves file reference data from the open metadata repositories.
-     *
-     * @return file classifier
-     * @throws ConnectorCheckedException exception thrown if connector is no longer active
-     */
-    public FileClassifier getFileClassifier() throws ConnectorCheckedException
-    {
-        final String methodName = "getFileClassifier";
-
-        validateIsActive(methodName);
-
-        return fileClassifier;
     }
 
 
@@ -239,38 +230,6 @@ public class SurveyContext
         }
 
         return true;
-    }
-
-
-    /**
-     * Free up any resources held since the connector is no longer needed.
-     */
-    public void disconnect() throws ConnectorCheckedException
-    {
-        isActive = false;
-    }
-
-
-    /**
-     * Verify that the connector is still active.
-     *
-     * @param methodName calling method
-     * @throws ConnectorCheckedException exception thrown if no longer active
-     */
-    private void validateIsActive(String methodName) throws ConnectorCheckedException
-    {
-        if (! isActive)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    SAFAuditCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName));
-            }
-
-            throw new ConnectorCheckedException(SAFErrorCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName),
-                                                this.getClass().getName(),
-                                                methodName);
-        }
     }
 
 
@@ -379,69 +338,19 @@ public class SurveyContext
     public String toString()
     {
         return "SurveyContext{" +
-                "userId='" + userId + '\'' +
-                ", assetGUID='" + assetGUID + '\'' +
+                "assetGUID='" + assetGUID + '\'' +
                 ", requestParameters=" + requestParameters +
                 ", actionTargetElements=" + actionTargetElements +
                 ", assetStore=" + assetStore +
                 ", annotationStore=" + annotationStore +
-                ", openMetadataStore=" + openMetadataStore +
                 ", surveyActionServiceName='" + surveyActionServiceName + '\'' +
                 ", requesterUserId='" + requesterUserId + '\'' +
-                ", fileClassifier=" + fileClassifier +
-                ", isActive=" + isActive +
+                ", auditLog=" + auditLog +
                 ", completionStatus=" + completionStatus +
                 ", completionGuards=" + completionGuards +
                 ", completionMessage=" + completionMessage +
                 ", completionRequestParameters=" + completionRequestParameters +
                 ", completionActionTargets=" + completionActionTargets +
-                '}';
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare) return true;
-        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
-        SurveyContext that = (SurveyContext) objectToCompare;
-        return isActive == that.isActive &&
-                Objects.equals(userId, that.userId) &&
-                Objects.equals(assetGUID, that.assetGUID) &&
-                Objects.equals(requestParameters, that.requestParameters) &&
-                Objects.equals(actionTargetElements, that.actionTargetElements) &&
-                Objects.equals(assetStore, that.assetStore) &&
-                Objects.equals(annotationStore, that.annotationStore) &&
-                Objects.equals(openMetadataStore, that.openMetadataStore) &&
-                Objects.equals(surveyActionServiceName, that.surveyActionServiceName) &&
-                Objects.equals(requesterUserId, that.requesterUserId) &&
-                Objects.equals(auditLog, that.auditLog) &&
-                Objects.equals(fileClassifier, that.fileClassifier) &&
-                completionStatus == that.completionStatus &&
-                Objects.equals(completionGuards, that.completionGuards) &&
-                Objects.equals(completionMessage, that.completionMessage) &&
-                Objects.equals(completionRequestParameters, that.completionRequestParameters) &&
-                Objects.equals(completionActionTargets, that.completionActionTargets);
-    }
-
-
-    /**
-     * Create a hash code for this element type.
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(userId, assetGUID, requestParameters, actionTargetElements, assetStore, annotationStore,
-                            openMetadataStore, surveyActionServiceName, requesterUserId, auditLog, fileClassifier,
-                            isActive, completionStatus, completionGuards, completionMessage,
-                            completionRequestParameters, completionActionTargets);
+                "} " + super.toString();
     }
 }

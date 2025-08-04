@@ -6,16 +6,18 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceClassificationStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.RetentionBasis;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -26,7 +28,7 @@ import java.util.*;
  * If there is at least one asset, their zones are updated, and the output guard is set to zone-assigned.
  * If no Assets are passed as action targets the output guard is no-targets-detected.
  */
-public class RetentionClassifierGovernanceActionConnector extends RemediationGovernanceActionService
+public class RetentionClassifierGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /**
      * Value used to set up the zones.
@@ -47,9 +49,10 @@ public class RetentionClassifierGovernanceActionConnector extends RemediationGov
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -148,12 +151,10 @@ public class RetentionClassifierGovernanceActionConnector extends RemediationGov
                                                                                                                            dateToArchive.toString(),
                                                                                                                            dateToDelete.toString()));
 
-                            governanceContext.classifyMetadataElement(element.getElementGUID(),
-                                                                      OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
-                                                                      true,
-                                                                      false,
-                                                                      properties,
-                                                                      new Date());
+                            governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(element.getElementGUID(),
+                                                                                                    OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
+                                                                                                    governanceContext.getOpenMetadataStore().getMetadataSourceOptions(),
+                                                                                                    new NewElementProperties(properties));
                         }
                     }
 

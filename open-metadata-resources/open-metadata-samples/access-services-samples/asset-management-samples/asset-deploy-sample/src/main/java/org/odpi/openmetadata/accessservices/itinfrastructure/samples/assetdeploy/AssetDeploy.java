@@ -3,16 +3,20 @@
 package org.odpi.openmetadata.accessservices.itinfrastructure.samples.assetdeploy;
 
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.EndpointManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
-
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerPlatformElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerPlatformProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerProperties;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EndpointHandler;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 
@@ -103,24 +107,54 @@ public class AssetDeploy
             SoftwareServerPlatformProperties platformProperties = new SoftwareServerPlatformProperties();
 
             platformProperties.setQualifiedName(platformType + "::" + platformName + "::" + platformNetworkAddress);
-            platformProperties.setName(platformType + " " + platformName + " at " + platformNetworkAddress);
+            platformProperties.setDisplayName(platformType + " " + platformName + " at " + platformNetworkAddress);
 
             String platformGUID = platformManagerClient.createSoftwareServerPlatform(clientUserId, null, null, false, platformProperties);
 
             if (platformGUID != null)
             {
-                EndpointManagerClient endpointManagerClient = new EndpointManagerClient(serverName, platformURLRoot);
+                EndpointHandler endpointManagerClient = new EndpointHandler(this.getClass().getName(),
+                                                                            serverName,
+                                                                            platformURLRoot,
+                                                                            null,
+                                                                            AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceURLMarker(),
+                                                                            AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName(),
+                                                                            100);
 
                 EndpointProperties endpointProperties = new EndpointProperties();
 
                 endpointProperties.setQualifiedName("Endpoint:" + platformNetworkAddress);
-                endpointProperties.setAddress(platformNetworkAddress);
+                endpointProperties.setNetworkAddress(platformNetworkAddress);
 
-                String endpointGUID = endpointManagerClient.createEndpoint(clientUserId, null, null, platformGUID, endpointProperties);
+                String endpointGUID = endpointManagerClient.createEndpoint(clientUserId,
+                                                                           null,
+                                                                           null,
+                                                                           platformGUID,
+                                                                           false,
+                                                                           null,
+                                                                           endpointProperties,
+                                                                           platformGUID,
+                                                                           OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName,
+                                                                           null,
+                                                                           true,
+                                                                           false,
+                                                                           false,
+                                                                           new Date());
 
                 System.out.println("  New platform " + platformGUID + " with endpoint " + endpointGUID);
 
-                List<EndpointElement> endpoints = endpointManagerClient.getEndpointsForInfrastructure(clientUserId, platformGUID, 0, 0);
+                List<EndpointElement> endpoints = endpointManagerClient.getEndpointsForInfrastructure(clientUserId,
+                                                                                                      platformGUID,
+                                                                                                      TemplateFilter.ALL,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                      null,
+                                                                                                      0,
+                                                                                                      0,
+                                                                                                      false,
+                                                                                                      false,
+                                                                                                       new Date());
 
                 if (endpoints != null)
                 {
@@ -134,9 +168,9 @@ public class AssetDeploy
 
                 SoftwareServerPlatformElement retrievedPlatform = platformManagerClient.getSoftwareServerPlatformByGUID(clientUserId, platformGUID);
 
-                if (retrievedPlatform.getElementHeader().getClassifications() != null)
+                if (retrievedPlatform.getElementHeader().getOtherClassifications() != null)
                 {
-                    System.out.println("     New classifications " + retrievedPlatform.getElementHeader().getClassifications());
+                    System.out.println("     New classifications " + retrievedPlatform.getElementHeader().getOtherClassifications());
                 }
 
                 return platformGUID;
@@ -169,14 +203,14 @@ public class AssetDeploy
         {
             System.out.println("Creating " + softwareServerType + " server " + softwareServerName + " deployed on platform " + softwarePlatformURL);
 
-            ServerManagerClient serverManagerClient = new ServerManagerClient(serverName, platformURLRoot, 100);
+            AssetHandler serverManagerClient = new AssetHandler(serverName, platformURLRoot, 100);
 
             System.out.println("Adding platform to " + softwareServerName + " ...");
 
             SoftwareServerProperties serverProperties = new SoftwareServerProperties();
 
             serverProperties.setQualifiedName(softwareServerType + "::" + softwareServerName);
-            serverProperties.setName(softwareServerType + " " + softwareServerName);
+            serverProperties.setDisplayName(softwareServerType + " " + softwareServerName);
 
             String serverGUID = serverManagerClient.createSoftwareServer(clientUserId, null, null, false, serverProperties);
 
@@ -190,7 +224,7 @@ public class AssetDeploy
                 {
                     for (SoftwareServerPlatformElement platform : platforms)
                     {
-                        System.out.println("     Attaching to platform " + platform.getProperties().getName());
+                        System.out.println("     Attaching to platform " + platform.getProperties().getDisplayName());
 
                         platformManagerClient.deployITAsset(clientUserId, null, null, false, serverGUID, platform.getElementHeader().getGUID(), null);
                     }

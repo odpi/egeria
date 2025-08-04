@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.slf4j.Logger;
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnectorProviderBase;
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorManager;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -22,7 +22,6 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconten
 /**
  * In the Open Connector Framework (OCF), a ConnectorProvider is a factory for a specific type of connector.
  * The EnterpriseOMRSConnectorProvider is the connector provider for the EnterpriseOMRSRepositoryConnector.
- *
  * It will return new instances of the EnterpriseOMRSRepositoryConnector as long as it is configured with the connector
  * manager.  This should happen at server startup, which means the exception due to a lack of connector
  * manager are unexpected.
@@ -99,7 +98,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
-    public Connector getConnector(ConnectionDetails connection) throws ConnectionCheckedException, ConnectorCheckedException
+    public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         String   methodName = "getConnector";
 
@@ -136,12 +135,8 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
 
         connector.setMetadataCollectionId(enterpriseMetadataCollectionId);
         connector.setMetadataCollectionName(enterpriseMetadataCollectionName);
-        connector.initializeConnectedAssetProperties(new EnterpriseOMRSConnectorDetails(connector,
-                                                                                        this.connectorManager,
-                                                                                        enterpriseMetadataCollectionId,
-                                                                                        enterpriseMetadataCollectionName));
 
-        log.debug(methodName + " returns: " + connector.getConnectorInstanceId() + ", " + connection.getConnectionName());
+        log.debug(methodName + " returns: " + connector.getConnectorInstanceId() + ", " + connection.getDisplayName());
 
         return connector;
     }

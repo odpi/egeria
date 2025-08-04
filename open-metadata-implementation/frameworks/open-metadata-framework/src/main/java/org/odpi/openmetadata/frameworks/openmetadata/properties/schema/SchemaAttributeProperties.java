@@ -6,12 +6,11 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularColumnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,15 +28,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = TabularColumnProperties.class, name = "TabularColumnProperties"),
-                @JsonSubTypes.Type(value = DatabaseTableProperties.class, name = "DatabaseTableProperties"),
+                @JsonSubTypes.Type(value = RelationalTableProperties.class, name = "RelationalTableProperties"),
                 @JsonSubTypes.Type(value = EventSchemaAttributeProperties.class, name = "EventSchemaAttributeProperties"),
                 @JsonSubTypes.Type(value = APIParameterProperties.class, name = "APIParameterProperties"),
         })
 public class SchemaAttributeProperties extends SchemaElementProperties
 {
-    private int               elementPosition       = 0;
-    private int               minCardinality        = 0;
-    private int               maxCardinality        = 0;
     private boolean           allowsDuplicateValues = false;
     private boolean           orderedValues         = false;
     private String            defaultValueOverride  = null;
@@ -46,21 +42,8 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private int               length                = 0;
     private int               precision             = 0;
     private boolean           isNullable            = true;
-    private String            nativeJavaClass       = null;
+    private String            nativeClass           = null;
     private List<String>      aliases               = null;
-
-    /*
-     * Details of the associated schema type when type is Primitive, Literal, External or Enum.  Other types are
-     * created independently and linked to the schema attribute.
-     */
-
-    private String dataType           = null;
-    private String defaultValue       = null;
-    private String fixedValue         = null;
-    private String externalTypeGUID   = null;
-    private String validValuesSetGUID = null;
-
-    private SchemaTypeProperties schemaType = null;
 
     /**
      * Default constructor
@@ -83,9 +66,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
         if (template != null)
         {
-            elementPosition       = template.getElementPosition();
-            minCardinality        = template.getMinCardinality();
-            maxCardinality        = template.getMaxCardinality();
             allowsDuplicateValues = template.getAllowsDuplicateValues();
             orderedValues         = template.getOrderedValues();
             sortOrder             = template.getSortOrder();
@@ -93,80 +73,10 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             length                = template.getLength();
             precision             = template.getPrecision();
             isNullable            = template.getIsNullable();
-            defaultValueOverride  = template.getDefaultValueOverride();
-            nativeJavaClass       = template.getNativeJavaClass();
-            aliases               = template.getAliases();
-
-            dataType           = template.getDataType();
-            defaultValue       = template.getDefaultValue();
-            fixedValue         = template.getFixedValue();
-            externalTypeGUID   = template.getExternalTypeGUID();
-            validValuesSetGUID = template.getValidValuesSetGUID();
-            schemaType         = template.getSchemaType();
+            defaultValueOverride = template.getDefaultValueOverride();
+            nativeClass          = template.getNativeClass();
+            aliases              = template.getAliases();
         }
-    }
-
-
-    /**
-     * Return the position of this schema attribute in its parent schema.
-     *
-     * @return int position in schema - 0 means first
-     */
-    public int getElementPosition() { return elementPosition; }
-
-
-    /**
-     * Set up the position of this schema attribute in its parent schema.
-     *
-     * @param elementPosition int position in schema - 0 means first
-     */
-    public void setElementPosition(int elementPosition)
-    {
-        this.elementPosition = elementPosition;
-    }
-
-
-    /**
-     * Return this minimum number of instances allowed for this attribute.
-     *
-     * @return int
-     */
-    public int getMinCardinality()
-    {
-        return minCardinality;
-    }
-
-
-    /**
-     * Set up the minimum number of instances allowed for this attribute.
-     *
-     * @param minCardinality int
-     */
-    public void setMinCardinality(int minCardinality)
-    {
-        this.minCardinality = minCardinality;
-    }
-
-
-    /**
-     * Return the maximum number of instances allowed for this attribute.
-     *
-     * @return int (-1 means infinite)
-     */
-    public int getMaxCardinality()
-    {
-        return maxCardinality;
-    }
-
-
-    /**
-     * Set up the maximum number of instances allowed for this attribute.
-     *
-     * @param maxCardinality int (-1 means infinite)
-     */
-    public void setMaxCardinality(int maxCardinality)
-    {
-        this.maxCardinality = maxCardinality;
     }
 
 
@@ -350,20 +260,20 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return fully qualified Java class name
      */
-    public String getNativeJavaClass()
+    public String getNativeClass()
     {
-        return nativeJavaClass;
+        return nativeClass;
     }
 
 
     /**
      * Set up the name of the Java class to use to represent this type.
      *
-     * @param nativeJavaClass fully qualified Java class name
+     * @param nativeClass fully qualified Java class name
      */
-    public void setNativeJavaClass(String nativeJavaClass)
+    public void setNativeClass(String nativeClass)
     {
-        this.nativeJavaClass = nativeJavaClass;
+        this.nativeClass = nativeClass;
     }
 
 
@@ -389,136 +299,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     }
 
 
-
-
-    /**
-     * Return the data type for this element.  Null means unknown data type.
-     *
-     * @return string data type name
-     */
-    public String getDataType() { return dataType; }
-
-
-    /**
-     * Set up the data type for this element.  Null means unknown data type.
-     *
-     * @param dataType data type name
-     */
-    public void setDataType(String dataType)
-    {
-        this.dataType = dataType;
-    }
-
-
-    /**
-     * Return the default value for the element.  Null means no default value set up.
-     *
-     * @return string containing default value
-     */
-    public String getDefaultValue() { return defaultValue; }
-
-
-    /**
-     * Set up the default value for the element.  Null means no default value set up.
-     *
-     * @param defaultValue String containing default value
-     */
-    public void setDefaultValue(String defaultValue)
-    {
-        this.defaultValue = defaultValue;
-    }
-
-
-    /**
-     * Return a fixed literal value - an alternative to default value.
-     *
-     * @return string value
-     */
-    public String getFixedValue()
-    {
-        return fixedValue;
-    }
-
-
-    /**
-     * If the column contains a fixed literal value, set this value here - an alternative to default value.
-     *
-     * @param fixedValue string
-     */
-    public void setFixedValue(String fixedValue)
-    {
-        this.fixedValue = fixedValue;
-    }
-
-
-    /**
-     * Return the unique identifier of this column's type.
-     *
-     * @return unique identifier (guid) of the external schema type
-     */
-    public String getExternalTypeGUID()
-    {
-        return externalTypeGUID;
-    }
-
-
-    /**
-     * If the type of this column is represented by an external (standard type) put its value here.  No need to set
-     * dataType, FixedType or defaultType
-     *
-     * @param externalTypeGUID unique identifier (guid) of the external schema type
-     */
-    public void setExternalTypeGUID(String externalTypeGUID)
-    {
-        this.externalTypeGUID = externalTypeGUID;
-    }
-
-
-    /**
-     * Return the set of valid values for this column.
-     *
-     * @return unique identifier (guid) of the valid values set
-     */
-    public String getValidValuesSetGUID()
-    {
-        return validValuesSetGUID;
-    }
-
-
-    /**
-     * If the type is controlled by a fixed set of values, set up the unique identifier of the valid values set
-     * that lists the valid values.
-     *
-     * @param validValuesSetGUID unique identifier (guid) of the valid values set
-     */
-    public void setValidValuesSetGUID(String validValuesSetGUID)
-    {
-        this.validValuesSetGUID = validValuesSetGUID;
-    }
-
-
-    /**
-     * Description fo the schema Type.
-     *
-     * @return schema type properties
-     */
-    public SchemaTypeProperties getSchemaType()
-    {
-        return schemaType;
-    }
-
-
-    /**
-     * Set up the description of the schemaType.
-     *
-     * @param schemaType schema type
-     */
-    public void setSchemaType(SchemaTypeProperties schemaType)
-    {
-        this.schemaType = schemaType;
-    }
-
-
     /**
      * Standard toString method.
      *
@@ -528,10 +308,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public String toString()
     {
         return "SchemaAttributeProperties{" +
-                "elementPosition=" + elementPosition +
-                ", minCardinality=" + minCardinality +
-                ", maxCardinality=" + maxCardinality +
-                ", allowsDuplicateValues=" + allowsDuplicateValues +
+                "allowsDuplicateValues=" + allowsDuplicateValues +
                 ", orderedValues=" + orderedValues +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", sortOrder=" + sortOrder +
@@ -539,14 +316,8 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 ", length=" + length +
                 ", precision=" + precision +
                 ", isNullable=" + isNullable +
-                ", nativeJavaClass='" + nativeJavaClass + '\'' +
+                ", nativeClass='" + nativeClass + '\'' +
                 ", aliases=" + aliases +
-                ", dataType='" + dataType + '\'' +
-                ", defaultValue='" + defaultValue + '\'' +
-                ", fixedValue='" + fixedValue + '\'' +
-                ", externalTypeGUID='" + externalTypeGUID + '\'' +
-                ", validValuesSetGUID='" + validValuesSetGUID + '\'' +
-                ", schemaType=" + schemaType +
                 "} " + super.toString();
     }
 
@@ -573,10 +344,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             return false;
         }
         SchemaAttributeProperties that = (SchemaAttributeProperties) objectToCompare;
-        return elementPosition == that.elementPosition &&
-                       minCardinality == that.minCardinality &&
-                       maxCardinality == that.maxCardinality &&
-                       allowsDuplicateValues == that.allowsDuplicateValues &&
+        return allowsDuplicateValues == that.allowsDuplicateValues &&
                        orderedValues == that.orderedValues &&
                        minimumLength == that.minimumLength &&
                        length == that.length &&
@@ -584,14 +352,8 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                        isNullable == that.isNullable &&
                        Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                        sortOrder == that.sortOrder &&
-                       Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
-                       Objects.equals(aliases, that.aliases) &&
-                       Objects.equals(dataType, that.dataType) &&
-                       Objects.equals(defaultValue, that.defaultValue) &&
-                       Objects.equals(fixedValue, that.fixedValue) &&
-                       Objects.equals(externalTypeGUID, that.externalTypeGUID) &&
-                       Objects.equals(validValuesSetGUID, that.validValuesSetGUID)&&
-                       Objects.equals(schemaType, that.schemaType);
+                       Objects.equals(nativeClass, that.nativeClass) &&
+                       Objects.equals(aliases, that.aliases);
     }
 
 
@@ -603,8 +365,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementPosition, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
-                            defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, nativeJavaClass,
-                            aliases, dataType, defaultValue, fixedValue, externalTypeGUID, validValuesSetGUID, schemaType);
+        return Objects.hash(super.hashCode(), allowsDuplicateValues, orderedValues, defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, nativeClass, aliases);
     }
 }

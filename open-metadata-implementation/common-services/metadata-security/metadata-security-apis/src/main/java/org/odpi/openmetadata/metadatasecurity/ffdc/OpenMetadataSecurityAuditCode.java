@@ -100,12 +100,12 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
-     * OPEN-METADATA-SECURITY-0009 - User {0} is not authorized to change the zone membership of asset {1} from {2} to {3}
+     * OPEN-METADATA-SECURITY-0009 - User {0} is not authorized to change the zone membership of element {1} from {2} to {3}
      */
     UNAUTHORIZED_ZONE_CHANGE("OPEN-METADATA-SECURITY-0009",
                              AuditLogRecordSeverityLevel.SECURITY,
-                             "User {0} is not authorized to change the zone membership of asset {1} from {2} to {3}",
-                             "The security service detected an unauthorized change to an asset.",
+                             "User {0} is not authorized to change the zone membership of element {1} from {2} to {3}",
+                             "The security service detected an unauthorized change to an element.",
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 

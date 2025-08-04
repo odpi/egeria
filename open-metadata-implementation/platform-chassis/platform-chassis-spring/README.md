@@ -48,7 +48,7 @@ mvn clean install -DadminChassisOnly
  * Administration Services - Operational
  * Administration Services - Platform Configuration
  * Administration Services - Server Configuration
- * Administration Services - Server Configurations
+ * Server Operations
  * Platform Services
  
  In this case, for any extra functionality, such as desired access services or view server, 

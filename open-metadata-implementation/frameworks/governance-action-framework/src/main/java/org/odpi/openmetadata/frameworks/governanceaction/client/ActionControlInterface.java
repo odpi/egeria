@@ -7,6 +7,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 
 import java.util.Date;
 import java.util.List;
@@ -200,8 +202,7 @@ public interface ActionControlInterface
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
+     * @param searchOptions additional options for the search
      *
      * @return list of matching metadata elements
      *
@@ -209,12 +210,11 @@ public interface ActionControlInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<EngineActionElement> findEngineActions(String userId,
-                                                String searchString,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+    List<EngineActionElement> findEngineActions(String        userId,
+                                                String        searchString,
+                                                SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 
 
     /**
@@ -223,8 +223,7 @@ public interface ActionControlInterface
      *
      * @param userId calling user
      * @param name name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
+     * @param queryOptions additional options to control the results of the query
      *
      * @return list of matching metadata elements
      *
@@ -232,10 +231,9 @@ public interface ActionControlInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<EngineActionElement> getEngineActionsByName(String userId,
-                                                     String name,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
+    List<EngineActionElement> getEngineActionsByName(String       userId,
+                                                     String       name,
+                                                     QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
 }

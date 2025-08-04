@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file;
 
 import org.apache.commons.io.FileUtils;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
@@ -44,13 +45,14 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * Set up the name of the file store
      *
      * @throws ConnectorCheckedException something went wrong
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint != null)
         {

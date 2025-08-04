@@ -76,7 +76,6 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         super.setConnectorClassName(connectorClassName);
 
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeQualifiedName);
         connectorType.setDisplayName(connectorTypeDisplayName);

@@ -4,10 +4,10 @@
 package org.odpi.openmetadata.frameworks.integration.iterator;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
 
@@ -27,7 +27,7 @@ public class MetadataCollectionIterator extends IntegrationIterator
      * @param catalogTargetName name of target
      * @param connectorName name of the calling connector
      * @param metadataTypeName type of element to receive
-     * @param openMetadataAccess client to access metadata
+     * @param openMetadataStore client to access metadata
      * @param targetPermittedSynchronization the synchronization policy for this target
      * @param maxPageSize max page size for the server
      * @param auditLog logging destination
@@ -39,7 +39,7 @@ public class MetadataCollectionIterator extends IntegrationIterator
                                       String                   catalogTargetName,
                                       String                   connectorName,
                                       String                   metadataTypeName,
-                                      OpenMetadataAccess       openMetadataAccess,
+                                      OpenMetadataStore        openMetadataStore,
                                       PermittedSynchronization targetPermittedSynchronization,
                                       int                      maxPageSize,
                                       AuditLog                 auditLog)
@@ -51,7 +51,7 @@ public class MetadataCollectionIterator extends IntegrationIterator
               catalogTargetName,
               connectorName,
               metadataTypeName,
-              openMetadataAccess,
+              openMetadataStore,
               targetPermittedSynchronization,
               maxPageSize,
               auditLog);
@@ -73,16 +73,9 @@ public class MetadataCollectionIterator extends IntegrationIterator
     {
         if ((elementCache == null) || (elementCache.isEmpty()))
         {
-            elementCache = openMetadataAccess.findMetadataElements(metadataTypeName,
-                                                                   null,
-                                                                   propertyHelper.getSearchPropertiesForMetadataCollectionName(metadataCollectionQualifiedName),
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   startFrom,
-                                                                   maxPageSize);
+            elementCache = openMetadataStore.findMetadataElements(propertyHelper.getSearchPropertiesForMetadataCollectionName(metadataCollectionQualifiedName),
+                                                                  null,
+                                                                  openMetadataStore.getQueryOptions(metadataTypeName, null, startFrom, maxPageSize));
             startFrom = startFrom + maxPageSize;
         }
 

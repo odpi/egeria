@@ -6,8 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 
 import java.util.Objects;
 
@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LicenseElement
 {
-    private ElementHeader          licenseHeader         = null;
-    private RelationshipProperties licenseProperties     = null;
-    private ElementHeader          licenseTypeHeader     = null;
+    private ElementHeader              licenseHeader     = null;
+    private RelationshipBeanProperties licenseProperties = null;
+    private ElementHeader              licenseTypeHeader = null;
     private LicenseProperties      licenseTypeProperties = null;
 
     /**
@@ -81,7 +81,7 @@ public class LicenseElement
      *
      * @return relationship properties
      */
-    public RelationshipProperties getLicenseProperties()
+    public RelationshipBeanProperties getLicenseProperties()
     {
         return licenseProperties;
     }
@@ -92,7 +92,7 @@ public class LicenseElement
      *
      * @param licenseProperties relationship properties
      */
-    public void setLicenseProperties(RelationshipProperties licenseProperties)
+    public void setLicenseProperties(RelationshipBeanProperties licenseProperties)
     {
         this.licenseProperties = licenseProperties;
     }

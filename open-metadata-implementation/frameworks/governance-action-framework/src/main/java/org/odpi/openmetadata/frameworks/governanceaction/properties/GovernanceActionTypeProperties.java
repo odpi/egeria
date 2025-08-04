@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GovernanceActionTypeProperties extends ReferenceableProperties
 {
     private int                        domainIdentifier           = 0;
-    private String                     displayName                = null;
-    private String                     description                = null;
     private List<RequestParameterType> supportedRequestParameters = null;
     private List<ActionTargetType>     supportedActionTargetTypes = null;
     private List<RequestParameterType> producedRequestParameters  = null;
@@ -61,8 +59,6 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
         if (template != null)
         {
             domainIdentifier = template.getDomainIdentifier();
-            displayName = template.getDisplayName();
-            description = template.getDescription();
 
             supportedRequestParameters = template.getSupportedRequestParameters();
             supportedActionTargetTypes = template.getSupportedActionTargetTypes();
@@ -98,50 +94,6 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     public void setDomainIdentifier(int domainIdentifier)
     {
         this.domainIdentifier = domainIdentifier;
-    }
-
-
-    /**
-     * Return the display name for the governance action.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for the governance action.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the governance action.
-     *
-     * @return string text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the governance action.
-     *
-     * @param description string text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -352,21 +304,17 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     public String toString()
     {
         return "GovernanceActionTypeProperties{" +
-                       "domainIdentifier=" + domainIdentifier +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", requiredRequestParameters=" + supportedRequestParameters +
-                       ", requiredActionTargets=" + supportedActionTargetTypes +
-                       ", producedRequestParameters=" + producedRequestParameters +
-                       ", producedActionTargets=" + producedActionTargetTypes +
-                       ", producedGuards=" + producedGuards +
-                       ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
-                       ", requestType='" + requestType + '\'' +
-                       ", requestParameters=" + fixedRequestParameters +
-                       ", waitTime=" + waitTime +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       '}';
+                "domainIdentifier=" + domainIdentifier +
+                ", supportedRequestParameters=" + supportedRequestParameters +
+                ", supportedActionTargetTypes=" + supportedActionTargetTypes +
+                ", producedRequestParameters=" + producedRequestParameters +
+                ", producedActionTargetTypes=" + producedActionTargetTypes +
+                ", producedGuards=" + producedGuards +
+                ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
+                ", requestType='" + requestType + '\'' +
+                ", fixedRequestParameters=" + fixedRequestParameters +
+                ", waitTime=" + waitTime +
+                "} " + super.toString();
     }
 
 
@@ -393,8 +341,6 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
         }
         GovernanceActionTypeProperties that = (GovernanceActionTypeProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
-                       Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
                        waitTime == that.waitTime &&
                        Objects.equals(supportedRequestParameters, that.supportedRequestParameters) &&
                        Objects.equals(supportedActionTargetTypes, that.supportedActionTargetTypes) &&
@@ -415,7 +361,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, supportedRequestParameters,
+        return Objects.hash(super.hashCode(), domainIdentifier, supportedRequestParameters,
                             supportedActionTargetTypes, producedRequestParameters, producedActionTargetTypes,
                             producedGuards, governanceEngineGUID, requestType, fixedRequestParameters, waitTime);
     }

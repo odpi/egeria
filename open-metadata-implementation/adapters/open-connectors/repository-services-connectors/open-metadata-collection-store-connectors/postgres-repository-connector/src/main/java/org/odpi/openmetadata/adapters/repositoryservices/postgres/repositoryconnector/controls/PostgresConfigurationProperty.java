@@ -18,7 +18,7 @@ import java.util.List;
 public enum PostgresConfigurationProperty
 {
     DATABASE_URL("databaseURL", "Connection string for the database where the schema is located. This should set the current schema to your chosen schema.", DataType.STRING.getName(), "~{postgreSQLDatabaseURL}~"),
-    DATABASE_SCHEMA ("databaseSchema", "The name of the database schema used to store the repository contents.", DataType.STRING.getName(), "repository_{{serverName}}"),
+    DATABASE_SCHEMA ("databaseSchema", "The name of the database schema used to store the repository contents.", DataType.STRING.getName(), "repository_~{serverName}~"),
     SECRETS_STORE ("secretsStore", "The file name of the secrets store containing the log on credentials to access the database schema.", DataType.STRING.getName(), "~{secretsStore}~"),
     SECRETS_COLLECTION_NAME ("secretsCollectionName", "The name of the secrets collection.", DataType.STRING.getName(), "~{postgreSQLServerCollectionName}~"),
     DEFAULT_AS_OF_TIME ("defaultAsOfTime", "Optional value that changes the default value for 'asOfTime'. The 'asOfTime' parameter is used on queries to control which point in time to take the open metadata from.  The standard default is 'null' which means use the current time. If the 'defaultAsOfTime' option is specified then, by default, queries will use the supplied asOfTime value.  This can be overridden on individual requests.  Creates, updates, deletes continue to be appended to the database.  The mode recent data can be retrieved by setting the asOfTime to the current time on queries.", DataType.DATE.getName(), null),

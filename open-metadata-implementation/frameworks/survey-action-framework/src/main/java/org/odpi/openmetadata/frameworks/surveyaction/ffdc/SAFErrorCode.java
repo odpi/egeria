@@ -52,13 +52,6 @@ public enum SAFErrorCode implements ExceptionMessageSet
             "The survey action pipeline is not able to discover which survey action services to run.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service or the associated open survey action engine.  Once the cause is resolved, retry the survey action request."),
 
-    /**
-     * SURVEY-ACTION-SERVICE-400-004 - The {0} survey action service has been disconnected - either due to its own actions or a cancel request
-     */
-    DISCONNECT_DETECTED(400, "SURVEY-ACTION-SERVICE-400-004",
-                        "The {0} survey action service has been disconnected - either due to its own actions or a cancel request",
-                        "The survey action framework will attempt to stop the work of the survey action framework",
-                        "Monitor the shutdown of the survey action service."),
 
 
     /**

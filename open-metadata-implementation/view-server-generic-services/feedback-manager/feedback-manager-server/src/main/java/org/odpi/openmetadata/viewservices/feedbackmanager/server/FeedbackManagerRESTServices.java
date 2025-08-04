@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project */
-/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.feedbackmanager.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -8,14 +7,11 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.FeedbackHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.CollaborationManagerHandler;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -47,9 +43,8 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param guid        String - unique id for the element.
-     * @param isPublic is this visible to other people
      * @param viewServiceURLMarker  view service URL marker
-     * @param requestBody containing the StarRating and user review of referenceable (probably element).
+     * @param requestBody provides a structure for the additional options when updating an element.
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
@@ -57,11 +52,10 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addRatingToElement(String           serverName,
-                                           String           guid,
-                                           boolean          isPublic,
-                                           String           viewServiceURLMarker,
-                                           RatingProperties requestBody)
+    public VoidResponse addRatingToElement(String                   serverName,
+                                           String                   guid,
+                                           String                   viewServiceURLMarker,
+                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "addRatingToElement";
 
@@ -78,11 +72,18 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+                FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                handler.addRatingToElement(userId, guid, isPublic, requestBody, new Date());
+                if (requestBody.getProperties() instanceof RatingProperties ratingProperties)
+                {
+                    handler.addRatingToElement(userId, guid, requestBody, ratingProperties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(RatingProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -113,10 +114,10 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse removeRatingFromElement(String                        serverName,
-                                                String                        guid,
-                                                String                        viewServiceURLMarker,
-                                                EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse removeRatingFromElement(String                   serverName,
+                                                String                   guid,
+                                                String                   viewServiceURLMarker,
+                                                DeleteRequestBody requestBody)
     {
         final String methodName = "removeRatingFromElement";
 
@@ -131,18 +132,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.removeRatingFromElement(userId, guid, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.removeRatingFromElement(userId, guid, new Date());
-            }
+            handler.removeRatingFromElement(userId, guid, requestBody);
         }
         catch (Throwable error)
         {
@@ -159,8 +153,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody optional effective time
      * @return list of ratings or
@@ -170,8 +162,6 @@ public class FeedbackManagerRESTServices extends TokenController
      */
     public RatingElementsResponse getAttachedRatings(String             serverName,
                                                      String             elementGUID,
-                                                     int                startFrom,
-                                                     int                pageSize,
                                                      String             viewServiceURLMarker,
                                                      ResultsRequestBody requestBody)
     {
@@ -188,38 +178,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.getAttachedRatings(userId,
-                                                                elementGUID,
-                                                                requestBody.getLimitResultsByStatus(),
-                                                                requestBody.getAsOfTime(),
-                                                                requestBody.getSequencingOrder(),
-                                                                requestBody.getSequencingProperty(),
-                                                                startFrom,
-                                                                pageSize,
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.getAttachedRatings(userId,
-                                                                elementGUID,
-                                                                null,
-                                                                null,
-                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                null,
-                                                                startFrom,
-                                                                pageSize,
-                                                                false,
-                                                                false,
-                                                                new Date()));
-            }
+            response.setElements(handler.getAttachedRatings(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -236,7 +199,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param guid        String - unique id for the element.
-     * @param isPublic is this visible to other people
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody optional effective time
      *
@@ -246,13 +208,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addLikeToElement(String                        serverName,
-                                         String                        guid,
-                                         boolean                       isPublic,
-                                         String                        viewServiceURLMarker,
-                                         EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse addLikeToElement(String                   serverName,
+                                         String                   guid,
+                                         String                   viewServiceURLMarker,
+                                         UpdateElementRequestBody requestBody)
     {
-        final String methodName        = "addLikeToElement";
+        final String methodName  = "addLikeToElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -267,15 +228,23 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
+            if (requestBody == null)
             {
-                handler.addLikeToElement(userId, guid, isPublic, requestBody.getEffectiveTime());
+                handler.addLikeToElement(userId, guid, null, null);
+
             }
             else
             {
-                handler.addLikeToElement(userId, guid, isPublic, new Date());
+                if (requestBody.getProperties() instanceof LikeProperties likeProperties)
+                {
+                    handler.addLikeToElement(userId, guid, requestBody, likeProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addLikeToElement(userId, guid, requestBody, null);
+                }
             }
         }
         catch (Throwable error)
@@ -302,14 +271,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeLikeFromElement(String                        serverName,
-                                              String                        guid,
-                                              String                        viewServiceURLMarker,
-                                              EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse removeLikeFromElement(String                   serverName,
+                                              String                   guid,
+                                              String                   viewServiceURLMarker,
+                                              DeleteRequestBody requestBody)
     {
-        final String methodName        = "removeLikeFromElement";
-        final String guidParameterName = "guid";
+        final String methodName = "removeLikeFromElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -324,16 +291,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.removeLikeFromElement(userId, guid, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.removeLikeFromElement(userId, guid, null);
-            }
+            handler.removeLikeFromElement(userId, guid, requestBody);
         }
         catch (Throwable error)
         {
@@ -351,8 +311,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody optional effective time
      * @return list of likes or
@@ -362,8 +320,6 @@ public class FeedbackManagerRESTServices extends TokenController
      */
     public LikeElementsResponse getAttachedLikes(String             serverName,
                                                  String             elementGUID,
-                                                 int                startFrom,
-                                                 int                pageSize,
                                                  String             viewServiceURLMarker,
                                                  ResultsRequestBody requestBody)
     {
@@ -380,38 +336,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.getAttachedLikes(userId,
-                                                              elementGUID,
-                                                              requestBody.getLimitResultsByStatus(),
-                                                              requestBody.getAsOfTime(),
-                                                              requestBody.getSequencingOrder(),
-                                                              requestBody.getSequencingProperty(),
-                                                              startFrom,
-                                                              pageSize,
-                                                              requestBody.getForLineage(),
-                                                              requestBody.getForDuplicateProcessing(),
-                                                              requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.getAttachedLikes(userId,
-                                                              elementGUID,
-                                                              null,
-                                                              null,
-                                                              SequencingOrder.CREATION_DATE_RECENT,
-                                                              null,
-                                                              startFrom,
-                                                              pageSize,
-                                                              false,
-                                                              false,
-                                                              new Date()));
-            }
+            response.setElements(handler.getAttachedLikes(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -428,7 +357,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID  String - unique id for the element.
-     * @param isPublic is this visible to other people
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody containing type of comment enum and the text of the comment.
      *
@@ -438,11 +366,10 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentToElement(String                         serverName,
-                                            String                         elementGUID,
-                                            boolean                        isPublic,
-                                            String                         viewServiceURLMarker,
-                                            ReferenceableUpdateRequestBody requestBody)
+    public GUIDResponse addCommentToElement(String                 serverName,
+                                            String                 elementGUID,
+                                            String                 viewServiceURLMarker,
+                                            NewFeedbackRequestBody requestBody)
     {
         final String methodName = "addCommentToElement";
 
@@ -459,14 +386,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof CommentProperties commentProperties)
                 {
 
-                    response.setGUID(handler.addCommentToElement(userId, elementGUID, isPublic, commentProperties));
+                    response.setGUID(handler.addCommentToElement(userId, elementGUID, requestBody, requestBody.getInitialClassifications(), commentProperties));
                 }
                 else
                 {
@@ -475,7 +402,7 @@ public class FeedbackManagerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ReferenceableUpdateRequestBody.class.getName());
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NewFeedbackRequestBody.class.getName());
             }
         }
         catch (Throwable error)
@@ -494,7 +421,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param serverName name of the server instances for this request
      * @param elementGUID  String - unique id for the anchor element.
      * @param commentGUID  String - unique id for an existing comment.  Used to add a reply to a comment.
-     * @param isPublic is this visible to other people
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
@@ -504,12 +430,11 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentReply(String                         serverName,
-                                        String                         elementGUID,
-                                        String                         commentGUID,
-                                        boolean                        isPublic,
-                                        String                         viewServiceURLMarker,
-                                        ReferenceableUpdateRequestBody requestBody)
+    public GUIDResponse addCommentReply(String                 serverName,
+                                        String                 elementGUID,
+                                        String                 commentGUID,
+                                        String                 viewServiceURLMarker,
+                                        NewFeedbackRequestBody requestBody)
     {
         final String methodName = "addCommentReply";
 
@@ -530,12 +455,13 @@ public class FeedbackManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof CommentProperties commentProperties)
                 {
-                    CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+                    FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                     response.setGUID(handler.addCommentReply(userId,
                                                              elementGUID,
                                                              commentGUID,
-                                                             isPublic,
+                                                             requestBody,
+                                                             requestBody.getInitialClassifications(),
                                                              commentProperties));
                 }
                 else
@@ -563,7 +489,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName   name of the server instances for this request.
      * @param commentGUID  unique identifier for the comment to change.
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
@@ -572,11 +497,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateComment(String                         serverName,
-                                        String                         commentGUID,
-                                        boolean                        isMergeUpdate,
-                                        String                         viewServiceURLMarker,
-                                        ReferenceableUpdateRequestBody requestBody)
+    public VoidResponse   updateComment(String                   serverName,
+                                        String                   commentGUID,
+                                        String                   viewServiceURLMarker,
+                                        UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateComment";
 
@@ -597,13 +521,9 @@ public class FeedbackManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof CommentProperties commentProperties)
                 {
-                    CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+                    FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-                    handler.updateComment(userId,
-                                          commentGUID,
-                                          isMergeUpdate,
-                                          commentProperties,
-                                          requestBody.getEffectiveTime());
+                    handler.updateComment(userId, commentGUID, requestBody, commentProperties);
                 }
                 else
                 {
@@ -625,64 +545,6 @@ public class FeedbackManagerRESTServices extends TokenController
     }
 
 
-    /**
-     * Update an existing comment's visibility.
-     *
-     * @param serverName   name of the server instances for this request.
-     * @param parentGUID  String - unique id for the attached element.
-     * @param commentGUID  unique identifier for the comment to change.
-     * @param isPublic is this visible to other people
-     * @param viewServiceURLMarker  view service URL marker
-     * @param requestBody optional effective time
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the element properties in the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse   updateCommentVisibility(String                        serverName,
-                                                  String                        parentGUID,
-                                                  String                        commentGUID,
-                                                  boolean                       isPublic,
-                                                  String                        viewServiceURLMarker,
-                                                  EffectiveTimeQueryRequestBody requestBody)
-    {
-        final String methodName = "updateCommentVisibility";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-            if (requestBody != null)
-            {
-                handler.updateCommentVisibility(userId, parentGUID, commentGUID, isPublic, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.updateCommentVisibility(userId, parentGUID, commentGUID, isPublic, new Date());
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
 
     /**
      * Link a comment that contains the best answer to a question posed in another comment.
@@ -690,7 +552,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param serverName name of the server to route the request to
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
-     * @param isPublic is this visible to other people
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody optional effective time
      *
@@ -699,12 +560,11 @@ public class FeedbackManagerRESTServices extends TokenController
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupAcceptedAnswer(String                        serverName,
-                                            String                        questionCommentGUID,
-                                            String                        answerCommentGUID,
-                                            boolean                       isPublic,
-                                            String                        viewServiceURLMarker,
-                                            EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse setupAcceptedAnswer(String                  serverName,
+                                            String                  questionCommentGUID,
+                                            String                  answerCommentGUID,
+                                            String                  viewServiceURLMarker,
+                                            NewRelationshipRequestBody requestBody)
     {
         final String methodName = "setupAcceptedAnswer";
 
@@ -721,24 +581,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.setupAcceptedAnswer(userId,
-                                                questionCommentGUID,
-                                                answerCommentGUID,
-                                                isPublic,
-                                                requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.setupAcceptedAnswer(userId,
-                                            questionCommentGUID,
-                                            answerCommentGUID,
-                                            isPublic,
-                                            new Date());
-            }
+            handler.setupAcceptedAnswer(userId, questionCommentGUID, answerCommentGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -765,11 +610,11 @@ public class FeedbackManagerRESTServices extends TokenController
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearAcceptedAnswer(String                        serverName,
-                                            String                        questionCommentGUID,
-                                            String                        answerCommentGUID,
-                                            String                        viewServiceURLMarker,
-                                            EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse clearAcceptedAnswer(String                   serverName,
+                                            String                   questionCommentGUID,
+                                            String                   answerCommentGUID,
+                                            String                   viewServiceURLMarker,
+                                            DeleteRequestBody requestBody)
     {
         final String methodName = "clearAcceptedAnswer";
 
@@ -786,16 +631,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.clearAcceptedAnswer(userId, questionCommentGUID, answerCommentGUID, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.clearAcceptedAnswer(userId, questionCommentGUID, answerCommentGUID, new Date());
-            }
+            handler.clearAcceptedAnswer(userId, questionCommentGUID, answerCommentGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -822,10 +660,10 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse removeCommentFromElement(String                         serverName,
-                                                 String                         commentGUID,
-                                                 String                         viewServiceURLMarker,
-                                                 EffectiveTimeQueryRequestBody  requestBody)
+    public VoidResponse removeCommentFromElement(String                   serverName,
+                                                 String                   commentGUID,
+                                                 String                   viewServiceURLMarker,
+                                                 DeleteRequestBody requestBody)
     {
         final String methodName = "removeElementComment";
 
@@ -842,16 +680,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.removeComment(userId, commentGUID, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.removeComment(userId, commentGUID, new Date());
-            }
+            handler.removeComment(userId, commentGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -875,10 +706,10 @@ public class FeedbackManagerRESTServices extends TokenController
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public CommentResponse getCommentByGUID(String                        serverName,
-                                            String                        commentGUID,
-                                            String                        viewServiceURLMarker,
-                                            EffectiveTimeQueryRequestBody requestBody)
+    public CommentResponse getCommentByGUID(String             serverName,
+                                            String             commentGUID,
+                                            String             viewServiceURLMarker,
+                                            GetRequestBody requestBody)
     {
         final String methodName = "getComment";
 
@@ -893,18 +724,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getComment(userId, commentGUID, requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getComment(userId, commentGUID, new Date()));
-            }
+            response.setElement(handler.getComment(userId, commentGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -921,8 +745,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody optional effective time
      * @return list of comments or
@@ -932,8 +754,6 @@ public class FeedbackManagerRESTServices extends TokenController
      */
     public CommentElementsResponse getAttachedComments(String             serverName,
                                                        String             elementGUID,
-                                                       int                startFrom,
-                                                       int                pageSize,
                                                        String             viewServiceURLMarker,
                                                        ResultsRequestBody requestBody)
     {
@@ -950,38 +770,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.getAttachedComments(userId,
-                                                                 elementGUID,
-                                                                 requestBody.getLimitResultsByStatus(),
-                                                                 requestBody.getAsOfTime(),
-                                                                 requestBody.getSequencingOrder(),
-                                                                 requestBody.getSequencingProperty(),
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 requestBody.getForLineage(),
-                                                                 requestBody.getForDuplicateProcessing(),
-                                                                 requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.getAttachedComments(userId,
-                                                                 elementGUID,
-                                                                 null,
-                                                                 null,
-                                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                                 null,
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 false,
-                                                                 false,
-                                                                 new Date()));
-            }
+            response.setElements(handler.getAttachedComments(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -998,11 +791,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody string to find in the properties
     *
@@ -1011,14 +799,9 @@ public class FeedbackManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public CommentElementsResponse findComments(String            serverName,
-                                                int               startFrom,
-                                                int               pageSize,
-                                                boolean           startsWith,
-                                                boolean           endsWith,
-                                                boolean           ignoreCase,
-                                                String            viewServiceURLMarker,
-                                                FilterRequestBody requestBody)
+    public CommentElementsResponse findComments(String                  serverName,
+                                                String                  viewServiceURLMarker,
+                                                SearchStringRequestBody requestBody)
     {
         final String methodName = "findComments";
 
@@ -1033,40 +816,13 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.findComments(userId,
-                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                          requestBody.getTemplateFilter(),
-                                                          requestBody.getLimitResultsByStatus(),
-                                                          requestBody.getAsOfTime(),
-                                                          requestBody.getSequencingOrder(),
-                                                          requestBody.getSequencingProperty(),
-                                                          startFrom,
-                                                          pageSize,
-                                                          requestBody.getForLineage(),
-                                                          requestBody.getForDuplicateProcessing(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.findComments(userId,
-                                                          instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                          TemplateFilter.ALL,
-                                                          null,
-                                                          null,
-                                                          SequencingOrder.CREATION_DATE_RECENT,
-                                                          null,
-                                                          startFrom,
-                                                          pageSize,
-                                                          false,
-                                                          false,
-                                                          new Date()));
-            }
+            response.setElements(handler.findComments(userId,
+                                                      requestBody.getSearchString(),
+                                                      requestBody));
         }
         catch (Throwable error)
         {
@@ -1090,9 +846,9 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createInformalTag(String        serverName,
-                                          String        viewServiceURLMarker,
-                                          TagProperties requestBody)
+    public GUIDResponse createInformalTag(String                serverName,
+                                          String                viewServiceURLMarker,
+                                          NewElementRequestBody requestBody)
     {
         final String   methodName = "createTag";
 
@@ -1109,14 +865,18 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+                FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.createInformalTag(userId, requestBody));
+
+                if (requestBody.getProperties() instanceof InformalTagProperties informalTagProperties)
+                {
+                    response.setGUID(handler.createInformalTag(userId, requestBody, requestBody.getInitialClassifications(), informalTagProperties));
+                }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, TagProperties.class.getName());
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, InformalTagProperties.class.getName());
             }
         }
         catch (Throwable error)
@@ -1142,10 +902,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateTagDescription(String                       serverName,
-                                               String                       tagGUID,
-                                               String                       viewServiceURLMarker,
-                                               InformalTagUpdateRequestBody requestBody)
+    public VoidResponse   updateTagDescription(String                   serverName,
+                                               String                   tagGUID,
+                                               String                   viewServiceURLMarker,
+                                               UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateTagDescription";
 
@@ -1162,13 +922,17 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+                FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.updateTagDescription(userId,
-                                             tagGUID,
-                                             requestBody.getDescription(),
-                                             requestBody.getEffectiveTime());
+
+                if (requestBody.getProperties() instanceof InformalTagProperties informalTagProperties)
+                {
+                    handler.updateTagDescription(userId,
+                                                 tagGUID,
+                                                 requestBody,
+                                                 informalTagProperties);
+                }
             }
             else
             {
@@ -1198,10 +962,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   deleteTag(String                        serverName,
-                                    String                        tagGUID,
-                                    String                        viewServiceURLMarker,
-                                    EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse   deleteTag(String                   serverName,
+                                    String                   tagGUID,
+                                    String                   viewServiceURLMarker,
+                                    DeleteRequestBody requestBody)
     {
         final String methodName           = "deleteTag";
 
@@ -1216,18 +980,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteTag(userId, tagGUID, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteTag(userId, tagGUID, new Date());
-            }
+            handler.deleteTag(userId, tagGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1252,10 +1009,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public InformalTagResponse getTag(String                        serverName,
-                                      String                        guid,
-                                      String                        viewServiceURLMarker,
-                                      EffectiveTimeQueryRequestBody requestBody)
+    public InformalTagResponse getTag(String             serverName,
+                                      String             guid,
+                                      String             viewServiceURLMarker,
+                                      GetRequestBody requestBody)
     {
         final String methodName = "getTag";
 
@@ -1270,18 +1027,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getTag(userId, guid, requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getTag(userId, guid, new Date()));
-            }
+            response.setElement(handler.getTag(userId, guid, requestBody));
         }
         catch (Throwable error)
         {
@@ -1297,8 +1047,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * Return the list of tags exactly matching the supplied name.
      *
      * @param serverName name of the server instances for this request
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody name of tag.
      *
@@ -1308,8 +1056,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagsResponse getTagsByName(String            serverName,
-                                              int               startFrom,
-                                              int               pageSize,
                                               String            viewServiceURLMarker,
                                               FilterRequestBody requestBody)
     {
@@ -1326,7 +1072,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1334,16 +1080,7 @@ public class FeedbackManagerRESTServices extends TokenController
             {
                 response.setElements(handler.getTagsByName(userId,
                                                            requestBody.getFilter(),
-                                                           TemplateFilter.ALL,
-                                                           null,
-                                                           null,
-                                                           SequencingOrder.CREATION_DATE_RECENT,
-                                                           null,
-                                                           startFrom,
-                                                           pageSize,
-                                                           false,
-                                                           false,
-                                                           new Date()));
+                                                           requestBody));
             }
             else
             {
@@ -1364,11 +1101,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * Return the list of tags containing the supplied string in either the name or description.
      *
      * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
@@ -1378,13 +1110,8 @@ public class FeedbackManagerRESTServices extends TokenController
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagsResponse findTags(String                  serverName,
-                                         int                     startFrom,
-                                         int                     pageSize,
-                                         boolean                 startsWith,
-                                         boolean                 endsWith,
-                                         boolean                 ignoreCase,
                                          String                  viewServiceURLMarker,
-                                         FilterRequestBody       requestBody)
+                                         SearchStringRequestBody requestBody)
     {
         final String methodName = "findTags";
 
@@ -1399,40 +1126,13 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.findTags(userId,
-                                                      instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                      requestBody.getTemplateFilter(),
-                                                      requestBody.getLimitResultsByStatus(),
-                                                      requestBody.getAsOfTime(),
-                                                      requestBody.getSequencingOrder(),
-                                                      requestBody.getSequencingProperty(),
-                                                      startFrom,
-                                                      pageSize,
-                                                      requestBody.getForLineage(),
-                                                      requestBody.getForDuplicateProcessing(),
-                                                      requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.findTags(userId,
-                                                      instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                      TemplateFilter.ALL,
-                                                      null,
-                                                      null,
-                                                      SequencingOrder.CREATION_DATE_RECENT,
-                                                      null,
-                                                      startFrom,
-                                                      pageSize,
-                                                      false,
-                                                      false,
-                                                      new Date()));
-            }
+            response.setElements(handler.findTags(userId,
+                                                  requestBody.getSearchString(),
+                                                  requestBody));
         }
         catch (Throwable error)
         {
@@ -1448,11 +1148,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * Return the list of the calling user's private tags containing the supplied string in either the name or description.
      *
      * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
@@ -1462,13 +1157,8 @@ public class FeedbackManagerRESTServices extends TokenController
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagsResponse findMyTags(String                  serverName,
-                                           int                     startFrom,
-                                           int                     pageSize,
-                                           boolean                 startsWith,
-                                           boolean                 endsWith,
-                                           boolean                 ignoreCase,
                                            String                  viewServiceURLMarker,
-                                           FilterRequestBody requestBody)
+                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findMyTags";
 
@@ -1483,40 +1173,13 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.findMyTags(userId,
-                                                        instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                        requestBody.getTemplateFilter(),
-                                                        requestBody.getLimitResultsByStatus(),
-                                                        requestBody.getAsOfTime(),
-                                                        requestBody.getSequencingOrder(),
-                                                        requestBody.getSequencingProperty(),
-                                                        startFrom,
-                                                        pageSize,
-                                                        requestBody.getForLineage(),
-                                                        requestBody.getForDuplicateProcessing(),
-                                                        requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.findMyTags(userId,
-                                                        instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                        TemplateFilter.ALL,
-                                                        null,
-                                                        null,
-                                                        SequencingOrder.CREATION_DATE_RECENT,
-                                                        null,
-                                                        startFrom,
-                                                        pageSize,
-                                                        false,
-                                                        false,
-                                                        new Date()));
-            }
+            response.setElements(handler.findMyTags(userId,
+                                                    requestBody.getSearchString(),
+                                                    requestBody));
         }
         catch (Throwable error)
         {
@@ -1534,7 +1197,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param serverName   name of the server instances for this request
      * @param elementGUID    unique id for the element.
      * @param tagGUID      unique id of the tag.
-     * @param isPublic visibility of link
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody  feedback request body.
      *
@@ -1543,12 +1205,11 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   addTagToElement(String                        serverName,
-                                          String                        elementGUID,
-                                          String                        tagGUID,
-                                          boolean                       isPublic,
-                                          String                        viewServiceURLMarker,
-                                          EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse   addTagToElement(String                    serverName,
+                                          String                    elementGUID,
+                                          String                    tagGUID,
+                                          String                    viewServiceURLMarker,
+                                          MetadataSourceRequestBody requestBody)
     {
         final String methodName = "addTagToElement";
 
@@ -1563,18 +1224,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.addTagToElement(userId, elementGUID, tagGUID, isPublic, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.addTagToElement(userId, elementGUID, tagGUID, isPublic, new Date());
-            }
+            handler.addTagToElement(userId, elementGUID, tagGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1600,11 +1254,11 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removeTagFromElement(String                        serverName,
-                                               String                        elementGUID,
-                                               String                        tagGUID,
-                                               String                        viewServiceURLMarker,
-                                               EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse   removeTagFromElement(String                   serverName,
+                                               String                   elementGUID,
+                                               String                   tagGUID,
+                                               String                   viewServiceURLMarker,
+                                               DeleteRequestBody requestBody)
     {
         final String   methodName  = "removeTagFromElement";
 
@@ -1619,18 +1273,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.removeTagFromElement(userId, elementGUID, tagGUID, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.removeTagFromElement(userId, elementGUID, tagGUID, new Date());
-            }
+            handler.removeTagFromElement(userId, elementGUID, tagGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1678,38 +1325,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.getElementsByTag(userId,
-                                                              tagGUID,
-                                                              requestBody.getLimitResultsByStatus(),
-                                                              requestBody.getAsOfTime(),
-                                                              requestBody.getSequencingOrder(),
-                                                              requestBody.getSequencingProperty(),
-                                                              startFrom,
-                                                              pageSize,
-                                                              requestBody.getForLineage(),
-                                                              requestBody.getForDuplicateProcessing(),
-                                                              requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.getElementsByTag(userId,
-                                                              tagGUID,
-                                                              null,
-                                                              null,
-                                                              SequencingOrder.CREATION_DATE_RECENT,
-                                                              null,
-                                                              startFrom,
-                                                              pageSize,
-                                                              false,
-                                                              false,
-                                                              new Date()));
-            }
+            response.setElements(handler.getElementsByTag(userId, tagGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -1727,8 +1347,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody optional effective time
      * @return list of tags or
@@ -1738,8 +1356,6 @@ public class FeedbackManagerRESTServices extends TokenController
      */
     public InformalTagsResponse getAttachedTags(String             serverName,
                                                 String             elementGUID,
-                                                int                startFrom,
-                                                int                pageSize,
                                                 String             viewServiceURLMarker,
                                                 ResultsRequestBody requestBody)
     {
@@ -1756,38 +1372,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.getAttachedTags(userId,
-                                                             elementGUID,
-                                                             requestBody.getLimitResultsByStatus(),
-                                                             requestBody.getAsOfTime(),
-                                                             requestBody.getSequencingOrder(),
-                                                             requestBody.getSequencingProperty(),
-                                                             startFrom,
-                                                             pageSize,
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.getAttachedTags(userId,
-                                                             elementGUID,
-                                                             null,
-                                                             null,
-                                                             SequencingOrder.CREATION_DATE_RECENT,
-                                                             null,
-                                                             startFrom,
-                                                             pageSize,
-                                                             false,
-                                                             false,
-                                                             new Date()));
-            }
+            response.setElements(handler.getAttachedTags(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -1808,7 +1397,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName   name of the server instances for this request
      * @param elementGUID unique identifier of the element where the note log is located
-     * @param isPublic                 is this element visible to other people.
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody  contains the name of the tag and (optional) description of the tag
      *
@@ -1817,11 +1405,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createNoteLog(String            serverName,
-                                      String            elementGUID,
-                                      boolean           isPublic,
-                                      String            viewServiceURLMarker,
-                                      NoteLogProperties requestBody)
+    public GUIDResponse createNoteLog(String                 serverName,
+                                      String                 elementGUID,
+                                      String                 viewServiceURLMarker,
+                                      NewFeedbackRequestBody requestBody)
     {
         final String   methodName = "createNoteLog";
 
@@ -1838,10 +1425,18 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+                FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.createNoteLog(userId, elementGUID, requestBody, isPublic));
+
+                if (requestBody.getProperties() instanceof NoteLogProperties noteLogProperties)
+                {
+                    response.setGUID(handler.createNoteLog(userId, elementGUID, requestBody, requestBody.getInitialClassifications(), noteLogProperties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteLogProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1863,7 +1458,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName   name of the server instances for this request.
      * @param noteLogGUID  unique identifier for the note log to change.
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
@@ -1872,11 +1466,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateNoteLog(String                         serverName,
-                                        String                         noteLogGUID,
-                                        boolean                        isMergeUpdate,
-                                        String                         viewServiceURLMarker,
-                                        ReferenceableUpdateRequestBody requestBody)
+    public VoidResponse   updateNoteLog(String                   serverName,
+                                        String                   noteLogGUID,
+                                        String                   viewServiceURLMarker,
+                                        UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateNoteLog";
 
@@ -1897,13 +1490,9 @@ public class FeedbackManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof  NoteLogProperties noteLogProperties)
                 {
-                    CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+                    FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-                    handler.updateNoteLog(userId,
-                                          noteLogGUID,
-                                          isMergeUpdate,
-                                          noteLogProperties,
-                                          requestBody.getEffectiveTime());
+                    handler.updateNoteLog(userId, noteLogGUID, requestBody, noteLogProperties);
                 }
                 else
                 {
@@ -1938,10 +1527,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   deleteNoteLog(String                        serverName,
-                                        String                        noteLogGUID,
-                                        String                        viewServiceURLMarker,
-                                        EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse   deleteNoteLog(String            serverName,
+                                        String            noteLogGUID,
+                                        String            viewServiceURLMarker,
+                                        DeleteRequestBody requestBody)
     {
         final String methodName = "deleteNoteLog";
 
@@ -1956,17 +1545,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            if (requestBody != null)
-            {
-                handler.removeNoteLog(userId, noteLogGUID, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.removeNoteLog(userId, noteLogGUID, new Date());
-            }
+
+            handler.removeNoteLog(userId, noteLogGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1983,11 +1566,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
@@ -1997,13 +1575,8 @@ public class FeedbackManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteLogsResponse findNoteLogs(String                  serverName,
-                                         int                     startFrom,
-                                         int                     pageSize,
-                                         boolean                 startsWith,
-                                         boolean                 endsWith,
-                                         boolean                 ignoreCase,
                                          String                  viewServiceURLMarker,
-                                         FilterRequestBody       requestBody)
+                                         SearchStringRequestBody requestBody)
     {
         final String methodName = "findNoteLogs";
 
@@ -2020,38 +1593,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.findNoteLogs(userId,
-                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                          requestBody.getTemplateFilter(),
-                                                          requestBody.getLimitResultsByStatus(),
-                                                          requestBody.getAsOfTime(),
-                                                          requestBody.getSequencingOrder(),
-                                                          requestBody.getSequencingProperty(),
-                                                          startFrom,
-                                                          pageSize,
-                                                          requestBody.getForLineage(),
-                                                          requestBody.getForDuplicateProcessing(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.findNoteLogs(userId,
-                                                          instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                          TemplateFilter.ALL,
-                                                          null,
-                                                          null,
-                                                          SequencingOrder.CREATION_DATE_RECENT,
-                                                          null,
-                                                          startFrom,
-                                                          pageSize,
-                                                          false,
-                                                          false,
-                                                          new Date()));
-            }
+            response.setElements(handler.findNoteLogs(userId, requestBody.getSearchString(), requestBody));
         }
         catch (Throwable error)
         {
@@ -2069,8 +1613,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * There are no wildcards supported on this request.
      *
      * @param serverName   name of the server instances for this request
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody name to search for and correlators
      *
@@ -2080,8 +1622,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteLogsResponse getNoteLogsByName(String            serverName,
-                                              int               startFrom,
-                                              int               pageSize,
                                               String            viewServiceURLMarker,
                                               FilterRequestBody requestBody)
     {
@@ -2100,22 +1640,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-           CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+           FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
            if (requestBody != null)
            {
-               response.setElements(handler.getNoteLogsByName(userId,
-                                                              requestBody.getFilter(),
-                                                              requestBody.getTemplateFilter(),
-                                                              requestBody.getLimitResultsByStatus(),
-                                                              requestBody.getAsOfTime(),
-                                                              requestBody.getSequencingOrder(),
-                                                              requestBody.getSequencingProperty(),
-                                                              startFrom,
-                                                              pageSize,
-                                                              requestBody.getForLineage(),
-                                                              requestBody.getForDuplicateProcessing(),
-                                                              requestBody.getEffectiveTime()));
+               response.setElements(handler.getNoteLogsByName(userId, requestBody.getFilter(), requestBody));
            }
            else
            {
@@ -2139,8 +1668,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName   name of the server instances for this request
      * @param elementGUID unique identifier of the note log of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody optional effective time
      *
@@ -2151,8 +1678,6 @@ public class FeedbackManagerRESTServices extends TokenController
      */
     public NoteLogsResponse getNoteLogsForElement(String             serverName,
                                                   String             elementGUID,
-                                                  int                startFrom,
-                                                  int                pageSize,
                                                   String             viewServiceURLMarker,
                                                   ResultsRequestBody requestBody)
     {
@@ -2171,36 +1696,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.getNoteLogsForElement(userId,
-                                                                   elementGUID,
-                                                                   requestBody.getLimitResultsByStatus(),
-                                                                   requestBody.getAsOfTime(),
-                                                                   requestBody.getSequencingOrder(),
-                                                                   requestBody.getSequencingProperty(),
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   requestBody.getForLineage(),
-                                                                   requestBody.getForDuplicateProcessing(),
-                                                                   requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.getNoteLogsForElement(userId,
-                                                                   elementGUID,
-                                                                   null,
-                                                                   null,
-                                                                   SequencingOrder.CREATION_DATE_RECENT,
-                                                                   null,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   false,
-                                                                   false,
-                                                                   new Date()));
-            }
+            response.setElements(handler.getNoteLogsForElement(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -2227,10 +1725,10 @@ public class FeedbackManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public NoteLogResponse getNoteLogByGUID(String                        serverName,
-                                            String                        noteLogGUID,
-                                            String                        viewServiceURLMarker,
-                                            EffectiveTimeQueryRequestBody requestBody)
+    public NoteLogResponse getNoteLogByGUID(String             serverName,
+                                            String             noteLogGUID,
+                                            String             viewServiceURLMarker,
+                                            GetRequestBody requestBody)
     {
         final String methodName = "getNoteLogByGUID";
 
@@ -2246,16 +1744,9 @@ public class FeedbackManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getNoteLogByGUID(userId, noteLogGUID, requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getNoteLogByGUID(userId, noteLogGUID, new Date()));
-            }
+            response.setElement(handler.getNoteLogByGUID(userId, noteLogGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -2286,10 +1777,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createNote(String         serverName,
-                                   String         noteLogGUID,
-                                   String         viewServiceURLMarker,
-                                   NoteProperties requestBody)
+    public GUIDResponse createNote(String                 serverName,
+                                   String                 noteLogGUID,
+                                   String                 viewServiceURLMarker,
+                                   NewFeedbackRequestBody requestBody)
     {
         final String   methodName = "createNote";
 
@@ -2306,10 +1797,18 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+                FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.createNote(userId, noteLogGUID, requestBody));
+
+                if (requestBody.getProperties() instanceof NoteProperties noteProperties)
+                {
+                    response.setGUID(handler.createNote(userId, noteLogGUID, requestBody, requestBody.getInitialClassifications(), noteProperties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -2331,7 +1830,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName   name of the server instances for this request.
      * @param noteGUID  unique identifier for the note to change.
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
@@ -2340,11 +1838,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateNote(String                         serverName,
-                                     String                         noteGUID,
-                                     boolean                        isMergeUpdate,
-                                     String                         viewServiceURLMarker,
-                                     ReferenceableUpdateRequestBody requestBody)
+    public VoidResponse   updateNote(String                   serverName,
+                                     String                   noteGUID,
+                                     String                   viewServiceURLMarker,
+                                     UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateNote";
 
@@ -2365,13 +1862,9 @@ public class FeedbackManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof  NoteProperties noteProperties)
                 {
-                    CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+                    FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-                    handler.updateNote(userId,
-                                       noteGUID,
-                                       isMergeUpdate,
-                                       noteProperties,
-                                       requestBody.getEffectiveTime());
+                    handler.updateNote(userId, noteGUID, requestBody, noteProperties);
                 }
                 else
                 {
@@ -2406,10 +1899,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   deleteNote(String                        serverName,
-                                     String                        noteGUID,
-                                     String                        viewServiceURLMarker,
-                                     EffectiveTimeQueryRequestBody requestBody)
+    public VoidResponse   deleteNote(String                   serverName,
+                                     String                   noteGUID,
+                                     String                   viewServiceURLMarker,
+                                     DeleteRequestBody requestBody)
     {
         final String methodName        = "deleteNote";
 
@@ -2424,18 +1917,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.removeNote(userId, noteGUID, requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.removeNote(userId, noteGUID, new Date());
-            }
+            handler.removeNote(userId, noteGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -2452,12 +1938,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -2466,13 +1947,8 @@ public class FeedbackManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NotesResponse findNotes(String                  serverName,
-                                   int                     startFrom,
-                                   int                     pageSize,
-                                   boolean                 startsWith,
-                                   boolean                 endsWith,
-                                   boolean                 ignoreCase,
                                    String                  viewServiceURLMarker,
-                                   FilterRequestBody       requestBody)
+                                   SearchStringRequestBody requestBody)
     {
         final String methodName = "findNotes";
 
@@ -2489,38 +1965,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.findNotes(userId,
-                                                       instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                       requestBody.getTemplateFilter(),
-                                                       requestBody.getLimitResultsByStatus(),
-                                                       requestBody.getAsOfTime(),
-                                                       requestBody.getSequencingOrder(),
-                                                       requestBody.getSequencingProperty(),
-                                                       startFrom,
-                                                       pageSize,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.findNotes(userId,
-                                                       instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                       TemplateFilter.ALL,
-                                                       null,
-                                                       null,
-                                                       SequencingOrder.CREATION_DATE_RECENT,
-                                                       null,
-                                                       startFrom,
-                                                       pageSize,
-                                                       false,
-                                                       false,
-                                                       new Date()));
-            }
+            response.setElements(handler.findNotes(userId, requestBody.getSearchString(), requestBody));
         }
         catch (Throwable error)
         {
@@ -2538,8 +1985,6 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @param serverName   name of the server instances for this request
      * @param noteLogGUID unique identifier of the note log of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody optional effective time
      *
@@ -2550,8 +1995,6 @@ public class FeedbackManagerRESTServices extends TokenController
      */
     public NotesResponse getNotesForNoteLog(String             serverName,
                                             String             noteLogGUID,
-                                            int                startFrom,
-                                            int                pageSize,
                                             String             viewServiceURLMarker,
                                             ResultsRequestBody requestBody)
     {
@@ -2570,36 +2013,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.getNotesForNoteLog(userId,
-                                                                noteLogGUID,
-                                                                requestBody.getLimitResultsByStatus(),
-                                                                requestBody.getAsOfTime(),
-                                                                requestBody.getSequencingOrder(),
-                                                                requestBody.getSequencingProperty(),
-                                                                startFrom,
-                                                                pageSize,
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.getNotesForNoteLog(userId,
-                                                                noteLogGUID,
-                                                                null,
-                                                                null,
-                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                null,
-                                                                startFrom,
-                                                                pageSize,
-                                                                false,
-                                                                false,
-                                                                new Date()));
-            }
+            response.setElements(handler.getNotesForNoteLog(userId, noteLogGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -2625,10 +2041,10 @@ public class FeedbackManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public NoteResponse getNoteByGUID(String                        serverName,
-                                      String                        noteGUID,
-                                      String                        viewServiceURLMarker,
-                                      EffectiveTimeQueryRequestBody requestBody)
+    public NoteResponse getNoteByGUID(String             serverName,
+                                      String             noteGUID,
+                                      String             viewServiceURLMarker,
+                                      GetRequestBody requestBody)
     {
         final String methodName = "getNoteByGUID";
 
@@ -2645,16 +2061,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
+            FeedbackHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getNoteByGUID(userId, noteGUID, requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getNoteByGUID(userId, noteGUID, new Date()));
-            }
+            response.setElement(handler.getNoteByGUID(userId, noteGUID, requestBody));
         }
         catch (Throwable error)
         {

@@ -10,8 +10,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
-import org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.viewservices.runtimemanager.rest.*;
+import org.odpi.openmetadata.viewservices.runtimemanager.rest.PlatformReportResponse;
+import org.odpi.openmetadata.viewservices.runtimemanager.rest.ServerReportResponse;
 import org.odpi.openmetadata.viewservices.runtimemanager.server.RuntimeManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +42,6 @@ public class RuntimeManagerResource
      * Returns the list of platforms with a particular name.
      *
      * @param serverName  name of called server
-     * @param startFrom   index of the list to start from (0 for start)
-     * @param pageSize    maximum number of elements to return
      * @param requestBody qualified name or display name of the platform
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
@@ -57,13 +55,11 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Server Platforms",
                     url = "https://egeria-project.org/types/0/0037-Software-Server-Platforms/"))
 
-    public SoftwareServerPlatformsResponse getPlatformsByName(@PathVariable String serverName,
-                                                              @RequestParam int startFrom,
-                                                              @RequestParam int pageSize,
+    public OpenMetadataRootElementsResponse getPlatformsByName(@PathVariable String serverName,
                                                               @RequestBody (required = false)
                                                                      FilterRequestBody requestBody)
     {
-        return restAPI.getPlatformsByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getPlatformsByName(serverName, requestBody);
     }
 
 
@@ -72,8 +68,6 @@ public class RuntimeManagerResource
      *
      * @param serverName  name of called server
      * @param requestBody name of the deployed implementation type - if null, all projects are returned
-     * @param startFrom   index of the list to start from (0 for start)
-     * @param pageSize    maximum number of elements to return
      * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
@@ -87,14 +81,12 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Server Platforms",
                     url = "https://egeria-project.org/types/0/0037-Software-Server-Platforms/"))
 
-    public SoftwareServerPlatformsResponse getPlatformsByDeployedImplType(@PathVariable String serverName,
-                                                                          @RequestParam int startFrom,
-                                                                          @RequestParam int pageSize,
+    public OpenMetadataRootElementsResponse getPlatformsByDeployedImplType(@PathVariable String serverName,
                                                                           @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
                                                                           @RequestBody (required = false)
-                                                                                 FilterRequestBody requestBody)
+                                                                                 SearchStringRequestBody requestBody)
     {
-        return restAPI.getPlatformsByDeployedImplType(serverName, startFrom, pageSize, getTemplates, requestBody);
+        return restAPI.getPlatformsByDeployedImplType(serverName, getTemplates, requestBody);
     }
 
 
@@ -116,10 +108,10 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Server Platforms",
                     url = "https://egeria-project.org/types/0/0037-Software-Server-Platforms/"))
 
-    public SoftwareServerPlatformResponse getPlatformByGUID(@PathVariable String serverName,
+    public OpenMetadataRootElementResponse getPlatformByGUID(@PathVariable String serverName,
                                                             @PathVariable String platformGUID,
                                                             @RequestBody(required = false)
-                                                                    EffectiveTimeQueryRequestBody requestBody)
+                                                                 GetRequestBody requestBody)
     {
         return restAPI.getPlatformByGUID(serverName, platformGUID, requestBody);
     }
@@ -154,8 +146,6 @@ public class RuntimeManagerResource
      *
      * @param serverName  name of called server
      * @param requestBody qualified name or display name of the server
-     * @param startFrom   index of the list to start from (0 for start)
-     * @param pageSize    maximum number of elements to return
      * @return a list of servers
      * InvalidParameterException  one of the parameters is null or invalid.
      * PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -168,13 +158,11 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Servers",
                     url = "https://egeria-project.org/types/0/0040-Software-Servers/"))
 
-    public SoftwareServersResponse getServersByName(@PathVariable String serverName,
-                                                    @RequestParam int startFrom,
-                                                    @RequestParam int pageSize,
+    public OpenMetadataRootElementsResponse getServersByName(@PathVariable String serverName,
                                                     @RequestBody(required = false)
                                                            FilterRequestBody requestBody)
     {
-        return restAPI.getServersByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getServersByName(serverName, requestBody);
     }
 
 
@@ -183,8 +171,6 @@ public class RuntimeManagerResource
      *
      * @param serverName  name of called server
      * @param requestBody name of the deployed impl type - if null, all servers are returned
-     * @param startFrom   index of the list to start from (0 for start)
-     * @param pageSize    maximum number of elements to return
      * @param getTemplates boolean indicating whether templates or non-template servers should be returned.
      * @return a list of servers
      * InvalidParameterException  one of the parameters is null or invalid.
@@ -198,13 +184,11 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Servers",
                     url = "https://egeria-project.org/types/0/0040-Software-Servers/"))
 
-    public SoftwareServersResponse getServersByDeployedImplType(@PathVariable String serverName,
-                                                                @RequestParam int startFrom,
-                                                                @RequestParam int pageSize,
+    public OpenMetadataRootElementsResponse getServersByDeployedImplType(@PathVariable String serverName,
                                                                 @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
                                                                 @RequestBody(required = false) FilterRequestBody requestBody)
     {
-        return restAPI.getServersByDeployedImplType(serverName, startFrom, pageSize, getTemplates, requestBody);
+        return restAPI.getServersByDeployedImplType(serverName, getTemplates, requestBody);
     }
 
 
@@ -227,10 +211,10 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Servers",
                     url = "https://egeria-project.org/types/0/0040-Software-Servers/"))
 
-    public SoftwareServerResponse getServerByGUID(@PathVariable String serverName,
+    public OpenMetadataRootElementResponse getServerByGUID(@PathVariable String serverName,
                                                   @PathVariable String serverGUID,
                                                   @RequestBody(required = false)
-                                                            EffectiveTimeQueryRequestBody requestBody)
+                                                               GetRequestBody requestBody)
     {
         return restAPI.getServerByGUID(serverName, serverGUID, requestBody);
     }

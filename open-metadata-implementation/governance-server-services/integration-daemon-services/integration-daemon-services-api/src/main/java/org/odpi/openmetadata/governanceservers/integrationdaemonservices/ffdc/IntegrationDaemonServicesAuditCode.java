@@ -28,27 +28,16 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.STARTUP,
                         "The integration daemon services are initializing in server {0}",
                         "A new OMAG server has been started that is configured to run as an integration daemon.  " +
-                                 "Within the integration daemon are one or more Open Metadata Integration Services (OMISs) that host " +
+                                 "Within the integration daemon are one or more dynamic integration groups that host " +
                                 "integration connectors to exchange metadata with third party technologies.",
                         "Verify that the start up sequence goes on to initialize the configured integration services."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0002 - The {0} is initializing in server {1}
-     */
-    INTEGRATION_SERVICE_INITIALIZING("INTEGRATION-DAEMON-SERVICES-0002",
-                                     AuditLogRecordSeverityLevel.STARTUP,
-                        "The {0} is initializing in server {1}",
-                        "A new Open Metadata Integration Service (OMIS) is starting up in the integration daemon.  " +
-                                "It will begin to initialize its context manager and the integration connectors that will exchange metadata " +
-                                             "between the open metadata ecosystem and a third party technology.",
-                        "Verify that the start up sequence goes on to initialize the configured integration connectors."),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0003 - Integration service {0} is not configured with the platform URL root for its partner OMAS {1}
      */
     NO_OMAS_SERVER_URL("INTEGRATION-DAEMON-SERVICES-0003",
                        AuditLogRecordSeverityLevel.ERROR,
-                         "Integration service {0} is not configured with the platform URL root for its partner OMAS {1}",
+                         "Integration daemon {0} is not configured with the platform URL root for its partner OMAS {1}",
                          "The service is not able to connect to the open metadata ecosystem.  It fails to start.",
                          "Add the platform URL root of the OMAG server where the partner OMAS is running " +
                                "to this integration service's configuration."),
@@ -58,37 +47,10 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
      */
     NO_OMAS_SERVER_NAME("INTEGRATION-DAEMON-SERVICES-0004",
                         AuditLogRecordSeverityLevel.ERROR,
-                       "Integration service {0} is not configured with the name for the server running its partner OMAS {1}",
+                       "Integration daemon {0} is not configured with the name for the server running its partner OMAS {1}",
                       "The service is not able to connect to the open metadata ecosystem.  It fails to start.",
                      "Add the server name of the OMAG server where the partner OMAS is running " +
                                 "to this integration service's configuration."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0005 - The integration service {0} has been configured with a null context manager class in integration daemon {1}
-     */
-    NULL_CONTEXT_MANAGER("INTEGRATION-DAEMON-SERVICES-0005",
-                         AuditLogRecordSeverityLevel.ERROR,
-                         "The integration service {0} has been configured with a null context manager class in integration daemon {1}",
-                         "The integration service fails to start because it is not able to initialize any integration " +
-                                 "connectors.",
-                         "The standard integration services are registered in a static method by the IntegrationDaemonHandler.  " +
-                                 "If this integration service is one of these services, correct the logic to include the " +
-                                 "context manager name.  If this integration service comes from a third party, make sure the class name " +
-                                 "is specified when the third party integration service is configured."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0006 - The integration service {0} has been configured with a context manager class of {1}
-     * which can not be used by the class loader.  The {2} exception was returned with message {3}
-     */
-    INVALID_CONTEXT_MANAGER("INTEGRATION-DAEMON-SERVICES-0006",
-                            AuditLogRecordSeverityLevel.EXCEPTION,
-                            "The integration service {0} has been configured with a context manager class of {1} which can not be " +
-                                    "used by the class loader.  The {2} exception was returned with message {3}",
-                            "The integration service fails to start.  Its connectors, if any, are not activated.",
-                            "Check that the jar for the context manager's class is visible to the OMAG Server Platform through " +
-                                    "the class path - and that the class name specified includes the full, correct package name and class name.  " +
-                                    "Once the class is correctly set up, restart the integration daemon.  It will be necessary to restart the " +
-                                    "OMAG Server Platform if the class path needed adjustment. "),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0007 - The {0} integration service is configured without any integration connectors
@@ -105,8 +67,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
      */
     INTEGRATION_CONNECTOR_INITIALIZING("INTEGRATION-DAEMON-SERVICES-0008",
                                        AuditLogRecordSeverityLevel.STARTUP,
-                      "A new integration connector named {0} is initializing in integration service {1} running in integration daemon {2}, permitted synchronization is: {3}",
-                      "The integration service is initializing an integration connector using the information in the configured " +
+                      "A new integration connector named {0} is initializing in integration daemon {1}, permitted synchronization is: {2}",
+                      "The integration daemon is initializing an integration connector using the information in the configured " +
                                                "connection.",
                       "Verify that this connector is successfully initialized."),
 
@@ -116,7 +78,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
      */
     BAD_INTEGRATION_CONNECTION("INTEGRATION-DAEMON-SERVICES-0009",
                                AuditLogRecordSeverityLevel.STARTUP,
-                      "A new integration connector named {0} failed to initialize in integration service {1}.  " +
+                      "A new integration connector named {0} failed to initialize in integration daemon {1}.  " +
                                        "The exception returned was {2} with a message of {3}",
                       "The integration service fails to initialize.  This, in turn causes the integration daemon to fail to start.",
                       "Correct the connection for this integration connector in the integration service's section " +
@@ -135,17 +97,6 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                               "Change the connection in the integration service's section " +
                                       "of this integration daemon's configuration document to a valid integration connector and then " +
                                       "restart the integration daemon."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0011 - The {0} integration service has completed its initialization in integration daemon {1}.
-     * It is running {2} integration connector(s)
-     */
-    INTEGRATION_SERVICE_INITIALIZED("INTEGRATION-DAEMON-SERVICES-0011",
-                                    AuditLogRecordSeverityLevel.STARTUP,
-                     "The {0} integration service has completed its initialization in integration daemon {1}.  It is running {2} integration " +
-                                            "connector(s)",
-                     "The integration service hands over its integration connectors to the integration daemon to manage.",
-                     "Verify that there were no errors starting the integration connectors for this service."),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0012 - The integration daemon services are unable to initialize a new instance of integration daemon {0};

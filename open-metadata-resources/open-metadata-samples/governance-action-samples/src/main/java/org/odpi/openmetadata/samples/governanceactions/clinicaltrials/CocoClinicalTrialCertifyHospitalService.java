@@ -39,9 +39,10 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -70,7 +71,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                             projectGUID = actionTargetElement.getTargetElement().getElementGUID();
 
                             clinicalTrialName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
-                                                                                 OpenMetadataProperty.NAME.name,
+                                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                  actionTargetElement.getTargetElement().getElementProperties(),
                                                                                  methodName);
                         }
@@ -78,7 +79,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                         {
                             hospitalGUID = actionTargetElement.getTargetElement().getElementGUID();
                             hospitalName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
-                                                                            OpenMetadataProperty.NAME.name,
+                                                                            OpenMetadataProperty.DISPLAY_NAME.name,
                                                                             actionTargetElement.getTargetElement().getElementProperties(),
                                                                             methodName);
                         }
@@ -233,7 +234,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
         else
         {
             ElementProperties updatedProperties = propertyHelper.addDateProperty(null,
-                                                                                 OpenMetadataProperty.START.name,
+                                                                                 OpenMetadataProperty.COVERAGE_START.name,
                                                                                  new Date());
 
             for (OpenMetadataRelationship certification : existingCertifications.getElementList())
@@ -241,18 +242,18 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                 if (certification != null)
                 {
                     Date startDate = propertyHelper.getDateProperty(governanceServiceName,
-                                                                    OpenMetadataProperty.START.name,
+                                                                    OpenMetadataProperty.COVERAGE_START.name,
                                                                     certification.getRelationshipProperties(),
                                                                     methodName);
                     Date endDate = propertyHelper.getDateProperty(governanceServiceName,
-                                                                  OpenMetadataProperty.END.name,
+                                                                  OpenMetadataProperty.COVERAGE_END.name,
                                                                   certification.getRelationshipProperties(),
                                                                   methodName);
 
                     if ((endDate == null) && (startDate == null))
                     {
                         governanceContext.getOpenMetadataStore().updateRelatedElementsInStore(certification.getRelationshipGUID(),
-                                                                                              false,
+                                                                                              governanceContext.getOpenMetadataStore().getUpdateOptions(false),
                                                                                               updatedProperties);
                     }
                 }

@@ -68,7 +68,6 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
          * Set up the connector type that should be included in a connection used to configure this connector.
          */
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorDisplayName);

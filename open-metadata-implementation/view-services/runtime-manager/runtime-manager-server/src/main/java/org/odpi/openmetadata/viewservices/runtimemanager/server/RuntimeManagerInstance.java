@@ -2,14 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.runtimemanager.server;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectedAssetClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 /**
  * RuntimeManagerInstance caches references to the objects it needs for a specific server.
@@ -21,10 +23,10 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.RUNTIME_MANAGER;
 
 
-    private final PlatformManagerClient   platformManagerClient;
-    private final ServerManagerClient     serverManagerClient;
-    private final ConnectedAssetClient    connectedAssetClient;
-    private final OpenMetadataStoreClient openMetadataStoreClient;
+    private final ConnectedAssetClient connectedAssetClient;
+    private final OpenMetadataClient   openMetadataClient;
+    private final AssetHandler         softwarePlatformHandler;
+    private final AssetHandler         softwareServerHandler;
 
     /**
      * Set up the Runtime Manager OMVS instance
@@ -57,18 +59,31 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
 
         if (localServerUserPassword == null)
         {
-            platformManagerClient   = new PlatformManagerClient(remoteServerName, remoteServerURL, maxPageSize);
-            serverManagerClient     = new ServerManagerClient(remoteServerName, remoteServerURL, maxPageSize);
-            connectedAssetClient    = new ConnectedAssetClient(remoteServerName, remoteServerURL, maxPageSize);
-            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+
+            connectedAssetClient = new EgeriaConnectedAssetClient(remoteServerName, remoteServerURL, maxPageSize, auditLog);
+            openMetadataClient   = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
         }
         else
         {
-            platformManagerClient   = new PlatformManagerClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-            serverManagerClient     = new ServerManagerClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-            connectedAssetClient    = new ConnectedAssetClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword);
-            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            connectedAssetClient = new EgeriaConnectedAssetClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize, auditLog);
+            openMetadataClient   = new EgeriaOpenMetadataStoreClient(remoteServerName,
+                                                                     remoteServerURL,
+                                                                     localServerUserId,
+                                                                     localServerUserPassword,
+                                                                     maxPageSize);
         }
+
+        softwarePlatformHandler = new AssetHandler(serverName,
+                                                   auditLog,
+                                                   myDescription.getViewServiceFullName(),
+                                                   openMetadataClient,
+                                                   OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
+
+        softwareServerHandler = new AssetHandler(serverName,
+                                                 auditLog,
+                                                 myDescription.getViewServiceFullName(),
+                                                 openMetadataClient,
+                                                 OpenMetadataType.SOFTWARE_SERVER.typeName);
     }
 
 
@@ -78,9 +93,9 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public PlatformManagerClient getPlatformManagerClient()
+    public AssetHandler getSoftwarePlatformHandler()
     {
-        return platformManagerClient;
+        return softwarePlatformHandler;
     }
 
 
@@ -89,9 +104,9 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public ServerManagerClient getServerManagerClient()
+    public AssetHandler getSoftwareServerHandler()
     {
-        return serverManagerClient;
+        return softwareServerHandler;
     }
 
 
@@ -113,8 +128,8 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient()
+    public OpenMetadataClient getOpenMetadataClient()
     {
-        return openMetadataStoreClient;
+        return openMetadataClient;
     }
 }

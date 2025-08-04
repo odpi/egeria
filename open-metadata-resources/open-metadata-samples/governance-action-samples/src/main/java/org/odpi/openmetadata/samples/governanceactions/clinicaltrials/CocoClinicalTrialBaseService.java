@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
@@ -90,7 +91,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                             methodName);
 
         personContactDetails.contactName = propertyHelper.getStringProperty(governanceServiceName,
-                                                                            OpenMetadataProperty.NAME.name,
+                                                                            OpenMetadataProperty.DISPLAY_NAME.name,
                                                                             person.getElementProperties(),
                                                                             methodName);
 
@@ -226,7 +227,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                processQualifiedName);
 
         processProperties = propertyHelper.addStringProperty(processProperties,
-                                                             OpenMetadataProperty.NAME.name,
+                                                             OpenMetadataProperty.DISPLAY_NAME.name,
                                                              processName);
 
         processProperties = propertyHelper.addStringProperty(processProperties,
@@ -239,9 +240,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                      null,
                                                                                      true,
                                                                                      topLevelProjectGUID,
-                                                                                     null,
-                                                                                     null,
-                                                                                     processProperties,
+                                                                                     new NewElementProperties(processProperties),
                                                                                      null,
                                                                                      null,
                                                                                      null,
@@ -354,7 +353,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      * @param resourceUse enum
      * @return element properties
      */
-    protected ElementProperties getResourceUseProperties(ResourceUse resourceUse)
+    protected NewElementProperties getResourceUseProperties(ResourceUse resourceUse)
     {
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.RESOURCE_USE.name,
@@ -364,7 +363,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                       OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name,
                                                       resourceUse.getResourceUse());
 
-        return properties;
+        return new NewElementProperties(properties);
     }
 
 
@@ -409,7 +408,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                         "Apache Airflow DAG:" + airflowDAGName);
 
         properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataProperty.NAME.name,
+                                                      OpenMetadataProperty.DISPLAY_NAME.name,
                                                       airflowDAGName);
         properties = propertyHelper.addStringProperty(properties,
                                                       OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
@@ -421,9 +420,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                      null,
                                                                                      true,
                                                                                      topLevelProjectGUID,
-                                                                                     null,
-                                                                                     null,
-                                                                                     properties,
+                                                                                     new NewElementProperties(properties),
                                                                                      null,
                                                                                      null,
                                                                                      null,

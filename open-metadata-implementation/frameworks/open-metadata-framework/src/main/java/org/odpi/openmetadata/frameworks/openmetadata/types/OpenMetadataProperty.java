@@ -153,15 +153,9 @@ public enum OpenMetadataProperty
     ADDITIONAL_PROPERTIES("additionalProperties", DataType.MAP_STRING_STRING.getName(), "Additional properties for the element.", null, "534b5665-73d4-4bdc-b83b-1a8fed19dba3"),
 
     /**
-     * Name that the element is known as - not necessarily unique.
-     */
-    NAME("name", DataType.STRING.getName(), "Short name that the element is known as - not necessarily unique.", "MyAssetName", "c075e0e7-8ecc-4f81-9ac4-ca3662c3ebe4"),
-
-    /**
      * Full name that the element is known as in the owning deployed technology.
      */
     RESOURCE_NAME("resourceName", DataType.STRING.getName(), "Full name that the element is known as in the owning deployed technology.  This name is typically unique within the scope of the owing technology", "MyAssetName", "c075e0e7-8ecc-4f81-9ac4-ca3662c3ebe4"),
-
 
     /**
      * Display name of the element used for summary tables and titles
@@ -224,19 +218,45 @@ public enum OpenMetadataProperty
     FORMULA_TYPE("formulaType", DataType.STRING.getName(), "Format of the expression provided in the formula attribute.", "SQL", "dd9b24cb-0359-4915-8b6b-9eae251adc1c"),
 
     /**
-     * Time that a transient process started.
+     * Time that the ending action should start.  This is the request time plus any requested wait time.
      */
-    PROCESS_START_TIME("processStartTime", DataType.DATE.getName(), "Time that a transient process started.", null, "f2c4180f-a803-42d6-9eb1-2bd29bd20d88"),
+    REQUESTED_START_TIME("requestedStartTime", DataType.DATE.getName(), "Time that the ending action should start.  This is the request time plus any requested wait time.", null, "7bf281bf-e91c-41f5-883c-af0025d0ad66"),
 
     /**
-     * Time that a transient process ended.
+     * Time that an action was started.
      */
-    PROCESS_END_TIME("processEndTime", DataType.DATE.getName(), "Time that a transient process ended.", null, "2179e4e3-b640-403a-a2bb-10da5c39acf6"),
+    START_TIME("startTime", DataType.DATE.getName(), "Time that a transient process started.", null, "f2c4180f-a803-42d6-9eb1-2bd29bd20d88"),
 
     /**
-     * Is this element visible to all, or only the author?
+     * When the requested activity needs to be completed.
      */
-    IS_PUBLIC("isPublic", DataType.BOOLEAN.getName(),  "Is this element visible to all, or only the author?", "true", "e7a8eaa8-4358-4dd3-8d82-2ab3c118cfe4"),
+    DUE_TIME("dueTime", DataType.DATE.getName(), "When the requested activity needs to be completed.", null, "200f604a-8936-4ad7-aa13-01abbecc82a6"),
+
+    /**
+     * The Date/time that this activity was reviewed.
+     */
+    LAST_REVIEW_TIME("lastReviewTime", DataType.DATE.getName(), "The Date/time that this activity was reviewed.", null, "adac8415-11c8-43e9-8a43-92a799893555"),
+
+    /**
+     * The Date/time that this activity was last paused.
+     */
+    LAST_PAUSE_TIME("lastPauseTime", DataType.DATE.getName(), "The Date/time that this activity was last paused.", null, "4133d47a-7644-4549-8960-6388e200c766"),
+
+    /**
+     * The Date/time that this activity was last resumed.
+     */
+    LAST_RESUME_TIME("lastResumeTime", DataType.DATE.getName(), "The Date/time that this activity was last resumed.", null, "ab3638ff-04ef-4e34-96ec-5a1f45e0bf72"),
+
+    /**
+     * When the requested activity was completed.
+     */
+    COMPLETION_TIME("completionTime", DataType.DATE.getName(), "When the requested activity was completed.", null, "9359f36f-ed11-4c33-80c3-e02941fee6b5"),
+
+
+    /**
+     * A symbol, such as a pictogram, logogram, ideogram, or smiley embedded in text and used in electronic messages and web pages.
+     */
+    EMOJI("emoji", DataType.STRING.getName(), "A symbol, such as a pictogram, logogram, ideogram, or smiley embedded in text and used in electronic messages and web pages. The primary function of modern emoji is to fill in emotional cues otherwise missing from typed conversation as well as to replace words as part of a logographic system. Emoji exist in various genres, including facial expressions, expressions, activity, food and drinks, celebrations, flags, objects, symbols, places, types of weather, animals, and nature.", ":)", "9e40ae6d-99f4-4336-a043-e1fac95e7ed6"),
 
     /**
      * Rating level provided.
@@ -249,16 +269,6 @@ public enum OpenMetadataProperty
     REVIEW("review", DataType.STRING.getName(), "Additional comments associated with the rating.", null, "ae1ef693-6264-44ee-8014-23a283ad3b0e"),
 
     /**
-     * Feedback comments or additional information.
-     */
-    TEXT("text", DataType.STRING.getName(), "Feedback comments or additional information.", null, "baef44c7-e345-46ef-b8f7-a4d7fbcf77d7"),
-
-    /**
-     * Type of comment.
-     */
-    TYPE("type", CommentType.getOpenTypeName(), "Type of comment.", "Answer", "465c7ed7-74d4-4eb3-9e4c-9d47f06a0ebd"),
-
-    /**
      * Role of contributor.
      */
     ROLE_TYPE("roleType", CrowdSourcingRole.getOpenTypeName(), "Role of contributor.", "Contributor", "05fdcacb-b7ec-475c-96eb-600fbbc1fb88"),
@@ -267,17 +277,7 @@ public enum OpenMetadataProperty
      * The courtesy title for the person.
      */
     COURTESY_TITLE("courtesyTitle", DataType.STRING.getName(), "The honorific title for the person.", "Dr", "c669dc73-3ae3-4350-95b7-4508a85bfc94"),
-
-    /**
-     * Descriptive name of the tag.
-     */
-    TAG_NAME("tagName", DataType.STRING.getName(), "Descriptive name of the tag.", null, "c6054168-4236-4de1-9ece-ebcb5597dbf4"),
-
-    /**
-     * More detail on the meaning of the tag.
-     */
-    TAG_DESCRIPTION("tagDescription", DataType.STRING.getName(), "More detail on the meaning of the tag.", null, "e8fc2fc9-afae-47cd-b5f0-f7c374fb6ea4"),
-
+    
     /**
      * Description of the technique used to create the sample.
      */
@@ -385,10 +385,6 @@ public enum OpenMetadataProperty
      */
     REQUESTER_USER_ID("requesterUserId", DataType.STRING.getName(), "User identity for the person, process or engine that requested this action.", null, "061de8f4-87a6-45b6-b91b-d375f202fe0f"),
 
-    /**
-     * Time that the ending action should start.  This is the request time plus any requested wait time.
-     */
-    REQUESTED_START_DATE("requestedStartDate", DataType.DATE.getName(), "Time that the ending action should start.  This is the request time plus any requested wait time.", null, "7bf281bf-e91c-41f5-883c-af0025d0ad66"),
 
     /**
      * Properties that configure the governance service for this type of request.
@@ -639,12 +635,22 @@ public enum OpenMetadataProperty
     /**
      * Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.
      */
-    USER_DEFINED_STATUS("userDefinedStatus", DataType.STRING.getName(), "Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.", null, "ff8797aa-8e7c-414a-8987-ca56ff77ad21"),
+    USER_DEFINED_STATUS("userDefinedStatus", DataType.STRING.getName(), "Extend or replace the valid element statuses with additional statuses controlled through valid metadata values.", null, "ff8797aa-8e7c-414a-8987-ca56ff77ad21"),
 
     /**
-     * Issuing authority for the regulation.
+     * Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.
      */
-    JURISDICTION("jurisdiction", DataType.STRING.getName(), "Issuing authority for the regulation.", "European Union", "d90cffe0-d440-401e-befc-39aaddec46a4"),
+    USER_DEFINED_ACTIVITY_STATUS("userDefinedActivityStatus", DataType.STRING.getName(), "Extend or replace the valid activity statuses with additional statuses controlled through valid metadata values.", null, "37c31c39-39f0-42f4-b256-698669390d5d"),
+
+    /**
+     * Source of the regulation.
+     */
+    REGULATION_SOURCE("regulationSource", DataType.STRING.getName(), "Source of the regulation.", "European Union", "d90cffe0-d440-401e-befc-39aaddec46a4"),
+
+    /**
+     * Enforcers of the regulation.
+     */
+    REGULATORS("regulators", DataType.ARRAY_STRING.getName(), "Enforcers of the regulation.", "European Union", "cd2c94fb-41c7-46a5-a64a-9862ac3db071"),
 
     /**
      * Describes the reasoning for defining the relationship.
@@ -697,11 +703,6 @@ public enum OpenMetadataProperty
     ANNOTATION_STATUS("annotationStatus", "AnnotationStatus", "Status of the processing as a result of the annotation.", null, "d36618bf-99fc-474f-a958-e8c64cd715ee"),
 
     /**
-     * The status of the work on this element.
-     */
-    TO_DO_STATUS("toDoStatus", ToDoStatus.getOpenTypeName(), ToDoStatus.getOpenTypeDescription(), ToDoStatus.OPEN.getName(), "bcd570a4-03af-4569-ba34-72b823ba01c5"),
-
-    /**
      * Date/time that work started on this element.
      */
     START_DATE("startDate", DataType.DATE.getName(), "Date/time that work started on this element.", null, "e3e374cc-0f9d-45f6-ae74-7d7a438b17bf"),
@@ -710,16 +711,6 @@ public enum OpenMetadataProperty
      * Date/time that work is expected to be complete for this element.
      */
     PLANNED_END_DATE("plannedEndDate", DataType.DATE.getName(), "Date/time that work is expected to be complete for this element.", null, "330ae312-1e88-4c7b-810e-4b4a50e540e8"),
-
-    /**
-     * Date/time that work stopped on this element.
-     */
-    COMPLETION_DATE("completionDate", DataType.DATE.getName(), "Date/time that work stopped on this element.", null, "28585eb7-ca9f-4149-b51f-ad29bbfe3f7c"),
-
-    /**
-     * The name to identify the action target to the actor that processes it.
-     */
-    ACTION_TARGET_NAME("actionTargetName", DataType.STRING.getName(), "The name to identify the action target to the actor that processes it.", null, "3a5d325f-267c-4821-beb2-2c59d89891ed"),
 
     /**
      * An example of the described concept, element or value.
@@ -1010,7 +1001,7 @@ public enum OpenMetadataProperty
     /**
      * Encoding scheme used on the data.
      */
-    ENCODING("encoding", DataType.STRING.getName(), "Type of encoding scheme used on the data.", null, "7ebb8847-5ed3-4881-bee4-0e28c16613b8"),
+    ENCODING_TYPE("encodingType", DataType.STRING.getName(), "Type of encoding scheme used on the data.", null, "7ebb8847-5ed3-4881-bee4-0e28c16613b8"),
 
     /**
      * Language used in the encoding.
@@ -1079,16 +1070,6 @@ public enum OpenMetadataProperty
     OPERATIONAL_STATUS("operationalStatus", "OperationalStatus", "The operational status of the deployed infrastructure.", null, "30c86736-c31a-4f29-8451-0c849f730a0b"),
 
     /**
-     * Type of the software capability.
-     */
-    CAPABILITY_TYPE("capabilityType", DataType.STRING.getName(), "Type of the software capability.", null, "c8ef1b3a-63bf-4ca1-9ef8-475e2ad67a2b"),
-
-    /**
-     * Version number of the software capability.
-     */
-    CAPABILITY_VERSION("capabilityVersion", DataType.STRING.getName(), "Version number of the software capability.", "V1.0", "7548df50-1553-46e1-a335-b782db998f88"),
-
-    /**
      * Patch level of the software server capability.
      */
     PATCH_LEVEL("patchLevel", DataType.STRING.getName(), "Patch level of the software server capability.", "456", "574bea24-8dd6-407a-bed4-aaa432d10276"),
@@ -1096,7 +1077,7 @@ public enum OpenMetadataProperty
     /**
      * Describes how the software capability uses the asset.
      */
-    USE_TYPE("useType", ServerAssetUseType.getOpenTypeName(), "Describes how the software capability uses the asset.", "OWNS", "a8cfffa4-a761-4fe0-be8b-6be43ac55020"),
+    USE_TYPE("useType", CapabilityAssetUseType.getOpenTypeName(), "Describes how the software capability uses the asset.", "OWNS", "a8cfffa4-a761-4fe0-be8b-6be43ac55020"),
 
     /**
      * Maximum number of running asset instances controlled by the software capability.
@@ -1189,17 +1170,6 @@ public enum OpenMetadataProperty
     SOURCE("source", DataType.STRING.getName(), "Details of the organization, person or process that created the element, or provided the information used to create the element.", null, "9c40c4e3-1d6d-45fd-8df0-f1a2e09db636"),
 
     /**
-     * Deployed version number for this platform.
-     */
-    PLATFORM_VERSION("platformVersion", DataType.STRING.getName(), "Deployed version number for this platform.", null, "03b0bab5-2a86-4720-8ab3-5b0d75c743dd"),
-
-
-    /**
-     * Deployed version number for this server.
-     */
-    SERVER_VERSION("serverVersion", DataType.STRING.getName(), "Deployed version number for this server.", null, "c762845d-f333-43b3-bd98-8780bc979167"),
-
-    /**
      * Deployed version number for this software.
      */
     SOFTWARE_VERSION("softwareVersion", DataType.STRING.getName(), "Deployed version number for this software.", null, "1386c460-d28e-4c19-ba32-b61ba11c8038"),
@@ -1230,11 +1200,6 @@ public enum OpenMetadataProperty
     PROPERTY_TYPE("propertyType", DataType.STRING.getName(), "The type of property that the valid value represents.", "producedGuard", "f9f2eba1-943a-4611-8bdd-647c1645b036"),
 
     /**
-     * Short description of type of the project.
-     */
-    PROJECT_TYPE("projectType", DataType.STRING.getName(), "Short description of type of the project.", null, "f11748b8-1a17-419b-b1d5-c3db8ffef151"),
-
-    /**
      * The phase in the lifecycle of the project.
      */
     PROJECT_PHASE("projectPhase", DataType.STRING.getName(), "The phase in the lifecycle of the project.", "Plan", "9178fece-e112-4250-9c08-5c336bd93f78"),
@@ -1250,19 +1215,9 @@ public enum OpenMetadataProperty
     PROJECT_STATUS("projectStatus", DataType.STRING.getName(), "Short description on current status of the project.", "Active", "39643f86-185b-465e-9e84-3f74905bad82"),
 
     /**
-     * Descriptive name of the concept that this collection represents.
-     */
-    COLLECTION_TYPE("collectionType", DataType.STRING.getName(), "Descriptive name of the concept that this collection represents.", "Product Contents", "05b7dcee-1c4c-4d2b-a484-bd84ec4d67e2"),
-
-    /**
      * Display name of the product.
      */
     PRODUCT_NAME("productName", DataType.STRING.getName(),  "Display name of the product.", "Teddy Bear Drop Foot Clinical Trial Patient Measurements", "aae2b086-05ea-433a-b1d6-502674c4ae6e"),
-
-    /**
-     * Type or category of the product.
-     */
-    PRODUCT_TYPE("productType", DataType.STRING.getName(), "Type or category of the product.", "Files", "e64cd76f-f1b8-4c00-9ce9-87fcae8bd3d2"),
 
     /**
      * Date that the product was made available.
@@ -1303,13 +1258,6 @@ public enum OpenMetadataProperty
      * Description of how the member is used, or why it is useful in this collection.
      */
     MEMBERSHIP_RATIONALE("membershipRationale", DataType.STRING.getName(), "Description of how the member is used, or why it is useful in this collection.", null, "f4c0da71-f8e8-4d05-a92c-5a1e6b4a263e"),
-
-
-
-    /**
-     * Defines the sequencing for a collection.
-     */
-    COLLECTION_ORDER("collectionOrder", OrderBy.getOpenTypeName(), OrderBy.getOpenTypeDescription(), OrderBy.DATE_ADDED.getName(), "068bf5f0-9caa-4e68-ad5e-e230b06b4a3a"),
 
     /**
      * Name of property to use for ordering.
@@ -1390,7 +1338,12 @@ public enum OpenMetadataProperty
     /**
      * Defines the current execution status of an engine action.
      */
-    ACTION_STATUS("actionStatus", EngineActionStatus.getOpenTypeName(), EngineActionStatus.getOpenTypeDescription(), EngineActionStatus.ACTIVATING.getName(), "c2d8fd79-0c16-4e01-888f-2ae7a9cdf11d"),
+    ACTIVITY_STATUS("activityStatus", ActivityStatus.getOpenTypeName(), ActivityStatus.getOpenTypeDescription(), ActivityStatus.ACTIVATING.getName(), "c2d8fd79-0c16-4e01-888f-2ae7a9cdf11d"),
+
+    /**
+     * The name to identify the action target to the actor that processes it.
+     */
+    ACTION_TARGET_NAME("actionTargetName", DataType.STRING.getName(), "The name to identify the action target to the actor that processes it.", null, "3a5d325f-267c-4821-beb2-2c59d89891ed"),
 
     /**
      * Different types of activities.
@@ -1471,6 +1424,12 @@ public enum OpenMetadataProperty
      * Network address where this external source can be accessed from.
      */
     URL("url", DataType.STRING.getName(), "Network address where this external source can be accessed from.", null, "604dbf10-335d-4132-8a32-c30fa9fec154"),
+
+
+    /**
+     * Names of external sources and their specific network address where this external information can be accessed from.
+     */
+    URLS("urls", DataType.MAP_STRING_STRING.getName(), "Names of external sources and their specific network address where this external information can be accessed from.", null, "c4189336-10ea-4a92-8974-6802170eae88"),
 
     /**
      * Name of the publisher responsible for producing this external source.
@@ -1631,11 +1590,6 @@ public enum OpenMetadataProperty
      * Name of the language used to implement this component.
      */
     IMPLEMENTATION_LANGUAGE("implementationLanguage", DataType.STRING.getName(), "Name of the language used to implement this component.", "Java", "e56dbaa5-6a2a-4aa0-8584-b3305234851f"),
-
-    /**
-     * The Date/time that this action was reviewed.
-     */
-    LAST_REVIEW_TIME("lastReviewTime", DataType.DATE.getName(), "The Date/time that this action was reviewed.", null, "adac8415-11c8-43e9-8a43-92a799893555"),
 
     /**
      * Version of the property facet schema.
@@ -1843,11 +1797,6 @@ public enum OpenMetadataProperty
     STAKEHOLDER_ROLE("stakeholderRole", DataType.STRING.getName(), "Identifier that describes the role that the stakeholders will play in the operation of the Referenceable.", "fundingExecutive", "09b45956-ad1b-4e51-ab7f-b1858f71de0d"),
 
     /**
-     * Short summary or purpose of the element.
-     */
-    TITLE("title", DataType.STRING.getName(), "Short summary or purpose of the element.", null, "b87aeaa9-ef37-479b-9d59-dc03c98b3248"),
-
-    /**
      * Breadth of responsibility or coverage.
      */
     SCOPE("scope", DataType.STRING.getName(), "Breadth of responsibility or coverage.", OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE, "033b4f92-fa46-4151-a095-c0bae938de8f"),
@@ -1860,17 +1809,12 @@ public enum OpenMetadataProperty
     /**
      * Descriptive name of the concept that this valid value applies to.
      */
-    CATEGORY("category", DataType.STRING.getName(), "Descriptive name of the concept that this valid value applies to.", null, "385d7ca6-bcdd-43e4-925f-026a1043e37d"),
+    CATEGORY("category", DataType.STRING.getName(), "Descriptive name of the concept that this element applies to.", null, "385d7ca6-bcdd-43e4-925f-026a1043e37d"),
 
     /**
      * Is this valid value case-sensitive, or should the values match irrespective of case?
      */
     IS_CASE_SENSITIVE("isCaseSensitive", DataType.BOOLEAN.getName(), "Is this valid value case-sensitive, or should the values match irrespective of case?", "true", "999d6f38-b244-44da-91f9-53694a25c174"),
-
-    /**
-     * This element may still be used but is flagged that it will be removed at some point in the future.
-     */
-    IS_DEPRECATED("isDeprecated", DataType.BOOLEAN.getName(),"This element may still be used but is flagged that it will be removed at some point in the future.", "false", "bf8e38f8-d841-4c7b-990a-26d701713bd0"),
 
     /**
      * "Reason for the meeting and intended outcome.
@@ -1883,24 +1827,14 @@ public enum OpenMetadataProperty
     MINUTES("minutes", DataType.ARRAY_STRING.getName(), "Description of what happened at the meeting.", null, "9b65f72c-76c1-438c-a672-49039f2ee62d"),
 
     /**
-     * Start time of the meeting.
+     * Decisions made during the meeting.
      */
-    START_TIME("startTime", DataType.DATE.getName(), "Start time of the meeting.", null, "90ea014e-09ed-41a5-972d-68a534c61a5c"),
+    DECISIONS("decisions", DataType.ARRAY_STRING.getName(), "Decisions made during the meeting.", null, "de498d70-59b4-4639-9069-5f41b40265fb"),
 
     /**
-     * End time of the meeting.
+     * When the requested activity was documented.
      */
-    END_TIME("endTime", DataType.DATE.getName(), "End time of the meeting.", null, "de498d70-59b4-4639-9069-5f41b40265fb"),
-
-    /**
-     * When the requested action was identified.
-     */
-    CREATION_TIME("creationTime", DataType.DATE.getName(), "When the requested action was identified.", null, "3b9586f3-3563-42cd-920b-11359d94e6ce"),
-
-    /**
-     * Type of to do - typically managed in a valid value set and used in stewardship automation.
-     */
-    TO_DO_TYPE("toDoType", DataType.STRING.getName(), "Type of to do - typically managed in a valid value set and used in stewardship automation.", null, "3ea557fa-9f01-49f0-ae17-e2825185312e"),
+    REQUESTED_TIME("requestedTime", DataType.DATE.getName(), "When the requested action was documented.", null, "3b9586f3-3563-42cd-920b-11359d94e6ce"),
 
     /**
      * Relative importance of this governance definition compared to its peers.
@@ -1922,15 +1856,6 @@ public enum OpenMetadataProperty
      */
     RESULTS("results", DataType.ARRAY_STRING.getName(), "Actual results.", null, "cb9ed4e0-bb5f-4ab9-95be-38c3d59517d8"),
 
-    /**
-     * When the requested action needs to be completed.
-     */
-    DUE_TIME("dueTime", DataType.DATE.getName(), "When the requested action needs to be completed.", null, "200f604a-8936-4ad7-aa13-01abbecc82a6"),
-
-    /**
-     * When the requested action was completed.
-     */
-    COMPLETION_TIME("completionTime", DataType.DATE.getName(), "When the requested action was completed.", null, "9359f36f-ed11-4c33-80c3-e02941fee6b5"),
 
     /**
      * The high-level goal of the activity.
@@ -2078,7 +2003,7 @@ public enum OpenMetadataProperty
     HOPS("hops", DataType.MAP_STRING_INT.getName(), "The number of hops along the lineage graph to the ultimate source organized by type of element.", null, "4bcc1f8e-ebef-4a6e-adbe-65d3932104e7"),
 
     /**
-     * Root of topic names used by the Open Metadata access Services (OMASs).
+     * Root of topic names used by the Open Metadata Store.
      */
     TOPIC_ROOT("topicRoot", DataType.STRING.getName(), "Root of topic names used by the Open Metadata Access Services (OMASs).", null, "78db859f-2335-4fe4-8af5-442a641bfd66"),
 
@@ -2339,14 +2264,25 @@ public enum OpenMetadataProperty
     SERVER_NAME("serverName", DataType.STRING.getName(), "Name of the integration daemon where the integration connector is/was running.", null, "a27047a9-5587-4bfd-b604-ddec605c03c6"),
 
     /**
-     * Date/time when the refresh() call was made.
+     * Date/time when the connector's start() was called.
      */
-    REFRESH_START_DATE("refreshStartDate", DataType.DATE.getName(), "Date/time when the refresh() call was made.", null, "4ef3b7e4-bfaa-4353-a451-7e999ec1d38c"),
+    CONNECTOR_START_DATE("connectorStartDate", DataType.DATE.getName(), "Date/time when the connector's start() was called.", null, "0930c386-b447-484b-8470-7bcfad9c4ed3"),
 
     /**
-     * Date/time when the integration connector returned from the refresh() call.
+     * Date/time when the refresh() call was made.
      */
-    REFRESH_COMPLETION_DATE("refreshCompletionDate", DataType.DATE.getName(), "Date/time when the integration connector returned from the refresh() call.", null, "27a3a734-75e1-412b-8de4-9b8293234f1a"),
+    REFRESH_START_DATE("refreshStartDate", DataType.DATE.getName(), "Date/time when the connector's refresh() was called.", null, "4ef3b7e4-bfaa-4353-a451-7e999ec1d38c"),
+
+    /**
+     * Date/time when the connector returned from the refresh() call.
+     */
+    REFRESH_COMPLETION_DATE("refreshCompletionDate", DataType.DATE.getName(), "Date/time when the connector returned from the refresh() call.", null, "27a3a734-75e1-412b-8de4-9b8293234f1a"),
+
+
+    /**
+     * Date/time when the connector's disconnect() was called.
+     */
+    CONNECTOR_DISCONNECT_DATE("connectorDisconnectDate", DataType.DATE.getName(), "Date/time when the connector's disconnect() was called.", null, "ccebbf45-1750-4287-a040-6545e7d8c6de"),
 
     /**
      * List of elements that were created.
@@ -2381,12 +2317,12 @@ public enum OpenMetadataProperty
     /**
      * Latest time that the connector can run.
      */
-    STOP_DATE("stopDate",DataType.DATE.getName(), "Latest time that the connector can run.", null, "ec798c83-660d-400e-8fa8-00dc8634fe24"),
+    CONNECTOR_SHUTDOWN_DATE("connectorShutdownDate", DataType.DATE.getName(), "Latest time that the connector can run.", null, "ec798c83-660d-400e-8fa8-00dc8634fe24"),
 
     /**
-     * Should the integration daemon create integration reports based on the integration connector's activity? (Default is true.)
+     * Should the service/connector create integration reports based on its activity? (Default is true.)
      */
-    GENERATE_INTEGRATION_REPORT("generateIntegrationReport", DataType.BOOLEAN.getName(), "Should the integration daemon create integration reports based on the integration connector's activity? (Default is true.)", null, "61f01f63-2e2d-47d0-9ea7-a95c0d561194"),
+    GENERATE_INTEGRATION_REPORT("generateIntegrationReports", DataType.BOOLEAN.getName(), "Should the service/connector create integration reports based on its activity? (Default is true.)", null, "61f01f63-2e2d-47d0-9ea7-a95c0d561194"),
 
     /**
      * The name of the attribute that the reference data assignment represents.
@@ -2534,21 +2470,6 @@ public enum OpenMetadataProperty
     RECEIVED_GUARDS("receivedGuards", DataType.ARRAY_STRING.getName(), "List of guards received from the previous governance service(s).", null, "6259d3fd-6d04-46b4-b844-0407675128c6"),
 
     /**
-     * The qualifiedName of the governance service that caused the engine action to be created.
-     */
-    ORIGIN_GOVERNANCE_SERVICE("originGovernanceService", DataType.STRING.getName(), "The qualifiedName of the governance service that caused the engine action to be created.", null, "0bd2d2ca-0113-4fa1-80c3-e4061e2e5093"),
-
-    /**
-     * The qualifiedName of the governance engine that caused the engine action to be created.
-     */
-    ORIGIN_GOVERNANCE_ENGINE("originGovernanceEngine", DataType.STRING.getName(), "The qualifiedName of the governance engine that caused the engine action to be created.", null, "20f5fddd-1f7d-440d-ba57-ccc39ae0ac37"),
-
-    /**
-     * The name to identify the request source to the governance service that processes it.
-     */
-    REQUEST_SOURCE_NAME("requestSourceName", DataType.STRING.getName(), "The name to identify the request source to the governance service that processes it.", null, "a7eb9ae6-261d-47b2-82ed-6afd5ce1a48c"),
-
-    /**
      * Goals or required outcomes from the business strategy that is supported by the data strategy.
      */
     BUSINESS_IMPERATIVES("businessImperatives", DataType.ARRAY_STRING.getName(), "Goals or required outcomes from the business strategy that is supported by the data strategy.", null, "962526a1-e16c-4604-8bf6-585b8943849c"),
@@ -2624,14 +2545,14 @@ public enum OpenMetadataProperty
     LICENSE_GUID("licenseGUID", DataType.STRING.getName(), "Unique identifier of the actual license.", "2e0b760d-80fc-4e4e-a6bd-aa1169585533", "2bd31f57-2984-4ca9-9dd9-2d86da804a75"),
 
     /**
-     * Start date for the certification.
+     * Start date for the certification/license.
      */
-    START("start", DataType.DATE.getName(), "Start date for the certification.", null, "c9a4fdab-c44f-41d0-bce3-7c305bb13681"),
+    COVERAGE_START("coverageStart", DataType.DATE.getName(), "Start date for the certification/license.", null, "c9a4fdab-c44f-41d0-bce3-7c305bb13681"),
 
     /**
      * End date for the certification.
      */
-    END("end", DataType.DATE.getName(), "End date for the certification.", null, "3933b3eb-a303-4818-8218-c7b0122393d8"),
+    COVERAGE_END("coverageEnd", DataType.DATE.getName(), "End date for the certification/license.", null, "3933b3eb-a303-4818-8218-c7b0122393d8"),
 
     /**
      * Any special conditions or endorsements over the basic certification type.

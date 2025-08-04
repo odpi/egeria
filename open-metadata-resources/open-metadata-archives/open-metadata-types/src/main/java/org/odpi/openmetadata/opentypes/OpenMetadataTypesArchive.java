@@ -157,11 +157,177 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
+        update00XXExternalReferences();
         update0021Collections();
         update04xxGovernanceDefinitions();
         update0484Agreements();
         update07xxImplementationRelationships();
     }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+     private void update00XXExternalReferences()
+     {
+         this.archiveBuilder.addEntityDef(getExternalDataSourceEntity());
+         this.archiveBuilder.addEntityDef(getExternalModelSourceEntity());
+         this.archiveBuilder.addEntityDef(getCitedDocumentEntity());
+
+         this.archiveBuilder.addRelationshipDef(getCitedDocumentLinkRelationship());
+         this.archiveBuilder.addRelationshipDef(getContractLinkRelationship());
+     }
+
+
+
+    private EntityDef getExternalDataSourceEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXTERNAL_DATA_SOURCE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_REFERENCE.typeName));
+    }
+
+
+    private EntityDef getExternalModelSourceEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXTERNAL_MODEL_SOURCE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_REFERENCE.typeName));
+    }
+
+
+    private EntityDef getCitedDocumentEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.CITED_DOCUMENT,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_REFERENCE.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NUMBER_OF_PAGES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PAGE_RANGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES_VOLUME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLISHER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EDITION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FIRST_PUB_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_CITY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_YEAR));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_NUMBERS));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    private RelationshipDef getContractLinkRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONTRACT_LINK_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "agreements";
+        final String                     end1AttributeDescription     = "Agreements related to the contract.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.AGREEMENT.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "contracts";
+        final String                     end2AttributeDescription     = "Details of the contract documents.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CITED_DOCUMENT.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTRACT_ID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTRACT_LIAISON));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTRACT_LIAISON_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTRACT_LIAISON_PROPERTY_NAME));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    private RelationshipDef getCitedDocumentLinkRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        relationshipDef.setMultiLink(true);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "citingItems";
+        final String                     end1AttributeDescription     = "Items that are referencing this work.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "citedDocuments";
+        final String                     end2AttributeDescription     = "Link to the documents located at an external source.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CITED_DOCUMENT.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFERENCE_ID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PAGES));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
 
 
     /*
@@ -174,15 +340,27 @@ public class OpenMetadataTypesArchive
     private void update0021Collections()
     {
         this.archiveBuilder.addClassificationDef(getNamespaceClassification());
+        this.archiveBuilder.addClassificationDef(getReferenceListClassification());
     }
 
     private ClassificationDef getNamespaceClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION,
-                                                  null,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
+                                                  false);
+
+    }
+
+
+    private ClassificationDef getReferenceListClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.REFERENCE_LIST_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -199,7 +377,7 @@ public class OpenMetadataTypesArchive
     private ClassificationDef getDataSharingAgreementClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION,
-                                                  null,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.AGREEMENT.typeName),
                                                   false);
     }
@@ -210,11 +388,16 @@ public class OpenMetadataTypesArchive
      */
 
     /**
-     * A variety of changes to improve consistency and flexibility of the governance definitions
+     * A variety of changes to improve consistency and flexibility of the governance types
      */
     private void update04xxGovernanceDefinitions()
     {
+        this.archiveBuilder.addEntityDef(getMethodologyEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceResponsibilityAssignmentRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateAssetZoneMembership());
+        this.archiveBuilder.addTypeDefPatch(deprecateAssetOrigin());
+        this.archiveBuilder.addClassificationDef(getDigitalResourceOriginClassification());
+        this.archiveBuilder.addClassificationDef(getZoneMembershipClassification());
     }
 
 
@@ -247,6 +430,92 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
+    }
+
+
+    private EntityDef getMethodologyEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.METHODOLOGY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_PROCEDURE.typeName));
+    }
+
+
+    /**
+     * Deprecate AssetZoneMembership
+     *
+     * @return typeDef patch
+     */
+    private TypeDefPatch deprecateAssetZoneMembership()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    /**
+     * Deprecate AssetZoneMembership
+     *
+     * @return typeDef patch
+     */
+    private TypeDefPatch deprecateAssetOrigin()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private ClassificationDef getDigitalResourceOriginClassification()
+    {
+        ClassificationDef classificationDef =  archiveHelper.getClassificationDef(OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION,
+                                                                                  null,
+                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                                  false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORGANIZATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORGANIZATION_PROPERTY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY_PROPERTY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OTHER_ORIGIN_VALUES));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    private ClassificationDef getZoneMembershipClassification()
+    {
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION,
+                                                                                 null,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ZONE_MEMBERSHIP));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
     }
 
 

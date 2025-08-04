@@ -3,19 +3,30 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
+import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * GovernanceDefinitionElement is the superclass used to return the common properties of a governance definition stored in the
  * open metadata repositories.
  */
-public class GovernanceDefinitionElement implements MetadataElement
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = GovernanceDefinitionGraph.class, name = "GovernanceDefinitionGraph"),
+        })
+public class GovernanceDefinitionElement extends OpenMetadataRootElement
 {
-    private ElementHeader                   elementHeader      = null;
-    private GovernanceDefinitionProperties properties = null;
-    private RelatedBy                      relatedBy  = null;
 
 
 
@@ -35,83 +46,25 @@ public class GovernanceDefinitionElement implements MetadataElement
      */
     public GovernanceDefinitionElement(GovernanceDefinitionElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            this.elementHeader = template.getElementHeader();
-            this.properties = template.getProperties();
-            this.relatedBy  = template.getRelatedBy();
+
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Copy/clone constructor
      *
-     * @return element header object
+     * @param template object to copy
      */
-    @Override
-    public ElementHeader getElementHeader()
+    public GovernanceDefinitionElement(OpenMetadataRootElement template)
     {
-        return elementHeader;
+        super(template);
     }
 
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
-    }
-
-
-    /**
-     * Return the requested governance definition.
-     *
-     * @return properties bean
-     */
-    public GovernanceDefinitionProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up the requested governance definition.
-     *
-     * @param properties properties bean
-     */
-    public void setProperties(GovernanceDefinitionProperties properties)
-    {
-        this.properties = properties;
-    }
-
-
-    /**
-     * Return details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @return list of element stubs
-     */
-    public RelatedBy getRelatedBy()
-    {
-        return relatedBy;
-    }
-
-
-    /**
-     * Set up details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @param relatedBy relationship details
-     */
-    public void setRelatedBy(RelatedBy relatedBy)
-    {
-        this.relatedBy = relatedBy;
-    }
 
 
     /**
@@ -123,44 +76,6 @@ public class GovernanceDefinitionElement implements MetadataElement
     public String toString()
     {
         return "GovernanceDefinitionElement{" +
-                       "elementHeader=" + elementHeader +
-                       ", properties=" + properties +
-                       ", relatedBy=" + relatedBy +
-                       '}';
-    }
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof GovernanceDefinitionElement that))
-        {
-            return false;
-        }
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties) &&
-                       Objects.equals(relatedBy, that.relatedBy);
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), elementHeader, properties, relatedBy);
+                "} " + super.toString();
     }
 }

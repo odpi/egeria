@@ -7,12 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -48,25 +47,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = LicenseTypeProperties.class, name = "LicenseTypeProperties"),
                 @JsonSubTypes.Type(value = CertificationTypeProperties.class, name = "CertificationTypeProperties"),
+                @JsonSubTypes.Type(value = GovernanceDriverProperties.class, name = "GovernanceDriverProperties"),
                 @JsonSubTypes.Type(value = GovernancePolicyProperties.class, name = "GovernancePolicyProperties"),
                 @JsonSubTypes.Type(value = GovernanceControlProperties.class, name = "GovernanceControlProperties"),
-                @JsonSubTypes.Type(value = GovernanceStrategyProperties.class, name = "GovernanceStrategyProperties"),
-                @JsonSubTypes.Type(value = RegulationProperties.class, name = "RegulationProperties"),
                 @JsonSubTypes.Type(value = DataProcessingPurposeProperties.class, name = "DataProcessingPurposeProperties"),
         })
-public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
+public class GovernanceDefinitionProperties extends ReferenceableProperties
 {
-    private String              documentIdentifier   = null;
-    private Map<String, String> additionalProperties = null;
-    private String              title                = null;
-    private String              summary              = null;
-    private String              description          = null;
-    private String              scope                = null;
-    private int                 domainIdentifier     = 0;
-    private String              importance           = null;
-    private List<String>        implications         = null;
-    private List<String>        outcomes             = null;
-    private List<String>        results              = null;
+    private String       userDefinedStatus = null;
+    private String       identifier       = null;
+    private String       summary          = null;
+    private String       scope            = null;
+    private int          domainIdentifier = 0;
+    private String       importance       = null;
+    private List<String> implications     = null;
+    private List<String> outcomes         = null;
+    private List<String> results          = null;
 
 
     /**
@@ -87,87 +83,63 @@ public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
     public GovernanceDefinitionProperties(GovernanceDefinitionProperties template)
     {
         super(template);
+
         if (template != null)
         {
-            this.documentIdentifier = template.getDocumentIdentifier();
-            this.additionalProperties = template.getAdditionalProperties();
-            this.title = template.getTitle();
-            this.summary = template.getSummary();
-            this.description = template.getDescription();
-            this.scope = template.getScope();
-            this.domainIdentifier = template.getDomainIdentifier();
-            this.importance       = template.getImportance();
-            this.implications     = template.getImplications();
-            this.outcomes = template.getOutcomes();
-            this.results = template.getResults();
+            this.userDefinedStatus = template.getUserDefinedStatus();
+            this.identifier        = template.getIdentifier();
+            this.summary           = template.getSummary();
+            this.scope             = template.getScope();
+            this.domainIdentifier  = template.getDomainIdentifier();
+            this.importance        = template.getImportance();
+            this.implications      = template.getImplications();
+            this.outcomes          = template.getOutcomes();
+            this.results           = template.getResults();
         }
     }
 
 
     /**
-     * Returns the stored qualified name property for the metadata entity.
-     * If no qualified name is available then the empty string is returned.
+     * Return any user defined status beyond the standard element status values.
+     *
+     * @return string
+     */
+    public String getUserDefinedStatus()
+    {
+        return userDefinedStatus;
+    }
+
+
+    /**
+     * Set up  any user defined status beyond the standard element status values.
+     *
+     * @param userDefinedStatus string
+     */
+    public void setUserDefinedStatus(String userDefinedStatus)
+    {
+        this.userDefinedStatus = userDefinedStatus;
+    }
+
+
+    /**
+     * Returns the identifier property for the metadata entity.
      *
      * @return documentIdentifier
      */
-    public String getDocumentIdentifier()
+    public String getIdentifier()
     {
-        return documentIdentifier;
+        return identifier;
     }
 
 
     /**
-     * Set up the fully qualified name.
+     * Set up the identifier.
      *
-     * @param documentIdentifier String name
+     * @param identifier String name
      */
-    public void setDocumentIdentifier(String documentIdentifier)
+    public void setIdentifier(String identifier)
     {
-        this.documentIdentifier = documentIdentifier;
-    }
-
-
-    /**
-     * Return a copy of the additional properties.  Null means no additional properties are available.
-     *
-     * @return AdditionalProperties
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        return additionalProperties;
-    }
-
-
-    /**
-     * Set up additional properties.
-     *
-     * @param additionalProperties Additional properties object
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return the title associated with this governance definition.
-     *
-     * @return String title
-     */
-    public String getTitle()
-    {
-        return title;
-    }
-
-
-    /**
-     * Set up the title associated with this governance definition.
-     *
-     * @param title String title
-     */
-    public void setTitle(String title)
-    {
-        this.title = title;
+        this.identifier = identifier;
     }
 
 
@@ -193,28 +165,6 @@ public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
     public void setSummary(String summary)
     {
         this.summary = summary;
-    }
-
-
-    /**
-     * Return the full description of the governance definition.
-     *
-     * @return String description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the full description of the governance definition.
-     *
-     * @param description String description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -365,11 +315,9 @@ public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
     public String toString()
     {
         return "GovernanceDefinitionProperties{" +
-                "documentIdentifier='" + documentIdentifier + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", title='" + title + '\'' +
+                "userDefinedStatus='" + userDefinedStatus + '\'' +
+                ", identifier='" + identifier + '\'' +
                 ", summary='" + summary + '\'' +
-                ", description='" + description + '\'' +
                 ", scope='" + scope + '\'' +
                 ", domainIdentifier=" + domainIdentifier +
                 ", importance='" + importance + '\'' +
@@ -378,6 +326,7 @@ public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
                 ", results=" + results +
                 "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -393,11 +342,9 @@ public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
         if (!super.equals(objectToCompare)) return false;
         GovernanceDefinitionProperties that = (GovernanceDefinitionProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
-                Objects.equals(documentIdentifier, that.documentIdentifier) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(title, that.title) &&
+                Objects.equals(identifier, that.identifier) &&
+                Objects.equals(userDefinedStatus, that.userDefinedStatus)&&
                 Objects.equals(summary, that.summary) &&
-                Objects.equals(description, that.description) &&
                 Objects.equals(scope, that.scope) &&
                 Objects.equals(importance, that.importance) &&
                 Objects.equals(implications, that.implications) &&
@@ -414,6 +361,6 @@ public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), documentIdentifier, additionalProperties, title, summary, description, scope, domainIdentifier, importance, implications, outcomes, results);
+        return Objects.hash(super.hashCode(), userDefinedStatus, identifier, summary, scope, domainIdentifier, importance, implications, outcomes, results);
     }
 }

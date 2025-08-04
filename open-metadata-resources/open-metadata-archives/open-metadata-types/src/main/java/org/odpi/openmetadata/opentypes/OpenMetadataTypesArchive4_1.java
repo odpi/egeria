@@ -159,7 +159,6 @@ public class OpenMetadataTypesArchive4_1
          */
         update0010BasicModel();
         update0011ManagingReferenceables();
-        update0320CategoryHierarchy();
         update0385ControlledGlossaryDevelopment();
         update0423SecurityAccessControl();
         update504ImplementationSnippets();
@@ -277,22 +276,6 @@ public class OpenMetadataTypesArchive4_1
                                                   false);
     }
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0320CategoryHierarchy()
-    {
-        this.archiveBuilder.addClassificationDef(getRootCategoryClassification());
-    }
-
-    private ClassificationDef getRootCategoryClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_CATEGORY.typeName),
-                                                  false);
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -303,7 +286,6 @@ public class OpenMetadataTypesArchive4_1
     {
         this.archiveBuilder.addClassificationDef(getEditingGlossaryClassification());
         this.archiveBuilder.addClassificationDef(getStagingGlossaryClassification());
-        this.archiveBuilder.addTypeDefPatch(updateGlossaryTermEntity());
     }
 
     private ClassificationDef getEditingGlossaryClassification()
@@ -344,29 +326,6 @@ public class OpenMetadataTypesArchive4_1
 
         return classificationDef;
     }
-
-    private TypeDefPatch updateGlossaryTermEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GLOSSARY_TERM.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add( archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLISH_VERSION_ID));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
     /*

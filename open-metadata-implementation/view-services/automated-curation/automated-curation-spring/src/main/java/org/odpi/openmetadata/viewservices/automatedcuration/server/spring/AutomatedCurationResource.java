@@ -16,8 +16,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetsResponse;
 import org.odpi.openmetadata.frameworkservices.omf.rest.MetadataCorrelationHeadersResponse;
-import org.odpi.openmetadata.frameworkservices.omf.rest.TemplateRequestBody;
-import org.odpi.openmetadata.frameworkservices.omf.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.ExternalIdEffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.frameworkservices.omf.rest.UpdateMetadataCorrelatorsRequestBody;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeHierarchyResponse;
@@ -68,11 +67,6 @@ public class AutomatedCurationResource
      * Retrieve the list of deployed implementation type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -88,19 +82,11 @@ public class AutomatedCurationResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/deployed-implementation-type"))
 
-    public TechnologyTypeSummaryListResponse findTechnologyTypes(@PathVariable String                  serverName,
-                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                               boolean                 startsWith,
-                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                               boolean                 endsWith,
-                                                                 @RequestParam (required = false, defaultValue = "true")
-                                                                               boolean                 ignoreCase,
-                                                                 @RequestParam int                     startFrom,
-                                                                 @RequestParam int                     pageSize,
+    public TechnologyTypeSummaryListResponse findTechnologyTypes(@PathVariable String        serverName,
                                                                  @RequestBody  (required = false)
-                                                                               FilterRequestBody       requestBody)
+                                                                               SearchStringRequestBody requestBody)
     {
-        return restAPI.findTechnologyTypes(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findTechnologyTypes(serverName, requestBody);
     }
 
 
@@ -109,8 +95,6 @@ public class AutomatedCurationResource
      *
      * @param serverName name of the service to route the request to
      * @param typeName does the value start with the supplied string?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      *
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -127,14 +111,10 @@ public class AutomatedCurationResource
 
     public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(@PathVariable String serverName,
                                                                                    @PathVariable String typeName,
-                                                                                   @RequestParam(required = false, defaultValue = "0")
-                                                                                       int    startFrom,
-                                                                                   @RequestParam(required = false, defaultValue = "0")
-                                                                                       int    pageSize,
                                                                                    @RequestBody(required = false)
                                                                                        ResultsRequestBody requestBody)
     {
-        return restAPI.getTechnologyTypesForOpenMetadataType(serverName, typeName, startFrom, pageSize, requestBody);
+        return restAPI.getTechnologyTypesForOpenMetadataType(serverName, typeName,  requestBody);
     }
 
 
@@ -194,9 +174,6 @@ public class AutomatedCurationResource
      * Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
      * @param requestBody the deployedImplementationType to search for
      *
      * @return list of matching metadata elements or
@@ -213,14 +190,9 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/deployed-implementation-type"))
 
     public TechnologyTypeElementListResponse getTechnologyTypeElements(@PathVariable String            serverName,
-                                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                       int    startFrom,
-                                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                       int    pageSize,
-                                                                       @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
-                                                                       @RequestBody  FilterRequestBody requestBody)
+                                                                      @RequestBody (required = false) FilterRequestBody requestBody)
     {
-        return restAPI.getTechnologyTypeElements(serverName, startFrom, pageSize, getTemplates, requestBody);
+        return restAPI.getTechnologyTypeElements(serverName, requestBody);
     }
 
 
@@ -278,7 +250,7 @@ public class AutomatedCurationResource
     public GUIDResponse getElementFromTemplate(@PathVariable String              serverName,
                                                @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.getElementFromTemplate(serverName, requestBody);
+        return restAPI.createElementFromTemplate(serverName, requestBody);
     }
 
 
@@ -438,11 +410,6 @@ public class AutomatedCurationResource
      * Retrieve the list of governance action type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -459,20 +426,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
     public GovernanceActionTypesResponse findGovernanceActionTypes(@PathVariable String                  serverName,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                                 int                     startFrom,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                                 int                     pageSize,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                 startsWith,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                 endsWith,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                 ignoreCase,
                                                                    @RequestBody  (required = false)
-                                                                                 FilterRequestBody       requestBody)
+                                                                   SearchStringRequestBody       requestBody)
     {
-        return restAPI.findGovernanceActionTypes(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findGovernanceActionTypes(serverName, requestBody);
     }
 
 
@@ -481,8 +438,6 @@ public class AutomatedCurationResource
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -499,11 +454,9 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
     public GovernanceActionTypesResponse getGovernanceActionTypesByName(@PathVariable String            serverName,
-                                                                        @RequestParam int               startFrom,
-                                                                        @RequestParam int               pageSize,
                                                                         @RequestBody  FilterRequestBody requestBody)
     {
-        return restAPI.getGovernanceActionTypesByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getGovernanceActionTypesByName(serverName, requestBody);
     }
 
 
@@ -543,11 +496,6 @@ public class AutomatedCurationResource
      * Retrieve the list of governance action process metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -564,18 +512,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
     public GovernanceActionProcessElementsResponse findGovernanceActionProcesses(@PathVariable String                  serverName,
-                                                                                 @RequestParam int                     startFrom,
-                                                                                 @RequestParam int                     pageSize,
-                                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                                               boolean                 startsWith,
-                                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                                               boolean                 endsWith,
-                                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                                               boolean                 ignoreCase,
                                                                                  @RequestBody  (required = false)
-                                                                                               FilterRequestBody       requestBody)
+                                                                                               SearchStringRequestBody       requestBody)
     {
-        return restAPI.findGovernanceActionProcesses(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findGovernanceActionProcesses(serverName, requestBody);
     }
 
 
@@ -585,8 +525,6 @@ public class AutomatedCurationResource
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -603,11 +541,9 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
     public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(@PathVariable String          serverName,
-                                                                                      @RequestParam int             startFrom,
-                                                                                      @RequestParam int             pageSize,
                                                                                       @RequestBody  FilterRequestBody requestBody)
     {
-        return restAPI.getGovernanceActionProcessesByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getGovernanceActionProcessesByName(serverName, requestBody);
     }
 
 
@@ -866,11 +802,6 @@ public class AutomatedCurationResource
      * Retrieve the list of engine action metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -887,18 +818,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public EngineActionElementsResponse findEngineActions(@PathVariable String                  serverName,
-                                                          @RequestParam int                     startFrom,
-                                                          @RequestParam int                     pageSize,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                 startsWith,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                 endsWith,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                 ignoreCase,
                                                           @RequestBody  (required = false)
-                                                                        FilterRequestBody       requestBody)
+                                                                        SearchStringRequestBody       requestBody)
     {
-        return restAPI.findEngineActions(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findEngineActions(serverName,  requestBody);
     }
 
 
@@ -907,8 +830,6 @@ public class AutomatedCurationResource
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -925,11 +846,9 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public EngineActionElementsResponse getEngineActionsByName(@PathVariable String            serverName,
-                                                               @RequestParam int               startFrom,
-                                                               @RequestParam int               pageSize,
                                                                @RequestBody  FilterRequestBody requestBody)
     {
-        return restAPI.getEngineActionsByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getEngineActionsByName(serverName, requestBody);
     }
 
 
@@ -1218,7 +1137,7 @@ public class AutomatedCurationResource
                                                                      @RequestParam (required = false, defaultValue = "false")
                                                                      boolean                       forDuplicateProcessing,
                                                                      @RequestBody  (required = false)
-                                                                     EffectiveTimeQueryRequestBody requestBody)
+                                                                         ExternalIdEffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getExternalIdentifiers(serverName, openMetadataElementGUID, openMetadataElementTypeName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }

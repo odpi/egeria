@@ -83,10 +83,10 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              governanceDomainSetGUID,
                                              governanceDomainSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              domainDefinition.getQualifiedName(),
                                              domainDefinition.getDisplayName(),
                                              domainDefinition.getDescription(),
@@ -95,7 +95,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                              DataType.INT.getName(),
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              Integer.toString(domainDefinition.getDomainIdentifier()),
-                                             false,
+                                             null,
                                              false,
                                              null);
 
@@ -133,7 +133,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 archiveHelper.addPersonRoleAppointmentRelationship(domainDefinition.getGovernanceOfficer().getQualifiedName(),
                                                                    governanceOfficerQName,
-                                                                   true);
+                                                                   false,
+                                                                   0);
             }
         }
     }
@@ -320,7 +321,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 
                 for (PersonDefinition leader : communityDefinition.getLeaders())
                 {
-                    archiveHelper.addPersonRoleAppointmentRelationship(leader.getQualifiedName(), leaderRoleQName, true);
+                    archiveHelper.addPersonRoleAppointmentRelationship(leader.getQualifiedName(), leaderRoleQName, false, 0);
                 }
             }
 
@@ -343,7 +344,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 
                 for (PersonDefinition member : communityDefinition.getMembers())
                 {
-                    archiveHelper.addPersonRoleAppointmentRelationship(member.getQualifiedName(), memberRoleQName, true);
+                    archiveHelper.addPersonRoleAppointmentRelationship(member.getQualifiedName(), memberRoleQName, false, 0);
                 }
             }
         }
@@ -375,7 +376,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                 {
                     archiveHelper.addPersonRoleAppointmentRelationship(appointee.getQualifiedName(),
                                                                        roleDefinition.getQualifiedName(),
-                                                                       true);
+                                                                       false,
+                                                                       0);
                 }
             }
         }
@@ -388,14 +390,14 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
     private void writeProjectStatusValidValueSet()
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + ProjectStatusDefinition.validValueSetName;
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                validValueSetQName,
                                                                ProjectStatusDefinition.validValueSetName,
                                                                ProjectStatusDefinition.validValueSetDescription,
                                                                ProjectStatusDefinition.validValueSetUsage,
                                                                ProjectStatusDefinition.validValueSetScope,
                                                                null,
-                                                               false,
+                                                               null,
                                                                null);
 
         if (validValueSetGUID != null)
@@ -411,7 +413,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     ProjectStatusDefinition.validValueSetUsage,
                                                                     ProjectStatusDefinition.validValueSetScope,
                                                                     projectStatusDefinition.getPreferredValue(),
-                                                                    false,
+                                                                    null,
                                                                     null);
 
                 if (validValueGUID != null)
@@ -483,7 +485,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 archiveHelper.addPersonRoleAppointmentRelationship(projectDefinition.getLeader().getQualifiedName(),
                                                                    projectManagerQName,
-                                                                   true);
+                                                                   false,
+                                                                   0);
 
             }
 

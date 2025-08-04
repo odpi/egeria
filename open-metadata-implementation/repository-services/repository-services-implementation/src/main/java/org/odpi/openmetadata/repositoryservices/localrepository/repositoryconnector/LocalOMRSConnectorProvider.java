@@ -9,12 +9,9 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.VirtualConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule;
@@ -40,7 +37,6 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     private OMRSRepositoryContentManager       repositoryContentManager        = null;
     private OMRSRepositoryEventExchangeRule    saveExchangeRule                = null;
     private       LocalOMRSRepositoryConnector localRepositoryConnector = null;
-    private final ConnectorTypeDetails         connectorTypeDetails     = null;
     private final ConnectorType                connectorType            = null;
     private AuditLog                           auditLog                        = null;
 
@@ -86,19 +82,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      */
     public LocalOMRSConnectorProvider()
     {
-    }
-
-
-    /**
-     * Returns the properties about the type of connector that this Connector Provider supports.
-     *
-     * @return properties including the name of the connector type, the connector provider class
-     * and any specific connection properties that are recognized by this connector.
-     */
-    @Override
-    public ConnectorTypeDetails getConnectorTypeProperties()
-    {
-        return connectorTypeDetails;
+        super();
     }
 
 
@@ -114,30 +98,6 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
         return connectorType;
     }
 
-    /**
-     * Creates a new instance of a connector based on the information in the supplied connection.
-     *
-     * @param realLocalConnection connection that should have all the properties needed by the Connector Provider
-     *                              to create a connector instance.
-     * @return Connector instance of the LocalOMRSRepositoryConnector wrapping the real local connector.
-     * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
-     * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
-     */
-    @Override
-    public synchronized Connector getConnector(Connection realLocalConnection) throws ConnectionCheckedException, ConnectorCheckedException
-    {
-        Connector connector;
-        if (realLocalConnection instanceof VirtualConnection)
-        {
-            connector = this.getConnector(new VirtualConnectionDetails((VirtualConnection)realLocalConnection));
-
-        } else
-        {
-            connector = this.getConnector(new ConnectionDetails(realLocalConnection));
-        }
-        return connector;
-    }
-
 
     /**
      * Creates a new instance of a connector based on the information in the supplied connection.
@@ -149,8 +109,9 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
     @Override
-    public synchronized Connector getConnector(ConnectionDetails realLocalConnection) throws ConnectionCheckedException,
-                                                                                             ConnectorCheckedException
+    public synchronized Connector getConnector(Connection realLocalConnection) throws ConnectionCheckedException,
+                                                                                      ConnectorCheckedException,
+                                                                                      UserNotAuthorizedException
     {
         String methodName = "getConnector";
 
@@ -239,7 +200,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
                                                                         repositoryContentManager,
                                                                         saveExchangeRule);
             localRepositoryConnector.initialize(this.getNewConnectorGUID(),
-                                                new ConnectionDetails(localRepositoryRemoteConnection));
+                                                new Connection(localRepositoryRemoteConnection));
         }
 
         return localRepositoryConnector;

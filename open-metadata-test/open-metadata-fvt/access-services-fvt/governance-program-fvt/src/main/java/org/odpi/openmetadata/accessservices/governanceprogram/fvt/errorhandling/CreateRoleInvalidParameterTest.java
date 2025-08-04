@@ -112,7 +112,7 @@ class CreateRoleInvalidParameterTest
         {
             GovernanceRoleProperties properties = new GovernanceRoleProperties();
 
-            properties.setName("TestTitle");
+            properties.setDisplayName("TestTitle");
 
             client.createGovernanceRole(userId, properties);
             throw new FVTUnexpectedCondition(testCaseName, activityName);

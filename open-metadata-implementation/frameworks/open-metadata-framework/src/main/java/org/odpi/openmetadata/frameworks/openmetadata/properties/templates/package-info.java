@@ -2,6 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * Beans for managing and representing templates
+ * Beans for managing and representing template classifications
  */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.templates;

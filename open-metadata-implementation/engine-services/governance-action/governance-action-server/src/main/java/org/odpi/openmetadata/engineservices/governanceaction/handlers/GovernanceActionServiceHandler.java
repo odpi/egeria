@@ -2,13 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.OpenMetadataStoreClient;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.governanceaction.connectorcontext.DuplicateManagementClient;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
@@ -17,6 +20,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTarget
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.*;
@@ -36,6 +40,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * This call is made on the REST call's thread so the properties are just cached.
      * The action happens in the run() method.
      *
+     * @param localServerName name of this engine host
      * @param governanceActionEngineProperties properties of the governance action engine - used for message logging
      * @param governanceActionEngineGUID unique Identifier of the governance action engine - used for message logging
      * @param governanceActionUserId user id for use by the engine host services
@@ -43,14 +48,15 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param engineActionClient client for managing engine actions
      * @param serviceRequestType incoming request
      * @param requestParameters parameters associated with the request type
+     * @param generateIntegrationReport generate integration report
+     * @param deleteMethod default delete method
      * @param requesterUserId original user requesting this governance service
      * @param requestSourceElements the elements that caused this service to run
      * @param actionTargetElements the elements for the service to work on
      * @param governanceActionServiceGUID unique identifier of entity defining this governance service
      * @param governanceActionServiceName unique name of this governance action service - used for message logging
      * @param governanceActionServiceConnector connector that does the work
-     * @param partnerServerName name of the metadata server used by the governance service
-     * @param partnerServerPlatformURLRoot location of the metadata server used by the governance service
+     * @param openMetadataClient access to the open metadata store
      * @param governanceContextClient client for services supporting the completion of a governance action service
      * @param governanceConfiguration client for services that configure the governance servers
      * @param startDate date/time that the governance service should start executing
@@ -58,21 +64,23 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException problem with the governance service definitions
      */
-    GovernanceActionServiceHandler(GovernanceEngineProperties governanceActionEngineProperties,
+    GovernanceActionServiceHandler(String                     localServerName,
+                                   GovernanceEngineProperties governanceActionEngineProperties,
                                    String                     governanceActionEngineGUID,
                                    String                     governanceActionUserId,
                                    String                     engineActionGUID,
                                    GovernanceContextClient    engineActionClient,
                                    String                     serviceRequestType,
                                    Map<String, String>        requestParameters,
+                                   boolean                    generateIntegrationReport,
+                                   DeleteMethod               deleteMethod,
                                    String                     requesterUserId,
                                    List<RequestSourceElement> requestSourceElements,
                                    List<ActionTargetElement>  actionTargetElements,
                                    String                     governanceActionServiceGUID,
                                    String                     governanceActionServiceName,
                                    Connector                  governanceActionServiceConnector,
-                                   String                     partnerServerName,
-                                   String                     partnerServerPlatformURLRoot,
+                                   OpenMetadataClient         openMetadataClient,
                                    GovernanceContextClient    governanceContextClient,
                                    GovernanceConfiguration    governanceConfiguration,
                                    Date                       startDate,
@@ -94,27 +102,32 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         final String actionDescription = "Initializing GeneralGovernanceActionService";
         final String governanceActionServiceConnectorParameterName = "governanceActionServiceConnector";
 
-        final String genericGovernanceActionServiceType      = "General";
-        final String watchdogGovernanceActionServiceType     = "Watchdog";
-        final String provisioningGovernanceActionServiceType = "Provisioning";
-        final String verificationGovernanceActionServiceType = "Verification";
-        final String triageGovernanceActionServiceType       = "Triage";
-        final String remediationGovernanceActionServiceType  = "Remediation";
+        final String genericGovernanceActionServiceType = "supported";
+
 
         try
         {
-            OpenMetadataStoreClient openMetadataClient = new OpenMetadataStoreClient(partnerServerName, partnerServerPlatformURLRoot, maxPageSize);
-
             if (governanceActionServiceConnector instanceof GovernanceActionServiceConnector service)
             {
-                GovernanceActionContext context = new GovernanceActionContext(governanceActionUserId,
+                GovernanceActionContext context = new GovernanceActionContext(localServerName,
+                                                                              EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName(),
+                                                                              null,
+                                                                              null,
+                                                                              engineActionGUID,
+                                                                              governanceActionServiceName,
+                                                                              governanceActionUserId,
+                                                                              governanceActionServiceGUID,
+                                                                              generateIntegrationReport,
+                                                                              openMetadataClient,
+                                                                              auditLog,
+                                                                              maxPageSize,
+                                                                              deleteMethod,
                                                                               engineActionGUID,
                                                                               serviceRequestType,
                                                                               requestParameters,
                                                                               requesterUserId,
                                                                               requestSourceElements,
                                                                               actionTargetElements,
-                                                                              openMetadataClient,
                                                                               governanceConfiguration,
                                                                               governanceContextClient,
                                                                               governanceContextClient,
@@ -132,26 +145,6 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                 if (governanceActionServiceConnector instanceof GeneralGovernanceActionService)
                 {
                     this.governanceActionServiceType = genericGovernanceActionServiceType;
-                }
-                else if (governanceActionServiceConnector instanceof WatchdogGovernanceActionService)
-                {
-                    this.governanceActionServiceType = watchdogGovernanceActionServiceType;
-                }
-                else if (governanceActionServiceConnector instanceof VerificationGovernanceActionService)
-                {
-                    this.governanceActionServiceType = verificationGovernanceActionServiceType;
-                }
-                else if (governanceActionServiceConnector instanceof TriageGovernanceActionService)
-                {
-                    this.governanceActionServiceType = triageGovernanceActionServiceType;
-                }
-                else if (governanceActionServiceConnector instanceof RemediationGovernanceActionService)
-                {
-                    this.governanceActionServiceType = remediationGovernanceActionServiceType;
-                }
-                else if (governanceActionServiceConnector instanceof ProvisioningGovernanceActionService)
-                {
-                    this.governanceActionServiceType = provisioningGovernanceActionServiceType;
                 }
                 else
                 {

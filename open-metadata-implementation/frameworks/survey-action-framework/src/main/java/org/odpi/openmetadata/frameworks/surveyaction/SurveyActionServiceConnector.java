@@ -11,9 +11,9 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -210,41 +210,41 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     {
         final String methodName = "performCheckAssetAnalysisStep";
 
-        AnnotationStore  annotationStore = surveyContext.getAnnotationStore();
-        SurveyAssetStore assetStore      = surveyContext.getAssetStore();
+        AnnotationStore annotationStore = surveyContext.getAnnotationStore();
+        AssetClient     assetClient     = surveyContext.getAssetClient(expectedAssetType);
 
         annotationStore.setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
 
         /*
          * Before performing any real work, check the type of the asset.
          */
-        AssetUniverse assetUniverse = assetStore.getAssetProperties();
+        OpenMetadataRootElement assetElement = assetClient.getAssetByGUID(surveyContext.getAssetGUID(), assetClient.getGetOptions());
 
-        if (assetUniverse == null)
+        if (assetElement == null)
         {
             surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
                                                  Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
                                                  null,
                                                  null,
-                                                 SAFAuditCode.NO_ASSET.getMessageDefinition(assetStore.getAssetGUID(), surveyActionServiceName));
+                                                 SAFAuditCode.NO_ASSET.getMessageDefinition(surveyContext.getAssetGUID(), surveyActionServiceName));
 
-            super.throwNoAsset(assetStore.getAssetGUID(),
+            super.throwNoAsset(surveyContext.getAssetGUID(),
                                surveyActionServiceName,
                                methodName);
         }
-        else if (!propertyHelper.isTypeOf(assetUniverse, expectedAssetType))
+        else if (!propertyHelper.isTypeOf(assetElement.getElementHeader(), expectedAssetType))
         {
             surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
                                                  Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
                                                  null,
                                                  null,
-                                                 SAFAuditCode.WRONG_TYPE_OF_ASSET.getMessageDefinition(assetUniverse.getGUID(),
-                                                                                                       assetUniverse.getType().getTypeName(),
+                                                 SAFAuditCode.WRONG_TYPE_OF_ASSET.getMessageDefinition(assetElement.getElementHeader().getGUID(),
+                                                                                                       assetElement.getElementHeader().getType().getTypeName(),
                                                                                                        surveyActionServiceName,
                                                                                                        expectedAssetType));
 
-            throw new ConnectorCheckedException(SAFErrorCode.INVALID_ASSET_TYPE.getMessageDefinition(assetUniverse.getGUID(),
-                                                                                                     assetUniverse.getType().getTypeName(),
+            throw new ConnectorCheckedException(SAFErrorCode.INVALID_ASSET_TYPE.getMessageDefinition(assetElement.getElementHeader().getGUID(),
+                                                                                                     assetElement.getElementHeader().getType().getTypeName(),
                                                                                                      surveyActionServiceName,
                                                                                                      expectedAssetType),
                                                 this.getClass().getName(),
@@ -256,7 +256,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     /**
      * Return the nested schema type associated with the asset
      *
-     * @param assetUniverse details of asset
+     * @param assetElement details of asset
      * @param schemaTypeName name of type for schema
      * @return nested schema type or null
      * @throws ConnectorCheckedException  problem with the connector
@@ -264,55 +264,39 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @throws PropertyServerException    problem with repositories
      * @throws UserNotAuthorizedException security problem
      */
-    protected NestedSchemaType getNestedSchemaType(AssetUniverse assetUniverse,
-                                                   String        schemaTypeName) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    ConnectorCheckedException
+    protected OpenMetadataRootElement getRootSchemaType(OpenMetadataRootElement assetElement,
+                                                        String                  schemaTypeName) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       ConnectorCheckedException
     {
-        final String methodName = "getNestedSchemaType";
+        final String methodName = "getRootSchemaType";
 
-        SchemaType rootSchemaType = assetUniverse.getRootSchemaType();
-
-        if (rootSchemaType instanceof NestedSchemaType nestedSchemaType)
+        if (assetElement != null)
         {
-            if (propertyHelper.isTypeOf(nestedSchemaType, schemaTypeName))
+            RelatedMetadataElementSummary rootSchemaType = assetElement.getRootSchemaType();
+
+            if (propertyHelper.isTypeOf(rootSchemaType.getRelatedElement().getElementHeader(), schemaTypeName))
             {
-                if ((nestedSchemaType.getSchemaAttributes() != null) && (nestedSchemaType.getSchemaAttributes().hasNext()))
-                {
-                    return nestedSchemaType;
-                }
-                else
-                {
-                    surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
-                                                         Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
-                                                         null,
-                                                         null,
-                                                         SAFAuditCode.NO_SCHEMA_ATTRIBUTES.getMessageDefinition(surveyActionServiceName, assetUniverse.getGUID()));
-
-                    throw new ConnectorCheckedException(SAFErrorCode.NO_SCHEMA_ATTRIBUTES.getMessageDefinition(surveyActionServiceName, assetUniverse.getGUID()),
-                                                        this.getClass().getName(),
-                                                        methodName);
-                }
+                return surveyContext.getSchemaTypeClient(schemaTypeName).getSchemaTypeByGUID(rootSchemaType.getRelatedElement().getElementHeader().getGUID(), null);
             }
-        }
+            else
+            {
+                surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
+                                                     Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
+                                                     null,
+                                                     null,
+                                                     SAFAuditCode.INVALID_ROOT_SCHEMA_TYPE.getMessageDefinition(assetElement.getElementHeader().getGUID(),
+                                                                                                                assetElement.getElementHeader().getType().getTypeName(),
+                                                                                                                surveyActionServiceName,
+                                                                                                                schemaTypeName));
 
-        if (rootSchemaType != null)
-        {
-            surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
-                                                 Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
-                                                 null,
-                                                 null,
-                                                 SAFAuditCode.INVALID_ROOT_SCHEMA_TYPE.getMessageDefinition(assetUniverse.getGUID(),
-                                                                                                            assetUniverse.getType().getTypeName(),
-                                                                                                            surveyActionServiceName,
-                                                                                                            schemaTypeName));
-
-            super.throwWrongTypeOfRootSchema(assetUniverse.getGUID(),
-                                             rootSchemaType.getType().getTypeName(),
-                                             schemaTypeName,
-                                             surveyActionServiceName,
-                                             methodName);
+                super.throwWrongTypeOfRootSchema(assetElement.getElementHeader().getGUID(),
+                                                 rootSchemaType.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                 schemaTypeName,
+                                                 surveyActionServiceName,
+                                                 methodName);
+            }
         }
 
         return null;
@@ -352,23 +336,14 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * method is called.  If called before disconnect(), it may only contain partial results.
      *
      * @return survey context containing the results discovered (so far) by the survey action service.
-     * @throws ConnectorCheckedException the service is no longer active
+     * @throws UserNotAuthorizedException the service is no longer active
      */
-    protected SurveyContext getSurveyContext() throws ConnectorCheckedException
+    protected SurveyContext getSurveyContext() throws UserNotAuthorizedException
     {
         final String methodName = "getSurveyContext";
 
-        validateIsActive(methodName);
+        surveyContext.validateIsActive(methodName);
         return surveyContext;
-    }
-
-
-    protected synchronized AnnotationStore getAnnotationStore() throws ConnectorCheckedException
-    {
-        final String methodName = "getAnnotationStore";
-
-        validateIsActive(methodName);
-        return surveyContext.getAnnotationStore();
     }
 
 
@@ -858,30 +833,6 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
 
     /**
-     * Verify that the connector is still active.
-     *
-     * @param methodName calling method
-     * @throws ConnectorCheckedException exception thrown if connector is no longer active
-     */
-    private void validateIsActive(String methodName) throws ConnectorCheckedException
-    {
-        if (! isActive())
-        {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    SAFAuditCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName));
-            }
-
-            throw new ConnectorCheckedException(SAFErrorCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName),
-                                                this.getClass().getName(),
-                                                methodName);
-        }
-    }
-
-
-
-    /**
      * Retrieve and validate the list of embedded connectors and cast them to survey action service connector.
      * This is used by SurveyPipelines and SurveyScanningServices.
      *
@@ -933,9 +884,10 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * be sure to call super.start() in your version.
      *
      * @throws ConnectorCheckedException there is a problem within the survey action service.
+     * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 

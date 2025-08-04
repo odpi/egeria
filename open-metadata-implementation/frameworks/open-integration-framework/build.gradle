@@ -13,6 +13,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     testImplementation 'org.testng:testng'
     implementation 'commons-io:commons-io'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 description = 'Open Integration Framework (OIF)'

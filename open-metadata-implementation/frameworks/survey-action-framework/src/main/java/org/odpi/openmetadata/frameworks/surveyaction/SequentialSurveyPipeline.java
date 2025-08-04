@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.surveyaction;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionPipelineConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 
@@ -16,9 +17,10 @@ public class SequentialSurveyPipeline extends SurveyActionPipelineConnector
      * This implementation provides an inline sequential invocation of the supplied survey action services.
      *
      * @throws ConnectorCheckedException there is a problem within the survey action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    protected void runSurveyPipeline() throws ConnectorCheckedException
+    protected void runSurveyPipeline() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         for (SurveyActionServiceConnector embeddedSurveyService : super.embeddedSurveyActionServices)
         {

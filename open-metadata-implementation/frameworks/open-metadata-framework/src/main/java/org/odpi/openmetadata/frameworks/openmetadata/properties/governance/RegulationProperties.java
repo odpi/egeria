@@ -7,20 +7,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SecurityGroupProperties defines a security group technical control.
+ * RegulationProperties defines a regulation of interest.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RegulationProperties extends GovernanceDefinitionProperties
 {
-    private  String jurisdiction = null;
+    private String       regulationSource = null;
+    private List<String> regulators       = null;
 
 
     /**
@@ -44,30 +46,53 @@ public class RegulationProperties extends GovernanceDefinitionProperties
 
         if (template != null)
         {
-            this.jurisdiction = template.getJurisdiction();
+            this.regulationSource = template.getRegulationSource();
+            this.regulators = template.getRegulators();
         }
     }
 
 
     /**
-     * Return the specific distinguishedName of the license.
+     * Return the source of the regulation.
      *
-     * @return string description
+     * @return organization name
      */
-    public String getJurisdiction()
+    public String getRegulationSource()
     {
-        return jurisdiction;
+        return regulationSource;
     }
 
 
     /**
-     * Set up the specific distinguishedName of the license.
+     * Set up the source of the regulation.
      *
-     * @param jurisdiction string description
+     * @param regulationSource organization name
      */
-    public void setJurisdiction(String jurisdiction)
+    public void setRegulationSource(String regulationSource)
     {
-        this.jurisdiction = jurisdiction;
+        this.regulationSource = regulationSource;
+    }
+
+
+    /**
+     * Return the list of regulators for this regulation.
+     *
+     * @return list of organization names
+     */
+    public List<String> getRegulators()
+    {
+        return regulators;
+    }
+
+
+    /**
+     * Set up the list of organization names.
+     *
+     * @param regulators list of organization names
+     */
+    public void setRegulators(List<String> regulators)
+    {
+        this.regulators = regulators;
     }
 
 
@@ -79,10 +104,12 @@ public class RegulationProperties extends GovernanceDefinitionProperties
     @Override
     public String toString()
     {
-        return "SecurityGroupProperties{" +
-                "distinguishedName='" + jurisdiction + '\'' +
+        return "RegulationProperties{" +
+                "regulationSource='" + regulationSource + '\'' +
+                ", regulators=" + regulators +
                 "} " + super.toString();
     }
+
 
 
     /**
@@ -107,7 +134,8 @@ public class RegulationProperties extends GovernanceDefinitionProperties
             return false;
         }
         RegulationProperties that = (RegulationProperties) objectToCompare;
-        return Objects.equals(jurisdiction, that.jurisdiction);
+        return Objects.equals(regulationSource, that.regulationSource) &&
+                Objects.equals(regulators, that.regulators);
     }
 
 
@@ -120,6 +148,6 @@ public class RegulationProperties extends GovernanceDefinitionProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), jurisdiction);
+        return Objects.hash(super.hashCode(), regulationSource, regulators);
     }
 }

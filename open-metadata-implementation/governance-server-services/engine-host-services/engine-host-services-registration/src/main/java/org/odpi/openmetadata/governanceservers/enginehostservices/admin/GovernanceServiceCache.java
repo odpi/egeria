@@ -7,11 +7,13 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 
 import java.util.HashMap;
@@ -25,8 +27,11 @@ public class GovernanceServiceCache
 {
     private final String              governanceServiceGUID;
     private final String              governanceServiceName;
+
     private final String              serviceRequestType;
     private final Map<String, String> requestParameters;
+    private final boolean             generateIntegrationReport;
+    private final DeleteMethod        deleteMethod;
     private final Connection          serviceConnection;
     private final AuditLog            auditLog;
 
@@ -75,6 +80,16 @@ public class GovernanceServiceCache
             }
 
             this.requestParameters  = registeredGovernanceServiceProperties.getRequestParameters();
+            this.generateIntegrationReport = registeredGovernanceServiceProperties.getGenerateIntegrationReports();
+
+            if (registeredGovernanceServiceProperties.getDeleteMethod() == null)
+            {
+                this.deleteMethod = DeleteMethod.LOOK_FOR_LINEAGE;
+            }
+            else
+            {
+                this.deleteMethod = registeredGovernanceServiceProperties.getDeleteMethod();
+            }
 
             getNextGovernanceService(); /* validate that the connection works */
         }
@@ -162,6 +177,28 @@ public class GovernanceServiceCache
 
 
     /**
+     * Should the governance engine activate integration reports for this service.
+     *
+     * @return boolean
+     */
+    public boolean getGenerateIntegrationReport()
+    {
+        return generateIntegrationReport;
+    }
+
+
+    /**
+     * Return the delete method that the service should use.
+     *
+     * @return enum
+     */
+    public DeleteMethod getDeleteMethod()
+    {
+        return deleteMethod;
+    }
+
+
+    /**
      * Return a governance service connector instance using the registered properties for the governance service.
      *
      * @return connector
@@ -183,7 +220,7 @@ public class GovernanceServiceCache
         {
             throw new InvalidParameterException(error.getReportedErrorMessage(), error, governanceServiceName + "GovernanceService Connection");
         }
-        catch (ConnectorCheckedException error)
+        catch (ConnectorCheckedException | UserNotAuthorizedException error)
         {
             throw new PropertyServerException(error);
         }

@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The CommentProperties bean stores information about a comment connected to an asset.  Comments provide informal feedback to assets
  * and can be added at any time.
- * Comments have the userId of the person who added the feedback, along with their comment text.
+ * Comments have the userId of the person who added the feedback, along with their comment text (description).
  * The content of the comment is a personal statement (which is why the user's id is in the comment)
  * and there is no formal review of the content.
  */
@@ -27,7 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class CommentProperties extends ReferenceableProperties
 {
     private CommentType commentType = null;
-    private String      commentText = null;
 
     /**
      * Default constructor
@@ -54,7 +53,6 @@ public class CommentProperties extends ReferenceableProperties
              * Copy the values from the supplied comment.
              */
             commentType = template.getCommentType();
-            commentText = template.getCommentText();
         }
     }
 
@@ -82,28 +80,6 @@ public class CommentProperties extends ReferenceableProperties
 
 
     /**
-     * Return the comment text.
-     *
-     * @return String commentText
-     */
-    public String getCommentText()
-    {
-        return commentText;
-    }
-
-
-    /**
-     * Set up the comment text.
-     *
-     * @param commentText String text
-     */
-    public void setCommentText(String commentText)
-    {
-        this.commentText = commentText;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -113,7 +89,6 @@ public class CommentProperties extends ReferenceableProperties
     {
         return "CommentProperties{" +
                 "commentType=" + commentType +
-                ", commentText='" + commentText + '\'' +
                 "} " + super.toString();
     }
 
@@ -139,8 +114,7 @@ public class CommentProperties extends ReferenceableProperties
             return false;
         }
         CommentProperties that = (CommentProperties) objectToCompare;
-        return commentType == that.commentType &&
-                       Objects.equals(commentText, that.commentText);
+        return commentType == that.commentType;
     }
 
 
@@ -152,6 +126,6 @@ public class CommentProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), commentType, commentText);
+        return Objects.hash(super.hashCode(), commentType);
     }
 }

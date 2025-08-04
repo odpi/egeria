@@ -3,19 +3,17 @@
 package org.odpi.openmetadata.viewservices.actormanager.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorRoleHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.UserIdentityHandler;
-import org.odpi.openmetadata.viewservices.actormanager.ffdc.ActorManagerErrorCode;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ActorManagerInstance caches references to the objects it needs for a specific server.
@@ -26,14 +24,9 @@ public class ActorManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.ACTOR_MANAGER;
 
-    /*
-     * These maps cache clients for specific view services/access services.
-     */
-    private final Map<String, ActorProfileHandler> actorProfileHandlerMap = new HashMap<>();
-    private final Map<String, ActorRoleHandler>    actorRoleHandlerMap    = new HashMap<>();
-    private final Map<String, UserIdentityHandler> userIdentityHandlerMap = new HashMap<>();
-
-    private final List<ViewServiceConfig> activeViewServices;
+    private final ViewServiceClientMap<ActorProfileHandler> actorProfileHandlerMap;
+    private final ViewServiceClientMap<ActorRoleHandler>    actorRoleHandlerMap;
+    private final ViewServiceClientMap<UserIdentityHandler> userIdentityHandlerMap;
 
 
 
@@ -67,7 +60,30 @@ public class ActorManagerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        this.activeViewServices = activeViewServices;
+        actorProfileHandlerMap = new ViewServiceClientMap<>(ActorProfileHandler.class,
+                                                            serverName,
+                                                            localServerUserId,
+                                                            localServerUserPassword,
+                                                            auditLog,
+                                                            activeViewServices,
+                                                            myDescription.getViewServiceFullName(),
+                                                            maxPageSize);
+        actorRoleHandlerMap = new ViewServiceClientMap<>(ActorRoleHandler.class,
+                                                         serverName,
+                                                         localServerUserId,
+                                                         localServerUserPassword,
+                                                         auditLog,
+                                                         activeViewServices,
+                                                         myDescription.getViewServiceFullName(),
+                                                         maxPageSize);
+        userIdentityHandlerMap = new ViewServiceClientMap<>(UserIdentityHandler.class,
+                                                            serverName,
+                                                            localServerUserId,
+                                                            localServerUserPassword,
+                                                            auditLog,
+                                                            activeViewServices,
+                                                            myDescription.getViewServiceFullName(),
+                                                            maxPageSize);
     }
 
 
@@ -78,75 +94,15 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * @param viewServiceURLMarker calling view service
      * @param methodName calling operation
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public ActorProfileHandler getActorProfileHandler(String viewServiceURLMarker,
-                                                      String methodName) throws InvalidParameterException
+                                                      String methodName) throws InvalidParameterException,
+                                                                                PropertyServerException
     {
-        ActorProfileHandler actorProfileHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            actorProfileHandler = actorProfileHandlerMap.get(viewServiceURLMarker);
-
-            if (actorProfileHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword != null)
-                                    {
-                                        actorProfileHandler = new ActorProfileHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.ACTOR_MANAGER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-                                    else
-                                    {
-                                        actorProfileHandler = new ActorProfileHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      localServerUserId,
-                                                                                      localServerUserPassword,
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.ACTOR_MANAGER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-
-                                    actorProfileHandlerMap.put(viewServiceURLMarker, actorProfileHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (actorProfileHandler == null)
-        {
-            throw new InvalidParameterException(ActorManagerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return actorProfileHandler;
+        return actorProfileHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
-
-
 
 
     /**
@@ -156,74 +112,14 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * @param viewServiceURLMarker calling view service
      * @param methodName calling operation
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public ActorRoleHandler getActorRoleHandler(String viewServiceURLMarker,
-                                                String methodName) throws InvalidParameterException
+                                                String methodName) throws InvalidParameterException,
+                                                                          PropertyServerException
     {
-        ActorRoleHandler actorRoleHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            actorRoleHandler = actorRoleHandlerMap.get(viewServiceURLMarker);
-
-            if (actorRoleHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword != null)
-                                    {
-                                        actorRoleHandler = new ActorRoleHandler(serverName,
-                                                                                viewServiceConfig.getOMAGServerName(),
-                                                                                viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                auditLog,
-                                                                                accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                ViewServiceDescription.ACTOR_MANAGER.getViewServiceFullName(),
-                                                                                maxPageSize,
-                                                                                false);
-                                    }
-                                    else
-                                    {
-                                        actorRoleHandler = new ActorRoleHandler(serverName,
-                                                                                viewServiceConfig.getOMAGServerName(),
-                                                                                viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                localServerUserId,
-                                                                                localServerUserPassword,
-                                                                                auditLog,
-                                                                                accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                ViewServiceDescription.ACTOR_MANAGER.getViewServiceFullName(),
-                                                                                maxPageSize,
-                                                                                false);
-                                    }
-
-                                    actorRoleHandlerMap.put(viewServiceURLMarker, actorRoleHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (actorRoleHandler == null)
-        {
-            throw new InvalidParameterException(ActorManagerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return actorRoleHandler;
+        return actorRoleHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
 
 
@@ -236,71 +132,13 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * @param viewServiceURLMarker calling view service
      * @param methodName calling operation
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public UserIdentityHandler getUserIdentityHandler(String viewServiceURLMarker,
-                                                      String methodName) throws InvalidParameterException
+                                                      String methodName) throws InvalidParameterException,
+                                                                                PropertyServerException
     {
-        UserIdentityHandler userIdentityHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            userIdentityHandler = userIdentityHandlerMap.get(viewServiceURLMarker);
-
-            if (userIdentityHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword != null)
-                                    {
-                                        userIdentityHandler = new UserIdentityHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.ACTOR_MANAGER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-                                    else
-                                    {
-                                        userIdentityHandler = new UserIdentityHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      localServerUserId,
-                                                                                      localServerUserPassword,
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.ACTOR_MANAGER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-
-                                    userIdentityHandlerMap.put(viewServiceURLMarker, userIdentityHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (userIdentityHandler == null)
-        {
-            throw new InvalidParameterException(ActorManagerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return userIdentityHandler;
+        return userIdentityHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
 }

@@ -7,7 +7,8 @@ import org.apache.kafka.clients.admin.DescribeClusterResult;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.apache.kafka.common.Node;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
@@ -147,12 +148,12 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     {
         final String actionDescription = "initializeTopic";
 
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
         if (endpoint != null)
         {
             topicName = endpoint.getAddress();
 
-            Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
+            Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
             if (configurationProperties != null)
             {
                 this.initializeKafkaProperties(configurationProperties);
@@ -298,9 +299,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      * events (consumer)
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         this.initializeTopic();
 
@@ -565,12 +567,14 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
 
 
-        /*
-         * waits for a list of running kafaka brokers
-         * @param connectionDetails The kafka connection properties
+        /**
+         * Waits for a list of running kafka brokers
+         *
+         * @param connectionProperties The kafka connection properties
          * Performs a sanity check that the services Egeria requires are available
          *         */
-        public boolean waitForBrokers(Properties connectionProperties ) {
+        public boolean waitForBrokers(Properties connectionProperties )
+        {
             int count = 0;
             boolean found = false;
             try {

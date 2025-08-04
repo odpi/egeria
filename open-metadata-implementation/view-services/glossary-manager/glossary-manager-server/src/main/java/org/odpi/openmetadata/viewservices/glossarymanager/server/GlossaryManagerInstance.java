@@ -2,13 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossarymanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.CollaborationExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
  * GlossaryManagerInstance caches references to objects it needs for a specific server.
@@ -19,9 +21,8 @@ public class GlossaryManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GLOSSARY_MANAGER;
 
-    private final CollaborationExchangeClient collaborationExchangeClient;
-    private final GlossaryExchangeClient      glossaryExchangeClient;
-    private final StewardshipExchangeClient   stewardshipExchangeClient;
+    private final GlossaryHandler     glossaryHandler;
+    private final GlossaryTermHandler glossaryTermHandler;
 
     /**
      * Set up the Glossary Manager OMVS instance*
@@ -51,51 +52,55 @@ public class GlossaryManagerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient;
         if (localServerUserPassword == null)
         {
-            collaborationExchangeClient = new CollaborationExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
-            glossaryExchangeClient      = new GlossaryExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
-            stewardshipExchangeClient   = new StewardshipExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
+
         }
         else
         {
-            collaborationExchangeClient = new CollaborationExchangeClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog, maxPageSize);
-            glossaryExchangeClient      = new GlossaryExchangeClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog, maxPageSize);
-            stewardshipExchangeClient   = new StewardshipExchangeClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
         }
+
+        glossaryHandler = new GlossaryHandler(serverName,
+                                              auditLog,
+                                              myDescription.getViewServiceFullName(),
+                                              openMetadataClient);
+
+        glossaryTermHandler = new GlossaryTermHandler(serverName,
+                                                      auditLog,
+                                                      myDescription.getViewServiceFullName(),
+                                                      openMetadataClient);
     }
 
 
     /**
-     * Return the collaboration client.  This client is from Asset Manager OMAS and is for maintaining note logs.
+     * Return the glossary handler.
      *
      * @return client
      */
-    public CollaborationExchangeClient getCollaborationExchangeClient()
+    public GlossaryHandler getGlossaryHandler()
     {
-        return collaborationExchangeClient;
+        return glossaryHandler;
     }
+
 
 
     /**
-     * Return the glossary client.  This client is from Asset Manager OMAS and is for maintaining glossaries and their content.
+     * Return the glossary term handler.
      *
      * @return client
      */
-    public GlossaryExchangeClient getGlossaryExchangeClient()
+    public GlossaryTermHandler getGlossaryTermHandler()
     {
-        return glossaryExchangeClient;
+        return glossaryTermHandler;
     }
 
-
-    /**
-     * Return the stewardship client.  This client is from Asset Manager OMAS and is for setting up classifications and relationships for
-     * a glossary term.
-     *
-     * @return client
-     */
-    public StewardshipExchangeClient getStewardshipExchangeClient()
-    {
-        return stewardshipExchangeClient;
-    }
 }

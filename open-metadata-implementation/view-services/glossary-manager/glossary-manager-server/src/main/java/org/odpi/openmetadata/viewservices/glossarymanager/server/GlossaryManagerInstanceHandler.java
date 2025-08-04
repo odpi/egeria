@@ -2,15 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossarymanager.server;
 
-
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.CollaborationExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
 
 
 /**
@@ -31,8 +29,9 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
     }
 
 
+
     /**
-     * This method returns the object for the tenant to use to work with the asset manager API
+     * This method returns the object for the tenant to use to work with the OME API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -42,25 +41,26 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public CollaborationExchangeClient getCollaborationExchangeClient(String userId,
-                                                                          String serverName,
-                                                                          String serviceOperationName) throws InvalidParameterException,
-                                                                                                              PropertyServerException,
-                                                                                                              UserNotAuthorizedException
+    public GlossaryHandler getGlossaryHandler(String userId,
+                                              String serverName,
+                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         GlossaryManagerInstance instance = (GlossaryManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getCollaborationExchangeClient();
+            return instance.getGlossaryHandler();
         }
 
         return null;
     }
 
 
+
     /**
-     * This method returns the object for the tenant to use to work with the asset manager API
+     * This method returns the object for the tenant to use to work with the OME API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -70,45 +70,17 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public GlossaryExchangeClient getGlossaryExchangeClient(String userId,
-                                                                String serverName,
-                                                                String serviceOperationName) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
+    public GlossaryTermHandler getGlossaryTermHandler(String userId,
+                                                      String serverName,
+                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         GlossaryManagerInstance instance = (GlossaryManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getGlossaryExchangeClient();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * This method returns the object for the tenant to use to work with the asset manager API
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public StewardshipExchangeClient getStewardshipExchangeClient(String userId,
-                                                                      String serverName,
-                                                                      String serviceOperationName) throws InvalidParameterException,
-                                                                                                          PropertyServerException,
-                                                                                                          UserNotAuthorizedException
-    {
-        GlossaryManagerInstance instance = (GlossaryManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getStewardshipExchangeClient();
+            return instance.getGlossaryTermHandler();
         }
 
         return null;

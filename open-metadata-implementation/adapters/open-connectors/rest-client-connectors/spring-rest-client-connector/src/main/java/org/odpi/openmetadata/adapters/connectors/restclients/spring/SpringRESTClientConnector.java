@@ -12,8 +12,9 @@ import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.tokenmanager.http.HTTPHeadersThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,13 +93,14 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint != null)
         {
@@ -124,8 +126,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
      */
     private void refreshAuthorizationToken() throws ConnectorCheckedException
     {
-        String userId = connectionDetails.getUserId();
-        String password = connectionDetails.getClearPassword();
+        String userId = connectionBean.getUserId();
+        String password = connectionBean.getClearPassword();
 
         if ((secretsStoreConnectorMap != null) && (! secretsStoreConnectorMap.isEmpty()))
         {

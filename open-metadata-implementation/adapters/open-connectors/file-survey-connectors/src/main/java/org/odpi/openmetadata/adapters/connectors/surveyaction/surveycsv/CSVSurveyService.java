@@ -3,6 +3,12 @@
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -10,21 +16,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.SchemaAttributes;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
@@ -163,9 +161,10 @@ public class CSVSurveyService extends SurveyActionServiceConnector
      * Indicates that the survey action service is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String  methodName = "start";
 
@@ -173,9 +172,9 @@ public class CSVSurveyService extends SurveyActionServiceConnector
 
         try
         {
-            AnnotationStore          annotationStore   = surveyContext.getAnnotationStore();
-            SurveyOpenMetadataStore  openMetadataStore = surveyContext.getOpenMetadataStore();
-            SurveyAssetStore         assetStore        = surveyContext.getAssetStore();
+            AnnotationStore    annotationStore   = surveyContext.getAnnotationStore();
+            OpenMetadataStore  openMetadataStore = surveyContext.getOpenMetadataStore();
+            SurveyAssetStore   assetStore        = surveyContext.getAssetStore();
 
             /*
              * The asset should have a special connector for CSV files.  If the connector is wrong,
@@ -184,9 +183,9 @@ public class CSVSurveyService extends SurveyActionServiceConnector
             connector = super.performCheckAssetAnalysisStep(CSVFileStoreConnector.class,
                                                             OpenMetadataType.CSV_FILE.typeName);
 
-            AssetUniverse            assetUniverse   = assetStore.getAssetProperties();
-            CSVFileStoreConnector    assetConnector  = (CSVFileStoreConnector)connector;
-            long                     recordCount     = assetConnector.getRecordCount();
+            AssetElement          assetElement   = assetStore.getAssetProperties();
+            CSVFileStoreConnector assetConnector = (CSVFileStoreConnector)connector;
+            long                  recordCount    = assetConnector.getRecordCount();
 
             File file = assetConnector.getFile();
 
@@ -210,21 +209,21 @@ public class CSVSurveyService extends SurveyActionServiceConnector
              */
             annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
 
-            String           schemaTypeGUID;
-            SchemaAttributes schemaAttributes;
-            NestedSchemaType nestedSchemaType = super.getNestedSchemaType(assetUniverse, schemaType);
+            String                              schemaTypeGUID;
+            List<RelatedMetadataElementSummary> schemaAttributes;
+            OpenMetadataRootElement             nestedSchemaType = super.getRootSchemaType(assetElement, schemaType);
 
             if (nestedSchemaType == null)
             {
                 /*
                  * Set up a new schema type.
                  */
-                schemaTypeGUID   = createSchemaType(openMetadataStore, assetUniverse);
+                schemaTypeGUID   = createSchemaType(openMetadataStore, assetElement);
                 schemaAttributes = null;
             }
             else
             {
-                schemaTypeGUID   = nestedSchemaType.getGUID();
+                schemaTypeGUID   = nestedSchemaType.getElementHeader().getGUID();
                 schemaAttributes = nestedSchemaType.getSchemaAttributes();
             }
 
@@ -327,7 +326,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                     for (int columnNumber=0 ; columnNumber < columnNames.size(); columnNumber++)
                     {
                         String  schemaAttributeGUID = this.addSchemaAttributeToSchemaType(openMetadataStore,
-                                                                                          assetUniverse,
+                                                                                          assetElement,
                                                                                           schemaTypeGUID,
                                                                                           dataFields.get(columnNumber));
 
@@ -347,17 +346,18 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                      * A comprehensive reorganization of the columns will result in a new schema.
                      */
                     int columnNumber = 0;
-                    while (schemaAttributes.hasNext())
+                    for (RelatedMetadataElementSummary schemaAttribute : schemaAttributes)
                     {
-                        SchemaAttribute schemaAttribute = schemaAttributes.next();
                         boolean found = false;
 
                         for (int i=columnNumber; i<columnNames.size(); i++)
                         {
                             DataField dataField = dataFields.get(i);
-                            if (dataField.getDataFieldName().equals(schemaAttribute.getDisplayName()))
+
+                            String schemaAttributeDisplayName = schemaAttribute.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
+                            if (dataField.getDataFieldName().equals(schemaAttributeDisplayName))
                             {
-                                dataField.setMatchingSchemaAttributeGUID(schemaAttribute.getGUID());
+                                dataField.setMatchingSchemaAttributeGUID(schemaAttribute.getRelatedElement().getElementHeader().getGUID());
                                 found = true;
                                 break;
                             }
@@ -365,12 +365,13 @@ public class CSVSurveyService extends SurveyActionServiceConnector
 
                         if (! found)
                         {
-                            ArchiveProperties archiveProperties = new ArchiveProperties();
+                            DeleteOptions deleteOptions = new DeleteOptions();
 
-                            archiveProperties.setArchiveDate(new Date());
-                            archiveProperties.setArchiveProcess(surveyActionServiceName);
-                            openMetadataStore.archiveMetadataElementInStore(schemaAttribute.getGUID(),
-                                                                            archiveProperties);
+                            deleteOptions.setDeleteMethod(DeleteMethod.ARCHIVE);
+                            deleteOptions.setArchiveDate(new Date());
+                            deleteOptions.setArchiveProcess(surveyActionServiceName);
+                            openMetadataStore.deleteMetadataElementInStore(schemaAttribute.getRelatedElement().getElementHeader().getGUID(),
+                                                                           deleteOptions);
                         }
                     }
 
@@ -385,7 +386,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                         if (dataField.getMatchingSchemaAttributeGUID() == null)
                         {
                             String schemaAttributeGUID = addSchemaAttributeToSchemaType(openMetadataStore,
-                                                                                        assetUniverse,
+                                                                                        assetElement,
                                                                                         schemaTypeGUID,
                                                                                         dataField);
                             dataField.setMatchingSchemaAttributeGUID(schemaAttributeGUID);
@@ -418,36 +419,41 @@ public class CSVSurveyService extends SurveyActionServiceConnector
      * Return the unique identifier of a new root schema type for the CSV file.
      *
      * @param openMetadataStore the client to the open metadata store
-     * @param assetUniverse unique identifier of the asset.
+     * @param assetElement unique identifier of the asset.
      * @return string guid
      *
      * @throws InvalidParameterException invalid property
      * @throws PropertyServerException no working metadata repository
      * @throws UserNotAuthorizedException insufficient security
      */
-    private String createSchemaType(SurveyOpenMetadataStore openMetadataStore, 
-                                    AssetUniverse           assetUniverse) throws InvalidParameterException,
+    private String createSchemaType(OpenMetadataStore       openMetadataStore,
+                                    OpenMetadataRootElement assetElement) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
-        ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                               OpenMetadataProperty.QUALIFIED_NAME.name, 
-                                                                               assetUniverse.getQualifiedName() + "_rootSchemaType");
-        
-        String schemaTypeGUID = openMetadataStore.createMetadataElementInStore(schemaType,
-                                                                               ElementStatus.ACTIVE,
-                                                                               elementProperties);
-        if (schemaTypeGUID != null)
+        if (assetElement.getProperties() instanceof AssetProperties assetProperties)
         {
-            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
-                                                           assetUniverse.getGUID(),
-                                                           schemaTypeGUID,
-                                                           null,
-                                                           null,
-                                                           null);
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                   assetProperties.getQualifiedName() + "_rootSchemaType");
+
+            String schemaTypeGUID = openMetadataStore.createMetadataElementInStore(schemaType,
+                                                                                   ElementStatus.ACTIVE,
+                                                                                   new NewElementProperties(elementProperties));
+            if (schemaTypeGUID != null)
+            {
+                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                               assetElement.getElementHeader().getGUID(),
+                                                               schemaTypeGUID,
+                                                               null,
+                                                               null,
+                                                               null);
+            }
+
+            return schemaTypeGUID;
         }
         
-        return schemaTypeGUID;
+        return null;
     }
 
 
@@ -456,7 +462,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
      * Create a new schema attribute.
      *
      * @param openMetadataStore client to access the open metadata repositories
-     * @param assetUniverse details of the asset
+     * @param assetElement details of the asset
      * @param schemaTypeGUID unique identifier of the schema type to link to
      * @param dataField details of the latest retrieved values
      * @return unique identifier of the schema attribute
@@ -464,50 +470,57 @@ public class CSVSurveyService extends SurveyActionServiceConnector
      * @throws PropertyServerException repository not working
      * @throws UserNotAuthorizedException insufficient security
      */
-    private String addSchemaAttributeToSchemaType(OpenMetadataStore openMetadataStore,
-                                                  AssetUniverse     assetUniverse,
-                                                  String            schemaTypeGUID,
-                                                  DataField         dataField) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+    private String addSchemaAttributeToSchemaType(OpenMetadataStore       openMetadataStore,
+                                                  OpenMetadataRootElement assetElement,
+                                                  String                  schemaTypeGUID,
+                                                  DataField               dataField) throws InvalidParameterException, 
+                                                                                            PropertyServerException, 
+                                                                                            UserNotAuthorizedException
     {
-        ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                               assetUniverse.getQualifiedName() + "_column_" + dataField.dataFieldPosition + "_" + dataField.dataFieldName);
+        if (assetElement.getProperties() instanceof AssetProperties assetProperties)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                   assetProperties.getQualifiedName() + "_column_" + dataField.dataFieldPosition + "_" + dataField.dataFieldName);
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataProperty.DISPLAY_NAME.name,
-                                                             dataField.getDataFieldName());
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                 dataField.getDataFieldName());
 
-        elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                          OpenMetadataProperty.POSITION.name,
-                                                          dataField.getDataFieldPosition());
+            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                              OpenMetadataProperty.POSITION.name,
+                                                              dataField.getDataFieldPosition());
 
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+            Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
-        ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
-                                                                                      OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
-                                                                                      OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
-        classificationProperties = propertyHelper.addStringProperty(classificationProperties,
-                                                                    OpenMetadataProperty.DATA_TYPE.name,
-                                                                    dataField.getDataFieldType());
+            ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
+                                                                                          OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
+                                                                                          OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
+            classificationProperties = propertyHelper.addStringProperty(classificationProperties,
+                                                                        OpenMetadataProperty.DATA_TYPE.name,
+                                                                        dataField.getDataFieldType());
 
-        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
-                                   classificationProperties);
+            initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
+                                       new NewElementProperties(classificationProperties));
 
-        return openMetadataStore.createMetadataElementInStore(OpenMetadataType.TABULAR_COLUMN.typeName,
-                                                              ElementStatus.ACTIVE,
-                                                              initialClassifications,
-                                                              assetUniverse.getGUID(),
-                                                              false,
-                                                              null,
-                                                              null,
-                                                              null,
-                                                              elementProperties,
-                                                              schemaTypeGUID,
-                                                              OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
-                                                              null,
-                                                              true);
+            NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
+
+            newElementOptions.setOpenMetadataTypeName(OpenMetadataType.TABULAR_COLUMN.typeName);
+            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+            newElementOptions.setAnchorGUID(assetElement.getElementHeader().getGUID());
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorScopeGUID(null);
+            newElementOptions.setParentGUID(schemaTypeGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
+
+            return openMetadataStore.createMetadataElementInStore(newElementOptions,
+                                                                  initialClassifications,
+                                                                  new NewElementProperties(elementProperties),
+                                                                  null);
+        }
+
+        return null;
     }
 
 
@@ -521,11 +534,11 @@ public class CSVSurveyService extends SurveyActionServiceConnector
      * @throws PropertyServerException repository not working
      * @throws UserNotAuthorizedException insufficient security
      */
-    private void updateSchemaAttribute(SurveyOpenMetadataStore openMetadataStore,
-                                       String                  schemaAttributeGUID,
-                                       DataField               dataField) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    private void updateSchemaAttribute(OpenMetadataStore openMetadataStore,
+                                       String            schemaAttributeGUID,
+                                       DataField         dataField) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                              OpenMetadataProperty.DISPLAY_NAME.name,

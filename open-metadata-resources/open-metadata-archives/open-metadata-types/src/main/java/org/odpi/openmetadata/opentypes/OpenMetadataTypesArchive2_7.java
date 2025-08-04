@@ -160,7 +160,6 @@ public class OpenMetadataTypesArchive2_7
         update0045ServersAndAssets();
         update0210DataStores();
         update0462GovernanceActionProcesses();
-        update0463EngineAction();
         update0512CalculatedValue();
     }
 
@@ -174,13 +173,13 @@ public class OpenMetadataTypesArchive2_7
      */
     private void update0045ServersAndAssets()
     {
-        this.archiveBuilder.addRelationshipDef(getServerAssetUseRelationship());
+        this.archiveBuilder.addRelationshipDef(getCapabilityAssetUseRelationship());
     }
 
 
-    private RelationshipDef getServerAssetUseRelationship()
+    private RelationshipDef getCapabilityAssetUseRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -193,7 +192,7 @@ public class OpenMetadataTypesArchive2_7
         final String                     end1AttributeDescription     = "Capability consuming this asset.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -258,37 +257,6 @@ public class OpenMetadataTypesArchive2_7
         return typeDefPatch;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0462 Update the EngineAction entity with the mandatoryGuards property
-     */
-    private void update0463EngineAction()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
-    }
-
-    private TypeDefPatch updateEngineActionEntity()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ENGINE_ACTION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MANDATORY_GUARDS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
 

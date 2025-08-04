@@ -5,10 +5,11 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
@@ -27,7 +28,7 @@ import java.util.List;
  * QualifiedNamePeerDuplicateGovernanceActionConnector checks the qualified name to determine the duplicates of the entity that is passed
  * as an action target.
  */
-public class QualifiedNamePeerDuplicateGovernanceActionConnector extends RemediationGovernanceActionService
+public class QualifiedNamePeerDuplicateGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
@@ -36,9 +37,10 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -69,10 +71,6 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                                                                 null,
                                                                                 searchProperties,
                                                                                 null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
                                                                                 0,
                                                                                 0);
 
@@ -92,7 +90,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                             continue;
                         }
 
-                        governanceContext.linkElementsAsPeerDuplicates(targetElementGUID,
+                        governanceContext.getDuplicateManagementClient().linkElementsAsPeerDuplicates(targetElementGUID,
                                                                        duplicateAssetGUID,
                                                                        1,
                                                                        null,

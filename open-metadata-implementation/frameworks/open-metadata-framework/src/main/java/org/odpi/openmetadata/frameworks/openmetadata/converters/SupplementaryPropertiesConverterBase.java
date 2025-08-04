@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AttributedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
@@ -19,7 +18,7 @@ import java.util.List;
 
 /**
  * SupplementaryPropertiesConverterBase provides common methods for transferring relevant properties from an Open Metadata Element
- * object into a bean whose properties inherits from SupplementaryProperties.
+ * object into a bean that inherits from SupplementaryProperties.
  */
 public class SupplementaryPropertiesConverterBase<B> extends AttributedElementConverterBase<B>
 {
@@ -35,72 +34,6 @@ public class SupplementaryPropertiesConverterBase<B> extends AttributedElementCo
                                                 String         serverName)
     {
         super(propertyHelper, serviceName, serverName);
-    }
-
-
-
-    /**
-     * Summarize the relationships that have no special processing by the subtype.
-     *
-     * @param relatedMetadataElements elements to summarize
-     * @param supplementaryProperties bean to fill
-     * @return unprocessed relationships
-     * @throws PropertyServerException problem in converter
-     */
-    protected List<RelatedMetadataElement> addSupplementaryProperties(List<RelatedMetadataElement> relatedMetadataElements,
-                                                                      SupplementaryProperties      supplementaryProperties) throws PropertyServerException
-    {
-        final String methodName = "addSupplementaryProperties";
-
-        if (relatedMetadataElements != null)
-        {
-            /*
-             * These are the relationships for the attributed element
-             */
-
-            List<RelatedMetadataElement> others             = new ArrayList<>();
-
-            /*
-             * Step through the relationships processing those that relate directly to attributed elements
-             */
-            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
-            {
-                if (relatedMetadataElement != null)
-                {
-                    if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
-                    {
-                        supplementaryProperties.setDisplayName(propertyHelper.getStringProperty(serviceName,
-                                                                                                OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                                                relatedMetadataElement.getElement().getElementProperties(),
-                                                                                                methodName));
-                        supplementaryProperties.setDisplaySummary(propertyHelper.getStringProperty(serviceName,
-                                                                                                  OpenMetadataProperty.SUMMARY.name,
-                                                                                                  relatedMetadataElement.getElement().getElementProperties(),
-                                                                                                  methodName));
-                        supplementaryProperties.setDisplayDescription(propertyHelper.getStringProperty(serviceName,
-                                                                                                       OpenMetadataProperty.DESCRIPTION.name,
-                                                                                                       relatedMetadataElement.getElement().getElementProperties(),
-                                                                                                       methodName));
-                        supplementaryProperties.setAbbreviation(propertyHelper.getStringProperty(serviceName,
-                                                                                                 OpenMetadataProperty.ABBREVIATION.name,
-                                                                                                 relatedMetadataElement.getElement().getElementProperties(),
-                                                                                                 methodName));
-                        supplementaryProperties.setUsage(propertyHelper.getStringProperty(serviceName,
-                                                                                          OpenMetadataProperty.USAGE.name,
-                                                                                          relatedMetadataElement.getElement().getElementProperties(),
-                                                                                          methodName));
-                    }
-                    else
-                    {
-                        others.add(relatedMetadataElement);
-                    }
-                }
-            }
-
-            return others;
-        }
-
-        return null;
     }
 
 
@@ -183,7 +116,7 @@ public class SupplementaryPropertiesConverterBase<B> extends AttributedElementCo
 
         if (returnBean instanceof AttributedMetadataElement bean)
         {
-            this.addRelationshipsToBean(beanClass, relationships, null, bean);
+            this.addRelationshipsToBean(beanClass, relationships, bean);
         }
 
         return returnBean;
@@ -212,7 +145,7 @@ public class SupplementaryPropertiesConverterBase<B> extends AttributedElementCo
 
         if (returnBean instanceof AttributedMetadataElement bean)
         {
-            this.addRelationshipsToBean(beanClass, relationships, null, bean);
+            this.addRelationshipsToBean(beanClass, relationships, bean);
         }
 
         return returnBean;

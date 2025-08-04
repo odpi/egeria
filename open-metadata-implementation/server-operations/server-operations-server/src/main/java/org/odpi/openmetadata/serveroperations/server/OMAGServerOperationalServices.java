@@ -2,50 +2,43 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serveroperations.server;
 
-
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
-import org.odpi.openmetadata.adminservices.registration.*;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworkservices.omf.admin.OMFMetadataOperationalServices;
-import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-import org.odpi.openmetadata.serveroperations.ffdc.ServerOpsAuditCode;
-import org.odpi.openmetadata.serveroperations.ffdc.ServerOpsErrorCode;
 import org.odpi.openmetadata.adminservices.classifier.ServerTypeClassifier;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.registration.*;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
 import org.odpi.openmetadata.adminservices.server.OMAGServerErrorHandler;
 import org.odpi.openmetadata.adminservices.server.OMAGServerExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
-import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
-import org.odpi.openmetadata.frameworkservices.oif.admin.OIFMetadataOperationalServices;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
-import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
-import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.serveroperations.ffdc.ServerOpsAuditCode;
+import org.odpi.openmetadata.serveroperations.ffdc.ServerOpsErrorCode;
+import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
+import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
+import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
+import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
@@ -209,7 +202,7 @@ public class OMAGServerOperationalServices
                     {
                         accessServiceConfig.setAccessServiceName(description.getAccessServiceName());
                         accessServiceConfig.setAccessServiceDevelopmentStatus(description.getAccessServiceDevelopmentStatus());
-                        accessServiceConfig.setAccessServiceFullName(description.getAccessServiceFullName());
+                        accessServiceConfig.setAccessServiceName(description.getAccessServiceName());
                         accessServiceConfig.setAccessServiceDescription(description.getAccessServiceDescription());
                         accessServiceConfig.setAccessServiceURLMarker(description.getAccessServiceURLMarker());
                         accessServiceConfig.setAccessServiceWiki(description.getAccessServiceWiki());
@@ -219,7 +212,7 @@ public class OMAGServerOperationalServices
                     }
                     else
                     {
-                        auditLog.logMessage(methodName, OMAGAdminAuditCode.IGNORING_UNREGISTERED_SERVICE.getMessageDefinition(accessServiceConfig.getAccessServiceFullName(),
+                        auditLog.logMessage(methodName, OMAGAdminAuditCode.IGNORING_UNREGISTERED_SERVICE.getMessageDefinition(accessServiceConfig.getAccessServiceName(),
                                                                                                                               serverConfig.getLocalServerName()));
                     }
                 }
@@ -268,48 +261,6 @@ public class OMAGServerOperationalServices
 
                 engineHostServicesConfig.setEngineServiceConfigs(engineServiceConfigList);
             }
-        }
-
-        /*
-         * Refresh the definition of any integration service to match the current platform implementation.
-         */
-        if (serverConfig.getIntegrationServicesConfig() != null)
-        {
-            List<IntegrationServiceConfig> integrationServiceConfigList = new ArrayList<>();
-
-            for (IntegrationServiceConfig integrationServiceConfig : serverConfig.getIntegrationServicesConfig())
-            {
-                if (integrationServiceConfig != null)
-                {
-                    IntegrationServiceConfig description;
-
-                    try
-                    {
-                        description = IntegrationServiceRegistry.getIntegrationServiceConfig(integrationServiceConfig.getIntegrationServiceURLMarker(),
-                                                                                             serverConfig.getLocalServerName(),
-                                                                                             methodName);
-
-
-                        integrationServiceConfig.setIntegrationServiceName(description.getIntegrationServiceName());
-                        integrationServiceConfig.setIntegrationServiceDevelopmentStatus(description.getIntegrationServiceDevelopmentStatus());
-                        integrationServiceConfig.setIntegrationServiceFullName(description.getIntegrationServiceFullName());
-                        integrationServiceConfig.setIntegrationServiceDescription(description.getIntegrationServiceDescription());
-                        integrationServiceConfig.setIntegrationServiceURLMarker(description.getIntegrationServiceURLMarker());
-                        integrationServiceConfig.setIntegrationServiceWiki(description.getIntegrationServiceWiki());
-                        integrationServiceConfig.setIntegrationServicePartnerOMAS(description.getIntegrationServicePartnerOMAS());
-                        integrationServiceConfig.setIntegrationServiceOperationalStatus(description.getIntegrationServiceOperationalStatus());
-
-                        integrationServiceConfigList.add(integrationServiceConfig);
-                    }
-                    catch (InvalidParameterException exception)
-                    {
-                        auditLog.logMessage(methodName, OMAGAdminAuditCode.IGNORING_UNREGISTERED_SERVICE.getMessageDefinition(integrationServiceConfig.getIntegrationServiceName(),
-                                                                                                                              serverConfig.getLocalServerName()));
-                    }
-                }
-            }
-
-            serverConfig.setIntegrationServicesConfig(integrationServiceConfigList);
         }
 
         /*
@@ -520,101 +471,6 @@ public class OMAGServerOperationalServices
                 instance.setServerServiceActiveStatus(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
 
                 /*
-                 * Next initialize the Open Connector Framework (OCF) metadata services.  These services are only initialized
-                 * if the enterprise repository services are enabled.  They support requests for metadata from connectors running
-                 * outside the metadata server.
-                 */
-                OMRSRepositoryConnector enterpriseRepositoryConnector
-                        = operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName());
-
-                if (enterpriseRepositoryConnector != null)
-                {
-                    /*
-                     * The enterprise repository services have been requested so OMF metadata management can be started.
-                     */
-                    OMFMetadataOperationalServices operationalOMFMetadataServices;
-
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STARTING);
-                    operationalOMFMetadataServices = new OMFMetadataOperationalServices(configuration.getLocalServerName(),
-                                                                                        enterpriseRepositoryConnector,
-                                                                                        operationalRepositoryServices.getAuditLog(
-                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceCode(),
-                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
-                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(),
-                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceDescription(),
-                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceWiki()),
-                                                                                        configuration.getLocalServerUserId(),
-                                                                                        configuration.getMaxPageSize());
-
-                    instance.setOperationalOMFMetadataServices(operationalOMFMetadataServices);
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
-                    activatedServiceList.add(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName());
-
-                    /*
-                     * The enterprise repository services have been requested so OCF metadata management can be started.
-                     */
-                    OCFMetadataOperationalServices operationalOCFMetadataServices;
-
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STARTING);
-                    operationalOCFMetadataServices = new OCFMetadataOperationalServices(configuration.getLocalServerName(),
-                                                                                        enterpriseRepositoryConnector,
-                                                                                        operationalRepositoryServices.getAuditLog(
-                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceCode(),
-                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
-                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(),
-                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDescription(),
-                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceWiki()),
-                                                                                        configuration.getLocalServerUserId(),
-                                                                                        configuration.getMaxPageSize());
-
-                    instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
-                    activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
-
-                    /*
-                     * The enterprise repository services have been requested so GAF metadata management can also be started.
-                     */
-                    GAFMetadataOperationalServices operationalGAFMetadataServices;
-
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STARTING);
-                    operationalGAFMetadataServices = new GAFMetadataOperationalServices(configuration.getLocalServerName(),
-                                                                                        enterpriseRepositoryConnector,
-                                                                                        operationalRepositoryServices.getAuditLog(
-                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceCode(),
-                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
-                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(),
-                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceDescription(),
-                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceWiki()),
-                                                                                        configuration.getLocalServerUserId(),
-                                                                                        configuration.getMaxPageSize());
-
-                    instance.setOperationalGAFMetadataServices(operationalGAFMetadataServices);
-                    activatedServiceList.add(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName());
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
-
-                    /*
-                     * The enterprise repository services have been requested so OIF metadata management can also be started.
-                     */
-                    OIFMetadataOperationalServices operationalOIFMetadataServices;
-
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STARTING);
-                    operationalOIFMetadataServices = new OIFMetadataOperationalServices(configuration.getLocalServerName(),
-                                                                                        enterpriseRepositoryConnector,
-                                                                                        operationalRepositoryServices.getAuditLog(
-                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceCode(),
-                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
-                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(),
-                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceDescription(),
-                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceWiki()),
-                                                                                        configuration.getLocalServerUserId(),
-                                                                                        configuration.getMaxPageSize());
-
-                    instance.setOperationalOIFMetadataServices(operationalOIFMetadataServices);
-                    activatedServiceList.add(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName());
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
-                }
-
-                /*
                  * Now initialize the configured open metadata access services.  Each access service has its own subsystem.  It is
                  * initialized via an Admin object that controls its start up and shutdown.  The configuration service just needs to create the
                  * appropriate admin object (specified in the configuration) and initialize it with its own configuration
@@ -624,16 +480,16 @@ public class OMAGServerOperationalServices
                  * Each access service is given access to the events from open metadata repository cohorts that this server connects to.
                  * The enterprise topic connector supplies these events.  The access service registers a listener with it to receive them.
                  */
-                OMRSTopicConnector enterpriseTopicConnector = operationalRepositoryServices.getEnterpriseOMRSTopicConnector();
-
                 initializeAccessServices(instance,
                                          configuration.getAccessServicesConfig(),
                                          operationalRepositoryServices,
-                                         enterpriseTopicConnector,
+                                         operationalRepositoryServices.getEnterpriseOMRSTopicConnector(),
                                          configuration.getLocalServerUserId(),
+                                         configuration.getLocalServerPassword(),
                                          serverName,
                                          activatedServiceList,
-                                         auditLog);
+                                         auditLog,
+                                         configuration.getMaxPageSize());
 
                 /*
                  * Initialize the Open Metadata Conformance Suite Services.  This runs the Open Metadata TestLabs that are
@@ -648,7 +504,7 @@ public class OMAGServerOperationalServices
                                                                                                           configuration.getMaxPageSize());
                     instance.setOperationalConformanceSuiteServices(operationalConformanceSuiteServices);
                     operationalConformanceSuiteServices.initialize(configuration.getConformanceSuiteConfig(),
-                                                                   enterpriseTopicConnector,
+                                                                   operationalRepositoryServices.getEnterpriseOMRSTopicConnector(),
                                                                    operationalRepositoryServices.getEnterpriseConnectorManager(),
                                                                    operationalRepositoryServices.getAuditLog(
                                                                            GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceCode(),
@@ -666,11 +522,11 @@ public class OMAGServerOperationalServices
                  * During the access services start up, they registered listeners with the enterprise topic.
                  * Starting the enterprise topic will start the flow of events to the registered access services.
                  */
-                if (enterpriseTopicConnector != null)
+                if (operationalRepositoryServices.getEnterpriseOMRSTopicConnector() != null)
                 {
                     try
                     {
-                        enterpriseTopicConnector.start();
+                        operationalRepositoryServices.getEnterpriseOMRSTopicConnector().start();
                     }
                     catch (Exception  error)
                     {
@@ -899,8 +755,10 @@ public class OMAGServerOperationalServices
      * @param operationalRepositoryServices repository services
      * @param enterpriseTopicConnector events from the cohort
      * @param localServerUserId servers userId
-     * @param serverName server name
+     * @param localServerPassword  password to use on OMRS calls where there is no end user.
+     * @param localServerName server name
      * @param activatedServiceList list of services (subsystems) running in the server
+     * @param maxPageSize max number of results to return on single request.
      * @throws OMAGConfigurationErrorException problem with the configuration
      */
     private void initializeAccessServices(OMAGOperationalServicesInstance instance,
@@ -908,9 +766,11 @@ public class OMAGServerOperationalServices
                                           OMRSOperationalServices         operationalRepositoryServices,
                                           OMRSTopicConnector              enterpriseTopicConnector,
                                           String                          localServerUserId,
-                                          String                          serverName,
+                                          String                          localServerPassword,
+                                          String                          localServerName,
                                           List<String>                    activatedServiceList,
-                                          OMRSAuditLog                    auditLog) throws OMAGConfigurationErrorException
+                                          OMRSAuditLog                    auditLog,
+                                          int                             maxPageSize) throws OMAGConfigurationErrorException
     {
         final String methodName = "initializeAccessServices";
         final String actionDescription = "Initialize Access Services";
@@ -935,13 +795,13 @@ public class OMAGServerOperationalServices
                     if (ServiceOperationalStatus.ENABLED.equals(accessServiceConfig.getAccessServiceOperationalStatus()))
                     {
                         enabledAccessServiceCount ++;
-                        instance.setServerServiceActiveStatus(accessServiceConfig.getAccessServiceFullName(), ServerActiveStatus.STARTING);
+                        instance.setServerServiceActiveStatus(accessServiceConfig.getAccessServiceName(), ServerActiveStatus.STARTING);
 
                         try
                         {
-                            AccessServiceAdmin accessServiceAdmin = this.getAccessServiceAdminClass(accessServiceConfig, auditLog, serverName);
+                            AccessServiceAdmin accessServiceAdmin = this.getAccessServiceAdminClass(accessServiceConfig, auditLog, localServerName);
 
-                            accessServiceAdmin.setFullServiceName(accessServiceConfig.getAccessServiceFullName());
+                            accessServiceAdmin.setFullServiceName(accessServiceConfig.getAccessServiceName());
 
 
                             /*
@@ -950,7 +810,7 @@ public class OMAGServerOperationalServices
                             AuditLog accessServicesAuditLog
                                     = operationalRepositoryServices.getAuditLog(accessServiceConfig.getAccessServiceId(),
                                                                                 accessServiceConfig.getAccessServiceDevelopmentStatus(),
-                                                                                accessServiceConfig.getAccessServiceFullName(),
+                                                                                accessServiceConfig.getAccessServiceName(),
                                                                                 accessServiceConfig.getAccessServiceDescription(),
                                                                                 accessServiceConfig.getAccessServiceWiki());
 
@@ -960,11 +820,14 @@ public class OMAGServerOperationalServices
                              */
                             accessServiceAdmin.initialize(accessServiceConfig,
                                                           enterpriseTopicConnector,
-                                                          operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(accessServiceConfig.getAccessServiceFullName()),
+                                                          operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(accessServiceConfig.getAccessServiceName()),
                                                           accessServicesAuditLog,
-                                                          localServerUserId);
+                                                          localServerName,
+                                                          localServerUserId,
+                                                          localServerPassword,
+                                                          maxPageSize);
                             operationalAccessServiceAdminList.add(accessServiceAdmin);
-                            activatedServiceList.add(accessServiceConfig.getAccessServiceFullName());
+                            activatedServiceList.add(accessServiceConfig.getAccessServiceName());
                             instance.setServerServiceActiveStatus(accessServiceAdmin.getFullServiceName(), ServerActiveStatus.RUNNING);
                         }
                         catch (OMAGConfigurationErrorException error)
@@ -986,7 +849,7 @@ public class OMAGServerOperationalServices
                                                   error);
 
                             throw new OMAGConfigurationErrorException(
-                                    ServerOpsErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(serverName,
+                                    ServerOpsErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(localServerName,
                                                                                                                 accessServiceConfig.getAccessServiceName(),
                                                                                                                 error.getMessage()),
                                     this.getClass().getName(),
@@ -997,8 +860,8 @@ public class OMAGServerOperationalServices
                     else
                     {
                         auditLog.logMessage(actionDescription,
-                                            ServerOpsAuditCode.SKIPPING_ACCESS_SERVICE.getMessageDefinition(accessServiceConfig.getAccessServiceFullName(),
-                                                                                                            serverName));
+                                            ServerOpsAuditCode.SKIPPING_ACCESS_SERVICE.getMessageDefinition(accessServiceConfig.getAccessServiceName(),
+                                                                                                            localServerName));
                     }
                 }
             }
@@ -1327,7 +1190,7 @@ public class OMAGServerOperationalServices
         {
             auditLog.logMessage(methodName,
                                 ServerOpsAuditCode.NULL_ACCESS_SERVICE_ADMIN_CLASS.getMessageDefinition(serverName,
-                                                                                                        accessServiceConfig.getAccessServiceFullName()),
+                                                                                                        accessServiceConfig.getAccessServiceName()),
                                 accessServiceConfig.toString());
 
             throw new OMAGConfigurationErrorException(ServerOpsErrorCode.NULL_ACCESS_SERVICE_ADMIN_CLASS.getMessageDefinition(serverName,
@@ -1450,8 +1313,7 @@ public class OMAGServerOperationalServices
                                                                configuration.getMaxPageSize());
 
             instance.setOperationalIntegrationDaemon(integrationDaemonOperationalServices);
-            List<String> integrationServices = integrationDaemonOperationalServices.initialize(configuration.getIntegrationServicesConfig(),
-                                                                                               configuration.getDynamicIntegrationGroupsConfig(),
+            List<String> integrationServices = integrationDaemonOperationalServices.initialize(configuration.getDynamicIntegrationGroupsConfig(),
                                                                                                operationalRepositoryServices.getAuditLog(
                                                                                                        GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceCode(),
                                                                                                        GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDevelopmentStatus(),
@@ -1576,54 +1438,6 @@ public class OMAGServerOperationalServices
 
                         }
                     }
-                }
-
-                /*
-                 * Shutdown the OMF metadata management services
-                 */
-                if (instance.getOperationalOMFMetadataServices() != null)
-                {
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STOPPING);
-
-                    instance.getOperationalOMFMetadataServices().shutdown();
-
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
-                }
-
-                /*
-                 * Shutdown the OCF metadata management services
-                 */
-                if (instance.getOperationalOCFMetadataServices() != null)
-                {
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STOPPING);
-
-                    instance.getOperationalOCFMetadataServices().shutdown();
-
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
-                }
-
-                /*
-                 * Shutdown the GAF metadata management services
-                 */
-                if (instance.getOperationalGAFMetadataServices() != null)
-                {
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STOPPING);
-
-                    instance.getOperationalGAFMetadataServices().shutdown();
-
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
-                }
-
-                /*
-                 * Shutdown the OIF metadata management services
-                 */
-                if (instance.getOperationalOIFMetadataServices() != null)
-                {
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STOPPING);
-
-                    instance.getOperationalOIFMetadataServices().shutdown();
-
-                    instance.setServerServiceActiveStatus(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*

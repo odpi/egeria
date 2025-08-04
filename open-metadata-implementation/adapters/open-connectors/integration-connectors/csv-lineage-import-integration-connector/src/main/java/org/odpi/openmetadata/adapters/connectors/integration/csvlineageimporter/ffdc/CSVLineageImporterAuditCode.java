@@ -33,7 +33,7 @@ public enum CSVLineageImporterAuditCode implements AuditLogMessageSet
     BAD_CONFIGURATION("CSV-LINEAGE-IMPORTER-0002",
                       AuditLogRecordSeverityLevel.ERROR,
                           "The {0} integration connector encountered an {1} exception when opening directory {2} during the {3} method.  The exception message included was {4}",
-                          "The exception is passed back to the Files Integrator OMIS in the integration daemon that is hosting " +
+                          "The exception is passed back to the open integration framework in the integration daemon that is hosting " +
                                   "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
                                   "error handling that was performed.  These can help to determine how to recover from this error.",
                           "This message contains the exception that was the original cause of the problem. Use the information from the " +
@@ -45,14 +45,14 @@ public enum CSVLineageImporterAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.ERROR,
                        "The {0} integration connector retrieved an incomplete FileFolder asset for directory {1}: {2}",
                        "The metadata element for the directory that was retrieved from the open metadata repositories has missing " +
-                               "information.  This is likely to be a logic error in the Files Integrator OMIS or Data Manager OMAS.",
-                       "Look for errors in the audit logs for the integration daemon where the connector and Files Integrator OMIS are " +
-                               "running and the metadata server where the Data Manager OMAS is running.  Collect these diagnostics and " +
+                               "information.  This is likely to be a logic error in the open integration framework or open metadata store services.",
+                       "Look for errors in the audit logs for the integration daemon where the connector is " +
+                               "running and the metadata server where the Open Metadata Store is running.  Collect these diagnostics and " +
                                "ask the Egeria community for help to determine why the FileFolder asset is incomplete."),
 
     UNEXPECTED_EXC_RETRIEVING_FOLDER("CSV-LINEAGE-IMPORTER-0004",
                                      AuditLogRecordSeverityLevel.ERROR,
-                            "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
+                            "An unexpected {0} exception was returned to the {1} integration connector by the {2} " +
                                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
                                      "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
                                      "Use the message in the nested exception to determine the root cause of the error. Once this is " +
@@ -122,9 +122,9 @@ public enum CSVLineageImporterAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.ERROR,
                        "The {0} integration connector retrieved an incomplete DataFile asset: {1}",
                        "The metadata element for the file that was retrieved from the open metadata repositories has missing " +
-                               "information.  This is likely to be a logic error in the Files Integrator OMIS or Data Manager OMAS.",
-                       "Look for errors in the audit logs for the integration daemon where the connector and Files Integrator OMIS are " +
-                               "running and the metadata server where the Data Manager OMAS is running.  Collect these diagnostics and " +
+                               "information.  This is likely to be a logic error in the Open Integration Framework or Open Metadata Store.",
+                       "Look for errors in the audit logs for the integration daemon where the connector is " +
+                               "running and the metadata access server where the Open Metadata Store is running.  Collect these diagnostics and " +
                                "ask the Egeria community for help to determine why the DataFile element is incomplete."),
 
     UNEXPECTED_EXC_DATA_FILE_UPDATE("CSV-LINEAGE-IMPORTER-0014",

@@ -11,8 +11,9 @@ import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.proto.KeyTemplate;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
@@ -81,7 +82,8 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      * {@inheritDoc}
      */
     @Override
-    public void start() throws ConnectorCheckedException {
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
+    {
         super.start();
 
         final String methodName = "start";
@@ -106,8 +108,8 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      * @return the store template name
      */
     private String getStoreTemplateName() {
-        EndpointDetails endpoint                = connectionDetails.getEndpoint();
-        String          configStoreTemplateName = null;
+        Endpoint endpoint                = connectionBean.getEndpoint();
+        String   configStoreTemplateName = null;
         if (endpoint != null) {
             configStoreTemplateName = endpoint.getAddress();
         }

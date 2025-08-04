@@ -4,12 +4,10 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -28,7 +26,7 @@ import java.util.Map;
  * </p>
  * <p>
  * The Connector interface defines that a connector instance should be able to return a unique
- * identifier, a connection object and a metadata object called ConnectedAssetDetails.
+ * identifier and a connection object.
  * </p>
  * <p>
  * Each specific implementation of a connector then extends the Connector interface to add the methods to work with the
@@ -42,11 +40,6 @@ import java.util.Map;
  * <p>
  * The start() method is called by the code that creates the connector when it is ready for the connector to run.
  * This calling code is also responsible for calling disconnect().
- * </p>
- * <p>
- * ConnectedAssetDetails provides descriptive properties about the asset that the connector is accessing.
- * It is supplied to the connector later during its initialization through the initializeConnectedAssetProperties() method.
- * See AssetConsumer OMAS for an example of this.
  * </p>
  * <p>
  * Every connector is able to gather statistics during its operation - these are named properties, named counters and named timestamps.
@@ -77,8 +70,8 @@ public abstract class Connector
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
      * @param connection   POJO for the configuration used to create the connector.
      */
-    public abstract void initialize(String               connectorInstanceId,
-                                    ConnectionDetails connection);
+    public abstract void initialize(String     connectorInstanceId,
+                                    Connection connection);
 
 
     /**
@@ -97,33 +90,7 @@ public abstract class Connector
      *
      * @return connection properties object
      */
-    public abstract ConnectionDetails getConnection();
-
-
-    /**
-     * Set up the connected asset properties object.  This provides the known metadata properties stored in one or more
-     * metadata repositories.  The implementation of the connected asset properties object is free to determine when
-     * the properties are populated.  It may be as lazy as whenever getConnectedAssetProperties() is called.
-     *
-     * @param connectedAssetDetails   properties of the connected asset
-     */
-    public abstract void initializeConnectedAssetProperties(ConnectedAssetDetails connectedAssetDetails);
-
-
-    /**
-     * Returns the properties that contain the metadata for the asset.  The asset metadata is retrieved from the
-     * metadata repository and cached in the ConnectedAssetDetails object each time the getConnectedAssetProperties
-     * method is requested by the caller.   Once the ConnectedAssetDetails object has the metadata cached, it can be
-     * used to access the asset property values many times without a return to the metadata repository.
-     * The cache of metadata can be refreshed simply by calling this getConnectedAssetProperties() method again.
-     *
-     * @param userId userId of requesting user
-     * @return ConnectedAssetDetails   connected asset properties
-     * @throws PropertyServerException indicates a problem retrieving properties from a metadata repository
-     * @throws UserNotAuthorizedException indicates that the user is not authorized to access the asset properties.
-     */
-    public abstract ConnectedAssetDetails getConnectedAssetProperties(String userId) throws PropertyServerException,
-                                                                                            UserNotAuthorizedException;
+    public abstract Connection getConnection();
 
 
     /**
@@ -131,7 +98,7 @@ public abstract class Connector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    public abstract void start() throws ConnectorCheckedException;
+    public abstract void start() throws ConnectorCheckedException, UserNotAuthorizedException;
 
 
     /**

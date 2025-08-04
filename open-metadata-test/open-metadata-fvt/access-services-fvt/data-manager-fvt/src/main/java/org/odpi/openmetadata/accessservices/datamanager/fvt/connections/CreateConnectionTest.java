@@ -197,10 +197,10 @@ public class CreateConnectionTest
 
             DatabaseManagerProperties properties = new DatabaseManagerProperties();
             properties.setQualifiedName(databaseManagerName);
-            properties.setResourceName(databaseManagerDisplayName);
-            properties.setResourceDescription(databaseManagerDescription);
+            properties.setDisplayName(databaseManagerDisplayName);
+            properties.setDescription(databaseManagerDescription);
             properties.setDeployedImplementationType(databaseManagerTypeDescription);
-            properties.setVersion(databaseManagerVersion);
+            properties.setVersionIdentifier(databaseManagerVersion);
 
             String databaseManagerGUID = client.createDatabaseManager(userId, null, null, properties);
 
@@ -521,7 +521,7 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointDisplayName.equals(retrievedEndpoint.getName()))
+            if (! endpointDisplayName.equals(retrievedEndpoint.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve) =>>" + retrievedEndpoint);
             }
@@ -554,7 +554,7 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName) =>>" + retrievedEndpoint);
             }
-            if (! endpointDisplayName.equals(retrievedEndpoint.getName()))
+            if (! endpointDisplayName.equals(retrievedEndpoint.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName) =>>" + retrievedEndpoint);
             }
@@ -638,7 +638,7 @@ public class CreateConnectionTest
             EndpointProperties properties = new EndpointProperties();
 
             properties.setQualifiedName(endpointName);
-            properties.setName(endpointDisplayName);
+            properties.setDisplayName(endpointDisplayName);
             properties.setResourceDescription(endpointDescription);
 
             String endpointGUID = client.createEndpoint(userId, databaseManagerGUID, databaseManagerName, properties);

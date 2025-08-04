@@ -2,20 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.samples.subjectareas;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceDefinitionManager;
-import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceMetricsManager;
-import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramReviewManager;
-import org.odpi.openmetadata.accessservices.governanceprogram.client.SubjectAreaManager;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SubjectAreaHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.http.HttpHelper;
 
@@ -34,10 +34,10 @@ public class CreateSubjectAreasSample
 
     private final Map<String, String> subjectAreaMap = new HashMap<>();
 
-    private SubjectAreaManager             subjectAreaManager = null;
-    private GovernanceMetricsManager       metricsManager     = null;
-    private GovernanceDefinitionManager    definitionManager  = null;
-    private GovernanceProgramReviewManager reviewManager      = null;
+    private SubjectAreaHandler       subjectAreaManager = null;
+    private GovernanceMetricsManager       metricsManager    = null;
+    private GovernanceDefinitionHandler    definitionManager = null;
+    private GovernanceProgramReviewManager reviewManager     = null;
 
     /**
      * Set up the parameters for the sample.
@@ -91,7 +91,7 @@ public class CreateSubjectAreasSample
         System.out.println(" ==> domain:          " + domainIdentifier);
         System.out.println(" ");
 
-        SubjectAreaProperties properties = new SubjectAreaProperties();
+        SubjectAreaDefinitionProperties properties = new SubjectAreaDefinitionProperties();
 
         properties.setQualifiedName("SubjectAreaDefinition:" + subjectAreaDefinitionName);
         properties.setSubjectAreaName(subjectAreaDefinitionName);
@@ -101,19 +101,27 @@ public class CreateSubjectAreasSample
         properties.setUsage(usage);
         properties.setDomainIdentifier(domainIdentifier);
 
-        String subjectAreaGUID = subjectAreaManager.createSubjectArea(clientUserId, properties);
+        String subjectAreaGUID = subjectAreaManager.createSubjectArea(clientUserId,
+                                                                      new NewElementOptions(),
+                                                                      null,
+                                                                      properties,
+                                                                      null);
 
         if (parentName != null)
         {
             System.out.println("Subject area " + subjectAreaDefinitionName + " parent " + parentName + " has GUID of " + subjectAreaMap.get(parentName));
 
-            subjectAreaManager.linkSubjectAreasInHierarchy(clientUserId, subjectAreaMap.get(parentName), subjectAreaGUID);
+            subjectAreaManager.linkSubjectAreas(clientUserId,
+                                                subjectAreaMap.get(parentName),
+                                                subjectAreaGUID,
+                                                new MetadataSourceOptions(),
+                                                null);
         }
 
         /*
          * Check the resulting subject area
          */
-        SubjectAreaDefinition subjectAreaDefinition = subjectAreaManager.getSubjectAreaDefinitionByGUID(clientUserId, subjectAreaGUID);
+        SubjectAreaDefinition subjectAreaDefinition = subjectAreaManager.getSubjectAreaByGUID(clientUserId, subjectAreaGUID);
 
         if (subjectAreaDefinition == null)
         {
@@ -144,7 +152,9 @@ public class CreateSubjectAreasSample
             /*
              * Retrieve the parent and check the child is in place.
              */
-            SubjectAreaDefinition parentSubjectAreaDefinition = subjectAreaManager.getSubjectAreaDefinitionByGUID(clientUserId, subjectAreaMap.get(parentName));
+            SubjectAreaElement parentSubjectAreaDefinition = subjectAreaManager.getSubjectAreaByGUID(clientUserId,
+                                                                                                        subjectAreaMap.get(parentName),
+                                                                                                        new GetOptions());
 
             if ((parentSubjectAreaDefinition.getNestedSubjectAreaGUIDs() == null) || (parentSubjectAreaDefinition.getNestedSubjectAreaGUIDs().isEmpty()))
             {
@@ -242,7 +252,7 @@ public class CreateSubjectAreasSample
             {
                 System.out.println("Adding " + sampleDefinition.getSubjectAreaName() + " to the product assurance domain.");
 
-                SubjectAreaProperties updateProperties = new SubjectAreaProperties();
+                SubjectAreaDefinitionProperties updateProperties = new SubjectAreaDefinitionProperties();
 
                 updateProperties.setDomainIdentifier(8);
 
@@ -318,8 +328,8 @@ public class CreateSubjectAreasSample
 
         GovernanceDefinitionProperties governanceDefinitionProperties = new GovernanceDefinitionProperties();
         governanceDefinitionProperties.setTypeName(OpenMetadataType.BUSINESS_IMPERATIVE.typeName);
-        governanceDefinitionProperties.setDocumentIdentifier(governanceDriverDocId);
-        governanceDefinitionProperties.setTitle(governanceDriverTitle);
+        governanceDefinitionProperties.setIdentifier(governanceDriverDocId);
+        governanceDefinitionProperties.setDisplayName(governanceDriverTitle);
 
         String governanceDriverGUID = definitionManager.createGovernanceDefinition(clientUserId,
                                                                                    null,
@@ -339,8 +349,8 @@ public class CreateSubjectAreasSample
 
         governanceDefinitionProperties = new GovernanceDefinitionProperties();
         governanceDefinitionProperties.setTypeName(OpenMetadataType.GOVERNANCE_PRINCIPLE.typeName);
-        governanceDefinitionProperties.setDocumentIdentifier(governancePolicyDocId);
-        governanceDefinitionProperties.setTitle(governancePolicyTitle);
+        governanceDefinitionProperties.setIdentifier(governancePolicyDocId);
+        governanceDefinitionProperties.setDisplayName(governancePolicyTitle);
         governanceDefinitionProperties.setDomainIdentifier(governancePolicyDomain);
 
         String governancePolicyGUID = definitionManager.createGovernanceDefinition(clientUserId,
@@ -372,8 +382,8 @@ public class CreateSubjectAreasSample
 
         governanceDefinitionProperties = new GovernanceDefinitionProperties();
         governanceDefinitionProperties.setTypeName(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName);
-        governanceDefinitionProperties.setDocumentIdentifier(governanceControl1DocId);
-        governanceDefinitionProperties.setTitle(governanceControl1Title);
+        governanceDefinitionProperties.setIdentifier(governanceControl1DocId);
+        governanceDefinitionProperties.setDisplayName(governanceControl1Title);
         governanceDefinitionProperties.setDomainIdentifier(governanceControl1Domain);
 
         String governanceControl1GUID = definitionManager.createGovernanceDefinition(clientUserId,
@@ -404,8 +414,8 @@ public class CreateSubjectAreasSample
 
         governanceDefinitionProperties = new GovernanceDefinitionProperties();
         governanceDefinitionProperties.setTypeName(OpenMetadataType.TECHNICAL_CONTROL.typeName);
-        governanceDefinitionProperties.setDocumentIdentifier(governanceControl2DocId);
-        governanceDefinitionProperties.setTitle(governanceControl2Title);
+        governanceDefinitionProperties.setIdentifier(governanceControl2DocId);
+        governanceDefinitionProperties.setDisplayName(governanceControl2Title);
         governanceDefinitionProperties.setDomainIdentifier(governanceControl2Domain);
 
         String governanceControl2GUID = definitionManager.createGovernanceDefinition(clientUserId,
@@ -458,7 +468,7 @@ public class CreateSubjectAreasSample
                                                                                                                  0);
         System.out.println(governanceDefinitionGraph);
 
-        if ((governanceDefinitionGraph.getParents() == null) ||
+        if ((governanceDefinitionGraph.getRelatedGovernanceDefinitions() == null) ||
                     (governanceDefinitionGraph.getChildren() == null) ||
                     (governanceDefinitionGraph.getPeers() != null) ||
                     (governanceDefinitionGraph.getElementHeader() == null) ||
@@ -481,7 +491,7 @@ public class CreateSubjectAreasSample
 
         System.out.println(governanceDefinitionGraph);
 
-        if ((governanceDefinitionGraph.getParents() != null) ||
+        if ((governanceDefinitionGraph.getRelatedGovernanceDefinitions() != null) ||
                     (governanceDefinitionGraph.getChildren() == null) ||
                     (governanceDefinitionGraph.getPeers() != null) ||
                     (governanceDefinitionGraph.getElementHeader() == null) ||
@@ -504,7 +514,7 @@ public class CreateSubjectAreasSample
 
         System.out.println(governanceDefinitionGraph);
 
-        if ((governanceDefinitionGraph.getParents() == null) ||
+        if ((governanceDefinitionGraph.getRelatedGovernanceDefinitions() == null) ||
                     (governanceDefinitionGraph.getChildren() != null) ||
                     (governanceDefinitionGraph.getPeers() == null) ||
                     (governanceDefinitionGraph.getElementHeader() == null) ||
@@ -576,11 +586,11 @@ public class CreateSubjectAreasSample
 
         String metricGUID = metricsManager.createGovernanceMetric(clientUserId, metricProperties);
 
-        SubjectAreaClassificationProperties subjectAreaClassificationProperties = new SubjectAreaClassificationProperties();
+        SubjectAreaProperties subjectAreaProperties = new SubjectAreaProperties();
 
-        subjectAreaClassificationProperties.setSubjectAreaName(SubjectAreaSampleDefinitions.PRODUCT.getSubjectAreaName());
+        subjectAreaProperties.setSubjectAreaName(SubjectAreaSampleDefinitions.PRODUCT.getSubjectAreaName());
 
-        subjectAreaManager.addSubjectAreaMemberClassification(clientUserId, metricGUID, subjectAreaClassificationProperties);
+        subjectAreaManager.addSubjectAreaMemberClassification(clientUserId, metricGUID, subjectAreaProperties);
 
         /*
          * Retrieve the metric to check it is part of the subject area.
@@ -596,11 +606,11 @@ public class CreateSubjectAreasSample
             errorExit("Unexpected metric name returned for " + metricName + ": " + metricElement);
         }
 
-        if (metricElement.getElementHeader().getClassifications() != null)
+        if (metricElement.getElementHeader().getOtherClassifications() != null)
         {
             boolean found = false;
 
-            for (ElementClassification classification : metricElement.getElementHeader().getClassifications())
+            for (ElementClassification classification : metricElement.getElementHeader().getOtherClassifications())
             {
                 if ("SubjectArea".equals(classification.getClassificationName()))
                 {

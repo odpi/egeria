@@ -3,17 +3,16 @@
 package org.odpi.openmetadata.viewservices.metadataexplorer.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.OpenMetadataStoreHandler;
-import org.odpi.openmetadata.viewservices.metadataexplorer.ffdc.MetadataExplorerErrorCode;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * MetadataExplorerInstance caches references to the objects it needs for a specific server.
@@ -24,11 +23,8 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.METADATA_EXPLORER;
 
-    /*
-     * This map caches clients for specific view services/access services.
-     */
-    private final Map<String, OpenMetadataStoreHandler> openMetadataHandlerMap = new HashMap<>();
-    private final List<ViewServiceConfig> activeViewServices;
+    private final ViewServiceClientMap<EgeriaOpenMetadataStoreHandler> openMetadataHandlerMap;
+
 
     /**
      * Set up the view service instance
@@ -60,10 +56,15 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        this.activeViewServices = activeViewServices;
+        this.openMetadataHandlerMap = new ViewServiceClientMap<>(EgeriaOpenMetadataStoreHandler.class,
+                                                                 serverName,
+                                                                 localServerUserId,
+                                                                 localServerUserPassword,
+                                                                 auditLog,
+                                                                 activeViewServices,
+                                                                 myDescription.getViewServiceFullName(),
+                                                                 maxPageSize);
     }
-
-
 
 
     /**
@@ -71,69 +72,14 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
      *
      * @param viewServiceURLMarker  view service URL marker
      * @param methodName calling method
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      * @return client
      */
-    public OpenMetadataStoreHandler getOpenMetadataHandler(String viewServiceURLMarker,
-                                                           String methodName) throws InvalidParameterException
+    public OpenMetadataClient getOpenMetadataHandler(String viewServiceURLMarker,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               PropertyServerException
     {
-        OpenMetadataStoreHandler openMetadataHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            /*
-             * Clients are created on demand
-             */
-            openMetadataHandler = openMetadataHandlerMap.get(viewServiceURLMarker);
-
-            if (openMetadataHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword == null)
-                                    {
-                                        openMetadataHandler = new OpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
-                                                                                           viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                           accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                           maxPageSize);
-                                    }
-                                    else
-                                    {
-                                        openMetadataHandler = new OpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
-                                                                                           viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                           accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                           localServerUserId,
-                                                                                           localServerUserPassword,
-                                                                                           maxPageSize);
-                                    }
-
-                                    openMetadataHandlerMap.put(viewServiceURLMarker, openMetadataHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (openMetadataHandler == null)
-        {
-            throw new InvalidParameterException(MetadataExplorerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return openMetadataHandler;
+        return openMetadataHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
-
 }

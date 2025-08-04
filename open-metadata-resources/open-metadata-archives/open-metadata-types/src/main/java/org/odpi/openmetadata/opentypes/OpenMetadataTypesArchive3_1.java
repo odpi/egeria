@@ -16,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
@@ -218,7 +217,7 @@ public class OpenMetadataTypesArchive3_1
     private ClassificationDef addSoftwarePackageManifestClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.SOFTWARE_PACKAGE_MANIFEST_CLASSIFICATION,
-                                                  null,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -401,7 +400,7 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -502,13 +501,13 @@ public class OpenMetadataTypesArchive3_1
     private EntityDef addCatalogEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.INVENTORY_CATALOG,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
     }
 
     private EntityDef addDataManagerEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_MANAGER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
     }
 
     private TypeDefPatch updateDatabaseManager()
@@ -542,7 +541,7 @@ public class OpenMetadataTypesArchive3_1
     private ClassificationDef addConnectorTypeDirectoryClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.CONNECTOR_TYPE_DIRECTORY_CLASSIFICATION,
-                                                  null,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -559,8 +558,6 @@ public class OpenMetadataTypesArchive3_1
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES));
@@ -686,20 +683,8 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef getDataProcessingDescriptionEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_DESCRIPTION,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_DESCRIPTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION.typeName));
     }
 
 
@@ -712,20 +697,8 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef getDataProcessingActionEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
     }
 
 

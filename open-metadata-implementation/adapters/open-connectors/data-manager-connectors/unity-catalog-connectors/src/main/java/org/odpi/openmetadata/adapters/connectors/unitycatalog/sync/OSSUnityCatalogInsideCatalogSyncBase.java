@@ -11,22 +11,21 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicEl
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -39,7 +38,7 @@ import java.util.Map;
 public abstract class OSSUnityCatalogInsideCatalogSyncBase
 {
     protected final String                                 connectorName;
-    protected final CatalogIntegratorContext               context;
+    protected final IntegrationContext                     context;
     protected final String                                 catalogGUID;
     protected final String                                 catalogTypeName = UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName();
     protected final String                                 catalogQualifiedName;
@@ -51,7 +50,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     protected final Map<String, String>                    templates;
     protected final Map<String, Object>                    configurationProperties;
     protected final AuditLog                               auditLog;
-    protected final OpenMetadataAccess                     openMetadataAccess;
+    protected final OpenMetadataStore                      openMetadataStore;
     protected final List<String>                           excludeNames;
     protected final List<String>                           includeNames;
 
@@ -80,9 +79,10 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param excludeNames list of catalogs to ignore (and include all others)
      * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
+     * @throws UserNotAuthorizedException connector disconnected
      */
     public OSSUnityCatalogInsideCatalogSyncBase(String                                 connectorName,
-                                                CatalogIntegratorContext               context,
+                                                IntegrationContext                     context,
                                                 String                                 catalogName,
                                                 String                                 catalogGUID,
                                                 String                                 catalogQualifiedName,
@@ -95,7 +95,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                 Map<String, Object>                    configurationProperties,
                                                 List<String>                           excludeNames,
                                                 List<String>                           includeNames,
-                                                AuditLog                               auditLog)
+                                                AuditLog                               auditLog) throws UserNotAuthorizedException
     {
         this.connectorName                  = connectorName;
         this.context                        = context;
@@ -113,8 +113,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         this.includeNames                   = includeNames;
         this.auditLog                       = auditLog;
 
-        this.openMetadataAccess             = context.getIntegrationGovernanceContext().getOpenMetadataAccess();
+        this.openMetadataStore = context.getOpenMetadataStore();
     }
+
 
 
 
@@ -204,6 +205,24 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
 
     /**
+     * Set up the metadata source options used on open metadata API calls.
+     *
+     * @return options
+     * @throws UserNotAuthorizedException connector disconnected
+     */
+    protected MetadataSourceOptions getMetadataSourceOptions() throws UserNotAuthorizedException
+    {
+        MetadataSourceOptions metadataSourceOptions = context.getOpenMetadataStore().getMetadataSourceOptions();
+
+        metadataSourceOptions.setExternalSourceGUID(catalogGUID);
+        metadataSourceOptions.setExternalSourceName(catalogQualifiedName);
+
+        return metadataSourceOptions;
+    }
+
+
+
+    /**
      * Delete an element from open metadata.
      *
      * @param memberElement element to delete
@@ -215,7 +234,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-        openMetadataAccess.deleteMetadataElementInStore(catalogGUID, catalogQualifiedName, memberElement.getElement().getElementGUID(), false);
+        openMetadataStore.deleteMetadataElementInStore(memberElement.getElement().getElementGUID(), new DeleteOptions(this.getMetadataSourceOptions()));
     }
 
 
@@ -239,7 +258,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     {
         ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
 
-        externalIdentifierProperties.setExternalIdentifier(id);
+        externalIdentifierProperties.setIdentifier(id);
         externalIdentifierProperties.setExternalIdentifierSource(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
         externalIdentifierProperties.setExternalInstanceTypeName(elementType);
         externalIdentifierProperties.setExternalInstanceCreationTime(new Date(ucElement.getCreated_at()));
@@ -307,23 +326,23 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                                 OpenMetadataProperty.PROPERTIES.name,
                                                                 fullFacetProperties);
 
-        openMetadataAccess.createMetadataElementInStore(catalogGUID,
-                                                        catalogQualifiedName,
-                                                        OpenMetadataType.PROPERTY_FACET.typeName,
-                                                        ElementStatus.ACTIVE,
-                                                        null,
-                                                        parentGUID,
-                                                        false,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        elementProperties,
-                                                        parentGUID,
-                                                        OpenMetadataType.REFERENCEABLE_FACET.typeName,
-                                                        propertyHelper.addStringProperty(null,
+        NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
+
+        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.PROPERTY_FACET.typeName);
+        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+        newElementOptions.setAnchorGUID(parentGUID);
+        newElementOptions.setIsOwnAnchor(false);
+        newElementOptions.setAnchorScopeGUID(null);
+        newElementOptions.setParentGUID(parentGUID);
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName);
+
+        openMetadataStore.createMetadataElementInStore(newElementOptions,
+                                                       null,
+                                                       new NewElementProperties(elementProperties),
+                                                       new NewElementProperties(propertyHelper.addStringProperty(null,
                                                                                          OpenMetadataProperty.SOURCE.name,
-                                                                                         PropertyFacetValidValues.UNITY_CATALOG_SOURCE_VALUE),
-                                                        true);
+                                                                                         PropertyFacetValidValues.UNITY_CATALOG_SOURCE_VALUE)));
     }
 
 
@@ -345,13 +364,13 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
             return true;
         }
 
-        if (thirdPartyExternalIdentifier.equals(memberElement.getExternalIdentifier().getExternalIdentifier()))
+        if (thirdPartyExternalIdentifier.equals(memberElement.getExternalIdentifier().getIdentifier()))
         {
             return true;
         }
 
         auditLog.logMessage(methodName, UCAuditCode.IDENTITY_MISMATCH.getMessageDefinition(connectorName,
-                                                                                           memberElement.getExternalIdentifier().getExternalIdentifier(),
+                                                                                           memberElement.getExternalIdentifier().getIdentifier(),
                                                                                            thirdPartyExternalIdentifier,
                                                                                            ucServerEndpoint));
         return false;
@@ -421,7 +440,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         if (fullName == null)
         {
             fullName = propertyHelper.getStringProperty(catalogName,
-                                                        OpenMetadataProperty.NAME.name,
+                                                        OpenMetadataProperty.DISPLAY_NAME.name,
                                                         elementProperties,
                                                         methodName);
         }

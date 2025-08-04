@@ -5,6 +5,8 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 
 import java.util.Objects;
 
@@ -19,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SearchStringRequestBody extends ResultsRequestBody
+public class SearchStringRequestBody extends SearchOptions
 {
     private String         searchString              = null;
     private String         searchStringParameterName = null;
@@ -51,6 +53,28 @@ public class SearchStringRequestBody extends ResultsRequestBody
             searchStringParameterName = template.getSearchStringParameterName();
             typeName                  = template.getTypeName();
         }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public SearchStringRequestBody(QueryOptions template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public SearchStringRequestBody(SearchOptions template)
+    {
+        super(template);
     }
 
 

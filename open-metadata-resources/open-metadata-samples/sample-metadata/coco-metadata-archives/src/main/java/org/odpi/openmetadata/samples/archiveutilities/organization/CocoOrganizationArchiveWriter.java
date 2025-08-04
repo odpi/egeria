@@ -70,14 +70,14 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     private void writeContactTypesValidValueSet()
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + ContactTypeDefinition.validValueSetName;
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                validValueSetQName,
                                                                ContactTypeDefinition.validValueSetName,
                                                                ContactTypeDefinition.validValueSetDescription,
                                                                ContactTypeDefinition.validValueSetUsage,
                                                                ContactTypeDefinition.validValueSetScope,
                                                                null,
-                                                               false,
+                                                               null,
                                                                null);
 
         if (validValueSetGUID != null)
@@ -92,7 +92,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     ContactTypeDefinition.validValueSetUsage,
                                                                     ContactTypeDefinition.validValueSetScope,
                                                                     contactTypeDefinition.getPreferredValue(),
-                                                                    false,
+                                                                    null,
                                                                     null);
 
                 if (validValueGUID != null)
@@ -111,14 +111,14 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + JobLevelDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                validValueSetQName,
                                                                JobLevelDefinition.validValueSetName,
                                                                JobLevelDefinition.validValueSetDescription,
                                                                JobLevelDefinition.validValueSetUsage,
                                                                JobLevelDefinition.validValueSetScope,
                                                                null,
-                                                               false,
+                                                               null,
                                                                null);
 
         if (validValueSetGUID != null)
@@ -134,7 +134,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     JobLevelDefinition.validValueSetUsage,
                                                                     JobLevelDefinition.validValueSetScope,
                                                                     jobLevelDefinition.getPreferredValue(),
-                                                                    false,
+                                                                    null,
                                                                     null);
 
                 if (validValueGUID != null)
@@ -153,14 +153,14 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + EmployeeTypeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                validValueSetQName,
                                                                EmployeeTypeDefinition.validValueSetName,
                                                                EmployeeTypeDefinition.validValueSetDescription,
                                                                EmployeeTypeDefinition.validValueSetUsage,
                                                                EmployeeTypeDefinition.validValueSetScope,
                                                                null,
-                                                               false,
+                                                               null,
                                                                null);
 
         if (validValueSetGUID != null)
@@ -176,7 +176,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     EmployeeTypeDefinition.validValueSetUsage,
                                                                     EmployeeTypeDefinition.validValueSetScope,
                                                                     employeeTypeDefinition.getPreferredValue(),
-                                                                    false,
+                                                                    null,
                                                                     null);
 
                 if (validValueGUID != null)
@@ -195,14 +195,14 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + OrganizationTypeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                validValueSetQName,
                                                                OrganizationTypeDefinition.validValueSetName,
                                                                OrganizationTypeDefinition.validValueSetDescription,
                                                                OrganizationTypeDefinition.validValueSetUsage,
                                                                OrganizationTypeDefinition.validValueSetScope,
                                                                null,
-                                                               false,
+                                                               null,
                                                                null);
 
         if (validValueSetGUID != null)
@@ -218,7 +218,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     OrganizationTypeDefinition.validValueSetUsage,
                                                                     OrganizationTypeDefinition.validValueSetScope,
                                                                     organizationTypeDefinition.getPreferredValue(),
-                                                                    false,
+                                                                    null,
                                                                     null);
 
                 if (validValueGUID != null)
@@ -237,14 +237,14 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + OrganizationTypeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                openMetadataValidValueSetPrefix + WorkLocationDefinition.validValueSetName,
                                                                WorkLocationDefinition.validValueSetName,
                                                                WorkLocationDefinition.validValueSetDescription,
                                                                WorkLocationDefinition.validValueSetUsage,
                                                                WorkLocationDefinition.validValueSetScope,
                                                                null,
-                                                               false,
+                                                               null,
                                                                null);
 
         if (validValueSetGUID != null)
@@ -260,7 +260,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     WorkLocationDefinition.validValueSetUsage,
                                                                     WorkLocationDefinition.validValueSetScope,
                                                                     workLocationDefinition.getWorkLocationId(),
-                                                                    false,
+                                                                    null,
                                                                     workLocationDefinition.getAddressProperties());
 
                 if (validValueGUID != null)
@@ -279,14 +279,14 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + CountryCodeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                validValueSetQName,
                                                                CountryCodeDefinition.validValueSetName,
                                                                CountryCodeDefinition.validValueSetDescription,
                                                                CountryCodeDefinition.validValueSetUsage,
                                                                CountryCodeDefinition.validValueSetScope,
                                                                null,
-                                                               false,
+                                                               null,
                                                                null);
 
         if (validValueSetGUID != null)
@@ -302,7 +302,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     CountryCodeDefinition.validValueSetUsage,
                                                                     CountryCodeDefinition.validValueSetScope,
                                                                     countryCodeDefinition.getPreferredValue(),
-                                                                    false,
+                                                                    null,
                                                                     null);
 
                 if (validValueGUID != null)
@@ -321,14 +321,14 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + ScopeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                validValueSetQName,
                                                                ScopeDefinition.validValueSetName,
                                                                ScopeDefinition.validValueSetDescription,
                                                                ScopeDefinition.validValueSetUsage,
                                                                ScopeDefinition.validValueSetScope,
                                                                null,
-                                                               false,
+                                                               null,
                                                                null);
 
         if (validValueSetGUID != null)
@@ -344,7 +344,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     ScopeDefinition.validValueSetUsage,
                                                                     ScopeDefinition.validValueSetScope,
                                                                     scopeDefinition.getPreferredValue(),
-                                                                    false,
+                                                                    null,
                                                                     null);
 
                 if (validValueGUID != null)
@@ -397,7 +397,6 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                          personDefinition.getEmployeeNumber(),
                                                          personDefinition.getEmployeeType().getPreferredValue(),
                                                          null,
-                                                         true,
                                                          additionalProperties);
 
             String userIdGUID  = archiveHelper.addUserIdentity(userIdQualifiedName, personDefinition.getUserId(), personDefinition.getDistinguishedName(), null);
@@ -499,7 +498,8 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                 {
                     archiveHelper.addPersonRoleAppointmentRelationship(appointee.getQualifiedName(),
                                                                        leadershipRoleQName,
-                                                                       true);
+                                                                       false,
+                                                                       0);
                 }
             }
 
@@ -523,7 +523,8 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                 {
                     archiveHelper.addPersonRoleAppointmentRelationship(appointee.getQualifiedName(),
                                                                        membershipRoleQName,
-                                                                       true);
+                                                                       false,
+                                                                       0);
                 }
             }
 
@@ -531,7 +532,8 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 archiveHelper.addPersonRoleAppointmentRelationship(getAnonymousMember(deptDefinition.getWorkLocation()),
                                                                    membershipRoleQName,
-                                                                   true);
+                                                                   false,
+                                                                   0);
             }
 
             if (deptDefinition.getBusinessArea() != null)
@@ -586,7 +588,6 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                      userId,
                                                      EmployeeTypeDefinition.FULL_TIME_PERMANENT.getPreferredValue(),
                                                      null,
-                                                     true,
                                                      additionalProperties);
 
         String userIdGUID  = archiveHelper.addUserIdentity(userIdQualifiedName, userId, distinguishedName, null);

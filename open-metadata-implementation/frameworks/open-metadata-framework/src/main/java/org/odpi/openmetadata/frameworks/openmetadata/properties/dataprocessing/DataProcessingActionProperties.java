@@ -20,10 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataProcessingActionProperties extends ReferenceableProperties
 {
-    private String displayName                = null;
-    private String description                = null;
-
-
     /**
      * Default constructor
      */
@@ -39,59 +35,9 @@ public class DataProcessingActionProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public DataProcessingActionProperties(DataProcessingActionProperties template)
+    public DataProcessingActionProperties(ReferenceableProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-        }
-    }
-
-
-    /**
-     * Return the display name for this processing action.
-     *
-     * @return string
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for this processing action.
-     *
-     * @param displayName string
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Returns the description of the data processing that is being performed.
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the data processing that is being performed.
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -104,37 +50,6 @@ public class DataProcessingActionProperties extends ReferenceableProperties
     public String toString()
     {
         return "DataProcessingActionProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare) return true;
-        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
-        if (!super.equals(objectToCompare)) return false;
-        DataProcessingActionProperties that = (DataProcessingActionProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description);
-    }
-
-    /**
-     * Return hash code based on properties.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), displayName, description);
     }
 }

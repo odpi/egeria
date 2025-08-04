@@ -3,18 +3,16 @@
 package org.odpi.openmetadata.viewservices.classificationexplorer.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.viewservices.classificationexplorer.ffdc.ClassificationExplorerErrorCode;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.OpenMetadataStoreHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ClassificationExplorerInstance caches references to objects it needs for a specific server.
@@ -25,17 +23,10 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.CLASSIFICATION_EXPLORER;
 
-    /*
-     * This map caches clients for specific view services/access services.
-     */
-    private final Map<String, StewardshipManagementHandler> stewardshipManagementHandlerHashMap = new HashMap<>();
 
-    /*
-     * This map caches clients for specific view services/access services.
-     */
-    private final Map<String, OpenMetadataStoreHandler> openMetadataHandlerMap = new HashMap<>();
+    private final ViewServiceClientMap<StewardshipManagementHandler>   stewardshipManagementHandlerHashMap;
+    private final ViewServiceClientMap<EgeriaOpenMetadataStoreHandler> openMetadataHandlerMap;
 
-    private final List<ViewServiceConfig> activeViewServices;
 
     /**
      * Set up the Classification Explorer OMVS instance*
@@ -66,7 +57,23 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        this.activeViewServices = activeViewServices;
+        this.openMetadataHandlerMap = new ViewServiceClientMap<>(EgeriaOpenMetadataStoreHandler.class,
+                                                                 serverName,
+                                                                 localServerUserId,
+                                                                 localServerUserPassword,
+                                                                 auditLog,
+                                                                 activeViewServices,
+                                                                 myDescription.getViewServiceFullName(),
+                                                                 maxPageSize);
+
+        this.stewardshipManagementHandlerHashMap = new ViewServiceClientMap<>(StewardshipManagementHandler.class,
+                                                                              serverName,
+                                                                              localServerUserId,
+                                                                              localServerUserPassword,
+                                                                              auditLog,
+                                                                              activeViewServices,
+                                                                              myDescription.getViewServiceFullName(),
+                                                                              maxPageSize);
     }
 
 
@@ -75,76 +82,16 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
      *
      * @param viewServiceURLMarker optional view service URL marker
      * @param methodName calling method
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      * @return client
      */
     public StewardshipManagementHandler getStewardshipManagerHandler(String viewServiceURLMarker,
-                                                                     String methodName) throws InvalidParameterException
+                                                                     String methodName) throws InvalidParameterException,
+                                                                                               PropertyServerException
     {
-
-        StewardshipManagementHandler collaborationManagerHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            collaborationManagerHandler = stewardshipManagementHandlerHashMap.get(viewServiceURLMarker);
-
-            if (collaborationManagerHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword == null)
-                                    {
-                                        collaborationManagerHandler = new StewardshipManagementHandler(serverName,
-                                                                                                       viewServiceConfig.getOMAGServerName(),
-                                                                                                       viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                                       auditLog,
-                                                                                                       accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                                       maxPageSize);
-                                    }
-                                    else
-                                    {
-                                        collaborationManagerHandler = new StewardshipManagementHandler(serverName,
-                                                                                                       viewServiceConfig.getOMAGServerName(),
-                                                                                                       viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                                       localServerUserId,
-                                                                                                       localServerUserPassword,
-                                                                                                       auditLog,
-                                                                                                       accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                                       maxPageSize);
-                                    }
-
-                                    stewardshipManagementHandlerHashMap.put(viewServiceURLMarker,
-                                                                            collaborationManagerHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (collaborationManagerHandler == null)
-        {
-            throw new InvalidParameterException(ClassificationExplorerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return collaborationManagerHandler;
+        return stewardshipManagementHandlerHashMap.getClient(viewServiceURLMarker, methodName);
     }
-
-
 
 
     /**
@@ -152,57 +99,14 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
      *
      * @param viewServiceURLMarker  view service URL marker
      * @param methodName calling method
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      * @return client
      */
-    public OpenMetadataStoreHandler getOpenMetadataStoreHandler(String viewServiceURLMarker,
-                                                                String methodName) throws InvalidParameterException
+    public EgeriaOpenMetadataStoreHandler getOpenMetadataStoreHandler(String viewServiceURLMarker,
+                                                                      String methodName) throws InvalidParameterException,
+                                                                                                PropertyServerException
     {
-        OpenMetadataStoreHandler openMetadataHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            /*
-             * Clients are created on demand
-             */
-            openMetadataHandler = openMetadataHandlerMap.get(viewServiceURLMarker);
-
-            if (openMetadataHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    openMetadataHandler = new OpenMetadataStoreHandler(accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                       viewServiceConfig.getOMAGServerName(),
-                                                                                       viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                       maxPageSize);
-
-                                    openMetadataHandlerMap.put(viewServiceURLMarker, openMetadataHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (openMetadataHandler == null)
-        {
-            throw new InvalidParameterException(ClassificationExplorerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return openMetadataHandler;
+        return openMetadataHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
-
 }

@@ -6,6 +6,8 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 
 import java.util.Map;
 import java.util.Objects;
@@ -21,8 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RegisteredGovernanceServiceProperties
 {
-    private String                     serviceRequestType       = null;
-    private Map<String, String>        requestParameters        = null;
+    private String              requestType                = null;
+    private String              serviceRequestType         = null;
+    private Map<String, String> requestParameters          = null;
+    private boolean             generateIntegrationReports = true;
+    private DeleteMethod        deleteMethod               = null;
 
     /**
      * Default constructor
@@ -42,11 +47,35 @@ public class RegisteredGovernanceServiceProperties
     {
         if (template != null)
         {
+            requestType = template.getRequestType();
             serviceRequestType = template.getServiceRequestType();
             requestParameters = template.getRequestParameters();
+            deleteMethod = template.getDeleteMethod();
+            generateIntegrationReports = template.getGenerateIntegrationReports();
         }
     }
 
+
+    /**
+     * Return the request type used to call the service.
+     *
+     * @return string
+     */
+    public String getRequestType()
+    {
+        return requestType;
+    }
+
+
+    /**
+     * Return the request type used to call the service.
+     *
+     * @param requestType string
+     */
+    public void setRequestType(String requestType)
+    {
+        this.requestType = requestType;
+    }
 
     /**
      * Return the request type that this governance service supports.  The requestType from the caller is mapped
@@ -97,6 +126,50 @@ public class RegisteredGovernanceServiceProperties
 
 
     /**
+     * Return whether integration reports should be generated when this service is called.
+     *
+     * @return boolean
+     */
+    public boolean getGenerateIntegrationReports()
+    {
+        return generateIntegrationReports;
+    }
+
+
+    /**
+     * Set up whether integration reports should be generated when this service is called.
+     *
+     * @param generateIntegrationReports boolean
+     */
+    public void setGenerateIntegrationReports(boolean generateIntegrationReports)
+    {
+        this.generateIntegrationReports = generateIntegrationReports;
+    }
+
+
+    /**
+     * Return the type of delete method to use.
+     *
+     * @return enum
+     */
+    public DeleteMethod getDeleteMethod()
+    {
+        return deleteMethod;
+    }
+
+
+    /**
+     * Set up the type of delete method to use.
+     *
+     * @param deleteMethod enum
+     */
+    public void setDeleteMethod(DeleteMethod deleteMethod)
+    {
+        this.deleteMethod = deleteMethod;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -105,11 +178,13 @@ public class RegisteredGovernanceServiceProperties
     public String toString()
     {
         return "RegisteredGovernanceServiceProperties{" +
-                       "serviceRequestType='" + serviceRequestType + '\'' +
-                       ", requestParameters=" + requestParameters +
-                       '}';
+                "requestType='" + requestType + '\'' +
+                ", serviceRequestType='" + serviceRequestType + '\'' +
+                ", requestParameters=" + requestParameters +
+                ", generateIntegrationReports=" + generateIntegrationReports +
+                ", deleteMethod=" + deleteMethod +
+                '}';
     }
-
 
     /**
      * Equals method that returns true if containing properties are the same.
@@ -120,23 +195,15 @@ public class RegisteredGovernanceServiceProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         RegisteredGovernanceServiceProperties that = (RegisteredGovernanceServiceProperties) objectToCompare;
-        return Objects.equals(serviceRequestType, that.serviceRequestType) &&
-                       Objects.equals(requestParameters, that.requestParameters) ;
+        return generateIntegrationReports == that.generateIntegrationReports &&
+                Objects.equals(requestType, that.requestType) &&
+                Objects.equals(serviceRequestType, that.serviceRequestType) &&
+                Objects.equals(deleteMethod, that.deleteMethod) &&
+                Objects.equals(requestParameters, that.requestParameters);
     }
-
 
     /**
      * Return hash code for this object
@@ -146,6 +213,6 @@ public class RegisteredGovernanceServiceProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), serviceRequestType, requestParameters);
+        return Objects.hash(super.hashCode(), requestType, deleteMethod, serviceRequestType, requestParameters, generateIntegrationReports);
     }
 }

@@ -632,7 +632,7 @@ public class OpenMetadataAPIGenericBuilder
     {
         String propertyValue = primitivePropertyValue.valueAsString();
 
-        if ((propertyValue == null) || (! propertyValue.contains("{{")))
+        if ((propertyValue == null) || (! propertyValue.contains("~{")))
         {
             /*
              * No placeholders in property.
@@ -644,7 +644,7 @@ public class OpenMetadataAPIGenericBuilder
         {
             for (String placeholderName : placeholderProperties.keySet())
             {
-                String placeholderMatchString = "{{" + placeholderName + "}}";
+                String placeholderMatchString = "~{" + placeholderName + "}~";
 
                 if (propertyValue.equals(placeholderMatchString))
                 {

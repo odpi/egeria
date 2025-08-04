@@ -31,7 +31,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class SchemaTypeProperties extends SchemaElementProperties
 {
-    private String versionIdentifier = null;
     private String author            = null;
     private String usage            = null;
     private String encodingStandard = null;
@@ -40,7 +39,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
     /*
      * Values for when the schemaType is derived from other values rather than stored
      */
-    private String                                       formula = null;
+    private String                                       formula     = null;
     private String                                       formulaType = null;
     private List<DerivedSchemaTypeQueryTargetProperties> queries     = null;
 
@@ -65,7 +64,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
 
         if (template != null)
         {
-            versionIdentifier = template.getVersionIdentifier();
             author            = template.getAuthor();
             usage             = template.getUsage();
             encodingStandard  = template.getEncodingStandard();
@@ -74,25 +72,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
             formulaType       = template.getFormulaType();
             queries           = template.getQueries();
         }
-    }
-
-
-    /**
-     * Return the version number of the schema element - null means no version number.
-     *
-     * @return String version number
-     */
-    public String getVersionIdentifier() { return versionIdentifier; }
-
-
-    /**
-     * Set up the version number of the schema element - null means no version number.
-     *
-     * @param versionIdentifier String version number
-     */
-    public void setVersionIdentifier(String versionIdentifier)
-    {
-        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -252,8 +231,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
     public String toString()
     {
         return "SchemaTypeProperties{" +
-                "versionNumber='" + versionIdentifier + '\'' +
-                ", author='" + author + '\'' +
+                "author='" + author + '\'' +
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", namespace='" + namespace + '\'' +
@@ -286,8 +264,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
             return false;
         }
         SchemaTypeProperties that = (SchemaTypeProperties) objectToCompare;
-        return Objects.equals(versionIdentifier, that.versionIdentifier) &&
-                Objects.equals(author, that.author) &&
+        return Objects.equals(author, that.author) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
                 Objects.equals(namespace, that.namespace) &&
@@ -305,6 +282,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), versionIdentifier, author, usage, encodingStandard, namespace, formula, formulaType, queries);
+        return Objects.hash(super.hashCode(), author, usage, encodingStandard, namespace, formula, formulaType, queries);
     }
 }

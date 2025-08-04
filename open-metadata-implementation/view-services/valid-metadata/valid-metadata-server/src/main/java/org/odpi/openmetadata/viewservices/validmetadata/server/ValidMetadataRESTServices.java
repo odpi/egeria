@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.viewservices.validmetadata.server;
 
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -84,7 +84,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                 client.setUpValidMetadataValue(userId,
                                                typeName,
@@ -145,7 +145,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                 client.setUpValidMetadataMapName(userId,
                                                  typeName,
@@ -208,7 +208,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                 client.setUpValidMetadataMapValue(userId,
                                                   typeName,
@@ -267,7 +267,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             client.clearValidMetadataValue(userId,
                                            typeName,
@@ -320,7 +320,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             client.clearValidMetadataMapName(userId,
                                              typeName,
@@ -375,7 +375,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             client.clearValidMetadataMapValue(userId,
                                               typeName,
@@ -426,7 +426,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setFlag(client.validateMetadataValue(userId,
                                                           typeName,
@@ -476,7 +476,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setFlag(client.validateMetadataMapName(userId,
                                                             typeName,
@@ -528,7 +528,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setFlag(client.validateMetadataMapValue(userId,
                                                              typeName,
@@ -579,7 +579,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setElement(client.getValidMetadataValue(userId,
                                                              typeName,
@@ -629,7 +629,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setElement(client.getValidMetadataMapName(userId,
                                                                typeName,
@@ -681,7 +681,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setElement(client.getValidMetadataMapValue(userId,
                                                                 typeName,
@@ -734,7 +734,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setElementList(client.getValidMetadataValues(userId,
                                                                   typeName,
@@ -791,7 +791,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setElementList(client.getConsistentMetadataValues(userId,
                                                                        typeName,
@@ -857,7 +857,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             client.setConsistentMetadataValues(userId,
                                                typeName1,
@@ -908,7 +908,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             OpenMetadataTypeDefGallery typeDefGallery = client.getAllTypes(userId);
 
@@ -957,7 +957,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setTypeDefs(client.findTypeDefsByCategory(userId, category));
         }
@@ -1001,7 +1001,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setTypeDefs(client.getSubTypes(userId, typeName));
         }
@@ -1044,7 +1044,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             OpenMetadataTypeDef entityDef = client.getTypeDefByName(userId, typeName);
 
@@ -1105,9 +1105,9 @@ public class ValidMetadataRESTServices extends TokenController
      */
     List<String> getEntityTypeNames(String                  userId,
                                     OpenMetadataTypeDef     entityDef,
-                                    OpenMetadataStoreClient client) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+                                    EgeriaOpenMetadataStoreClient client) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         List<String>        entityTypeNames = new ArrayList<>();
 
@@ -1153,7 +1153,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             OpenMetadataTypeDef entityDef = client.getTypeDefByName(userId, typeName);
 
@@ -1233,7 +1233,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            EgeriaOpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             response.setTypeDef(client.getTypeDefByName(userId, name));
         }

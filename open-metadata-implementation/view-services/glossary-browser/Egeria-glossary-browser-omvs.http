@@ -93,21 +93,6 @@ Content-Type: application/json
 
 ###
 # group: Glossaries
-# @name getGlossaryForCategory
-# Retrieve the glossary metadata element for the requested category.  The optional request body allows you to specify
-# that the glossary element should only be returned if it was effective at a particular time.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/for-category/{{glossaryCategoryGUID}}/retrieve
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "EffectiveTimeQueryRequestBody",
-  "effectiveTime" : "null"
-}
-
-
-###
-# group: Glossaries
 # @name getGlossaryForTerm
 # Retrieve the glossary metadata element for the requested term.  The optional request body allows you to specify
 # that the glossary element should only be returned if it was effective at a particular time.
@@ -139,94 +124,6 @@ Content-Type: application/json
   "limitResultsByStatus" :  []
 }
 
-
-###
-# group: GlossaryCategories
-# @name findGlossaryCategories
-# Retrieve the list of glossary category metadata elements that contain the search string.
-# The search string is located in the request body and is interpreted as a plain string.
-# The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/by-search-string?
-    startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : ""
-}
-
-###
-# group: GlossaryCategories
-# @name getCategoriesForGlossary
-# Return the list of categories associated with a glossary.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/categories/retrieve?
-    startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-
-###
-# group: GlossaryCategories
-# @name getCategoriesForTerm
-# Return the list of categories associated with a glossary term.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/categories/retrieve?
-    startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-
-###
-# group: GlossaryCategories
-# @name getGlossaryCategoriesByName
-# Retrieve the list of glossary category metadata elements that either have the requested qualified name or display name.
-# The name to search for is located in the request body and is interpreted as a plain string.
-# The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/by-name
-    ?startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "GlossaryNameRequestBody",
-  "name" : "Chemicals",
-  "glossaryGUID" : "{{glossaryGUID}}",
-  "limitResultsByStatus" : [ "DRAFT", "PREPARED", "PROPOSED", "APPROVED", "ACTIVE"]
-}
-
-
-###
-# group: GlossaryCategories
-# @name getGlossaryCategoryByGUID
-# Retrieve the requested glossary category metadata element.  The optional request body contain an effective time for the query.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/{{glossaryCategoryGUID}}/retrieve
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "EffectiveTimeQueryRequestBody",
-  "effectiveTime" : "null"
-}
-
-
-###
-# group: GlossaryCategories
-# @name getGlossaryCategoryParent
-# Glossary categories can be organized in a hierarchy. Retrieve the parent glossary category metadata
-# element for the glossary category with the supplied unique identifier.  If the requested category
-# does not have a parent category, null is returned.  The optional request body contain an effective time
-# for the query.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/{{glossaryCategoryGUID}}/retrieve
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# group: GlossaryTerms
-# @name Retrieve ALL the glossary terms in a category
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/{{glossaryCategoryGUID}}/terms/retrieve?
-    startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
 ###
 # group: GlossaryTerms
@@ -319,7 +216,7 @@ Content-Type: application/json
 ###
 # group: GlossaryTerms
 # @name Search for term by version identifier
-POST {{baseURL}}/servers/{{viewServer}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-conditions?
+POST {{baseURL}}/servers/{{viewServer}}/open-metadata/access-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-conditions?
     startFrom=0&pageSize=0&
     forLineage=false&
     forDuplicateProcessing=false&

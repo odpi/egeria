@@ -3,11 +3,11 @@
 
 package org.odpi.openmetadata.governanceservers.enginehostservices.registration;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 
 /**
@@ -32,14 +32,14 @@ public abstract class GovernanceEngineHandlerFactory
      * @return governance engine handler
      * @throws InvalidParameterException unable to connect to the clients
      */
-    public abstract GovernanceEngineHandler createGovernanceEngineHandler(EngineConfig                        engineConfig,
-                                                                          String                              localServerName,
-                                                                          String                              localServerUserId,
-                                                                          String                              localServerPassword,
-                                                                          String                              partnerServerName,
-                                                                          String                              partnerURLRoot,
+    public abstract GovernanceEngineHandler createGovernanceEngineHandler(EngineConfig                  engineConfig,
+                                                                          String                        localServerName,
+                                                                          String                        localServerUserId,
+                                                                          String                        localServerPassword,
+                                                                          String                        partnerServerName,
+                                                                          String                        partnerURLRoot,
                                                                           GovernanceConfigurationClient configurationClient,
-                                                                          GovernanceContextClient             serverClient,
-                                                                          AuditLog                            auditLog,
-                                                                          int                                 maxPageSize) throws InvalidParameterException;
+                                                                          GovernanceContextClient       serverClient,
+                                                                          AuditLog                      auditLog,
+                                                                          int                           maxPageSize) throws InvalidParameterException;
 }

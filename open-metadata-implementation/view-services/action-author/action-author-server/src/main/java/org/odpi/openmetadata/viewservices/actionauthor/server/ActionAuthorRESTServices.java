@@ -1,15 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project */
-/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.actionauthor.server;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.client.OpenGovernanceClient;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties;
@@ -201,11 +200,6 @@ public class ActionAuthorRESTServices extends TokenController
      * Retrieve the list of governance action type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -213,13 +207,8 @@ public class ActionAuthorRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionTypesResponse findGovernanceActionTypes(String            serverName,
-                                                                   boolean           startsWith,
-                                                                   boolean           endsWith,
-                                                                   boolean           ignoreCase,
-                                                                   int               startFrom,
-                                                                   int               pageSize,
-                                                                   FilterRequestBody requestBody)
+    public GovernanceActionTypesResponse findGovernanceActionTypes(String                  serverName,
+                                                                   SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceActionTypes";
 
@@ -240,10 +229,8 @@ public class ActionAuthorRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.findGovernanceActionTypes(userId,
-                                                                       instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       requestBody.getEffectiveTime()));
+                                                                       requestBody.getSearchString(),
+                                                                       requestBody));
             }
             else
             {
@@ -265,8 +252,6 @@ public class ActionAuthorRESTServices extends TokenController
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -275,8 +260,6 @@ public class ActionAuthorRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionTypesResponse getGovernanceActionTypesByName(String            serverName,
-                                                                        int               startFrom,
-                                                                        int               pageSize,
                                                                         FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionTypesByName";
@@ -297,11 +280,7 @@ public class ActionAuthorRESTServices extends TokenController
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
-                response.setElements(handler.getGovernanceActionTypesByName(userId,
-                                                                            requestBody.getFilter(),
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getEffectiveTime()));
+                response.setElements(handler.getGovernanceActionTypesByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -620,11 +599,6 @@ public class ActionAuthorRESTServices extends TokenController
      * Retrieve the list of governance action process metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -633,12 +607,7 @@ public class ActionAuthorRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionProcessElementsResponse findGovernanceActionProcesses(String                  serverName,
-                                                                                 boolean                 startsWith,
-                                                                                 boolean                 endsWith,
-                                                                                 boolean                 ignoreCase,
-                                                                                 int                     startFrom,
-                                                                                 int                     pageSize,
-                                                                                 FilterRequestBody       requestBody)
+                                                                                 SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceActionProcesses";
 
@@ -658,11 +627,7 @@ public class ActionAuthorRESTServices extends TokenController
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
-                response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                requestBody.getEffectiveTime()));
+                response.setElements(handler.findGovernanceActionProcesses(userId, requestBody.getSearchString(), requestBody));
             }
             else
             {
@@ -716,11 +681,7 @@ public class ActionAuthorRESTServices extends TokenController
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
-                response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                requestBody.getFilter(),
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                requestBody.getEffectiveTime()));
+                response.setElements(handler.getGovernanceActionProcessesByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -991,11 +952,6 @@ public class ActionAuthorRESTServices extends TokenController
      * Retrieve the list of governance action process step metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1004,12 +960,7 @@ public class ActionAuthorRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionProcessStepsResponse findGovernanceActionProcessSteps(String                  serverName,
-                                                                                 boolean                 startsWith,
-                                                                                 boolean                 endsWith,
-                                                                                 boolean                 ignoreCase,
-                                                                                 int                     startFrom,
-                                                                                 int                     pageSize,
-                                                                                 FilterRequestBody       requestBody)
+                                                                                 SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceActionProcessSteps";
 
@@ -1030,10 +981,8 @@ public class ActionAuthorRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.findGovernanceActionProcessSteps(userId,
-                                                                              instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              requestBody.getEffectiveTime()));
+                                                                              requestBody.getSearchString(),
+                                                                              requestBody));
             }
             else
             {
@@ -1055,8 +1004,6 @@ public class ActionAuthorRESTServices extends TokenController
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -1065,8 +1012,6 @@ public class ActionAuthorRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionProcessStepsResponse getGovernanceActionProcessStepsByName(String            serverName,
-                                                                                      int               startFrom,
-                                                                                      int               pageSize,
                                                                                       FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessStepsByName";
@@ -1089,9 +1034,7 @@ public class ActionAuthorRESTServices extends TokenController
 
                 response.setElements(handler.getGovernanceActionProcessStepsByName(userId,
                                                                                    requestBody.getFilter(),
-                                                                                   startFrom,
-                                                                                   pageSize,
-                                                                                   requestBody.getEffectiveTime()));
+                                                                                   requestBody));
             }
             else
             {

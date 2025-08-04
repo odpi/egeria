@@ -7,21 +7,22 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
-import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
-import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;
-import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
+
 
 import java.util.*;
 
@@ -33,13 +34,13 @@ import java.util.*;
  * It also supports the start and stop method for the connector which only need to be
  * overridden if the connector has work to do at these times
  */
-public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegratorConnector implements OpenLineageLogStore,
-                                                                                                     OpenLineageEventListener
+public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnectorBase implements OpenLineageLogStore,
+                                                                                                   OpenLineageEventListener
 {
 
     private static final ObjectWriter  OBJECT_WRITER   = new ObjectMapper().writer();
-    protected String                   distributorName = "<Unknown>";
-    protected LineageIntegratorContext myContext       = null;
+    protected       String             distributorName      = "<Unknown>";
+    protected       IntegrationContext myContext            = null;
     protected final List<String>       destinationAddresses = new ArrayList<>();
 
 
@@ -124,8 +125,8 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * @param connectionDetails   POJO for the configuration used to create the connector.
      */
     @Override
-    public void initialize(String               connectorInstanceId,
-                           ConnectionDetails connectionDetails)
+    public void initialize(String     connectorInstanceId,
+                           Connection connectionDetails)
     {
         super.initialize(connectorInstanceId, connectionDetails);
 
@@ -137,7 +138,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
             }
             else if (connectionDetails.getConnectorType() != null)
             {
-                ConnectorTypeDetails connectorType = connectionDetails.getConnectorType();
+                ConnectorType connectorType = connectionDetails.getConnectorType();
 
                 if (connectorType.getDisplayName() != null)
                 {
@@ -152,13 +153,14 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if ((endpoint != null) && (endpoint.getAddress() != null))
         {
@@ -166,7 +168,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
             this.newDestinationIdentified(endpoint.getAddress());
         }
 
-        myContext = super.getContext();
+        myContext = integrationContext;
 
         if (myContext != null)
         {
@@ -188,7 +190,9 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
         try
         {
             int                startFrom = 0;
-            List<CatalogTarget> catalogTargets = myContext.getCatalogTargets(startFrom, myContext.getMaxPageSize());
+            List<CatalogTarget> catalogTargets = myContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                        startFrom,
+                                                                                                        myContext.getMaxPageSize());
 
             while (catalogTargets != null)
             {
@@ -207,10 +211,9 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
                         }
                         else if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
                         {
-                            RelatedMetadataElement connectionElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
+                            RelatedMetadataElement connectionElement = integrationContext.getOpenMetadataStore().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
                                                                                                                                                                      1,
-                                                                                                                                                                     OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
-                                                                                                                                                                     new Date());
+                                                                                                                                                                     OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
 
                             if (connectionElement != null)
                             {
@@ -220,7 +223,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
 
                         if (endpointGUID != null)
                         {
-                            OpenMetadataElement endpoint = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getMetadataElementByGUID(endpointGUID);
+                            OpenMetadataElement endpoint = integrationContext.getOpenMetadataStore().getMetadataElementByGUID(endpointGUID);
 
                             if (endpoint != null)
                             {
@@ -241,7 +244,9 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
 
                 startFrom = startFrom + myContext.getMaxPageSize();
 
-                catalogTargets = myContext.getCatalogTargets(startFrom, myContext.getMaxPageSize());
+                catalogTargets = myContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                        startFrom,
+                                                                                        myContext.getMaxPageSize());
             }
         }
         catch (Exception error)
@@ -271,10 +276,9 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
     {
         String endpointGUID = null;
 
-        RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(connectionGUID,
-                                                                                                                                               1,
-                                                                                                                                               OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
-                                                                                                                                               new Date());
+        RelatedMetadataElement endpointElement = integrationContext.getOpenMetadataStore().getRelatedMetadataElement(connectionGUID,
+                                                                                                                     1,
+                                                                                                                     OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
 
         if (endpointElement != null)
         {
@@ -286,7 +290,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
 
 
     /**
-     * Called each time an open lineage run event is published to the Lineage Integrator OMIS.  The integration connector is able to
+     * Called each time an open lineage run event is published to the integration daemon.  The integration connector is able to
      * work with the formatted event using the Egeria beans or reformat the open lineage run event using the supplied open lineage backend beans
      * or another set of beans.
      *

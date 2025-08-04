@@ -208,7 +208,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -272,7 +272,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -335,7 +335,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -399,7 +399,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -460,7 +460,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -520,7 +520,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -669,7 +669,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -861,7 +861,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -926,7 +926,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -986,7 +986,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1134,7 +1134,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -1321,7 +1321,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1383,7 +1383,7 @@ Content-Type: application/json
 
 
 {
-  "class" : "ClassificationRequestBody",
+  "class" : "NewClassificationRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1530,7 +1530,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,

@@ -3,11 +3,14 @@
 package org.odpi.openmetadata.viewservices.subjectarea.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SubjectAreaHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SubjectAreaHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
  * SubjectAreaInstance caches references to the objects it needs for a specific server.
@@ -51,28 +54,27 @@ public class SubjectAreaInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient;
         if (localServerUserPassword == null)
         {
-            subjectAreaHandler = new SubjectAreaHandler(serverName,
-                                                        remoteServerName,
-                                                        remoteServerURL,
-                                                        auditLog,
-                                                        AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceURLMarker(),
-                                                        ViewServiceDescription.SUBJECT_AREA.getViewServiceFullName(),
-                                                        maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
+
         }
         else
         {
-            subjectAreaHandler = new SubjectAreaHandler(serverName,
-                                                        remoteServerName,
-                                                        remoteServerURL,
-                                                        localServerUserId,
-                                                        localServerUserPassword,
-                                                        auditLog,
-                                                        AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceURLMarker(),
-                                                        ViewServiceDescription.SUBJECT_AREA.getViewServiceFullName(),
-                                                        maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
         }
+
+        subjectAreaHandler = new SubjectAreaHandler(serverName,
+                                                    auditLog,
+                                                    myDescription.getViewServiceFullName(),
+                                                    openMetadataClient);
     }
 
 

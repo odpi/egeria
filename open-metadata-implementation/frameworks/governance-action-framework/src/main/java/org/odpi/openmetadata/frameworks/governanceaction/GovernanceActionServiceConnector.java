@@ -17,23 +17,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * GovernanceActionServiceConnector describes the base class for a specific type of connector that is responsible for preforming
- * specific governance actions on demand.  There are six types of governance action service:
+ * GovernanceActionService describes the base class for a governance action service connector that is responsible for preforming
+ * specific governance actions on demand.  There are five types of actions that s governance action service performs:
  *
  * <ul>
- *     <li><b>WatchdogGovernanceActionService</b> - monitors for changes to the metadata elements and initiates other governance actions depending on the nature of the change.</li>
- *     <li><b>VerificationGovernanceActionService</b> - tests values in the metadata elements to detect errors or to classify the status of the metadata elements.</li>
- *     <li><b>TriageGovernanceActionService</b> - manages the choices on how to resolve a situation, often involving a human decision maker.</li>
- *     <li><b>RemediationGovernanceActionService</b> - maintains the metadata elements.</li>
- *     <li><b>ProvisioningGovernanceActionService</b> - provisions resources in the digital landscape and maintains lineage.</li>
- *     <li><b>GeneralGovernanceActionService</b> - combines all of the capability of the specialist services above.</li>
+ *     <li><b>Watchdog</b> - monitors for changes to the metadata elements and initiates other governance actions depending on the nature of the change.</li>
+ *     <li><b>Verification</b> - tests values in the metadata elements to detect errors or to classify the status of the metadata elements.</li>
+ *     <li><b>Triage</b> - manages the choices on how to resolve a situation, often involving a human decision maker.</li>
+ *     <li><b>Remediation</b> - maintains the metadata elements.</li>
+ *     <li><b>Provisioning</b> - provisions resources in the digital landscape and maintains lineage.</li>
  * </ul>
  *
- * Each type of governance action service is passed a specialized context that provides it with the metadata methods it needs for its specific role.
- * When you build a governance action service, you extend the governance action service class that matches the purpose of your governance action
- * to ensure your code receives a context with the appropriate interface.
- * In addition, there is a generic governance action service called <b>GeneralGovernanceActionService</b> that combines all the functions of the
- * five specialist types of governance action service.  It is used when if is more efficient to combine the functions into one execution.
+ * Each type of action is supported through the governance context that provides it with the metadata methods it needs for its specific role.
+ * When you build a governance action service, you extend this governance action service class and access services through the context.
  */
 public abstract class GovernanceActionServiceConnector extends ConnectorBase implements GovernanceActionService,
                                                                                         AuditLoggingComponent

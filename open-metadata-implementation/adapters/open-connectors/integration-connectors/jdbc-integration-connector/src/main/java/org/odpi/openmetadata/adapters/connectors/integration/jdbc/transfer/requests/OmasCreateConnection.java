@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -19,11 +21,12 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
  */
 class OmasCreateConnection implements Function<ConnectionProperties, Optional<String>> {
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final IntegrationContext integrationContext;
+    private final AuditLog           auditLog;
 
-    OmasCreateConnection(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
+    OmasCreateConnection(IntegrationContext integrationContext, AuditLog auditLog)
+    {
+        this.integrationContext = integrationContext;
         this.auditLog = auditLog;
     }
 
@@ -35,15 +38,21 @@ class OmasCreateConnection implements Function<ConnectionProperties, Optional<St
      * @return guid
      */
     @Override
-    public Optional<String> apply(ConnectionProperties newConnectionProperties){
+    public Optional<String> apply(ConnectionProperties newConnectionProperties)
+    {
         String methodName = "OmasCreateConnection";
-        try {
+        try
+        {
+            ConnectionClient connectionClient = integrationContext.getConnectionClient();
             return Optional.ofNullable(
-                    databaseIntegratorContext.createConnection(newConnectionProperties));
-        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
+                    connectionClient.createConnection(new NewElementOptions(connectionClient.getMetadataSourceOptions()), null, newConnectionProperties, null));
+        }
+        catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
+        {
             auditLog.logException("Creating connection with qualified name " + newConnectionProperties.getQualifiedName(),
                     EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
         }
+
         return Optional.empty();
     }
 

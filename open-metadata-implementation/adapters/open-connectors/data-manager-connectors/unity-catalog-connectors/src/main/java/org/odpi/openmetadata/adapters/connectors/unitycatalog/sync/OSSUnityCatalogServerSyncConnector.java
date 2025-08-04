@@ -3,8 +3,6 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
-import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
-import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
@@ -14,6 +12,10 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityC
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
@@ -22,15 +24,14 @@ import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogT
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 
 import java.util.*;
 
 /**
  * OSSUnityCatalogServerSyncConnector synchronizes metadata between Unity Catalog and the Open Metadata Ecosystem.
  */
-public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator,
-                                                                                                 AssetManagerEventListener
+public class    OSSUnityCatalogServerSyncConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator,
+                                                                                               OpenMetadataEventListener
 {
     String       defaultFriendshipGUID  = null;
     List<String> defaultExcludeCatalogs = new ArrayList<>();
@@ -42,21 +43,22 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
         super.start();
 
-        if (connectionDetails.getConfigurationProperties() != null)
+        if (connectionBean.getConfigurationProperties() != null)
         {
-            defaultFriendshipGUID = this.getFriendshipGUID(connectionDetails.getConfigurationProperties());
+            defaultFriendshipGUID = this.getFriendshipGUID(connectionBean.getConfigurationProperties());
             defaultExcludeCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_CATALOG_NAMES.getName(),
-                                                                         connectionDetails.getConfigurationProperties());
+                                                                         connectionBean.getConfigurationProperties());
             defaultIncludeCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_CATALOG_NAMES.getName(),
-                                                                         connectionDetails.getConfigurationProperties());
+                                                                         connectionBean.getConfigurationProperties());
         }
 
         if (defaultFriendshipGUID != null)
@@ -125,9 +127,9 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
 
                         catalogCatalogs(null,
                                         "endpoint",
-                                        this.getContext().getPermittedSynchronization(),
+                                        integrationContext.getPermittedSynchronization(),
                                         this.getTemplates(null),
-                                        connectionDetails.getConfigurationProperties(),
+                                        connectionBean.getConfigurationProperties(),
                                         unityCatalogResourceConnector);
                     }
                     catch (ConnectorCheckedException exception)
@@ -157,10 +159,10 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
          *
          * A listener is registered only if metadata is flowing from the open metadata ecosystem to Unity Catalog (UC).
          */
-        if ((! super.getContext().isListenerRegistered()) &&
+        if ((integrationContext.noListenerRegistered()) &&
                 (lastRefreshCompleteTime != null) &&
-                (super.getContext().getPermittedSynchronization() == PermittedSynchronization.BOTH_DIRECTIONS) ||
-                (super.getContext().getPermittedSynchronization() == PermittedSynchronization.TO_THIRD_PARTY))
+                (integrationContext.getPermittedSynchronization() == PermittedSynchronization.BOTH_DIRECTIONS) ||
+                (integrationContext.getPermittedSynchronization() == PermittedSynchronization.TO_THIRD_PARTY))
         {
             try
             {
@@ -168,7 +170,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
                  * This request registers this connector to receive events from the open metadata ecosystem.  When an event occurs,
                  * the processEvent() method is called.
                  */
-                super.getContext().registerListener(this);
+                integrationContext.registerListener(this);
             }
             catch (Exception error)
             {
@@ -211,14 +213,14 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
             String ucServerGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
             try
             {
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(ucServerGUID, auditLog);
+                Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(ucServerGUID, auditLog);
 
                 OSSUnityCatalogResourceConnector assetConnector = (OSSUnityCatalogResourceConnector) connector;
 
                 assetConnector.setUCInstanceName(connectorName + "::" + requestedCatalogTarget.getCatalogTargetName());
                 assetConnector.start();
 
-                PermittedSynchronization permittedSynchronization = this.getContext().getPermittedSynchronization();
+                PermittedSynchronization permittedSynchronization = integrationContext.getPermittedSynchronization();
 
                 if (requestedCatalogTarget.getPermittedSynchronization() != null)
                 {
@@ -290,7 +292,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
                                                                                  defaultIncludeCatalogs);
 
             OSSUnityCatalogServerSyncCatalog syncCatalog = new OSSUnityCatalogServerSyncCatalog(connectorName,
-                                                                                                this.getContext(),
+                                                                                                integrationContext,
                                                                                                 catalogTargetName,
                                                                                                 ucServerGUID,
                                                                                                 friendshipConnectorGUID,
@@ -304,10 +306,6 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
                                                                                                 auditLog);
 
             syncCatalog.refresh();
-        }
-        catch (ConnectorCheckedException exception)
-        {
-            throw exception;
         }
         catch (Exception exception)
         {
@@ -334,7 +332,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
         if ((configurationProperties != null) &&
                 (configurationProperties.get(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName()) != null))
         {
-            friendshipGUID = connectionDetails.getConfigurationProperties().get(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName()).toString();
+            friendshipGUID = connectionBean.getConfigurationProperties().get(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName()).toString();
         }
 
         return friendshipGUID;
@@ -357,7 +355,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
      * @param event event object - call getEventType to find out what type of event.
      */
     @Override
-    public void processEvent(AssetManagerOutTopicEvent event)
+    public void processEvent(OpenMetadataOutTopicEvent event)
     {
         final String methodName = "processEvent";
 
@@ -365,7 +363,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
          * Only process events if refresh() is not running because the refresh() process creates lots of events and proceeding with event processing
          * at this time causes elements to be processed multiple times.
          */
-        if (! integrationContext.isRefreshInProgress())
+        if (integrationContext.noRefreshInProgress())
         {
             /*
              * Call the appropriate registered module that matches the type.  Notice that multiple modules can be registered for the same type.
@@ -384,7 +382,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
             try
             {
                 if ((lastUpdateTime.after(lastRefreshCompleteTime)) &&
-                    (! lastUpdateUser.equals(super.getContext().getMyUserId())) &&
+                    (! lastUpdateUser.equals(integrationContext.getMyUserId())) &&
                     (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.DATA_ACCESS_MANAGER.typeName)))
                 {
                     /*
@@ -392,7 +390,9 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
                      */
                     int startFrom = 0;
 
-                    List<CatalogTarget> catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
+                    List<CatalogTarget> catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                                            startFrom,
+                                                                                                                            integrationContext.getMaxPageSize());
 
                     while (catalogTargetList != null)
                     {
@@ -402,16 +402,18 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
                                     (isCatalogForTargetServer(elementHeader.getGUID(),
                                                               catalogTarget.getCatalogTargetElement().getGUID())))
                             {
+                                Connector catalogTargetConnector = null;
 
-                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget, null);
-
-                                requestedCatalogTarget.setConfigurationProperties(super.combineConfigurationProperties(catalogTarget.getConfigurationProperties()));
+                                catalogTarget.setConfigurationProperties(super.combineConfigurationProperties(catalogTarget.getConfigurationProperties()));
 
                                 if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
                                 {
-                                    requestedCatalogTarget.setCatalogTargetConnector(integrationContext.getConnectedAssetContext().getConnectorToAsset(catalogTarget.getCatalogTargetElement().getGUID(),
-                                                                                                                                                       auditLog));
+                                    catalogTargetConnector = integrationContext.getConnectedAssetContext().getConnectorForAsset(catalogTarget.getCatalogTargetElement().getGUID(), auditLog);
                                 }
+
+                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget,
+                                                                                                           integrationContext.getCatalogTargetContext(catalogTarget),
+                                                                                                           catalogTargetConnector);
 
                                 auditLog.logMessage(methodName,
                                                     OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
@@ -421,7 +423,9 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
                         }
 
                         startFrom         = startFrom + integrationContext.getMaxPageSize();
-                        catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
+                        catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                            startFrom,
+                                                                                                            integrationContext.getMaxPageSize());
                     }
                 }
             }
@@ -450,11 +454,11 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
         {
             int startFrom = 0;
 
-            RelatedMetadataElementList relatedServers = integrationContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElements(catalogGUID,
-                                                                                                                                                                2,
-                                                                                                                                                                OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
-                                                                                                                                                                startFrom,
-                                                                                                                                                                integrationContext.getMaxPageSize());
+            RelatedMetadataElementList relatedServers = integrationContext.getOpenMetadataStore().getRelatedMetadataElements(catalogGUID,
+                                                                                                                             2,
+                                                                                                                             OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                                                             startFrom,
+                                                                                                                             integrationContext.getMaxPageSize());
 
             while ((relatedServers != null) && (relatedServers.getElementList() != null))
             {
@@ -467,11 +471,11 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
                 }
 
                 startFrom      = startFrom + integrationContext.getMaxPageSize();
-                relatedServers = integrationContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElements(catalogGUID,
-                                                                                                                                         2,
-                                                                                                                                         OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
-                                                                                                                                         startFrom,
-                                                                                                                                         integrationContext.getMaxPageSize());
+                relatedServers = integrationContext.getOpenMetadataStore().getRelatedMetadataElements(catalogGUID,
+                                                                                                      2,
+                                                                                                      OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                                      startFrom,
+                                                                                                      integrationContext.getMaxPageSize());
 
             }
         }

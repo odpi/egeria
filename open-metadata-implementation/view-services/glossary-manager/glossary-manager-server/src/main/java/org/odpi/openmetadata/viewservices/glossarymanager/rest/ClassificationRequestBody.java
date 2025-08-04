@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.glossarymanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 
 import java.util.Date;
 import java.util.Objects;
@@ -16,15 +16,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ClassificationRequestBody describes the request body used when classifying/reclassifying elements.
+ * NewClassificationRequestBody describes the request body used when classifying/reclassifying elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ClassificationRequestBody
 {
-    private ClassificationProperties properties    = null;
-    private Date                     effectiveTime = null;
+    private ClassificationBeanProperties properties    = null;
+    private Date                         effectiveTime = null;
 
 
 
@@ -57,7 +57,7 @@ public class ClassificationRequestBody
      *
      * @return properties object
      */
-    public ClassificationProperties getProperties()
+    public ClassificationBeanProperties getProperties()
     {
         return properties;
     }
@@ -68,7 +68,7 @@ public class ClassificationRequestBody
      *
      * @param properties properties object
      */
-    public void setProperties(ClassificationProperties properties)
+    public void setProperties(ClassificationBeanProperties properties)
     {
         this.properties = properties;
     }
@@ -104,7 +104,7 @@ public class ClassificationRequestBody
     @Override
     public String toString()
     {
-        return "ClassificationRequestBody{" +
+        return "NewClassificationRequestBody{" +
                        ", properties=" + properties +
                        ", effectiveTime=" + effectiveTime +
                        '}';

@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -166,24 +166,24 @@ public class CreateValidValuesSetTest
 
         try
         {
-            ValidValueProperties validValueProperties = new ValidValueProperties();
+            ValidValueDefinitionProperties validValueDefinitionProperties = new ValidValueDefinitionProperties();
 
-            validValueProperties.setTypeName("ValidValuesSet");
-            validValueProperties.setQualifiedName(validValuesSetName);
-            validValueProperties.setDisplayName(validValuesSetDisplayName);
-            validValueProperties.setDescription(validValuesSetDescription);
-            validValueProperties.setUsage(validValuesSetUsage);
-            validValueProperties.setScope(validValuesSetScope);
+            validValueDefinitionProperties.setTypeName("ValidValuesSet");
+            validValueDefinitionProperties.setQualifiedName(validValuesSetName);
+            validValueDefinitionProperties.setDisplayName(validValuesSetDisplayName);
+            validValueDefinitionProperties.setDescription(validValuesSetDescription);
+            validValueDefinitionProperties.setUsage(validValuesSetUsage);
+            validValueDefinitionProperties.setScope(validValuesSetScope);
 
-            String validValuesSetGUID = client.createValidValue(userId, null, null, validValueProperties);
+            String validValuesSetGUID = client.createValidValue(userId, null, null, validValueDefinitionProperties);
 
             if (validValuesSetGUID == null)
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
             }
 
-            ValidValueElement    retrievedElement = client.getValidValueByGUID(userId, validValuesSetGUID);
-            ValidValueProperties retrievedSet     = retrievedElement.getValidValueProperties();
+            ValidValueElement              retrievedElement = client.getValidValueByGUID(userId, validValuesSetGUID);
+            ValidValueDefinitionProperties retrievedSet     = retrievedElement.getProperties();
 
             if (retrievedSet == null)
             {
@@ -233,7 +233,7 @@ public class CreateValidValuesSetTest
             }
 
             retrievedElement = validValueList.get(0);
-            retrievedSet = retrievedElement.getValidValueProperties();
+            retrievedSet = retrievedElement.getProperties();
 
             if (! validValuesSetName.equals(retrievedSet.getQualifiedName()))
             {
@@ -292,18 +292,18 @@ public class CreateValidValuesSetTest
             Map<String, String>  additionalProperties = new HashMap<>();
             additionalProperties.put(validValue1AdditionalPropertyName, validValue1AdditionalPropertyValue);
 
-            ValidValueProperties validValueProperties = new ValidValueProperties();
+            ValidValueDefinitionProperties validValueDefinitionProperties = new ValidValueDefinitionProperties();
 
-            validValueProperties.setTypeName("ValidValuesSet"); // Yes this is deliberate
-            validValueProperties.setQualifiedName(validValue1Name);
-            validValueProperties.setDisplayName(validValue1DisplayName);
-            validValueProperties.setDescription( validValue1Description);
-            validValueProperties.setUsage(validValue1Usage);
-            validValueProperties.setScope(validValue1Scope);
-            validValueProperties.setPreferredValue(validValue1PreferredValue);
-            validValueProperties.setAdditionalProperties(additionalProperties);
+            validValueDefinitionProperties.setTypeName("ValidValuesSet"); // Yes this is deliberate
+            validValueDefinitionProperties.setQualifiedName(validValue1Name);
+            validValueDefinitionProperties.setDisplayName(validValue1DisplayName);
+            validValueDefinitionProperties.setDescription(validValue1Description);
+            validValueDefinitionProperties.setUsage(validValue1Usage);
+            validValueDefinitionProperties.setScope(validValue1Scope);
+            validValueDefinitionProperties.setPreferredValue(validValue1PreferredValue);
+            validValueDefinitionProperties.setAdditionalProperties(additionalProperties);
 
-            String validValue1GUID = client.createValidValue(userId, null, null, validValueProperties);
+            String validValue1GUID = client.createValidValue(userId, null, null, validValueDefinitionProperties);
 
             if (validValue1GUID == null)
             {
@@ -312,8 +312,8 @@ public class CreateValidValuesSetTest
 
             client.setupValidValueMember(userId, null, null, validValueSetGUID, null, validValue1GUID);
 
-            ValidValueElement    retrievedElement  = client.getValidValueByGUID(userId, validValue1GUID);
-            ValidValueProperties retrievedDefinition = retrievedElement.getValidValueProperties();
+            ValidValueElement              retrievedElement    = client.getValidValueByGUID(userId, validValue1GUID);
+            ValidValueDefinitionProperties retrievedDefinition = retrievedElement.getProperties();
 
             if (retrievedDefinition == null)
             {
@@ -371,7 +371,7 @@ public class CreateValidValuesSetTest
             }
 
             retrievedElement = validValueList.get(0);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (retrievedDefinition == null)
             {
@@ -439,7 +439,7 @@ public class CreateValidValuesSetTest
             else
             {
                 retrievedElement = validValueList.get(0);
-                retrievedDefinition = retrievedElement.getValidValueProperties();
+                retrievedDefinition = retrievedElement.getProperties();
             }
 
             if (retrievedDefinition == null)
@@ -477,7 +477,7 @@ public class CreateValidValuesSetTest
              */
             try
             {
-                client.createValidValue(userId, null, null, validValueProperties);
+                client.createValidValue(userId, null, null, validValueDefinitionProperties);
 
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(duplicate create of valid value definition allowed)");
             }
@@ -489,18 +489,18 @@ public class CreateValidValuesSetTest
             /*
              * Now do the second value
              */
-            ValidValueProperties validValueProperties2 = new ValidValueProperties();
+            ValidValueDefinitionProperties validValueDefinitionProperties2 = new ValidValueDefinitionProperties();
 
 
-            validValueProperties2.setTypeName("ValidValuesSet"); // Yes this is deliberate
-            validValueProperties2.setQualifiedName(validValue2Name);
-            validValueProperties2.setDisplayName(validValue2DisplayName);
-            validValueProperties2.setDescription( validValue2Description);
-            validValueProperties2.setUsage(validValue2Usage);
-            validValueProperties2.setScope(validValue2Scope);
-            validValueProperties2.setAdditionalProperties(additionalProperties);
+            validValueDefinitionProperties2.setTypeName("ValidValuesSet"); // Yes this is deliberate
+            validValueDefinitionProperties2.setQualifiedName(validValue2Name);
+            validValueDefinitionProperties2.setDisplayName(validValue2DisplayName);
+            validValueDefinitionProperties2.setDescription(validValue2Description);
+            validValueDefinitionProperties2.setUsage(validValue2Usage);
+            validValueDefinitionProperties2.setScope(validValue2Scope);
+            validValueDefinitionProperties2.setAdditionalProperties(additionalProperties);
 
-            String validValue2GUID = client.createValidValue(userId, null, null, validValueProperties2);
+            String validValue2GUID = client.createValidValue(userId, null, null, validValueDefinitionProperties2);
 
             if (validValue2GUID == null)
             {
@@ -510,7 +510,7 @@ public class CreateValidValuesSetTest
             client.setupValidValueMember(userId, null, null, validValueSetGUID, null, validValue2GUID);
 
             retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (retrievedDefinition == null)
             {
@@ -564,7 +564,7 @@ public class CreateValidValuesSetTest
             }
 
             retrievedElement = validValueList.get(0);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (! validValue2Name.equals(retrievedDefinition.getQualifiedName()))
             {
@@ -632,19 +632,19 @@ public class CreateValidValuesSetTest
             /*
              * Add the preferred value and isDeprecated
              */
-            ValidValueProperties validValueProperties3 = new ValidValueProperties();
-            validValueProperties3.setPreferredValue(validValue2PreferredValue);
-            validValueProperties3.setIsDeprecated(true);
+            ValidValueDefinitionProperties validValueDefinitionProperties3 = new ValidValueDefinitionProperties();
+            validValueDefinitionProperties3.setPreferredValue(validValue2PreferredValue);
+            validValueDefinitionProperties3.setIsDeprecated(true);
 
             client.updateValidValue(userId,
                                     null,
                                     null,
                                     validValue2GUID,
                                     true,
-                                    validValueProperties3);
+                                    validValueDefinitionProperties3);
 
             retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (! validValue2Name.equals(retrievedDefinition.getQualifiedName()))
             {
@@ -681,16 +681,16 @@ public class CreateValidValuesSetTest
              */
             try
             {
-                ValidValueProperties validValueProperties4 = new ValidValueProperties();
+                ValidValueDefinitionProperties validValueDefinitionProperties4 = new ValidValueDefinitionProperties();
 
-                validValueProperties4.setQualifiedName(validValue1Name);
+                validValueDefinitionProperties4.setQualifiedName(validValue1Name);
 
                 client.updateValidValue(userId,
                                         null,
                                         null,
                                         validValue2GUID,
                                         true,
-                                        validValueProperties4);
+                                        validValueDefinitionProperties4);
 
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Duplicate update allowed)");
             }
@@ -703,7 +703,7 @@ public class CreateValidValuesSetTest
              * Valid value 2 should be exactly as it was
              */
             retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (! validValue2Name.equals(retrievedDefinition.getQualifiedName()))
             {
@@ -738,22 +738,22 @@ public class CreateValidValuesSetTest
             /*
              * Update valid value 2 with a new qualified name - this should work ok
              */
-            validValueProperties2.setQualifiedName(validValue2NameUpdate);
-            validValueProperties2.setPreferredValue(validValue2PreferredValue);
-            validValueProperties2.setIsDeprecated(true);
+            validValueDefinitionProperties2.setQualifiedName(validValue2NameUpdate);
+            validValueDefinitionProperties2.setPreferredValue(validValue2PreferredValue);
+            validValueDefinitionProperties2.setIsDeprecated(true);
 
             client.updateValidValue(userId,
                                     null,
                                     null,
                                     validValue2GUID,
                                     false,
-                                    validValueProperties2);
+                                    validValueDefinitionProperties2);
 
             /*
              * Valid value 2 should be updated
              */
             retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (! validValue2NameUpdate.equals(retrievedDefinition.getQualifiedName()))
             {
@@ -809,7 +809,7 @@ public class CreateValidValuesSetTest
             else
             {
                 retrievedElement = validValueList.get(0);
-                retrievedDefinition = retrievedElement.getValidValueProperties();
+                retrievedDefinition = retrievedElement.getProperties();
             }
 
             if (retrievedDefinition == null)

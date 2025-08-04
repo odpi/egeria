@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.feedback;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -16,11 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FeedbackProperties extends RelationshipProperties
+public class FeedbackProperties extends RelationshipBeanProperties
 {
-    private boolean    isPublic  = false;
-
-
     /**
      * Default constructor
      */
@@ -37,35 +34,6 @@ public class FeedbackProperties extends RelationshipProperties
     public FeedbackProperties(FeedbackProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            this.isPublic = template.getIsPublic();
-        }
-    }
-
-
-
-
-    /**
-     * Return whether the feedback is private or not
-     *
-     * @return boolean
-     */
-    public boolean getIsPublic()
-    {
-        return isPublic;
-    }
-
-
-    /**
-     * Set up the privacy flag.
-     *
-     * @param aPrivate boolean
-     */
-    public void setIsPublic(boolean aPrivate)
-    {
-        isPublic = aPrivate;
     }
 
 

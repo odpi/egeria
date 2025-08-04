@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 
 import java.util.ArrayList;
@@ -112,9 +113,10 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
      * OMRSTopicConnector needs to pass on the start() to its embedded connectors.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
@@ -123,9 +125,9 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
         /*
          * Save the name of the connection for error messages.
          */
-        if (super.connectionDetails != null)
+        if (super.connectionBean != null)
         {
-            connectionName = super.connectionDetails.getConnectionName();
+            connectionName = super.connectionBean.getDisplayName();
         }
 
         /*

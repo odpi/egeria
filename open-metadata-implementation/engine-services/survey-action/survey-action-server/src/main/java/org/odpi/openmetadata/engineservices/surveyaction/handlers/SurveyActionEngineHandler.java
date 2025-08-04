@@ -2,17 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
-import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
-import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClient;
-import org.odpi.openmetadata.accessservices.assetowner.client.FileSystemAssetOwner;
-import org.odpi.openmetadata.accessservices.assetowner.client.SurveyAssetStoreClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionAuditCode;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -20,13 +16,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyContext;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
 
@@ -43,11 +40,9 @@ import java.util.Map;
 public class SurveyActionEngineHandler extends GovernanceEngineHandler
 {
     private final ConnectedAssetClient connectedAssetClient;    /* Initialized in constructor */
-    private final FileSystemAssetOwner fileSystemAssetOwner;    /* Initialized in constructor */
-    private final CSVFileAssetOwner    csvFileAssetOwner;    /* Initialized in constructor */
     private final OpenMetadataClient   openMetadataClient;      /* Initialized in constructor */
 
-    private final PropertyHelper propertyHelper = new PropertyHelper();
+    private final PropertyHelper       propertyHelper   = new PropertyHelper();
 
     /**
      * Create a client-side object for calling a survey action engine.
@@ -58,23 +53,19 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @param configurationClient client to retrieve the configuration
      * @param engineActionClient client used by the engine host services to control the execution of governance action requests
      * @param connectedAssetClient REST client from the OCF that is linked to the Asset Owner OMAS
-     * @param fileSystemAssetOwner REST client that is linked to the Asset Owner OMAS
-     * @param csvFileAssetOwner REST client that is linked to the Asset Owner OMAS
      * @param openMetadataClient REST Client from the GAF that is linked to the Asset Owner OMAS
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
-    public SurveyActionEngineHandler(EngineConfig                        engineConfig,
-                                     String                              serverName,
-                                     String                              serverUserId,
+    public SurveyActionEngineHandler(EngineConfig                  engineConfig,
+                                     String                        serverName,
+                                     String                        serverUserId,
                                      GovernanceConfigurationClient configurationClient,
-                                     GovernanceContextClient             engineActionClient,
-                                     ConnectedAssetClient                connectedAssetClient,
-                                     FileSystemAssetOwner                fileSystemAssetOwner,
-                                     CSVFileAssetOwner                   csvFileAssetOwner,
-                                     OpenMetadataClient                  openMetadataClient,
-                                     AuditLog                            auditLog,
-                                     int                                 maxPageSize)
+                                     GovernanceContextClient       engineActionClient,
+                                     ConnectedAssetClient          connectedAssetClient,
+                                     OpenMetadataClient            openMetadataClient,
+                                     AuditLog                      auditLog,
+                                     int                           maxPageSize)
     {
         super(engineConfig,
               serverName,
@@ -86,8 +77,6 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
               maxPageSize);
 
         this.connectedAssetClient = connectedAssetClient;
-        this.fileSystemAssetOwner = fileSystemAssetOwner;
-        this.csvFileAssetOwner    = csvFileAssetOwner;
         this.openMetadataClient   = openMetadataClient;
     }
 
@@ -238,7 +227,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                         assetGUID = actionTargetElement.getTargetElement().getElementGUID();
                         engineActionClient.updateActionTargetStatus(serverUserId,
                                                                     actionTargetElement.getActionTargetRelationshipGUID(),
-                                                                    EngineActionStatus.IN_PROGRESS,
+                                                                    ActivityStatus.IN_PROGRESS,
                                                                     new Date(),
                                                                     null,
                                                                     null);
@@ -260,8 +249,6 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                                                                ignoredAssets.toString()));
             }
         }
-
-
 
         return assetGUID;
     }
@@ -316,29 +303,37 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                               requestType,
                                                               engineActionGUID);
 
-        SurveyAssetStore assetStore = new SurveyAssetStoreClient(assetGUID,
-                                                                 engineUserId,
-                                                                 connectedAssetClient,
-                                                                 fileSystemAssetOwner,
-                                                                 csvFileAssetOwner,
-                                                                 auditLog);
 
-        SurveyOpenMetadataStore openMetadataStore = new SurveyOpenMetadataStore(openMetadataClient,
-                                                                                engineUserId,
-                                                                                null,
-                                                                                null,
-                                                                                engineActionGUID);
+        SurveyAssetStore assetStore = new SurveyAssetStore(assetGUID,
+                                                           engineUserId,
+                                                           connectedAssetClient,
+                                                           new AssetHandler(serverName,
+                                                                            auditLog,
+                                                                            engineServiceName,
+                                                                            openMetadataClient),
+                                                           auditLog);
 
-        SurveyContext surveyContext = new SurveyContext(engineUserId,
+
+        SurveyContext surveyContext = new SurveyContext(serverName,
+                                                        engineServiceName,
+                                                        null,
+                                                        null,
+                                                        engineActionGUID,
+                                                        governanceServiceCache.getGovernanceServiceName(),
+                                                        engineUserId,
+                                                        governanceServiceCache.getGovernanceServiceGUID(),
+                                                        governanceServiceCache.getGenerateIntegrationReport(),
+                                                        openMetadataClient,
+                                                        auditLog,
+                                                        maxPageSize,
+                                                        governanceServiceCache.getDeleteMethod(),
                                                         assetGUID,
                                                         analysisParameters,
                                                         actionTargetElements,
                                                         assetStore,
                                                         annotationStore,
-                                                        openMetadataStore,
                                                         governanceServiceCache.getGovernanceServiceName(),
-                                                        requesterUserId,
-                                                        auditLog);
+                                                        requesterUserId);
 
         return new SurveyActionServiceHandler(governanceEngineProperties,
                                               governanceEngineGUID,

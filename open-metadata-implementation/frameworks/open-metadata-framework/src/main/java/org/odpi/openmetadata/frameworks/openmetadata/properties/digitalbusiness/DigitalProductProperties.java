@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.DigitalProductStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -27,11 +26,9 @@ public class DigitalProductProperties extends CollectionProperties
     private String userDefinedStatus = null;
     private String productName       = null;
     private String identifier        = null;
-    private String productType       = null;
     private Date   introductionDate  = null;
     private String maturity          = null;
     private String serviceLife       = null;
-    private String currentVersion    = null;
     private Date   nextVersionDate   = null;
     private Date   withdrawDate      = null;
 
@@ -59,14 +56,12 @@ public class DigitalProductProperties extends CollectionProperties
         {
             userDefinedStatus = template.getUserDefinedStatus();
             productName       = template.getProductName();
-            productType = template.getProductType();
-            identifier = template.getIdentifier();
-            introductionDate = template.getIntroductionDate();
-            maturity = template.getMaturity();
-            serviceLife = template.getServiceLife();
-            currentVersion  = template.getCurrentVersion();
-            nextVersionDate = template.getNextVersionDate();
-            withdrawDate    = template.getWithdrawDate();
+            identifier        = template.getIdentifier();
+            introductionDate  = template.getIntroductionDate();
+            maturity          = template.getMaturity();
+            serviceLife       = template.getServiceLife();
+            nextVersionDate   = template.getNextVersionDate();
+            withdrawDate      = template.getWithdrawDate();
         }
     }
 
@@ -137,27 +132,6 @@ public class DigitalProductProperties extends CollectionProperties
     }
 
 
-    /**
-     * Return the type of product.
-     *
-     * @return string name
-     */
-    public String getProductType()
-    {
-        return productType;
-    }
-
-
-    /**
-     * Set up the type of product.
-     *
-     * @param productType string name
-     */
-    public void setProductType(String productType)
-    {
-        this.productType = productType;
-    }
-
 
     /**
      * Return the date that the product was added to the market.
@@ -226,28 +200,6 @@ public class DigitalProductProperties extends CollectionProperties
 
 
     /**
-     * Return the identifier of the current version.
-     *
-     * @return string name
-     */
-    public String getCurrentVersion()
-    {
-        return currentVersion;
-    }
-
-
-    /**
-     * Set up the identifier of the current version.
-     *
-     * @param currentVersion string name
-     */
-    public void setCurrentVersion(String currentVersion)
-    {
-        this.currentVersion = currentVersion;
-    }
-
-
-    /**
      * Return the date of the next version of the digital service.
      *
      * @return date
@@ -305,11 +257,9 @@ public class DigitalProductProperties extends CollectionProperties
                 "userDefinedStatus=" + userDefinedStatus +
                 ", productName='" + productName + '\'' +
                 ", identifier='" + identifier + '\'' +
-                ", productType='" + productType + '\'' +
                 ", introductionDate=" + introductionDate +
                 ", maturity='" + maturity + '\'' +
                 ", serviceLife='" + serviceLife + '\'' +
-                ", currentVersion='" + currentVersion + '\'' +
                 ", nextVersionDate=" + nextVersionDate +
                 ", withdrawDate=" + withdrawDate +
                 "} " + super.toString();
@@ -338,11 +288,13 @@ public class DigitalProductProperties extends CollectionProperties
             return false;
         }
         return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                       Objects.equals(productName, that.productName) && Objects.equals(identifier, that.identifier) &&
-                       Objects.equals(productType, that.productType) &&
-                       Objects.equals(introductionDate, that.introductionDate) && Objects.equals(maturity, that.maturity) &&
-                       Objects.equals(serviceLife, that.serviceLife) && Objects.equals(currentVersion, that.currentVersion) &&
-                       Objects.equals(nextVersionDate, that.nextVersionDate) && Objects.equals(withdrawDate, that.withdrawDate);
+                       Objects.equals(productName, that.productName) &&
+                       Objects.equals(identifier, that.identifier) &&
+                       Objects.equals(introductionDate, that.introductionDate) &&
+                       Objects.equals(maturity, that.maturity) &&
+                       Objects.equals(serviceLife, that.serviceLife)  &&
+                       Objects.equals(nextVersionDate, that.nextVersionDate) &&
+                       Objects.equals(withdrawDate, that.withdrawDate);
     }
 
 
@@ -354,7 +306,7 @@ public class DigitalProductProperties extends CollectionProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), userDefinedStatus, productName, productType, introductionDate,
-                            maturity, serviceLife, currentVersion, nextVersionDate, withdrawDate, identifier);
+        return Objects.hash(super.hashCode(), userDefinedStatus, productName, introductionDate,
+                            maturity, serviceLife, nextVersionDate, withdrawDate, identifier);
     }
 }

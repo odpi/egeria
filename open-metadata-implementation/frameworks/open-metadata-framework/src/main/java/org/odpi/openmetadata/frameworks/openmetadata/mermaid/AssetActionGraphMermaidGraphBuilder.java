@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataNodeSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -25,17 +25,7 @@ public class AssetActionGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
      */
     public AssetActionGraphMermaidGraphBuilder(AssetGraph assetGraph)
     {
-        String currentDisplayName = assetGraph.getProperties().getDisplayName();
-
-        if (currentDisplayName == null)
-        {
-            currentDisplayName = assetGraph.getProperties().getName();
-        }
-
-        if (currentDisplayName == null)
-        {
-            currentDisplayName = assetGraph.getProperties().getQualifiedName();
-        }
+        String currentDisplayName = super.getNodeDisplayName(assetGraph);
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Actions associated with Asset - ");
@@ -64,67 +54,18 @@ public class AssetActionGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                 }
             }
 
-            for (MetadataRelationship line : assetGraph.getRelationships())
+            for (RelatedMetadataNodeSummary line : assetGraph.getRelationships())
             {
                 if ((line != null) &&
-                        (propertyHelper.isTypeOf(line, Arrays.asList(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
-                                                                     OpenMetadataType.TARGET_FOR_ACTION_RELATIONSHIP.typeName,
+                        (propertyHelper.isTypeOf(line.getRelationshipHeader(), Arrays.asList(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                     OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                                      OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeName,
                                                                      OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
                                                                      OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName))))
                 {
-                    VisualStyle visualStyle = getVisualStyleForRelationship(line);
+                    VisualStyle visualStyle = getVisualStyleForRelationship(line.getRelationshipHeader());
 
-                    String endName = line.getEnd1().getGUID();
-                    if (line.getEnd1().getUniqueName() != null)
-                    {
-                        endName = line.getEnd1().getUniqueName();
-                    }
-
-                    if (nodeMap.get(line.getEnd1().getGUID()) != null)
-                    {
-                        MetadataElementSummary node = nodeMap.get(line.getEnd1().getGUID());
-
-                        appendNewMermaidNode(node.getElementHeader().getGUID(),
-                                             super.getNodeDisplayName(node),
-                                             node.getElementHeader().getType().getTypeName(),
-                                             getVisualStyleForEntity(node.getElementHeader(), visualStyle));
-                    }
-                    else
-                    {
-                        appendNewMermaidNode(line.getEnd1().getGUID(),
-                                             endName,
-                                             line.getEnd1().getType().getTypeName(),
-                                             getVisualStyleForEntity(line.getEnd1(), visualStyle));
-                    }
-
-                    endName = line.getEnd2().getGUID();
-                    if (line.getEnd2().getUniqueName() != null)
-                    {
-                        endName = line.getEnd2().getUniqueName();
-                    }
-
-                    if (nodeMap.get(line.getEnd2().getGUID()) != null)
-                    {
-                        MetadataElementSummary node = nodeMap.get(line.getEnd2().getGUID());
-
-                        appendNewMermaidNode(node.getElementHeader().getGUID(),
-                                             super.getNodeDisplayName(node),
-                                             node.getElementHeader().getType().getTypeName(),
-                                             getVisualStyleForEntity(node.getElementHeader(), visualStyle));
-                    }
-                    else
-                    {
-                        appendNewMermaidNode(line.getEnd2().getGUID(),
-                                             endName,
-                                             line.getEnd2().getType().getTypeName(),
-                                             getVisualStyleForEntity(line.getEnd2(), visualStyle));
-                    }
-
-                    super.appendMermaidDottedLine(line.getGUID(),
-                                                  line.getEnd1().getGUID(),
-                                                  getActionLabel(line),
-                                                  line.getEnd2().getGUID());
+                    super.addRelatedNodeSummary(line, getVisualStyleForEntity(line.getRelationshipHeader(), visualStyle));
                 }
             }
         }
@@ -141,25 +82,25 @@ public class AssetActionGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
      * @param line relationship
      * @return label
      */
-    private String getActionLabel(MetadataRelationship line)
+    private String getActionLabel(RelatedMetadataNodeSummary line)
     {
         Object label = null;
 
-        if (line.getProperties() != null)
+        if (line.getRelationshipProperties() != null)
         {
-            label = line.getProperties().get(OpenMetadataProperty.SEVERITY_LEVEL_IDENTIFIER.name);
+            label = line.getRelationshipProperties().get(OpenMetadataProperty.SEVERITY_LEVEL_IDENTIFIER.name);
 
             if (label != null)
             {
-                label = line.getProperties().get(OpenMetadataProperty.ACTION_TARGET_NAME.name);
+                label = line.getRelationshipProperties().get(OpenMetadataProperty.ACTION_TARGET_NAME.name);
 
                 if (label != null)
                 {
-                    Object status = line.getProperties().get(OpenMetadataProperty.STATUS.name);
+                    Object status = line.getRelationshipProperties().get(OpenMetadataProperty.STATUS.name);
 
                     if (status == null)
                     {
-                        status = line.getProperties().get(OpenMetadataProperty.TO_DO_STATUS.name);
+                        status = line.getRelationshipProperties().get(OpenMetadataProperty.ACTIVITY_STATUS.name);
                     }
 
                     if (status != null)
@@ -171,10 +112,10 @@ public class AssetActionGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 
             if (label != null)
             {
-                return super.addSpacesToTypeName(line.getType().getTypeName()) + " " + label;
+                return super.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName()) + " " + label;
             }
         }
 
-        return super.addSpacesToTypeName(line.getType().getTypeName());
+        return super.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName());
     }
 }

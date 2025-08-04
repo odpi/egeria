@@ -3,13 +3,15 @@
 package org.odpi.openmetadata.viewservices.templatemanager.server;
 
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -68,29 +70,15 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setGUID(handler.createMetadataElementInStore(userId,
-                                                                      requestBody.getExternalSourceGUID(),
-                                                                      requestBody.getExternalSourceName(),
-                                                                      requestBody.getTypeName(),
-                                                                      requestBody.getInitialStatus(),
+                                                                      requestBody,
                                                                       requestBody.getInitialClassifications(),
-                                                                      requestBody.getAnchorGUID(),
-                                                                      requestBody.getIsOwnAnchor(),
-                                                                      requestBody.getAnchorScopeGUID(),
-                                                                      requestBody.getEffectiveFrom(),
-                                                                      requestBody.getEffectiveTo(),
                                                                       requestBody.getProperties(),
-                                                                      requestBody.getParentGUID(),
-                                                                      requestBody.getParentRelationshipTypeName(),
-                                                                      requestBody.getParentRelationshipProperties(),
-                                                                      requestBody.getParentAtEnd1(),
-                                                                      requestBody.getForLineage(),
-                                                                      requestBody.getForDuplicateProcessing(),
-                                                                      requestBody.getEffectiveTime()));
+                                                                      requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -119,8 +107,8 @@ public class TemplateManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public GUIDResponse createMetadataElementFromTemplate(String              serverName,
-                                                          TemplateRequestBody requestBody)
+    public GUIDResponse createMetadataElementFromTemplate(String                          serverName,
+                                                          OpenMetadataTemplateRequestBody requestBody)
     {
         final String methodName = "createMetadataElementFromTemplate";
 
@@ -136,29 +124,16 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setGUID(handler.createMetadataElementFromTemplate(userId,
-                                                                           requestBody.getExternalSourceGUID(),
-                                                                           requestBody.getExternalSourceName(),
-                                                                           requestBody.getTypeName(),
-                                                                           requestBody.getAnchorGUID(),
-                                                                           requestBody.getIsOwnAnchor(),
-                                                                           requestBody.getAnchorScopeGUID(),
-                                                                           requestBody.getEffectiveFrom(),
-                                                                           requestBody.getEffectiveTo(),
+                                                                           requestBody,
                                                                            requestBody.getTemplateGUID(),
                                                                            requestBody.getReplacementProperties(),
                                                                            requestBody.getPlaceholderPropertyValues(),
-                                                                           requestBody.getParentGUID(),
-                                                                           requestBody.getParentRelationshipTypeName(),
-                                                                           requestBody.getParentRelationshipProperties(),
-                                                                           requestBody.getParentAtEnd1(),
-                                                                           requestBody.getForLineage(),
-                                                                           requestBody.getForDuplicateProcessing(),
-                                                                           requestBody.getEffectiveTime()));
+                                                                           requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -207,19 +182,14 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.updateMetadataElementInStore(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
                                                      metadataElementGUID,
-                                                     requestBody.getReplaceProperties(),
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getProperties(),
-                                                     requestBody.getEffectiveTime());
+                                                     requestBody,
+                                                     requestBody.getProperties());
             }
             else
             {
@@ -267,18 +237,14 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.updateMetadataElementStatusInStore(userId,
-                                                           requestBody.getExternalSourceGUID(),
-                                                           requestBody.getExternalSourceName(),
                                                            metadataElementGUID,
-                                                           requestBody.getForLineage(),
-                                                           requestBody.getForDuplicateProcessing(),
-                                                           requestBody.getNewStatus(),
-                                                           requestBody.getEffectiveTime());
+                                                           requestBody,
+                                                           requestBody.getNewStatus());
             }
             else
             {
@@ -326,19 +292,15 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.updateMetadataElementEffectivityInStore(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
                                                                 metadataElementGUID,
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
+                                                                requestBody,
                                                                 requestBody.getEffectiveFrom(),
-                                                                requestBody.getEffectiveTo(),
-                                                                requestBody.getEffectiveTime());
+                                                                requestBody.getEffectiveTo());
             }
             else
             {
@@ -360,18 +322,16 @@ public class TemplateManagerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
-     * @param requestBody null request body
+     * @param requestBody delete request body
      *
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public  VoidResponse deleteMetadataElementInStore(String                    serverName,
-                                                      String                    metadataElementGUID,
-                                                      boolean                   cascadedDelete,
-                                                      MetadataSourceRequestBody requestBody)
+    public  VoidResponse deleteMetadataElementInStore(String                        serverName,
+                                                      String                        metadataElementGUID,
+                                                      OpenMetadataDeleteRequestBody requestBody)
     {
         final String methodName = "deleteMetadataElementInStore";
 
@@ -387,18 +347,11 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.deleteMetadataElementInStore(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     metadataElementGUID,
-                                                     cascadedDelete,
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
+                handler.deleteMetadataElementInStore(userId, metadataElementGUID, requestBody);
             }
             else
             {
@@ -427,9 +380,9 @@ public class TemplateManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not authorized to archive this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public  VoidResponse archiveMetadataElementInStore(String             serverName,
-                                                       String             metadataElementGUID,
-                                                       ArchiveRequestBody requestBody)
+    public  VoidResponse archiveMetadataElementInStore(String            serverName,
+                                                       String            metadataElementGUID,
+                                                       DeleteRequestBody requestBody)
     {
         final String methodName = "archiveMetadataElementInStore";
 
@@ -445,18 +398,13 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.archiveMetadataElementInStore(userId,
-                                                      requestBody.getExternalSourceGUID(),
-                                                      requestBody.getExternalSourceName(),
                                                       metadataElementGUID,
-                                                      requestBody.getArchiveProperties(),
-                                                      requestBody.getForLineage(),
-                                                      requestBody.getForDuplicateProcessing(),
-                                                      requestBody.getEffectiveTime());
+                                                      requestBody);
             }
             else
             {
@@ -492,7 +440,7 @@ public class TemplateManagerRESTServices extends TokenController
     public VoidResponse classifyMetadataElementInStore(String                       serverName,
                                                        String                       metadataElementGUID,
                                                        String                       classificationName,
-                                                       NewClassificationRequestBody requestBody)
+                                                       NewOpenMetadataClassificationRequestBody requestBody)
     {
         final String methodName = "classifyMetadataElementInStore";
 
@@ -508,21 +456,15 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.classifyMetadataElementInStore(userId,
-                                                      requestBody.getExternalSourceGUID(),
-                                                      requestBody.getExternalSourceName(),
-                                                      metadataElementGUID,
-                                                      classificationName,
-                                                      requestBody.getForLineage(),
-                                                      requestBody.getForDuplicateProcessing(),
-                                                      requestBody.getEffectiveFrom(),
-                                                      requestBody.getEffectiveTo(),
-                                                      requestBody.getProperties(),
-                                                      requestBody.getEffectiveTime());
+                                                       metadataElementGUID,
+                                                       classificationName,
+                                                       requestBody,
+                                                       requestBody.getProperties());
             }
             else
             {
@@ -572,20 +514,15 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.reclassifyMetadataElementInStore(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
                                                          metadataElementGUID,
                                                          classificationName,
-                                                         requestBody.getReplaceProperties(),
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getProperties(),
-                                                         requestBody.getEffectiveTime());
+                                                         requestBody,
+                                                         requestBody.getProperties());
             }
             else
             {
@@ -635,20 +572,16 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.updateClassificationEffectivityInStore(userId,
-                                                               requestBody.getExternalSourceGUID(),
-                                                               requestBody.getExternalSourceName(),
                                                                metadataElementGUID,
                                                                classificationName,
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
+                                                               requestBody,
                                                                requestBody.getEffectiveFrom(),
-                                                               requestBody.getEffectiveTo(),
-                                                               requestBody.getEffectiveTime());
+                                                               requestBody.getEffectiveTo());
             }
             else
             {
@@ -697,18 +630,14 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.declassifyMetadataElementInStore(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
                                                          metadataElementGUID,
                                                          classificationName,
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getEffectiveTime());
+                                                         requestBody);
             }
             else
             {
@@ -755,22 +684,16 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setGUID(handler.createRelatedElementsInStore(userId,
-                                                                      requestBody.getExternalSourceGUID(),
-                                                                      requestBody.getExternalSourceName(),
                                                                       requestBody.getTypeName(),
                                                                       requestBody.getMetadataElement1GUID(),
                                                                       requestBody.getMetadataElement2GUID(),
-                                                                      requestBody.getForLineage(),
-                                                                      requestBody.getForDuplicateProcessing(),
-                                                                      requestBody.getEffectiveFrom(),
-                                                                      requestBody.getEffectiveTo(),
-                                                                      requestBody.getProperties(),
-                                                                      requestBody.getEffectiveTime()));
+                                                                      requestBody,
+                                                                      requestBody.getProperties()));
             }
             else
             {
@@ -818,19 +741,14 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.updateRelationshipInStore(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
                                                   relationshipGUID,
-                                                  requestBody.getReplaceProperties(),
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getProperties(),
-                                                  requestBody.getEffectiveTime());
+                                                  requestBody,
+                                                  requestBody.getProperties());
             }
             else
             {
@@ -878,19 +796,15 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.updateRelationshipEffectivityInStore(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
                                                              relationshipGUID,
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody,
                                                              requestBody.getEffectiveFrom(),
-                                                             requestBody.getEffectiveTo(),
-                                                             requestBody.getEffectiveTime());
+                                                             requestBody.getEffectiveTo());
             }
             else
             {
@@ -912,16 +826,16 @@ public class TemplateManagerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param relationshipGUID unique identifier of the relationship to delete
-     * @param requestBody null request body
+     * @param requestBody  options to control access to open metadata
      *
      * @return void or
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse deleteRelatedElementsInStore(String                    serverName,
-                                                     String                    relationshipGUID,
-                                                     MetadataSourceRequestBody requestBody)
+    public VoidResponse deleteRelatedElementsInStore(String                        serverName,
+                                                     String                        relationshipGUID,
+                                                     OpenMetadataDeleteRequestBody requestBody)
     {
         final String methodName = "deleteRelatedElementsInStore";
 
@@ -937,17 +851,73 @@ public class TemplateManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.deleteRelationshipInStore(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
                                                   relationshipGUID,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
+                                                  requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Delete all relationships of a particular type between two metadata elements.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param requestBody  options to control access to open metadata
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse detachRelatedElementsInStore(String                        serverName,
+                                                     String                        relationshipTypeName,
+                                                     String                        metadataElement1GUID,
+                                                     String                        metadataElement2GUID,
+                                                     OpenMetadataDeleteRequestBody requestBody)
+    {
+        final String methodName = "detachRelatedElementsInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachRelatedElementsInStore(userId,
+                                                     relationshipTypeName,
+                                                     metadataElement1GUID,
+                                                     metadataElement2GUID,
+                                                     requestBody);
             }
             else
             {

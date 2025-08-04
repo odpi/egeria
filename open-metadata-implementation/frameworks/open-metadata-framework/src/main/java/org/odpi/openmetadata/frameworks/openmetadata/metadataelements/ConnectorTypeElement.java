@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,10 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ConnectorTypeElement implements MetadataElement
+public class ConnectorTypeElement extends OpenMetadataRootElement
 {
-    private ConnectorTypeProperties properties    = null;
-    private ElementHeader           elementHeader = null;
+    private List<RelatedMetadataElementSummary> connections = null;
 
 
     /**
@@ -41,58 +41,42 @@ public class ConnectorTypeElement implements MetadataElement
      */
     public ConnectorTypeElement(ConnectorTypeElement template)
     {
+        super (template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties    = template.getProperties();
+            connections = template.getConnections();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Copy/clone constructor
      *
-     * @return element header object
+     * @param template object to copy
      */
-    @Override
-    public ElementHeader getElementHeader()
+    public ConnectorTypeElement(OpenMetadataRootElement template)
     {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
+        super (template);
     }
 
 
 
     /**
-     * Return the properties for the connector type.
+     * Return the connections using this connector type.
      *
-     * @return asset properties (using appropriate subclass)
+     * @return list
      */
-    public ConnectorTypeProperties getProperties()
+    public List<RelatedMetadataElementSummary> getConnections()
     {
-        return properties;
+        return connections;
     }
 
 
-    /**
-     * Set up the properties for the connector type.
-     *
-     * @param properties asset properties
-     */
-    public void setProperties(ConnectorTypeProperties properties)
+
+    public void setConnections(List<RelatedMetadataElementSummary> connections)
     {
-        this.properties = properties;
+        this.connections = connections;
     }
 
 
@@ -105,11 +89,9 @@ public class ConnectorTypeElement implements MetadataElement
     public String toString()
     {
         return "ConnectorTypeElement{" +
-                       "connectorTypeProperties=" + properties +
-                       ", elementHeader=" + elementHeader +
-                       '}';
+                "connections=" + connections +
+                "} " + super.toString();
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -120,17 +102,11 @@ public class ConnectorTypeElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         ConnectorTypeElement that = (ConnectorTypeElement) objectToCompare;
-        return Objects.equals(getProperties(), that.getProperties()) &&
-                       Objects.equals(getElementHeader(), that.getElementHeader());
+        return Objects.equals(connections, that.connections);
     }
 
 
@@ -142,6 +118,6 @@ public class ConnectorTypeElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), connections);
     }
 }

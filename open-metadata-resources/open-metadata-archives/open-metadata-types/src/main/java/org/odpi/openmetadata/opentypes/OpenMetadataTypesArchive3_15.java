@@ -9,8 +9,6 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
@@ -163,7 +161,6 @@ public class OpenMetadataTypesArchive3_15
          * Calls for new and changed types go here
          */
         updateGovernanceEngines();
-        updateEngineActions();
         update0710DigitalServices();
         update0735SolutionPortsAndWires();
     }
@@ -212,66 +209,6 @@ public class OpenMetadataTypesArchive3_15
      */
 
 
-    /**
-     * Allow a governance service to record a message as part of its completion.  This is particularly useful if it fails.
-     */
-    private void updateEngineActions()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
-        this.archiveBuilder.addTypeDefPatch(updateTargetForActionRelationship());
-    }
-
-
-    private TypeDefPatch updateEngineActionEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ENGINE_ACTION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_MESSAGE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateTargetForActionRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TARGET_FOR_ACTION_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_MESSAGE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
     private void update0710DigitalServices()
     {
         this.archiveBuilder.addTypeDefPatch(updateDigitalProductEntity());
@@ -295,11 +232,9 @@ public class OpenMetadataTypesArchive3_15
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTRODUCTION_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MATURITY));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVICE_LIFE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CURRENT_VERSION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NEXT_VERSION_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.WITHDRAW_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));

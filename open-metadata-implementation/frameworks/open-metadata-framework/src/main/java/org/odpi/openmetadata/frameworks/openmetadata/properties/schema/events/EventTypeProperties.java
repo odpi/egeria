@@ -49,20 +49,6 @@ public class EventTypeProperties extends RootSchemaTypeProperties
     @Override
     public String toString()
     {
-        return "EventTypeProperties{" +
-                       "versionNumber='" + getVersionIdentifier() + '\'' +
-                       ", author='" + getAuthor() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
-                       ", encodingStandard='" + getEncodingStandard() + '\'' +
-                       ", namespace='" + getNamespace() + '\'' +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "EventTypeProperties{} " + super.toString();
     }
 }

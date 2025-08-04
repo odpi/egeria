@@ -88,7 +88,14 @@ public enum Colour
     WHITE_ORANGE ("#ffe3cc"),
     PALE_ORANGE  ("#ffab66"),
 
+    /* Actors */
+    DARK_ORANGE("#FF8c00"),
 
+    MEDIUM_PURPLE("#9370db"),
+    BLUE_VIOLET("#8a2be2"),
+    DARK_MAGENTA("#8b008b"),
+    MEDIUM_VIOLET_RED("#c71585"),
+    LIGHT_PINK("#ffb6c1"),
     ;
 
     private final String colourNumber;

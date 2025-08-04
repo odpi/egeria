@@ -9,21 +9,21 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaInfo;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,9 +54,10 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      * @param excludeNames list of catalogs to ignore (and include all others)
      * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     public OSSUnityCatalogInsideCatalogSyncSchema(String                           connectorName,
-                                                  CatalogIntegratorContext         context,
+                                                  IntegrationContext               context,
                                                   String                           catalogTargetName,
                                                   String                           catalogGUID,
                                                   String                           catalogName,
@@ -68,7 +69,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                   Map<String, Object>              configurationProperties,
                                                   List<String>                     excludeNames,
                                                   List<String>                     includeNames,
-                                                  AuditLog                         auditLog)
+                                                  AuditLog                         auditLog) throws UserNotAuthorizedException
     {
         super(connectorName,
               context,
@@ -115,7 +116,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                              catalogName,
                                                                              connectorName,
                                                                              deployedImplementationType.getAssociatedTypeName(),
-                                                                             openMetadataAccess,
+                                                                             openMetadataStore,
                                                                              targetPermittedSynchronization,
                                                                              context.getMaxPageSize(),
                                                                              auditLog);
@@ -247,7 +248,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        final String parentLinkTypeName = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName;
+        final String parentLinkTypeName = OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName;
         final boolean parentAtEnd1 = true;
 
         String ucSchemaGUID;
@@ -255,65 +256,66 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         if (templateGUID != null)
         {
-            ucSchemaGUID = openMetadataAccess.getMetadataElementFromTemplate(catalogGUID,
-                                                                             catalogQualifiedName,
-                                                                             deployedImplementationType.getAssociatedTypeName(),
-                                                                             catalogGUID,
-                                                                             false,
-                                                                             null,
-                                                                             null,
-                                                                             null,
-                                                                             templateGUID,
-                                                                             null,
-                                                                             this.getPlaceholderProperties(schemaInfo),
-                                                                             catalogGUID,
-                                                                             parentLinkTypeName,
-                                                                             propertyHelper.addEnumProperty(null,
-                                                                                                            OpenMetadataProperty.USE_TYPE.name,
-                                                                                                            ServerAssetUseType.getOpenTypeName(),
-                                                                                                            ServerAssetUseType.OWNS.getName()),
-                                                                             parentAtEnd1);
+            TemplateOptions templateOptions = new TemplateOptions(super.getMetadataSourceOptions());
+
+            templateOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
+            templateOptions.setAnchorGUID(catalogGUID);
+            templateOptions.setIsOwnAnchor(false);
+            templateOptions.setAnchorScopeGUID(catalogGUID);
+
+            templateOptions.setParentGUID(catalogGUID);
+            templateOptions.setParentAtEnd1(parentAtEnd1);
+            templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
+
+            ucSchemaGUID = openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+                                                                               templateGUID,
+                                                                               null,
+                                                                               this.getPlaceholderProperties(schemaInfo),
+                                                                               new NewElementProperties(propertyHelper.addEnumProperty(null,
+                                                                                                                                       OpenMetadataProperty.USE_TYPE.name,
+                                                                                                                                       CapabilityAssetUseType.getOpenTypeName(),
+                                                                                                                                       CapabilityAssetUseType.OWNS.getName())));
         }
         else
         {
-            ucSchemaGUID = openMetadataAccess.createMetadataElementInStore(catalogGUID,
-                                                                           catalogQualifiedName,
-                                                                           deployedImplementationType.getAssociatedTypeName(),
-                                                                           ElementStatus.ACTIVE,
-                                                                           null,
-                                                                           catalogGUID,
-                                                                           false,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           this.getElementProperties(qualifiedName, schemaInfo),
-                                                                           catalogGUID,
-                                                                           parentLinkTypeName,
-                                                                           propertyHelper.addEnumProperty(null,
-                                                                                                          OpenMetadataProperty.USE_TYPE.name,
-                                                                                                          ServerAssetUseType.getOpenTypeName(),
-                                                                                                          ServerAssetUseType.OWNS.getName()),
-                                                                           parentAtEnd1);
+            NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
+
+            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+            newElementOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
+
+            newElementOptions.setAnchorGUID(catalogGUID);
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorScopeGUID(catalogGUID);
+
+            newElementOptions.setParentGUID(catalogGUID);
+            newElementOptions.setParentAtEnd1(parentAtEnd1);
+            newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
+
+            ucSchemaGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+                                                                          null,
+                                                                          new NewElementProperties(this.getElementProperties(qualifiedName, schemaInfo)),
+                                                                          new NewElementProperties(propertyHelper.addEnumProperty(null,
+                                                                                                                                  OpenMetadataProperty.USE_TYPE.name,
+                                                                                                                                  CapabilityAssetUseType.getOpenTypeName(),
+                                                                                                                                  CapabilityAssetUseType.OWNS.getName())));
         }
 
         super.addPropertyFacet(ucSchemaGUID, qualifiedName, schemaInfo, null);
 
-        context.addExternalIdentifier(catalogGUID,
-                                      catalogQualifiedName,
-                                      catalogTypeName,
-                                      ucSchemaGUID,
-                                      deployedImplementationType.getAssociatedTypeName(),
-                                      this.getExternalIdentifierProperties(schemaInfo,
-                                                                           schemaInfo.getName(),
-                                                                           PlaceholderProperty.SCHEMA_NAME.getName(),
-                                                                           "schema",
-                                                                           schemaInfo.getSchema_id(),
-                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
+        openMetadataStore.addExternalIdentifier(catalogGUID,
+                                                catalogQualifiedName,
+                                                catalogTypeName,
+                                                ucSchemaGUID,
+                                                deployedImplementationType.getAssociatedTypeName(),
+                                                this.getExternalIdentifierProperties(schemaInfo,
+                                                                                     schemaInfo.getName(),
+                                                                                     PlaceholderProperty.SCHEMA_NAME.getName(),
+                                                                                     "schema",
+                                                                                     schemaInfo.getSchema_id(),
+                                                                                     PermittedSynchronization.FROM_THIRD_PARTY));
 
         ucFullNameToEgeriaGUID.put(schemaInfo.getFull_name(), ucSchemaGUID);
     }
-
-
 
 
     /**
@@ -333,13 +335,15 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     {
         String egeriaSchemaGUID = memberElement.getElement().getElementGUID();
 
-        openMetadataAccess.updateMetadataElementInStore(catalogGUID,
-                                                        catalogQualifiedName,
-                                                        egeriaSchemaGUID,
-                                                        false,
-                                                        getElementProperties(schemaInfo));
+        UpdateOptions updateOptions = new UpdateOptions(super.getMetadataSourceOptions());
 
-        context.confirmSynchronization(catalogGUID,
+        updateOptions.setMergePropertyUpdate(true);
+
+        openMetadataStore.updateMetadataElementInStore(egeriaSchemaGUID,
+                                                       updateOptions,
+                                                       getElementProperties(schemaInfo));
+
+        openMetadataStore.confirmSynchronization(catalogGUID,
                                        catalogQualifiedName,
                                        egeriaSchemaGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
@@ -366,25 +370,25 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         if (memberElement.getExternalIdentifier() == null)
         {
-            context.addExternalIdentifier(catalogGUID,
-                                          catalogQualifiedName,
-                                          catalogTypeName,
-                                          memberElement.getElement().getElementGUID(),
-                                          deployedImplementationType.getAssociatedTypeName(),
-                                          this.getExternalIdentifierProperties(schemaInfo,
-                                                                               schemaInfo.getName(),
-                                                                               PlaceholderProperty.SCHEMA_NAME.getName(),
-                                                                               "schema",
-                                                                               schemaInfo.getSchema_id(),
-                                                                               PermittedSynchronization.TO_THIRD_PARTY));
+            openMetadataStore.addExternalIdentifier(catalogGUID,
+                                                    catalogQualifiedName,
+                                                    catalogTypeName,
+                                                    memberElement.getElement().getElementGUID(),
+                                                    deployedImplementationType.getAssociatedTypeName(),
+                                                    this.getExternalIdentifierProperties(schemaInfo,
+                                                                                         schemaInfo.getName(),
+                                                                                         PlaceholderProperty.SCHEMA_NAME.getName(),
+                                                                                         "schema",
+                                                                                         schemaInfo.getSchema_id(),
+                                                                                         PermittedSynchronization.TO_THIRD_PARTY));
         }
         else
         {
-            context.confirmSynchronization(catalogGUID,
-                                           catalogQualifiedName,
-                                           memberElement.getElement().getElementGUID(),
-                                           deployedImplementationType.getAssociatedTypeName(),
-                                           schemaInfo.getSchema_id());
+            openMetadataStore.confirmSynchronization(catalogGUID,
+                                                     catalogQualifiedName,
+                                                     memberElement.getElement().getElementGUID(),
+                                                     deployedImplementationType.getAssociatedTypeName(),
+                                                     schemaInfo.getSchema_id());
         }
     }
 
@@ -412,11 +416,11 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                              schemaInfo.getCatalog_name() + "." + schemaInfo.getName(),
                                                                              ucServerEndpoint));
 
-        context.confirmSynchronization(catalogGUID,
-                                       catalogQualifiedName,
-                                       memberElement.getElement().getElementGUID(),
-                                       deployedImplementationType.getAssociatedTypeName(),
-                                       schemaInfo.getSchema_id());
+        openMetadataStore.confirmSynchronization(catalogGUID,
+                                                 catalogQualifiedName,
+                                                 memberElement.getElement().getElementGUID(),
+                                                 deployedImplementationType.getAssociatedTypeName(),
+                                                 schemaInfo.getSchema_id());
     }
 
 
@@ -463,7 +467,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     private ElementProperties getElementProperties(SchemaInfo info)
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                               OpenMetadataProperty.NAME.name,
+                                                                               OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                info.getName());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,

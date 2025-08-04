@@ -31,9 +31,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NameRequestBody",
+  "class" : "UniqueNameRequestBody",
   "name" : "active-metadata-store",
-  "namePropertyName" : "name"
+  "namePropertyName" : "displayName"
 }
 
 > {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
@@ -415,7 +415,7 @@ Content-Type: application/json
 # {
 #   "typeName" : "",
 #   "initialStatus" : "",
-#   "initialClassifications" : "",
+#   "initialClassifications" : {},
 #   "anchorGUID" : "",
 #   "isOwnAnchor" : "",
 #   "effectiveFrom" : "",

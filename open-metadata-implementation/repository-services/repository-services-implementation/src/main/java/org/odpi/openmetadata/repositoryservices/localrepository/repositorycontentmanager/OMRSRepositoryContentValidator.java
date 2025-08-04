@@ -2221,14 +2221,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         final String   thisMethodName = "validatePropertiesForType";
 
-        if (properties == null)
-        {
-            /*
-             * No properties to evaluate so return
-             */
-            return;
-        }
-
         if (typeDef == null)
         {
             /*
@@ -2251,17 +2243,48 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         if (typeDefAttributes == null)
         {
+            if ((properties == null) || (properties.getPropertyCount() == 0))
+            {
+                /*
+                 * All good
+                 */
+                return;
+            }
+            else
+            {
+                /*
+                 * Error is thrown because properties is not null so properties have been provided for this instance.
+                 */
+                throw new PropertyErrorException(OMRSErrorCode.NO_PROPERTIES_FOR_TYPE.getMessageDefinition(typeDefCategoryName,
+                                                                                                           typeDefName,
+                                                                                                           sourceName),
+                                                 this.getClass().getName(),
+                                                 methodName);
+            }
+        }
+        else if ((properties == null) || (properties.getPropertyCount() == 0))
+        {
             /*
-             * Error is thrown because properties is not null so properties have been provided for this instance.
+             * There are no properties supplied, which is ok if there are no mandatory properties.
              */
-            throw new PropertyErrorException(OMRSErrorCode.NO_PROPERTIES_FOR_TYPE.getMessageDefinition(typeDefCategoryName,
-                                                                                                       typeDefName,
-                                                                                                       sourceName),
-                                             this.getClass().getName(),
-                                             methodName);
+            for (TypeDefAttribute typeDefAttribute : typeDefAttributes)
+            {
+                if ((typeDefAttribute != null) && (typeDefAttribute.isUnique()))
+                {
+                    throw new PropertyErrorException(OMRSErrorCode.NO_NEW_PROPERTIES.getMessageDefinition(parameterName,
+                                                                                                          methodName,
+                                                                                                          sourceName),
+                                                     this.getClass().getName(),
+                                                     methodName);
+                }
+            }
+
+            return;
         }
 
+
         /*
+         * The type defines properties and there are properties supplied
          * Need to step through each of the proposed properties and validate that the name and value are
          * present, and they match the typeDef
          */
@@ -2467,18 +2490,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                               InstanceProperties properties,
                                               String             methodName) throws PropertyErrorException
     {
-        if (properties != null)
-        {
-            this.validatePropertiesForType(sourceName, parameterName, typeDef, properties, methodName);
-        }
-        else
-        {
-            throw new PropertyErrorException(OMRSErrorCode.NO_NEW_PROPERTIES.getMessageDefinition(parameterName,
-                                                                                                  methodName,
-                                                                                                  sourceName),
-                                              this.getClass().getName(),
-                                              methodName);
-        }
+        this.validatePropertiesForType(sourceName, parameterName, typeDef, properties, methodName);
     }
 
 

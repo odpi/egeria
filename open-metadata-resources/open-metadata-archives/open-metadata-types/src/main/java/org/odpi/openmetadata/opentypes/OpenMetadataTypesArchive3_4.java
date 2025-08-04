@@ -172,7 +172,6 @@ public class OpenMetadataTypesArchive3_4
         update0115ITProfile();
         extend0423SecurityDefinitions();
         update0223Events();
-        update0463EngineActions();
     }
 
 
@@ -541,46 +540,6 @@ public class OpenMetadataTypesArchive3_4
         return typeDefPatch;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0463EngineActions()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
-    }
-
-
-    private TypeDefPatch updateEngineActionEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ENGINE_ACTION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXECUTOR_ENGINE_GUID));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXECUTOR_ENGINE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS_STEP_GUID));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS_STEP_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_GUID));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
 

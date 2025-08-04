@@ -179,7 +179,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "OpenMetadataDeleteRequestBody",
   "externalSourceGUID" :  "",
   "externalSourceName" : "",
   "forLineage" : false,
@@ -357,7 +357,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "OpenMetadataDeleteRequestBody",
   "externalSourceGUID" :  "",
   "externalSourceName" : "",
   "forLineage" : false,

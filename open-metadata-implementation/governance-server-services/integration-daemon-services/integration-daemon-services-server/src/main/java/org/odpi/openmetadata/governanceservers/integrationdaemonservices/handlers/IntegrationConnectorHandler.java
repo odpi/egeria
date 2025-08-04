@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContextRefreshProxy;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorElement;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
@@ -38,7 +39,6 @@ public class IntegrationConnectorHandler
     /*
      * These values are set in the constructor and do not change.
      */
-    private final String                    integrationServiceFullName;
     private final String                    integrationDaemonName;
     private final String                    integrationConnectorId;
     private       String                    integrationConnectorGUID;
@@ -49,6 +49,7 @@ public class IntegrationConnectorHandler
     private       String                    metadataSourceQualifiedName;
     private       PermittedSynchronization  permittedSynchronization;
     private final boolean                   generateIntegrationReport;
+    private final DeleteMethod              deleteMethod;
     private       Connection                connection;
     private       boolean                   needDedicatedThread;
     private       long                      minMinutesBetweenRefresh;
@@ -87,7 +88,6 @@ public class IntegrationConnectorHandler
      *                          refresh() method).
      * @param permittedSynchronization what is the direction that metadata can be synchronized - affects the methods available through the context
      * @param generateIntegrationReport should the connector generate an integration reports?
-     * @param integrationServiceFullName full name of the integration service - used for messages
      * @param integrationDaemonName name of the integration daemon - used for messages
      * @param contextManager the specialized context manager for this connector's integration service
      * @param auditLog logging destination
@@ -104,14 +104,12 @@ public class IntegrationConnectorHandler
                                 boolean                    usesBlockingCalls,
                                 PermittedSynchronization   permittedSynchronization,
                                 boolean                    generateIntegrationReport,
-                                String                     integrationServiceFullName,
                                 String                     integrationDaemonName,
                                 IntegrationContextManager  contextManager,
                                 AuditLog                   auditLog)
     {
         final String actionDescription = "Initializing integration connector";
 
-        this.integrationServiceFullName  = integrationServiceFullName;
         this.integrationDaemonName       = integrationDaemonName;
         this.integrationConnectorId      = connectorId;
         this.integrationConnectorGUID    = connectorGUID;
@@ -125,6 +123,7 @@ public class IntegrationConnectorHandler
         this.needDedicatedThread         = usesBlockingCalls;
         this.permittedSynchronization    = permittedSynchronization;
         this.generateIntegrationReport   = generateIntegrationReport;
+        this.deleteMethod                = DeleteMethod.LOOK_FOR_LINEAGE;
         this.contextManager              = contextManager;
         this.auditLog                    = auditLog;
 
@@ -330,9 +329,10 @@ public class IntegrationConnectorHandler
      * @return connector instance
      * @throws ConnectionCheckedException the connection is invalid
      * @throws ConnectorCheckedException the connector is not able to initialize properly
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     private Connector getConnector(Connection  connection,
-                                   String      actionDescription) throws ConnectionCheckedException, ConnectorCheckedException
+                                   String      actionDescription) throws ConnectionCheckedException, ConnectorCheckedException, UserNotAuthorizedException
     {
         ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
@@ -340,11 +340,11 @@ public class IntegrationConnectorHandler
         {
             return connectorBroker.getConnector(connection);
         }
-        catch (ConnectionCheckedException | ConnectorCheckedException error)
+        catch (ConnectionCheckedException | ConnectorCheckedException | UserNotAuthorizedException error)
         {
             auditLog.logMessage(actionDescription,
                                 IntegrationDaemonServicesAuditCode.BAD_INTEGRATION_CONNECTION.getMessageDefinition(integrationConnectorName,
-                                                                                                                   integrationServiceFullName,
+                                                                                                                   integrationDaemonName,
                                                                                                                    error.getClass().getName(),
                                                                                                                    error.getMessage()));
             throw error;
@@ -366,7 +366,6 @@ public class IntegrationConnectorHandler
 
         auditLog.logMessage(actionDescription,
                             IntegrationDaemonServicesAuditCode.INTEGRATION_CONNECTOR_INITIALIZING.getMessageDefinition(integrationConnectorName,
-                                                                                                                       integrationServiceFullName,
                                                                                                                        integrationDaemonName,
                                                                                                                        permittedSynchronization.getName()));
 
@@ -410,7 +409,8 @@ public class IntegrationConnectorHandler
                                                                 integrationConnectorGUID,
                                                                 permittedSynchronization,
                                                                 generateIntegrationReport,
-                                                                metadataSourceQualifiedName);
+                                                                metadataSourceQualifiedName,
+                                                                deleteMethod);
 
             this.integrationContextRefreshProxy = new IntegrationContextRefreshProxy(this.integrationContext);
 

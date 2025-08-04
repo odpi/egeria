@@ -14,8 +14,6 @@ import java.util.Objects;
 public class GovernanceZoneProperties extends ReferenceableProperties
 {
     private String zoneName         = null;
-    private String displayName      = null;
-    private String description      = null;
     private String criteria         = null;
     private String scope            = null;
     private int    domainIdentifier = 0;
@@ -43,8 +41,6 @@ public class GovernanceZoneProperties extends ReferenceableProperties
         if (template != null)
         {
             this.zoneName = template.getZoneName();
-            this.displayName = template.getDisplayName();
-            this.description = template.getDescription();
             this.criteria = template.getCriteria();
             this.scope = template.getScope();
             this.domainIdentifier = template.getDomainIdentifier();
@@ -71,50 +67,6 @@ public class GovernanceZoneProperties extends ReferenceableProperties
     public void setZoneName(String zoneName)
     {
         this.zoneName = zoneName;
-    }
-
-
-    /**
-     * Return the short name for the governance zone.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the short name for the governance zone.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for the governance zone
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the governance zone
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -194,8 +146,6 @@ public class GovernanceZoneProperties extends ReferenceableProperties
     {
         return "GovernanceZoneProperties{" +
                        "zoneName='" + zoneName + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
                        ", criteria='" + criteria + '\'' +
                        ", scope='" + scope + '\'' +
                        ", domainIdentifier=" + domainIdentifier +
@@ -231,8 +181,6 @@ public class GovernanceZoneProperties extends ReferenceableProperties
         GovernanceZoneProperties that = (GovernanceZoneProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
                        Objects.equals(zoneName, that.zoneName) &&
-                       Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
                        Objects.equals(criteria, that.criteria) &&
                        Objects.equals(scope, that.scope);
     }

@@ -70,7 +70,6 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
 
         ConnectorType connectorType = new ConnectorType();
 
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorTypeName);

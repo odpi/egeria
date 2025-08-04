@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Objects;
 
@@ -22,9 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionComponentPort implements MetadataElement
 {
-    private ElementHeader          elementHeader = null;
-    private RelationshipProperties properties   = null;
-    private SolutionPortElement    solutionPort = null;
+    private ElementHeader              elementHeader = null;
+    private RelationshipBeanProperties properties    = null;
+    private SolutionPortElement        solutionPort  = null;
 
 
     /**
@@ -81,7 +81,7 @@ public class SolutionComponentPort implements MetadataElement
      *
      * @return properties
      */
-    public RelationshipProperties getProperties()
+    public RelationshipBeanProperties getProperties()
     {
         return properties;
     }
@@ -92,7 +92,7 @@ public class SolutionComponentPort implements MetadataElement
      *
      * @param properties property map
      */
-    public void setProperties(RelationshipProperties properties)
+    public void setProperties(RelationshipBeanProperties properties)
     {
         this.properties = properties;
     }

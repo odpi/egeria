@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.viewservices.datadesigner.server.DataDesignerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,8 +92,6 @@ public class DataDesignerResource
      *
      * @param serverName         name of called server.
      * @param dataStructureGUID unique identifier of the data structure (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -111,12 +109,10 @@ public class DataDesignerResource
                                             String                                  serverName,
                                             @PathVariable
                                             String                                  dataStructureGUID,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                            boolean                                 replaceAllProperties,
                                             @RequestBody (required = false)
                                             UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateDataStructure(serverName, dataStructureGUID, replaceAllProperties, requestBody);
+        return restAPI.updateDataStructure(serverName, dataStructureGUID, requestBody);
     }
 
 
@@ -146,7 +142,7 @@ public class DataDesignerResource
                                             @PathVariable
                                             String                  dataFieldGUID,
                                             @RequestBody (required = false)
-                                            RelationshipRequestBody requestBody)
+                                                NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkMemberDataField(serverName, dataStructureGUID, dataFieldGUID, requestBody);
     }
@@ -178,7 +174,7 @@ public class DataDesignerResource
                                               @PathVariable
                                               String memberDataFieldGUID,
                                               @RequestBody (required = false)
-                                              MetadataSourceRequestBody requestBody)
+                                                  DeleteRequestBody requestBody)
     {
         return restAPI.detachMemberDataField(serverName, parentDataStructureGUID, memberDataFieldGUID, requestBody);
     }
@@ -189,7 +185,6 @@ public class DataDesignerResource
      *
      * @param serverName         name of called server
      * @param dataStructureGUID  unique identifier of the element to delete
-     * @param cascadedDelete can data structures be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -207,12 +202,10 @@ public class DataDesignerResource
                                             String                    serverName,
                                             @PathVariable
                                             String                    dataStructureGUID,
-                                            @RequestParam(required = false, defaultValue = "false")
-                                            boolean                   cascadedDelete,
                                             @RequestBody (required = false)
-                                            MetadataSourceRequestBody requestBody)
+                                                DeleteRequestBody requestBody)
     {
-        return restAPI.deleteDataStructure(serverName, dataStructureGUID, cascadedDelete, requestBody);
+        return restAPI.deleteDataStructure(serverName, dataStructureGUID, requestBody);
     }
 
 
@@ -220,8 +213,6 @@ public class DataDesignerResource
      * Returns the list of data structures with a particular name.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -237,14 +228,10 @@ public class DataDesignerResource
 
     public DataStructuresResponse getDataStructuresByName(@PathVariable
                                                           String            serverName,
-                                                          @RequestParam (required = false, defaultValue = "0")
-                                                          int                     startFrom,
-                                                          @RequestParam (required = false, defaultValue = "0")
-                                                          int                     pageSize,
                                                           @RequestBody (required = false)
                                                           FilterRequestBody requestBody)
     {
-        return restAPI.getDataStructuresByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getDataStructuresByName(serverName, requestBody);
     }
 
 
@@ -252,11 +239,6 @@ public class DataDesignerResource
      * Retrieve the list of data structure metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -272,20 +254,10 @@ public class DataDesignerResource
 
     public DataStructuresResponse findDataStructures(@PathVariable
                                                      String                  serverName,
-                                                     @RequestParam (required = false, defaultValue = "0")
-                                                     int                     startFrom,
-                                                     @RequestParam (required = false, defaultValue = "0")
-                                                     int                     pageSize,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                 startsWith,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                 endsWith,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                 ignoreCase,
                                                      @RequestBody (required = false)
-                                                     FilterRequestBody requestBody)
+                                                     SearchStringRequestBody requestBody)
     {
-        return restAPI.findDataStructures(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findDataStructures(serverName, requestBody);
     }
 
 
@@ -312,7 +284,7 @@ public class DataDesignerResource
                                                         @PathVariable
                                                         String             dataStructureGUID,
                                                         @RequestBody (required = false)
-                                                        AnyTimeRequestBody requestBody)
+                                                            GetRequestBody requestBody)
     {
         return restAPI.getDataStructureByGUID(serverName, dataStructureGUID, requestBody);
     }
@@ -380,8 +352,6 @@ public class DataDesignerResource
      *
      * @param serverName         name of called server.
      * @param dataFieldGUID unique identifier of the data field (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -399,12 +369,10 @@ public class DataDesignerResource
                                         String                                  serverName,
                                         @PathVariable
                                         String                                  dataFieldGUID,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                        boolean                                 replaceAllProperties,
                                         @RequestBody (required = false)
                                         UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateDataField(serverName, dataFieldGUID, replaceAllProperties, requestBody);
+        return restAPI.updateDataField(serverName, dataFieldGUID, requestBody);
     }
 
 
@@ -435,7 +403,7 @@ public class DataDesignerResource
                                              @PathVariable
                                              String nestedDataFieldGUID,
                                              @RequestBody (required = false)
-                                             RelationshipRequestBody requestBody)
+                                                 NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkNestedDataFields(serverName, parentDataFieldGUID, nestedDataFieldGUID, requestBody);
     }
@@ -467,7 +435,7 @@ public class DataDesignerResource
                                                @PathVariable
                                                String nestedDataFieldGUID,
                                                @RequestBody (required = false)
-                                               MetadataSourceRequestBody requestBody)
+                                                   DeleteRequestBody requestBody)
     {
         return restAPI.detachNestedDataFields(serverName, parentDataFieldGUID, nestedDataFieldGUID, requestBody);
     }
@@ -478,7 +446,6 @@ public class DataDesignerResource
      *
      * @param serverName         name of called server
      * @param dataFieldGUID  unique identifier of the element to delete
-     * @param cascadedDelete can data fields be deleted if other data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -496,12 +463,10 @@ public class DataDesignerResource
                                         String                    serverName,
                                         @PathVariable
                                         String                    dataFieldGUID,
-                                        @RequestParam(required = false, defaultValue = "false")
-                                        boolean                   cascadedDelete,
                                         @RequestBody (required = false)
-                                        MetadataSourceRequestBody requestBody)
+                                            DeleteRequestBody requestBody)
     {
-        return restAPI.deleteDataField(serverName, dataFieldGUID, cascadedDelete, requestBody);
+        return restAPI.deleteDataField(serverName, dataFieldGUID, requestBody);
     }
 
 
@@ -509,8 +474,6 @@ public class DataDesignerResource
      * Returns the list of data fields with a particular name.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -526,14 +489,10 @@ public class DataDesignerResource
 
     public DataFieldsResponse getDataFieldsByName(@PathVariable
                                                   String            serverName,
-                                                  @RequestParam (required = false, defaultValue = "0")
-                                                  int                     startFrom,
-                                                  @RequestParam (required = false, defaultValue = "0")
-                                                  int                     pageSize,
                                                   @RequestBody (required = false)
                                                   FilterRequestBody requestBody)
     {
-        return restAPI.getDataFieldsByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getDataFieldsByName(serverName, requestBody);
     }
 
 
@@ -541,11 +500,6 @@ public class DataDesignerResource
      * Retrieve the list of data field metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -561,20 +515,10 @@ public class DataDesignerResource
 
     public DataFieldsResponse findDataFields(@PathVariable
                                              String                  serverName,
-                                             @RequestParam (required = false, defaultValue = "0")
-                                             int                     startFrom,
-                                             @RequestParam (required = false, defaultValue = "0")
-                                             int                     pageSize,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 startsWith,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 endsWith,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 ignoreCase,
                                              @RequestBody (required = false)
-                                             FilterRequestBody requestBody)
+                                             SearchStringRequestBody requestBody)
     {
-        return restAPI.findDataFields(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findDataFields(serverName, requestBody);
     }
 
 
@@ -602,7 +546,7 @@ public class DataDesignerResource
                                                 @PathVariable
                                                 String             dataFieldGUID,
                                                 @RequestBody (required = false)
-                                                AnyTimeRequestBody requestBody)
+                                                    GetRequestBody requestBody)
     {
         return restAPI.getDataFieldByGUID(serverName, dataFieldGUID, requestBody);
     }
@@ -671,8 +615,6 @@ public class DataDesignerResource
      *
      * @param serverName         name of called server.
      * @param dataClassGUID unique identifier of the data class (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -690,12 +632,10 @@ public class DataDesignerResource
                                         String                                  serverName,
                                         @PathVariable
                                         String                                  dataClassGUID,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                        boolean                                 replaceAllProperties,
                                         @RequestBody (required = false)
                                         UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateDataClass(serverName, dataClassGUID, replaceAllProperties, requestBody);
+        return restAPI.updateDataClass(serverName, dataClassGUID, requestBody);
     }
 
 
@@ -725,7 +665,7 @@ public class DataDesignerResource
                                             @PathVariable
                                             String                                childDataClassGUID,
                                             @RequestBody (required = false)
-                                            RelationshipRequestBody requestBody)
+                                                NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkNestedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
@@ -757,7 +697,7 @@ public class DataDesignerResource
                                               @PathVariable
                                               String                    childDataClassGUID,
                                               @RequestBody (required = false)
-                                              MetadataSourceRequestBody requestBody)
+                                                  DeleteRequestBody requestBody)
     {
         return restAPI.detachNestedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
@@ -783,13 +723,13 @@ public class DataDesignerResource
                     url="https://egeria-project.org/concepts/data-class"))
 
     public VoidResponse linkSpecializedDataClass(@PathVariable
-                                                String                  serverName,
-                                                @PathVariable
-                                                String                  parentDataClassGUID,
-                                                @PathVariable
-                                                String                  childDataClassGUID,
-                                                @RequestBody (required = false)
-                                                RelationshipRequestBody requestBody)
+                                                 String                  serverName,
+                                                 @PathVariable
+                                                 String                  parentDataClassGUID,
+                                                 @PathVariable
+                                                 String                  childDataClassGUID,
+                                                 @RequestBody (required = false)
+                                                     NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSpecializedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
@@ -815,13 +755,13 @@ public class DataDesignerResource
                     url="https://egeria-project.org/concepts/data-class"))
 
     public VoidResponse detachSpecializedDataClass(@PathVariable
-                                                  String                    serverName,
-                                                  @PathVariable
-                                                  String                    parentDataClassGUID,
-                                                  @PathVariable
-                                                  String                    childDataClassGUID,
-                                                  @RequestBody (required = false)
-                                                  MetadataSourceRequestBody requestBody)
+                                                   String                    serverName,
+                                                   @PathVariable
+                                                   String                    parentDataClassGUID,
+                                                   @PathVariable
+                                                   String                    childDataClassGUID,
+                                                   @RequestBody (required = false)
+                                                       DeleteRequestBody requestBody)
     {
         return restAPI.detachSpecializedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
@@ -832,7 +772,6 @@ public class DataDesignerResource
      *
      * @param serverName         name of called server
      * @param dataClassGUID  unique identifier of the element to delete
-     * @param cascadedDelete can data classes be deleted if other data classes are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -850,12 +789,10 @@ public class DataDesignerResource
                                         String                    serverName,
                                         @PathVariable
                                         String                    dataClassGUID,
-                                        @RequestParam(required = false, defaultValue = "false")
-                                        boolean                   cascadedDelete,
                                         @RequestBody (required = false)
-                                        MetadataSourceRequestBody requestBody)
+                                            DeleteRequestBody requestBody)
     {
-        return restAPI.deleteDataClass(serverName, dataClassGUID, cascadedDelete, requestBody);
+        return restAPI.deleteDataClass(serverName, dataClassGUID, requestBody);
     }
 
 
@@ -863,8 +800,6 @@ public class DataDesignerResource
      * Returns the list of data classes with a particular name.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -878,16 +813,12 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-class"))
 
-    public DataClassesResponse getDataClassesByName(@PathVariable
-                                                    String            serverName,
-                                                    @RequestParam (required = false, defaultValue = "0")
-                                                    int                     startFrom,
-                                                    @RequestParam (required = false, defaultValue = "0")
-                                                    int                     pageSize,
-                                                    @RequestBody (required = false)
-                                                    FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getDataClassesByName(@PathVariable
+                                                                 String            serverName,
+                                                                 @RequestBody (required = false)
+                                                                 FilterRequestBody requestBody)
     {
-        return restAPI.getDataClassesByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getDataClassesByName(serverName, requestBody);
     }
 
 
@@ -895,11 +826,6 @@ public class DataDesignerResource
      * Retrieve the list of data class metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -913,22 +839,12 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-class"))
 
-    public DataClassesResponse findDataClasses(@PathVariable
-                                               String                  serverName,
-                                               @RequestParam (required = false, defaultValue = "0")
-                                               int                     startFrom,
-                                               @RequestParam (required = false, defaultValue = "0")
-                                               int                     pageSize,
-                                               @RequestParam (required = false, defaultValue = "false")
-                                               boolean                 startsWith,
-                                               @RequestParam (required = false, defaultValue = "false")
-                                               boolean                 endsWith,
-                                               @RequestParam (required = false, defaultValue = "false")
-                                               boolean                 ignoreCase,
-                                               @RequestBody (required = false)
-                                               FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findDataClasses(@PathVariable
+                                                            String                  serverName,
+                                                            @RequestBody (required = false)
+                                                            SearchStringRequestBody requestBody)
     {
-        return restAPI.findDataClasses(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findDataClasses(serverName, requestBody);
     }
 
 
@@ -950,12 +866,12 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-class"))
 
-    public DataClassResponse getDataClassByGUID(@PathVariable
-                                                String             serverName,
-                                                @PathVariable
-                                                String             dataClassGUID,
-                                                @RequestBody (required = false)
-                                                AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getDataClassByGUID(@PathVariable
+                                                              String             serverName,
+                                                              @PathVariable
+                                                              String             dataClassGUID,
+                                                              @RequestBody (required = false)
+                                                                  GetRequestBody requestBody)
     {
         return restAPI.getDataClassByGUID(serverName, dataClassGUID, requestBody);
     }
@@ -990,7 +906,7 @@ public class DataDesignerResource
                                                 @PathVariable String                    dataDefinitionGUID,
                                                 @PathVariable String                    dataClassGUID,
                                                 @RequestBody (required = false)
-                                                    RelationshipRequestBody requestBody)
+                                                    NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkDataClassDefinition(serverName, dataDefinitionGUID, dataClassGUID, requestBody);
     }
@@ -1019,7 +935,7 @@ public class DataDesignerResource
                                                   @PathVariable String                    dataDefinitionGUID,
                                                   @PathVariable String                    dataClassGUID,
                                                   @RequestBody (required = false)
-                                                  MetadataSourceRequestBody requestBody)
+                                                      DeleteRequestBody requestBody)
     {
         return restAPI.detachDataClassDefinition(serverName, dataDefinitionGUID, dataClassGUID, requestBody);
     }
@@ -1049,7 +965,7 @@ public class DataDesignerResource
                                                @PathVariable String                    dataDefinitionGUID,
                                                @PathVariable String                    glossaryTermGUID,
                                                @RequestBody (required = false)
-                                               RelationshipRequestBody requestBody)
+                                                   NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSemanticDefinition(serverName, dataDefinitionGUID, glossaryTermGUID, requestBody);
     }
@@ -1078,7 +994,7 @@ public class DataDesignerResource
                                                  @PathVariable String                    dataDefinitionGUID,
                                                  @PathVariable String                    glossaryTermGUID,
                                                  @RequestBody (required = false)
-                                                 MetadataSourceRequestBody requestBody)
+                                                     DeleteRequestBody requestBody)
     {
         return restAPI.detachSemanticDefinition(serverName, dataDefinitionGUID, glossaryTermGUID, requestBody);
     }
@@ -1110,7 +1026,7 @@ public class DataDesignerResource
                                                              @PathVariable String                    certificationTypeGUID,
                                                              @PathVariable String                    dataStructureGUID,
                                                              @RequestBody (required = false)
-                                                             RelationshipRequestBody requestBody)
+                                                                 NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkCertificationTypeToDataStructure(serverName, certificationTypeGUID, dataStructureGUID, requestBody);
     }
@@ -1138,7 +1054,7 @@ public class DataDesignerResource
                                                                @PathVariable String                    certificationTypeGUID,
                                                                @PathVariable String                    dataStructureGUID,
                                                                @RequestBody (required = false)
-                                                               MetadataSourceRequestBody requestBody)
+                                                                   DeleteRequestBody requestBody)
     {
         return restAPI.detachCertificationTypeToDataStructure(serverName, certificationTypeGUID, dataStructureGUID, requestBody);
     }

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
@@ -19,12 +19,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ContextEventProperties extends SupplementaryProperties
+public class ContextEventProperties extends ReferenceableProperties
 {
-    private String name                   = null;
-    private String contextEventType       = null;
+    private String contextEventType = null;
     private String eventEffect            = null;
-    private String eventDescription       = null;
     private Date   plannedStartDate       = null;
     private Date   actualStartDate        = null;
     private long   plannedDuration        = 0L;
@@ -57,10 +55,8 @@ public class ContextEventProperties extends SupplementaryProperties
 
         if (template != null)
         {
-            name                   = template.getName();
-            contextEventType       = template.getContextEventType();
+            contextEventType = template.getContextEventType();
             eventEffect            = template.getEventEffect();
-            eventDescription       = template.getEventDescription();
             plannedStartDate       = template.getPlannedStartDate();
             actualStartDate        = template.getActualStartDate();
             plannedDuration        = template.getPlannedDuration();
@@ -72,29 +68,6 @@ public class ContextEventProperties extends SupplementaryProperties
             referenceEffectiveTo   = template.getReferenceEffectiveTo();
         }
     }
-
-
-    /**
-     * Return the short name of the event that is used when displaying the event in tables etc.
-     *
-     * @return string
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the short name of the event that is used in tables etc.
-     *
-     * @param name string event name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
 
     /**
      * Return the type of the event.
@@ -119,23 +92,6 @@ public class ContextEventProperties extends SupplementaryProperties
 
 
     /**
-     * Return the business oriented display name.
-     *
-     * @return display name
-     */
-    @Override
-    public String getDisplayName()
-    {
-        if (displayName == null)
-        {
-            return getName();
-        }
-
-        return displayName;
-    }
-
-
-    /**
      * Set up the effect of the event.
      *
      * @return string version name
@@ -154,46 +110,6 @@ public class ContextEventProperties extends SupplementaryProperties
     public void setEventEffect(String eventEffect)
     {
         this.eventEffect = eventEffect;
-    }
-
-
-    /**
-     * Returns the stored description property extracted from the event.
-     * If no description is provided then null is returned.
-     *
-     * @return description String text
-     */
-    public String getEventDescription()
-    {
-        return eventDescription;
-    }
-
-
-    /**
-     * Set up the stored description property extracted from the event.
-     *
-     * @param eventDescription String text
-     */
-    public void setEventDescription(String eventDescription)
-    {
-        this.eventDescription = eventDescription;
-    }
-
-
-    /**
-     * This override defaults the display description to the event description if it is null;
-     *
-     * @return description
-     */
-    @Override
-    public String getDisplayDescription()
-    {
-        if (displayDescription == null)
-        {
-            return getEventDescription();
-        }
-
-        return displayDescription;
     }
 
 
@@ -404,10 +320,8 @@ public class ContextEventProperties extends SupplementaryProperties
     public String toString()
     {
         return "ContextEventProperties{" +
-                "name='" + name + '\'' +
-                ", contextEventType='" + contextEventType + '\'' +
+                "contextEventType='" + contextEventType + '\'' +
                 ", eventEffect='" + eventEffect + '\'' +
-                ", eventDescription='" + eventDescription + '\'' +
                 ", plannedStartDate=" + plannedStartDate +
                 ", actualStartDate=" + actualStartDate +
                 ", plannedDuration=" + plannedDuration +
@@ -437,10 +351,8 @@ public class ContextEventProperties extends SupplementaryProperties
         return plannedDuration == that.plannedDuration
                 && actualDuration == that.actualDuration
                 && repeatInterval == that.repeatInterval
-                && Objects.equals(name, that.name)
                 && Objects.equals(contextEventType, that.contextEventType)
                 && Objects.equals(eventEffect, that.eventEffect)
-                && Objects.equals(eventDescription, that.eventDescription)
                 && Objects.equals(plannedStartDate, that.plannedStartDate)
                 && Objects.equals(actualStartDate, that.actualStartDate)
                 && Objects.equals(plannedCompletionDate, that.plannedCompletionDate)
@@ -458,7 +370,7 @@ public class ContextEventProperties extends SupplementaryProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, contextEventType, eventEffect, eventDescription, plannedStartDate,
+        return Objects.hash(super.hashCode(), contextEventType, eventEffect, plannedStartDate,
                             actualStartDate, plannedDuration, actualDuration, repeatInterval, plannedCompletionDate,
                             actualCompletionDate, referenceEffectiveFrom, referenceEffectiveTo);
     }

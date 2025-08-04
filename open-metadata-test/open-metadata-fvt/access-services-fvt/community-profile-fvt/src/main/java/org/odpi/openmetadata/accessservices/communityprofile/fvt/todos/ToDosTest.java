@@ -5,8 +5,9 @@ package org.odpi.openmetadata.accessservices.communityprofile.fvt.todos;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OpenMetadataStoreClient;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ToDoActionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ToDoActionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.NewToDoActionTargetProperties;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -163,13 +165,14 @@ public class ToDosTest
 
         try
         {
+            OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreHandler(serverName,
+                                                                                       serverPlatformRootURL,
+                                                                                       CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceURLMarker(),
+                                                                                       100);
             return new ToDoActionHandler("Test",
-                                         serverName,
-                                         serverPlatformRootURL,
                                          auditLog,
-                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceURLMarker(),
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                         100);
+                                         openMetadataClient);
         }
         catch (Exception unexpectedError)
         {

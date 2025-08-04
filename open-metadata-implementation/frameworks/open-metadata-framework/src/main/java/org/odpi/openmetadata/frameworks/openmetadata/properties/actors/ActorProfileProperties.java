@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.actors;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,16 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = PersonProfileProperties.class, name = "PersonProfileProperties"),
-                @JsonSubTypes.Type(value = TeamProfileProperties.class, name = "TeamProfileProperties"),
+                @JsonSubTypes.Type(value = PersonProperties.class, name = "PersonProperties"),
+                @JsonSubTypes.Type(value = TeamProperties.class, name = "TeamProperties"),
                 @JsonSubTypes.Type(value = ITProfileProperties.class, name = "ITProfileProperties"),
         })
-public class ActorProfileProperties extends ReferenceableProperties
+public class ActorProfileProperties extends ActorProperties
 {
-    private String knownName   = null;
-    private String description = null;
-
-
     /**
      * Default Constructor
      */
@@ -44,63 +37,13 @@ public class ActorProfileProperties extends ReferenceableProperties
 
 
     /**
-     * Copy/clone Constructor - the resulting object.
+     * Copy/clone constructor
      *
-     * @param template object being copied
+     * @param template object to copy
      */
-    public ActorProfileProperties(ActorProfileProperties template)
+    public ActorProfileProperties(ActorProperties template)
     {
-        super (template);
-
-        if (template != null)
-        {
-            this.knownName = template.getKnownName();
-            this.description = template.getDescription();
-        }
-    }
-
-
-    /**
-     * Return the name that the person/automated agent/team is known as.
-     *
-     * @return string name
-     */
-    public String getKnownName()
-    {
-        return knownName;
-    }
-
-
-    /**
-     * Set up the name that the person/automated agent/team is known as.
-     *
-     * @param knownName string name
-     */
-    public void setKnownName(String knownName)
-    {
-        this.knownName = knownName;
-    }
-
-
-    /**
-     * Return description of the person/automated agent/team.
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up description of the person/automated agent/team.
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
+        super(template);
     }
 
 
@@ -113,54 +56,6 @@ public class ActorProfileProperties extends ReferenceableProperties
     public String toString()
     {
         return "ActorProfileProperties{" +
-                       "knownName='" + knownName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
-    }
-
-
-    /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        ActorProfileProperties that = (ActorProfileProperties) objectToCompare;
-        return Objects.equals(knownName, that.knownName) &&
-                       Objects.equals(description, that.description);
-    }
-
-
-    /**
-     * Just use the GUID for the hash code as it should be unique.
-     *
-     * @return int code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), knownName, description);
+                "} " + super.toString();
     }
 }

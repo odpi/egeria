@@ -6,13 +6,9 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.io.Serial;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,7 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationDaemonServicesConfig extends AdminServicesConfigHeader
 {
-    private List<IntegrationServiceConfig>  integrationServicesConfig       = null;
     private List<IntegrationGroupConfig>    dynamicIntegrationGroupsConfig  = null;
 
 
@@ -50,31 +45,8 @@ public class IntegrationDaemonServicesConfig extends AdminServicesConfigHeader
 
         if (template != null)
         {
-            integrationServicesConfig       = template.getIntegrationServicesConfig();
             dynamicIntegrationGroupsConfig  = template.getDynamicIntegrationGroupsConfig();
         }
-    }
-
-
-    /**
-     * Return the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.
-     *
-     * @return list of configuration properties, one for each OMIS
-     */
-    public List<IntegrationServiceConfig> getIntegrationServicesConfig()
-    {
-        return integrationServicesConfig;
-    }
-
-
-    /**
-     * Set up the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.
-     *
-     * @param integrationServicesConfig list of configuration properties, one for each OMIS
-     */
-    public void setIntegrationServicesConfig(List<IntegrationServiceConfig> integrationServicesConfig)
-    {
-        this.integrationServicesConfig = integrationServicesConfig;
     }
 
 
@@ -108,8 +80,7 @@ public class IntegrationDaemonServicesConfig extends AdminServicesConfigHeader
     public String toString()
     {
         return "IntegrationDaemonServicesConfig{" +
-                "integrationServicesConfig=" + integrationServicesConfig +
-                ", dynamicIntegrationGroupsConfig=" + dynamicIntegrationGroupsConfig +
+                "dynamicIntegrationGroupsConfig=" + dynamicIntegrationGroupsConfig +
                 "} " + super.toString();
     }
 
@@ -132,8 +103,7 @@ public class IntegrationDaemonServicesConfig extends AdminServicesConfigHeader
             return false;
         }
         IntegrationDaemonServicesConfig that = (IntegrationDaemonServicesConfig) objectToCompare;
-        return Objects.equals(getIntegrationServicesConfig(), that.getIntegrationServicesConfig()) &&
-                       Objects.equals(getDynamicIntegrationGroupsConfig(), that.getDynamicIntegrationGroupsConfig());
+        return Objects.equals(getDynamicIntegrationGroupsConfig(), that.getDynamicIntegrationGroupsConfig());
     }
 
 
@@ -145,6 +115,6 @@ public class IntegrationDaemonServicesConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getIntegrationServicesConfig(), getDynamicIntegrationGroupsConfig());
+        return Objects.hash(getDynamicIntegrationGroupsConfig());
     }
 }

@@ -5,8 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.direc
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreConnector;
@@ -79,11 +80,11 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param connectionDetails   POJO for the configuration used to create the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionDetails connectionDetails)
+    public void initialize(String connectorInstanceId, Connection connectionDetails)
     {
         super.initialize(connectorInstanceId, connectionDetails);
 
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {
@@ -109,9 +110,10 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 

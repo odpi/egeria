@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
 
 import java.util.function.BiConsumer;
 
@@ -17,11 +18,11 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
  */
 class OmasSetupConnectorType implements BiConsumer<String, String> {
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final IntegrationContext integrationContext;
+    private final AuditLog           auditLog;
 
-    OmasSetupConnectorType(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
+    OmasSetupConnectorType(IntegrationContext integrationContext, AuditLog auditLog){
+        this.integrationContext = integrationContext;
         this.auditLog = auditLog;
     }
 
@@ -32,11 +33,18 @@ class OmasSetupConnectorType implements BiConsumer<String, String> {
      * @param connectorTypeGuid guid
      */
     @Override
-    public void accept(String connectionGuid, String connectorTypeGuid){
+    public void accept(String connectionGuid, String connectorTypeGuid)
+    {
         String methodName = "OmasSetupConnectorType";
-        try {
-            databaseIntegratorContext.setupConnectorType(connectionGuid, connectorTypeGuid);
-        } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
+
+        try
+        {
+            ConnectionClient connectionClient = integrationContext.getConnectionClient();
+
+            connectionClient.linkConnectionConnectorType(connectionGuid, connectorTypeGuid, connectionClient.getMetadataSourceOptions(), null);
+        }
+        catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
+        {
             auditLog.logException("Setting connector type for connection with guid " + connectionGuid +
                     " and connector type with guid " + connectorTypeGuid,
                     EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);

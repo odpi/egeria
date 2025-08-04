@@ -75,7 +75,7 @@ public class MetadataSourceConverter<B> extends OMFConverter<B>
                     metadataSourceProperties.setDisplayName(this.removeName(instanceProperties));
                     metadataSourceProperties.setDescription(this.removeDescription(instanceProperties));
                     metadataSourceProperties.setDeployedImplementationType(this.removeCapabilityType(instanceProperties));
-                    metadataSourceProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
+                    metadataSourceProperties.setVersionIdentifier(this.removeCapabilityVersion(instanceProperties));
                     metadataSourceProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     metadataSourceProperties.setSource(this.removeSource(instanceProperties));
 

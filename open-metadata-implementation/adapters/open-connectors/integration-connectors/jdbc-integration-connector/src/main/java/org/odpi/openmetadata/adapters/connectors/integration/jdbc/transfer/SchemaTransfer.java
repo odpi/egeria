@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseSchemaElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseSchemaProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcSchema;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Jdbc;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DeployedDatabaseSchemaProperties;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,15 +20,16 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Transfers metadata of a schema
  */
-public class SchemaTransfer implements Function<JdbcSchema, DatabaseSchemaElement> {
-
+public class SchemaTransfer implements Function<JdbcSchema, OpenMetadataRootElement>
+{
     private final Omas omas;
     private final AuditLog auditLog;
-    private final List<DatabaseSchemaElement> omasSchemas;
+    private final List<OpenMetadataRootElement> omasSchemas;
     private final String databaseQualifiedName;
     private final String databaseGuid;
 
-    public SchemaTransfer(Omas omas, AuditLog auditLog, List<DatabaseSchemaElement> omasSchemas, String databaseQualifiedName, String databaseGuid) {
+    public SchemaTransfer(Omas omas, AuditLog auditLog, List<OpenMetadataRootElement> omasSchemas, String databaseQualifiedName, String databaseGuid)
+    {
         this.omas = omas;
         this.auditLog = auditLog;
         this.omasSchemas = omasSchemas;
@@ -44,15 +45,16 @@ public class SchemaTransfer implements Function<JdbcSchema, DatabaseSchemaElemen
      * @return schema element
      */
     @Override
-    public DatabaseSchemaElement apply(JdbcSchema jdbcSchema) {
-        DatabaseSchemaProperties schemaProperties = buildSchemaProperties(jdbcSchema);
+    public OpenMetadataRootElement apply(JdbcSchema jdbcSchema)
+    {
+        DeployedDatabaseSchemaProperties schemaProperties = buildSchemaProperties(jdbcSchema);
 
-        Optional<DatabaseSchemaElement> omasSchema = omasSchemas.stream()
-                .filter(dse -> dse.getDatabaseSchemaProperties()
-                        .getQualifiedName().equals(schemaProperties.getQualifiedName()))
+        Optional<OpenMetadataRootElement> omasSchema = omasSchemas.stream()
+                .filter(dse -> omas.getQualifiedName(dse).equals(schemaProperties.getQualifiedName()))
                 .findFirst();
 
-        if (omasSchema.isPresent()) {
+        if (omasSchema.isPresent())
+        {
             omas.updateSchema(omasSchema.get().getElementHeader().getGUID(), schemaProperties);
             auditLog.logMessage("Updated schema with qualified name " + schemaProperties.getQualifiedName(),
                     TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("schema " + schemaProperties.getQualifiedName()));
@@ -72,15 +74,18 @@ public class SchemaTransfer implements Function<JdbcSchema, DatabaseSchemaElemen
      *
      * @return properties
      */
-    private DatabaseSchemaProperties buildSchemaProperties(JdbcSchema jdbcSchema) {
+    private DeployedDatabaseSchemaProperties buildSchemaProperties(JdbcSchema jdbcSchema)
+    {
         Map<String, String> additionalProperties = new HashMap<>();
         additionalProperties.put(Jdbc.JDBC_CATALOG_KEY, jdbcSchema.getTableCatalog());
         additionalProperties.put(Jdbc.JDBC_SCHEMA_KEY, jdbcSchema.getTableSchem());
 
-        DatabaseSchemaProperties jdbcSchemaProperties = new DatabaseSchemaProperties();
-        jdbcSchemaProperties.setName(jdbcSchema.getTableSchem());
+        DeployedDatabaseSchemaProperties jdbcSchemaProperties = new DeployedDatabaseSchemaProperties();
+
+        jdbcSchemaProperties.setDisplayName(jdbcSchema.getTableSchem());
         jdbcSchemaProperties.setQualifiedName(databaseQualifiedName + "::" + jdbcSchema.getTableSchem());
         jdbcSchemaProperties.setAdditionalProperties(additionalProperties);
+
         return jdbcSchemaProperties;
     }
 

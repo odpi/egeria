@@ -6,11 +6,10 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyT
 import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
 import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 
@@ -45,15 +44,6 @@ public abstract class ConnectorProvider
      * The list of technology types that this connector supports.
      */
     protected List<SupportedTechnologyType> supportedTechnologyTypes = null;
-
-
-    /**
-     * Returns the properties about the type of connector that this ConnectorTypeManager supports.
-     *
-     * @return properties including the name of the connector type, the connector provider class
-     * and any specific connection properties that are recognized by this connector.
-     */
-    public abstract ConnectorTypeDetails getConnectorTypeProperties();
 
 
     /**
@@ -110,18 +100,5 @@ public abstract class ConnectorProvider
      * @throws ConnectionCheckedException an error with the connection.
      * @throws ConnectorCheckedException an error initializing the connector.
      */
-    public abstract Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException;
-
-
-    /**
-     * Creates a new instance of a connector using the information from the connection and the properties
-     * from the subclass(es).
-     *
-     * @param connection   connection that should have all the properties needed by the Connector Provider
-     *                   to create a connector instance.
-     * @return Connector   instance of the connector.
-     * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
-     * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
-     */
-    public abstract Connector getConnector(ConnectionDetails connection) throws ConnectionCheckedException, ConnectorCheckedException;
+    public abstract Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException, UserNotAuthorizedException;
 }

@@ -7,7 +7,6 @@
 dependencies {
     implementation project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:view-services:project-manager:project-manager-server')
-    implementation project(':open-metadata-implementation:access-services:project-management:project-management-api')
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.springframework:spring-web'

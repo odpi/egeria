@@ -1,0 +1,148 @@
+# Egeria-open-metadata-store
+
+@serviceURLName=asset-manager
+
+###
+# group: Valid Metadata Values
+# @name setUpValidMetadataValue
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/setup-value/projectType?
+    typeName=ProjectCharter
+Content-Type: application/json
+
+{
+  "class": "ValidMetadataValue",
+  "displayName": "Clinical Trial",
+  "description": "A controlled validation of the efficacy of a particular treatment with selected patients.",
+  "usage": "For projects that validate new treatment",
+  "scope": "Coco Pharmaceuticals research",
+  "preferredValue": "clinical-trial",
+  "isDeprecated": "false"
+}
+
+###
+# group: Valid Metadata Values
+# @name clearValidMetadataValue
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/clear-value/projectType?
+    typeName=ProjectCharter
+Content-Type: application/json
+
+{
+  "class": "NullRequestBody"
+}
+
+###
+# group: Valid Metadata Values
+# @name validateMetadataValue
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/validate-value/projectType?
+    actualValue=clinical-trial&
+    typeName=ProjectCharter§
+
+###
+# group: Valid Metadata Values
+# @name getValidMetadataValue
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-value/toDoStatus?
+    preferredValue=clinical-trial&
+    typeName=ProjectCharter
+
+###
+# group: Valid Metadata Values
+# @name setUpValidMetadataMapName
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/setup-map-name/additionalProperties?
+    typeName=ProjectCharter
+Content-Type: application/json
+
+{
+  "class": "ValidMetadataValue",
+  "displayName": "Expected Duration",
+  "description": "An estimate of the duration of the project.",
+  "usage": "Used to estimate the relative sizes of projects.",
+  "scope": "Coco Pharmaceuticals",
+  "preferredValue": "expectedDuration",
+  "isDeprecated": "false"
+}
+
+###
+# group: Valid Metadata Values
+# @name clearValidMetadataMapName
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/clear-map-name/additionalProperties?
+    typeName=ProjectCharter
+Content-Type: application/json
+
+{
+  "class": "NullRequestBody"
+}
+
+###
+# group: Valid Metadata Values
+# @name validateMetadataMapName
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/validate-map-name/additionalProperties?
+    actualValue=expectedDuration&
+    typeName=ProjectCharter
+
+###
+# group: Valid Metadata Values
+# @name getValidMetadataMapName
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-map-name/additionalProperties?
+    preferredValue=expectedDuration&
+    typeName=ProjectCharter
+
+###
+# group: Valid Metadata Values
+# @name setUpValidMetadataMapValue
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/setup-map-value/additionalProperties/expectedDuration?
+    typeName=ProjectCharter
+Content-Type: application/json
+
+{
+  "class": "ValidMetadataValue",
+  "displayName": "One month project",
+  "description": "A project that is expected to take about a month.",
+  "usage": "Used to estimate the relative sizes of projects.",
+  "scope": "Coco Pharmaceuticals",
+  "preferredValue": "1 month",
+  "isDeprecated": "false"
+}
+
+###
+# group: Valid Metadata Values
+# @name clearValidMetadataMapValue
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/clear-map-value/additionalProperties/expectedDuration?
+    typeName=ProjectCharter
+Content-Type: application/json
+
+{
+  "class": "NullRequestBody"
+}
+
+###
+# group: Valid Metadata Values
+# @name validateMetadataMapValue
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/validate-map-value/additionalProperties/expectedDuration?
+    actualValue=1 month&
+    typeName=ProjectCharter
+
+###
+# group: Valid Metadata Values
+# @name getValidMetadataMapValue
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-map-value/additionalProperties/expectedDuration?
+    preferredValue=1 month&
+    typeName=ProjectCharter
+
+###
+# group: Valid Metadata Values
+# @name getValidMetadataValues
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-valid-metadata-values/projectType?
+    typeName=ProjectCharter&
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+  "class": "ValidMetadataValue",
+  "displayName": "Clinical Trial",
+  "description": "A controlled validation of the efficacy of a particular treatment with selected patients.",
+  "usage": "For projects that validate new treatment",
+  "scope": "Coco Pharmaceuticals research",
+  "preferredValue": "clinical-trial",
+  "isDeprecated": "false"
+}

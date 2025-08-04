@@ -5,21 +5,8 @@ package org.odpi.openmetadata.accessservices.assetconsumer.samples.assetlookup;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MeaningElement;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Certification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalIdentifier;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalReference;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.License;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Like;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Location;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Rating;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedMediaReference;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 
@@ -416,7 +403,7 @@ public class AssetLookUp
                     }
                 }
 
-                List<ElementClassification> classifications = assetUniverse.getClassifications();
+                List<ElementClassification> classifications = assetUniverse.getOtherClassifications();
                 if (classifications != null)
                 {
                     System.out.println("   classifications: ");

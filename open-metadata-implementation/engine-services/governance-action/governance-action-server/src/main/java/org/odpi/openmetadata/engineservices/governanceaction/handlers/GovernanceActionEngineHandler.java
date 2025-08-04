@@ -2,13 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.*;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
-import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
@@ -28,8 +30,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     private final GovernanceContextClient   governanceContextClient;    /* Initialized in constructor */
     private final GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
 
-    private final String partnerURLRoot;             /* Initialized in constructor */
-    private final String partnerServerName;          /* Initialized in constructor */
+    private final OpenMetadataClient        openMetadataClient; /* Initialized in constructor */
 
     private static final String supportGovernanceEngineType = "GovernanceActionEngine";
 
@@ -44,22 +45,24 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      * @param partnerServerName name of partner server
      * @param partnerURLRoot partner platform
      * @param serverUserId user id for the server to use
+     * @param openMetadataClient access to the open metadata store
      * @param configurationClient client to retrieve the configuration
      * @param engineActionClient client to control the execution of governance action requests
      * @param governanceContextClient REST client for calls made by the governance action services
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
-    public GovernanceActionEngineHandler(EngineConfig                        engineConfig,
-                                         String                              localServerName,
-                                         String                              partnerServerName,
-                                         String                              partnerURLRoot,
-                                         String                              serverUserId,
-                                         GovernanceConfigurationClient       configurationClient,
-                                         GovernanceContextClient             engineActionClient,
-                                         GovernanceContextClient             governanceContextClient,
-                                         AuditLog                            auditLog,
-                                         int                                 maxPageSize)
+    public GovernanceActionEngineHandler(EngineConfig                  engineConfig,
+                                         String                        localServerName,
+                                         String                        partnerServerName,
+                                         String                        partnerURLRoot,
+                                         String                        serverUserId,
+                                         OpenMetadataClient            openMetadataClient,
+                                         GovernanceConfigurationClient configurationClient,
+                                         GovernanceContextClient       engineActionClient,
+                                         GovernanceContextClient       governanceContextClient,
+                                         AuditLog                      auditLog,
+                                         int                           maxPageSize)
     {
         super(engineConfig,
               localServerName,
@@ -70,13 +73,9 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
               auditLog,
               maxPageSize);
 
-        /* Initialized in constructor */
-        this.partnerServerName = partnerServerName;
-        this.partnerURLRoot = partnerURLRoot;
-
+        this.openMetadataClient        = openMetadataClient;
         this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
-
-        this.governanceContextClient = governanceContextClient;
+        this.governanceContextClient   = governanceContextClient;
 
         this.governanceContextClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
     }
@@ -89,7 +88,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      *
      * @throws InvalidParameterException Vital fields of the governance action are not filled out
      */
-    public void publishWatchdogEvent(WatchdogGovernanceEvent watchdogGovernanceEvent) throws InvalidParameterException
+    public void publishWatchdogEvent(OpenMetadataOutTopicEvent watchdogGovernanceEvent) throws InvalidParameterException
     {
         governanceListenerManager.processEvent(watchdogGovernanceEvent);
     }
@@ -133,21 +132,23 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
              * Need to combine the request parameters from the SupportedGovernanceService relationship with any from the caller.
              * The caller's request parameters take precedence.  This is done in the governanceServiceCache.
              */
-            GovernanceActionServiceHandler governanceActionServiceHandler = new GovernanceActionServiceHandler(governanceEngineProperties,
+            GovernanceActionServiceHandler governanceActionServiceHandler = new GovernanceActionServiceHandler(serverName,
+                                                                                                               governanceEngineProperties,
                                                                                                                governanceEngineGUID,
                                                                                                                serverUserId,
                                                                                                                engineActionGUID,
                                                                                                                engineActionClient,
                                                                                                                governanceServiceCache.getServiceRequestType(),
                                                                                                                governanceServiceCache.getRequestParameters(requestParameters),
+                                                                                                               governanceServiceCache.getGenerateIntegrationReport(),
+                                                                                                               governanceServiceCache.getDeleteMethod(),
                                                                                                                requesterUserId,
                                                                                                                requestSourceElements,
                                                                                                                actionTargetElements,
                                                                                                                governanceServiceCache.getGovernanceServiceGUID(),
                                                                                                                governanceServiceCache.getGovernanceServiceName(),
                                                                                                                governanceServiceCache.getNextGovernanceService(),
-                                                                                                               partnerServerName,
-                                                                                                               partnerURLRoot,
+                                                                                                               openMetadataClient,
                                                                                                                governanceContextClient,
                                                                                                                configurationClient,
                                                                                                                requestedStartDate,

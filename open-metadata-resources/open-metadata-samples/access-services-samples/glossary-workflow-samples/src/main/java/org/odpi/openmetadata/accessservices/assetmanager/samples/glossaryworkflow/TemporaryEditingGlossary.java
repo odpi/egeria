@@ -6,7 +6,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Glossar
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
@@ -81,7 +80,7 @@ public class TemporaryEditingGlossary
             glossaryTermProperties.setQualifiedName("GlossaryTerm:Customer Identifier");
             glossaryTermProperties.setDisplayName("Customer Identifier");
             glossaryTermProperties.setSummary("Unique identifier for a customer");
-            glossaryTermProperties.setPublishVersionIdentifier("V1.0");
+            glossaryTermProperties.setVersionIdentifier("V1.0");
 
             String glossaryTerm1GUID = client.createControlledGlossaryTerm(clientUserId,
                                                                            null,
@@ -141,7 +140,7 @@ public class TemporaryEditingGlossary
             glossaryTermProperties.setDescription("Every person who is a customer needs a unique identifier which is associated with their accounts and other purchased services.");
             glossaryTermProperties.setUsage("The customer identifier is used to retrieve all of the accounts and services for a person.");
             glossaryTermProperties.setAbbreviation("CustId");
-            glossaryTermProperties.setPublishVersionIdentifier("V2.0");
+            glossaryTermProperties.setVersionIdentifier("V2.0");
 
             client.updateGlossaryTerm(clientUserId, null, null, editingGlossaryTermGUID, null,true, glossaryTermProperties, updateDescription, null, false, false);
             printGlossaryTerm(client, editingGlossaryTermGUID);
@@ -194,9 +193,9 @@ public class TemporaryEditingGlossary
 
         System.out.println("===> Term GUID:           " + glossaryTermElement.getElementHeader().getGUID());
 
-        if (glossaryTermElement.getElementHeader().getClassifications() != null)
+        if (glossaryTermElement.getElementHeader().getOtherClassifications() != null)
         {
-            for (ElementClassification classification : glossaryTermElement.getElementHeader().getClassifications())
+            for (ElementClassification classification : glossaryTermElement.getElementHeader().getOtherClassifications())
             {
                 if ("Anchors".equals(classification.getClassificationName()))
                 {
@@ -206,7 +205,7 @@ public class TemporaryEditingGlossary
         }
 
         System.out.println("===> Term Status          " + glossaryTermElement.getElementHeader().getStatus());
-        System.out.println("===> Term Version         " + glossaryTermElement.getGlossaryTermProperties().getPublishVersionIdentifier());
+        System.out.println("===> Term Version         " + glossaryTermElement.getGlossaryTermProperties().getVersionIdentifier());
         System.out.println("===> Term Qualified Name: " + glossaryTermElement.getGlossaryTermProperties().getQualifiedName());
         System.out.println("===> Term Display Name:   " + glossaryTermElement.getGlossaryTermProperties().getDisplayName());
         System.out.println("===> Term Summary:        " + glossaryTermElement.getGlossaryTermProperties().getSummary());

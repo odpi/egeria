@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ITInfrastructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -25,18 +25,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = APIProperties.class, name = "APIProperties"),
+        @JsonSubTypes.Type(value = DeployedAPIProperties.class, name = "DeployedAPIProperties"),
         @JsonSubTypes.Type(value = DataAssetProperties.class, name = "DataAssetProperties"),
         @JsonSubTypes.Type(value = ProcessProperties.class, name = "ProcessProperties"),
         @JsonSubTypes.Type(value = ITInfrastructureProperties.class, name = "ITInfrastructureProperties"),
 })
-public class AssetProperties extends SupplementaryProperties
+public class AssetProperties extends ReferenceableProperties
 {
-    private String name                       = null;
     private String resourceName               = null;
-    private String versionIdentifier          = null;
-    private String resourceDescription        = null;
+    private String namespace                  = null;
     private String deployedImplementationType = null;
+    private String source                     = null;
+    private String userDefinedStatus          = null;
 
 
     /**
@@ -60,56 +60,13 @@ public class AssetProperties extends SupplementaryProperties
 
         if (template != null)
         {
-            name                       = template.getName();
             resourceName               = template.getResourceName();
-            versionIdentifier          = template.getVersionIdentifier();
-            resourceDescription        = template.getResourceDescription();
+            namespace                  = template.getNamespace();
             deployedImplementationType = template.getDeployedImplementationType();
+            source                     = template.getSource();
+            userDefinedStatus          = template.getUserDefinedStatus();
         }
     }
-
-
-    /**
-     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
-     * into the extended properties.
-     *
-     * @param subTypeName subtype name
-     * @return asset properties
-     */
-    public AssetProperties cloneToAsset(String subTypeName)
-    {
-        AssetProperties clone = new AssetProperties(this);
-
-        if (clone.getTypeName() == null)
-        {
-            clone.setTypeName(subTypeName);
-        }
-
-        return clone;
-    }
-
-
-    /**
-     * Return the short name of the resource that is used when displaying the resource in tables etc.
-     *
-     * @return string
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the short name of the resource that is used in tables etc.
-     *
-     * @param name string resource name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
 
     /**
      * Return the full name of the resource as it is known in its owning technology.
@@ -133,58 +90,24 @@ public class AssetProperties extends SupplementaryProperties
 
 
     /**
-     * Set up the version identifier of the resource.
+     * Return the name of the namespace that this type belongs to.
      *
-     * @return string version name
+     * @return string name
      */
-    public String getVersionIdentifier()
+    public String getNamespace()
     {
-        return versionIdentifier;
+        return namespace;
     }
 
 
     /**
-     * Set up the version identifier of the resource.
+     * Set up the name of the namespace that this type belongs to.
      *
-     * @param versionIdentifier string version name
+     * @param namespace string name
      */
-    public void setVersionIdentifier(String versionIdentifier)
+    public void setNamespace(String namespace)
     {
-        this.versionIdentifier = versionIdentifier;
-    }
-
-
-    /**
-     * Returns the stored description property extracted from the resource.
-     * If no description is provided then null is returned.
-     *
-     * @return description String text
-     */
-    public String getResourceDescription()
-    {
-        return resourceDescription;
-    }
-
-
-    /**
-     * Set up the stored description property extracted from the resource.
-     *
-     * @param resourceDescription String text
-     */
-    public void setResourceDescription(String resourceDescription)
-    {
-        this.resourceDescription = resourceDescription;
-    }
-
-
-    /**
-     * This override defaults the display description to the resource description if it is null;
-     *
-     * @return description
-     */
-    public String getDisplayDescription()
-    {
-        return displayDescription;
+        this.namespace = namespace;
     }
 
 
@@ -210,6 +133,52 @@ public class AssetProperties extends SupplementaryProperties
     }
 
 
+
+    /**
+     * Return the source (such as author, vendor or operator) of the asset.
+     *
+     * @return string name
+     */
+    public String getSource()
+    {
+        return source;
+    }
+
+
+    /**
+     * Set up the source (such as author, vendor or operator) of the asset.
+     *
+     * @param source string name
+     */
+    public void setSource(String source)
+    {
+        this.source = source;
+    }
+
+
+
+    /**
+     * Return the status used when element status is OTHER.
+     *
+     * @return string
+     */
+    public String getUserDefinedStatus()
+    {
+        return userDefinedStatus;
+    }
+
+
+    /**
+     * Set up the status used when element status is OTHER.
+     *
+     * @param userDefinedStatus string
+     */
+    public void setUserDefinedStatus(String userDefinedStatus)
+    {
+        this.userDefinedStatus = userDefinedStatus;
+    }
+
+
     /**
      * Standard toString method.
      *
@@ -219,11 +188,11 @@ public class AssetProperties extends SupplementaryProperties
     public String toString()
     {
         return "AssetProperties{" +
-                "name='" + name + '\'' +
-                ", resourceName='" + resourceName + '\'' +
-                ", versionIdentifier='" + versionIdentifier + '\'' +
-                ", description='" + resourceDescription + '\'' +
+                "resourceName='" + resourceName + '\'' +
+                ", namespace='" + namespace + '\'' +
                 ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", source='" + source + '\'' +
+                ", userDefinedStatus='" + userDefinedStatus + '\'' +
                 "} " + super.toString();
     }
 
@@ -241,11 +210,11 @@ public class AssetProperties extends SupplementaryProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         AssetProperties that = (AssetProperties) objectToCompare;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(versionIdentifier, that.versionIdentifier) &&
+        return Objects.equals(namespace, that.namespace) &&
                 Objects.equals(resourceName, that.resourceName) &&
-                Objects.equals(resourceDescription, that.deployedImplementationType) &&
-                Objects.equals(resourceDescription, that.resourceDescription);
+                Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
+                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
+                Objects.equals(source, that.source);
     }
 
     /**
@@ -256,6 +225,6 @@ public class AssetProperties extends SupplementaryProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, resourceName, versionIdentifier, resourceDescription, deployedImplementationType);
+        return Objects.hash(super.hashCode(), namespace, resourceName, deployedImplementationType, source, userDefinedStatus);
     }
 }

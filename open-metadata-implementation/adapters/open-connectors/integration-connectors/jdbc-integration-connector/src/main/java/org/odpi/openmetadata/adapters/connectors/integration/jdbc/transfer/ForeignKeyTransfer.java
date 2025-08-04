@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseForeignKeyProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcForeignKey;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,17 +18,21 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Transfers metadata of a foreign key
  */
-public class ForeignKeyTransfer implements Consumer<JdbcForeignKey> {
-
+public class ForeignKeyTransfer implements Consumer<JdbcForeignKey>
+{
     private final Omas omas;
-    private final AuditLog        auditLog;
-    private final DatabaseElement database;
+    private final AuditLog     auditLog;
+    private final OpenMetadataRootElement database;
 
-    public ForeignKeyTransfer(Omas omas, AuditLog auditLog, DatabaseElement database) {
+    public ForeignKeyTransfer(Omas omas,
+                              AuditLog auditLog,
+                              OpenMetadataRootElement database)
+    {
         this.omas = omas;
         this.auditLog = auditLog;
         this.database = database;
     }
+
 
     /**
      * Triggers foreign key metadata transfer
@@ -36,8 +40,10 @@ public class ForeignKeyTransfer implements Consumer<JdbcForeignKey> {
      * @param jdbcForeignKey foreign key
      */
     @Override
-    public void accept(JdbcForeignKey jdbcForeignKey) {
-        String databaseQualifiedName = database.getDatabaseProperties().getQualifiedName();
+    public void accept(JdbcForeignKey jdbcForeignKey)
+    {
+        String databaseQualifiedName = omas.getQualifiedName(database);
+
         String pkColumnQualifiedName = databaseQualifiedName
                 + (jdbcForeignKey.getPkTableSchem() == null ? "" : "::" + jdbcForeignKey.getPkTableSchem() )
                 + "::" + jdbcForeignKey.getPkTableName() + "::" + jdbcForeignKey.getPkColumnName();
@@ -45,10 +51,11 @@ public class ForeignKeyTransfer implements Consumer<JdbcForeignKey> {
                 + ( jdbcForeignKey.getFkTableSchem() == null ? "" : "::" + jdbcForeignKey.getFkTableSchem())
                 + "::" + jdbcForeignKey.getFkTableName() + "::" + jdbcForeignKey.getFkColumnName();
 
-        DatabaseColumnElement pkColumn = determineColumn(omas.findDatabaseColumns(pkColumnQualifiedName));
-        DatabaseColumnElement fkColumn = determineColumn(omas.findDatabaseColumns(fkColumnQualifiedName));
+        OpenMetadataRootElement pkColumn = determineColumn(omas.findDatabaseColumns(pkColumnQualifiedName));
+        OpenMetadataRootElement fkColumn = determineColumn(omas.findDatabaseColumns(fkColumnQualifiedName));
 
-        if(pkColumn == null || fkColumn == null){
+        if (pkColumn == null || fkColumn == null)
+        {
             return;
         }
 
@@ -67,12 +74,16 @@ public class ForeignKeyTransfer implements Consumer<JdbcForeignKey> {
      *
      * @return item at index 0 if size is 1 otherwise null
      */
-    private DatabaseColumnElement determineColumn(List<DatabaseColumnElement> columns){
-        if(columns.size() == 1){
+    private OpenMetadataRootElement determineColumn(List<OpenMetadataRootElement> columns)
+    {
+        if (columns.size() == 1)
+        {
             return columns.get(0);
         }
+
         return null;
     }
+
 
     /**
      * Build foreign key properties
@@ -81,10 +92,17 @@ public class ForeignKeyTransfer implements Consumer<JdbcForeignKey> {
      *
      * @return properties
      */
-    private DatabaseForeignKeyProperties buildForeignKeyProperties(JdbcForeignKey jdbcForeignKey){
-        DatabaseForeignKeyProperties properties = new DatabaseForeignKeyProperties();
-        properties.setName(jdbcForeignKey.getPkName() + " - " + jdbcForeignKey.getFkName());
-        properties.setSource(database.getDatabaseProperties().getDatabaseImportedFrom());
+    private ForeignKeyProperties buildForeignKeyProperties(JdbcForeignKey jdbcForeignKey)
+    {
+        ForeignKeyProperties properties = new ForeignKeyProperties();
+
+        properties.setDisplayName(jdbcForeignKey.getPkName() + " - " + jdbcForeignKey.getFkName());
+
+        if (database.getProperties() instanceof DatabaseProperties databaseProperties)
+        {
+            properties.setSource(databaseProperties.getDatabaseImportedFrom());
+        }
+
         return properties;
     }
 }

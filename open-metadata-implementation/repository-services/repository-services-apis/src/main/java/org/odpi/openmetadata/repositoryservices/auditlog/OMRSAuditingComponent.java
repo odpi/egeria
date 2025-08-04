@@ -230,13 +230,13 @@ public enum OMRSAuditingComponent implements ComponentDescription
                                 "https://egeria-project.org/concepts/cohort-member-client-connector/"),
 
     /**
-     * Open Metadata Access Service (OMAS) Out Topic - Publishes events from a specific access service.
+     * Metadata Access Server Out Topic - Publishes events from the open metadata store.
      */
-    OMAS_OUT_TOPIC(24,
-                   ComponentDevelopmentStatus.STABLE,
-                   "Open Metadata Access Service (OMAS) Out Topic",
-                   "Publishes events from a specific access service.",
-                   "https://egeria-project.org/concepts/out-topic/"),
+    METADATA_ACCESS_SERVER_OUT_TOPIC(24,
+                                     ComponentDevelopmentStatus.STABLE,
+                                     "Metadata Access Server Out Topic",
+                                     "Publishes events from the open metadata store.",
+                                     "https://egeria-project.org/concepts/out-topic/"),
 
     /**
      * Open Metadata Access Service (OMAS) In Topic - Receives events from external servers and tools directed at a specific access service.

@@ -362,12 +362,6 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                   description,
                                                                   methodName);
 
-        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   OpenMetadataProperty.IS_DEPRECATED.name,
-                                                                   isDeprecated,
-                                                                   methodName);
-
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataProperty.DEFAULT_VALUE_OVERRIDE.name,

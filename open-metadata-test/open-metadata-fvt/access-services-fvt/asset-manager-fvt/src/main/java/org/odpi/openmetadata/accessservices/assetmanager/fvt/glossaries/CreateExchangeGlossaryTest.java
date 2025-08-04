@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.common.AssetManagerTestBase;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryElement;
@@ -14,13 +13,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryCategoryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermCategorization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -525,7 +521,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
      * @return GUID of glossary
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private String getGlossaryTerm(GlossaryExchangeClient client,
+    private String getGlossaryTerm(GlossaryTermHandler client,
                                    String                 assetManagerGUID,
                                    String                 glossaryGUID,
                                    String                 userId) throws FVTUnexpectedCondition
@@ -606,7 +602,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
      * @return GUID of glossary
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private String getControlledGlossaryTerm(GlossaryExchangeClient client,
+    private String getControlledGlossaryTerm(GlossaryTermHandler client,
                                              String                 glossaryGUID,
                                              String                 userId) throws FVTUnexpectedCondition
     {
@@ -621,12 +617,9 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
             properties.setQualifiedName(controlledGlossaryTermName);
             properties.setDisplayName(controlledGlossaryTermDisplayName);
             properties.setDescription(controlledGlossaryTermDescription);
+            properties.setUserDefinedStatus(controlledGlossaryTermStatus);
 
-            extendedProperties.put(OpenMetadataProperty.USER_DEFINED_STATUS.name, controlledGlossaryTermStatus);
-            properties.setExtendedProperties(extendedProperties);
-            properties.setTypeName(OpenMetadataType.CONTROLLED_GLOSSARY_TERM.typeName);
-
-            String glossaryTermGUID = client.createControlledGlossaryTerm(userId,
+            String glossaryTermGUID = client.createGlossaryTerm(userId,
                                                                           null,
                                                                           null,
                                                                           false,

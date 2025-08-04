@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class LocationProperties extends ReferenceableProperties
 {
     private String identifier  = null;
-    private String displayName = null;
-    private String description = null;
 
 
     /**
@@ -49,8 +47,6 @@ public class LocationProperties extends ReferenceableProperties
         if (template != null)
         {
             identifier  = template.getIdentifier();
-            displayName = template.getDisplayName();
-            description = template.getDescription();
         }
     }
 
@@ -78,50 +74,6 @@ public class LocationProperties extends ReferenceableProperties
 
 
     /**
-     * Return a human memorable name for the location.
-     *
-     * @return string  name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up a human memorable name for the location.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the location.
-     *
-     * @return string text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the location.
-     *
-     * @param description string text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -130,17 +82,8 @@ public class LocationProperties extends ReferenceableProperties
     public String toString()
     {
         return "LocationProperties{" +
-                       "identifier='" + identifier + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "identifier='" + identifier + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -166,9 +109,7 @@ public class LocationProperties extends ReferenceableProperties
             return false;
         }
         LocationProperties that = (LocationProperties) objectToCompare;
-        return Objects.equals(identifier, that.identifier) &&
-               Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description);
+        return Objects.equals(identifier, that.identifier);
     }
 
 
@@ -180,6 +121,6 @@ public class LocationProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, displayName, description);
+        return Objects.hash(super.hashCode(), identifier);
     }
 }

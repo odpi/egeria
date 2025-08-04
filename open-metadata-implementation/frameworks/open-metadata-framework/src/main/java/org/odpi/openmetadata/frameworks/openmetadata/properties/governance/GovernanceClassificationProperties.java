@@ -3,9 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
 
@@ -19,6 +17,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = CriticalityProperties.class, name = "CriticalityProperties"),
+                @JsonSubTypes.Type(value = ConfidentialityProperties.class, name = "ConfidentialityProperties"),
+                @JsonSubTypes.Type(value = ConfidenceProperties.class, name = "ConfidenceProperties"),
+                @JsonSubTypes.Type(value = ImpactProperties.class, name = "ImpactProperties"),
+        })
 public class GovernanceClassificationProperties extends GovernanceClassificationBase
 {
     private int levelIdentifier = 0;
@@ -78,15 +86,8 @@ public class GovernanceClassificationProperties extends GovernanceClassification
     public String toString()
     {
         return "GovernanceClassificationProperties{" +
-                       "levelIdentifier=" + levelIdentifier +
-                       ", status=" + getStatus() +
-                       ", confidence=" + getConfidence() +
-                       ", steward='" + getSteward() + '\'' +
-                       ", stewardTypeName='" + getStewardTypeName() + '\'' +
-                       ", stewardPropertyName='" + getStewardPropertyName() + '\'' +
-                       ", source='" + getSource() + '\'' +
-                       ", notes='" + getNotes() + '\'' +
-                       '}';
+                "levelIdentifier=" + levelIdentifier +
+                "} " + super.toString();
     }
 
 

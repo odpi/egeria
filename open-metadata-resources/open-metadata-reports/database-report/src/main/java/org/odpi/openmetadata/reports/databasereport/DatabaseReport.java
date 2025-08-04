@@ -6,7 +6,6 @@ package org.odpi.openmetadata.reports.databasereport;
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.DatabaseManagerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.*;
@@ -222,8 +221,8 @@ public class DatabaseReport
         {
             System.out.print("| " + databaseElement.getElementHeader().getGUID());
             System.out.print(" | " + databaseElement.getDatabaseProperties().getQualifiedName());
-            System.out.print(" | " + databaseElement.getDatabaseProperties().getName());
-            System.out.print(" | " + databaseElement.getDatabaseProperties().getResourceDescription());
+            System.out.print(" | " + databaseElement.getDatabaseProperties().getDisplayName());
+            System.out.print(" | " + databaseElement.getDatabaseProperties().getDescription());
             System.out.println(" |");
         }
     }
@@ -240,17 +239,17 @@ public class DatabaseReport
         {
             DatabaseElement databaseElement = databaseManagerClient.getDatabaseByGUID(clientUserId, databaseGUID);
 
-            EgeriaReport report = new EgeriaReport("Database " + databaseElement.getDatabaseProperties().getName());
+            EgeriaReport report = new EgeriaReport("Database " + databaseElement.getDatabaseProperties().getDisplayName());
 
             final String reportTitle = "Database report for: ";
-            report.printReportTitle(0, reportTitle + databaseElement.getDatabaseProperties().getName() + " on server: " + serverName);
+            report.printReportTitle(0, reportTitle + databaseElement.getDatabaseProperties().getDisplayName() + " on server: " + serverName);
 
             report.printElementInTable(0,
                                        true,
                                        databaseElement.getElementHeader().getGUID(),
                                        databaseElement.getDatabaseProperties().getQualifiedName(),
-                                       databaseElement.getDatabaseProperties().getName(),
-                                       databaseElement.getDatabaseProperties().getResourceDescription());
+                                       databaseElement.getDatabaseProperties().getDisplayName(),
+                                       databaseElement.getDatabaseProperties().getDescription());
 
             /*
              * The database may have its tables organized in schemas or directly listed under the database.
@@ -289,8 +288,8 @@ public class DatabaseReport
                                                true,
                                                databaseSchemaElement.getElementHeader().getGUID(),
                                                databaseSchemaElement.getDatabaseSchemaProperties().getQualifiedName(),
-                                               databaseSchemaElement.getDatabaseSchemaProperties().getName(),
-                                               databaseSchemaElement.getDatabaseSchemaProperties().getResourceDescription());
+                                               databaseSchemaElement.getDatabaseSchemaProperties().getDisplayName(),
+                                               databaseSchemaElement.getDatabaseSchemaProperties().getDescription());
 
                     displayTables(report, indentLevel + 1, databaseSchemaElement.getElementHeader().getGUID());
                 }
@@ -483,17 +482,17 @@ public class DatabaseReport
                 {
                     String schemaName = "Schema" + s;
 
-                    DatabaseSchemaProperties databaseSchemaProperties = new DatabaseSchemaProperties();
+                    DeployedDatabaseSchemaProperties deployedDatabaseSchemaProperties = new DeployedDatabaseSchemaProperties();
 
-                    databaseSchemaProperties.setQualifiedName(databaseName + "." + schemaName);
-                    databaseSchemaProperties.setName(schemaName);
-                    databaseSchemaProperties.setResourceDescription("Database schema definition called " + schemaName + " with " + numberOfTables + " tables.");
+                    deployedDatabaseSchemaProperties.setQualifiedName(databaseName + "." + schemaName);
+                    deployedDatabaseSchemaProperties.setDisplayName(schemaName);
+                    deployedDatabaseSchemaProperties.setDescription("Database schema definition called " + schemaName + " with " + numberOfTables + " tables.");
 
                     String databaseSchemaGUID = databaseManagerClient.createDatabaseSchema(clientUserId,
                                                                                            databaseManagerGUID,
                                                                                            databaseManagerName,
                                                                                            databaseGUID,
-                                                                                           databaseSchemaProperties);
+                                                                                           deployedDatabaseSchemaProperties);
 
                     if (numberOfTables > 0)
                     {
@@ -568,11 +567,11 @@ public class DatabaseReport
                 {
                     String tableName = "Table" + t;
 
-                    DatabaseTableProperties databaseTableProperties = new DatabaseTableProperties();
+                    RelationalTableProperties relationalTableProperties = new RelationalTableProperties();
 
-                    databaseTableProperties.setQualifiedName(parentName + "." + tableName);
-                    databaseTableProperties.setDisplayName(tableName);
-                    databaseTableProperties.setDescription("Table definition called " + tableName + " with " + numberOfColumns + " columns.");
+                    relationalTableProperties.setQualifiedName(parentName + "." + tableName);
+                    relationalTableProperties.setDisplayName(tableName);
+                    relationalTableProperties.setDescription("Table definition called " + tableName + " with " + numberOfColumns + " columns.");
 
                     String databaseTableGUID;
 
@@ -582,7 +581,7 @@ public class DatabaseReport
                                                                                                    databaseManagerGUID,
                                                                                                    databaseManagerName,
                                                                                                    databaseSchemaTypeGUID,
-                                                                                                   databaseTableProperties);
+                                                                                                   relationalTableProperties);
                     }
                     else
                     {
@@ -590,7 +589,7 @@ public class DatabaseReport
                                                                                       databaseManagerGUID,
                                                                                       databaseManagerName,
                                                                                       parentGUID,
-                                                                                      databaseTableProperties);
+                                                                                      relationalTableProperties);
                     }
 
                     if (numberOfColumns > 0)
@@ -599,18 +598,18 @@ public class DatabaseReport
                         {
                             String columnName = "Column" + t + "." + c;
 
-                            DatabaseColumnProperties databaseColumnProperties = new DatabaseColumnProperties();
+                            RelationalColumnProperties relationalColumnProperties = new RelationalColumnProperties();
 
-                            databaseColumnProperties.setQualifiedName(parentName + "." + tableName);
-                            databaseColumnProperties.setDisplayName(tableName);
-                            databaseColumnProperties.setDescription("Column definition called " + columnName + " inside " + tableName + " table.");
-                            databaseColumnProperties.setDataType("string");
+                            relationalColumnProperties.setQualifiedName(parentName + "." + tableName);
+                            relationalColumnProperties.setDisplayName(tableName);
+                            relationalColumnProperties.setDescription("Column definition called " + columnName + " inside " + tableName + " table.");
+                            relationalColumnProperties.setDataType("string");
 
                             databaseManagerClient.createDatabaseColumn(clientUserId,
                                                                        databaseManagerGUID,
                                                                        databaseManagerName,
                                                                        databaseTableGUID,
-                                                                       databaseColumnProperties);
+                                                                       relationalColumnProperties);
                         }
                     }
                 }

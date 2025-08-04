@@ -5,13 +5,9 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphNode;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's asset lineage edge graph.
@@ -29,17 +25,7 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
                                                     List<AssetLineageGraphNode> ultimateSources,
                                                     List<AssetLineageGraphNode> ultimateDestinations)
     {
-        String currentDisplayName = assetLineageGraph.getProperties().getDisplayName();
-
-        if (currentDisplayName == null)
-        {
-            currentDisplayName = assetLineageGraph.getProperties().getName();
-        }
-
-        if (currentDisplayName == null)
-        {
-            currentDisplayName = assetLineageGraph.getProperties().getQualifiedName();
-        }
+        String currentDisplayName = super.getNodeDisplayName(assetLineageGraph);;
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Lineage Edge Analysis Graph for Asset - ");
@@ -60,19 +46,7 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
             {
                 if (node != null)
                 {
-                    currentDisplayName   = node.getProperties().getDisplayName();
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getName();
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getResourceName();
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getQualifiedName();
-                    }
+                    currentDisplayName = super.getNodeDisplayName(node);
 
                     appendNewMermaidNode(node.getElementHeader().getGUID(),
                                          currentDisplayName,
@@ -93,19 +67,7 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
             {
                 if (node != null)
                 {
-                    currentDisplayName   = node.getProperties().getDisplayName();
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getName();
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getResourceName();
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getQualifiedName();
-                    }
+                    currentDisplayName   = super.getNodeDisplayName(node);
 
                     appendNewMermaidNode(node.getElementHeader().getGUID(),
                                          currentDisplayName,

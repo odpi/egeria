@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InformationSupplyChainProperties extends ReferenceableProperties
 {
-    private String              displayName          = null;
-    private String              description          = null;
     private String              scope                = null;
     private List<String>        purposes             = null;
     private String              integrationStyle     = null;
@@ -56,57 +54,11 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.displayName          = template.getDisplayName();
-            this.description          = template.getDescription();
             this.scope                = template.getScope();
             this.purposes             = template.getPurposes();
             this.integrationStyle     = template.getIntegrationStyle();
             this.estimatedVolumetrics = template.getEstimatedVolumetrics();
         }
-    }
-
-
-    /**
-     * Return the display name for this information supply chain (normally a shortened form of the qualified name).
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for this information supply chain (normally a shortened form of the qualified name).
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for this information supply chain.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for this information supply chain.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -208,9 +160,7 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
     public String toString()
     {
         return "InformationSupplyChainProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", scope='" + scope + '\'' +
+                "scope='" + scope + '\'' +
                 ", purposes='" + purposes + '\'' +
                 ", integrationStyle='" + integrationStyle + '\'' +
                 ", estimatedVolumetrics=" + estimatedVolumetrics +
@@ -239,9 +189,7 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
         {
             return false;
         }
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(scope, that.scope) &&
+        return Objects.equals(scope, that.scope) &&
                 Objects.equals(purposes, that.purposes) &&
                 Objects.equals(integrationStyle, that.integrationStyle) &&
                 Objects.equals(estimatedVolumetrics, that.estimatedVolumetrics);
@@ -256,6 +204,6 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, scope, purposes, integrationStyle, estimatedVolumetrics);
+        return Objects.hash(super.hashCode(), scope, purposes, integrationStyle, estimatedVolumetrics);
     }
 }

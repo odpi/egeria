@@ -31,7 +31,7 @@ Content-Type: application/json
 # Note the number of anchored elements returned is controlled by the paging.
 #
 # Asset: https://egeria-project.org/concepts/asset/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{assetGUID}}/as-graph?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{assetGUID}}/as-graph?startFrom=0&pageSize=0
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -60,7 +60,7 @@ Content-Type: application/json
 {
   "effectiveTime" : "{{$isoTimestamp}}",
   "asOfTime": "{{$isoTimestamp}}",
-  "relationshipTypes" : ["DataSetContent"],
+  "includeOnlyRelationships" : ["DataSetContent"],
   "limitToISCQualifiedName": "",
   "highlightISCQualifiedName": "",
   "allAnchors" : true
@@ -75,7 +75,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NameRequestBody",
+  "class" : "UniqueNameRequestBody",
   "name" : "System:coco-sus",
   "namePropertyName" : "qualifiedName"
 }
@@ -116,7 +116,7 @@ Content-Type: application/json
 # retrieved both from the asset, and the anchored schema elements.
 #
 # Lineage: https://egeria-project.org/features/lineage-management/overview/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -126,12 +126,12 @@ Content-Type: application/json
 # Locate string value in elements that are anchored to assets.
 #
 # Asset: https://egeria-project.org/concepts/asset/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/in-domain/by-search-string?startFrom=0&pageSize=10&startsWith=false&endWith=false&ignoreCase=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/in-domain/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add search string here"
+  "searchString" : "Add search string here"
 }
 
 ###
@@ -145,7 +145,7 @@ Content-Type: application/json
 # Return a list of assets that come from the requested metadata collection.
 #
 # Asset: https://egeria-project.org/concepts/asset/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/by-metadata-collection-id/{{metadataCollectionId}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/by-metadata-collection-id/{{metadataCollectionId}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

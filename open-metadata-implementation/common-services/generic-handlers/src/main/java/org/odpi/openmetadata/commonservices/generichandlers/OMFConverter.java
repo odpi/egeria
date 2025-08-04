@@ -94,7 +94,8 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
             elementHeader.setGUID(entity.getGUID());
             elementHeader.setType(this.getElementType(entity));
-            elementHeader.setClassifications(this.getEntityClassifications(entity));
+            propertyHelper.addClassificationsToElementHeader(elementHeader,
+                                                             this.getAttachedClassifications(entity.getClassifications()));
 
             ElementOrigin elementOrigin = new ElementOrigin();
 
@@ -122,20 +123,17 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      *
      * @param elementHeader   the header for the bean
      * @param instanceHeader  header of entity
-     * @param classifications classifications from the entity
      * @param methodName      calling method
      * @throws PropertyServerException the supplied entity is not of the expected type
      */
     protected void setUpElementHeader(ElementHeader elementHeader,
                                       InstanceHeader instanceHeader,
-                                      List<Classification> classifications,
                                       String methodName) throws PropertyServerException
     {
         if (instanceHeader != null)
         {
             elementHeader.setGUID(instanceHeader.getGUID());
             elementHeader.setType(this.getElementType(instanceHeader));
-            elementHeader.setClassifications(this.getElementClassifications(classifications));
 
             ElementOrigin elementOrigin = new ElementOrigin();
 
@@ -156,70 +154,6 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                                                 methodName);
         }
     }
-
-
-    /**
-     * Retrieve a specific named classification.
-     *
-     * @param classificationName  name of classification
-     * @param beanClassifications list of classifications retrieved from the repositories
-     * @return null or the requested classification
-     */
-    protected ElementClassification getClassification(String classificationName,
-                                                      List<ElementClassification> beanClassifications)
-    {
-        if ((classificationName != null) && (beanClassifications != null))
-        {
-            for (ElementClassification classification : beanClassifications)
-            {
-                if (classification != null)
-                {
-                    if (classification.getClassificationName().equals(classificationName))
-                    {
-                        return classification;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Remove the requested classification from the bean classifications and return the resulting list.
-     *
-     * @param classificationName  name of the classification
-     * @param beanClassifications list of classifications retrieved from the repositories
-     * @return null or a list of classifications
-     */
-    protected List<ElementClassification> removeClassification(String classificationName,
-                                                               List<ElementClassification> beanClassifications)
-    {
-        if ((classificationName != null) && (beanClassifications != null))
-        {
-            List<ElementClassification> results = new ArrayList<>();
-
-            for (ElementClassification classification : beanClassifications)
-            {
-                if (classification != null)
-                {
-                    if (!classification.getClassificationName().equals(classificationName))
-                    {
-                        results.add(classification);
-                    }
-                }
-            }
-
-            if (!results.isEmpty())
-            {
-                return results;
-            }
-        }
-
-        return null;
-    }
-
 
 
     /**
@@ -283,11 +217,11 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * @return bean populated with properties from the instances supplied in the constructor
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    protected Connection getEmbeddedConnection(Class<B> beanClass,
-                                               EntityDetail primaryEntity,
+    protected Connection getEmbeddedConnection(Class<B>           beanClass,
+                                               EntityDetail       primaryEntity,
                                                List<EntityDetail> supplementaryEntities,
                                                List<Relationship> relationships,
-                                               String methodName) throws PropertyServerException
+                                               String             methodName) throws PropertyServerException
     {
         /*
          * The entities and relationships may describe either a Connection or a VirtualConnection.
@@ -349,7 +283,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         {
             VirtualConnection connection = new VirtualConnection();
 
-            fillInConnectionProperties(connection, primaryEntity, relationships, supplementaryEntities, methodName);
+            fillInConnectionProperties(connection, primaryEntity, relationships, supplementaryEntities);
 
             /*
              * To fill out the rest of the virtual connection it is necessary to follow the relationships
@@ -465,13 +399,13 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                                         EntityDetail       primaryEntity,
                                         List<EntityDetail> supplementaryEntities,
                                         List<Relationship> relationships,
-                                        String methodName) throws PropertyServerException
+                                        String             methodName) throws PropertyServerException
     {
         try
         {
             Connection connection = new Connection();
 
-            fillInConnectionProperties(connection, primaryEntity, relationships, supplementaryEntities, methodName);
+            fillInConnectionProperties(connection, primaryEntity, relationships, supplementaryEntities);
 
             return connection;
         }
@@ -490,16 +424,13 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * @param connection    bean to fill
      * @param primaryEntity        entity to trawl for values
      * @param relationships relationships linking the entities
-     * @param methodName    calling method
-     * @throws PropertyServerException there was a problem unpacking the entity
      */
     private void fillInConnectionProperties(Connection connection,
                                             EntityDetail primaryEntity,
                                             List<Relationship> relationships,
-                                            List<EntityDetail> supplementaryEntities,
-                                            String methodName) throws PropertyServerException
+                                            List<EntityDetail> supplementaryEntities)
     {
-        this.setUpElementHeader(connection, primaryEntity, OpenMetadataType.CONNECTION.typeName, methodName);
+        connection.setGUID(primaryEntity.getGUID());
 
         /*
          * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
@@ -510,6 +441,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         connection.setQualifiedName(this.removeQualifiedName(instanceProperties));
         connection.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
         connection.setDisplayName(this.removeDisplayName(instanceProperties));
+        connection.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
         connection.setDescription(this.removeDescription(instanceProperties));
         connection.setSecuredProperties(this.removeSecuredProperties(instanceProperties));
         connection.setConfigurationProperties(this.removeConfigurationProperties(instanceProperties));
@@ -541,7 +473,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
                     if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENDPOINT.typeName))
                     {
-                        Endpoint endpoint = getEndpoint(entity, methodName);
+                        Endpoint endpoint = getEndpoint(entity);
 
                         /*
                          * Add the endpoint to the connection
@@ -550,7 +482,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                     }
                     else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTOR_TYPE.typeName))
                     {
-                        ConnectorType connectorType = getConnectorType(entity, methodName);
+                        ConnectorType connectorType = getConnectorType(entity);
 
                         /*
                          * Add the connector type to the connection
@@ -599,16 +531,13 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * Retrieve the endpoint from an entity.
      *
      * @param entity     entity to trawl for values
-     * @param methodName calling method
      * @return new endpoint object
-     * @throws PropertyServerException there was a problem unpacking the entity
      */
-    private Endpoint getEndpoint(EntityDetail entity,
-                                 String methodName) throws PropertyServerException
+    private Endpoint getEndpoint(EntityDetail entity)
     {
         Endpoint endpoint = new Endpoint();
 
-        this.setUpElementHeader(endpoint, entity, OpenMetadataType.ENDPOINT.typeName, methodName);
+        endpoint.setGUID(entity.getGUID());
 
         /*
          * The initial set of values come from the entity.
@@ -619,6 +548,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         endpoint.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
         endpoint.setDisplayName(this.removeName(instanceProperties));
         endpoint.setDescription(this.removeDescription(instanceProperties));
+        endpoint.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
         endpoint.setAddress(this.removeNetworkAddress(instanceProperties));
         endpoint.setProtocol(this.removeProtocol(instanceProperties));
         endpoint.setEncryptionMethod(this.removeEncryptionMethod(instanceProperties));
@@ -637,16 +567,13 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * Retrieve the connector type from an entity.
      *
      * @param entity     entity to trawl for values
-     * @param methodName calling method
      * @return new endpoint object
-     * @throws PropertyServerException there was a problem unpacking the entity
      */
-    private ConnectorType getConnectorType(EntityDetail entity,
-                                           String methodName) throws PropertyServerException
+    private ConnectorType getConnectorType(EntityDetail entity)
     {
         ConnectorType connectorType = new ConnectorType();
 
-        this.setUpElementHeader(connectorType, entity, OpenMetadataType.CONNECTOR_TYPE.typeName, methodName);
+        connectorType.setGUID(entity.getGUID());
 
         /*
          * The initial set of values come from the entity.
@@ -657,6 +584,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         connectorType.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
         connectorType.setDisplayName(this.removeDisplayName(instanceProperties));
         connectorType.setDescription(this.removeDescription(instanceProperties));
+        connectorType.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
         connectorType.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
         connectorType.setSupportedDeployedImplementationType(this.removeSupportedDeployedImplementationType(instanceProperties));
         connectorType.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));

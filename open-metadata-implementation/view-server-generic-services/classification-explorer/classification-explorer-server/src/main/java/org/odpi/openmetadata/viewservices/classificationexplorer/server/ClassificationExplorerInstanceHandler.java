@@ -8,8 +8,8 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.OpenMetadataStoreHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 
 /**
@@ -76,10 +76,10 @@ public class ClassificationExplorerInstanceHandler extends OMVSServiceInstanceHa
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public OpenMetadataStoreHandler getOpenMetadataHandler(String userId,
-                                                           String serverName,
-                                                           String urlMarker,
-                                                           String serviceOperationName) throws InvalidParameterException,
+    public EgeriaOpenMetadataStoreHandler getOpenMetadataHandler(String userId,
+                                                                 String serverName,
+                                                                 String urlMarker,
+                                                                 String serviceOperationName) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
     {

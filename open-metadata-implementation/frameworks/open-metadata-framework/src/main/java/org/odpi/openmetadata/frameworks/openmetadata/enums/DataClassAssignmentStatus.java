@@ -232,4 +232,5 @@ public enum DataClassAssignmentStatus implements OpenMetadataEnum
     public String toString()
     {
         return "DataClassAssignmentStatus{name='" + name + '}';
-    }}
+    }
+}

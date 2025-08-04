@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.viewservices.assetcatalog.server;
 
 
-import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.Type;
 
 import java.util.List;
@@ -71,17 +71,17 @@ public class AssetCatalogInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public AssetConsumer getAssetConsumerClient(String userId,
-                                                String serverName,
-                                                String serviceOperationName) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+    public AssetHandler getAssetHandler(String userId,
+                                        String serverName,
+                                        String serviceOperationName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         AssetCatalogInstance instance = (AssetCatalogInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getAssetConsumerClient();
+            return instance.getAssetHandler();
         }
 
         return null;

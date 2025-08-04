@@ -4,13 +4,13 @@
 package org.odpi.openmetadata.frameworks.integration.iterator;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class RelatedElementsIterator extends IntegrationIterator
      * @param parentRelationshipTypeName type of relationship - may be null
      * @param parentAtEnd which end of the relationship to start from: 0 (either); 1 or 2
      * @param metadataTypeName type of element to receive
-     * @param openMetadataAccess client to access metadata
+     * @param openMetadataStore client to access metadata
      * @param targetPermittedSynchronization the synchronization policy for this target
      * @param maxPageSize max page size for the server
      * @param auditLog logging destination
@@ -54,7 +54,7 @@ public class RelatedElementsIterator extends IntegrationIterator
                                    String                   parentRelationshipTypeName,
                                    int                      parentAtEnd,
                                    String                   metadataTypeName,
-                                   OpenMetadataAccess       openMetadataAccess,
+                                   OpenMetadataStore        openMetadataStore,
                                    PermittedSynchronization targetPermittedSynchronization,
                                    int                      maxPageSize,
                                    AuditLog                 auditLog)
@@ -66,7 +66,7 @@ public class RelatedElementsIterator extends IntegrationIterator
               catalogTargetName,
               connectorName,
               metadataTypeName,
-              openMetadataAccess,
+              openMetadataStore,
               targetPermittedSynchronization,
               maxPageSize,
               auditLog);
@@ -92,11 +92,11 @@ public class RelatedElementsIterator extends IntegrationIterator
     {
         if ((elementCache == null) || (elementCache.isEmpty()))
         {
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataAccess.getRelatedMetadataElements(parentGUID,
-                                                                                                                  parentAtEnd,
-                                                                                                                  parentRelationshipTypeName,
-                                                                                                                  startFrom,
-                                                                                                                  maxPageSize);
+            RelatedMetadataElementList relatedMetadataElementList = openMetadataStore.getRelatedMetadataElements(parentGUID,
+                                                                                                                 parentAtEnd,
+                                                                                                                 parentRelationshipTypeName,
+                                                                                                                 startFrom,
+                                                                                                                 maxPageSize);
             if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
             {
                 elementCache = this.getElementCache(relatedMetadataElementList.getElementList());

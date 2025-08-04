@@ -3,14 +3,12 @@
 package org.odpi.openmetadata.viewservices.classificationmanager.server;
 
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.CollaborationExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 
 
 /**
@@ -42,73 +40,17 @@ public class ClassificationManagerInstanceHandler extends OMVSServiceInstanceHan
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public CollaborationExchangeClient getCollaborationExchangeClient(String userId,
-                                                                      String serverName,
-                                                                      String serviceOperationName) throws InvalidParameterException,
-                                                                                                          PropertyServerException,
-                                                                                                          UserNotAuthorizedException
+    public StewardshipManagementHandler getStewardshipManagementHandler(String userId,
+                                                                        String serverName,
+                                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
     {
         ClassificationManagerInstance instance = (ClassificationManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getCollaborationExchangeClient();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * This method returns the object for the tenant to use to work with the asset manager API
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public GlossaryExchangeClient getGlossaryExchangeClient(String userId,
-                                                            String serverName,
-                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException
-    {
-        ClassificationManagerInstance instance = (ClassificationManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getGlossaryExchangeClient();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * This method returns the object for the tenant to use to work with the asset manager API
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public StewardshipExchangeClient getStewardshipExchangeClient(String userId,
-                                                                  String serverName,
-                                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                                      PropertyServerException,
-                                                                                                      UserNotAuthorizedException
-    {
-        ClassificationManagerInstance instance = (ClassificationManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getStewardshipExchangeClient();
+            return instance.getStewardshipManagementHandler();
         }
 
         return null;

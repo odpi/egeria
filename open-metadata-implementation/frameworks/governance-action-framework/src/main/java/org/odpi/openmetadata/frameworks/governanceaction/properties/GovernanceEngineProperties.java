@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceEngineProperties extends ReferenceableProperties
 {
-    private String              displayName          = null;
-    private String              description          = null;
     private String              typeDescription      = null;
     private String              version              = null;
     private String              patchLevel           = null;
@@ -49,57 +47,11 @@ public class GovernanceEngineProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName          = template.getDisplayName();
-            description          = template.getDescription();
             typeDescription      = template.getTypeDescription();
             version              = template.getVersion();
             patchLevel           = template.getPatchLevel();
             source               = template.getSource();
         }
-    }
-
-
-    /**
-     * Return the display name for messages and UI.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for messages and UI.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the governance engine.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the governance engine.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -200,15 +152,11 @@ public class GovernanceEngineProperties extends ReferenceableProperties
     public String toString()
     {
         return "GovernanceEngineProperties{" +
-                       "displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", typeDescription='" + typeDescription + '\'' +
-                       ", version='" + version + '\'' +
-                       ", patchLevel='" + patchLevel + '\'' +
-                       ", source='" + source + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       '}';
+                "typeDescription='" + typeDescription + '\'' +
+                ", version='" + version + '\'' +
+                ", patchLevel='" + patchLevel + '\'' +
+                ", source='" + source + '\'' +
+                "} " + super.toString();
     }
 
 

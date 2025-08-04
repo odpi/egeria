@@ -1,0 +1,88 @@
+# Egeria-open-metadata-store - requests for creating/updating/deleting metadata
+
+@serverName=active-metadata-store
+@serviceURLMarker=asset-owner
+@userId=erinoverview
+
+@elementGUID=44c05d48-1c99-4298-8740-6318345b7af5
+
+
+###
+# @name createMetadataElementFromTemplate
+# Create a new metadata element in the metadata store using a template.  The templateGUID identifies the selected template.
+# The type name is optional but can be used to change the type name of the element that is created.  Typically this
+# would be a sub-type of the template's type to be sure that all of the properties and relationships are valid.
+# The example below uses a template from the CocoComboArchive.omarchive open metadata archive.
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/from-template
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "templateGUID" : "90e35d5a-cc22-4b5e-9762-7845daaced0e",
+  "typeName" : "CSVFile",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "clinicalTrialId" : "PROJ-CT-TBDF",
+    "clinicalTrialName" : "Clinical Trial:Teddy Bear Drop Foot",
+    "hospitalName" : "Hampton Hospital",
+    "contactName" : "Robbie Records",
+    "contactDept" : "Drop Foot Research Centre",
+    "dateReceived" : "14th February 2024",
+    "pathName" : "/landing-area/week1.csv",
+    "fileName" : "week1.csv"
+  }
+}
+
+
+###
+# @name getMetadataElementFromTemplate
+# Retrieve an existing element or create a new metadata element in the metadata store using a template.  The templateGUID identifies the selected template.
+# The type name is optional but can be used to change the type name of the element that is created.  Typically this
+# would be a sub-type of the template's type to be sure that all of the properties and relationships are valid.
+# The example below uses a template from the CocoComboArchive.omarchive open metadata archive.
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/from-template?allowRetrieve=true
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "templateGUID" : "90e35d5a-cc22-4b5e-9762-7845daaced0e",
+  "typeName" : "CSVFile",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "clinicalTrialId" : "PROJ-CT-TBDF",
+    "clinicalTrialName" : "Clinical Trial:Teddy Bear Drop Foot",
+    "hospitalName" : "Hampton Hospital",
+    "contactName" : "Robbie Records",
+    "contactDept" : "Drop Foot Research Centre",
+    "dateReceived" : "14th February 2024",
+    "pathName" : "/landing-area/week1.csv",
+    "fileName" : "week1.csv"
+  }
+}
+
+
+
+###
+
+relationshipGUID=add guid here
+
+###
+# @name getMetadataElementByGUID
+# Retrieve a specific metadata element.
+
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}
+Content-Type: application/json
+
+###
+# @name getMetadataElementHistory
+# Retrieve a specific metadata element.
+
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}
+Content-Type: application/json
+
+###
+# @name deleteMetadataElement
+# Delete a specific metadata element.
+
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{metadataElementGUID}}/delete
+Content-Type: application/json

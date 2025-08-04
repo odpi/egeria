@@ -60,7 +60,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      */
     NO_CONFIG_OMAS_SERVER_URL("ENGINE-HOST-SERVICES-0004",
                               AuditLogRecordSeverityLevel.ERROR,
-                         "Engine host {0} is not configured with the platform URL root for its configuration OMAS {1}",
+                         "Engine host {0} is not configured with the platform URL root for its configuration service {1}",
                          "The server is not able to connect to the open metadata ecosystem without the name of the platform.  It fails to start.",
                          "Add the platform URL root of the OMAG server where the Governance Engine OMAS is running " +
                                "to this engine service's configuration."),
@@ -70,7 +70,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      */
     NO_CONFIG_OMAS_SERVER_NAME("ENGINE-HOST-SERVICES-0005",
                                AuditLogRecordSeverityLevel.ERROR,
-                       "Engine host {0} is not configured with the name for the server running its configuration OMAS {1}",
+                       "Engine host {0} is not configured with the name for the server running its configuration service {1}",
                       "The server is not able to connect to the open metadata repositories.  It fails to start.",
                      "Add the server name of the OMAG server where the Governance Engine OMAS is running " +
                                 "to this integration service's configuration."),
@@ -369,8 +369,8 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      */
     GOVERNANCE_SERVICE_NO_CONFIG("ENGINE-HOST-SERVICES-0030",
                                  AuditLogRecordSeverityLevel.INFO,
-                                "Failed to refresh configuration for governance service registered as " +
-                                        "{0} for governance request types {1}.  The exception was {2} with error message {3}",
+                                "Failed to refresh configuration for governance engine {0}'s registered governance service {1}, registered with the " +
+                                        " properties {2}.  The exception was {3} with error message {4}",
                                 "The governance engine is unable to process governance request types for the failed governance service.",
                                 "Review the error messages and resolve the cause of the problem.  " +
                                         "Then, either wait for the engine host services to refresh the configuration, or issue the refreshConfig " +

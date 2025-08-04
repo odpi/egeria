@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -13,12 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataConverterBase;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.EnumTypePropertyValue;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyValue;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
 
 import java.util.ArrayList;
@@ -34,6 +28,7 @@ public class AnnotationStore
 {
     private final OpenMetadataClient openMetadataStore;
     private final String             userId;
+    private final String             assetGUID;
     private final String             externalSourceGUID;
     private final String             externalSourceName;
     private       boolean            forLineage              = false;
@@ -83,6 +78,7 @@ public class AnnotationStore
                                                                        PropertyServerException
     {
         this.userId              = userId;
+        this.assetGUID           = assetGUID;
         this.openMetadataStore   = openMetadataStore;
         this.externalSourceGUID  = externalSourceGUID;
         this.externalSourceName  = externalSourceName;
@@ -114,72 +110,36 @@ public class AnnotationStore
                                                     OpenMetadataProperty.START_DATE.name,
                                                     startDate);
 
+        NewElementOptions newElementOptions = new NewElementOptions();
+
+        newElementOptions.setExternalSourceGUID(externalSourceGUID);
+        newElementOptions.setExternalSourceName(externalSourceName);
+
+        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.SURVEY_REPORT.typeName);
+        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+        newElementOptions.setAnchorGUID(assetGUID);
+        newElementOptions.setIsOwnAnchor(false);
+
+        newElementOptions.setParentGUID(assetGUID);
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName);
+
+
         this.surveyReportGUID = openMetadataStore.createMetadataElementInStore(userId,
-                                                                               externalSourceGUID,
-                                                                               externalSourceName,
-                                                                               OpenMetadataType.SURVEY_REPORT.typeName,
-                                                                               ElementStatus.ACTIVE,
+                                                                               newElementOptions,
                                                                                null,
-                                                                               assetGUID,
-                                                                               false,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               properties,
-                                                                               assetGUID,
-                                                                               OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
-                                                                               null,
-                                                                               true,
-                                                                               forLineage,
-                                                                               forDuplicateProcessing,
-                                                                               getEffectiveTime());
+                                                                               new NewElementProperties(properties),
+                                                                               null);
 
         if ((surveyReportGUID != null) && (engineActionGUID != null))
         {
             openMetadataStore.createRelatedElementsInStore(userId,
-                                                           externalSourceGUID,
-                                                           externalSourceName,
                                                            OpenMetadataType.ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP.typeName,
                                                            engineActionGUID,
                                                            surveyReportGUID,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           null,
-                                                           null,
-                                                           null,
-                                                           this.getEffectiveTime());
+                                                           newElementOptions,
+                                                           null);
         }
-    }
-
-
-    /**
-     * Constructor sets up the key parameters for accessing the annotations store.  This is typically used by
-     * a subclass that is making use of the annotation support.
-     *
-     * @param userId calling user
-     * @param openMetadataStore access to the open metadata repositories
-     * @param surveyReportGUID unique identifier of the survey report
-     * @param externalSourceGUID unique identifier of the external source that is supplying the survey data
-     * @param externalSourceName unique name of the external source that is supplying the survey data
-     */
-    public AnnotationStore(String             userId,
-                           OpenMetadataClient openMetadataStore,
-                           String             surveyReportGUID,
-                           String             externalSourceGUID,
-                           String             externalSourceName)
-    {
-        this.userId              = userId;
-        this.openMetadataStore   = openMetadataStore;
-        this.externalSourceGUID  = externalSourceGUID;
-        this.externalSourceName  = externalSourceName;
-        this.reportQualifiedName = null;
-        this.reportDisplayName   = null;
-        this.surveyDescription   = null;
-        this.surveyPurpose       = null;
-        this.surveyReportGUID    = surveyReportGUID;
-
-        this.converter = new AnnotationConverter<>("Survey Action Framework (SAF)",
-                                                   openMetadataStore.getServerName());
     }
 
 
@@ -324,15 +284,17 @@ public class AnnotationStore
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.ANALYSIS_STEP.name,
                                                                         analysisStep);
+
+        UpdateOptions updateOptions = new UpdateOptions();
+
+        updateOptions.setExternalSourceGUID(externalSourceGUID);
+        updateOptions.setExternalSourceName(externalSourceName);
+        updateOptions.setMergePropertyUpdate(true);
+
         openMetadataStore.updateMetadataElementInStore(userId,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
                                                        surveyReportGUID,
-                                                       false,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       properties,
-                                                       this.getEffectiveTime());
+                                                       updateOptions,
+                                                       properties);
     }
 
 
@@ -365,15 +327,16 @@ public class AnnotationStore
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                         reportQualifiedName);
+        UpdateOptions updateOptions = new UpdateOptions();
+
+        updateOptions.setExternalSourceGUID(externalSourceGUID);
+        updateOptions.setExternalSourceName(externalSourceName);
+        updateOptions.setMergePropertyUpdate(true);
+
         openMetadataStore.updateMetadataElementInStore(userId,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
                                                        surveyReportGUID,
-                                                       false,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       properties,
-                                                       this.getEffectiveTime());
+                                                       updateOptions,
+                                                       properties);
     }
 
 
@@ -406,15 +369,16 @@ public class AnnotationStore
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
                                                                         reportDisplayName);
+        UpdateOptions updateOptions = new UpdateOptions();
+
+        updateOptions.setExternalSourceGUID(externalSourceGUID);
+        updateOptions.setExternalSourceName(externalSourceName);
+        updateOptions.setMergePropertyUpdate(true);
+
         openMetadataStore.updateMetadataElementInStore(userId,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
                                                        surveyReportGUID,
-                                                       false,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       properties,
-                                                       this.getEffectiveTime());
+                                                       updateOptions,
+                                                       properties);
     }
 
 
@@ -447,15 +411,16 @@ public class AnnotationStore
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.DESCRIPTION.name,
                                                                         surveyDescription);
+        UpdateOptions updateOptions = new UpdateOptions();
+
+        updateOptions.setExternalSourceGUID(externalSourceGUID);
+        updateOptions.setExternalSourceName(externalSourceName);
+        updateOptions.setMergePropertyUpdate(true);
+
         openMetadataStore.updateMetadataElementInStore(userId,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
                                                        surveyReportGUID,
-                                                       false,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       properties,
-                                                       this.getEffectiveTime());
+                                                       updateOptions,
+                                                       properties);
     }
 
 
@@ -487,15 +452,16 @@ public class AnnotationStore
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.PURPOSE.name,
                                                                         surveyDescription);
+        UpdateOptions updateOptions = new UpdateOptions();
+
+        updateOptions.setExternalSourceGUID(externalSourceGUID);
+        updateOptions.setExternalSourceName(externalSourceName);
+        updateOptions.setMergePropertyUpdate(true);
+
         openMetadataStore.updateMetadataElementInStore(userId,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
                                                        surveyReportGUID,
-                                                       false,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       properties,
-                                                       this.getEffectiveTime());
+                                                       updateOptions,
+                                                       properties);
     }
 
 
@@ -515,18 +481,19 @@ public class AnnotationStore
                                                                         OpenMetadataProperty.COMPLETION_MESSAGE.name,
                                                                         completionMessage);
         properties = propertyHelper.addDateProperty(properties,
-                                                    OpenMetadataProperty.COMPLETION_DATE.name,
+                                                    OpenMetadataProperty.COMPLETION_TIME.name,
                                                     new Date());
 
+        UpdateOptions updateOptions = new UpdateOptions();
+
+        updateOptions.setExternalSourceGUID(externalSourceGUID);
+        updateOptions.setExternalSourceName(externalSourceName);
+        updateOptions.setMergePropertyUpdate(true);
+
         openMetadataStore.updateMetadataElementInStore(userId,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
                                                        surveyReportGUID,
-                                                       false,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       properties,
-                                                       this.getEffectiveTime());
+                                                       updateOptions,
+                                                       properties);
     }
 
 
@@ -539,18 +506,18 @@ public class AnnotationStore
      * This method follows the AssociatedAnnotation relationship from the supplied element to the
      *
      * @param elementGUID unique identifier of the element to query
-     * @param startingFrom starting position in the list.
-     * @param maximumResults maximum number of elements that can be returned
+     * @param startFrom starting position in the list.
+     * @param pageSize maximum number of elements that can be returned
      * @return list of annotation (or null if none are registered)
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving annotations from the annotation store.
      */
     public List<Annotation>  getAnnotationsForElement(String    elementGUID,
-                                                      int       startingFrom,
-                                                      int       maximumResults) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                                      int       startFrom,
+                                                      int       pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName = "getAnnotationsForElement";
 
@@ -558,15 +525,7 @@ public class AnnotationStore
                                                                                                           elementGUID,
                                                                                                           1,
                                                                                                           OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                                          null,
-                                                                                                          null,
-                                                                                                          null,
-                                                                                                          SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                          forLineage,
-                                                                                                          forDuplicateProcessing,
-                                                                                                          getEffectiveTime(),
-                                                                                                          startingFrom,
-                                                                                                          maximumResults);
+                                                                                                          getQueryOptions(startFrom, pageSize));
 
         return this.getRelatedAnnotationBeans(relatedMetadataElements, methodName);
     }
@@ -576,17 +535,17 @@ public class AnnotationStore
      * Return the current list of annotations created by this survey run.
      * This method is used by survey pipeline steps to pick up the annotations
      *
-     * @param startingFrom starting position in the list.
-     * @param maximumResults maximum number of elements that can be returned
+     * @param startFrom starting position in the list.
+     * @param pageSize maximum number of elements that can be returned
      * @return list of annotation (or null if none are registered)
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving annotations from the annotation store.
      */
-    public List<Annotation>  getNewAnnotations(int startingFrom,
-                                               int maximumResults) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<Annotation>  getNewAnnotations(int startFrom,
+                                               int pageSize) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         final String methodName = "getNewAnnotations";
 
@@ -594,15 +553,7 @@ public class AnnotationStore
                                                                                                             surveyReportGUID,
                                                                                                             1,
                                                                                                             OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                            forLineage,
-                                                                                                            forDuplicateProcessing,
-                                                                                                            getEffectiveTime(),
-                                                                                                            startingFrom,
-                                                                                                            maximumResults);
+                                                                                                            getQueryOptions(startFrom, pageSize));
 
         return this.getRelatedAnnotationBeans(relatedMetadataElements, methodName);
     }
@@ -612,8 +563,8 @@ public class AnnotationStore
      * Return any annotations attached to this annotation.
      *
      * @param annotationGUID parent annotation
-     * @param startingFrom starting position in the list
-     * @param maximumResults maximum number of annotations that can be returned.
+     * @param startFrom starting position in the list
+     * @param pageSize maximum number of annotations that can be returned.
      *
      * @return list of Annotation objects
      *
@@ -622,10 +573,10 @@ public class AnnotationStore
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
     public  List<Annotation>  getExtendedAnnotations(String   annotationGUID,
-                                                     int      startingFrom,
-                                                     int      maximumResults) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                                     int      startFrom,
+                                                     int      pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName = "getExtendedAnnotations";
 
@@ -633,15 +584,7 @@ public class AnnotationStore
                                                                                                             annotationGUID,
                                                                                                             1,
                                                                                                             OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName,
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                            forLineage,
-                                                                                                            forDuplicateProcessing,
-                                                                                                            getEffectiveTime(),
-                                                                                                            startingFrom,
-                                                                                                            maximumResults);
+                                                                                                            getQueryOptions(startFrom, pageSize));
 
         return this.getRelatedAnnotationBeans(relatedMetadataElements, methodName);
     }
@@ -664,10 +607,7 @@ public class AnnotationStore
 
         OpenMetadataElement openMetadataElement = openMetadataStore.getMetadataElementByGUID(userId,
                                                                                              annotationGUID,
-                                                                                             forLineage,
-                                                                                             forDuplicateProcessing,
-                                                                                             null,
-                                                                                             this.getEffectiveTime());
+                                                                                             getGetOptions());
         return getAnnotationBean(openMetadataElement, methodName);
     }
 
@@ -693,25 +633,23 @@ public class AnnotationStore
 
         if (builder != null)
         {
+            NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
+
+            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+            newElementOptions.setOpenMetadataTypeName(OpenMetadataType.ANNOTATION.typeName);
+            newElementOptions.setAnchorGUID(assetGUID);
+            newElementOptions.setIsOwnAnchor(false);
+
+            newElementOptions.setParentGUID(surveyReportGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName);
+
+
             String annotationGUID = openMetadataStore.createMetadataElementInStore(userId,
-                                                                                   externalSourceGUID,
-                                                                                   externalSourceName,
-                                                                                   builder.getOpenMetadataTypeName(),
-                                                                                   ElementStatus.ACTIVE,
+                                                                                   newElementOptions,
                                                                                    null,
-                                                                                   surveyReportGUID,
-                                                                                   false,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   builder.getElementProperties(),
-                                                                                   surveyReportGUID,
-                                                                                   OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                   null,
-                                                                                   true,
-                                                                                   forLineage,
-                                                                                   forDuplicateProcessing,
-                                                                                   getEffectiveTime());
+                                                                                   new NewElementProperties(builder.getElementProperties()),
+                                                                                   null);
 
             if (annotationGUID != null)
             {
@@ -722,17 +660,11 @@ public class AnnotationStore
                         if (dataProfileDataGUID != null)
                         {
                             openMetadataStore.createRelatedElementsInStore(userId,
-                                                                           externalSourceGUID,
-                                                                           externalSourceName,
                                                                            OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName,
                                                                            annotationGUID,
                                                                            dataProfileDataGUID,
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           this.getEffectiveTime());
+                                                                           newElementOptions,
+                                                                           null);
                         }
                     }
                 }
@@ -744,17 +676,11 @@ public class AnnotationStore
                         if (requestForActionTargetGUID != null)
                         {
                             openMetadataStore.createRelatedElementsInStore(userId,
-                                                                           externalSourceGUID,
-                                                                           externalSourceName,
                                                                            OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
                                                                            annotationGUID,
                                                                            requestForActionTargetGUID,
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           this.getEffectiveTime());
+                                                                           newElementOptions,
+                                                                           null);
                         }
                     }
                 }
@@ -762,17 +688,11 @@ public class AnnotationStore
                 if  (associatedElementGUID != null)
                 {
                     openMetadataStore.createRelatedElementsInStore(userId,
-                                                                   externalSourceGUID,
-                                                                   externalSourceName,
                                                                    OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                    associatedElementGUID,
                                                                    annotationGUID,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   this.getEffectiveTime());
+                                                                   newElementOptions,
+                                                                   null);
                 }
 
                 return annotationGUID;
@@ -803,17 +723,11 @@ public class AnnotationStore
         if ((annotationGUID != null) && (parentAnnotationGUID != null))
         {
             openMetadataStore.createRelatedElementsInStore(userId,
-                                                           externalSourceGUID,
-                                                           externalSourceName,
                                                            OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName,
                                                            parentAnnotationGUID,
                                                            annotationGUID,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           null,
-                                                           null,
-                                                           null,
-                                                           this.getEffectiveTime());
+                                                           getMetadataSourceOptions(),
+                                                           null);
         }
 
         return null;
@@ -844,15 +758,13 @@ public class AnnotationStore
 
         if (builder != null)
         {
+            UpdateOptions updateOptions = new UpdateOptions(this.getMetadataSourceOptions());
+            updateOptions.setMergePropertyUpdate(true);
+
             openMetadataStore.updateMetadataElementInStore(userId,
-                                                           externalSourceGUID,
-                                                           externalSourceName,
                                                            guid,
-                                                           true,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           builder.getElementProperties(),
-                                                           this.getEffectiveTime());
+                                                           updateOptions,
+                                                           builder.getElementProperties());
         }
     }
 
@@ -869,14 +781,9 @@ public class AnnotationStore
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        openMetadataStore.deleteMetadataElementInStore(userId,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
-                                                       annotationGUID,
-                                                       false,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       this.getEffectiveTime());
+        DeleteOptions deleteOptions = new DeleteOptions(this.getMetadataSourceOptions());
+
+        openMetadataStore.deleteMetadataElementInStore(userId, annotationGUID, deleteOptions);
     }
 
 
@@ -1064,6 +971,66 @@ public class AnnotationStore
 
 
     /**
+     * Return the default get options.
+     *
+     * @return default values
+     */
+    protected GetOptions getGetOptions()
+    {
+        GetOptions getOptions = new GetOptions();
+
+        getOptions.setForLineage(forLineage);
+        getOptions.setForDuplicateProcessing(forDuplicateProcessing);
+        getOptions.setEffectiveTime(getEffectiveTime());
+
+        return getOptions;
+    }
+
+
+    /**
+     * Return the default get options.
+     *
+     * @return default values
+     */
+    protected QueryOptions getQueryOptions()
+    {
+        return new QueryOptions(getGetOptions());
+    }
+
+
+    /**
+     * Return the default get options.
+     *
+     * @return default values
+     */
+    protected QueryOptions getQueryOptions(int startFrom,
+                                           int pageSize)
+    {
+        return new QueryOptions(getGetOptions());
+    }
+
+
+    /**
+     * Return the default metadata source options.
+     *
+     * @return default values
+     */
+    protected MetadataSourceOptions getMetadataSourceOptions()
+    {
+        MetadataSourceOptions metadataSourceOptions =  new MetadataSourceOptions();
+
+        metadataSourceOptions.setForLineage(forLineage);
+        metadataSourceOptions.setForDuplicateProcessing(forDuplicateProcessing);
+        metadataSourceOptions.setEffectiveTime(getEffectiveTime());
+
+        metadataSourceOptions.setExternalSourceGUID(externalSourceGUID);
+        metadataSourceOptions.setExternalSourceName(externalSourceName);
+
+        return metadataSourceOptions;
+    }
+
+
+    /**
      * Using the supplied instances, return a new instance of the Annotation bean.
      *
      * @param annotationElement entity that is the root of the collection of entities that make up the content of the bean
@@ -1082,18 +1049,10 @@ public class AnnotationStore
         if (annotationElement != null)
         {
             RelatedMetadataElementList relationships = openMetadataStore.getRelatedMetadataElements(userId,
-                                                                                                      annotationElement.getElementGUID(),
-                                                                                                      0,
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                      forLineage,
-                                                                                                      forDuplicateProcessing,
-                                                                                                      this.getEffectiveTime(),
-                                                                                                      0,
-                                                                                                      0);
+                                                                                                    annotationElement.getElementGUID(),
+                                                                                                    0,
+                                                                                                    null,
+                                                                                                    getQueryOptions());
             if ((relationships != null) && (relationships.getElementList() != null))
             {
                 return converter.getAnnotationBean(Annotation.class,
@@ -1830,7 +1789,7 @@ public class AnnotationStore
                                                         size);
 
             properties = propertyHelper.addStringProperty(properties,
-                                                          OpenMetadataProperty.ENCODING.name,
+                                                          OpenMetadataProperty.ENCODING_TYPE.name,
                                                           encoding);
 
             return properties;

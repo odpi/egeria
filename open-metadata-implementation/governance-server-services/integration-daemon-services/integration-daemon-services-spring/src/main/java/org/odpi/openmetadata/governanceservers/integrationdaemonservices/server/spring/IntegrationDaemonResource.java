@@ -32,6 +32,31 @@ public class IntegrationDaemonResource
     private final IntegrationDaemonRESTServices restAPI = new IntegrationDaemonRESTServices();
 
 
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param event open lineage event to publish.
+     */
+    @PostMapping(path = "/api/v1/lineage")
+
+    @Operation(summary="publishOpenLineageEvent",
+            description="Sent an Open Lineage event to the integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for open lineage events.",
+            externalDocs=@ExternalDocumentation(description="Open Lineage Standard",
+                    url="https://egeria-project.org/features/lineage-management/overview/#the-openlineage-standard"))
+
+    void publishOpenLineageEvent(@PathVariable String serverName,
+                                 @PathVariable String userId,
+                                 @RequestBody  String event)
+    {
+        restAPI.publishOpenLineageEvent(serverName, userId, event);
+    }
+
+
     /**
      * Return the status of each of the integration services and integration groups running in the integration daemon.
      *
@@ -224,89 +249,6 @@ public class IntegrationDaemonResource
                                           @RequestBody(required = false) NameRequestBody requestBody)
     {
         return restAPI.restartConnectors(serverName, userId, requestBody);
-    }
-
-
-    /**
-     * Process a refresh request.  This calls refresh on all connectors within the integration service.
-     *
-     * @param serverName integration daemon server name
-     * @param userId calling user
-     * @param serviceURLMarker integration service identifier
-     * @param requestBody optional name of the connector to target - if no connector name is specified, all
-     *                      connectors managed by this integration service are refreshed.
-     *
-     * @return void or
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     *  PropertyServerException there was a problem detected by the integration daemon.
-     */
-    @PostMapping(path = "/integration-services/{serviceURLMarker}/refresh")
-
-    @Operation(summary="refreshService",
-            description="Process a refresh request.  This calls refresh on all connectors within the integration service.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/integration-daemon/"))
-
-    public VoidResponse refreshService(@PathVariable                  String          serverName,
-                                       @PathVariable                  String          userId,
-                                       @PathVariable                  String          serviceURLMarker,
-                                       @RequestBody(required = false) NameRequestBody requestBody)
-    {
-        return restAPI.refreshService(serverName, userId, serviceURLMarker, requestBody);
-    }
-
-
-    /**
-     * Request that the integration service shutdown and restart its integration connectors.
-     *
-     * @param serverName name of the integration daemon
-     * @param userId identifier of calling user
-     * @param serviceURLMarker unique name of the integration service
-     * @param requestBody name of a specific connector to restart - if null all connectors are restarted.
-     *
-     * @return void or
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     *  PropertyServerException there was a problem detected by the integration service.
-     */
-    @PostMapping(path = "/integration-services/{serviceURLMarker}/restart")
-
-    @Operation(summary="restartService",
-            description="Request that the integration service shutdown and restart its integration connectors.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/integration-daemon/"))
-
-    public  VoidResponse restartService(@PathVariable                  String          serverName,
-                                        @PathVariable                  String          userId,
-                                        @PathVariable                  String          serviceURLMarker,
-                                        @RequestBody(required = false) NameRequestBody requestBody)
-    {
-        return restAPI.restartService(serverName, userId, serviceURLMarker, requestBody);
-    }
-
-
-    /**
-     * Return a summary of each of the integration services' status.
-     *
-     * @param serverName integration daemon name
-     * @param userId calling user
-     * @return list of statuses - on for each assigned integration services
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     *  PropertyServerException there was a problem detected by the integration daemon.
-     */
-    @GetMapping(path = "/integration-services/summary")
-
-    @Operation(summary="getIntegrationServicesSummaries",
-            description="Return a summary of each of the integration services' status.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/integration-daemon/"))
-
-    public IntegrationServiceSummaryResponse getIntegrationServicesSummaries(@PathVariable String   serverName,
-                                                                             @PathVariable String   userId)
-    {
-        return restAPI.getIntegrationServicesSummaries(serverName, userId);
     }
 
 

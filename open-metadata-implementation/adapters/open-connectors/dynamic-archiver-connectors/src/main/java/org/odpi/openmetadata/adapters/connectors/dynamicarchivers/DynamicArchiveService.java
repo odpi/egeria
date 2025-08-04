@@ -7,6 +7,7 @@ import org.odpi.openmetadata.engineservices.repositorygovernance.connector.Repos
 import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.RepositoryGovernanceErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveCache;
@@ -93,14 +94,14 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceServiceC
      * Indicates that the archive service is completely configured and can begin processing.
      * Any embedded connectors are started.
      * This is the method where the function of the archive service is implemented in the subclass.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() in your version.
      *
      * @throws ConnectorCheckedException there is a problem within the archive service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 

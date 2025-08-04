@@ -2,14 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.myprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ToDoActionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ToDoActionHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
  * MyProfileInstance caches references to the objects it needs for a specific server.
@@ -20,8 +22,8 @@ public class MyProfileInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.MY_PROFILE;
 
-    private final OrganizationManagement organizationManagement;
-    private final ToDoActionHandler      toDoActionHandler;
+    private final ActorProfileHandler actorProfileHandler;
+    private final ToDoActionHandler   toDoActionHandler;
 
 
     /**
@@ -53,30 +55,32 @@ public class MyProfileInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient;
         if (localServerUserPassword == null)
         {
-            organizationManagement = new OrganizationManagement(remoteServerName, remoteServerURL, auditLog, maxPageSize);
-            toDoActionHandler      = new ToDoActionHandler(serverName,
-                                                           remoteServerName,
-                                                           remoteServerURL,
-                                                           auditLog,
-                                                           AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceURLMarker(),
-                                                           AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                                           maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
+
         }
         else
         {
-            organizationManagement = new OrganizationManagement(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog, maxPageSize);
-            toDoActionHandler      = new ToDoActionHandler(serverName,
-                                                           remoteServerName,
-                                                           remoteServerURL,
-                                                           localServerUserId,
-                                                           localServerUserPassword,
-                                                           auditLog,
-                                                           AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceURLMarker(),
-                                                           AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                                           maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
         }
+
+        actorProfileHandler = new ActorProfileHandler(serverName,
+                                                      auditLog,
+                                                      myDescription.getViewServiceFullName(),
+                                                      openMetadataClient);
+
+        toDoActionHandler   = new ToDoActionHandler(serverName,
+                                                       auditLog,
+                                                       myDescription.getViewServiceFullName(),
+                                                       openMetadataClient);
     }
 
 
@@ -85,9 +89,9 @@ public class MyProfileInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public OrganizationManagement getOrganizationManagement()
+    public ActorProfileHandler getActorProfileHandler()
     {
-        return organizationManagement;
+        return actorProfileHandler;
     }
 
 

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.fvt.errorhandling
 
 import org.odpi.openmetadata.accessservices.governanceprogram.client.SubjectAreaManager;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaDefinitionProperties;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
 /**
@@ -49,7 +49,7 @@ class CreateSubjectAreaInvalidParameterTest
     {
         final String activityName = "testCreateSubjectAreaNoUserId";
 
-        SubjectAreaProperties properties = new SubjectAreaProperties();
+        SubjectAreaDefinitionProperties properties = new SubjectAreaDefinitionProperties();
 
         try
         {
@@ -81,7 +81,7 @@ class CreateSubjectAreaInvalidParameterTest
 
         try
         {
-            client.createSubjectArea(userId, (SubjectAreaProperties) null);
+            client.createSubjectArea(userId, (SubjectAreaDefinitionProperties) null);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
@@ -109,7 +109,7 @@ class CreateSubjectAreaInvalidParameterTest
 
         try
         {
-            SubjectAreaProperties properties = new SubjectAreaProperties();
+            SubjectAreaDefinitionProperties properties = new SubjectAreaDefinitionProperties();
 
             client.createSubjectArea(userId, properties);
             throw new FVTUnexpectedCondition(testCaseName, activityName);

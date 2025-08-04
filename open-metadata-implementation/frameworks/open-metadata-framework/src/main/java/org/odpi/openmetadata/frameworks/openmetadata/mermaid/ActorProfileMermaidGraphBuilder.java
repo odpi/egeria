@@ -7,9 +7,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfi
 
 
 /**
- * Creates a mermaid graph rendering of the Open Metadata Framework's actor role graph.
+ * Creates a mermaid graph rendering of the Open Metadata Framework's actor profile graph.
  */
-public class ActorProfileMermaidGraphBuilder extends MermaidGraphBuilderBase
+public class ActorProfileMermaidGraphBuilder extends OpenMetadataRootMermaidGraphBuilder
 {
     /**
      * Construct a mermaid markdown graph.
@@ -18,27 +18,36 @@ public class ActorProfileMermaidGraphBuilder extends MermaidGraphBuilderBase
      */
     public ActorProfileMermaidGraphBuilder(ActorProfileElement actorProfileElement)
     {
-        mermaidGraph.append("---\n");
-        mermaidGraph.append("title: Actor Profile - ");
-        mermaidGraph.append(actorProfileElement.getProfileProperties().getKnownName());
-        mermaidGraph.append(" [");
-        mermaidGraph.append(actorProfileElement.getElementHeader().getGUID());
-        mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
+        super(actorProfileElement);
 
-        String currentNodeName    = actorProfileElement.getElementHeader().getGUID();
-        String currentDisplayName = actorProfileElement.getProfileProperties().getKnownName();
+        addRelatedElementSummary(actorProfileElement.getContributionRecord(), VisualStyle.GOVERNANCE_ACTOR, actorProfileElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+        addRelatedElementSummary(actorProfileElement.getSuperTeam(), VisualStyle.GOVERNANCE_ACTOR, actorProfileElement.getElementHeader().getGUID(), LineStyle.NORMAL);
 
-        appendNewMermaidNode(currentNodeName,
-                             currentDisplayName,
-                             actorProfileElement.getElementHeader().getType().getTypeName(),
-                             getVisualStyleForEntity(actorProfileElement.getElementHeader(),
-                                                     VisualStyle.GOVERNANCE_ACTOR));
-
-        this.addRelatedElementSummaries(actorProfileElement.getExternalReferences(),
-                                        VisualStyle.EXTERNAL_REFERENCE,
+        this.addRelatedElementSummaries(actorProfileElement.getActorRoles(),
+                                        VisualStyle.GOVERNANCE_ACTOR,
                                         actorProfileElement.getElementHeader().getGUID());
 
-        this.addRelatedElementSummaries(actorProfileElement.getOtherRelatedElements(),
+        this.addRelatedElementSummaries(actorProfileElement.getPeerGovernanceDefinitions(),
+                                        VisualStyle.GOVERNANCE_ACTOR,
+                                        actorProfileElement.getElementHeader().getGUID());
+
+        this.addRelatedElementSummaries(actorProfileElement.getSubTeams(),
+                                        VisualStyle.GOVERNANCE_ACTOR,
+                                        actorProfileElement.getElementHeader().getGUID());
+
+        this.addRelatedElementSummaries(actorProfileElement.getUserIdentities(),
+                                        VisualStyle.GOVERNANCE_ACTOR,
+                                        actorProfileElement.getElementHeader().getGUID());
+
+        this.addRelatedElementSummaries(actorProfileElement.getLocations(),
+                                        VisualStyle.LINKED_ELEMENT,
+                                        actorProfileElement.getElementHeader().getGUID());
+
+        this.addRelatedElementSummaries(actorProfileElement.getBusinessCapabilities(),
+                                        VisualStyle.LINKED_ELEMENT,
+                                        actorProfileElement.getElementHeader().getGUID());
+
+        this.addRelatedElementSummaries(actorProfileElement.getLinkedInfrastructure(),
                                         VisualStyle.LINKED_ELEMENT,
                                         actorProfileElement.getElementHeader().getGUID());
     }

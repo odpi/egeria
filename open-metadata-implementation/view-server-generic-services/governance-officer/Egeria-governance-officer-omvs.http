@@ -42,7 +42,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewGovernanceDefinitionRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -83,7 +83,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "DRAFT"
+  "initialStatus": "ACTIVE"
 }
 
 ###
@@ -94,7 +94,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewGovernanceDefinitionRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -136,7 +136,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "DRAFT"
+  "initialStatus": "ACTIVE"
 }
 
 ###
@@ -147,7 +147,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewGovernanceDefinitionRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -189,7 +189,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "DRAFT"
+  "initialStatus": "ACTIVE"
 }
 
 
@@ -208,7 +208,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewGovernanceDefinitionRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -250,7 +250,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "DRAFT"
+  "initialStatus": "ACTIVE"
 }
 
 ###
@@ -261,7 +261,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewGovernanceDefinitionRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -304,7 +304,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "DRAFT"
+  "initialStatus": "ACTIVE"
 }
 
 ###
@@ -315,7 +315,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewGovernanceDefinitionRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -358,7 +358,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "DRAFT"
+  "initialStatus": "ACTIVE"
 }
 
 ###
@@ -369,7 +369,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewGovernanceDefinitionRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -411,7 +411,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "DRAFT"
+  "initialStatus": "ACTIVE"
 }
 
 ###
@@ -422,7 +422,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewGovernanceDefinitionRequestBody",
+  "class" : "NewElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -464,266 +464,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "DRAFT"
-}
-
-
-
-
-###
-# @name createGovernanceDefinition (simple)
-# Create a governance definition. It may be of type:
-## * BusinessImperative
-## * RegulationArticle
-## * Threat
-## * GovernancePrinciple
-## * GovernanceObligation
-## * GovernanceApproach
-## * GovernanceProcessingPurpose
-# The type is added to the "typeName" property.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "GovernanceDefinitionProperties",
-    "typeName" : "enter the type of the governance definition",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createGovernanceStrategy (simple)
-# Create a governance definition of type GovernanceStrategy
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "GovernanceStrategyProperties",
-    "typeName" : "GovernanceStrategy",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "businessImperatives" : [],
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createRegulation (simple)
-# Create a governance definition of type Regulation
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "RegulationProperties",
-    "typeName" : "Regulation",
-    "domainIdentifier": 0,
-    "jurisdiction" : "",
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createGovernanceControl (simple)
-# Create a governance control definition. It may be of type:
-## * GovernanceRule
-## * ServiceLevelObjective
-## * GovernanceProcess
-## * GoveranceResponsibility
-## * GovernanceProcedure
-## * SecurityAccessControl
-# The type is added to the "typeName" property.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "GovernanceDefinitionProperties",
-    "typeName" : "enter the type of the governance definition",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "implementationDescription": "",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createSecurityGroup (simple)
-# Create a governance control definition of type SecurityGroup.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "SecurityGroupProperties",
-    "typeName" : "SecurityGroup",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "distinguishedName": "",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "implementationDescription": "",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createNamingStandardRule (simple)
-# Create a governance control definition of type NamingStandardsRule
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "NamingStandardRuleProperties",
-    "typeName" : "NamingStandardRule",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "implementationDescription": "",
-    "namePatterns": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createCertificationType (simple)
-# Create a governance definition of type CertificationType
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "CertificationTypeProperties",
-    "typeName" : "CertificationType",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "details" : "",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
-}
-
-###
-# @name createLicenseType (simple)
-# Create a governance definition of type LicenseType.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "LicenseTypeProperties",
-    "typeName" : "LicenseType",
-    "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "details" : "",
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    }
-  },
-  "initialStatus": "DRAFT"
+  "initialStatus": "ACTIVE"
 }
 
 
@@ -815,12 +556,12 @@ Content-Type: application/json
 ###
 # @name updateGovernanceDefinitionStatus
 # Update the status of a governance definition.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionGUID}}/update-status
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/metadata-elements/{{governanceDefinitionGUID}}/update-status
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateGovernanceDefinitionRequestBody",
+  "class" : "UpdateStatusRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -847,7 +588,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -891,7 +632,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1048,7 +789,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -1071,7 +812,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1118,7 +859,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

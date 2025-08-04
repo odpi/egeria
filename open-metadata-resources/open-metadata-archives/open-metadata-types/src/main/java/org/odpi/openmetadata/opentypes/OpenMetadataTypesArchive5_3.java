@@ -164,7 +164,6 @@ public class OpenMetadataTypesArchive5_3
         this.update0056ResourceManagers();
         this.update0201Connections();
         this.update0205ConnectionLinkage();
-        this.update0442ProjectCharter();
         this.update0720InformationSupplyChains();
         this.update0730SolutionComponents();
         this.update0735SolutionPortsAndWires();
@@ -376,9 +375,8 @@ public class OpenMetadataTypesArchive5_3
      */
     private void add058xDataDictionaries()
     {
-        this.archiveBuilder.addClassificationDef(getDataDictionaryClassification());
-        this.archiveBuilder.addClassificationDef(getDataSpecClassification());
-
+        this.archiveBuilder.addEntityDef(getDataDictionaryEntity());
+        this.archiveBuilder.addEntityDef(getDataSpecEntity());
         this.archiveBuilder.addEntityDef(getDataStructureEntity());
         this.archiveBuilder.addEntityDef(getDataFieldEntity());
 
@@ -395,36 +393,30 @@ public class OpenMetadataTypesArchive5_3
         this.archiveBuilder.addRelationshipDef(getSemanticDefinitionRelationship());
     }
 
-    private ClassificationDef getDataDictionaryClassification()
+    private EntityDef getDataDictionaryEntity()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_DICTIONARY_COLLECTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
-    private ClassificationDef getDataSpecClassification()
+    private EntityDef getDataSpecEntity()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_SPEC_COLLECTION,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
     private EntityDef getDataStructureEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_STRUCTURE,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+        EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.DATA_STRUCTURE,
+                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAMESPACE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -433,23 +425,19 @@ public class OpenMetadataTypesArchive5_3
 
     private EntityDef getDataFieldEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_FIELD,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+        EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.DATA_FIELD,
+                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAMESPACE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALIASES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME_PATTERNS));
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_DEPRECATED));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_NULLABLE));
@@ -655,7 +643,7 @@ public class OpenMetadataTypesArchive5_3
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RELATIONSHIP_TYPE_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RELATIONSHIP_END));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MIN_CARDINALITY));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAX_CARDINALITY));
@@ -1069,41 +1057,6 @@ public class OpenMetadataTypesArchive5_3
         return typeDefPatch;
     }
 
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0442 Project Charter
-     */
-    private void update0442ProjectCharter()
-    {
-        this.archiveBuilder.addTypeDefPatch(update0442ProjectCharterEntity());
-    }
-
-    private TypeDefPatch update0442ProjectCharterEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROJECT_CHARTER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
 

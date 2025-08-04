@@ -21,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionBlueprintProperties extends ReferenceableProperties
 {
-    private String displayName       = null;
-    private String description       = null;
-    private String versionIdentifier = null;
     private String userDefinedStatus = null;
 
     /**
@@ -47,77 +44,8 @@ public class SolutionBlueprintProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.displayName = template.getDisplayName();
-            this.description       = template.getDescription();
-            this.versionIdentifier = template.getVersionIdentifier();
             this.userDefinedStatus = template.getUserDefinedStatus();
         }
-    }
-
-
-    /**
-     * Return the display name for this blueprint (normally a shortened form of the qualified name).
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for this blueprint (normally a shortened form of the qualified name).
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for this blueprint.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for this blueprint.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the version identifier for this solution blueprint.
-     *
-     * @return String
-     */
-    public String getVersionIdentifier()
-    {
-        return versionIdentifier;
-    }
-
-
-    /**
-     * Set up the version number for this solution blueprint.
-     *
-     * @param versionIdentifier String
-     */
-    public void setVersionIdentifier(String versionIdentifier)
-    {
-        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -152,10 +80,7 @@ public class SolutionBlueprintProperties extends ReferenceableProperties
     public String toString()
     {
         return "SolutionBlueprintProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", versionIdentifier='" + versionIdentifier + '\'' +
-                ", userDefinedStatus=" + userDefinedStatus +
+                "userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
 
@@ -181,10 +106,7 @@ public class SolutionBlueprintProperties extends ReferenceableProperties
         {
             return false;
         }
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                Objects.equals(versionIdentifier, that.versionIdentifier);
+        return Objects.equals(userDefinedStatus, that.userDefinedStatus);
     }
 
 
@@ -196,6 +118,6 @@ public class SolutionBlueprintProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, versionIdentifier, userDefinedStatus);
+        return Objects.hash(super.hashCode(), userDefinedStatus);
     }
 }

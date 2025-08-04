@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
 
 import java.util.List;
 import java.util.Map;
@@ -59,47 +58,6 @@ public interface IntegrationDaemonAPI
                                        Map<String, Object> configurationProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException;
-
-
-    /**
-     * Refresh the requested connectors running in the requested integration service.
-     *
-     * @param userId calling user
-     * @param serviceURLMarker integration service identifier
-     * @param connectorName optional name of the connector to target - if no connector name is specified, all
-     *                      connectors managed by this integration service are refreshed.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException there was a problem detected by the integration daemon
-     */
-    void refreshService(String userId,
-                        String serviceURLMarker,
-                        String connectorName) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException;
-
-
-    /**
-     * Request that the integration service shutdown and recreate its integration connectors.  If a connector name
-     * is provided, only that connector is restarted.
-     *
-     * @param userId calling user
-     * @param serviceURLMarker integration service identifier
-     * @param connectorName optional name of the connector to target - if no connector name is specified, all
-     *                      connectors managed by this integration service are restarted.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException there was a problem detected by the integration daemon
-     */
-    void restartService(String userId,
-                        String serviceURLMarker,
-                        String connectorName) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException;
-
-
     /**
      * Return a summary of each of the integration services' and integration groups' status.
      *
@@ -114,23 +72,6 @@ public interface IntegrationDaemonAPI
     IntegrationDaemonStatus getIntegrationDaemonStatus(String   userId) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException;
-
-
-    /**
-     * Return a summary of each of the integration services' status.
-     *
-     * @param userId calling user
-     *
-     * @return list of statuses - on for each assigned integration services
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException there was a problem detected by the integration daemon
-     */
-    List<IntegrationServiceSummary> getIntegrationServicesSummaries(String   userId) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException;
-
 
     /**
      * Retrieve the description and status of the requested integration group.

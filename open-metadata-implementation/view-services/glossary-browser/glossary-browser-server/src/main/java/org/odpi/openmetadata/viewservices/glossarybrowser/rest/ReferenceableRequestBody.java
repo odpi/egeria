@@ -24,8 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReferenceableRequestBody
 {
-    private ReferenceableProperties       elementProperties             = null;
-    private String                        parentGUID                    = null;
+    private ReferenceableProperties elementProperties = null;
+    private String                  parentGUID        = null;
 
 
     /**

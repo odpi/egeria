@@ -2,17 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 
 import java.util.Date;
@@ -149,7 +149,7 @@ public abstract class GovernanceServiceHandler implements Runnable
         /*
          * This update indicates that the service has now started running.
          */
-        engineActionClient.updateEngineActionStatus(serverUserId, engineActionGUID, EngineActionStatus.IN_PROGRESS);
+        engineActionClient.updateEngineActionStatus(serverUserId, engineActionGUID, ActivityStatus.IN_PROGRESS);
     }
 
 
@@ -170,7 +170,7 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     public void updateActionTargetStatus(String             actionTargetGUID,
-                                         EngineActionStatus status,
+                                         ActivityStatus status,
                                          Date               startDate,
                                          Date               completionDate,
                                          String             completionMessage) throws InvalidParameterException,

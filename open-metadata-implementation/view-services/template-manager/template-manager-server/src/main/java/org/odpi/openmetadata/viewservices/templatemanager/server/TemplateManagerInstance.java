@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.templatemanager.server;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.TemplateManager;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.TemplateHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 /**
  * TemplateManagerInstance caches references to the objects it needs for a specific server.
@@ -18,8 +19,8 @@ public class TemplateManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.TEMPLATE_MANAGER;
 
-    private final TemplateManager         templateManager;
-    private final OpenMetadataStoreClient openMetadataStoreClient;
+    private final TemplateHandler    templateHandler;
+    private final OpenMetadataClient openMetadataClient;
 
 
     /**
@@ -53,14 +54,14 @@ public class TemplateManagerInstance extends OMVSServiceInstance
 
         if (localServerUserPassword == null)
         {
-            templateManager         = new TemplateManager(remoteServerName, remoteServerURL, maxPageSize);
-            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
         }
         else
         {
-            templateManager         = new TemplateManager(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-            openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
         }
+
+        templateHandler = new TemplateHandler(serverName, auditLog, myDescription.getViewServiceFullName(), openMetadataClient);
     }
 
 
@@ -70,9 +71,9 @@ public class TemplateManagerInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public TemplateManager getTemplateManagerClient()
+    public TemplateHandler getTemplateHandler()
     {
-        return templateManager;
+        return templateHandler;
     }
 
 
@@ -82,8 +83,8 @@ public class TemplateManagerInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient()
+    public OpenMetadataClient getOpenMetadataClient()
     {
-        return openMetadataStoreClient;
+        return openMetadataClient;
     }
 }

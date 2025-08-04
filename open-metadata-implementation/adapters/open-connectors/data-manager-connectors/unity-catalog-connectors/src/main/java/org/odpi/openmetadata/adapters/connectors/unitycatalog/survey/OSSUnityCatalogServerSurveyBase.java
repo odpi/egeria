@@ -46,12 +46,14 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      * Retrieve any configured final analysis step
      *
      * @throws ConnectorCheckedException problem with context
+     * @throws UserNotAuthorizedException connector is disconnected
      */
-    protected void setFinalAnalysisStep() throws ConnectorCheckedException
+    protected void setFinalAnalysisStep() throws ConnectorCheckedException,
+                                                 UserNotAuthorizedException
     {
-        if (connectionDetails.getConfigurationProperties() != null)
+        if (connectionBean.getConfigurationProperties() != null)
         {
-            Object finalAnalysisStepPropertyObject = connectionDetails.getConfigurationProperties().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
+            Object finalAnalysisStepPropertyObject = connectionBean.getConfigurationProperties().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
 
             if (finalAnalysisStepPropertyObject != null)
             {
@@ -115,16 +117,17 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      *
      * @return name of the catalog to survey
      * @throws ConnectorCheckedException the catalog name is not specified
+     * @throws UserNotAuthorizedException connector is disconnected
      */
-    protected String getCatalogName() throws ConnectorCheckedException
+    protected String getCatalogName() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "getCatalogName";
 
         String catalogName = null;
 
-        if (connectionDetails.getConfigurationProperties() != null)
+        if (connectionBean.getConfigurationProperties() != null)
         {
-            Object catalogNamePropertyObject = connectionDetails.getConfigurationProperties().get(UnityCatalogConfigurationProperty.CATALOG_NAME.getName());
+            Object catalogNamePropertyObject = connectionBean.getConfigurationProperties().get(UnityCatalogConfigurationProperty.CATALOG_NAME.getName());
 
             if (catalogNamePropertyObject != null)
             {
@@ -159,16 +162,17 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      *
      * @return name of the catalog to survey
      * @throws ConnectorCheckedException the catalog name is not specified
+     * @throws UserNotAuthorizedException connector is disconnected
      */
-    protected String getSchemaName() throws ConnectorCheckedException
+    protected String getSchemaName() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "getSchemaName";
 
         String schemaName = null;
 
-        if (connectionDetails.getConfigurationProperties() != null)
+        if (connectionBean.getConfigurationProperties() != null)
         {
-            Object schemaNamePropertyObject = connectionDetails.getConfigurationProperties().get(UnityCatalogConfigurationProperty.SCHEMA_NAME.getName());
+            Object schemaNamePropertyObject = connectionBean.getConfigurationProperties().get(UnityCatalogConfigurationProperty.SCHEMA_NAME.getName());
 
             if (schemaNamePropertyObject != null)
             {

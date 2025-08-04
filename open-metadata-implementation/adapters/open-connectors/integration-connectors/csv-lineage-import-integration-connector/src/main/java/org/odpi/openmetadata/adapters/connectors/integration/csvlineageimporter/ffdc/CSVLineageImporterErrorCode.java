@@ -42,7 +42,7 @@ public enum CSVLineageImporterErrorCode implements ExceptionMessageSet
             "The connector is unable to open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
     UNEXPECTED_EXC_RETRIEVING_FOLDER(400,"CSV-LINEAGE-IMPORTER-400-004",
-            "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
+            "An unexpected {0} exception was returned to the {1} integration connector by the {2} " +
                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
             "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
             "Use the message in the nested exception to determine the root cause of the error. Once this is " +

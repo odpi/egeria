@@ -119,7 +119,7 @@ class EndpointBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.NAME.name,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
 

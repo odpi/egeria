@@ -32,7 +32,7 @@ public enum GovernanceServicesDescription
                                       "Hosts integration connectors that are exchanging metadata with third party technologies.",
                                       "https://egeria-project.org/services/integration-daemon-services/",
                                       ServerTypeClassification.INTEGRATION_DAEMON.getServerTypeName(),
-                                      AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName(),
+                                      AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName(),
                                       ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()),
 
     /**
@@ -45,7 +45,7 @@ public enum GovernanceServicesDescription
                                       "Host one or more engine services that are actively managing governance of open metadata and the digital landscape.",
                                       "https://egeria-project.org/services/engine-host-services/",
                                       ServerTypeClassification.ENGINE_HOST.getServerTypeName(),
-                                      AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName(),
+                                      AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName(),
                                       ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()),
     ;
 

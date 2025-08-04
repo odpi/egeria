@@ -8,7 +8,7 @@ The OpenAPI integration connector catalogs APIs by extracting their OpenAPISpeci
 ## Deployment and configuration
 
 The Open API integration connector is included in the main Egeria assembly.
-It runs in the [API Integrator OMIS](../../../../integration-services/api-integrator).
+It runs in the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon).
 
 ----
 * Return to [Integration Connectors module](..)

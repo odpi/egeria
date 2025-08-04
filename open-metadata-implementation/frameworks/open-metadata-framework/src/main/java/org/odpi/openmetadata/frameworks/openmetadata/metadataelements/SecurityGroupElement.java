@@ -20,11 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SecurityGroupElement implements MetadataElement
+public class SecurityGroupElement extends AttributedMetadataElement
 {
-    private ElementHeader           elementHeader = null;
     private SecurityGroupProperties properties = null;
-    private RelatedBy               relatedBy  = null;
 
 
     /**
@@ -45,34 +43,8 @@ public class SecurityGroupElement implements MetadataElement
     {
         if (template != null)
         {
-            this.elementHeader = template.getElementHeader();
             this.properties = template.getProperties();
-            this.relatedBy  = template.getRelatedBy();
         }
-    }
-
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
     }
 
 
@@ -99,30 +71,6 @@ public class SecurityGroupElement implements MetadataElement
 
 
     /**
-     * Return details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @return list of element stubs
-     */
-    public RelatedBy getRelatedBy()
-    {
-        return relatedBy;
-    }
-
-
-    /**
-     * Set up details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @param relatedBy relationship details
-     */
-    public void setRelatedBy(RelatedBy relatedBy)
-    {
-        this.relatedBy = relatedBy;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -131,10 +79,8 @@ public class SecurityGroupElement implements MetadataElement
     public String toString()
     {
         return "SecurityGroupElement{" +
-                       "elementHeader=" + elementHeader +
-                       ", properties=" + properties +
-                       ", relatedBy=" + relatedBy +
-                       '}';
+                "properties=" + properties +
+                "} " + super.toString();
     }
 
 
@@ -155,10 +101,9 @@ public class SecurityGroupElement implements MetadataElement
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
         SecurityGroupElement that = (SecurityGroupElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties) &&
-                       Objects.equals(relatedBy, that.relatedBy);
+        return Objects.equals(properties, that.properties);
     }
 
 
@@ -170,6 +115,6 @@ public class SecurityGroupElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, relatedBy);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

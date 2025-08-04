@@ -5,6 +5,8 @@ package org.odpi.openmetadata.viewservices.glossarybrowser.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,12 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossarySearchStringRequestBody extends GlossaryResultsRequestBody
+public class GlossarySearchStringRequestBody extends SearchStringRequestBody
 {
-    private String searchString              = null;
-    private String searchStringParameterName = null;
-    private String typeName                  = null;
-    private String glossaryGUID              = null;
+    private String anchorGUID = null;
 
     /**
      * Default constructor
@@ -45,99 +44,8 @@ public class GlossarySearchStringRequestBody extends GlossaryResultsRequestBody
 
         if (template != null)
         {
-            searchString              = template.getSearchString();
-            searchStringParameterName = template.getSearchStringParameterName();
-            typeName                  = template.getTypeName();
-            glossaryGUID              = template.getGlossaryGUID();
+            anchorGUID = template.getAnchorGUID();
         }
-    }
-
-
-    /**
-     * Return the search request.
-     *
-     * @return regEx expression
-     */
-    public String getSearchString()
-    {
-        return searchString;
-    }
-
-
-    /**
-     * Set up the search.
-     *
-     * @param searchString regEx expression
-     */
-    public void setSearchString(String searchString)
-    {
-        this.searchString = searchString;
-    }
-
-
-    /**
-     * Return the search string parameter name.
-     *
-     * @return string name
-     */
-    public String getSearchStringParameterName()
-    {
-        return searchStringParameterName;
-    }
-
-
-    /**
-     * Set up the search string parameter name.
-     *
-     * @param searchStringParameterName string name
-     */
-    public void setSearchStringParameterName(String searchStringParameterName)
-    {
-        this.searchStringParameterName = searchStringParameterName;
-    }
-
-
-    /**
-     * Return the optional type name for the search results (null means any type).
-     *
-     * @return unique name of type
-     */
-    public String getTypeName()
-    {
-        return typeName;
-    }
-
-
-    /**
-     * Set up the optional type name for the search results (null means any type).
-     *
-     * @param typeName unique name of type
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
-
-
-    /**
-     * Return the unique identifier of the glossary scope.
-     *
-     * @return string guid
-     */
-    public String getGlossaryGUID()
-    {
-        return glossaryGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the glossary scope.
-     *
-     * @param glossaryGUID string
-     */
-    public void setGlossaryGUID(String glossaryGUID)
-    {
-        this.glossaryGUID = glossaryGUID;
     }
 
 
@@ -150,10 +58,7 @@ public class GlossarySearchStringRequestBody extends GlossaryResultsRequestBody
     public String toString()
     {
         return "GlossarySearchStringRequestBody{" +
-                "searchString='" + searchString + '\'' +
-                ", searchStringParameterName='" + searchStringParameterName + '\'' +
-                ", typeName='" + typeName + '\'' +
-                ", glossaryGUID='" + glossaryGUID + '\'' +
+                ", glossaryGUID='" + anchorGUID + '\'' +
                 "} " + super.toString();
     }
 
@@ -180,10 +85,7 @@ public class GlossarySearchStringRequestBody extends GlossaryResultsRequestBody
             return false;
         }
         GlossarySearchStringRequestBody that = (GlossarySearchStringRequestBody) objectToCompare;
-        return Objects.equals(glossaryGUID, that.glossaryGUID) &&
-                Objects.equals(searchString, that.searchString) &&
-                Objects.equals(searchStringParameterName, that.searchStringParameterName) &&
-                Objects.equals(typeName, that.typeName);
+        return Objects.equals(anchorGUID, that.anchorGUID);
     }
 
 
@@ -195,6 +97,6 @@ public class GlossarySearchStringRequestBody extends GlossaryResultsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), glossaryGUID, searchString, searchStringParameterName, typeName);
+        return Objects.hash(super.hashCode(), anchorGUID);
     }
 }

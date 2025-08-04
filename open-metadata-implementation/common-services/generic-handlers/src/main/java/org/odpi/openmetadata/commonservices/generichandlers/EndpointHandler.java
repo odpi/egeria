@@ -160,7 +160,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                 retrievedGUID = this.getBeanGUIDByUniqueName(userId,
                                                              endpoint.getDisplayName(),
                                                              displayNameParameter,
-                                                             OpenMetadataProperty.NAME.name,
+                                                             OpenMetadataProperty.DISPLAY_NAME.name,
                                                              OpenMetadataType.CONNECTION.typeGUID,
                                                              OpenMetadataType.CONNECTION.typeName,
                                                              null,

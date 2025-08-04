@@ -292,34 +292,6 @@ public class ConfigAccessServicesResource
 
 
     /**
-     * Update the in topic name for a specific access service.
-     *
-     * @param userId                user that is issuing the request.
-     * @param serverName            local server name.
-     * @param serviceURLMarker string indicating which access service it requested
-     * @param topicName string for new topic name
-     *
-     * @return map of topic names or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
-     */
-    @PostMapping(path = "/access-services/{serviceURLMarker}/topic-names/in-topic")
-
-    @Operation(summary="overrideAccessServiceInTopicName",
-               description="Update the in topic name for a specific access service.",
-               externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/services/omas/"))
-
-    public VoidResponse  overrideAccessServiceInTopicName(@PathVariable String userId,
-                                                          @PathVariable String serverName,
-                                                          @PathVariable String serviceURLMarker,
-                                                          @RequestBody  String topicName)
-    {
-        return adminAPI.overrideAccessServiceInTopicName(userId, serverName, serviceURLMarker, topicName);
-    }
-
-
-    /**
      * Update the out topic name for a specific access service.
      *
      * @param userId                user that is issuing the request.

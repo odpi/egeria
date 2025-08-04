@@ -11,7 +11,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Defines the type of delete method to use.
+ * Defines the type of delete method to use.  This is an option on the delete operation
+ * of the view services and can be set up as a configuration option in the connectors.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,13 +23,25 @@ public enum DeleteMethod implements OpenMetadataEnum
      * Archive the element using the Memento classification so it is still available for lineage queries.
      */
     ARCHIVE(0, "733a7c13-0830-4a81-bedc-f317f81e2673", "Archive",
-            "Archive the element using the Memento classification so it is still available for lineage queries.", true),
+            "Archive the element using the Memento classification so it is still available for lineage queries.", false),
 
     /**
      * Delete the element from the active store, however it can still be restored if it has been deleted in error.
      */
     SOFT_DELETE    (1, "db2e5c74-bc09-47de-8a80-22d9206de677","SoftDelete",
                        "Delete the element from the active store, however it can still be restored if it has been deleted in error.", false),
+
+    /**
+     * If the element has lineage relationships then archive; otherwise soft-delete."
+     */
+    LOOK_FOR_LINEAGE (2, "eff96544-c730-4abe-b71e-1524b5859183", "LookForLineage",
+                      "If the element has lineage relationships then archive; otherwise soft-delete.", true),
+
+    /**
+     * Remove the element from the repository; this can not be restored automatically.
+     */
+    PURGE (3, "51f6c127-a143-4adb-a14a-d6fb2e93109e", "Purge",
+           "Remove the element from the repository; this can not be restored automatically.  If you need it back, you need to look in the repository backups.", false),
 
     /**
      * Another type of delete.

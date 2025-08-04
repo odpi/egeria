@@ -4,19 +4,19 @@
 package org.odpi.openmetadata.frameworks.integration.iterator;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ public abstract class IntegrationIterator
     protected final String                   catalogTargetName;
     protected final String                   connectorName;
     protected final String                   metadataTypeName;
-    protected final OpenMetadataAccess       openMetadataAccess;
+    protected final OpenMetadataStore        openMetadataStore;
     protected final PermittedSynchronization targetPermittedSynchronization;
     protected final int                      maxPageSize;
     protected final AuditLog                 auditLog;
@@ -53,7 +53,7 @@ public abstract class IntegrationIterator
      * @param catalogTargetName name of target
      * @param connectorName name of the calling connector
      * @param metadataTypeName type of element to receive
-     * @param openMetadataAccess client to access metadata
+     * @param openMetadataStore client to access metadata
      * @param targetPermittedSynchronization the synchronization policy for this target
      * @param maxPageSize max page size for the server
      * @param auditLog logging destination
@@ -65,7 +65,7 @@ public abstract class IntegrationIterator
                                String                   catalogTargetName,
                                String                   connectorName,
                                String                   metadataTypeName,
-                               OpenMetadataAccess       openMetadataAccess,
+                               OpenMetadataStore        openMetadataStore,
                                PermittedSynchronization targetPermittedSynchronization,
                                int                      maxPageSize,
                                AuditLog                 auditLog)
@@ -77,7 +77,7 @@ public abstract class IntegrationIterator
         this.catalogTargetName               = catalogTargetName;
         this.connectorName                   = connectorName;
         this.metadataTypeName                = metadataTypeName;
-        this.openMetadataAccess              = openMetadataAccess;
+        this.openMetadataStore               = openMetadataStore;
         this.targetPermittedSynchronization  = targetPermittedSynchronization;
         this.maxPageSize                     = maxPageSize;
         this.auditLog                        = auditLog;
@@ -148,20 +148,20 @@ public abstract class IntegrationIterator
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
-        OpenMetadataElement element = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+        OpenMetadataElement element = openMetadataStore.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
         if (element != null)
         {
             return this.fillOutMemberElement(element, true);
         }
 
-        element = openMetadataAccess.getLineageElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+        element = openMetadataStore.getLineageElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
         if (element != null)
         {
             return this.fillOutMemberElement(element, false);
         }
 
-        element = openMetadataAccess.getDeletedElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+        element = openMetadataStore.getDeletedElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
         return this.fillOutMemberElement(element, false);
     }
@@ -193,34 +193,35 @@ public abstract class IntegrationIterator
         {
             if (externalScopeGUID == null)
             {
-                correlationHeaders = openMetadataAccess.getExternalIdentifiers(element.getElementGUID(),
-                                                                               propertyHelper.getStringProperty(element.getElementGUID(),
+                correlationHeaders = openMetadataStore.getExternalIdentifiers(element.getElementGUID(),
+                                                                              propertyHelper.getStringProperty(element.getElementGUID(),
                                                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                                        element.getElementProperties(),
                                                                                                                        methodName),
-                                                                               element.getElementGUID(),
-                                                                               element.getType().getTypeName(),
-                                                                               0,
-                                                                               0);
+                                                                              element.getElementGUID(),
+                                                                              element.getType().getTypeName(),
+                                                                              0,
+                                                                              0);
             }
             else
             {
-                correlationHeaders = openMetadataAccess.getExternalIdentifiers(externalScopeGUID,
-                                                                               externalScopeName,
-                                                                               element.getElementGUID(),
-                                                                               element.getType().getTypeName(),
-                                                                               0,
-                                                                               0);
+                correlationHeaders = openMetadataStore.getExternalIdentifiers(externalScopeGUID,
+                                                                              externalScopeName,
+                                                                              element.getElementGUID(),
+                                                                              element.getType().getTypeName(),
+                                                                              0,
+                                                                              0);
             }
 
-            vendorProperties = openMetadataAccess.getVendorProperties(element.getElementGUID(),
-                                                                      element.getType().getTypeName());
+            vendorProperties = openMetadataStore.getVendorProperties(element.getElementGUID(),
+                                                                     element.getType().getTypeName());
 
 
-            rootSchemaType = openMetadataAccess.getRelatedMetadataElement(element.getElementGUID(),
-                                                                          1,
-                                                                          OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
-                                                                          new Date());
+
+            rootSchemaType = openMetadataStore.getRelatedMetadataElement(element.getElementGUID(),
+                                                                         1,
+                                                                         OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                         new GetOptions(this.openMetadataStore.getGetOptions()));
         }
 
         if (vendorProperties == null)

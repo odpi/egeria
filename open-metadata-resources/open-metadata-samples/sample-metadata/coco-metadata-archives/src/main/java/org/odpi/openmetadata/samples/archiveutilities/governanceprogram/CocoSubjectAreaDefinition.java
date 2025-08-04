@@ -413,4 +413,5 @@ public enum CocoSubjectAreaDefinition
     {
         return "CocoSubjectAreaDefinition{" +
                        "subjectAreaName='" + subjectAreaName + '\'' + '}';
-    }}
+    }
+}

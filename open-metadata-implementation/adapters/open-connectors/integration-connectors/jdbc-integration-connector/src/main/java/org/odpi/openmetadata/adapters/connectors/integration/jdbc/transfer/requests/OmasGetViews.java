@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseViewElement;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +20,21 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the getViewsForDatabaseAsset call to access service
  */
-class OmasGetViews implements Function<String, List<DatabaseViewElement>> {
+class OmasGetViews implements Function<String, List<OpenMetadataRootElement>>
+{
+    private final AssetClient           dataAssetClient;
+    private final SchemaAttributeClient databaseViewClient;
+    private final AuditLog              auditLog;
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
-
-    OmasGetViews(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasGetViews(AssetClient           dataAssetClient,
+                 SchemaAttributeClient databaseViewClient,
+                 AuditLog              auditLog)
+    {
+        this.dataAssetClient    = dataAssetClient;
+        this.databaseViewClient = databaseViewClient;
+        this.auditLog           = auditLog;
     }
+
 
     /**
      * Get views of schema
@@ -37,15 +44,32 @@ class OmasGetViews implements Function<String, List<DatabaseViewElement>> {
      * @return tables
      */
     @Override
-    public List<DatabaseViewElement> apply(String assetGuid){
-        String methodName = "OmasGetViews";
-        try{
-            return Optional.ofNullable(databaseIntegratorContext
-                    .getViewsForDatabaseAsset(assetGuid, 0, 0)).orElseGet(ArrayList::new);
-        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+    public List<OpenMetadataRootElement> apply(String assetGuid)
+    {
+        final String methodName = "OmasGetViews";
+
+        try
+        {
+            OpenMetadataRootElement dataAsset = dataAssetClient.getAssetByGUID(assetGuid, dataAssetClient.getGetOptions());
+
+            if (dataAsset.getRootSchemaType() == null)
+            {
+                return new ArrayList<>();
+            }
+            else
+            {
+                // todo limit search to only schema attributes with the CalculatedValue classification
+                return Optional.ofNullable(
+                        databaseViewClient.getAttributesForSchemaType(dataAsset.getRootSchemaType().getRelatedElement().getElementHeader().getGUID(),
+                                                                      databaseViewClient.getQueryOptions())).orElseGet(ArrayList::new);
+            }
+        }
+        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
+        {
             auditLog.logException("Reading views for assetGuid: " + assetGuid,
                     EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
         }
+
         return new ArrayList<>();
     }
 

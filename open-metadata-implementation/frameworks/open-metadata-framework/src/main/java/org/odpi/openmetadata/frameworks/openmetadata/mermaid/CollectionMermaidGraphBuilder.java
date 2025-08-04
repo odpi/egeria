@@ -3,8 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionGraph;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMemberGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionHierarchy;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,55 +12,30 @@ import java.util.UUID;
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's collection graph.
  */
-public class CollectionMermaidGraphBuilder extends MermaidGraphBuilderBase
+public class CollectionMermaidGraphBuilder extends OpenMetadataRootMermaidGraphBuilder
 {
+
     /**
      * Construct a mermaid markdown graph.
      *
-     * @param collectionGraph content
+     * @param collectionHierarchy content
      */
-    public CollectionMermaidGraphBuilder(CollectionGraph collectionGraph)
+    public CollectionMermaidGraphBuilder(CollectionHierarchy collectionHierarchy)
     {
-        mermaidGraph.append("---\n");
-        mermaidGraph.append("title: Collection - ");
-        mermaidGraph.append(collectionGraph.getProperties().getName());
-        mermaidGraph.append(" [");
-        mermaidGraph.append(collectionGraph.getElementHeader().getGUID());
-        mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
+        super(collectionHierarchy);
 
-        if (collectionGraph != null)
+        if (collectionHierarchy.getCollectionMemberGraphs() != null)
         {
-            String currentDisplayName = collectionGraph.getProperties().getName();
+            /*
+             * Build a grid of elements in a subgraph
+             */
+            super.startSubgraph("Collection Membership", VisualStyle.DESCRIPTION, "LR");
 
-            if (currentDisplayName == null)
-            {
-                currentDisplayName = collectionGraph.getProperties().getQualifiedName();
-            }
+            this.addCollectionMembers(null, collectionHierarchy.getCollectionMemberGraphs());
 
-            super.appendNewMermaidNode(collectionGraph.getElementHeader().getGUID(),
-                                       currentDisplayName,
-                                       collectionGraph.getElementHeader().getType().getTypeName(),
-                                       getVisualStyleForEntity(collectionGraph.getElementHeader(), VisualStyle.COLLECTION));
+            super.endSubgraph();
 
-            this.addDescription(collectionGraph);
-
-            super.addClassifications(collectionGraph.getElementHeader());
-            super.addRelatedElementSummaries(collectionGraph.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, collectionGraph.getElementHeader().getGUID());
-            super.addRelatedElementSummaries(collectionGraph.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, collectionGraph.getElementHeader().getGUID());
-
-            if (collectionGraph.getCollectionMemberGraphs() != null)
-            {
-                /*
-                 * Build a grid of elements in a subgraph
-                 */
-                super.startSubgraph("Collection Membership", VisualStyle.DESCRIPTION, "LR");
-
-                this.addCollectionMembers(null, collectionGraph.getCollectionMemberGraphs());
-
-                super.endSubgraph();
-
-                appendMermaidDottedLine(null, collectionGraph.getElementHeader().getGUID(), null, "Collection Membership");
-            }
+            appendMermaidDottedLine(null, collectionHierarchy.getElementHeader().getGUID(), null, "Collection Membership");
         }
     }
 
@@ -72,12 +46,12 @@ public class CollectionMermaidGraphBuilder extends MermaidGraphBuilderBase
      * @param parentNodeName id of the parent
      * @param collectionMemberGraphs list of child categories
      */
-    private void addCollectionMembers(String                      parentNodeName,
-                                      List<CollectionMemberGraph> collectionMemberGraphs)
+    private void addCollectionMembers(String                    parentNodeName,
+                                      List<CollectionHierarchy> collectionMemberGraphs)
     {
         if (collectionMemberGraphs != null)
         {
-            for (CollectionMemberGraph collectionMemberGraph : collectionMemberGraphs)
+            for (CollectionHierarchy collectionMemberGraph : collectionMemberGraphs)
             {
                 addCollectionMemberGraph(parentNodeName, collectionMemberGraph);
             }
@@ -91,8 +65,8 @@ public class CollectionMermaidGraphBuilder extends MermaidGraphBuilderBase
      * @param parentNodeName id of the parent
      * @param collectionMemberGraph child category
      */
-    private void addCollectionMemberGraph(String                parentNodeName,
-                                          CollectionMemberGraph collectionMemberGraph)
+    private void addCollectionMemberGraph(String              parentNodeName,
+                                          CollectionHierarchy collectionMemberGraph)
     {
 
         appendNewMermaidNode(collectionMemberGraph.getElementHeader().getGUID(),
@@ -102,38 +76,13 @@ public class CollectionMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         if (parentNodeName != null)
         {
-            appendMermaidLine(collectionMemberGraph.getRelationshipHeader().getGUID(),
+            appendMermaidLine(UUID.randomUUID().toString(),
                               parentNodeName,
                               this.addSpacesToTypeName(collectionMemberGraph.getElementHeader().getType().getTypeName()),
                               collectionMemberGraph.getElementHeader().getGUID());
         }
 
         addCollectionMembers(collectionMemberGraph.getElementHeader().getGUID(),
-                             collectionMemberGraph.getNestedMembers());
-    }
-
-
-
-    /**
-     * Add a text box with the description (if any)
-     *
-     * @param collectionGraph element with the potential description
-     */
-    private void addDescription(CollectionGraph collectionGraph)
-    {
-        if (collectionGraph.getProperties() != null)
-        {
-            if (collectionGraph.getProperties().getDescription() != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     collectionGraph.getProperties().getDescription(),
-                                     "Description",
-                                     VisualStyle.DESCRIPTION);
-
-                appendInvisibleMermaidLine(descriptionNodeName, collectionGraph.getElementHeader().getGUID());
-            }
-        }
+                             collectionMemberGraph.getCollectionMemberGraphs());
     }
 }

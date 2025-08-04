@@ -6,13 +6,14 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
+import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,7 +40,7 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
     /**
      * This is the folder element describing this directory from the open metadata ecosystem.
      */
-    protected FileFolderElement dataFolderElement = null;
+    protected OpenMetadataRootElement dataFolderElement = null;
 
     /**
      * This is the Java File object that is accessing the directory.
@@ -58,16 +59,9 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
     protected String            catalogTargetGUID = null;
 
     /**
-     * Template for cataloguing files
+     * Templates for cataloguing files and folders
      */
-    protected String  fileTemplateQualifiedName           = null;
-    protected String  fileTemplateGUID          = null;
-
-    /**
-     * Template for cataloguing directories
-     */
-    protected String  directoryTemplateQualifiedName      = null;
-    protected String  directoryTemplateGUID      = null;
+    protected final Map<String, String> templates = new HashMap<>();
 
     /**
      * Template for creating todos
@@ -126,7 +120,7 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
                                Map<String,String>                        templates,
                                Map<String, Object>                       configurationProperties,
                                BasicFilesMonitorIntegrationConnectorBase integrationConnector,
-                               FileFolderElement                         dataFolderElement,
+                               OpenMetadataRootElement                   dataFolderElement,
                                AuditLog                                  auditLog)
     {
         final String methodName = "DirectoryToMonitor";
@@ -162,10 +156,6 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
             {
                 newFileProcessName = configurationProperties.get(BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName()).toString();
             }
-            if (configurationProperties.containsKey(BasicFilesMonitorIntegrationProviderBase.ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY))
-            {
-                allowCatalogDelete = true;
-            }
 
             if (configurationProperties.containsKey(BasicFilesMonitorIntegrationProviderBase.CATALOG_ALL_FILES_CONFIGURATION_PROPERTY))
             {
@@ -176,42 +166,10 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
             {
                 waitForDirectory = true;
             }
-
-            if (configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY) != null)
-            {
-                fileTemplateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
-            }
-
-            if (configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY) != null)
-            {
-                directoryTemplateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
-            }
-
-            if (configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.TO_DO_TEMPLATE_CONFIGURATION_PROPERTY) != null)
-            {
-                directoryTemplateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.TO_DO_TEMPLATE_CONFIGURATION_PROPERTY).toString();
-            }
-
-            if (configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY) != null)
-            {
-                directoryTemplateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY).toString();
-            }
         }
 
         if (templates != null)
         {
-            if (templates.get(OpenMetadataType.DATA_FILE.typeName) != null)
-            {
-                fileTemplateQualifiedName = templates.get(OpenMetadataType.DATA_FILE.typeName);
-            }
-            if (templates.get(OpenMetadataType.FILE_FOLDER.typeName) != null)
-            {
-                directoryTemplateQualifiedName = templates.get(OpenMetadataType.FILE_FOLDER.typeName);
-            }
-            if (templates.get(OpenMetadataType.DATA_FOLDER.typeName) != null)
-            {
-                directoryTemplateQualifiedName = templates.get(OpenMetadataType.DATA_FOLDER.typeName);
-            }
             if (templates.get(OpenMetadataType.TO_DO.typeName) != null)
             {
                 toDoTemplateQualifiedName = templates.get(OpenMetadataType.TO_DO.typeName);
@@ -220,6 +178,8 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
             {
                 incidentReportTemplateQualifiedName = templates.get(OpenMetadataType.DATA_FILE.typeName);
             }
+
+            this.templates.putAll(templates);
         }
 
         if (deleteMethod != null)
@@ -237,10 +197,7 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
         auditLog.logMessage(methodName,
                             BasicFilesIntegrationConnectorsAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
                                                                                                                   this.directoryName,
-                                                                                                                  Boolean.toString(allowCatalogDelete),
                                                                                                                   Boolean.toString(waitForDirectory),
-                                                                                                                  fileTemplateQualifiedName,
-                                                                                                                  directoryTemplateQualifiedName,
                                                                                                                   toDoTemplateQualifiedName,
                                                                                                                   incidentReportTemplateQualifiedName));
     }

@@ -116,6 +116,7 @@ Content-Type: application/json
   "filter" : ""
 }
 
+
 ###
 # @name getServersByDeployedImplementationType
 # Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
@@ -327,9 +328,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NameRequestBody",
+  "class" : "UniqueNameRequestBody",
   "name" : "active-metadata-store",
-  "namePropertyName" : "name"
+  "namePropertyName" : "displayName"
 }
 
 > {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}

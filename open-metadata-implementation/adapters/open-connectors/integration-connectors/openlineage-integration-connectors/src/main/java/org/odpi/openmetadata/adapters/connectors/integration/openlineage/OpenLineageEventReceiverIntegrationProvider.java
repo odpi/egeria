@@ -32,7 +32,7 @@ public class OpenLineageEventReceiverIntegrationProvider extends IntegrationConn
     private static final String connectorDisplayName   = "Open Lineage Event Receiver Integration Connector";
     private static final String connectorDescription   = "Connector to receive and publish open lineage events from an event broker topic and publish" +
                                                                  "them to lineage integration connectors with listeners registered in the same " +
-                                                                 "instance of the Lineage Integrator OMIS.";
+                                                                 "instance of the integration daemon.";
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/open-lineage-event-receiver-integration-connector/";
 
     /*
@@ -57,7 +57,6 @@ public class OpenLineageEventReceiverIntegrationProvider extends IntegrationConn
          * Set up the connector type that should be included in a connection used to configure this connector.
          */
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorDisplayName);

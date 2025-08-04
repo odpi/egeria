@@ -3,29 +3,34 @@
 
 package org.odpi.openmetadata.viewservices.automatedcuration.handlers;
 
-import org.odpi.openmetadata.accessservices.assetowner.client.ExternalReferenceManager;
-import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.HierarchyMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.HierarchyMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.ReferenceableConverter;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.TechnologyTypeSummaryConverter;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.*;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeHierarchy;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeReport;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeSummary;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Provides additional support for retrieving technology types
@@ -35,26 +40,22 @@ public class TechnologyTypeHandler
     private static final PropertyHelper          propertyHelper          = new PropertyHelper();
     private static final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
-    private final ExternalReferenceManager externalRefHandler;
-    private final OpenMetadataStoreClient  openHandler;
-    private final String                   serverName;
-    private final String                   serviceName;
+    private final OpenMetadataClient openHandler;
+    private final String             serverName;
+    private final String             serviceName;
 
 
     /**
      * Construct the handler.
      *
-     * @param externalRefHandler client for retrieving resources for a technology type
      * @param openHandler Open Metadata Store client
      * @param serviceName name of this component
      * @param serverName local server name
      */
-    public TechnologyTypeHandler(ExternalReferenceManager externalRefHandler,
-                                 OpenMetadataStoreClient  openHandler,
+    public TechnologyTypeHandler(EgeriaOpenMetadataStoreClient openHandler,
                                  String                   serviceName,
                                  String                   serverName)
     {
-        this.externalRefHandler = externalRefHandler;
         this.openHandler        = openHandler;
         this.serviceName        = serviceName;
         this.serverName         = serverName;
@@ -67,13 +68,8 @@ public class TechnologyTypeHandler
      *
      * @param userId calling user
      * @param searchString string value to look for
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     * @param effectiveTime the effective date/time to use for the query
-     * @param limitResultsByStatus limit the status values that the elements should be
-     * @param asOfTime repository time
-     * @param sequencingOrder order of results
-     * @param sequencingProperty optional property name
+     * @param queryOptions multiple options to control the query
+
      *
      * @return list of valid value beans
      *
@@ -81,41 +77,28 @@ public class TechnologyTypeHandler
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public List<TechnologyTypeSummary> findTechnologyTypes(String              userId,
-                                                           String              searchString,
-                                                           int                 startFrom,
-                                                           int                 pageSize,
-                                                           Date                effectiveTime,
-                                                           List<ElementStatus> limitResultsByStatus,
-                                                           Date                asOfTime,
-                                                           SequencingOrder     sequencingOrder,
-                                                           String              sequencingProperty) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public List<TechnologyTypeSummary> findTechnologyTypes(String       userId,
+                                                           String       searchString,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName = "findTechnologyTypes";
         final String parameterName = "searchString";
 
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
 
+        QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+
         List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
-                                                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                                          null,
                                                                                           this.getTechnologyTypeConditions(searchString, PropertyComparisonOperator.LIKE),
-                                                                                          limitResultsByStatus,
-                                                                                          asOfTime,
                                                                                           null,
-                                                                                          sequencingProperty,
-                                                                                          sequencingOrder,
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveTime,
-                                                                                          startFrom,
-                                                                                          pageSize);
+                                                                                          workingQueryOptions);
 
         return this.convertTechTypeSummaries(openMetadataElements, methodName);
     }
-
 
 
     /**
@@ -124,13 +107,7 @@ public class TechnologyTypeHandler
      *
      * @param userId calling user
      * @param typeName type name value to look for
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     * @param effectiveTime the effective date/time to use for the query
-     * @param limitResultsByStatus limit the status values that the elements should be
-     * @param asOfTime repository time
-     * @param sequencingOrder order of results
-     * @param sequencingProperty optional property name
+     * @param queryOptions multiple options to control the query
      *
      * @return list of valid value beans
      *
@@ -138,17 +115,11 @@ public class TechnologyTypeHandler
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public List<TechnologyTypeSummary> getTechnologyTypesForOpenMetadataType(String              userId,
-                                                                             String              typeName,
-                                                                             int                 startFrom,
-                                                                             int                 pageSize,
-                                                                             Date                effectiveTime,
-                                                                             List<ElementStatus> limitResultsByStatus,
-                                                                             Date                asOfTime,
-                                                                             SequencingOrder     sequencingOrder,
-                                                                             String              sequencingProperty) throws InvalidParameterException,
-                                                                                                                            UserNotAuthorizedException,
-                                                                                                                            PropertyServerException
+    public List<TechnologyTypeSummary> getTechnologyTypesForOpenMetadataType(String       userId,
+                                                                             String       typeName,
+                                                                             QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
     {
         final String methodName = "getTechnologyTypesForOpenMetadataType";
         final String parameterName = "typeName";
@@ -175,20 +146,14 @@ public class TechnologyTypeHandler
         searchProperties.setConditions(propertyConditions);
         searchProperties.setMatchCriteria(MatchCriteria.ANY);
 
+        QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+
         List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
-                                                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                                          null,
                                                                                           searchProperties,
-                                                                                          limitResultsByStatus,
-                                                                                          asOfTime,
                                                                                           null,
-                                                                                          sequencingProperty,
-                                                                                          sequencingOrder,
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveTime,
-                                                                                          startFrom,
-                                                                                          pageSize);
+                                                                                          workingQueryOptions);
 
         return this.convertTechTypeSummaries(openMetadataElements, methodName);
     }
@@ -200,11 +165,7 @@ public class TechnologyTypeHandler
      *
      * @param userId calling user
      * @param technologyTypeName string value to look for
-     * @param effectiveTime the effective date/time to use for the query
-     * @param limitResultsByStatus limit the status values that the elements should be
-     * @param asOfTime repository time
-     * @param sequencingOrder order of results
-     * @param sequencingProperty optional property name
+     * @param queryOptions multiple options to control the query
      *
      * @return detailed report for technology type
      *
@@ -212,35 +173,25 @@ public class TechnologyTypeHandler
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public TechnologyTypeReport getTechnologyTypeDetail(String              userId,
-                                                        String              technologyTypeName,
-                                                        Date                effectiveTime,
-                                                        List<ElementStatus> limitResultsByStatus,
-                                                        Date                asOfTime,
-                                                        SequencingOrder     sequencingOrder,
-                                                        String              sequencingProperty) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+    public TechnologyTypeReport getTechnologyTypeDetail(String       userId,
+                                                        String       technologyTypeName,
+                                                        QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName = "getTechnologyTypeDetail";
         final String parameterName = "technologyTypeName";
 
         invalidParameterHandler.validateName(technologyTypeName, parameterName, methodName);
 
+        QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+
         List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
-                                                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                                          null,
                                                                                           this.getTechnologyTypeConditions(technologyTypeName, PropertyComparisonOperator.EQ),
-                                                                                          limitResultsByStatus,
-                                                                                          asOfTime,
                                                                                           null,
-                                                                                          sequencingProperty,
-                                                                                          sequencingOrder,
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveTime,
-                                                                                          0,
-                                                                                          0);
+                                                                                          workingQueryOptions);
 
         if (openMetadataElements != null)
         {
@@ -252,38 +203,63 @@ public class TechnologyTypeHandler
                 {
                     report = new TechnologyTypeReport(this.convertTechTypeSummary(openMetadataElement));
 
-                    List<RelatedElementStub> resourceList = externalRefHandler.getResourceList(userId,
-                                                                                               openMetadataElement.getElementGUID(),
-                                                                                               0,
-                                                                                               0);
+                    workingQueryOptions.setMetadataElementTypeName(null);
 
-                    if (resourceList != null)
+                    RelatedMetadataElementList relatedMetadataElementList = openHandler.getRelatedMetadataElements(userId,
+                                                                                                                   openMetadataElement.getElementGUID(),
+                                                                                                                   1,
+                                                                                                                   null,
+                                                                                                                   workingQueryOptions);
+
+
+                    if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
                     {
-                        List<ResourceDescription> resources = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> resources = new ArrayList<>();
+                        List<CatalogTemplate>               catalogTemplates = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> externalReferences = new ArrayList<>();
 
-                        for (RelatedElementStub resource : resourceList)
+                        for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
                         {
-                            if (resource != null)
+                            if (relatedMetadataElement != null)
                             {
-                                if ((resource.getRelationshipProperties() != null) && (resource.getRelationshipProperties().getExtendedProperties() != null))
+                                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName))
                                 {
-                                    Map<String, Object> extendedProperties = resource.getRelationshipProperties().getExtendedProperties();
+                                    resources.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName));
+                                }
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName))
+                                {
+                                    CatalogTemplate catalogTemplate = new CatalogTemplate();
 
-                                    ResourceDescription resourceDescription = new ResourceDescription();
+                                    catalogTemplate.setRelatedElement(propertyHelper.getMetadataElementSummary(relatedMetadataElement.getElement()));
 
-                                    if (extendedProperties.get(OpenMetadataProperty.RESOURCE_USE.name) != null)
+                                    if (catalogTemplate.getRelatedElement().getElementHeader().getTemplate() != null)
                                     {
-                                        resourceDescription.setResourceUse(extendedProperties.get(OpenMetadataProperty.RESOURCE_USE.name).toString());
-                                    }
-                                    if (extendedProperties.get(OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name) != null)
-                                    {
-                                        resourceDescription.setResourceUseDescription(extendedProperties.get(OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name).toString());
+                                        if (catalogTemplate.getRelatedElement().getElementHeader().getTemplate().getClassificationProperties() != null)
+                                        {
+                                            ElementClassification classification = catalogTemplate.getRelatedElement().getElementHeader().getTemplate();
+
+                                            if (classification.getClassificationProperties().get(OpenMetadataProperty.DISPLAY_NAME.name) != null)
+                                            {
+                                                catalogTemplate.setName(classification.getClassificationProperties().get(OpenMetadataProperty.DISPLAY_NAME.name).toString());
+                                            }
+                                            else if (classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name) != null)
+                                            {
+                                                catalogTemplate.setDescription(classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name).toString());
+                                            }
+                                            else if (classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name) != null)
+                                            {
+                                                catalogTemplate.setVersionIdentifier(classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name).toString());
+                                            }
+                                        }
                                     }
 
-                                    resourceDescription.setRelatedElement(resource.getRelatedElement());
-                                    resourceDescription.setSpecification(openHandler.getSpecification(userId, resource.getRelatedElement().getGUID()));
+                                    catalogTemplate.setSpecification(openHandler.getSpecification(userId, relatedMetadataElement.getElement().getElementGUID()));
 
-                                    resources.add(resourceDescription);
+                                    catalogTemplates.add(catalogTemplate);
+                                }
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName))
+                                {
+                                    externalReferences.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName));
                                 }
                             }
                         }
@@ -292,75 +268,17 @@ public class TechnologyTypeHandler
                         {
                             report.setResourceList(resources);
                         }
-                    }
 
-                    List<RelatedElementStub> catalogTemplateList = externalRefHandler.getCatalogTemplateList(userId,
-                                                                                                             openMetadataElement.getElementGUID(),
-                                                                                                             0,
-                                                                                                             0);
-
-                    if (catalogTemplateList != null)
-                    {
-                        List<CatalogTemplate> catalogTemplates = new ArrayList<>();
-
-                        for (RelatedElementStub templateElement : catalogTemplateList)
-                        {
-                            if (templateElement != null)
-                            {
-                                CatalogTemplate catalogTemplate = new CatalogTemplate();
-
-                                catalogTemplate.setRelatedElement(templateElement.getRelatedElement());
-
-                                List<ElementClassification> classifications = templateElement.getRelatedElement().getClassifications();
-
-                                if (classifications != null)
-                                {
-                                    for (ElementClassification classification : classifications)
-                                    {
-                                        if (classification != null)
-                                        {
-                                            if (classification.getClassificationName().equals(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
-                                            {
-                                                if (classification.getClassificationProperties() != null)
-                                                {
-                                                    if (classification.getClassificationProperties().get(OpenMetadataProperty.NAME.name) != null)
-                                                    {
-                                                        catalogTemplate.setName(classification.getClassificationProperties().get(OpenMetadataProperty.NAME.name).toString());
-                                                    }
-                                                    else if (classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name) != null)
-                                                    {
-                                                        catalogTemplate.setDescription(classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name).toString());
-                                                    }
-                                                    else if (classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name) != null)
-                                                    {
-                                                        catalogTemplate.setVersionIdentifier(classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name).toString());
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                catalogTemplate.setSpecification(openHandler.getSpecification(userId, templateElement.getRelatedElement().getGUID()));
-
-                                catalogTemplates.add(catalogTemplate);
-                            }
-                        }
-
-                        if (! catalogTemplates.isEmpty())
+                        if (!catalogTemplates.isEmpty())
                         {
                             report.setCatalogTemplates(catalogTemplates);
                         }
+
+                        if (!externalReferences.isEmpty())
+                        {
+                            report.setExternalReferences(externalReferences);
+                        }
                     }
-
-                    List<ExternalReferenceElement> externalReferenceElements = externalRefHandler.retrieveAttachedExternalReferences(userId,
-                                                                                                                                     openMetadataElement.getElementGUID(),
-                                                                                                                                     0,
-                                                                                                                                     0);
-
-                    report.setExternalReferences(externalReferenceElements);
-
-                    break;
                 }
             }
 
@@ -377,11 +295,7 @@ public class TechnologyTypeHandler
      *
      * @param userId calling user
      * @param technologyTypeName string value to look for
-     * @param effectiveTime the effective date/time to use for the query
-     * @param limitResultsByStatus limit the status values that the elements should be
-     * @param asOfTime repository time
-     * @param sequencingOrder order of results
-     * @param sequencingProperty optional property name
+     * @param queryOptions multiple options to control the query
      *
      * @return detailed report for technology type
      *
@@ -389,35 +303,25 @@ public class TechnologyTypeHandler
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public TechnologyTypeHierarchy getTechnologyTypeHierarchy(String              userId,
-                                                              String              technologyTypeName,
-                                                              Date                effectiveTime,
-                                                              List<ElementStatus> limitResultsByStatus,
-                                                              Date                asOfTime,
-                                                              SequencingOrder     sequencingOrder,
-                                                              String              sequencingProperty) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+    public TechnologyTypeHierarchy getTechnologyTypeHierarchy(String       userId,
+                                                              String       technologyTypeName,
+                                                              QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         final String methodName = "getTechnologyTypeHierarchy";
         final String parameterName = "technologyTypeName";
 
         invalidParameterHandler.validateName(technologyTypeName, parameterName, methodName);
 
+        QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+
         List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
-                                                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                                          null,
                                                                                           this.getTechnologyTypeConditions(technologyTypeName, PropertyComparisonOperator.EQ),
-                                                                                          limitResultsByStatus,
-                                                                                          asOfTime,
                                                                                           null,
-                                                                                          sequencingProperty,
-                                                                                          sequencingOrder,
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveTime,
-                                                                                          0,
-                                                                                          0);
+                                                                                          workingQueryOptions);
 
         if (openMetadataElements != null)
         {
@@ -429,7 +333,9 @@ public class TechnologyTypeHandler
                 {
                     technologyTypeHierarchy = new TechnologyTypeHierarchy(this.convertTechTypeSummary(openMetadataElement));
 
-                    technologyTypeHierarchy.setSubTypes(this.getSubTypes(userId, openMetadataElement.getElementGUID()));
+                    technologyTypeHierarchy.setSubTypes(this.getSubTypes(userId,
+                                                                         openMetadataElement.getElementGUID(),
+                                                                         queryOptions));
 
                     break;
                 }
@@ -454,10 +360,10 @@ public class TechnologyTypeHandler
         {
             HierarchyMermaidGraphBuilder mermaidGraphBuilder = new HierarchyMermaidGraphBuilder("Technology type hierarchy",
                                                                                                 technologyTypeHierarchy.getTechnologyTypeGUID(),
-                                                                                                technologyTypeHierarchy.getName());
+                                                                                                technologyTypeHierarchy.getDisplayName());
 
             mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
-                                                  technologyTypeHierarchy.getName(),
+                                                  technologyTypeHierarchy.getDisplayName(),
                                                   technologyTypeHierarchy.getCategory());
 
             this.addTechnologyTypeHierarchyNodesMermaidString(mermaidGraphBuilder,
@@ -499,7 +405,7 @@ public class TechnologyTypeHandler
             for (TechnologyTypeHierarchy technologyTypeHierarchy : technologyTypeHierarchies)
             {
                 mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
-                                                      technologyTypeHierarchy.getName(),
+                                                      technologyTypeHierarchy.getDisplayName(),
                                                       technologyTypeHierarchy.getCategory());
 
                 addTechnologyTypeHierarchyNodesMermaidString(mermaidGraphBuilder,
@@ -545,13 +451,15 @@ public class TechnologyTypeHandler
      *
      * @param userId calling user
      * @param technologyTypeGUID guid of the super type
+     * @param queryOptions multiple options to control the query
      * @return subtype list or null
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    private List<TechnologyTypeHierarchy> getSubTypes(String userId,
-                                                      String technologyTypeGUID) throws InvalidParameterException,
+    private List<TechnologyTypeHierarchy> getSubTypes(String       userId,
+                                                      String       technologyTypeGUID,
+                                                      QueryOptions queryOptions) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
@@ -561,15 +469,7 @@ public class TechnologyTypeHandler
                                                                                             technologyTypeGUID,
                                                                                             2,
                                                                                             OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            SequencingOrder.CREATION_DATE_RECENT,
-                                                                                            false,
-                                                                                            false,
-                                                                                            new Date(),
-                                                                                            0,
-                                                                                            0);
+                                                                                            queryOptions);
 
         if ((relatedElements != null) && (relatedElements.getElementList() != null))
         {
@@ -588,7 +488,9 @@ public class TechnologyTypeHandler
                     {
                         TechnologyTypeHierarchy technologyTypeHierarchy = new TechnologyTypeHierarchy(this.convertTechTypeSummary(relatedMetadataElement.getElement()));
 
-                        technologyTypeHierarchy.setSubTypes(this.getSubTypes(userId, relatedMetadataElement.getElement().getElementGUID()));
+                        technologyTypeHierarchy.setSubTypes(this.getSubTypes(userId,
+                                                                             relatedMetadataElement.getElement().getElementGUID(),
+                                                                             queryOptions));
 
                         technologyTypeHierarchies.add(technologyTypeHierarchy);
                     }
@@ -661,14 +563,7 @@ public class TechnologyTypeHandler
      *
      * @param userId calling user
      * @param technologyTypeName string value to look for
-     * @param getTemplates boolean indicating whether templates or non-template elements should be returned.
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     * @param effectiveTime the effective date/time to use for the query
-     * @param limitResultsByStatus limit the status values that the elements should be
-     * @param asOfTime repository time
-     * @param sequencingOrder order of results
-     * @param sequencingProperty optional property name
+     * @param queryOptions multiple options to control the query
      *
      * @return detailed report for technology type
      *
@@ -678,44 +573,24 @@ public class TechnologyTypeHandler
      */
     public List<ReferenceableElement> getTechnologyTypeElements(String              userId,
                                                                 String              technologyTypeName,
-                                                                boolean             getTemplates,
-                                                                int                 startFrom,
-                                                                int                 pageSize,
-                                                                Date                effectiveTime,
-                                                                List<ElementStatus> limitResultsByStatus,
-                                                                Date                asOfTime,
-                                                                SequencingOrder     sequencingOrder,
-                                                                String              sequencingProperty) throws InvalidParameterException,
-                                                                                                               UserNotAuthorizedException,
-                                                                                                               PropertyServerException
+                                                                QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         final String methodName = "getTechnologyTypeElements";
         final String parameterName = "technologyTypeName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(technologyTypeName, parameterName, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
 
-
-
         List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
-                                                                                          OpenMetadataType.REFERENCEABLE.typeName,
+                                                                                          propertyHelper.getSearchPropertiesByName(propertyNames, technologyTypeName, PropertyComparisonOperator.EQ),
                                                                                           null,
-                                                                                          propertyHelper.getSearchPropertiesByName(propertyNames, technologyTypeName, PropertyComparisonOperator.EQ, TemplateFilter.ALL),
-                                                                                          limitResultsByStatus,
-                                                                                          asOfTime,
-                                                                                          this.getMatchClassifications(getTemplates),
-                                                                                          sequencingProperty,
-                                                                                          sequencingOrder,
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveTime,
-                                                                                          startFrom,
-                                                                                          pageSize);
+                                                                                          queryOptions);
 
-        return this.convertReferenceables(openMetadataElements, getTemplates);
+        return this.convertReferenceables(openMetadataElements);
     }
 
 
@@ -817,14 +692,12 @@ public class TechnologyTypeHandler
      * Convert open metadata objects from the OpenMetadataClient to local beans.
      *
      * @param openMetadataElements retrieved elements
-     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
      *
      * @return list of validValue elements
      *
      * @throws PropertyServerException the repository is not available or not working properly.
      * */
-    private List<ReferenceableElement> convertReferenceables(List<OpenMetadataElement>  openMetadataElements,
-                                                             boolean                    getTemplates) throws PropertyServerException
+    private List<ReferenceableElement> convertReferenceables(List<OpenMetadataElement>  openMetadataElements) throws PropertyServerException
     {
         final String methodName = "convertReferenceables";
 
@@ -838,25 +711,11 @@ public class TechnologyTypeHandler
             {
                 if (openMetadataElement != null)
                 {
-                    boolean isTemplate = this.isTemplate(openMetadataElement);
-                    if (isTemplate && (getTemplates))
+                    ReferenceableElement referenceableElement = converter.getNewBean(ReferenceableElement.class, openMetadataElement, methodName);
+
+                    if (referenceableElement != null)
                     {
-                        ReferenceableElement referenceableElement = converter.getNewBean(ReferenceableElement.class, openMetadataElement, methodName);
-
-                        if (referenceableElement != null)
-                        {
-                            referenceableElements.add(referenceableElement);
-                        }
-                    }
-
-                    if ((! isTemplate) && (! getTemplates))
-                    {
-                        ReferenceableElement referenceableElement = converter.getNewBean(ReferenceableElement.class, openMetadataElement, methodName);
-
-                        if (referenceableElement != null)
-                        {
-                            referenceableElements.add(referenceableElement);
-                        }
+                        referenceableElements.add(referenceableElement);
                     }
                 }
             }
