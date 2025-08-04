@@ -68,7 +68,8 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
                                             CatalogTargetContext catalogTargetContext,
                                             Connector            connectorToTarget,
                                             String               connectorName,
-                                            AuditLog             auditLog)
+                                            AuditLog             auditLog) throws ConnectorCheckedException,
+                                                                                  UserNotAuthorizedException
     {
         super(template, catalogTargetContext, connectorToTarget, connectorName, auditLog);
     }
