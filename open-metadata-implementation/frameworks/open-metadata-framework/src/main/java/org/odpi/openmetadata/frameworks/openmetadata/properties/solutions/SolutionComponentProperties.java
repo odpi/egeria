@@ -21,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionComponentProperties extends ReferenceableProperties
 {
-    private String displayName                       = null;
-    private String description                       = null;
-    private String versionIdentifier                 = null;
     private String solutionComponentType             = null;
     private String plannedDeployedImplementationType = null;
     private String userDefinedStatus                 = null;
@@ -50,79 +47,10 @@ public class SolutionComponentProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.displayName                       = template.getDisplayName();
-            this.description                       = template.getDescription();
-            this.versionIdentifier                 = template.getVersionIdentifier();
             this.solutionComponentType             = template.getSolutionComponentType();
             this.plannedDeployedImplementationType = template.getPlannedDeployedImplementationType();
             this.userDefinedStatus                 = template.getUserDefinedStatus();
         }
-    }
-
-
-    /**
-     * Return the display name for this asset (normally a shortened form of the qualified name).
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for this asset (normally a shortened form of the qualified name).
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for this asset.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for this asset.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the version identifier for this digital service.
-     *
-     * @return String
-     */
-    public String getVersionIdentifier()
-    {
-        return versionIdentifier;
-    }
-
-
-    /**
-     * Set up the version number for this digital service.
-     *
-     * @param versionIdentifier String
-     */
-    public void setVersionIdentifier(String versionIdentifier)
-    {
-        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -202,10 +130,7 @@ public class SolutionComponentProperties extends ReferenceableProperties
     public String toString()
     {
         return "SolutionComponentProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", version='" + versionIdentifier + '\'' +
-                ", solutionComponentType='" + solutionComponentType + '\'' +
+                "solutionComponentType='" + solutionComponentType + '\'' +
                 ", plannedDeployedImplementationType='" + plannedDeployedImplementationType + '\'' +
                 ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
@@ -233,12 +158,9 @@ public class SolutionComponentProperties extends ReferenceableProperties
         {
             return false;
         }
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(solutionComponentType, that.solutionComponentType) &&
+        return Objects.equals(solutionComponentType, that.solutionComponentType) &&
                 Objects.equals(plannedDeployedImplementationType, that.plannedDeployedImplementationType) &&
-                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                Objects.equals(versionIdentifier, that.versionIdentifier);
+                Objects.equals(userDefinedStatus, that.userDefinedStatus);
     }
 
 
@@ -250,7 +172,6 @@ public class SolutionComponentProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, solutionComponentType,
-                            plannedDeployedImplementationType, versionIdentifier, userDefinedStatus);
+        return Objects.hash(super.hashCode(), solutionComponentType, plannedDeployedImplementationType, userDefinedStatus);
     }
 }

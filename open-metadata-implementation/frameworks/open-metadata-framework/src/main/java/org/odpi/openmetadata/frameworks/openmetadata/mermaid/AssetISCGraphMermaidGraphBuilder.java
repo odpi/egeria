@@ -4,13 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraph;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphNode;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-
-import java.util.List;
 
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's asset lineage edge graph.
@@ -24,17 +18,7 @@ public class AssetISCGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
      */
     public AssetISCGraphMermaidGraphBuilder(AssetGraph assetGraph)
     {
-        String currentDisplayName = assetGraph.getProperties().getDisplayName();
-
-        if (currentDisplayName == null)
-        {
-            currentDisplayName = assetGraph.getProperties().getName();
-        }
-
-        if (currentDisplayName == null)
-        {
-            currentDisplayName = assetGraph.getProperties().getQualifiedName();
-        }
+        String currentDisplayName = super.getNodeDisplayName(assetGraph);;
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Information Supply Chain Analysis Graph for Asset - ");

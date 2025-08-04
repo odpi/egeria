@@ -465,7 +465,7 @@ Content-Type: application/json
 # @name deleteMetadataElement
 # Delete a specific metadata element.
 
-POST {{baseURL}}/servers/active-metadata-store/open-metadata/framework-services/asset-owner/open-metadata-store/users/peterprofile/metadata-elements/{{catalogGUID}}/delete
+POST {{baseURL}}/servers/active-metadata-store/open-metadata/access-services/asset-owner/open-metadata-store/users/peterprofile/metadata-elements/{{catalogGUID}}/delete
 Content-Type: application/json
 
 

@@ -21,10 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RequestSourceElement
 {
-    private String              requestSourceName       = null;
     private OpenMetadataElement requestSourceElement    = null;
-    private String              originGovernanceService = null;
-    private String              originGovernanceEngine  = null;
+
 
 
     /**
@@ -45,35 +43,9 @@ public class RequestSourceElement
     {
         if (template != null)
         {
-            requestSourceName       = template.getRequestSourceName();
             requestSourceElement    = template.getRequestSourceElement();
-            originGovernanceService = template.getOriginGovernanceService();
-            originGovernanceEngine  = template.getOriginGovernanceEngine();
         }
     }
-
-
-    /**
-     * Return the assigned to this request source.  This name heps to guide the governance service in its processing.
-     *
-     * @return string name
-     */
-    public String getRequestSourceName()
-    {
-        return requestSourceName;
-    }
-
-
-    /**
-     * Set up the assigned to this request source.  This name heps to guide the governance service in its processing.
-     *
-     * @param requestSourceName string name
-     */
-    public void setRequestSourceName(String requestSourceName)
-    {
-        this.requestSourceName = requestSourceName;
-    }
-
 
     /**
      * Return the specific element that caused the governance action service to be started.
@@ -98,50 +70,6 @@ public class RequestSourceElement
 
 
     /**
-     * Return the governance service that created this governance action (if any).
-     *
-     * @return string name
-     */
-    public String getOriginGovernanceService()
-    {
-        return originGovernanceService;
-    }
-
-
-    /**
-     * Set up the governance service that created this governance action (if any).
-     *
-     * @param originGovernanceService string name
-     */
-    public void setOriginGovernanceService(String originGovernanceService)
-    {
-        this.originGovernanceService = originGovernanceService;
-    }
-
-
-    /**
-     * Return the governance engine that created this governance action (if any).
-     *
-     * @return string name
-     */
-    public String getOriginGovernanceEngine()
-    {
-        return originGovernanceEngine;
-    }
-
-
-    /**
-     * Set up the governance engine that created this governance action (if any).
-     *
-     * @param originGovernanceEngine string name
-     */
-    public void setOriginGovernanceEngine(String originGovernanceEngine)
-    {
-        this.originGovernanceEngine = originGovernanceEngine;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -150,10 +78,7 @@ public class RequestSourceElement
     public String toString()
     {
         return "RequestSourceElement{" +
-                       "requestSourceName=" + requestSourceName +
-                       ", requestSourceElement=" + requestSourceElement +
-                       ", originGovernanceService=" + originGovernanceService +
-                       ", originGovernanceEngine=" + originGovernanceEngine +
+                       "requestSourceElement=" + requestSourceElement +
                        '}';
     }
 
@@ -177,10 +102,7 @@ public class RequestSourceElement
             return false;
         }
         RequestSourceElement that = (RequestSourceElement) objectToCompare;
-        return Objects.equals(requestSourceName, that.requestSourceName) &&
-                       Objects.equals(requestSourceElement, that.requestSourceElement) &&
-                       Objects.equals(originGovernanceService, that.originGovernanceService) &&
-                       Objects.equals(originGovernanceEngine, that.originGovernanceEngine);
+        return Objects.equals(requestSourceElement, that.requestSourceElement);
     }
 
 
@@ -192,6 +114,6 @@ public class RequestSourceElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(requestSourceName, requestSourceElement, originGovernanceService, originGovernanceEngine);
+        return Objects.hash(requestSourceElement);
     }
 }

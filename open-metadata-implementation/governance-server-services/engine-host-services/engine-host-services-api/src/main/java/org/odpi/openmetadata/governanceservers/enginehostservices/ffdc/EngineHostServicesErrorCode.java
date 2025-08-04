@@ -115,7 +115,7 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
      */
     NO_CONFIG_OMAS_SERVER_URL(400,"ENGINE-HOST-SERVICES-400-008",
                        "Engine host {0} is not configured with the platform URL root for the {1}",
-                       "The engine service is not able to locate the server where its partner OMAS is running in order " +
+                       "The engine service is not able to locate the server where its partner service is running in order " +
                                "to exchange metadata.  The engine host server fails to start.",
                        "To be successful each engine service needs both the platform URL root and the name of the " +
                                "server there the OMAS is running as well as the list of connections for the connectors it is to manage. Add this " +
@@ -127,7 +127,7 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
      */
     NO_CONFIG_OMAS_SERVER_NAME(400, "ENGINE-HOST-SERVICES-400-009",
                         "Engine host {0} is not configured with the name for the server running the {1}",
-                        "The engine service is not able to locate the metadata server where its partner OMAS is running in order " +
+                        "The engine service is not able to locate the metadata server where its partner service is running in order " +
                                 "to exchange metadata.  The engine host fails to start.",
                         "Add the configuration for the server name for this engine service to the engine host's " +
                                 "configuration document.  " +

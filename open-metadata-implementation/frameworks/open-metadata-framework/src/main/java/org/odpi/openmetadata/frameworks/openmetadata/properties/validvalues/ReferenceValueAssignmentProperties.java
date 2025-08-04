@@ -7,7 +7,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReferenceValueAssignmentProperties extends RelationshipProperties
+public class ReferenceValueAssignmentProperties extends RelationshipBeanProperties
 {
     private String attributeName          = null;
     private int    confidence             = 0;
@@ -204,16 +204,13 @@ public class ReferenceValueAssignmentProperties extends RelationshipProperties
     public String toString()
     {
         return "ReferenceValueAssignmentProperties{" +
-                       "confidence=" + confidence +
-                       ", attributeName='" + attributeName + '\'' +
-                       ", steward='" + steward + '\'' +
-                       ", stewardTypeName='" + stewardTypeName + '\'' +
-                       ", stewardPropertyName='" + stewardPropertyName + '\'' +
-                       ", notes='" + notes + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "attributeName='" + attributeName + '\'' +
+                ", confidence=" + confidence +
+                ", steward='" + steward + '\'' +
+                ", stewardTypeName='" + stewardTypeName + '\'' +
+                ", stewardPropertyName='" + stewardPropertyName + '\'' +
+                ", notes='" + notes + '\'' +
+                "} " + super.toString();
     }
 
 

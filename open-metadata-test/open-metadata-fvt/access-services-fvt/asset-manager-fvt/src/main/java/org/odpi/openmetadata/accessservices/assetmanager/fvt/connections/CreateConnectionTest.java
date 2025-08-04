@@ -288,10 +288,10 @@ public class CreateConnectionTest
 
             AssetManagerProperties properties = new AssetManagerProperties();
             properties.setQualifiedName(assetManagerName);
-            properties.setResourceName(assetManagerDisplayName);
-            properties.setResourceDescription(assetManagerDescription);
+            properties.setDisplayName(assetManagerDisplayName);
+            properties.setDescription(assetManagerDescription);
             properties.setDeployedImplementationType(assetManagerTypeDescription);
-            properties.setVersion(assetManagerVersion);
+            properties.setVersionIdentifier(assetManagerVersion);
 
             String assetManagerGUID = client.createExternalAssetManager(userId, properties);
 
@@ -625,7 +625,7 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointTechnicalName.equals(retrievedEndpoint.getName()))
+            if (! endpointTechnicalName.equals(retrievedEndpoint.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad technicalName from Retrieve) =>>" + retrievedEndpoint);
             }
@@ -761,7 +761,7 @@ public class CreateConnectionTest
             EndpointProperties properties = new EndpointProperties();
 
             properties.setQualifiedName(endpointName);
-            properties.setName(endpointTechnicalName);
+            properties.setDisplayName(endpointTechnicalName);
             properties.setResourceDescription(endpointTechnicalDescription);
             properties.setDisplayName(endpointDisplayName);
             properties.setDisplayDescription(endpointDescription);

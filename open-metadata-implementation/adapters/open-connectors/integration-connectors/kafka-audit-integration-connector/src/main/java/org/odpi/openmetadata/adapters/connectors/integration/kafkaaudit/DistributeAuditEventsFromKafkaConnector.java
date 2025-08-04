@@ -9,17 +9,19 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 
 /**
  * Distributes audit log events from one or more embedded topic connectors to one or more embedded audit log destinations.
  */
-public class DistributeAuditEventsFromKafkaConnector extends CatalogIntegratorConnector implements OpenMetadataTopicListener,
-                                                                                                   CatalogTargetIntegrator
+public class DistributeAuditEventsFromKafkaConnector extends IntegrationConnectorBase implements OpenMetadataTopicListener,
+                                                                                                 CatalogTargetIntegrator
 {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -84,7 +86,7 @@ public class DistributeAuditEventsFromKafkaConnector extends CatalogIntegratorCo
     @Override
     public void integrateCatalogTarget(RequestedCatalogTarget requestedCatalogTarget) throws ConnectorCheckedException
     {
-        // Nothing to do
+        // Nothing to do - this connector works entirely off of events
     }
 
 
@@ -92,19 +94,24 @@ public class DistributeAuditEventsFromKafkaConnector extends CatalogIntegratorCo
      * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).
      *
      * @param retrievedCatalogTarget details of the open metadata elements describing the catalog target
+     * @param catalogTargetContext specialized context for this catalog target
      * @param connectorToTarget connector to access the target resource
      * @return new processor based on the catalog target information
      * @throws ConnectorCheckedException problem connecting to topic
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget,
-                                                                       Connector     connectorToTarget) throws ConnectorCheckedException
+    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget        retrievedCatalogTarget,
+                                                                       CatalogTargetContext catalogTargetContext,
+                                                                       Connector            connectorToTarget) throws ConnectorCheckedException,
+                                                                                                                      UserNotAuthorizedException
     {
         if (DistributeAuditEventCatalogTarget.INCOMING_TOPIC.getName().equals(retrievedCatalogTarget.getCatalogTargetName()))
         {
             if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
             {
                 return new KafkaTopicSourceCatalogTargetProcessor(retrievedCatalogTarget,
+                                                                  catalogTargetContext,
                                                                   connectorToTarget,
                                                                   connectorName,
                                                                   auditLog,
@@ -116,12 +123,13 @@ public class DistributeAuditEventsFromKafkaConnector extends CatalogIntegratorCo
             if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.DATA_ASSET.typeName))
             {
                 return new AuditLogDestinationCatalogTargetProcessor(retrievedCatalogTarget,
+                                                                     catalogTargetContext,
                                                                      connectorToTarget,
                                                                      connectorName,
                                                                      auditLog);
             }
         }
 
-        return new RequestedCatalogTarget(retrievedCatalogTarget, connectorToTarget);
+        return new RequestedCatalogTarget(retrievedCatalogTarget, catalogTargetContext, connectorToTarget);
     }
 }

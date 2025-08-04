@@ -7,8 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ProjectMembersResponse;
 import org.odpi.openmetadata.viewservices.projectmanager.server.ProjectManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +45,6 @@ public class ProjectManagerResource
      * @param serverName     name of called server
      * @param parentGUID     unique identifier of referenceable object (typically a personal profile, project or
      *                       community) that the projects hang off of
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
      * @param requestBody    filter response by project status - if null, any value will do
      *
      * @return a list of projects
@@ -64,14 +60,10 @@ public class ProjectManagerResource
 
     public ProjectsResponse getLinkedProjects(@PathVariable String            serverName,
                                               @PathVariable String            parentGUID,
-                                              @RequestParam(required = false, defaultValue = "0")
-                                                            int               startFrom,
-                                              @RequestParam(required = false, defaultValue = "0")
-                                                            int               pageSize,
                                               @RequestBody(required = false)
                                                                FilterRequestBody requestBody)
     {
-        return restAPI.getLinkedProjects(serverName, parentGUID, startFrom, pageSize, requestBody);
+        return restAPI.getLinkedProjects(serverName, parentGUID, requestBody);
     }
 
 
@@ -79,8 +71,6 @@ public class ProjectManagerResource
      * Returns the list of projects with a particular classification.
      *
      * @param serverName         name of called server
-     * @param startFrom          index of the list to start from (0 for start)
-     * @param pageSize           maximum number of elements to return
      * @param requestBody        name of the classification - if null, all projects are returned
      *
      * @return a list of projects
@@ -95,13 +85,9 @@ public class ProjectManagerResource
                     url="https://egeria-project.org/concepts/project"))
 
     public ProjectsResponse getClassifiedProjects(@PathVariable String            serverName,
-                                                     @RequestParam(required = false, defaultValue = "0")
-                                                     int               startFrom,
-                                                     @RequestParam(required = false, defaultValue = "0")
-                                                     int               pageSize,
                                                      @RequestBody  FilterRequestBody requestBody)
     {
-        return restAPI.getClassifiedProjects(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getClassifiedProjects(serverName, requestBody);
     }
 
 
@@ -110,8 +96,6 @@ public class ProjectManagerResource
      *
      * @param serverName     name of called server
      * @param projectGUID     unique identifier of the project
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
      * @param requestBody    filter response by team role
      *
      * @return a list of projects
@@ -130,13 +114,9 @@ public class ProjectManagerResource
 
     public ProjectMembersResponse getProjectTeam(@PathVariable String            serverName,
                                                  @PathVariable String            projectGUID,
-                                                 @RequestParam(required = false, defaultValue = "0")
-                                                                  int               startFrom,
-                                                 @RequestParam(required = false, defaultValue = "0")
-                                                                  int               pageSize,
                                                  @RequestBody(required = false)  FilterRequestBody requestBody)
     {
-        return restAPI.getProjectTeam(serverName, projectGUID, startFrom, pageSize, requestBody);
+        return restAPI.getProjectTeam(serverName, projectGUID, requestBody);
     }
 
 
@@ -144,11 +124,6 @@ public class ProjectManagerResource
      * Returns the list of projects matching the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return a list of projects
@@ -163,20 +138,10 @@ public class ProjectManagerResource
                     url="https://egeria-project.org/concepts/project"))
 
     public    ProjectsResponse findProjects(@PathVariable String            serverName,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                          boolean           startsWith,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                          boolean           endsWith,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                          boolean           ignoreCase,
-                                            @RequestParam (required = false, defaultValue = "0")
-                                                          int               startFrom,
-                                            @RequestParam (required = false, defaultValue = "0")
-                                                          int               pageSize,
                                             @RequestBody  (required = false)
-                                                          FilterRequestBody requestBody)
+                                                          SearchStringRequestBody requestBody)
     {
-        return restAPI.findProjects(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findProjects(serverName, requestBody);
     }
 
 
@@ -185,8 +150,6 @@ public class ProjectManagerResource
      *
      * @param serverName    name of called server
      * @param requestBody      name of the projects to return - match is full text match in qualifiedName or name
-     * @param startFrom index of the list to start from (0 for start)
-     * @param pageSize  maximum number of elements to return
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -200,14 +163,10 @@ public class ProjectManagerResource
                     url="https://egeria-project.org/concepts/project"))
 
     public    ProjectsResponse getProjectsByName(@PathVariable String            serverName,
-                                                 @RequestParam(required = false, defaultValue = "0")
-                                                               int               startFrom,
-                                                 @RequestParam(required = false, defaultValue = "0")
-                                                               int               pageSize,
                                                  @RequestBody(required = false)
                                                                FilterRequestBody requestBody)
     {
-        return restAPI.getProjectsByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getProjectsByName(serverName, requestBody);
     }
 
 
@@ -231,7 +190,33 @@ public class ProjectManagerResource
     public ProjectResponse getProject(@PathVariable String serverName,
                                       @PathVariable String projectGUID)
     {
-        return restAPI.getProject(serverName, projectGUID);
+        return restAPI.getProject(serverName, projectGUID, null);
+    }
+
+
+    /**
+     * Return the properties of a specific project.
+     *
+     * @param serverName         name of called server
+     * @param projectGUID unique identifier of the required project
+     * @param requestBody optional properties to control the query
+     *
+     * @return project properties
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/projects/{projectGUID}")
+    @Operation(summary="getProjectByGUID",
+            description="Return the properties of a specific project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public ProjectResponse getProject(@PathVariable String serverName,
+                                      @PathVariable String projectGUID,
+                                      @RequestBody(required = false) GetRequestBody requestBody)
+    {
+        return restAPI.getProject(serverName, projectGUID, requestBody);
     }
 
 
@@ -254,7 +239,33 @@ public class ProjectManagerResource
     public ProjectGraphResponse getProjectGraph(@PathVariable String serverName,
                                                 @PathVariable String projectGUID)
     {
-        return restAPI.getProjectGraph(serverName, projectGUID);
+        return restAPI.getProjectGraph(serverName, projectGUID, null);
+    }
+
+
+    /**
+     * Returns the graph of related projects and resources starting with a supplied project guid.
+     *
+     * @param serverName         name of called server
+     * @param projectGUID     unique identifier of the starting project
+     * @param requestBody optional properties to control the query
+     *
+     * @return a graph of projects or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path =
+            "/projects/{projectGUID}/graph")
+    @Operation(summary="getProjectGraph",
+            description="Returns the graph of related projects and resources starting with a supplied project guid.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+    public ProjectGraphResponse getProjectGraph(@PathVariable String serverName,
+                                                @PathVariable String projectGUID,
+                                                @RequestBody(required = false) ResultsRequestBody requestBody)
+    {
+        return restAPI.getProjectGraph(serverName, projectGUID, requestBody);
     }
 
     /**
@@ -341,8 +352,6 @@ public class ProjectManagerResource
      *
      * @param serverName         name of called server.
      * @param projectGUID unique identifier of the project (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the project.
      *
      * @return void or
@@ -358,10 +367,10 @@ public class ProjectManagerResource
 
     public VoidResponse updateProject(@PathVariable String            serverName,
                                       @PathVariable String            projectGUID,
-                                      @RequestParam boolean           replaceAllProperties,
-                                      @RequestBody  ProjectProperties requestBody)
+                                      @RequestBody(required = false)
+                                                    UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateProject(serverName, projectGUID, replaceAllProperties, requestBody);
+        return restAPI.updateProject(serverName, projectGUID, requestBody);
     }
 
 
@@ -371,7 +380,6 @@ public class ProjectManagerResource
      *
      * @param serverName         name of called server.
      * @param projectGUID unique identifier of the project.
-     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody  null request body
      *
      * @return void or
@@ -387,12 +395,10 @@ public class ProjectManagerResource
 
     public VoidResponse deleteProject(@PathVariable String          serverName,
                                       @PathVariable String          projectGUID,
-                                      @RequestParam (required = false, defaultValue = "false")
-                                                    boolean cascadedDelete,
                                       @RequestBody(required = false)
-                                                    NullRequestBody requestBody)
+                                          DeleteRequestBody requestBody)
     {
-        return restAPI.deleteProject(serverName, projectGUID, cascadedDelete, requestBody);
+        return restAPI.deleteProject(serverName, projectGUID, requestBody);
     }
 
 
@@ -419,7 +425,7 @@ public class ProjectManagerResource
                                          @PathVariable String                projectGUID,
                                          @PathVariable String                actorGUID,
                                          @RequestBody(required = false)
-                                                      ProjectTeamProperties requestBody)
+                                             NewRelationshipRequestBody requestBody)
     {
         return restAPI.addToProjectTeam(serverName, projectGUID, actorGUID, requestBody);
     }
@@ -448,10 +454,124 @@ public class ProjectManagerResource
                                               @PathVariable String          projectGUID,
                                               @PathVariable String          actorGUID,
                                               @RequestBody(required = false)
-                                                            NullRequestBody requestBody)
+                                                  DeleteRequestBody requestBody)
     {
         return restAPI.removeFromProjectTeam(serverName, projectGUID, actorGUID, requestBody);
     }
+
+
+    /**
+     * Create a project hierarchy relationship between two projects.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param projectGUID unique identifier of the project
+     * @param managedProjectGUID unique identifier of the project it depends on
+     * @param requestBody external identifiers
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/project-hierarchies/{managedProjectGUID}/attach")
+    @Operation(summary="setupProjectHierarchy",
+            description="Create a project hierarchy relationship between two projects.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setupProjectHierarchy(@PathVariable String          serverName,
+                                                   @PathVariable String          projectGUID,
+                                                   @PathVariable String          managedProjectGUID,
+                                                   @RequestBody(required = false) NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.setupProjectHierarchy(serverName, projectGUID, managedProjectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a project hierarchy relationship between two projects.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param projectGUID unique identifier of the project
+     * @param managedProjectGUID unique identifier of the project it depends on
+     * @param requestBody external identifiers
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/project-hierarchies/{managedProjectGUID}/detach")
+    @Operation(summary="clearProjectHierarchy",
+            description="Remove a project hierarchy relationship between two projects.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectHierarchy(@PathVariable String          serverName,
+                                                   @PathVariable String          projectGUID,
+                                                   @PathVariable String          managedProjectGUID,
+                                                   @RequestBody(required = false) DeleteRequestBody requestBody)
+    {
+        return restAPI.clearProjectHierarchy(serverName, projectGUID, managedProjectGUID, requestBody);
+    }
+
+
+
+    /**
+     * Create a project dependency relationship between two projects.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param projectGUID unique identifier of the project
+     * @param dependsOnProjectGUID unique identifier of the project it depends on
+     * @param requestBody external identifiers
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/project-dependencies/{dependsOnProjectGUID}/attach")
+    @Operation(summary="setupProjectDependency",
+            description="Create a project dependency relationship between two projects.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setupProjectDependency(@PathVariable String          serverName,
+                                                   @PathVariable String          projectGUID,
+                                                   @PathVariable String          dependsOnProjectGUID,
+                                                   @RequestBody(required = false) NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.setupProjectDependency(serverName, projectGUID, dependsOnProjectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a project dependency relationship between two projects.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param projectGUID unique identifier of the project
+     * @param dependsOnProjectGUID unique identifier of the project it depends on
+     * @param requestBody external identifiers
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/project-dependencies/{dependsOnProjectGUID}/detach")
+    @Operation(summary="clearProjectDependency",
+            description="Remove a project dependency relationship between two projects.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectDependency(@PathVariable String          serverName,
+                                               @PathVariable String          projectGUID,
+                                               @PathVariable String          dependsOnProjectGUID,
+                                               @RequestBody(required = false) DeleteRequestBody requestBody)
+    {
+        return restAPI.clearProjectDependency(serverName, projectGUID, dependsOnProjectGUID, requestBody);
+    }
+
 
 
     /**
@@ -476,7 +596,7 @@ public class ProjectManagerResource
     public VoidResponse setupProjectManagementRole(@PathVariable String          serverName,
                                                    @PathVariable String          projectGUID,
                                                    @PathVariable String          projectRoleGUID,
-                                                   @RequestBody(required = false)  NullRequestBody requestBody)
+                                                   @RequestBody(required = false) NewRelationshipRequestBody requestBody)
     {
         return restAPI.setupProjectManagementRole(serverName, projectGUID, projectRoleGUID, requestBody);
     }
@@ -504,125 +624,9 @@ public class ProjectManagerResource
     public VoidResponse clearProjectManagementRole(@PathVariable String          serverName,
                                                    @PathVariable String          projectGUID,
                                                    @PathVariable String          projectRoleGUID,
-                                                   @RequestBody(required = false)  NullRequestBody requestBody)
+                                                   @RequestBody(required = false) DeleteRequestBody requestBody)
     {
         return restAPI.clearProjectManagementRole(serverName, projectGUID, projectRoleGUID, requestBody);
-    }
-
-
-    /**
-     * Create a "ResourceList" relationship between a consuming element and an element that represents resources.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param elementGUID unique identifier of the element
-     * @param resourceGUID unique identifier of the resource
-     * @param requestBody relationship properties
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/related-elements/{elementGUID}/resource-list/{resourceGUID}")
-
-    @Operation(summary="setupResource",
-            description="Create a 'ResourceList' relationship between a consuming element (such as a project) and an element that represents a resource.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/resource"))
-
-    public VoidResponse setupResource(@PathVariable String                  serverName,
-                                      @PathVariable String                  elementGUID,
-                                      @PathVariable String                  resourceGUID,
-                                      @RequestBody(required = false) RelationshipRequestBody requestBody)
-    {
-        return restAPI.setupResource(serverName, elementGUID, resourceGUID, requestBody);
-    }
-
-
-    /**
-     * Remove a "ResourceList" relationship between two referenceables.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param elementGUID unique identifier of the element
-     * @param resourceGUID unique identifier of the resource
-     * @param requestBody external source identifiers
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/related-elements/{elementGUID}/resource-list/{resourceGUID}/delete")
-
-    @Operation(summary="clearResource",
-            description="Remove a 'ResourceList' relationship between a consuming element and an element that represents a resource.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/resource"))
-
-    public VoidResponse clearResource(@PathVariable String                    serverName,
-                                      @PathVariable String                    elementGUID,
-                                      @PathVariable String                    resourceGUID,
-                                      @RequestBody(required = false) ExternalSourceRequestBody requestBody)
-    {
-        return restAPI.clearResource(serverName, elementGUID, resourceGUID, requestBody);
-    }
-
-
-    /**
-     * Retrieve the list of resources assigned to an element via the "ResourceList" relationship between two referenceables.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param elementGUID unique identifier of the element
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @GetMapping(path = "/related-elements/resource-list/by-assignee/{elementGUID}")
-
-    @Operation(summary="getResourceList",
-            description="Retrieve the list of resources assigned to an element (such as a project) via the 'ResourceList' relationship.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/resource"))
-
-    public RelatedElementsResponse getResourceList(@PathVariable String serverName,
-                                                   @PathVariable String elementGUID,
-                                                   @RequestParam int   startFrom,
-                                                   @RequestParam int   pageSize)
-    {
-        return restAPI.getResourceList(serverName, elementGUID, startFrom, pageSize);
-    }
-
-
-    /**
-     * Retrieve the list of elements assigned to a resource via the "ResourceList" relationship between two referenceables.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param resourceGUID unique identifier of the resource
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @GetMapping(path = "/related-elements/resource-list/by-resource/{resourceGUID}")
-
-    @Operation(summary="getSupportedByResource",
-            description="Retrieve the list of elements (such as projects, technology types, ...) assigned to a resource via the ResourceList' relationship.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/resource"))
-
-    public RelatedElementsResponse getSupportedByResource(@PathVariable String serverName,
-                                                          @PathVariable String resourceGUID,
-                                                          @RequestParam int   startFrom,
-                                                          @RequestParam int   pageSize)
-    {
-        return restAPI.getSupportedByResource(serverName, resourceGUID, startFrom, pageSize);
     }
 }
 

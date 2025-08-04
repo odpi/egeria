@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TeamProfileElement implements MetadataElement
 {
-    private ElementHeader         elementHeader = null;
-    private TeamProfileProperties properties = null;
-    private ElementStub           superTeam  = null;
+    private ElementHeader  elementHeader = null;
+    private TeamProperties properties    = null;
+    private ElementStub    superTeam     = null;
     private List<ElementStub>     subTeams   = null;
 
     /**
@@ -82,7 +82,7 @@ public class TeamProfileElement implements MetadataElement
      *
      * @return properties
      */
-    public TeamProfileProperties getProperties()
+    public TeamProperties getProperties()
     {
         return properties;
     }
@@ -93,7 +93,7 @@ public class TeamProfileElement implements MetadataElement
      *
      * @param properties  properties
      */
-    public void setProperties(TeamProfileProperties properties)
+    public void setProperties(TeamProperties properties)
     {
         this.properties = properties;
     }

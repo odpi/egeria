@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataDefinitionElement extends AttributedMetadataElement
+public class DataDefinitionElement extends OpenMetadataRootElement
 {
     private List<RelatedMetadataElementSummary> assignedMeanings    = null;
 
@@ -48,6 +48,16 @@ public class DataDefinitionElement extends AttributedMetadataElement
         }
     }
 
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public DataDefinitionElement(OpenMetadataRootElement template)
+    {
+        super(template);
+    }
 
 
     /**

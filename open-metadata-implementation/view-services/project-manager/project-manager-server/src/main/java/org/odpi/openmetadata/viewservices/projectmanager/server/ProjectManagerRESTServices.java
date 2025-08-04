@@ -1,17 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project */
-/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.projectmanager.server;
 
-import org.odpi.openmetadata.accessservices.projectmanagement.client.ProjectManagement;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ProjectHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -48,8 +46,6 @@ public class ProjectManagerRESTServices extends TokenController
      * @param serverName     name of called server
      * @param parentGUID     unique identifier of referenceable object (typically a personal profile, project or
      *                       community) that the projects hang off of
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
      * @param requestBody filter response by project status - if null, any value will do
      *
      * @return a list of projects
@@ -59,8 +55,6 @@ public class ProjectManagerRESTServices extends TokenController
      */
     public ProjectsResponse getLinkedProjects(String            serverName,
                                               String            parentGUID,
-                                              int               startFrom,
-                                              int               pageSize,
                                               FilterRequestBody requestBody)
     {
         final String methodName = "getLinkedProjects";
@@ -78,15 +72,15 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getLinkedProjects(userId, parentGUID, requestBody.getFilter(), startFrom, pageSize));
+                response.setElements(handler.getLinkedProjects(userId, parentGUID, requestBody.getFilter(), requestBody));
             }
             else
             {
-                response.setElements(handler.getLinkedProjects(userId, parentGUID, null, startFrom, pageSize));
+                response.setElements(handler.getLinkedProjects(userId, parentGUID, null, null));
             }
         }
         catch (Throwable error)
@@ -104,8 +98,6 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @param serverName     name of called server
      * @param projectGUID     unique identifier of the project
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
      * @param requestBody    filter response by team role
      *
      * @return a list of projects
@@ -115,8 +107,6 @@ public class ProjectManagerRESTServices extends TokenController
      */
     public ProjectMembersResponse getProjectTeam(String            serverName,
                                                  String            projectGUID,
-                                                 int               startFrom,
-                                                 int               pageSize,
                                                  FilterRequestBody requestBody)
     {
         final String methodName = "getProjectTeam";
@@ -134,15 +124,15 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getProjectMembers(userId, projectGUID, requestBody.getFilter(), startFrom, pageSize));
+                response.setElements(handler.getProjectMembers(userId, projectGUID, requestBody.getFilter(), requestBody));
             }
             else
             {
-                response.setElements(handler.getProjectMembers(userId, projectGUID, null, startFrom, pageSize));
+                response.setElements(handler.getProjectMembers(userId, projectGUID, null, null));
             }
         }
         catch (Throwable error)
@@ -160,8 +150,6 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param requestBody        name of the classification - if null, all projects are returned
-     * @param startFrom          index of the list to start from (0 for start)
-     * @param pageSize           maximum number of elements to return
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -169,9 +157,7 @@ public class ProjectManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public ProjectsResponse getClassifiedProjects(String            serverName,
-                                                     int               startFrom,
-                                                     int               pageSize,
-                                                     FilterRequestBody requestBody)
+                                                  FilterRequestBody requestBody)
     {
         final String methodName = "getClassifiedProjects";
 
@@ -188,15 +174,15 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getClassifiedProjects(userId, requestBody.getFilter(), startFrom, pageSize));
+                response.setElements(handler.getClassifiedProjects(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
-                response.setElements(handler.getClassifiedProjects(userId, null, startFrom, pageSize));
+                response.setElements(handler.getClassifiedProjects(userId, null,null));
             }
         }
         catch (Throwable error)
@@ -207,17 +193,12 @@ public class ProjectManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-    
+
 
     /**
      * Returns the list of projects matching the search string - this is coded as a regular expression.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return a list of projects
@@ -225,13 +206,8 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectsResponse findProjects(String            serverName,
-                                            boolean           startsWith,
-                                            boolean           endsWith,
-                                            boolean           ignoreCase,
-                                            int               startFrom,
-                                            int               pageSize,
-                                            FilterRequestBody requestBody)
+    public ProjectsResponse findProjects(String                  serverName,
+                                         SearchStringRequestBody requestBody)
     {
         final String methodName = "findProjects";
 
@@ -248,21 +224,17 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findProjects(userId,
-                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                          startFrom,
-                                                          pageSize));
+                                                          requestBody.getSearchString(),
+                                                          requestBody));
             }
             else
             {
-                response.setElements(handler.findProjects(userId,
-                                                          "",
-                                                          startFrom,
-                                                          pageSize));
+                response.setElements(handler.findProjects(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -280,8 +252,6 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @param serverName    name of called server
      * @param requestBody      name of the projects to return - match is full text match in qualifiedName or name
-     * @param startFrom index of the list to start from (0 for start)
-     * @param pageSize  maximum number of elements to return
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -289,9 +259,7 @@ public class ProjectManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public ProjectsResponse getProjectsByName(String            serverName,
-                                                 int               startFrom,
-                                                 int               pageSize,
-                                                 FilterRequestBody requestBody)
+                                              FilterRequestBody requestBody)
     {
         final String methodName = "getProjectsByName";
 
@@ -308,21 +276,19 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.getProjectsByName(userId,
                                                                requestBody.getFilter(),
-                                                               startFrom,
-                                                               pageSize));
+                                                               requestBody));
             }
             else
             {
                 response.setElements(handler.getProjectsByName(userId,
                                                                null,
-                                                               startFrom,
-                                                               pageSize));
+                                                               null));
             }
         }
         catch (Throwable error)
@@ -340,14 +306,16 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param projectGUID unique identifier of the required project
+     * @param requestBody properties to control the query
      *
      * @return project properties
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectResponse getProject(String serverName,
-                                      String projectGUID)
+    public ProjectResponse getProject(String             serverName,
+                                      String             projectGUID,
+                                      GetRequestBody requestBody)
     {
         final String methodName = "getProject";
 
@@ -364,9 +332,9 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getProjectByGUID(userId, projectGUID));
+            response.setElement(handler.getProjectByGUID(userId, projectGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -383,14 +351,16 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param projectGUID     unique identifier of the starting project
+     * @param requestBody properties to control the query
      *
      * @return a graph of projects or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectGraphResponse getProjectGraph(String serverName,
-                                                String projectGUID)
+    public ProjectGraphResponse getProjectGraph(String             serverName,
+                                                String             projectGUID,
+                                                ResultsRequestBody requestBody)
 
     {
         final String methodName = "getProjectGraph";
@@ -408,9 +378,9 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getProjectGraph(userId, projectGUID));
+            response.setElement(handler.getProjectGraph(userId, projectGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -455,33 +425,16 @@ public class ProjectManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+                ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
                 if (requestBody.getProperties() instanceof ProjectProperties properties)
                 {
                     response.setGUID(handler.createProject(userId,
-                                                           requestBody.getAnchorGUID(),
-                                                           requestBody.getIsOwnAnchor(),
-                                                           requestBody.getAnchorScopeGUID(),
+                                                           requestBody,
                                                            optionalClassificationName,
+                                                           requestBody.getInitialClassifications(),
                                                            properties,
-                                                           requestBody.getParentGUID(),
-                                                           requestBody.getParentRelationshipTypeName(),
-                                                           requestBody.getParentRelationshipProperties(),
-                                                           requestBody.getParentAtEnd1()));
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    response.setGUID(handler.createProject(userId,
-                                                           requestBody.getAnchorGUID(),
-                                                           requestBody.getIsOwnAnchor(),
-                                                           requestBody.getAnchorScopeGUID(),
-                                                           optionalClassificationName,
-                                                           null,
-                                                           requestBody.getParentGUID(),
-                                                           requestBody.getParentRelationshipTypeName(),
-                                                           requestBody.getParentRelationshipProperties(),
-                                                           requestBody.getParentAtEnd1()));
+                                                           requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -509,7 +462,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @param serverName                 name of called server.
      * @param projectGUID             unique identifier of the project
-     * @param requestBody             properties for the project.
+     * @param properties             properties for the project.
      *
      * @return unique identifier of the newly created Project
      *  InvalidParameterException  one of the parameters is invalid.
@@ -518,7 +471,7 @@ public class ProjectManagerRESTServices extends TokenController
      */
     public GUIDResponse createTaskForProject(String            serverName,
                                              String            projectGUID,
-                                             ProjectProperties requestBody)
+                                             ProjectProperties properties)
     {
         final String methodName = "createTaskForProject";
 
@@ -535,20 +488,27 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if (properties != null)
             {
-                ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+                ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+                NewElementOptions newElementOptions = new NewElementOptions();
+
+                if (projectGUID != null)
+                {
+                    newElementOptions.setAnchorGUID(projectGUID);
+                    newElementOptions.setIsOwnAnchor(false);
+                    newElementOptions.setParentGUID(projectGUID);
+                    newElementOptions.setParentAtEnd1(true);
+                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName);
+                }
 
                 response.setGUID(handler.createProject(userId,
-                                                       projectGUID,
-                                                       false,
-                                                       null,
+                                                       newElementOptions,
                                                        OpenMetadataType.TASK_CLASSIFICATION.typeName,
-                                                       requestBody,
-                                                       projectGUID,
-                                                       OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                        null,
-                                                       true));
+                                                       properties,
+                                                       null));
             }
             else
             {
@@ -597,21 +557,14 @@ public class ProjectManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+                ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createProjectFromTemplate(userId,
-                                                                   requestBody.getAnchorGUID(),
-                                                                   requestBody.getIsOwnAnchor(),
-                                                                   requestBody.getAnchorScopeGUID(),
-                                                                   null,
-                                                                   null,
+                                                                   requestBody,
                                                                    requestBody.getTemplateGUID(),
                                                                    requestBody.getReplacementProperties(),
                                                                    requestBody.getPlaceholderPropertyValues(),
-                                                                   requestBody.getParentGUID(),
-                                                                   requestBody.getParentRelationshipTypeName(),
-                                                                   requestBody.getParentRelationshipProperties(),
-                                                                   requestBody.getParentAtEnd1()));
+                                                                   requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -633,8 +586,6 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @param serverName         name of called server.
      * @param projectGUID unique identifier of the project (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the project.
      *
      * @return void or
@@ -642,10 +593,9 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateProject(String            serverName,
-                                        String            projectGUID,
-                                        boolean           replaceAllProperties,
-                                        ProjectProperties requestBody)
+    public VoidResponse   updateProject(String                   serverName,
+                                        String                   projectGUID,
+                                        UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateProject";
 
@@ -664,14 +614,20 @@ public class ProjectManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+                ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
-                handler.updateProject(userId,
-                                      null,
-                                      null,
-                                      projectGUID,
-                                      ! replaceAllProperties,
-                                      requestBody);
+                if (requestBody.getProperties() instanceof  ProjectProperties projectProperties)
+                {
+                    handler.updateProject(userId, projectGUID, requestBody, projectProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateProject(userId, projectGUID, requestBody, null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ProjectProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -694,7 +650,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @param serverName         name of called server.
      * @param projectGUID unique identifier of the project.
-     * @param requestBody null request body
+     * @param requestBody delete request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -702,10 +658,9 @@ public class ProjectManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse deleteProject(String          serverName,
-                                      String          projectGUID,
-                                      boolean         cascadedDelete,
-                                      NullRequestBody requestBody)
+    public VoidResponse deleteProject(String                   serverName,
+                                      String                   projectGUID,
+                                      DeleteRequestBody requestBody)
     {
         final String methodName = "deleteProject";
 
@@ -722,9 +677,9 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
-            handler.removeProject(userId, null, null, projectGUID, cascadedDelete);
+            handler.removeProject(userId, projectGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -749,10 +704,10 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addToProjectTeam(String                serverName,
-                                         String                projectGUID,
-                                         String                actorGUID,
-                                         ProjectTeamProperties requestBody)
+    public VoidResponse addToProjectTeam(String                  serverName,
+                                         String                  projectGUID,
+                                         String                  actorGUID,
+                                         NewRelationshipRequestBody requestBody)
     {
         final String methodName = "addToProjectTeam";
 
@@ -769,20 +724,26 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
-
-                handler.setupProjectTeam(userId,
-                                         null,
-                                         null,
-                                         projectGUID,
-                                         requestBody,
-                                         actorGUID);
+                if (requestBody.getProperties() instanceof ProjectTeamProperties projectTeamProperties)
+                {
+                    handler.setupProjectTeam(userId, projectGUID, actorGUID, null, projectTeamProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupProjectTeam(userId, projectGUID, actorGUID, null, null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ProjectTeamProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.setupProjectTeam(userId, projectGUID, actorGUID, null, null);
             }
         }
         catch (Throwable error)
@@ -808,11 +769,10 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeFromProjectTeam(String          serverName,
-                                              String          projectGUID,
-                                              String          actorGUID,
-                                              NullRequestBody requestBody)
+    public VoidResponse removeFromProjectTeam(String                   serverName,
+                                              String                   projectGUID,
+                                              String                   actorGUID,
+                                              DeleteRequestBody requestBody)
     {
         final String methodName = "removeFromProjectTeam";
 
@@ -829,13 +789,9 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
-            handler.clearProjectTeam(userId,
-                                     null,
-                                     null,
-                                     projectGUID,
-                                     actorGUID);
+            handler.clearProjectTeam(userId, projectGUID, actorGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -848,7 +804,7 @@ public class ProjectManagerRESTServices extends TokenController
 
 
     /**
-     * Create a ProjectManagement relationship between a project and a person role to show that anyone appointed to the role is a member of the project.
+     * Create a ProjectHandler relationship between a project and a person role to show that anyone appointed to the role is a member of the project.
      *
      * @param serverName name of the service to route the request to.
      * @param projectGUID unique identifier of the project
@@ -860,13 +816,12 @@ public class ProjectManagerRESTServices extends TokenController
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse setupProjectManagementRole(String          serverName,
-                                                   String          projectGUID,
-                                                   String          projectRoleGUID,
-                                                   NullRequestBody requestBody)
+    public VoidResponse setupProjectManagementRole(String                  serverName,
+                                                   String                  projectGUID,
+                                                   String                  projectRoleGUID,
+                                                   NewRelationshipRequestBody requestBody)
     {
-        final String methodName = "setupProjectManagementRole";
+        final String methodName = "setupProjectHandlerRole";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -881,130 +836,38 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
-
-            handler.setupProjectManagementRole(userId,
-                                               null,
-                                               null,
-                                               projectGUID,
-                                               projectRoleGUID);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove a ProjectManagement relationship between a project and a person role.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param projectGUID unique identifier of the project
-     * @param projectRoleGUID unique identifier of the person role
-     * @param requestBody external identifiers
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse clearProjectManagementRole(String          serverName,
-                                                   String          projectGUID,
-                                                   String          projectRoleGUID,
-                                                   NullRequestBody requestBody)
-    {
-        final String methodName = "clearProjectManagementRole";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
-
-            handler.clearProjectManagementRole(userId,
-                                               null,
-                                               null,
-                                               projectGUID,
-                                               projectRoleGUID);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-    
-
-    /**
-     * Create a "ResourceList" relationship between a consuming element and an element that represents resources.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param elementGUID unique identifier of the element
-     * @param resourceGUID unique identifier of the resource
-     * @param requestBody relationship properties
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse setupResource(String                  serverName,
-                                      String                  elementGUID,
-                                      String                  resourceGUID,
-                                      RelationshipRequestBody requestBody)
-    {
-        final String methodName = "setupResource";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ResourceListProperties resourceListProperties)
+                if (requestBody.getProperties() instanceof ProjectManagementProperties projectManagementProperties)
                 {
-                    handler.setupResource(userId,
-                                          null,
-                                          null,
-                                          elementGUID,
-                                          resourceListProperties,
-                                          resourceGUID);
+                    handler.setupProjectManagementRole(userId,
+                                                       projectGUID,
+                                                       projectRoleGUID,
+                                                       requestBody,
+                                                       projectManagementProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupProjectManagementRole(userId,
+                                                       projectGUID,
+                                                       projectRoleGUID,
+                                                       requestBody,
+                                                       null);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ResourceListProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ProjectManagementProperties.class.getName(), methodName);
                 }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.setupProjectManagementRole(userId,
+                                                   projectGUID,
+                                                   projectRoleGUID,
+                                                   null,
+                                                   null);
             }
         }
         catch (Throwable error)
@@ -1018,24 +881,24 @@ public class ProjectManagerRESTServices extends TokenController
 
 
     /**
-     * Remove a "ResourceList" relationship between two referenceables.
+     * Remove a ProjectHandler relationship between a project and a person role.
      *
      * @param serverName name of the service to route the request to.
-     * @param elementGUID unique identifier of the element
-     * @param resourceGUID unique identifier of the resource
-     * @param requestBody external source identifiers
+     * @param projectGUID unique identifier of the project
+     * @param projectRoleGUID unique identifier of the person role
+     * @param requestBody external identifiers
      *
      * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearResource(String                    serverName,
-                                      String                    elementGUID,
-                                      String                    resourceGUID,
-                                      ExternalSourceRequestBody requestBody)
+    public VoidResponse clearProjectManagementRole(String                   serverName,
+                                                   String                   projectGUID,
+                                                   String                   projectRoleGUID,
+                                                   DeleteRequestBody requestBody)
     {
-        final String methodName = "clearResource";
+        final String methodName = "clearProjectHandlerRole";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -1050,23 +913,86 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectManagementRole(userId, projectGUID, projectRoleGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Create a project dependency relationship between two projects.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param projectGUID unique identifier of the project
+     * @param dependsOnProjectGUID unique identifier of the project it depends on
+     * @param requestBody external identifiers
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setupProjectDependency(String                  serverName,
+                                               String                  projectGUID,
+                                               String                  dependsOnProjectGUID,
+                                               NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "setupProjectDependency";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.clearResource(userId,
-                                      requestBody.getExternalSourceGUID(),
-                                      requestBody.getExternalSourceName(),
-                                      elementGUID,
-                                      resourceGUID);
+                if (requestBody.getProperties() instanceof ProjectDependencyProperties projectManagementProperties)
+                {
+                    handler.setupProjectDependency(userId,
+                                                       projectGUID,
+                                                       dependsOnProjectGUID,
+                                                       requestBody,
+                                                       projectManagementProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupProjectDependency(userId,
+                                                       projectGUID,
+                                                       dependsOnProjectGUID,
+                                                       requestBody,
+                                                       null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ProjectDependencyProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                handler.clearResource(userId,
-                                      null,
-                                      null,
-                                      elementGUID,
-                                      resourceGUID);
+                handler.setupProjectDependency(userId,
+                                               projectGUID,
+                                               dependsOnProjectGUID,
+                                               null,
+                                               null);
             }
         }
         catch (Throwable error)
@@ -1080,29 +1006,29 @@ public class ProjectManagerRESTServices extends TokenController
 
 
     /**
-     * Retrieve the list of resources assigned to an element via the "ResourceList" relationship between two referenceables.
+     * Remove a project dependency relationship between two projects.
      *
      * @param serverName name of the service to route the request to.
-     * @param elementGUID unique identifier of the element
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
+     * @param projectGUID unique identifier of the project
+     * @param dependsOnProjectGUID unique identifier of the project it depends on
+     * @param requestBody external identifiers
      *
      * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedElementsResponse getResourceList(String serverName,
-                                                   String elementGUID,
-                                                   int   startFrom,
-                                                   int   pageSize)
+    public VoidResponse clearProjectDependency(String                   serverName,
+                                               String                   projectGUID,
+                                               String                   dependsOnProjectGUID,
+                                               DeleteRequestBody requestBody)
     {
-        final String methodName = "getResourceList";
+        final String methodName = "clearProjectDependency";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
-        AuditLog                auditLog = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -1112,9 +1038,9 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
-            response.setElements(handler.getResourceList(userId, elementGUID, startFrom, pageSize));
+            handler.clearProjectDependency(userId, projectGUID, dependsOnProjectGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1127,29 +1053,29 @@ public class ProjectManagerRESTServices extends TokenController
 
 
     /**
-     * Retrieve the list of elements assigned to a resource via the "ResourceList" relationship between two referenceables.
+     * Create a project hierarchy relationship between two projects.
      *
      * @param serverName name of the service to route the request to.
-     * @param resourceGUID unique identifier of the resource
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
+     * @param projectGUID unique identifier of the project
+     * @param managedProjectGUID unique identifier of the project it manages
+     * @param requestBody external identifiers
      *
      * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedElementsResponse getSupportedByResource(String serverName,
-                                                          String resourceGUID,
-                                                          int   startFrom,
-                                                          int   pageSize)
+    public VoidResponse setupProjectHierarchy(String                  serverName,
+                                              String                  projectGUID,
+                                              String                  managedProjectGUID,
+                                              NewRelationshipRequestBody requestBody)
     {
-        final String methodName = "getSupportedByResource";
+        final String methodName = "setupProjectHierarchy";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
-        AuditLog                auditLog = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -1159,9 +1085,86 @@ public class ProjectManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
-            response.setElements(handler.getSupportedByResource(userId, resourceGUID, startFrom, pageSize));
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ProjectHierarchyProperties projectHierarchyProperties)
+                {
+                    handler.setupProjectHierarchy(userId,
+                                                       projectGUID,
+                                                       managedProjectGUID,
+                                                       requestBody,
+                                                       projectHierarchyProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupProjectHierarchy(userId,
+                                                       projectGUID,
+                                                       managedProjectGUID,
+                                                       requestBody,
+                                                       null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ProjectHierarchyProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.setupProjectHierarchy(userId,
+                                                   projectGUID,
+                                                   managedProjectGUID,
+                                                   null,
+                                                   null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove a project hierarchy relationship between two projects.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param projectGUID unique identifier of the project
+     * @param managedProjectGUID unique identifier of the project it depends on
+     * @param requestBody external identifiers
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectHierarchy(String                   serverName,
+                                              String                   projectGUID,
+                                              String                   managedProjectGUID,
+                                              DeleteRequestBody requestBody)
+    {
+        final String methodName = "clearProjectHierarchy";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectHierarchy(userId, projectGUID, managedProjectGUID, requestBody);
         }
         catch (Throwable error)
         {

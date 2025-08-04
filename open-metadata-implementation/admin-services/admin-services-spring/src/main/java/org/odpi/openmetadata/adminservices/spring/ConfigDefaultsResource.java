@@ -5,9 +5,9 @@ package org.odpi.openmetadata.adminservices.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.adminservices.server.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.rest.EventBusConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
+import org.odpi.openmetadata.adminservices.server.OMAGServerAdminServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -104,10 +104,12 @@ public class ConfigDefaultsResource
 
     /**
      * Set up the default event bus for embedding in event-driven connector.   The resulting connector will
-     * be used for example, in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
-     * possibly the local repository's event mapper.
-     * When the event bus is configured, it is used only on future configuration.  It does not effect
+     * be used in the OMRS Topic Connector for each cohort, the open metadata out topic and
+     * the local repositories' event mapper.
+     * When the event bus is configured, it is used only on future configuration.  It does not affect
      * existing configuration.
+     * If openMetadataOutTopic is null, a default connection for this topic is created.  It can be removed using
+     * clearOpenMetadataOutTopic
      *
      * @param userId  user that is issuing the request.
      * @param serverName local server name.

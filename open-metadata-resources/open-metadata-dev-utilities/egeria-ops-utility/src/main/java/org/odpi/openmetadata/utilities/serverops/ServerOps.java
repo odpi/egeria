@@ -7,7 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.client.IntegrationDaemon;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
@@ -176,19 +176,19 @@ public class ServerOps
         {
             IntegrationDaemon client = new IntegrationDaemon(clientUserId, platformURLRoot);
 
-            List<IntegrationServiceSummary> serviceSummaries = client.getIntegrationServicesSummaries(clientUserId);
+            List<IntegrationGroupSummary> serviceSummaries = client.getIntegrationGroupSummaries(clientUserId);
 
             if (serviceSummaries != null)
             {
                 System.out.println("  integration services: ");
 
-                for (IntegrationServiceSummary serviceSummary : serviceSummaries)
+                for (IntegrationGroupSummary serviceSummary : serviceSummaries)
                 {
-                    System.out.println("    integration service: " + serviceSummary.getIntegrationServiceFullName());
+                    System.out.println("    integration group: " + serviceSummary.getIntegrationGroupName());
 
                     if (serviceSummary.getIntegrationConnectorReports() != null)
                     {
-                        System.out.println("      connectors: " + serviceSummary.getIntegrationServiceFullName());
+                        System.out.println("      connectors: " + serviceSummary.getIntegrationGroupName());
 
                         for (IntegrationConnectorReport connectorReport : serviceSummary.getIntegrationConnectorReports())
                         {

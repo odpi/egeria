@@ -59,7 +59,7 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                 "from the third party technology (scope) is not known.",
                         "Investigate if the identifier is correct for the named element and scope.  Was it created successfully? " +
                                 "Has something deleted it before this request ran? " +
-                                "Typically these associations are created by an integration connector running in the Catalog Integrator OMIS." +
+                                "Typically these associations are created by an integration connector." +
                                 "Look for errors reported in the hosting integration daemon."),
 
     /**
@@ -70,7 +70,7 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                           "The system is unable to confirm the synchronization of the element's property because the identifier " +
                                   "from the third party technology (scope) is not linked to the element.",
                           "Investigate if the identifier is correct for the named element and scope. " +
-                                  "Typically these associations are created by an integration connector running in the Catalog Integrator OMIS." +
+                                  "Typically these associations are created by an integration connector." +
                                   "Look for errors reported in the hosting integration daemon."),
 
     /**

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmet
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLColumn;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLForeignKey;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLTable;
-import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.ColumnType;
 
 import java.util.*;
 
@@ -398,7 +397,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                   HarvestOpenMetadataColumn.SYNC_TIME},
           new HarvestOpenMetadataColumn[]{
                   HarvestOpenMetadataColumn.QUALIFIED_NAME,
-                  HarvestOpenMetadataColumn.TO_DO_TYPE,
+                  HarvestOpenMetadataColumn.CATEGORY,
                   HarvestOpenMetadataColumn.DISPLAY_NAME,
                   HarvestOpenMetadataColumn.DESCRIPTION,
                   HarvestOpenMetadataColumn.CREATION_TIME,
@@ -407,7 +406,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                   HarvestOpenMetadataColumn.DUE_TIME,
                   HarvestOpenMetadataColumn.LAST_REVIEW_TIME,
                   HarvestOpenMetadataColumn.COMPLETION_TIME,
-                  HarvestOpenMetadataColumn.TO_DO_STATUS,
+                  HarvestOpenMetadataColumn.ACTIVITY_STATUS,
                   HarvestOpenMetadataColumn.TO_DO_SOURCE_GUID,
                   HarvestOpenMetadataColumn.TO_DO_SOURCE_TYPE,
                   HarvestOpenMetadataColumn.SPONSOR_GUID,

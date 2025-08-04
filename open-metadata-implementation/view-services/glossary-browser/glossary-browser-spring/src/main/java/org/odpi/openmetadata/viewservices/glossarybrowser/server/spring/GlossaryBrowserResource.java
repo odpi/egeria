@@ -5,14 +5,10 @@ package org.odpi.openmetadata.viewservices.glossarybrowser.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryNameRequestBody;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossarySearchStringRequestBody;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.HistoryRequestBody;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermActivityTypeListResponse;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipStatusListResponse;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermStatusListResponse;
 import org.odpi.openmetadata.viewservices.glossarybrowser.server.GlossaryBrowserRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -107,13 +103,6 @@ public class GlossaryBrowserResource
      *
      * @param serverName name of the server to route the request to
      * @param requestBody string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
@@ -127,22 +116,10 @@ public class GlossaryBrowserResource
             externalDocs=@ExternalDocumentation(description="Glossary metadata element",
                     url="https://egeria-project.org/types/3/0310-Glossary/"))
 
-    public GlossaryElementsResponse findGlossaries(@PathVariable String                          serverName,
-                                                   @RequestParam int                             startFrom,
-                                                   @RequestParam int                             pageSize,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                        startsWith,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                        endsWith,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                        ignoreCase,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                        forLineage,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                        forDuplicateProcessing,
-                                                   @RequestBody  SearchStringRequestBody        requestBody)
+    public OpenMetadataRootElementsResponse findGlossaries(@PathVariable String                          serverName,
+                                                           @RequestBody  SearchStringRequestBody        requestBody)
     {
-        return restAPI.findGlossaries(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.findGlossaries(serverName, requestBody);
     }
 
 
@@ -152,10 +129,6 @@ public class GlossaryBrowserResource
      *
      * @param serverName name of the server to route the request to
      * @param requestBody name to search for
-     * @param startFrom paging start point
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param pageSize maximum results that can be returned
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
@@ -169,16 +142,10 @@ public class GlossaryBrowserResource
             externalDocs=@ExternalDocumentation(description="Glossary metadata element",
                     url="https://egeria-project.org/types/3/0310-Glossary/"))
 
-    public GlossaryElementsResponse   getGlossariesByName(@PathVariable String                  serverName,
-                                                          @RequestParam int                     startFrom,
-                                                          @RequestParam int                     pageSize,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                 forLineage,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                 forDuplicateProcessing,
-                                                          @RequestBody  NameRequestBody         requestBody)
+    public OpenMetadataRootElementsResponse   getGlossariesByName(@PathVariable String                  serverName,
+                                                          @RequestBody(required = false)  FilterRequestBody         requestBody)
     {
-        return restAPI.getGlossariesByName(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getGlossariesByName(serverName, requestBody);
     }
 
 
@@ -187,8 +154,6 @@ public class GlossaryBrowserResource
      *
      * @param serverName name of the server to route the request to
      * @param glossaryGUID unique identifier of the requested metadata element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return matching metadata element or
@@ -203,60 +168,18 @@ public class GlossaryBrowserResource
             externalDocs=@ExternalDocumentation(description="Glossary metadata element",
                     url="https://egeria-project.org/types/3/0310-Glossary/"))
 
-    public GlossaryElementResponse getGlossaryByGUID(@PathVariable String                        serverName,
+    public OpenMetadataRootElementResponse getGlossaryByGUID(@PathVariable String                        serverName,
                                                      @PathVariable String                        glossaryGUID,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                       forLineage,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                       forDuplicateProcessing,
-                                                     @RequestBody(required = false)
-                                                     EffectiveTimeQueryRequestBody requestBody)
+                                                     @RequestBody(required = false) GetRequestBody requestBody)
     {
-        return restAPI.getGlossaryByGUID(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getGlossaryByGUID(serverName, glossaryGUID, requestBody);
     }
-
-
-    /**
-     * Retrieve the glossary metadata element for the requested category.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryCategoryGUID unique identifier of the requested metadata element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return matching metadata element or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/for-category/{glossaryCategoryGUID}/retrieve")
-
-    @Operation(summary="getGlossaryForCategory",
-            description="Retrieve the glossary metadata element for the requested category.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
-            externalDocs=@ExternalDocumentation(description="Glossary metadata element",
-                    url="https://egeria-project.org/types/3/0310-Glossary/"))
-
-    public GlossaryElementResponse getGlossaryForCategory(@PathVariable String                        serverName,
-                                                          @PathVariable String                        glossaryCategoryGUID,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                       forLineage,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                       forDuplicateProcessing,
-                                                          @RequestBody(required = false)
-                                                          EffectiveTimeQueryRequestBody requestBody)
-    {
-        return restAPI.getGlossaryForCategory(serverName, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
 
     /**
      * Retrieve the glossary metadata element for the requested term.
      *
      * @param serverName name of the server to route the request to
      * @param glossaryTermGUID unique identifier of the requested metadata element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return matching metadata element or
@@ -271,285 +194,12 @@ public class GlossaryBrowserResource
             externalDocs=@ExternalDocumentation(description="Glossary metadata element",
                     url="https://egeria-project.org/types/3/0310-Glossary/"))
 
-    public GlossaryElementResponse getGlossaryForTerm(@PathVariable String                        serverName,
+    public OpenMetadataRootElementResponse getGlossaryForTerm(@PathVariable String                        serverName,
                                                       @PathVariable String                        glossaryTermGUID,
-                                                      @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                       forLineage,
-                                                      @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                       forDuplicateProcessing,
                                                       @RequestBody(required = false)
-                                                      EffectiveTimeQueryRequestBody requestBody)
+                                                                  GetRequestBody requestBody)
     {
-        return restAPI.getGlossaryForTerm(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Retrieve the list of glossary category metadata elements that contain the search string.
-     *
-     * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody string to find in the properties and correlators
-     *
-     * @return list of matching metadata elements or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/categories/by-search-string")
-
-    @Operation(summary="findGlossaryCategories",
-            description="Retrieve the list of glossary category metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
-            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
-
-    public GlossaryCategoryElementsResponse findGlossaryCategories(@PathVariable String                          serverName,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                   int                             startFrom,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                   int                             pageSize,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                         startsWith,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                         endsWith,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                         ignoreCase,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                         forLineage,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                         forDuplicateProcessing,
-                                                                   @RequestBody  GlossarySearchStringRequestBody requestBody)
-    {
-        return restAPI.findGlossaryCategories(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Return the list of categories associated with a glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the glossary to query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return list of metadata elements describing the categories associated with the requested glossary or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/categories/retrieve")
-
-    @Operation(summary="getCategoriesForGlossary",
-            description="Return the list of categories associated with a glossary.",
-            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
-
-    public GlossaryCategoryElementsResponse getCategoriesForGlossary(@PathVariable String                             serverName,
-                                                                     @PathVariable String                             glossaryGUID,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int                                startFrom,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int                                pageSize,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                            forLineage,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                            forDuplicateProcessing,
-                                                                     @RequestBody(required = false)
-                                                                     EffectiveTimeQueryRequestBody      requestBody)
-    {
-        return restAPI.getCategoriesForGlossary(serverName, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Return the list of categories associated with a term.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryTermGUID unique identifier of the glossary to query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return list of metadata elements describing the categories associated with the requested glossary or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/categories/retrieve")
-
-    @Operation(summary="getCategoriesForTerm",
-            description="Return the list of categories associated with a term.",
-            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
-
-    public GlossaryCategoryElementsResponse getCategoriesForTerm(@PathVariable String                             serverName,
-                                                                 @PathVariable String                             glossaryTermGUID,
-                                                                 @RequestParam (required = false, defaultValue = "0")
-                                                                 int                                startFrom,
-                                                                 @RequestParam (required = false, defaultValue = "0")
-                                                                 int                                pageSize,
-                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                            forLineage,
-                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                            forDuplicateProcessing,
-                                                                 @RequestBody(required = false)
-                                                                 EffectiveTimeQueryRequestBody      requestBody)
-    {
-        return restAPI.getCategoriesForTerm(serverName, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Retrieve the list of glossary category metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName name of the server to route the request to
-     * @param requestBody name to search for and correlators
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @return list of matching metadata elements or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/categories/by-name")
-
-    @Operation(summary="getGlossaryCategoriesByName",
-            description="Retrieve the list of glossary category metadata elements that either have the requested qualified name or display name.  The name to search for is located in the request body and is interpreted as a plain string.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
-            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
-
-    public GlossaryCategoryElementsResponse   getGlossaryCategoriesByName(@PathVariable String                  serverName,
-                                                                          @RequestParam int                     startFrom,
-                                                                          @RequestParam int                     pageSize,
-                                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                 forLineage,
-                                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                 forDuplicateProcessing,
-                                                                          @RequestBody  GlossaryNameRequestBody requestBody)
-    {
-        return restAPI.getGlossaryCategoriesByName(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Retrieve the glossary category metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryCategoryGUID unique identifier of the requested metadata element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return requested metadata element or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/retrieve")
-
-    @Operation(summary="getGlossaryCategoryByGUID",
-            description="Retrieve the requested glossary category metadata element.  The optional request body contain an effective time for the query.",
-            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
-
-    public GlossaryCategoryElementResponse getGlossaryCategoryByGUID(@PathVariable String                             serverName,
-                                                                     @PathVariable String                             glossaryCategoryGUID,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                      forLineage,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                      forDuplicateProcessing,
-                                                                     @RequestBody(required = false)
-                                                                     EffectiveTimeQueryRequestBody requestBody)
-    {
-        return restAPI.getGlossaryCategoryByGUID(serverName, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Retrieve the parent glossary category metadata element for the glossary category with the supplied unique identifier.  If the
-     * requested category does not have a parent category, null is returned.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryCategoryGUID unique identifier of the requested metadata element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return parent glossary category element or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/parent/retrieve")
-
-    @Operation(summary="getGlossaryCategoryParent",
-            description="Glossary categories can be organized in a hierarchy. Retrieve the parent glossary category metadata element for the glossary category with the supplied unique identifier.  If the requested category does not have a parent category, null is returned.  The optional request body contain an effective time for the query.",
-            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
-
-    public GlossaryCategoryElementResponse getGlossaryCategoryParent(@PathVariable String                        serverName,
-                                                                     @PathVariable String                        glossaryCategoryGUID,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                       forLineage,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                       forDuplicateProcessing,
-                                                                     @RequestBody(required = false)
-                                                                     EffectiveTimeQueryRequestBody requestBody)
-    {
-        return restAPI.getGlossaryCategoryParent(serverName, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Retrieve the subcategories for the glossary category metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryCategoryGUID unique identifier of the requested metadata element
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return list of glossary category elements or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/subcategories/retrieve")
-
-    @Operation(summary="getGlossarySubCategories",
-            description="Glossary categories can be organized in a hierarchy. Retrieve the subcategories for the glossary category metadata element with the supplied unique identifier.  If the requested category does not have any subcategories, null is returned.  The optional request body contain an effective time for the query.",
-            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
-
-    public GlossaryCategoryElementsResponse getGlossarySubCategories(@PathVariable String                             serverName,
-                                                                     @PathVariable String                             glossaryCategoryGUID,
-                                                                     @RequestParam int                                startFrom,
-                                                                     @RequestParam int                                pageSize,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                      forLineage,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                      forDuplicateProcessing,
-                                                                     @RequestBody(required = false)
-                                                                     EffectiveTimeQueryRequestBody requestBody)
-    {
-        return restAPI.getGlossarySubCategories(serverName, glossaryCategoryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getGlossaryForTerm(serverName, glossaryTermGUID, requestBody);
     }
 
 
@@ -558,13 +208,6 @@ public class GlossaryBrowserResource
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers and search string
      *
      * @return list of matching metadata elements or
@@ -579,126 +222,10 @@ public class GlossaryBrowserResource
             externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
                     url="https://egeria-project.org/types/3/0330-Terms/"))
 
-    public GlossaryTermElementsResponse findGlossaryTerms(@PathVariable String                          serverName,
-                                                          @RequestParam int                             startFrom,
-                                                          @RequestParam int                             pageSize,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                         startsWith,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                         endsWith,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                         ignoreCase,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                         forLineage,
-                                                          @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                         forDuplicateProcessing,
-                                                          @RequestBody  GlossarySearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findGlossaryTerms(@PathVariable String                  serverName,
+                                                              @RequestBody(required = false)  SearchStringRequestBody requestBody)
     {
-        return restAPI.findGlossaryTerms(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Retrieve the list of glossary terms associated with a glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the glossary of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return list of associated metadata elements or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/terms/retrieve")
-
-    @Operation(summary="getTermsForGlossary",
-            description="Retrieve the list of glossary terms associated with a glossary.  The request body also supports the specification of an effective time for the query.",
-            externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
-                    url="https://egeria-project.org/types/3/0330-Terms/"))
-
-    public GlossaryTermElementsResponse getTermsForGlossary(@PathVariable String                        serverName,
-                                                            @PathVariable String                        glossaryGUID,
-                                                            @RequestParam int                           startFrom,
-                                                            @RequestParam int                           pageSize,
-                                                            @RequestParam (required = false, defaultValue = "false")
-                                                            boolean                       forLineage,
-                                                            @RequestParam (required = false, defaultValue = "false")
-                                                            boolean                       forDuplicateProcessing,
-                                                            @RequestBody(required = false)
-                                                            EffectiveTimeQueryRequestBody requestBody)
-    {
-        return restAPI.getTermsForGlossary(serverName, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Retrieve the list of glossary terms associated with a glossary category.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryCategoryGUID unique identifier of the glossary category of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return list of associated metadata elements or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/terms/retrieve")
-
-    public GlossaryTermElementsResponse getTermsForGlossaryCategory(@PathVariable String                              serverName,
-                                                                    @PathVariable String                              glossaryCategoryGUID,
-                                                                    @RequestParam int                                 startFrom,
-                                                                    @RequestParam int                                 pageSize,
-                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                    boolean                             forLineage,
-                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                    boolean                             forDuplicateProcessing,
-                                                                    @RequestBody(required = false)
-                                                                    GlossaryTermRelationshipRequestBody requestBody)
-    {
-        return restAPI.getTermsForGlossaryCategory(serverName, glossaryCategoryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Retrieve the list of glossary terms associated with the requested glossary term.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryTermGUID unique identifier of the glossary of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return list of associated metadata elements or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/related-terms")
-
-    public GlossaryTermElementsResponse getRelatedTerms(@PathVariable String                              serverName,
-                                                        @PathVariable String                              glossaryTermGUID,
-                                                        @RequestParam int                                 startFrom,
-                                                        @RequestParam int                                 pageSize,
-                                                        @RequestParam (required = false, defaultValue = "false")
-                                                        boolean                             forLineage,
-                                                        @RequestParam (required = false, defaultValue = "false")
-                                                        boolean                             forDuplicateProcessing,
-                                                        @RequestBody(required = false)
-                                                        GlossaryTermRelationshipRequestBody requestBody)
-    {
-        return restAPI.getRelatedTerms(serverName, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.findGlossaryTerms(serverName, requestBody);
     }
 
 
@@ -707,10 +234,6 @@ public class GlossaryBrowserResource
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers and name
      *
      * @return list of matching metadata elements or
@@ -720,16 +243,10 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/terms/by-name")
 
-    public GlossaryTermElementsResponse   getGlossaryTermsByName(@PathVariable String                  serverName,
-                                                                 @RequestParam int                     startFrom,
-                                                                 @RequestParam int                     pageSize,
-                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                 forLineage,
-                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                 forDuplicateProcessing,
-                                                                 @RequestBody  GlossaryNameRequestBody requestBody)
+    public OpenMetadataRootElementsResponse   getGlossaryTermsByName(@PathVariable String             serverName,
+                                                                     @RequestBody(required = false)  FilterRequestBody requestBody)
     {
-        return restAPI.getGlossaryTermsByName(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getGlossaryTermsByName(serverName, requestBody);
     }
 
 
@@ -738,8 +255,6 @@ public class GlossaryBrowserResource
      *
      * @param serverName name of the server to route the request to
      * @param glossaryTermGUID unique identifier of the requested metadata element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return matching metadata element or
@@ -749,55 +264,11 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/retrieve")
 
-    public GlossaryTermElementResponse getGlossaryTermByGUID(@PathVariable String                             serverName,
+    public OpenMetadataRootElementResponse getGlossaryTermByGUID(@PathVariable String                             serverName,
                                                              @PathVariable String                             glossaryTermGUID,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                      forLineage,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                      forDuplicateProcessing,
-                                                             @RequestBody(required = false)
-                                                             EffectiveTimeQueryRequestBody requestBody)
+                                                             @RequestBody(required = false) GetRequestBody requestBody)
     {
-        return restAPI.getGlossaryTermByGUID(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getGlossaryTermByGUID(serverName, glossaryTermGUID, requestBody);
     }
-
-
-    /**
-     * Retrieve all the versions of a glossary term.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryTermGUID unique identifier of object to retrieve
-     * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
-     *                         versions beyond the first page of results. Zero means start from the first element.
-     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
-     *                 return results size.
-     * @param oldestFirst  defining how the results should be ordered.
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param requestBody the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @return list of beans or
-     *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem removing the properties from the repositories.
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/history")
-
-    public GlossaryTermElementsResponse getGlossaryTermHistory(@PathVariable String                 serverName,
-                                                               @PathVariable String                 glossaryTermGUID,
-                                                               @RequestParam int                    startFrom,
-                                                               @RequestParam int                    pageSize,
-                                                               @RequestParam (required = false, defaultValue = "false")
-                                                               boolean                oldestFirst,
-                                                               @RequestParam (required = false, defaultValue = "false")
-                                                               boolean                forLineage,
-                                                               @RequestParam (required = false, defaultValue = "false")
-                                                               boolean                forDuplicateProcessing,
-                                                               @RequestBody(required = false)
-                                                               HistoryRequestBody     requestBody)
-    {
-        return restAPI.getGlossaryTermHistory(serverName, glossaryTermGUID, startFrom, pageSize, oldestFirst, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
 }
 

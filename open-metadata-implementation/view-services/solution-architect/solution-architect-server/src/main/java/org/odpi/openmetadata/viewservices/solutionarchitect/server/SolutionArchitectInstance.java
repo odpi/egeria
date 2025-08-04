@@ -3,12 +3,18 @@
 package org.odpi.openmetadata.viewservices.solutionarchitect.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorRoleHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SolutionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.InformationSupplyChainHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionBlueprintHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionComponentHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
+
 
 /**
  * SolutionArchitectInstance caches references to the objects it needs for a specific server.
@@ -19,8 +25,10 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.SOLUTION_ARCHITECT;
 
-    private final SolutionHandler solutionHandler;
-    private final ActorRoleHandler actorRoleHandler;
+    private final InformationSupplyChainHandler informationSupplyChainHandler;
+    private final SolutionBlueprintHandler      solutionBlueprintHandler;
+    private final SolutionComponentHandler      solutionComponentHandler;
+    private final ActorRoleHandler         actorRoleHandler;
 
 
     /**
@@ -52,60 +60,81 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient;
         if (localServerUserPassword == null)
         {
-            solutionHandler = new SolutionHandler(serverName,
-                                                  remoteServerName,
-                                                  remoteServerURL,
-                                                  auditLog,
-                                                  AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceURLMarker(),
-                                                  ViewServiceDescription.SOLUTION_ARCHITECT.getViewServiceFullName(),
-                                                  maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
 
-            actorRoleHandler = new ActorRoleHandler(serverName,
-                                                    remoteServerName,
-                                                    remoteServerURL,
-                                                    auditLog,
-                                                    AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceURLMarker(),
-                                                    ViewServiceDescription.SOLUTION_ARCHITECT.getViewServiceFullName(),
-                                                    maxPageSize,
-                                                    true);
         }
         else
         {
-            solutionHandler = new SolutionHandler(serverName,
-                                                  remoteServerName,
-                                                  remoteServerURL,
-                                                  localServerUserId,
-                                                  localServerUserPassword,
-                                                  auditLog,
-                                                  AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceURLMarker(),
-                                                  ViewServiceDescription.SOLUTION_ARCHITECT.getViewServiceFullName(),
-                                                  maxPageSize);
-
-            actorRoleHandler = new ActorRoleHandler(serverName,
-                                                    remoteServerName,
-                                                    remoteServerURL,
-                                                    localServerUserId,
-                                                    localServerUserPassword,
-                                                    auditLog,
-                                                    AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceURLMarker(),
-                                                    ViewServiceDescription.SOLUTION_ARCHITECT.getViewServiceFullName(),
-                                                    maxPageSize,
-                                                    true);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
         }
+
+        solutionComponentHandler = new SolutionComponentHandler(serverName,
+                                                                auditLog,
+                                                                myDescription.getViewServiceFullName(),
+                                                                openMetadataClient);
+
+        solutionBlueprintHandler = new SolutionBlueprintHandler(serverName,
+                                                                auditLog,
+                                                                myDescription.getViewServiceFullName(),
+                                                                openMetadataClient);
+
+        informationSupplyChainHandler = new InformationSupplyChainHandler(serverName,
+                                                                auditLog,
+                                                                myDescription.getViewServiceFullName(),
+                                                                openMetadataClient);
+
+        actorRoleHandler = new ActorRoleHandler(serverName,
+                                                auditLog,
+                                                myDescription.getViewServiceFullName(),
+                                                openMetadataClient);
     }
 
 
     /**
-     * Return the solution manager client.  This client is from the Digital Architecture OMAS and is for maintaining
-     * information supply chains and solutions.
+     * Return the solution manager client.  This client is from the OMF services and is for maintaining
+     * solution components.
      *
      * @return client
      */
-    public SolutionHandler getSolutionManagerClient()
+    public SolutionComponentHandler getSolutionComponentHandler()
     {
-        return solutionHandler;
+        return solutionComponentHandler;
+    }
+
+
+
+    /**
+     * Return the solution manager client.  This client is from the OMF services and is for maintaining
+     * solution blueprints.
+     *
+     * @return client
+     */
+    public SolutionBlueprintHandler getSolutionBlueprintHandler()
+    {
+        return solutionBlueprintHandler;
+    }
+
+
+
+
+    /**
+     * Return the solution manager client.  This client is from the OMF services and is for maintaining
+     * information supply chains.
+     *
+     * @return client
+     */
+    public InformationSupplyChainHandler getInformationSupplyChainHandler()
+    {
+        return informationSupplyChainHandler;
     }
 
 
@@ -115,7 +144,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public ActorRoleHandler getSolutionRoleClient()
+    public ActorRoleHandler getSolutionRoleHandler()
     {
         return actorRoleHandler;
     }

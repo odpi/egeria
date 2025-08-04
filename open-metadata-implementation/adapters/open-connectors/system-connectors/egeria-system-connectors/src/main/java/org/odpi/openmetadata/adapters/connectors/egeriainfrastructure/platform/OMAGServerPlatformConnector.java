@@ -17,10 +17,10 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 import java.util.*;
@@ -102,23 +102,24 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
      * This call can be used to register with non-blocking services.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
         final String methodName = "start";
 
-        if (connectionDetails.getConnectionName() != null)
+        if (connectionBean.getDisplayName() != null)
         {
-            connectorName = connectionDetails.getConnectionName();
+            connectorName = connectionBean.getDisplayName();
         }
 
         /*
          * Retrieve the configuration
          */
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint != null)
         {
@@ -137,12 +138,12 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
          */
         try
         {
-            if (connectionDetails.getUserId() != null)
+            if (connectionBean.getUserId() != null)
             {
                 extractor = new EgeriaExtractor(targetRootURL,
                                                 platformName,
                                                 null,
-                                                connectionDetails.getUserId());
+                                                connectionBean.getUserId());
             }
             else
             {

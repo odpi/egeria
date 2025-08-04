@@ -607,7 +607,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            replacementAttributeType.getName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -679,7 +679,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            placeholderPropertyType.getName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -750,7 +750,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            templateType.getTemplateName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -823,7 +823,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            configurationPropertyType.getName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -885,7 +885,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            supportedRequestType.getRequestType(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -957,7 +957,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            supportedRequestParameter.getName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -1029,7 +1029,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            supportedActionTarget.getName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -1091,7 +1091,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            analysisStepType.getName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -1157,7 +1157,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            annotationTypeType.getName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -1229,7 +1229,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            producedRequestParameter.getName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -1301,7 +1301,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            actionTargetType.getName(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -1365,7 +1365,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            guardType.getGuard(),
-                                                           false,
+                                                           null,
                                                            true,
                                                            additionalProperties);
 
@@ -1452,12 +1452,14 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param requestType governance request type to use when calling the governance engine
      * @param serviceRequestType  request type to use when calling the service (if null, governance request type is used)
      * @param requestParameters default request parameters to pass to the service when called with this request type
+     * @param generateIntegrationReport should an integration report be generated each time the service is called?
      * @param serviceGUID unique identifier of the service
      */
     public void addSupportedGovernanceService(String              engineGUID,
                                               String              requestType,
                                               String              serviceRequestType,
                                               Map<String, String> requestParameters,
+                                              boolean             generateIntegrationReport,
                                               String              serviceGUID)
     {
         final String methodName = "addSupportedGovernanceService";
@@ -1471,6 +1473,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.REQUEST_TYPE.name, requestType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SERVICE_REQUEST_TYPE.name, serviceRequestType, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUEST_PARAMETERS.name, requestParameters, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.GENERATE_INTEGRATION_REPORT.name, generateIntegrationReport, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(engineGUID + "_to_" + serviceGUID + "_" + requestType + "_supported_governance_service_relationship"),

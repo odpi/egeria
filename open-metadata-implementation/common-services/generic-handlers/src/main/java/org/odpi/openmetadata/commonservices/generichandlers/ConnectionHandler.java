@@ -664,19 +664,16 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                              effectiveTime,
                                                                              methodName);
 
-            if (OpenMetadataType.ASSET.typeName.equals(anchorEntity.getType().getTypeDefName()))
-            {
-                /*
-                 * This method will throw an exception if the asset is not in the supported zones - it will look like
-                 * the asset is not known.
-                 */
-                invalidParameterHandler.validateAssetInSupportedZone(anchorEntity.getGUID(),
-                                                                     anchorGUIDParameterName,
-                                                                     serviceSupportedZones,
-                                                                     securityVerifier.getSupportedZones(userId, serviceSupportedZones),
-                                                                     serviceName,
-                                                                     methodName);
-            }
+            /*
+             * This method will throw an exception if the element is not in the supported zones - it will look like
+             * the element is not known.
+             */
+            invalidParameterHandler.validateElementInSupportedZone(anchorEntity.getGUID(),
+                                                                   anchorGUIDParameterName,
+                                                                   serviceSupportedZones,
+                                                                   securityVerifier.getVisibleZones(userId),
+                                                                   serviceName,
+                                                                   methodName);
         }
 
         String connectionGUID = this.createBeanInRepository(userId,
@@ -1227,12 +1224,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
              */
             if (assetEntity != null)
             {
-                invalidParameterHandler.validateAssetInSupportedZone(assetEntity.getGUID(),
-                                                                     assetGUIDParameterName,
-                                                                     serviceSupportedZones,
-                                                                     securityVerifier.getSupportedZones(userId, serviceSupportedZones),
-                                                                     serviceName,
-                                                                     methodName);
+                invalidParameterHandler.validateElementInSupportedZone(assetEntity.getGUID(),
+                                                                       assetGUIDParameterName,
+                                                                       serviceSupportedZones,
+                                                                       securityVerifier.getVisibleZones(userId),
+                                                                       serviceName,
+                                                                       methodName);
             }
         }
 

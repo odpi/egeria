@@ -61,7 +61,14 @@ public class LikeConverter<B> extends OpenMetadataConverterBase<B>
 
                 if (openMetadataElement != null)
                 {
-                    properties.setUser(openMetadataElement.getVersions().getCreatedBy());
+                    properties.setEmoji(this.removeEmoji(openMetadataElement.getElementProperties()));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    properties.setTypeName(openMetadataElement.getType().getTypeName());
+                    properties.setExtendedProperties(this.getRemainingExtendedProperties(openMetadataElement.getElementProperties()));
                 }
                 else
                 {

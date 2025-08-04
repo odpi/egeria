@@ -5,7 +5,6 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.client
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -16,17 +15,16 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.api.IntegrationDaemonAPI;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.*;
 
 import java.util.List;
 import java.util.Map;
+import io.openlineage.client.OpenLineage;
 
 /**
  * IntegrationDaemon is the client library for the Integration Daemon's REST API.  The integration daemon is an OMAG Server.
  * It runs one-to-many integration services that in turn manage one-to-many integration connectors.  Each integration service
  * focuses on a particular type of third party technology and is paired with an appropriate OMAS.
- *
  * The refresh commands are used to instruct the connectors running in the integration daemon to verify the consistency
  * of the metadata in the third party technology against the values in open metadata.  All connectors are requested
  * to refresh when the integration daemon first starts.  Then refresh is called on the schedule defined in the configuration
@@ -39,7 +37,6 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
     private final String                              serverPlatformRootURL;
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final static NullRequestBody  nullRequestBody         = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -373,83 +370,6 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
 
 
     /**
-     * Refresh the requested connectors running in the requested integration service.
-     *
-     * @param userId calling user
-     * @param serviceURLMarker integration service identifier
-     * @param connectorName optional name of the connector to target - if no connector name is specified, all
-     *                      connectors managed by this integration service are refreshed.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException there was a problem detected by the integration daemon
-     */
-    public void refreshService(String userId,
-                               String serviceURLMarker,
-                               String connectorName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
-    {
-        final String   methodName = "refreshService";
-        final String   nameParameter = "serviceURLMarker";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-services/{2}/refresh";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(serviceURLMarker, nameParameter, methodName);
-
-        NameRequestBody requestBody = new NameRequestBody();
-
-        requestBody.setName(connectorName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        serviceURLMarker);
-    }
-
-
-    /**
-     * Request that the integration service shutdown and recreate its integration connectors.  If a connector name
-     * is provided, only that connector is restarted.
-     *
-     * @param userId calling user
-     * @param serviceURLMarker integration service identifier
-     * @param connectorName optional name of the connector to target - if no connector name is specified, all
-     *                      connectors managed by this integration service are restarted.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException there was a problem detected by the integration daemon
-     */
-    public void restartService(String userId,
-                               String serviceURLMarker,
-                               String connectorName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
-    {
-        final String   methodName = "refreshService";
-        final String   nameParameter = "serviceURLMarker";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-service/{2}/restart";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(serviceURLMarker, nameParameter, methodName);
-
-        NameRequestBody requestBody = new NameRequestBody();
-
-        requestBody.setName(connectorName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        serviceURLMarker);
-    }
-
-
-    /**
      * Return a summary of each of the integration services' and integration groups' status.
      *
      * @param userId calling user
@@ -475,35 +395,6 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
                                                                                                        userId);
 
         return restResult.getIntegrationDaemonStatus();
-    }
-
-
-    /**
-     * Return a summary of each of the integration services' status.
-     *
-     * @param userId calling user
-     *
-     * @return list of statuses - one for each assigned integration services or
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException there was a problem detected by the integration daemon
-     */
-    public List<IntegrationServiceSummary> getIntegrationServicesSummaries(String   userId) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
-    {
-        final String   methodName = "getIntegrationServicesSummaries";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-services/summary";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        IntegrationServiceSummaryResponse restResult = restClient.callIntegrationServiceStatusGetRESTCall(methodName,
-                                                                                                          serverPlatformRootURL + urlTemplate,
-                                                                                                          serverName,
-                                                                                                          userId);
-
-        return restResult.getIntegrationServiceSummaries();
     }
 
 
@@ -596,5 +487,67 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
                                        serverName,
                                        userId,
                                        integrationGroupName);
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param userId calling user
+     * @param event open lineage event to publish.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException there is a problem processing the request
+     */
+    public void publishOpenLineageEvent(String               userId,
+                                        OpenLineage.RunEvent event) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "publishOpenLineageEvent";
+        final String eventParameter = "event";
+        final String urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/publish-open-lineage-event";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(event, eventParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        event,
+                                        serverName,
+                                        userId);
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param userId calling user
+     * @param event open lineage event to publish.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException there is a problem processing the request
+     */
+    public void publishOpenLineageEvent(String userId,
+                                        String event) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        final String methodName = "publishOpenLineageEvent";
+        final String eventParameter = "event";
+        final String urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/publish-open-lineage-event";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(event, eventParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        event,
+                                        serverName,
+                                        userId);
     }
 }

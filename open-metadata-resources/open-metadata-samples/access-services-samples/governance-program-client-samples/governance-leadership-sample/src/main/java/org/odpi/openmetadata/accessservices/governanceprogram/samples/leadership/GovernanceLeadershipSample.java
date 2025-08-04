@@ -2,25 +2,28 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.samples.leadership;
 
-import org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.client.ActorProfileManagement;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceRoleManager;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDomain;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.UserIdentityHandler;
+
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 import org.odpi.openmetadata.http.HttpHelper;
 
 
@@ -102,7 +105,7 @@ public class GovernanceLeadershipSample
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
     {
-        ActorProfileElement profile = client.getActorProfileByGUID(clientUserId, guid, null, false, false, new Date());
+        OpenMetadataRootElement profile = client.getActorProfileByGUID(clientUserId, guid, new GetOptions());
 
         System.out.println("----------------------------");
         System.out.println("Profile: " + guid);
@@ -160,37 +163,28 @@ public class GovernanceLeadershipSample
             System.out.println();
         }
 
-        if (profile.getProfileProperties() instanceof PersonProfileProperties personProfileProperties)
+        if (profile.getProperties() instanceof PersonProperties personProperties)
         {
-            System.out.println("  Employee Id: " + personProfileProperties.getEmployeeNumber());
-            System.out.println("  Full Name: " + personProfileProperties.getFullName());
-            System.out.println("  Known Name: " + personProfileProperties.getKnownName());
-            System.out.println("  Job Title: " + personProfileProperties.getJobTitle());
-            System.out.println("  Job Description: " + profile.getProfileProperties().getDescription());
+            System.out.println("  Employee Id: " + personProperties.getEmployeeNumber());
+            System.out.println("  Full Name: " + personProperties.getFullName());
+            System.out.println("  Known Name: " + personProperties.getDisplayName());
+            System.out.println("  Job Title: " + personProperties.getJobTitle());
+            System.out.println("  Job Description: " + personProperties.getDescription());
 
-            if (profile.getProfileProperties().getAdditionalProperties() != null)
+            if (personProperties.getAdditionalProperties() != null)
             {
-                System.out.println("  Work Location: " + personProfileProperties.getAdditionalProperties().get(workLocationPropertyName));
+                System.out.println("  Work Location: " + personProperties.getAdditionalProperties().get(workLocationPropertyName));
             }
 
-            System.out.println("  Employee Type: " + personProfileProperties.getEmployeeType());
+            System.out.println("  Employee Type: " + personProperties.getEmployeeType());
+        }
+        else if (profile.getProperties() == null)
+        {
+            System.out.println("--No Properties -----";
         }
         else
         {
-            Map<String, Object> extendedProperties = profile.getProfileProperties().getExtendedProperties();
-
-            System.out.println("  Employee Id: " + extendedProperties.get(OpenMetadataProperty.EMPLOYEE_NUMBER.name));
-            System.out.println("  Full Name: " + extendedProperties.get(OpenMetadataProperty.FULL_NAME.name));
-            System.out.println("  Known Name: " + profile.getProfileProperties().getKnownName());
-            System.out.println("  Job Title: " + extendedProperties.get(OpenMetadataProperty.JOB_TITLE.name));
-            System.out.println("  Job Description: " + profile.getProfileProperties().getDescription());
-
-            if (profile.getProfileProperties().getAdditionalProperties() != null)
-            {
-                System.out.println("  Work Location: " + profile.getProfileProperties().getAdditionalProperties().get(workLocationPropertyName));
-            }
-
-            System.out.println("  Employee Type: " + extendedProperties.get(OpenMetadataProperty.EMPLOYEE_TYPE.name));
+            System.out.println("--Wrong type of object: " + profile.getProperties().getClass().getName());
         }
 
         System.out.println("----------------------------");
@@ -207,11 +201,11 @@ public class GovernanceLeadershipSample
      * @throws PropertyServerException the property server is not available.
      * @throws UserNotAuthorizedException the user id is not authorized to access the personal profile.
      */
-    private void  printGovernanceRole(GovernanceRoleManager client,
-                                      String                clientUserId,
-                                      String                guid) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    private void  printGovernanceRole(ActorRoleHandler client,
+                                      String           clientUserId,
+                                      String           guid) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         GovernanceRoleHistory    governanceRoleElement = client.getGovernanceRoleHistoryByGUID(clientUserId, guid);
 
@@ -250,7 +244,7 @@ public class GovernanceLeadershipSample
      *
      * @param governanceRoleElement details to print out
      */
-    private void  printGovernanceRoleAppointee(GovernanceRoleAppointee governanceRoleElement)
+    private void  printGovernanceRoleAppointee(OpenMetadataRootElement governanceRoleElement)
     {
         printGovernanceRole(governanceRoleElement);
 
@@ -263,9 +257,9 @@ public class GovernanceLeadershipSample
      *
      * @param governanceRoleElement details to print out
      */
-    private void  printGovernanceRole(GovernanceRoleElement governanceRoleElement)
+    private void  printGovernanceRole(OpenMetadataRootElement governanceRoleElement)
     {
-        GovernanceRoleProperties governanceRole = governanceRoleElement.getRole();
+        GovernanceRoleProperties governanceRole = governanceRoleElement.getProperties();
 
         System.out.println("----------------------------");
         System.out.println("Governance Role: " + governanceRoleElement.getElementHeader().getGUID());
@@ -274,7 +268,7 @@ public class GovernanceLeadershipSample
             System.out.println("  Domain: " + governanceRole.getDomainIdentifier());
             System.out.println("  Appointment Id: " + governanceRole.getIdentifier());
             System.out.println("  Appointment Scope: " + governanceRole.getScope());
-            System.out.println("  Title: " + governanceRole.getName());
+            System.out.println("  Title: " + governanceRole.getDisplayName());
         }
         else
         {
@@ -300,7 +294,7 @@ public class GovernanceLeadershipSample
             {
                 if (appointee != null)
                 {
-                    System.out.println("  Appointee: " + appointee.getProfile().getProfileProperties().getKnownName());
+                    System.out.println("  Appointee: " + appointee.getProfile().getProfileProperties().getDisplayName());
                     System.out.println("     Start Date: " + appointee.getStartDate());
                     System.out.println("     End Date: " + appointee.getEndDate());
                 }
@@ -338,7 +332,7 @@ public class GovernanceLeadershipSample
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private String createPersonalProfile(ActorProfileHandler     orgClient,
-                                         UserIdentityHandler     uidClient,
+                                         UserIdentityHandler uidClient,
                                          String                  clientUserId,
                                          String                  actorUserId,
                                          String                  actorEmployeeNo,
@@ -361,7 +355,7 @@ public class GovernanceLeadershipSample
 
         actorProfileProperties.setTypeName(typeName);
         actorProfileProperties.setQualifiedName(typeName + "::" + actorEmployeeNo);
-        actorProfileProperties.setKnownName(knownName);
+        actorProfileProperties.setDisplayName(knownName);
         actorProfileProperties.setDescription(jobDescription);
 
         Map<String, String>  additionalProperties = new HashMap<>();
@@ -381,24 +375,18 @@ public class GovernanceLeadershipSample
         extendedProperties.put(OpenMetadataProperty.EMPLOYEE_NUMBER.name, actorEmployeeNo);
         extendedProperties.put(OpenMetadataProperty.EMPLOYEE_TYPE.name, "Employee");
         extendedProperties.put(OpenMetadataProperty.PREFERRED_LANGUAGE.name, "English");
-        extendedProperties.put(OpenMetadataProperty.IS_PUBLIC.name, true);
 
         actorProfileProperties.setExtendedProperties(extendedProperties);
 
+        NewElementOptions newElementOptions = new NewElementOptions();
+        newElementOptions.setIsOwnAnchor(true);
+        newElementOptions.setEffectiveTime(new Date());
+
         String profileGUID = orgClient.createActorProfile(clientUserId,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          true,
+                                                          newElementOptions,
                                                           null,
                                                           actorProfileProperties,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          true,
-                                                          false,
-                                                          false,
-                                                          new Date());
+                                                          null);
 
         /*
          * Create a userId for the profile.
@@ -441,24 +429,17 @@ public class GovernanceLeadershipSample
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private void deleteUserIdentity(UserIdentityManagement uidClient,
-                                    String                 clientUserId,
-                                    String                 actorUserId) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    private void deleteUserIdentity(UserIdentityHandler uidClient,
+                                    String              clientUserId,
+                                    String              actorUserId) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         List<UserIdentityElement> userIdentityElements = uidClient.getUserIdentitiesByName(clientUserId,
                                                                                            actorUserId,
-                                                                                           TemplateFilter.NO_TEMPLATES,
-                                                                                           null,
-                                                                                           null,
-                                                                                           SequencingOrder.CREATION_DATE_RECENT,
-                                                                                           null,
+                                                                                           new QueryOptions(),
                                                                                            0,
-                                                                                           0,
-                                                                                           false,
-                                                                                           false,
-                                                                                            new Date());
+                                                                                           0);
 
         for (UserIdentityElement userIdentity : userIdentityElements)
         {
@@ -478,16 +459,18 @@ public class GovernanceLeadershipSample
                              PropertyServerException,
                              UserNotAuthorizedException
     {
-        ActorProfileManagement actorProfileClient = new ActorProfileManagement(this.getClass().getName(),
-                                                                            serverName,
-                                                                            serverURLRoot,
-                                                                            null,
-                                                                            100);
-        UserIdentityManagement uidClient = new UserIdentityManagement(this.getClass().getName(),
-                                                                      serverName,
-                                                                      serverURLRoot,
-                                                                      null,
-                                                                      100);
+        OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreHandler(serverName,
+                                                                                   serverURLRoot,
+                                                                                   CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceURLMarker(),
+                                                                                   100);
+        ActorProfileHandler actorProfileClient = new ActorProfileHandler(this.getClass().getName(),
+                                                                         null,
+                                                                         "Governance Leadership Sample",
+                                                                         openMetadataClient);
+        UserIdentityHandler uidClient = new UserIdentityHandler(this.getClass().getName(),
+                                                                null,
+                                                                "Governance Leadership Sample",
+                                                                openMetadataClient);
         GovernanceRoleManager  gplClient = new GovernanceRoleManager(serverName, serverURLRoot);
 
         GovernanceRoleProperties governanceRoleProperties;
@@ -538,7 +521,7 @@ public class GovernanceLeadershipSample
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.DATA.getOrdinal());
         governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + cdoAppointmentId);
         governanceRoleProperties.setIdentifier(cdoAppointmentId);
-        governanceRoleProperties.setName("Chief Data Officer (CDO) Role");
+        governanceRoleProperties.setDisplayName("Chief Data Officer (CDO) Role");
 
         String cdoGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
@@ -550,7 +533,7 @@ public class GovernanceLeadershipSample
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.PRIVACY.getOrdinal());
         governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + cpoAppointmentId);
         governanceRoleProperties.setIdentifier(cpoAppointmentId);
-        governanceRoleProperties.setName("Chief Privacy Officer (CPO) Role");
+        governanceRoleProperties.setDisplayName("Chief Privacy Officer (CPO) Role");
 
         String cpoGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
@@ -562,7 +545,7 @@ public class GovernanceLeadershipSample
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.SECURITY.getOrdinal());
         governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + csoAppointmentId);
         governanceRoleProperties.setIdentifier(csoAppointmentId);
-        governanceRoleProperties.setName("Chief Security Officer (CSO) Role");
+        governanceRoleProperties.setDisplayName("Chief Security Officer (CSO) Role");
 
         String csoGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
@@ -727,7 +710,7 @@ public class GovernanceLeadershipSample
         governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + cdoForITAppointmentId);
         governanceRoleProperties.setIdentifier(cdoForITAppointmentId);
         governanceRoleProperties.setScope("IT Systems");
-        governanceRoleProperties.setName("Chief Data Officer (CDO) for IT Role");
+        governanceRoleProperties.setDisplayName("Chief Data Officer (CDO) for IT Role");
 
         String cdoForInfoTechGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
@@ -771,7 +754,7 @@ public class GovernanceLeadershipSample
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal());
         governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + infraGovForITAppointmentId);
         governanceRoleProperties.setIdentifier(infraGovForITAppointmentId);
-        governanceRoleProperties.setName("Chief Infrastructure Architect");
+        governanceRoleProperties.setDisplayName("Chief Infrastructure Architect");
 
         String infraGovForITGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
@@ -815,7 +798,7 @@ public class GovernanceLeadershipSample
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.SOFTWARE_DEVELOPMENT.getOrdinal());
         governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + projLeadForITAppointmentId);
         governanceRoleProperties.setIdentifier(projLeadForITAppointmentId);
-        governanceRoleProperties.setName("Chief Project Lead for Software");
+        governanceRoleProperties.setDisplayName("Chief Project Lead for Software");
 
         String projLeadForITGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
@@ -858,7 +841,7 @@ public class GovernanceLeadershipSample
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.CORPORATE.getOrdinal());
         governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + corpAppointmentId);
         governanceRoleProperties.setIdentifier(corpAppointmentId);
-        governanceRoleProperties.setName("Corporate Governance Role");
+        governanceRoleProperties.setDisplayName("Corporate Governance Role");
 
         String corpGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
@@ -877,7 +860,7 @@ public class GovernanceLeadershipSample
 
         governanceRoleProperties = new GovernanceRoleProperties();
 
-        governanceRoleProperties.setName("Chief Information Security Officer (CISO) Role");
+        governanceRoleProperties.setDisplayName("Chief Information Security Officer (CISO) Role");
 
         gplClient.updateGovernanceRole(clientUserId,
                                        csoGUID,
@@ -901,16 +884,9 @@ public class GovernanceLeadershipSample
          */
         List<UserIdentityElement> activeUserIdentities = uidClient.findUserIdentities(clientUserId,
                                                                                       ".*",
-                                                                                      TemplateFilter.ALL,
-                                                                                      null,
-                                                                                      null,
-                                                                                      SequencingOrder.CREATION_DATE_RECENT,
-                                                                                      null,
+                                                                                      new QueryOptions(),
                                                                                       0,
-                                                                                      0,
-                                                                                      false,
-                                                                                       false,
-                                                                                      new Date());
+                                                                                      0);
 
         if (activeUserIdentities == null)
         {
@@ -995,16 +971,9 @@ public class GovernanceLeadershipSample
          */
         List<UserIdentityElement> abandonedUserIdentities = uidClient.findUserIdentities(clientUserId,
                                                                                          ".*",
-                                                                                         TemplateFilter.ALL,
-                                                                                         null,
-                                                                                         null,
-                                                                                         SequencingOrder.CREATION_DATE_RECENT,
-                                                                                         null,
+                                                                                         new QueryOptions(),
                                                                                          0,
-                                                                                         0,
-                                                                                         false,
-                                                                                         false,
-                                                                                         new Date());
+                                                                                         0);
 
         if (abandonedUserIdentities != null)
         {

@@ -8,18 +8,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.DataDesignHandler;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataClassHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataFieldHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataStructureHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -74,41 +68,23 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+                DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
                 if (requestBody.getProperties() instanceof DataStructureProperties dataStructureProperties)
                 {
                     response.setGUID(handler.createDataStructure(userId,
-                                                                 requestBody.getExternalSourceGUID(),
-                                                                 requestBody.getExternalSourceName(),
-                                                                 requestBody.getAnchorGUID(),
-                                                                 requestBody.getIsOwnAnchor(),
-                                                                 requestBody.getAnchorScopeGUID(),
+                                                                 requestBody,
+                                                                 requestBody.getInitialClassifications(),
                                                                  dataStructureProperties,
-                                                                 requestBody.getParentGUID(),
-                                                                 requestBody.getParentRelationshipTypeName(),
-                                                                 requestBody.getParentRelationshipProperties(),
-                                                                 requestBody.getParentAtEnd1(),
-                                                                 requestBody.getForLineage(),
-                                                                 requestBody.getForDuplicateProcessing(),
-                                                                 requestBody.getEffectiveTime()));
+                                                                 requestBody.getParentRelationshipProperties()));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setGUID(handler.createDataStructure(userId,
-                                                                 requestBody.getExternalSourceGUID(),
-                                                                 requestBody.getExternalSourceName(),
-                                                                 requestBody.getAnchorGUID(),
-                                                                 requestBody.getIsOwnAnchor(),
-                                                                 requestBody.getAnchorScopeGUID(),
+                                                                 requestBody,
+                                                                 requestBody.getInitialClassifications(),
                                                                  null,
-                                                                 requestBody.getParentGUID(),
-                                                                 requestBody.getParentRelationshipTypeName(),
-                                                                 requestBody.getParentRelationshipProperties(),
-                                                                 requestBody.getParentAtEnd1(),
-                                                                 requestBody.getForLineage(),
-                                                                 requestBody.getForDuplicateProcessing(),
-                                                                 requestBody.getEffectiveTime()));
+                                                                 requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -163,26 +139,14 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+                DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createDataStructureFromTemplate(userId,
-                                                                         requestBody.getExternalSourceGUID(),
-                                                                         requestBody.getExternalSourceName(),
-                                                                         requestBody.getAnchorGUID(),
-                                                                         requestBody.getIsOwnAnchor(),
-                                                                         requestBody.getAnchorScopeGUID(),
-                                                                         null,
-                                                                         null,
+                                                                         requestBody,
                                                                          requestBody.getTemplateGUID(),
                                                                          requestBody.getReplacementProperties(),
                                                                          requestBody.getPlaceholderPropertyValues(),
-                                                                         requestBody.getParentGUID(),
-                                                                         requestBody.getParentRelationshipTypeName(),
-                                                                         requestBody.getParentRelationshipProperties(),
-                                                                         requestBody.getParentAtEnd1(),
-                                                                         requestBody.getForLineage(),
-                                                                         requestBody.getForDuplicateProcessing(),
-                                                                         requestBody.getEffectiveTime()));
+                                                                         requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -204,8 +168,6 @@ public class DataDesignerRESTServices extends TokenController
      *
      * @param serverName         name of called server.
      * @param dataStructureGUID unique identifier of the data structure (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -215,7 +177,6 @@ public class DataDesignerRESTServices extends TokenController
      */
     public VoidResponse updateDataStructure(String                   serverName,
                                             String                   dataStructureGUID,
-                                            boolean                  replaceAllProperties,
                                             UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateDataStructure";
@@ -235,31 +196,21 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+                DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
                 if (requestBody.getProperties() instanceof DataStructureProperties dataStructureProperties)
                 {
                     handler.updateDataStructure(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
                                                 dataStructureGUID,
-                                                replaceAllProperties,
-                                                dataStructureProperties,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                                                requestBody,
+                                                dataStructureProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.updateDataStructure(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
                                                 dataStructureGUID,
-                                                replaceAllProperties,
-                                                null,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                                                requestBody,
+                                                null);
                 }
                 else
                 {
@@ -297,7 +248,7 @@ public class DataDesignerRESTServices extends TokenController
     public VoidResponse linkMemberDataField(String                  serverName,
                                             String                  dataStructureGUID,
                                             String                  dataFieldGUID,
-                                            RelationshipRequestBody requestBody)
+                                            NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkMemberDataField";
 
@@ -313,33 +264,25 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof MemberDataFieldProperties memberDataFieldProperties)
                 {
                     handler.linkMemberDataField(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
                                                 dataStructureGUID,
                                                 dataFieldGUID,
-                                                memberDataFieldProperties,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                                                requestBody,
+                                                memberDataFieldProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkMemberDataField(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
                                                 dataStructureGUID,
                                                 dataFieldGUID,
-                                                null,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                                                requestBody,
+                                                null);
                 }
                 else
                 {
@@ -349,14 +292,10 @@ public class DataDesignerRESTServices extends TokenController
             else
             {
                 handler.linkMemberDataField(userId,
-                                            null,
-                                            null,
                                             dataStructureGUID,
                                             dataFieldGUID,
-                                            null,
-                                            false,
-                                            false,
-                                            new Date());
+                                            requestBody,
+                                            null);
             }
         }
         catch (Throwable error)
@@ -382,10 +321,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachMemberDataField(String                    serverName,
-                                              String                    dataStructureGUID,
-                                              String                    dataFieldGUID,
-                                              MetadataSourceRequestBody requestBody)
+    public VoidResponse detachMemberDataField(String                   serverName,
+                                              String                   dataStructureGUID,
+                                              String                   dataFieldGUID,
+                                              DeleteRequestBody requestBody)
     {
         final String methodName = "detachMemberDataField";
 
@@ -402,30 +341,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachMemberDataField(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
-                                              dataStructureGUID,
-                                              dataFieldGUID,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachMemberDataField(userId,
-                                              null,
-                                              null,
-                                              dataStructureGUID,
-                                              dataFieldGUID,
-                                              false,
-                                              false,
-                                              new Date());
-            }
+            handler.detachMemberDataField(userId, dataStructureGUID, dataFieldGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -442,7 +360,6 @@ public class DataDesignerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param dataStructureGUID  unique identifier of the element to delete
-     * @param cascadedDelete can data structures be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -450,10 +367,9 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteDataStructure(String                    serverName,
-                                            String                    dataStructureGUID,
-                                            boolean                   cascadedDelete,
-                                            MetadataSourceRequestBody requestBody)
+    public VoidResponse deleteDataStructure(String                   serverName,
+                                            String                   dataStructureGUID,
+                                            DeleteRequestBody requestBody)
     {
         final String methodName = "deleteDataStructure";
 
@@ -470,30 +386,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteDataStructure(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
-                                            dataStructureGUID,
-                                            cascadedDelete,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteDataStructure(userId,
-                                            null,
-                                            null,
-                                            dataStructureGUID,
-                                            cascadedDelete,
-                                            false,
-                                            false,
-                                            new Date());
-            }
+            handler.deleteDataStructure(userId, dataStructureGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -509,8 +404,6 @@ public class DataDesignerRESTServices extends TokenController
      * Retrieve the list of data structure metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -519,8 +412,6 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public DataStructuresResponse getDataStructuresByName(String            serverName,
-                                                          int               startFrom,
-                                                          int               pageSize,
                                                           FilterRequestBody requestBody)
     {
         final String methodName = "getDataStructuresByName";
@@ -538,22 +429,11 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getDataStructuresByName(userId,
-                                                                     requestBody.getFilter(),
-                                                                     requestBody.getTemplateFilter(),
-                                                                     requestBody.getLimitResultsByStatus(),
-                                                                     requestBody.getAsOfTime(),
-                                                                     requestBody.getSequencingOrder(),
-                                                                     requestBody.getSequencingProperty(),
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     requestBody.getForLineage(),
-                                                                     requestBody.getForDuplicateProcessing(),
-                                                                     requestBody.getEffectiveTime()));
+                response.setElements(handler.getDataStructuresByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -584,7 +464,7 @@ public class DataDesignerRESTServices extends TokenController
      */
     public DataStructureResponse getDataStructureByGUID(String             serverName,
                                                         String             dataStructureGUID,
-                                                        AnyTimeRequestBody requestBody)
+                                                        GetRequestBody requestBody)
     {
         final String methodName = "getDataStructureByGUID";
 
@@ -601,26 +481,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getDataStructureByGUID(userId,
-                                                                   dataStructureGUID,
-                                                                   requestBody.getAsOfTime(),
-                                                                   requestBody.getForLineage(),
-                                                                   requestBody.getForDuplicateProcessing(),
-                                                                   requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getDataStructureByGUID(userId,
-                                                                   dataStructureGUID,
-                                                                   null,
-                                                                   false,
-                                                                   false,
-                                                                   new Date()));
-            }
+            response.setElement(handler.getDataStructureByGUID(userId, dataStructureGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -636,11 +499,6 @@ public class DataDesignerRESTServices extends TokenController
      * Retrieve the list of data structure metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -649,12 +507,7 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public DataStructuresResponse findDataStructures(String            serverName,
-                                                     boolean           startsWith,
-                                                     boolean           endsWith,
-                                                     boolean           ignoreCase,
-                                                     int               startFrom,
-                                                     int               pageSize,
-                                                     FilterRequestBody requestBody)
+                                                     SearchStringRequestBody requestBody)
     {
         final String methodName = "findDataStructures";
 
@@ -671,37 +524,19 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findDataStructures(userId,
-                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                requestBody.getTemplateFilter(),
-                                                                requestBody.getLimitResultsByStatus(),
-                                                                requestBody.getAsOfTime(),
-                                                                requestBody.getSequencingOrder(),
-                                                                requestBody.getSequencingProperty(),
-                                                                startFrom,
-                                                                pageSize,
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
+                                                                requestBody.getSearchString(),
+                                                                requestBody));
             }
             else
             {
                 response.setElements(handler.findDataStructures(userId,
-                                                                instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                                TemplateFilter.ALL,
                                                                 null,
-                                                                null,
-                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                null,
-                                                                startFrom,
-                                                                pageSize,
-                                                                false,
-                                                                false,
-                                                                new Date()));
+                                                                null));
             }
         }
         catch (Throwable error)
@@ -745,41 +580,23 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+                DataFieldHandler handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
 
                 if (requestBody.getProperties() instanceof DataFieldProperties dataFieldProperties)
                 {
                     response.setGUID(handler.createDataField(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             requestBody.getAnchorGUID(),
-                                                             requestBody.getIsOwnAnchor(),
-                                                             requestBody.getAnchorScopeGUID(),
+                                                             requestBody,
+                                                             requestBody.getInitialClassifications(),
                                                              dataFieldProperties,
-                                                             requestBody.getParentGUID(),
-                                                             requestBody.getParentRelationshipTypeName(),
-                                                             requestBody.getParentRelationshipProperties(),
-                                                             requestBody.getParentAtEnd1(),
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
+                                                             requestBody.getParentRelationshipProperties()));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setGUID(handler.createDataField(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             requestBody.getAnchorGUID(),
-                                                             requestBody.getIsOwnAnchor(),
-                                                             requestBody.getAnchorScopeGUID(),
+                                                             requestBody,
+                                                             requestBody.getInitialClassifications(),
                                                              null,
-                                                             requestBody.getParentGUID(),
-                                                             requestBody.getParentRelationshipTypeName(),
-                                                             requestBody.getParentRelationshipProperties(),
-                                                             requestBody.getParentAtEnd1(),
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
+                                                             requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -834,26 +651,14 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+                DataFieldHandler handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createDataFieldFromTemplate(userId,
-                                                                     requestBody.getExternalSourceGUID(),
-                                                                     requestBody.getExternalSourceName(),
-                                                                     requestBody.getAnchorGUID(),
-                                                                     requestBody.getIsOwnAnchor(),
-                                                                     requestBody.getAnchorScopeGUID(),
-                                                                     null,
-                                                                     null,
+                                                                     requestBody,
                                                                      requestBody.getTemplateGUID(),
                                                                      requestBody.getReplacementProperties(),
                                                                      requestBody.getPlaceholderPropertyValues(),
-                                                                     requestBody.getParentGUID(),
-                                                                     requestBody.getParentRelationshipTypeName(),
-                                                                     requestBody.getParentRelationshipProperties(),
-                                                                     requestBody.getParentAtEnd1(),
-                                                                     requestBody.getForLineage(),
-                                                                     requestBody.getForDuplicateProcessing(),
-                                                                     requestBody.getEffectiveTime()));
+                                                                     requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -875,8 +680,6 @@ public class DataDesignerRESTServices extends TokenController
      *
      * @param serverName         name of called server.
      * @param dataFieldGUID unique identifier of the data field (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -886,7 +689,6 @@ public class DataDesignerRESTServices extends TokenController
      */
     public VoidResponse   updateDataField(String                   serverName,
                                           String                   dataFieldGUID,
-                                          boolean                  replaceAllProperties,
                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateDataField";
@@ -906,31 +708,21 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+                DataFieldHandler handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
 
                 if (requestBody.getProperties() instanceof DataFieldProperties dataFieldProperties)
                 {
                     handler.updateDataField(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
                                             dataFieldGUID,
-                                            replaceAllProperties,
-                                            dataFieldProperties,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                                            requestBody,
+                                            dataFieldProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.updateDataField(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
                                             dataFieldGUID,
-                                            replaceAllProperties,
-                                            null,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                                            requestBody,
+                                            null);
                 }
                 else
                 {
@@ -968,7 +760,7 @@ public class DataDesignerRESTServices extends TokenController
     public VoidResponse linkNestedDataFields(String                  serverName,
                                              String                  parentDataFieldGUID,
                                              String                  nestedDataFieldGUID,
-                                             RelationshipRequestBody requestBody)
+                                             NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkNestedDataFields";
 
@@ -984,33 +776,25 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataFieldHandler handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof MemberDataFieldProperties memberDataFieldProperties)
                 {
                     handler.linkNestedDataFields(userId,
-                                                 requestBody.getExternalSourceGUID(),
-                                                 requestBody.getExternalSourceName(),
                                                  parentDataFieldGUID,
                                                  nestedDataFieldGUID,
-                                                 memberDataFieldProperties,
-                                                 requestBody.getForLineage(),
-                                                 requestBody.getForDuplicateProcessing(),
-                                                 requestBody.getEffectiveTime());
+                                                 requestBody,
+                                                 memberDataFieldProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkNestedDataFields(userId,
-                                                 requestBody.getExternalSourceGUID(),
-                                                 requestBody.getExternalSourceName(),
                                                  parentDataFieldGUID,
                                                  nestedDataFieldGUID,
-                                                 null,
-                                                 requestBody.getForLineage(),
-                                                 requestBody.getForDuplicateProcessing(),
-                                                 requestBody.getEffectiveTime());
+                                                 requestBody,
+                                                 null);
                 }
                 else
                 {
@@ -1020,14 +804,10 @@ public class DataDesignerRESTServices extends TokenController
             else
             {
                 handler.linkNestedDataFields(userId,
-                                             null,
-                                             null,
                                              parentDataFieldGUID,
                                              nestedDataFieldGUID,
                                              null,
-                                             false,
-                                             false,
-                                             new Date());
+                                             null);
             }
         }
         catch (Throwable error)
@@ -1053,10 +833,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachNestedDataFields(String                    serverName,
-                                               String                    parentDataFieldGUID,
-                                               String                    nestedDataFieldGUID,
-                                               MetadataSourceRequestBody requestBody)
+    public VoidResponse detachNestedDataFields(String                   serverName,
+                                               String                   parentDataFieldGUID,
+                                               String                   nestedDataFieldGUID,
+                                               DeleteRequestBody requestBody)
     {
         final String methodName = "detachNestedDataClass";
 
@@ -1073,30 +853,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataFieldHandler handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachNestedDataFields(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               parentDataFieldGUID,
-                                               nestedDataFieldGUID,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachNestedDataFields(userId,
-                                               null,
-                                               null,
-                                               parentDataFieldGUID,
-                                               nestedDataFieldGUID,
-                                               false,
-                                               false,
-                                               new Date());
-            }
+            handler.detachNestedDataFields(userId, parentDataFieldGUID, nestedDataFieldGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1113,7 +872,6 @@ public class DataDesignerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param dataFieldGUID  unique identifier of the element to delete
-     * @param cascadedDelete can data fields be deleted if other data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1123,8 +881,7 @@ public class DataDesignerRESTServices extends TokenController
      */
     public VoidResponse deleteDataField(String                    serverName,
                                         String                    dataFieldGUID,
-                                        boolean                   cascadedDelete,
-                                        MetadataSourceRequestBody requestBody)
+                                        DeleteRequestBody requestBody)
     {
         final String methodName = "deleteDataField";
 
@@ -1141,30 +898,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataFieldHandler handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteDataField(userId,
-                                        requestBody.getExternalSourceGUID(),
-                                        requestBody.getExternalSourceName(),
-                                        dataFieldGUID,
-                                        cascadedDelete,
-                                        requestBody.getForLineage(),
-                                        requestBody.getForDuplicateProcessing(),
-                                        requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteDataField(userId,
-                                        null,
-                                        null,
-                                        dataFieldGUID,
-                                        cascadedDelete,
-                                        false,
-                                        false,
-                                        new Date());
-            }
+            handler.deleteDataField(userId, dataFieldGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1180,8 +916,6 @@ public class DataDesignerRESTServices extends TokenController
      * Retrieve the list of data field metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1190,8 +924,6 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public DataFieldsResponse getDataFieldsByName(String            serverName,
-                                                  int               startFrom,
-                                                  int               pageSize,
                                                   FilterRequestBody requestBody)
     {
         final String methodName = "getDataFieldsByName";
@@ -1209,22 +941,11 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataFieldHandler handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getDataFieldsByName(userId,
-                                                                 requestBody.getFilter(),
-                                                                 requestBody.getTemplateFilter(),
-                                                                 requestBody.getLimitResultsByStatus(),
-                                                                 requestBody.getAsOfTime(),
-                                                                 requestBody.getSequencingOrder(),
-                                                                 requestBody.getSequencingProperty(),
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 requestBody.getForLineage(),
-                                                                 requestBody.getForDuplicateProcessing(),
-                                                                 requestBody.getEffectiveTime()));
+                response.setElements(handler.getDataFieldsByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -1245,11 +966,6 @@ public class DataDesignerRESTServices extends TokenController
      * Retrieve the list of data field metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1257,13 +973,8 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataFieldsResponse findDataFields(String            serverName,
-                                             boolean           startsWith,
-                                             boolean           endsWith,
-                                             boolean           ignoreCase,
-                                             int               startFrom,
-                                             int               pageSize,
-                                             FilterRequestBody requestBody)
+    public DataFieldsResponse findDataFields(String                  serverName,
+                                             SearchStringRequestBody requestBody)
     {
         final String methodName = "findDataFields";
 
@@ -1280,37 +991,17 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataFieldHandler handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findDataFields(userId,
-                                                            instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                            requestBody.getTemplateFilter(),
-                                                            requestBody.getLimitResultsByStatus(),
-                                                            requestBody.getAsOfTime(),
-                                                            requestBody.getSequencingOrder(),
-                                                            requestBody.getSequencingProperty(),
-                                                            startFrom,
-                                                            pageSize,
-                                                            requestBody.getForLineage(),
-                                                            requestBody.getForDuplicateProcessing(),
-                                                            requestBody.getEffectiveTime()));
+                                                            requestBody.getSearchString(),
+                                                            requestBody));
             }
             else
             {
-                response.setElements(handler.findDataFields(userId,
-                                                            instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                            TemplateFilter.ALL,
-                                                            null,
-                                                            null,
-                                                            SequencingOrder.CREATION_DATE_RECENT,
-                                                            null,
-                                                            startFrom,
-                                                            pageSize,
-                                                            false,
-                                                            false,
-                                                            new Date()));
+                response.setElements(handler.findDataFields(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -1337,7 +1028,7 @@ public class DataDesignerRESTServices extends TokenController
      */
     public DataFieldResponse getDataFieldByGUID(String             serverName,
                                                 String             dataFieldGUID,
-                                                AnyTimeRequestBody requestBody)
+                                                GetRequestBody requestBody)
     {
         final String methodName = "getDataFieldByGUID";
 
@@ -1354,26 +1045,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataFieldHandler handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getDataFieldByGUID(userId,
-                                                               dataFieldGUID,
-                                                               requestBody.getAsOfTime(),
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getDataFieldByGUID(userId,
-                                                               dataFieldGUID,
-                                                               null,
-                                                               false,
-                                                               false,
-                                                               new Date()));
-            }
+            response.setElement(handler.getDataFieldByGUID(userId, dataFieldGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -1417,41 +1091,23 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+                DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
                 if (requestBody.getProperties() instanceof DataClassProperties dataClassProperties)
                 {
                     response.setGUID(handler.createDataClass(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             requestBody.getAnchorGUID(),
-                                                             requestBody.getIsOwnAnchor(),
-                                                             requestBody.getAnchorScopeGUID(),
+                                                             requestBody,
+                                                             requestBody.getInitialClassifications(),
                                                              dataClassProperties,
-                                                             requestBody.getParentGUID(),
-                                                             requestBody.getParentRelationshipTypeName(),
-                                                             requestBody.getParentRelationshipProperties(),
-                                                             requestBody.getParentAtEnd1(),
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
+                                                             requestBody.getParentRelationshipProperties()));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setGUID(handler.createDataClass(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             requestBody.getAnchorGUID(),
-                                                             requestBody.getIsOwnAnchor(),
-                                                             requestBody.getAnchorScopeGUID(),
+                                                             requestBody,
+                                                             requestBody.getInitialClassifications(),
                                                              null,
-                                                             requestBody.getParentGUID(),
-                                                             requestBody.getParentRelationshipTypeName(),
-                                                             requestBody.getParentRelationshipProperties(),
-                                                             requestBody.getParentAtEnd1(),
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
+                                                             requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -1506,26 +1162,14 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+                DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createDataClassFromTemplate(userId,
-                                                                     requestBody.getExternalSourceGUID(),
-                                                                     requestBody.getExternalSourceName(),
-                                                                     requestBody.getAnchorGUID(),
-                                                                     requestBody.getIsOwnAnchor(),
-                                                                     requestBody.getAnchorScopeGUID(),
-                                                                     null,
-                                                                     null,
+                                                                     requestBody,
                                                                      requestBody.getTemplateGUID(),
                                                                      requestBody.getReplacementProperties(),
                                                                      requestBody.getPlaceholderPropertyValues(),
-                                                                     requestBody.getParentGUID(),
-                                                                     requestBody.getParentRelationshipTypeName(),
-                                                                     requestBody.getParentRelationshipProperties(),
-                                                                     requestBody.getParentAtEnd1(),
-                                                                     requestBody.getForLineage(),
-                                                                     requestBody.getForDuplicateProcessing(),
-                                                                     requestBody.getEffectiveTime()));
+                                                                     requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -1547,8 +1191,6 @@ public class DataDesignerRESTServices extends TokenController
      *
      * @param serverName         name of called server.
      * @param dataClassGUID unique identifier of the data class (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -1558,7 +1200,6 @@ public class DataDesignerRESTServices extends TokenController
      */
     public VoidResponse   updateDataClass(String                   serverName,
                                           String                   dataClassGUID,
-                                          boolean                  replaceAllProperties,
                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateDataClass";
@@ -1578,31 +1219,21 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+                DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
                 if (requestBody.getProperties() instanceof DataClassProperties dataClassProperties)
                 {
                     handler.updateDataClass(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
                                             dataClassGUID,
-                                            replaceAllProperties,
-                                            dataClassProperties,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                                            requestBody,
+                                            dataClassProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.updateDataClass(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
                                             dataClassGUID,
-                                            replaceAllProperties,
-                                            null,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                                            requestBody,
+                                            null);
                 }
                 else
                 {
@@ -1640,7 +1271,7 @@ public class DataDesignerRESTServices extends TokenController
     public VoidResponse linkNestedDataClass(String                  serverName,
                                             String                  parentDataClassGUID,
                                             String                  childDataClassGUID,
-                                            RelationshipRequestBody requestBody)
+                                            NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkNestedDataClass";
 
@@ -1656,29 +1287,38 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.linkNestedDataClass(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
-                                            parentDataClassGUID,
-                                            childDataClassGUID,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof DataClassCompositionProperties dataClassCompositionProperties)
+                {
+                    handler.linkNestedDataClass(userId,
+                                                parentDataClassGUID,
+                                                childDataClassGUID,
+                                                requestBody,
+                                                dataClassCompositionProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkNestedDataClass(userId,
+                                                parentDataClassGUID,
+                                                childDataClassGUID,
+                                                requestBody,
+                                                null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataClassCompositionProperties.class.getName(), methodName);
+                }
             }
             else
             {
                 handler.linkNestedDataClass(userId,
-                                            null,
-                                            null,
                                             parentDataClassGUID,
                                             childDataClassGUID,
-                                            false,
-                                            false,
-                                            new Date());
+                                            null,
+                                            null);
             }
         }
         catch (Throwable error)
@@ -1704,10 +1344,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachNestedDataClass(String                    serverName,
-                                              String                    parentDataClassGUID,
-                                              String                    childDataClassGUID,
-                                              MetadataSourceRequestBody requestBody)
+    public VoidResponse detachNestedDataClass(String                   serverName,
+                                              String                   parentDataClassGUID,
+                                              String                   childDataClassGUID,
+                                              DeleteRequestBody requestBody)
     {
         final String methodName = "detachNestedDataClass";
 
@@ -1724,30 +1364,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachNestedDataClass(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
-                                              parentDataClassGUID,
-                                              childDataClassGUID,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachNestedDataClass(userId,
-                                              null,
-                                              null,
-                                              parentDataClassGUID,
-                                              childDataClassGUID,
-                                              false,
-                                              false,
-                                              new Date());
-            }
+            handler.detachNestedDataClass(userId, parentDataClassGUID, childDataClassGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1772,10 +1391,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkSpecializedDataClass(String                    serverName,
-                                                 String                    parentDataClassGUID,
-                                                 String                    childDataClassGUID,
-                                                 RelationshipRequestBody requestBody)
+    public VoidResponse linkSpecializedDataClass(String                  serverName,
+                                                 String                  parentDataClassGUID,
+                                                 String                  childDataClassGUID,
+                                                 NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkSpecializedDataClass";
 
@@ -1791,29 +1410,38 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.linkSpecializedDataClass(userId,
-                                                 requestBody.getExternalSourceGUID(),
-                                                 requestBody.getExternalSourceName(),
-                                                 parentDataClassGUID,
-                                                 childDataClassGUID,
-                                                 requestBody.getForLineage(),
-                                                 requestBody.getForDuplicateProcessing(),
-                                                 requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof DataClassHierarchyProperties dataClassHierarchyProperties)
+                {
+                    handler.linkSpecializedDataClass(userId,
+                                                     parentDataClassGUID,
+                                                     childDataClassGUID,
+                                                     requestBody,
+                                                     dataClassHierarchyProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkSpecializedDataClass(userId,
+                                                     parentDataClassGUID,
+                                                     childDataClassGUID,
+                                                     requestBody,
+                                                     null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataClassHierarchyProperties.class.getName(), methodName);
+                }
             }
             else
             {
                 handler.linkSpecializedDataClass(userId,
-                                                 null,
-                                                 null,
                                                  parentDataClassGUID,
                                                  childDataClassGUID,
-                                                 false,
-                                                 false,
-                                                 new Date());
+                                                 null,
+                                                 null);
             }
         }
         catch (Throwable error)
@@ -1839,10 +1467,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSpecializedDataClass(String                    serverName,
-                                                   String                    parentDataClassGUID,
-                                                   String                    childDataClassGUID,
-                                                   MetadataSourceRequestBody requestBody)
+    public VoidResponse detachSpecializedDataClass(String                   serverName,
+                                                   String                   parentDataClassGUID,
+                                                   String                   childDataClassGUID,
+                                                   DeleteRequestBody requestBody)
     {
         final String methodName = "detachSpecializedDataClass";
 
@@ -1859,30 +1487,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachSpecializedDataClass(userId,
-                                                   requestBody.getExternalSourceGUID(),
-                                                   requestBody.getExternalSourceName(),
-                                                   parentDataClassGUID,
-                                                   childDataClassGUID,
-                                                   requestBody.getForLineage(),
-                                                   requestBody.getForDuplicateProcessing(),
-                                                   requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachSpecializedDataClass(userId,
-                                                   null,
-                                                   null,
-                                                   parentDataClassGUID,
-                                                   childDataClassGUID,
-                                                   false,
-                                                   false,
-                                                   new Date());
-            }
+            handler.detachSpecializedDataClass(userId, parentDataClassGUID, childDataClassGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1899,7 +1506,6 @@ public class DataDesignerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param dataClassGUID  unique identifier of the element to delete
-     * @param cascadedDelete can data classes be deleted if linked data classes are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1907,10 +1513,9 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteDataClass(String                    serverName,
-                                        String                    dataClassGUID,
-                                        boolean                   cascadedDelete,
-                                        MetadataSourceRequestBody requestBody)
+    public VoidResponse deleteDataClass(String                   serverName,
+                                        String                   dataClassGUID,
+                                        DeleteRequestBody requestBody)
     {
         final String methodName = "deleteDataClass";
 
@@ -1927,30 +1532,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteDataClass(userId,
-                                        requestBody.getExternalSourceGUID(),
-                                        requestBody.getExternalSourceName(),
-                                        dataClassGUID,
-                                        cascadedDelete,
-                                        requestBody.getForLineage(),
-                                        requestBody.getForDuplicateProcessing(),
-                                        requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteDataClass(userId,
-                                        null,
-                                        null,
-                                        dataClassGUID,
-                                        cascadedDelete,
-                                        false,
-                                        false,
-                                        new Date());
-            }
+            handler.deleteDataClass(userId, dataClassGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1966,8 +1550,6 @@ public class DataDesignerRESTServices extends TokenController
      * Retrieve the list of data class metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1975,17 +1557,15 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataClassesResponse getDataClassesByName(String            serverName,
-                                                    int               startFrom,
-                                                    int               pageSize,
-                                                    FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getDataClassesByName(String            serverName,
+                                                                 FilterRequestBody requestBody)
     {
         final String methodName = "getDataClassesByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        DataClassesResponse response = new DataClassesResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1995,22 +1575,11 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getDataClassesByName(userId,
-                                                                  requestBody.getFilter(),
-                                                                  requestBody.getTemplateFilter(),
-                                                                  requestBody.getLimitResultsByStatus(),
-                                                                  requestBody.getAsOfTime(),
-                                                                  requestBody.getSequencingOrder(),
-                                                                  requestBody.getSequencingProperty(),
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  requestBody.getForLineage(),
-                                                                  requestBody.getForDuplicateProcessing(),
-                                                                  requestBody.getEffectiveTime()));
+                response.setElements(handler.getDataClassesByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -2031,11 +1600,6 @@ public class DataDesignerRESTServices extends TokenController
      * Retrieve the list of data class metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -2043,20 +1607,15 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataClassesResponse findDataClasses(String            serverName,
-                                               boolean           startsWith,
-                                               boolean           endsWith,
-                                               boolean           ignoreCase,
-                                               int               startFrom,
-                                               int               pageSize,
-                                               FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findDataClasses(String                  serverName,
+                                                            SearchStringRequestBody requestBody)
     {
         final String methodName = "findDataClasses";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        DataClassesResponse response = new DataClassesResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -2066,37 +1625,19 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findDataClasses(userId,
-                                                             instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                             requestBody.getTemplateFilter(),
-                                                             requestBody.getLimitResultsByStatus(),
-                                                             requestBody.getAsOfTime(),
-                                                             requestBody.getSequencingOrder(),
-                                                             requestBody.getSequencingProperty(),
-                                                             startFrom,
-                                                             pageSize,
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
+                                                             requestBody.getSearchString(),
+                                                             requestBody));
             }
             else
             {
                 response.setElements(handler.findDataClasses(userId,
-                                                             instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                             TemplateFilter.ALL,
                                                              null,
-                                                             null,
-                                                             SequencingOrder.CREATION_DATE_RECENT,
-                                                             null,
-                                                             startFrom,
-                                                             pageSize,
-                                                             false,
-                                                             false,
-                                                             new Date()));
+                                                             null));
             }
         }
         catch (Throwable error)
@@ -2121,16 +1662,16 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataClassResponse getDataClassByGUID(String             serverName,
-                                                String             dataClassGUID,
-                                                AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getDataClassByGUID(String             serverName,
+                                                              String             dataClassGUID,
+                                                              GetRequestBody requestBody)
     {
         final String methodName = "getDataClassByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        DataClassResponse response = new DataClassResponse();
-        AuditLog                      auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -2140,26 +1681,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataClassHandler handler = instanceHandler.getDataClassHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getDataClassByGUID(userId,
-                                                               dataClassGUID,
-                                                               requestBody.getAsOfTime(),
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getDataClassByGUID(userId,
-                                                               dataClassGUID,
-                                                               null,
-                                                               false,
-                                                               false,
-                                                               new Date()));
-            }
+            response.setElement(handler.getDataClassByGUID(userId, dataClassGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -2169,8 +1693,6 @@ public class DataDesignerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
 
 
     /**
@@ -2190,7 +1712,7 @@ public class DataDesignerRESTServices extends TokenController
     public VoidResponse linkDataClassDefinition(String                  serverName,
                                                 String                  dataDefinitionGUID,
                                                 String                  dataClassGUID,
-                                                RelationshipRequestBody requestBody)
+                                                NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkDataClassDefinition";
 
@@ -2207,22 +1729,38 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
-
-                handler.linkDataClassDefinition(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
-                                                dataDefinitionGUID,
-                                                dataClassGUID,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof DataClassDefinitionProperties dataClassDefinitionProperties)
+                {
+                    handler.linkDataClassDefinition(userId,
+                                                    dataDefinitionGUID,
+                                                    dataClassGUID,
+                                                    requestBody,
+                                                    dataClassDefinitionProperties);
+                }
+                else if (requestBody.getProperties() != null)
+                {
+                    handler.linkDataClassDefinition(userId,
+                                                    dataDefinitionGUID,
+                                                    dataClassGUID,
+                                                    requestBody,
+                                                    null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataClassDefinitionProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.linkDataClassDefinition(userId,
+                                                dataDefinitionGUID,
+                                                dataClassGUID,
+                                                null,
+                                                null);
             }
         }
         catch (Throwable error)
@@ -2248,10 +1786,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachDataClassDefinition(String                    serverName,
-                                                  String                    dataDefinitionGUID,
-                                                  String                    dataClassGUID,
-                                                  MetadataSourceRequestBody requestBody)
+    public VoidResponse detachDataClassDefinition(String                   serverName,
+                                                  String                   dataDefinitionGUID,
+                                                  String                   dataClassGUID,
+                                                  DeleteRequestBody requestBody)
     {
         final String methodName = "detachDataClassDefinition";
 
@@ -2268,30 +1806,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachDataClassDefinition(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
-                                                  dataDefinitionGUID,
-                                                  dataClassGUID,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachDataClassDefinition(userId,
-                                                  null,
-                                                  null,
-                                                  dataDefinitionGUID,
-                                                  dataClassGUID,
-                                                  false,
-                                                  false,
-                                                  new Date());
-            }
+            handler.detachDataClassDefinition(userId, dataDefinitionGUID, dataClassGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -2320,7 +1837,7 @@ public class DataDesignerRESTServices extends TokenController
     public VoidResponse linkSemanticDefinition(String                  serverName,
                                                String                  dataDefinitionGUID,
                                                String                  glossaryTermGUID,
-                                               RelationshipRequestBody requestBody)
+                                               NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkSemanticDefinition";
 
@@ -2336,30 +1853,38 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-
-                handler.linkSemanticDefinition(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               dataDefinitionGUID,
-                                               glossaryTermGUID,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof SemanticDefinitionProperties semanticDefinitionProperties)
+                {
+                    handler.linkSemanticDefinition(userId,
+                                                   dataDefinitionGUID,
+                                                   glossaryTermGUID,
+                                                   requestBody,
+                                                   semanticDefinitionProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkSemanticDefinition(userId,
+                                                   dataDefinitionGUID,
+                                                   glossaryTermGUID,
+                                                   requestBody,
+                                                   null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SemanticDefinitionProperties.class.getName(), methodName);
+                }
             }
             else
             {
                 handler.linkSemanticDefinition(userId,
-                                               null,
-                                               null,
                                                dataDefinitionGUID,
                                                glossaryTermGUID,
-                                               false,
-                                               false,
-                                               new Date());
+                                               null,
+                                               null);
             }
         }
         catch (Throwable error)
@@ -2385,10 +1910,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSemanticDefinition(String                    serverName,
-                                                 String                    dataDefinitionGUID,
-                                                 String                    glossaryTermGUID,
-                                                 MetadataSourceRequestBody requestBody)
+    public VoidResponse detachSemanticDefinition(String                   serverName,
+                                                 String                   dataDefinitionGUID,
+                                                 String                   glossaryTermGUID,
+                                                 DeleteRequestBody requestBody)
     {
         final String methodName = "detachSemanticDefinition";
 
@@ -2405,30 +1930,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachSemanticDefinition(userId,
-                                                 requestBody.getExternalSourceGUID(),
-                                                 requestBody.getExternalSourceName(),
-                                                 dataDefinitionGUID,
-                                                 glossaryTermGUID,
-                                                 requestBody.getForLineage(),
-                                                 requestBody.getForDuplicateProcessing(),
-                                                 requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachSemanticDefinition(userId,
-                                                 null,
-                                                 null,
-                                                 dataDefinitionGUID,
-                                                 glossaryTermGUID,
-                                                 false,
-                                                 false,
-                                                 new Date());
-            }
+            handler.detachSemanticDefinition(userId, dataDefinitionGUID, glossaryTermGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -2460,7 +1964,7 @@ public class DataDesignerRESTServices extends TokenController
     public VoidResponse linkCertificationTypeToDataStructure(String                  serverName,
                                                              String                  certificationTypeGUID,
                                                              String                  dataStructureGUID,
-                                                             RelationshipRequestBody requestBody)
+                                                             NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkCertificationTypeToDataStructure";
 
@@ -2476,29 +1980,38 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.linkCertificationTypeToDataStructure(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             certificationTypeGUID,
-                                                             dataStructureGUID,
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime());
+                if (requestBody.getProperties() instanceof DataStructureDefinitionProperties dataStructureDefinitionProperties)
+                {
+                    handler.linkCertificationTypeToDataStructure(userId,
+                                                                 certificationTypeGUID,
+                                                                 dataStructureGUID,
+                                                                 requestBody,
+                                                                 dataStructureDefinitionProperties);
+                }
+                else if (requestBody.getProperties() != null)
+                {
+                    handler.linkCertificationTypeToDataStructure(userId,
+                                                                 certificationTypeGUID,
+                                                                 dataStructureGUID,
+                                                                 requestBody,
+                                                                 null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataStructureDefinitionProperties.class.getName(), methodName);
+                }
             }
             else
             {
                 handler.linkCertificationTypeToDataStructure(userId,
-                                                             null,
-                                                             null,
                                                              certificationTypeGUID,
                                                              dataStructureGUID,
-                                                             false,
-                                                             false,
-                                                             new Date());
+                                                             null,
+                                                             null);
             }
         }
         catch (Throwable error)
@@ -2524,10 +2037,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachCertificationTypeToDataStructure(String                    serverName,
-                                                               String                    certificationTypeGUID,
-                                                               String                    dataStructureGUID,
-                                                               MetadataSourceRequestBody requestBody)
+    public VoidResponse detachCertificationTypeToDataStructure(String                   serverName,
+                                                               String                   certificationTypeGUID,
+                                                               String                   dataStructureGUID,
+                                                               DeleteRequestBody requestBody)
     {
         final String methodName = "detachCertificationTypeToDataStructure";
 
@@ -2544,30 +2057,9 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
+            DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachCertificationTypeToDataStructure(userId,
-                                                               requestBody.getExternalSourceGUID(),
-                                                               requestBody.getExternalSourceName(),
-                                                               certificationTypeGUID,
-                                                               dataStructureGUID,
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachCertificationTypeToDataStructure(userId,
-                                                               null,
-                                                               null,
-                                                               certificationTypeGUID,
-                                                               dataStructureGUID,
-                                                               false,
-                                                               false,
-                                                               new Date());
-            }
+            handler.detachCertificationTypeToDataStructure(userId, certificationTypeGUID, dataStructureGUID, requestBody);
         }
         catch (Throwable error)
         {

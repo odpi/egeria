@@ -10,15 +10,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -35,6 +40,10 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     protected OMRSRepositoryHelper   repositoryHelper;
     protected String                 serviceName;
     protected String                 serverName;
+
+    protected static final PropertyHelper propertyHelper = new PropertyHelper();
+
+    private static final Logger log = LoggerFactory.getLogger(OpenMetadataAPIGenericConverter.class);
 
 
     /**
@@ -654,6 +663,204 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+
+    /**
+     * Fill an omf control header from the information in a repository services element header.
+     *
+     * @param elementControlHeader omf object control header
+     * @param header OMRS element header
+     */
+    public void fillElementControlHeader(ElementControlHeader elementControlHeader,
+                                         InstanceAuditHeader  header)
+    {
+        if (header != null)
+        {
+            elementControlHeader.setStatus(this.getElementStatus(header.getStatus()));
+            elementControlHeader.setType(this.getElementType(header));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementControlHeader.setOrigin(elementOrigin);
+
+            elementControlHeader.setVersions(this.getElementVersions(header));
+        }
+    }
+
+
+
+    /**
+     * Convert OMRS value in omf value.
+     *
+     * @param primitiveDefCategory OMRS value
+     * @return omf equivalent
+     */
+    protected PrimitiveTypeCategory mapPrimitiveDefCategory(PrimitiveDefCategory primitiveDefCategory)
+    {
+        return switch (primitiveDefCategory)
+        {
+            case OM_PRIMITIVE_TYPE_INT -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT;
+            case OM_PRIMITIVE_TYPE_BYTE -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BYTE;
+            case OM_PRIMITIVE_TYPE_CHAR -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_CHAR;
+            case OM_PRIMITIVE_TYPE_DATE -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE;
+            case OM_PRIMITIVE_TYPE_LONG -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG;
+            case OM_PRIMITIVE_TYPE_FLOAT -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT;
+            case OM_PRIMITIVE_TYPE_SHORT -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_SHORT;
+            case OM_PRIMITIVE_TYPE_DOUBLE -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DOUBLE;
+            case OM_PRIMITIVE_TYPE_STRING -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING;
+            case OM_PRIMITIVE_TYPE_BOOLEAN -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN;
+            case OM_PRIMITIVE_TYPE_BIGDECIMAL -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL;
+            case OM_PRIMITIVE_TYPE_BIGINTEGER -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGINTEGER;
+            default -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
+        };
+
+    }
+
+
+    /**
+     * Fill out the properties for the omf Open Metadata Element bean with values from an OMRS entity.
+     *
+     * @param instanceProperties retrieve properties
+     * @return  properties mapped to omf
+     */
+    public ElementProperties mapElementProperties(InstanceProperties instanceProperties)
+    {
+        if (instanceProperties != null)
+        {
+            if (instanceProperties.getInstanceProperties() != null)
+            {
+                ElementProperties                  omfElementProperties = new ElementProperties();
+                Map<String, InstancePropertyValue> omrsProperties       = instanceProperties.getInstanceProperties();
+
+                for (String propertyName : omrsProperties.keySet())
+                {
+                    log.debug("=================================");
+                    log.debug("Processing property: " + propertyName);
+                    InstancePropertyValue omrsPropertyValue = omrsProperties.get(propertyName);
+
+                    if (omrsPropertyValue != null)
+                    {
+                        log.debug("OMRS Property value: " + omrsPropertyValue);
+                        log.debug("OMRS Property category: " + omrsPropertyValue.getInstancePropertyCategory());
+
+                        switch (omrsPropertyValue.getInstancePropertyCategory())
+                        {
+                            case PRIMITIVE:
+                                PrimitivePropertyValue omrsPrimitivePropertyValue = (PrimitivePropertyValue) omrsPropertyValue;
+                                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+
+                                primitiveTypePropertyValue.setTypeName(omrsPrimitivePropertyValue.getTypeName());
+                                primitiveTypePropertyValue.setPrimitiveValue(omrsPrimitivePropertyValue.getPrimitiveValue());
+                                primitiveTypePropertyValue.setPrimitiveTypeCategory(mapPrimitiveDefCategory(omrsPrimitivePropertyValue.getPrimitiveDefCategory()));
+
+                                omfElementProperties.setProperty(propertyName, primitiveTypePropertyValue);
+                                break;
+
+                            case ENUM:
+                                EnumPropertyValue omrsEnumPropertyValue = (EnumPropertyValue) omrsPropertyValue;
+                                EnumTypePropertyValue enumTypePropertyValue = new EnumTypePropertyValue();
+
+                                enumTypePropertyValue.setTypeName(omrsEnumPropertyValue.getTypeName());
+                                enumTypePropertyValue.setSymbolicName(omrsEnumPropertyValue.getSymbolicName());
+
+                                omfElementProperties.setProperty(propertyName, enumTypePropertyValue);
+                                break;
+
+                            case MAP:
+                                MapPropertyValue omrsMapPropertyValue = (MapPropertyValue) omrsPropertyValue;
+                                MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+
+                                mapTypePropertyValue.setTypeName(omrsMapPropertyValue.getTypeName());
+                                mapTypePropertyValue.setMapValues(this.mapElementProperties(omrsMapPropertyValue.getMapValues()));
+
+                                omfElementProperties.setProperty(propertyName, mapTypePropertyValue);
+                                break;
+
+                            case ARRAY:
+                                ArrayPropertyValue omrsArrayPropertyValue = (ArrayPropertyValue) omrsPropertyValue;
+                                ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
+
+                                arrayTypePropertyValue.setTypeName(omrsArrayPropertyValue.getTypeName());
+                                arrayTypePropertyValue.setArrayValues(this.mapElementProperties(omrsArrayPropertyValue.getArrayValues()));
+                                if (arrayTypePropertyValue.getArrayValues() != null)
+                                {
+                                    arrayTypePropertyValue.setArrayCount(arrayTypePropertyValue.getArrayValues().getPropertyCount());
+                                }
+
+                                omfElementProperties.setProperty(propertyName, arrayTypePropertyValue);
+                                break;
+
+                            case STRUCT:
+                                StructPropertyValue omrsStructPropertyValue = (StructPropertyValue) omrsPropertyValue;
+                                StructTypePropertyValue structTypePropertyValue = new StructTypePropertyValue();
+
+                                structTypePropertyValue.setTypeName(omrsStructPropertyValue.getTypeName());
+                                structTypePropertyValue.setAttributes(this.mapElementProperties(omrsStructPropertyValue.getAttributes()));
+
+                                omfElementProperties.setProperty(propertyName, structTypePropertyValue);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        log.debug("Ignoring property: " + propertyName);
+                    }
+                }
+
+                log.debug("omf properties: " + omfElementProperties);
+                return omfElementProperties;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the classifications from the entity.
+     *
+     * @param entityClassifications classifications direct from the entity
+     * @return list of bean classifications
+     */
+    protected List<AttachedClassification> getAttachedClassifications(List<Classification> entityClassifications)
+    {
+        List<AttachedClassification> beanClassifications = null;
+
+        if (entityClassifications != null)
+        {
+            beanClassifications = new ArrayList<>();
+
+            for (Classification entityClassification : entityClassifications)
+            {
+                if (entityClassification != null)
+                {
+                    AttachedClassification beanClassification = new AttachedClassification();
+
+                    fillElementControlHeader(beanClassification, entityClassification);
+
+                    beanClassification.setClassificationName(entityClassification.getName());
+
+                    if (entityClassification.getProperties() != null)
+                    {
+                        beanClassification.setClassificationProperties(mapElementProperties(entityClassification.getProperties()));
+                        beanClassification.setEffectiveFromTime(entityClassification.getProperties().getEffectiveFromTime());
+                        beanClassification.setEffectiveToTime(entityClassification.getProperties().getEffectiveToTime());
+                    }
+
+                    beanClassifications.add(beanClassification);
+                }
+            }
+        }
+
+        return beanClassifications;
+    }
+
+
     /**
      * Extract the properties from the entity.
      *
@@ -676,7 +883,8 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
             elementHeader.setGUID(header.getGUID());
             elementHeader.setStatus(this.getElementStatus(header.getStatus()));
-            elementHeader.setClassifications(this.getElementClassifications(entityClassifications));
+            propertyHelper.addClassificationsToElementHeader(elementHeader,
+                                                             this.getAttachedClassifications(entityClassifications));
             elementHeader.setType(this.getElementType(header));
 
             ElementOrigin elementOrigin = new ElementOrigin();
@@ -987,6 +1195,23 @@ public abstract class OpenMetadataAPIGenericConverter<B>
             elementType.setTypeVersion(instanceType.getTypeDefVersion());
             elementType.setTypeDescription(typeDef.getDescription());
 
+            if (instanceType.getTypeDefCategory() == TypeDefCategory.ENTITY_DEF)
+            {
+                elementType.setTypeCategory(OpenMetadataTypeDefCategory.ENTITY_DEF);
+            }
+            else if (instanceType.getTypeDefCategory() == TypeDefCategory.CLASSIFICATION_DEF)
+            {
+                elementType.setTypeCategory(OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
+            }
+            else if (instanceType.getTypeDefCategory() == TypeDefCategory.RELATIONSHIP_DEF)
+            {
+                elementType.setTypeCategory(OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
+            }
+            else
+            {
+                elementType.setTypeCategory(OpenMetadataTypeDefCategory.UNKNOWN_DEF);
+            }
+
             List<TypeDefLink> typeDefSuperTypes = repositoryHelper.getSuperTypes(serviceName, typeDefName);
 
             if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
@@ -1120,140 +1345,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
-    /**
-     * Set up the properties that can be extracted form the schema type.
-     *
-     * @param schemaAttributeEntity entity to unpack
-     * @param schemaTypeElement schema type properties
-     * @param schemaAttributeRelationships relationships containing the links to other schema attributes
-     * @param properties output column properties
-     */
-    public void setUpSchemaAttribute(EntityDetail              schemaAttributeEntity,
-                                     SchemaTypeElement         schemaTypeElement,
-                                     List<Relationship>        schemaAttributeRelationships,
-                                     SchemaAttributeProperties properties)
-    {
-        /*
-         * The initial set of values come from the entity.
-         */
-        InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
-
-        properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-        properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-        properties.setDisplayName(this.removeDisplayName(instanceProperties));
-        properties.setDescription(this.removeDescription(instanceProperties));
-
-        properties.setElementPosition(this.removePosition(instanceProperties));
-        properties.setMinCardinality(this.removeMinCardinality(instanceProperties));
-        properties.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
-        properties.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
-        properties.setOrderedValues(this.removeOrderedValues(instanceProperties));
-        properties.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
-        properties.setSortOrder(this.removeSortOrder(instanceProperties));
-        properties.setMinimumLength(this.removeMinimumLength(instanceProperties));
-        properties.setLength(this.removeLength(instanceProperties));
-        properties.setPrecision(this.removePrecision(instanceProperties));
-        properties.setIsNullable(this.removeIsNullable(instanceProperties));
-        properties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
-        properties.setAliases(this.removeAliases(instanceProperties));
-
-        /*
-         * Any remaining properties are returned in the extended properties.  They are assumed to be defined in a subtype.
-         */
-        properties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-        if (schemaTypeElement != null)
-        {
-            this.addSchemaTypeToAttribute(schemaTypeElement, properties);
-        }
-
-        if (schemaAttributeRelationships != null)
-        {
-            for (Relationship relationship : schemaAttributeRelationships)
-            {
-                if ((relationship != null) && (relationship.getType() != null) &&
-                        ((relationship.getType().getTypeDefName().equals(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName)) ||
-                                (relationship.getType().getTypeDefName().equals(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName))))
-                {
-                    if (relationship.getProperties() != null)
-                    {
-                        properties.setElementPosition(this.getPosition(relationship.getProperties()));
-                        properties.setMinCardinality(this.getMinCardinality(relationship.getProperties()));
-                        properties.setMaxCardinality(this.getMaxCardinality(relationship.getProperties()));
-                    }
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Set up the properties that can be extracted form the schema type. There are two strategies to try.
-     * The Schema Type Converter in the OCF creates a bean of a specific type to reflect the type of schema.
-     * The Schema Type Converter in the generic handler always creates a bean of type SchemaTypeProperties with the
-     * subtype's properties in extendedProperties.
-     *
-     * @param schemaTypeElement schema type properties
-     * @param attributeProperties output column properties
-     */
-    public void addSchemaTypeToAttribute(SchemaTypeElement         schemaTypeElement,
-                                         SchemaAttributeProperties attributeProperties)
-    {
-        SchemaTypeProperties schemaTypeProperties = schemaTypeElement.getSchemaTypeProperties();
-
-        if (schemaTypeProperties instanceof PrimitiveSchemaTypeProperties)
-        {
-            attributeProperties.setDataType(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDataType());
-            attributeProperties.setDefaultValue(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
-        }
-        else if (schemaTypeProperties instanceof LiteralSchemaTypeProperties)
-        {
-            attributeProperties.setDataType(((LiteralSchemaTypeProperties) schemaTypeProperties).getDataType());
-            attributeProperties.setFixedValue(((LiteralSchemaTypeProperties) schemaTypeProperties).getFixedValue());
-        }
-        else if (schemaTypeProperties instanceof EnumSchemaTypeProperties)
-        {
-            attributeProperties.setDataType(((EnumSchemaTypeProperties) schemaTypeProperties).getDataType());
-            attributeProperties.setDefaultValue(((EnumSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
-            attributeProperties.setValidValuesSetGUID(((EnumSchemaTypeProperties) schemaTypeProperties).getValidValueSetGUID());
-        }
-        else if (schemaTypeProperties instanceof ExternalSchemaTypeProperties)
-        {
-            SchemaTypeElement externalSchemaType = schemaTypeElement.getExternalSchemaType();
-            attributeProperties.setExternalTypeGUID(externalSchemaType.getElementHeader().getGUID());
-        }
-        else
-        {
-            /*
-             * The schema type is unspecialized, so just pull any additional properties out of extended properties.
-             */
-            if (schemaTypeProperties.getExtendedProperties() != null)
-            {
-                Map<String, Object> extendedProperties = schemaTypeProperties.getExtendedProperties();
-
-                Object propertyObject = extendedProperties.get(OpenMetadataProperty.DATA_TYPE.name);
-                if (propertyObject != null)
-                {
-                    attributeProperties.setDataType(propertyObject.toString());
-                }
-
-                propertyObject = extendedProperties.get(OpenMetadataProperty.FIXED_VALUE.name);
-                if (propertyObject != null)
-                {
-                    attributeProperties.setFixedValue(propertyObject.toString());
-                }
-
-                propertyObject = extendedProperties.get(OpenMetadataProperty.DEFAULT_VALUE.name);
-                if (propertyObject != null)
-                {
-                    attributeProperties.setDefaultValue(propertyObject.toString());
-                }
-            }
-        }
-
-        attributeProperties.setSchemaType(schemaTypeProperties);
-    }
-
 
     /**
      * Using the supplied instances, return a new instance of a relatedElement bean. This is used for beans that
@@ -1279,7 +1370,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
-            RelationshipProperties relationshipProperties = new RelationshipProperties();
+            RelationshipBeanProperties relationshipProperties = new RelationshipBeanProperties();
 
             relationshipProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
             relationshipProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
@@ -1334,7 +1425,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
-            RelationshipProperties relationshipProperties = new RelationshipProperties();
+            RelationshipBeanProperties relationshipProperties = new RelationshipBeanProperties();
 
             relationshipProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
             relationshipProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
@@ -1385,7 +1476,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
-            RelationshipProperties relationshipProperties = new RelationshipProperties();
+            RelationshipBeanProperties relationshipProperties = new RelationshipBeanProperties();
 
             relationshipProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
             relationshipProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
@@ -1586,7 +1677,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.NAME.name,
+                                                         OpenMetadataProperty.DISPLAY_NAME.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -1675,28 +1766,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataProperty.DESCRIPTION.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the collectionType property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string text or null
-     */
-    protected String removeCollectionType(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeCollectionType";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.COLLECTION_TYPE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2836,7 +2905,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.JURISDICTION.name,
+                                                         OpenMetadataProperty.REGULATION_SOURCE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -3046,7 +3115,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataProperty.ENCODING.name,
+                                                      OpenMetadataProperty.ENCODING_TYPE.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -3358,20 +3427,11 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            String type = repositoryHelper.removeStringProperty(serviceName,
-                                                                OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                instanceProperties,
-                                                                methodName);
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                         instanceProperties,
+                                                         methodName);
 
-            if (type == null)
-            {
-                type = repositoryHelper.removeStringProperty(serviceName,
-                                                             OpenMetadataProperty.CAPABILITY_TYPE.name,
-                                                             instanceProperties,
-                                                             methodName);
-            }
-
-            return type;
         }
 
         return null;
@@ -3391,7 +3451,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.CAPABILITY_VERSION.name,
+                                                         OpenMetadataProperty.VERSION_IDENTIFIER.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -3419,31 +3479,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
 
         return null;
-    }
-
-
-
-
-
-    /**
-     * Retrieve the isDeprecated flag from the properties from the supplied instance properties.
-     *
-     * @param instanceProperties properties from the classification
-     * @return boolean - default is false
-     */
-    protected boolean removeIsDeprecated(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeIsDeprecated";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeBooleanProperty(serviceName,
-                                                          OpenMetadataProperty.IS_DEPRECATED.name,
-                                                          instanceProperties,
-                                                          methodName);
-        }
-
-        return false;
     }
 
 
@@ -4287,7 +4322,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeDateProperty(serviceName,
-                                                         OpenMetadataProperty.PROCESS_START_TIME.name,
+                                                         OpenMetadataProperty.START_TIME.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -4309,7 +4344,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeDateProperty(serviceName,
-                                                       OpenMetadataProperty.PROCESS_END_TIME.name,
+                                                       OpenMetadataProperty.COMPLETION_TIME.name,
                                                        instanceProperties,
                                                        methodName);
         }
@@ -4474,32 +4509,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
-
-    /**
-     * Extract and remove the publishVersionIdentifier property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from governance entities
-     * @return string property or null
-     */
-    protected String removePublishVersionIdentifier(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removePublishVersionIdentifier";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.PUBLISH_VERSION_ID.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-
-
-
     /**
      * Extract the abbreviation property from the supplied instance properties.
      *
@@ -4568,28 +4577,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract the title property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from governance entities
-     * @return string property or null
-     */
-    protected String removeTitle(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removeTitle";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.TITLE.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract the text property from the supplied instance properties.
      *
      * @param instanceProperties properties from governance entities
@@ -4602,7 +4589,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.TEXT.name,
+                                                         OpenMetadataProperty.DESCRIPTION.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -4736,28 +4723,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringArrayProperty(serviceName,
                                                               OpenMetadataProperty.OUTCOMES.name,
-                                                              instanceProperties,
-                                                              methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the "implications" property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string list or null
-     */
-    protected List<String> removeImplications(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removeImplications";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataProperty.IMPLICATIONS.name,
                                                               instanceProperties,
                                                               methodName);
         }
@@ -5350,6 +5315,30 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from entity
      * @return date
      */
+    protected Date removeStartTime(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeStartTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataProperty.START_TIME.name,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the startDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
     protected Date removeStartDate(InstanceProperties instanceProperties)
 
     {
@@ -5381,7 +5370,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeDateProperty(serviceName,
-                                                       OpenMetadataProperty.REQUESTED_START_DATE.name,
+                                                       OpenMetadataProperty.REQUESTED_START_TIME.name,
                                                        instanceProperties,
                                                        methodName);
         }
@@ -5428,7 +5417,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeDateProperty(serviceName,
-                                                       OpenMetadataProperty.COMPLETION_DATE.name,
+                                                       OpenMetadataProperty.COMPLETION_TIME.name,
                                                        instanceProperties,
                                                        methodName);
         }
@@ -5508,29 +5497,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the requestSourceName property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return String text or null
-     */
-    protected String removeRequestSourceName(InstanceProperties instanceProperties)
-
-    {
-        final String methodName = "removeRequestSourceName";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.REQUEST_SOURCE_NAME.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract and delete the actionTargetName property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -5545,52 +5511,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataProperty.ACTION_TARGET_NAME.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the originGovernanceService property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return String text or null
-     */
-    protected String removeOriginGovernanceService(InstanceProperties instanceProperties)
-
-    {
-        final String methodName = "removeOriginGovernanceService";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.ORIGIN_GOVERNANCE_SERVICE.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the originGovernanceEngine property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return String text or null
-     */
-    protected String removeOriginGovernanceEngine(InstanceProperties instanceProperties)
-
-    {
-        final String methodName = "removeOriginGovernanceEngine";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.ORIGIN_GOVERNANCE_ENGINE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5636,7 +5556,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getDateProperty(serviceName,
-                                                    OpenMetadataProperty.START.name,
+                                                    OpenMetadataProperty.COVERAGE_START.name,
                                                     instanceProperties,
                                                     methodName);
         }
@@ -5659,7 +5579,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getDateProperty(serviceName,
-                                                    OpenMetadataProperty.END.name,
+                                                    OpenMetadataProperty.COVERAGE_END.name,
                                                     instanceProperties,
                                                     methodName);
         }
@@ -6104,56 +6024,12 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.TEXT.name,
+                                                         OpenMetadataProperty.DESCRIPTION.name,
                                                          instanceProperties,
                                                          methodName);
         }
 
         return null;
-    }
-
-
-    /**
-     * Extract the isPublic property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from feedback relationships
-     * @return boolean
-     */
-    protected boolean getIsPublic(InstanceProperties instanceProperties)
-    {
-        final String methodName = "getIsPublic";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.getBooleanProperty(serviceName,
-                                                       OpenMetadataProperty.IS_PUBLIC.name,
-                                                       instanceProperties,
-                                                       methodName);
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Extract the isPublic property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from feedback relationships
-     * @return boolean
-     */
-    protected boolean removeIsPublic(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removeIsPublic";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeBooleanProperty(serviceName,
-                                                          OpenMetadataProperty.IS_PUBLIC.name,
-                                                          instanceProperties,
-                                                          methodName);
-        }
-
-        return false;
     }
 
 
@@ -6180,6 +6056,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the review property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from review/rating entities
+     * @return string property or null
+     */
+    protected String removeEmoji(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeEmoji";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.EMOJI.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the tagName property from the supplied instance properties.
      *
      * @param instanceProperties properties from informal tag entities
@@ -6192,7 +6090,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.TAG_NAME.name,
+                                                         OpenMetadataProperty.DISPLAY_NAME.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -6214,7 +6112,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.TAG_DESCRIPTION.name,
+                                                         OpenMetadataProperty.DESCRIPTION.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -7005,7 +6903,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.ENCODING.name,
+                                                         OpenMetadataProperty.ENCODING_TYPE.name,
                                                          instanceProperties,
                                                          methodName);
         }

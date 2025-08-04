@@ -4,35 +4,31 @@ package org.odpi.openmetadata.frameworks.integration.context;
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.governanceaction.connectorcontext.ConnectorConfigClient;
+import org.odpi.openmetadata.frameworks.governanceaction.connectorcontext.StewardshipAction;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
-import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
-import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
-import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
-import org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface;
-import org.odpi.openmetadata.frameworks.integration.filelistener.FilesListenerManager;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * IntegrationContext is the base class for the integration context provided to the integration connector to provide access to open metadata
@@ -40,173 +36,209 @@ import java.util.*;
  * is supporting.
  * This base class supports the common methods available to all types of integration connectors.
  */
-public class IntegrationContext
+public class IntegrationContext extends ConnectorContextBase
 {
-    protected final PropertyHelper           propertyHelper = new PropertyHelper();
+    protected final OpenMetadataEventClient    openMetadataEventClient;
+    private final   OpenLineageListenerManager openLineageListenerManager;
 
-    protected final OpenIntegrationClient    openIntegrationClient;
-    protected final ActionControlInterface   actionControlInterface;
-    protected final GovernanceConfiguration  governanceConfiguration;
-    protected final OpenMetadataClient       openMetadataStoreClient;
-    protected final String                   userId;
-    protected final String                   connectorName;
-    protected final String                   integrationConnectorGUID;
-    protected final PermittedSynchronization permittedSynchronization;
-
-    protected       String                   externalSourceGUID;
-    protected       String                   externalSourceName;
-    protected       boolean                  externalSourceIsHome = true;
-
-    protected final FileClassifier           fileClassifier;
-
-    private   final ConnectedAssetContext        connectedAssetContext;
-    private   final IntegrationGovernanceContext integrationGovernanceContext;
-    protected final IntegrationReportWriter      integrationReportWriter;
+    protected final OpenIntegrationClient   openIntegrationClient;
+    protected final OpenGovernanceClient    openGovernanceClient;
+    protected final ConnectedAssetClient    connectedAssetClient;
+    protected final GovernanceConfiguration governanceConfiguration;
+    protected final StewardshipAction       stewardshipAction;
+    private final   ConnectedAssetContext    connectedAssetContext;
+    private final   ConnectorConfigClient   connectorConfigClient;
 
     private   final Map<String, String> externalSourceCache = new HashMap<>();
 
-    protected final int maxPageSize;
-
-    private final FilesListenerManager listenerManager;
+    protected final PermittedSynchronization permittedSynchronization;
 
     private boolean isRefreshInProgress = false;
+    private boolean listenerRegistered = false;
 
     /**
      * Constructor handles standard values for all integration contexts.
      *
+     * @param localServerName name of local server
+     * @param localServiceName name of the service to call
+     * @param externalSourceGUID metadata collection unique id
+     * @param externalSourceName metadata collection unique name
      * @param connectorId unique identifier of the connector (used to configure the event listener)
      * @param connectorName name of connector from config
      * @param connectorUserId userId for the connector
-     * @param serverName name of the integration daemon
-     * @param openIntegrationClient client for calling the metadata server
-     * @param governanceConfiguration client for managing catalog targets
-     * @param openMetadataStoreClient client for calling the metadata server
-     * @param actionControlInterface client for initiating governance actions
+     * @param connectorGUID unique identifier of the integration connector entity (maybe null)
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization enum
-     * @param externalSourceGUID unique identifier of the software server capability for the source of metadata
-     * @param externalSourceName unique name of the software server capability for the source of metadata
-     * @param integrationConnectorGUID unique identifier of the integration connector entity (maybe null)
+     * @param openMetadataClient client to access open metadata store
+     * @param openMetadataEventClient client to access open metadata events
+     * @param connectedAssetClient client for working with connectors
+     * @param openIntegrationClient client for calling the metadata server
+     * @param governanceConfiguration client for managing catalog targets
+     * @param openGovernanceClient client for initiating governance actions
      * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
+     * @param deleteMethod default delete method
      */
-    public IntegrationContext(String                       connectorId,
-                              String                       connectorName,
-                              String                       connectorUserId,
-                              String                       serverName,
-                              OpenIntegrationClient        openIntegrationClient,
-                              GovernanceConfiguration      governanceConfiguration,
-                              OpenMetadataClient           openMetadataStoreClient,
-                              ActionControlInterface       actionControlInterface,
-                              boolean                      generateIntegrationReport,
-                              PermittedSynchronization     permittedSynchronization,
+    public IntegrationContext(String                       localServerName,
+                              String                       localServiceName,
                               String                       externalSourceGUID,
                               String                       externalSourceName,
-                              String                       integrationConnectorGUID,
+                              String                       connectorId,
+                              String                       connectorName,
+                              String                       connectorUserId,
+                              String                       connectorGUID,
+                              boolean                      generateIntegrationReport,
+                              PermittedSynchronization     permittedSynchronization,
+                              OpenMetadataClient           openMetadataClient,
+                              OpenMetadataEventClient      openMetadataEventClient,
+                              ConnectedAssetClient         connectedAssetClient,
+                              OpenIntegrationClient        openIntegrationClient,
+                              OpenLineageListenerManager   openLineageListenerManager,
+                              GovernanceConfiguration      governanceConfiguration,
+                              OpenGovernanceClient         openGovernanceClient,
                               AuditLog                     auditLog,
-                              int                          maxPageSize)
+                              int                          maxPageSize,
+                              DeleteMethod                 deleteMethod)
     {
-        this.openIntegrationClient        = openIntegrationClient;
-        this.governanceConfiguration      = governanceConfiguration;
-        this.openMetadataStoreClient      = openMetadataStoreClient;
-        this.actionControlInterface       = actionControlInterface;
-        this.permittedSynchronization     = permittedSynchronization;
-        this.userId                       = connectorUserId;
-        this.connectorName                = connectorName;
-        this.externalSourceGUID           = externalSourceGUID;
-        this.externalSourceName           = externalSourceName;
-        this.integrationConnectorGUID     = integrationConnectorGUID;
-        this.maxPageSize                  = maxPageSize;
+        super(localServerName,
+              localServiceName,
+              externalSourceGUID,
+              externalSourceName,
+              connectorId,
+              connectorName,
+              connectorUserId,
+              connectorGUID,
+              generateIntegrationReport,
+              openMetadataClient,
+              auditLog,
+              maxPageSize,
+              deleteMethod);
 
-        this.fileClassifier               = new FileClassifier(new OpenMetadataStore(openMetadataStoreClient, userId, integrationConnectorGUID));
-        this.listenerManager              = new FilesListenerManager(auditLog, connectorName);
+        this.openIntegrationClient      = openIntegrationClient;
+        this.openLineageListenerManager = openLineageListenerManager;
+        this.governanceConfiguration    = governanceConfiguration;
+        this.openGovernanceClient       = openGovernanceClient;
+        this.connectedAssetClient       = connectedAssetClient;
+        this.permittedSynchronization   = permittedSynchronization;
 
-        if (generateIntegrationReport)
-        {
-            this.integrationReportWriter = new IntegrationReportWriter(serverName,
-                                                                       connectorId,
-                                                                       integrationConnectorGUID,
-                                                                       connectorName,
-                                                                       userId,
-                                                                       openIntegrationClient);
-        }
-        else
-        {
-            this.integrationReportWriter = null;
-        }
+        this.openMetadataEventClient    = openMetadataEventClient;
 
-        this.connectedAssetContext = new ConnectedAssetContext(connectorUserId, openIntegrationClient);
+        this.connectedAssetContext      = new ConnectedAssetContext(connectorUserId, connectedAssetClient);
 
-        this.integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
-                                                                                  actionControlInterface,
-                                                                                  connectorUserId,
-                                                                                  externalSourceGUID,
-                                                                                  externalSourceName,
-                                                                                  integrationConnectorGUID,
-                                                                                  integrationReportWriter);
+        this.connectorConfigClient      = new ConnectorConfigClient(this,
+                                                                    localServerName,
+                                                                    localServiceName,
+                                                                    connectorUserId,
+                                                                    connectorGUID,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    governanceConfiguration,
+                                                                    auditLog,
+                                                                    maxPageSize);
+
+        this.stewardshipAction          = new StewardshipAction(this,
+                                                                localServerName,
+                                                                localServiceName,
+                                                                connectorUserId,
+                                                                connectorGUID,
+                                                                externalSourceGUID,
+                                                                externalSourceName,
+                                                                openMetadataClient,
+                                                                openGovernanceClient,
+                                                                auditLog,
+                                                                maxPageSize);
     }
 
 
     /**
-     * Return a new integrationGovernanceContext for a specific connector.
+     * Return a new context for a configured catalog target.
      *
-     * @param openMetadataStore client implementation
-     * @param actionControlInterface interface for creating governance actions
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier for external source (or null)
-     * @param externalSourceName unique name for external source (or null)
-     * @param originatorGUID unique identifier of the source of the to do
-     * @param integrationReportWriter report writer (maybe null)
-     * @return new context
+     * @param requestedCatalogTarget details of the catalog target configuration
+     * @return new context with the correct external source
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private IntegrationGovernanceContext constructIntegrationGovernanceContext(OpenMetadataClient      openMetadataStore,
-                                                                               ActionControlInterface  actionControlInterface,
-                                                                               String                  userId,
-                                                                               String                  externalSourceGUID,
-                                                                               String                  externalSourceName,
-                                                                               String                  originatorGUID,
-                                                                               IntegrationReportWriter integrationReportWriter)
+    public CatalogTargetContext getCatalogTargetContext(CatalogTarget requestedCatalogTarget) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
     {
-        if (openMetadataStoreClient != null)
-        {
-            OpenMetadataAccess openMetadataAccess = new OpenMetadataAccess(openMetadataStore,
-                                                                           userId,
-                                                                           externalSourceGUID,
-                                                                           externalSourceName,
-                                                                           originatorGUID,
-                                                                           integrationReportWriter);
-            MultiLanguageManagement    multiLanguageManagement    = new MultiLanguageManagement(openMetadataStore, userId);
-            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, actionControlInterface, userId, originatorGUID);
-            ValidMetadataValuesContext validMetadataValuesContext = new ValidMetadataValuesContext(openMetadataStore, userId);
+        return new CatalogTargetContext(localServerName,
+                                        localServiceName,
+                                        this.getMetadataSourceGUID(requestedCatalogTarget.getMetadataSourceQualifiedName()),
+                                        requestedCatalogTarget.getMetadataSourceQualifiedName(),
+                                        connectorId,
+                                        connectorName,
+                                        connectorUserId,
+                                        connectorGUID,
+                                        generateIntegrationReport,
+                                        requestedCatalogTarget.getPermittedSynchronization(),
+                                        openMetadataClient,
+                                        openMetadataEventClient,
+                                        connectedAssetClient,
+                                        openIntegrationClient,
+                                        openLineageListenerManager,
+                                        governanceConfiguration,
+                                        openGovernanceClient,
+                                        auditLog,
+                                        maxPageSize,
+                                        requestedCatalogTarget.getDeleteMethod());
+    }
 
-            return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValuesContext);
-        }
 
-        return null;
+    /* ======================================================================================
+     * Register a listener to receive open lineage events.
+     */
+
+    /**
+     * The listener is implemented by the integration connector.  Once it is registered with the context, its processOpenLineageRunEvent()
+     * method is called each time an open lineage event is published to the integration daemon.
+     *
+     * @param listener listener to call
+     */
+    public void registerListener(OpenLineageEventListener listener)
+    {
+        openLineageListenerManager.registerListener(listener);
     }
 
 
     /**
-     * Return the userId for this connector.  It is used to determine if changes where made by this connector.
-     * It should not be needed to issue calls to open metadata.
+     * Called each time an integration connector wishes to publish an open lineage run event.  The event is formatted and passed to each of the
+     * registered open lineage event listeners.
      *
-     * @return string
+     * @param rawEvent json payload to send for the event
      */
-    public String getMyUserId()
+    public void publishOpenLineageRunEvent(String rawEvent)
     {
-        return userId;
+        openLineageListenerManager.publishOpenLineageRunEvent(rawEvent);
     }
 
 
     /**
-     * Return the file classifier that uses reference data to describe a file.
+     * Called each time an open lineage run event is published to the integration daemon.  The integration connector is able to
+     * work with the formatted event using the Egeria beans or reformat the open lineage run event using the supplied open lineage backend beans
+     * or another set of beans.
      *
-     * @return file classifier utility
+     * @param event bean for the event
      */
-    public FileClassifier getFileClassifier()
+    public void publishOpenLineageRunEvent(OpenLineageRunEvent event) { openLineageListenerManager.publishOpenLineageRunEvent(event); }
+
+
+    /* ========================================================
+     * Configuration information
+     */
+
+    /**
+     * Return the permitted synchronization direction.  This setting may affect which method in the context are available to the integration
+     * connector.
+     *
+     * @return permittedSynchronization enum
+     */
+    public PermittedSynchronization getPermittedSynchronization()
     {
-        return fileClassifier;
+        return permittedSynchronization;
     }
+
 
 
 
@@ -241,175 +273,90 @@ public class IntegrationContext
     }
 
 
-    /**
-     * Add a catalog target to this integration connector.
-     *
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
-     * @param properties properties for the relationship.
-     *
-     * @return catalog target GUID
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem storing the catalog target definition.
-     */
-    public String addCatalogTarget(String                  metadataElementGUID,
-                                   CatalogTargetProperties properties) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
-    {
-        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
-        {
-            return governanceConfiguration.addCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID, properties);
-        }
 
-        return null;
+    /* ========================================================
+     * Register for inbound events from the Open Metadata OutTopic
+     */
+
+
+    /**
+     * Return a flag indicating whether a listener has been registered or not.
+     *
+     * @return true means the listener has been successfully registered
+     */
+    public boolean noListenerRegistered()
+    {
+        return !listenerRegistered;
+    }
+
+
+
+    /**
+     * Register a listener object that will be passed each of the events published by
+     * the Open Metadata Server.
+     *
+     * @param listener listener object
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void registerListener(OpenMetadataEventListener listener) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        openMetadataEventClient.registerListener(connectorUserId, listener);
+        this.listenerRegistered = true;
     }
 
 
     /**
-     * Add a catalog target to another integration connector.
+     * Return the connected asset context that support an integration connector working with assets and their connectors.
      *
-     * @param integrationConnectorGUID unique identifier of the integration service.
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
-     * @param properties properties for the relationship.
-     *
-     * @return catalog target GUID
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem storing the catalog target definition.
+     * @return connected asset context
      */
-    public String addCatalogTarget(String                  integrationConnectorGUID,
-                                   String                  metadataElementGUID,
-                                   CatalogTargetProperties properties) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public ConnectedAssetContext getConnectedAssetContext()
     {
-        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
-        {
-            return governanceConfiguration.addCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID, properties);
-        }
-
-        return null;
+        return connectedAssetContext;
     }
 
 
     /**
-     * Update a catalog target relationship for an integration connector.
+     * Return the connected asset context that support an integration connector working with assets and their connectors.
      *
-     * @param relationshipGUID unique identifier of the relationship.
-     * @param properties properties for the relationship.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem storing the catalog target definition.
+     * @return connected asset context
      */
-    public void updateCatalogTarget(String                  relationshipGUID,
-                                    CatalogTargetProperties properties) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public StewardshipAction getStewardshipAction()
     {
-        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
-        {
-            governanceConfiguration.updateCatalogTarget(userId, relationshipGUID, properties);
-        }
+        return stewardshipAction;
     }
 
 
     /**
-     * Retrieve a specific catalog target associated with an integration connector.
+     * Return the open governance client.  This supports defining and initiating governance actions,
+     * and managing duplicates.
      *
-     * @param relationshipGUID unique identifier of the relationship.
-     *
-     * @return details of the integration connector and the elements it is to catalog
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the integration connector definition.
+     * @return client
      */
-    public CatalogTarget getCatalogTarget(String relationshipGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public OpenGovernanceClient getOpenGovernanceClient()
     {
-        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
-        {
-            return governanceConfiguration.getCatalogTarget(userId, relationshipGUID);
-        }
-
-        return null;
+        return openGovernanceClient;
     }
 
 
     /**
-     * Retrieve the identifiers of the metadata elements identified as catalog targets with another integration connector.
+     * Return the client for managing the metadata associated with running connectors, governance engines and governance services.
      *
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
-     *
-     * @return list of named elements
-     * @throws InvalidParameterException one of the parameters is null or invalid,
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the integration connector definition.
+     * @return connector context client
      */
-    public List<CatalogTarget> getCatalogTargets(String  integrationConnectorGUID,
-                                                 int     startingFrom,
-                                                 int     maximumResults) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
-        {
-            return governanceConfiguration.getCatalogTargets(userId, integrationConnectorGUID, startingFrom, maximumResults);
-        }
-
-        return null;
-    }
+    public ConnectorConfigClient getConnectorConfigClient() { return connectorConfigClient; }
 
 
     /**
-     * Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.
-     * Each catalog target may be configured with an optional symbolic name to guide the integration connector on how to use
-     * the catalog targets.
+     * Return the unique identifier of the element that represents this integration connector in open metadata.
      *
-     * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
-     *
-     * @return list of named element headers
-     * @throws InvalidParameterException one of the parameters is null or invalid,
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the integration connector definition.
+     * @return string guid
      */
-    public List<CatalogTarget> getCatalogTargets(int     startingFrom,
-                                                 int     maximumResults) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
-        {
-            return governanceConfiguration.getCatalogTargets(userId, integrationConnectorGUID, startingFrom, maximumResults);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Unregister a catalog target from the integration connector.
-     *
-     * @param relationshipGUID unique identifier of the integration connector.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem accessing/updating the integration connector definition.
-     */
-    public void removeCatalogTarget(String relationshipGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
-        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
-        {
-            governanceConfiguration.removeCatalogTarget(userId, relationshipGUID);
-        }
-    }
+    public String getIntegrationConnectorGUID() { return connectorGUID; }
 
 
     /**
@@ -438,236 +385,46 @@ public class IntegrationContext
     }
 
 
+
     /**
-     * Change the metadata collection that is in use when working with open metadata.  It should be the qualified name
-     * of a software capability,  The qualified name is supplied through open metadata values and may be incorrect
+     * Return the unique identifier of metadata collection that corresponds to the qualified name
+     * of a software capability,  This qualified name is supplied through open metadata values and may be incorrect
      * which is why any exceptions from retrieving the software capability are passed through to the caller.
      *
      * @param metadataSourceQualifiedName supplied qualified name for the metadata collection
      *
+     * @return null or unique identifier of the associated software capability
      * @throws InvalidParameterException the unique name is null or not known.
      * @throws UserNotAuthorizedException the caller's userId is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public void setMetadataSourceQualifiedName(String metadataSourceQualifiedName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public String getMetadataSourceGUID(String metadataSourceQualifiedName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        if (metadataSourceQualifiedName == null)
-        {
-            this.externalSourceName = null;
-            this.externalSourceGUID = null;
-        }
-        else
+        if (metadataSourceQualifiedName != null)
         {
             if (externalSourceCache.get(metadataSourceQualifiedName) != null)
             {
-                this.externalSourceName = metadataSourceQualifiedName;
-                this.externalSourceGUID = externalSourceCache.get(metadataSourceQualifiedName);
+                return externalSourceCache.get(metadataSourceQualifiedName);
             }
             else
             {
-                String metadataSourceGUID = openMetadataStoreClient.getMetadataElementGUIDByUniqueName(userId,
-                                                                                                       metadataSourceQualifiedName,
-                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                       false,
-                                                                                                       false,
-                                                                                                       null,
-                                                                                                       new Date());
+                String metadataSourceGUID = openMetadataClient.getMetadataElementGUIDByUniqueName(connectorUserId,
+                                                                                                  metadataSourceQualifiedName,
+                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                  new GetOptions());
 
                 if (metadataSourceGUID != null)
                 {
-                    this.externalSourceName = metadataSourceQualifiedName;
-                    this.externalSourceGUID = metadataSourceGUID;
-
                     externalSourceCache.put(metadataSourceQualifiedName, metadataSourceGUID);
+
+                    return metadataSourceGUID;
                 }
             }
         }
 
-        integrationGovernanceContext.setExternalSourceIds(externalSourceGUID, externalSourceName);
-    }
-
-
-    /**
-     * Change the metadata collection that is in use when working with open metadata.  It should be the qualified name
-     * of a software capability,  The qualified name is supplied through open metadata values and may be incorrect
-     * which is why any exceptions from retrieving the software capability are passed through to the caller.
-     *
-     * @param metadataSourceGUID unique identifier of the metadata source (if known)
-     * @param metadataSourceQualifiedName supplied qualified name for the metadata collection
-     *
-     * @throws InvalidParameterException the unique name is null or not known.
-     * @throws UserNotAuthorizedException the caller's userId is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
-     */
-    public void setMetadataSourceQualifiedName(String metadataSourceGUID,
-                                               String metadataSourceQualifiedName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        if (metadataSourceQualifiedName == null)
-        {
-            this.externalSourceName = null;
-            this.externalSourceGUID = null;
-        }
-        else
-        {
-            this.externalSourceName = metadataSourceQualifiedName;
-            this.externalSourceGUID = metadataSourceGUID;
-
-            externalSourceCache.put(metadataSourceQualifiedName, metadataSourceGUID);
-        }
-
-        integrationGovernanceContext.setExternalSourceIds(externalSourceGUID, externalSourceName);
-    }
-
-
-    /**
-     * Return the flag indicating whether the external source name is to be used as the new element's
-     * metadata collection, or they belong to the local cohort.
-     *
-     * @return flag
-     */
-    public boolean getExternalSourceIsHome()
-    {
-        return externalSourceIsHome;
-    }
-
-
-    /**
-     * Set the flag indicating whether the external source name is to be used as the new element's
-     * metadata collection, or they belong to the local cohort.
-     *
-     * @param newValue flag
-     */
-    public void setExternalSourceIsHome(boolean newValue)
-    {
-        this.externalSourceIsHome = newValue;
-    }
-
-
-    /**
-     * Return the permitted synchronization direction.  This setting may affect which method in the context are available to the integration
-     * connector.
-     *
-     * @return permittedSynchronization enum
-     */
-    public PermittedSynchronization getPermittedSynchronization()
-    {
-        return permittedSynchronization;
-    }
-
-
-    /**
-     * Return the integration governance context that provides access to various Governance Action Framework (GAF) function.
-     *
-     * @return IntegrationGovernanceContext context object
-     */
-    public IntegrationGovernanceContext getIntegrationGovernanceContext()
-    {
-        return  integrationGovernanceContext;
-    }
-
-
-    /**
-     * Return the connected asset context that support an integration connector working with assets and their connectors.
-     *
-     * @return connected asset context
-     */
-    public ConnectedAssetContext getConnectedAssetContext()
-    {
-        return connectedAssetContext;
-    }
-
-
-    /**
-     * Set whether an integration report should be assembled and published.
-     * This allows the integration connector to turn off/on integration report writing.
-     * It only has an effect if the connector is configured to allow report writing
-     *
-     * @param flag required behaviour
-     */
-    public void setActiveReportPublishing(boolean flag)
-    {
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.setActiveReportPublishing(flag);
-        }
-    }
-
-
-    /**
-     * Clear the report properties ready for a new report.  This is not
-     * normally needed by the integration connector since it is called by the
-     * connector handler just before refresh.  It is also called by publish report.
-     */
-    void startRecording()
-    {
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.startRecording();
-        }
-    }
-
-
-    /**
-     * Save information about a newly created element.
-     *
-     * @param elementGUID unique identifier of the element
-     */
-    protected void reportElementCreation(String elementGUID)
-    {
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.reportElementCreation(elementGUID);
-        }
-    }
-
-
-    /**
-     * Save information about a newly updated element.
-     *
-     * @param elementGUID unique identifier of the element
-     */
-    protected void reportElementUpdate(String elementGUID)
-    {
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.reportElementUpdate(elementGUID);
-        }
-    }
-
-
-    /**
-     * Save information about a newly archived or deleted element.
-     *
-     * @param elementGUID unique identifier of the element
-     */
-    protected void reportElementDelete(String elementGUID)
-    {
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.reportElementDelete(elementGUID);
-        }
-    }
-
-
-    /**
-     * Assemble the data collected and write out a report (if configured).
-     *
-     * @throws InvalidParameterException an invalid property has been passed
-     * @throws UserNotAuthorizedException the user is not authorized
-     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
-     */
-    void publishReport() throws InvalidParameterException,
-                                UserNotAuthorizedException,
-                                PropertyServerException
-    {
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.publishReport();
-        }
+        return null;
     }
 
 
@@ -678,9 +435,9 @@ public class IntegrationContext
      *
      * @return boolean flag
      */
-    public boolean isRefreshInProgress()
+    public boolean noRefreshInProgress()
     {
-        return isRefreshInProgress;
+        return ! isRefreshInProgress;
     }
 
 
@@ -689,252 +446,8 @@ public class IntegrationContext
      *
      * @param refreshInProgress boolean flag
      */
-    void setRefreshInProgress(boolean refreshInProgress)
+    public void setRefreshInProgress(boolean refreshInProgress)
     {
         isRefreshInProgress = refreshInProgress;
-    }
-
-
-    /**
-     * Retrieve the anchorGUID from the Anchors classification.
-     *
-     * @param elementHeader element header where the classifications reside
-     * @return anchorGUID or null
-     */
-    public String getAnchorGUID(ElementHeader elementHeader)
-    {
-        if (elementHeader.getClassifications() != null)
-        {
-            for (ElementClassification classification : elementHeader.getClassifications())
-            {
-                if (classification.getClassificationName().equals(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName))
-                {
-                    Map<String, Object> properties = classification.getClassificationProperties();
-
-                    if (properties != null)
-                    {
-                        Object anchorGUID = properties.get(OpenMetadataProperty.ANCHOR_GUID.name);
-
-                        if (anchorGUID != null)
-                        {
-                            return anchorGUID.toString();
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Retrieve the anchorGUID from the Anchors classification.
-     *
-     * @param openMetadataElement element header where the classifications reside
-     * @return anchorGUID or null
-     */
-    public String getAnchorGUID(OpenMetadataElement openMetadataElement)
-    {
-        final String methodName = "getAnchorGUID";
-
-        if (openMetadataElement.getClassifications() != null)
-        {
-            for (AttachedClassification classification : openMetadataElement.getClassifications())
-            {
-                if (classification.getClassificationName().equals(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName))
-                {
-                    return propertyHelper.getStringProperty(connectorName,
-                                                            OpenMetadataProperty.ANCHOR_GUID.name,
-                                                            classification.getClassificationProperties(),
-                                                            methodName);
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-
-
-    /* ========================================================
-     * Register/unregister for inbound events from the file system
-     */
-
-
-    /**
-     * Register a listener object that will be called each time a specific file is created, changed or deleted.
-     *
-     * @param listener      listener object
-     * @param fileToMonitor name of the file to monitor
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    public void registerFileListener(FileListenerInterface listener,
-                                     File                  fileToMonitor) throws InvalidParameterException
-    {
-        listenerManager.registerFileListener(listener, fileToMonitor);
-    }
-
-
-    /**
-     * Unregister a listener object that will be called each time a specific file is created, changed or deleted.
-     *
-     * @param listener      listener object
-     * @param fileToMonitor name of the file to unregister
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    public void unregisterFileListener(FileListenerInterface listener,
-                                       File                  fileToMonitor) throws InvalidParameterException
-    {
-        listenerManager.unregisterFileListener(listener, fileToMonitor);
-    }
-
-
-    /**
-     * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.
-     * The file filter lets you request that only certain types of files are returned.
-     *
-     * @param listener           listener object
-     * @param directoryToMonitor details of the file directory to monitor
-     * @param fileFilter         a file filter implementation that restricts the files/directories that will be returned to the listener
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    public void registerDirectoryListener(FileDirectoryListenerInterface listener,
-                                          File                           directoryToMonitor,
-                                          FileFilter                     fileFilter) throws InvalidParameterException
-    {
-        listenerManager.registerDirectoryListener(listener, directoryToMonitor, fileFilter);
-    }
-
-
-    /**
-     * Unregister a listener object for the directory.
-     *
-     * @param listener           listener object
-     * @param directoryToMonitor details of the file directory unregister
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    public void unregisterDirectoryListener(FileDirectoryListenerInterface listener,
-                                            File                           directoryToMonitor) throws InvalidParameterException
-    {
-        listenerManager.unregisterDirectoryListener(listener, directoryToMonitor);
-    }
-
-
-    /**
-     * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
-     * and any of its subdirectories.  The file filter lets you request that only certain types of files and/or directories are returned.
-     *
-     * @param listener           listener object
-     * @param directoryToMonitor details of the root file directory to monitor from
-     * @param fileFilter         a file filter implementation that restricts the files/directories that will be returned to the listener
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    public void registerDirectoryTreeListener(FileDirectoryListenerInterface listener,
-                                              File                           directoryToMonitor,
-                                              FileFilter                     fileFilter) throws InvalidParameterException
-    {
-        listenerManager.registerDirectoryTreeListener(listener, directoryToMonitor, fileFilter);
-    }
-
-
-    /**
-     * Unregister a listener object for the directory.
-     *
-     * @param listener           listener object
-     * @param directoryToMonitor details of the root file directory to unregister
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    public void unregisterDirectoryTreeListener(FileDirectoryListenerInterface listener,
-                                                File                           directoryToMonitor) throws InvalidParameterException
-    {
-        listenerManager.unregisterDirectoryTreeListener(listener, directoryToMonitor);
-    }
-
-
-    /* ==============================================================
-     * Controlling paging
-     */
-
-    /**
-     * Returns the server configuration for the maximum number of elements that can be returned on a request.  It is used to control
-     * paging.
-     *
-     * @return integer
-     */
-    public int getMaxPageSize()
-    {
-        return maxPageSize;
-    }
-
-
-    /* =============================
-     * Working with types
-     */
-
-
-    /**
-     * Understand the type of element.  It checks the type and super types.
-     *
-     * @param elementHeader element to validate
-     * @param typeName type to test
-     * @return boolean flag
-     */
-    public boolean isTypeOf(ElementHeader  elementHeader,
-                            String         typeName)
-    {
-        return isTypeOf(elementHeader.getType(), typeName);
-    }
-
-
-    /**
-     * Understand the type of element.  It checks the type and super types.
-     *
-     * @param elementType element to validate
-     * @param typeName type to test
-     * @return boolean flag
-     */
-    public boolean isTypeOf(ElementType  elementType,
-                            String       typeName)
-    {
-        if (elementType != null)
-        {
-            List<String> elementTypeNames = new ArrayList<>();
-
-            elementTypeNames.add(elementType.getTypeName());
-            if (elementType.getSuperTypeNames() != null)
-            {
-                elementTypeNames.addAll(elementType.getSuperTypeNames());
-            }
-
-            if (elementTypeNames.contains(typeName))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Disconnect the file listener.
-     *
-     * @throws ConnectorCheckedException exception disconnecting
-     */
-    public void disconnect() throws ConnectorCheckedException
-    {
-        if (listenerManager != null)
-        {
-            listenerManager.disconnect();
-        }
     }
 }

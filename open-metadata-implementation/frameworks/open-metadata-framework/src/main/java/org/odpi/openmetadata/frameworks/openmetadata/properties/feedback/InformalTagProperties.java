@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.feedback;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -19,10 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * InformalTags provide informal classifications to assets
  * and can be added at any time.
  * <br><br>
- * InformalTags have the userId of the person who added the tag, the name of the tag and its description.
- * <br><br>
- * The content of the tag is a personal judgement (which is why the user's id is in the tag)
- * and there is no formal review of the tags.  However, they can be used as a basis for crowd-sourcing
+ * The content of the tag is a personal judgement
+ * and there is no formal review of the tags.  However, they can be used as a basis for crowdsourcing
  * Glossary terms.
  * <br><br>
  * Private InformalTags are only returned to the user that created them.
@@ -32,10 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InformalTagProperties extends OpenMetadataRootProperties
 {
-    private boolean isPrivateTag = false;
-    private String  name         = null;
-    private String  description  = null;
-    private String  user         = null;
+    private String displayName = null;
+    private String description = null;
 
 
     /**
@@ -59,55 +53,9 @@ public class InformalTagProperties extends OpenMetadataRootProperties
 
         if (template != null)
         {
-            isPrivateTag = template.getIsPrivateTag();
-            user = template.getUser();
-            name = template.getName();
+            displayName = template.getDisplayName();
             description = template.getDescription();
         }
-    }
-
-
-    /**
-     * Return boolean flag to say whether the tag is private or not.  A private tag is only seen by the
-     * person who set it up.  Public tags are visible to everyone.
-     *
-     * @return boolean is private flag
-     */
-    public boolean getIsPrivateTag() {
-        return isPrivateTag;
-    }
-
-
-    /**
-     * Set up boolean flag to say whether the tag is private or not.  A private tag is only seen by the
-     * person who set it up.  Public tags are visible to everyone.
-     *
-     * @param privateTag indicator of a private tag
-     */
-    public void setIsPrivateTag(boolean privateTag)
-    {
-        isPrivateTag = privateTag;
-    }
-
-
-    /**
-     * Return the user id of the person who created the tag.  Null means the user id is not known.
-     *
-     * @return String tagging user
-     */
-    public String getUser() {
-        return user;
-    }
-
-
-    /**
-     * Set up the user id of the person who created the tag.  Null means the user id is not known.
-     *
-     * @param user String identifier of the creator of the tag.
-     */
-    public void setUser(String user)
-    {
-        this.user = user;
     }
 
 
@@ -117,8 +65,9 @@ public class InformalTagProperties extends OpenMetadataRootProperties
      *
      * @return String tag name
      */
-    public String getName() {
-        return name;
+    public String getDisplayName()
+    {
+        return displayName;
     }
 
 
@@ -126,11 +75,11 @@ public class InformalTagProperties extends OpenMetadataRootProperties
      * Set up the name of the tag.  It is not valid to have a tag with no name.  However, there is a point where
      * the tag object is created and the tag name not yet set, so null is a possible response.
      *
-     * @param name String tag name
+     * @param displayName String tag name
      */
-    public void setName(String name)
+    public void setDisplayName(String displayName)
     {
-        this.name = name;
+        this.displayName = displayName;
     }
 
 
@@ -164,10 +113,8 @@ public class InformalTagProperties extends OpenMetadataRootProperties
     public String toString()
     {
         return "InformalTagProperties{" +
-                "isPrivateTag=" + isPrivateTag +
-                ", name='" + name + '\'' +
+                "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", user='" + user + '\'' +
                 "} " + super.toString();
     }
 
@@ -193,10 +140,8 @@ public class InformalTagProperties extends OpenMetadataRootProperties
         {
             return false;
         }
-        return getIsPrivateTag() == that.getIsPrivateTag() &&
-                Objects.equals(getName(), that.getName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getUser(), that.getUser());
+        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
+                Objects.equals(getDescription(), that.getDescription());
     }
 
 
@@ -208,6 +153,6 @@ public class InformalTagProperties extends OpenMetadataRootProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), isPrivateTag, name, description, user);
+        return Objects.hash(super.hashCode(), displayName, description);
     }
 }

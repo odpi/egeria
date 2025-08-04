@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 
 import java.util.Objects;
 
@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GovernanceClassificationProperties.class, name = "GovernanceClassificationProperties"),
                 @JsonSubTypes.Type(value = RetentionClassificationProperties.class, name = "RetentionClassificationProperties"),
         })
-public class GovernanceClassificationBase extends ClassificationProperties
+public class GovernanceClassificationBase extends ClassificationBeanProperties
 {
     private int    status              = 0;
     private int    confidence          = 0;
@@ -56,11 +56,13 @@ public class GovernanceClassificationBase extends ClassificationProperties
 
         if (template != null)
         {
-            status     = template.getStatus();
-            confidence = template.getConfidence();
-            steward    = template.getSteward();
-            source     = template.getSource();
-            notes      = template.getNotes();
+            status              = template.getStatus();
+            confidence          = template.getConfidence();
+            steward             = template.getSteward();
+            stewardTypeName     = template.getStewardTypeName();
+            stewardPropertyName = template.getStewardPropertyName();
+            source              = template.getSource();
+            notes               = template.getNotes();
         }
     }
 
@@ -228,17 +230,14 @@ public class GovernanceClassificationBase extends ClassificationProperties
     public String toString()
     {
         return "GovernanceClassificationBase{" +
-                       "status=" + status +
-                       ", confidence=" + confidence +
-                       ", steward='" + steward + '\'' +
-                       ", stewardTypeName='" + stewardTypeName + '\'' +
-                       ", stewardPropertyName='" + stewardPropertyName + '\'' +
-                       ", source='" + source + '\'' +
-                       ", notes='" + notes + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "status=" + status +
+                ", confidence=" + confidence +
+                ", steward='" + steward + '\'' +
+                ", stewardTypeName='" + stewardTypeName + '\'' +
+                ", stewardPropertyName='" + stewardPropertyName + '\'' +
+                ", source='" + source + '\'' +
+                ", notes='" + notes + '\'' +
+                "} " + super.toString();
     }
 
 

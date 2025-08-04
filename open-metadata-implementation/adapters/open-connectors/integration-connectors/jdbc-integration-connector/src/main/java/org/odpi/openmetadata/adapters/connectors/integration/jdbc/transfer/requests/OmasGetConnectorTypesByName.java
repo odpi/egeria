@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorTypeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +19,17 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the getConnectorTypesByName call to access service
  */
-class OmasGetConnectorTypesByName implements Function<String, List<ConnectorTypeElement>> {
+class OmasGetConnectorTypesByName implements Function<String, List<OpenMetadataRootElement>> {
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final ConnectorTypeClient connectorTypeClient;
+    private final AuditLog            auditLog;
 
-    OmasGetConnectorTypesByName(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasGetConnectorTypesByName(ConnectorTypeClient connectorTypeClient, AuditLog auditLog)
+    {
+        this.connectorTypeClient = connectorTypeClient;
+        this.auditLog            = auditLog;
     }
+
 
     /**
      * Get connector types by name
@@ -37,16 +39,22 @@ class OmasGetConnectorTypesByName implements Function<String, List<ConnectorType
      * @return connector types
      */
     @Override
-    public List<ConnectorTypeElement> apply(String connectorTypeQualifiedName){
-        String methodName = "OmasGetConnectorTypesByName";
-        try{
+    public List<OpenMetadataRootElement> apply(String connectorTypeQualifiedName)
+    {
+        final String methodName = "OmasGetConnectorTypesByName";
+
+        try
+        {
             return Optional.ofNullable(
-                    databaseIntegratorContext.getConnectorTypesByName(connectorTypeQualifiedName, 0, 0))
+                            connectorTypeClient.getConnectorTypesByName(connectorTypeQualifiedName, connectorTypeClient.getQueryOptions()))
                     .orElseGet(ArrayList::new);
-        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+        }
+        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
+        {
             auditLog.logMessage("Reading connector type with qualified name " + connectorTypeQualifiedName,
                     EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()));
         }
+
         return new ArrayList<>();
     }
 

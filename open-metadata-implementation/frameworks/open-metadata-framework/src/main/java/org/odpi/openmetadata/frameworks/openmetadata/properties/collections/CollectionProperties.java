@@ -4,11 +4,11 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.collections;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDictionaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataSpecProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -24,17 +24,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = CollectionFolderProperties.class, name = "CollectionFolderProperties"),
-                @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
                 @JsonSubTypes.Type(value = AgreementProperties.class, name = "AgreementProperties"),
+                @JsonSubTypes.Type(value = DataDictionaryProperties.class, name = "DataDictionaryProperties"),
+                @JsonSubTypes.Type(value = DataSpecProperties.class, name = "DataSpecProperties"),
+                @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
         })
 public class CollectionProperties extends ReferenceableProperties
 {
-    private String name           = null;
-    private String description    = null;
-    private String collectionType = null;
-
-
     /**
      * Default constructor
      */
@@ -50,82 +46,13 @@ public class CollectionProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public CollectionProperties(CollectionProperties template)
+    public CollectionProperties(ReferenceableProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            this.name = template.getName();
-            this.description = template.getDescription();
-            this.collectionType = template.getCollectionType();
         }
-    }
-
-
-    /**
-     * Return the name of the collection.
-     *
-     * @return string name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the name of the collection.
-     *
-     * @param name string name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-     * Return the description of the collection.
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the collection.
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return a descriptive name for the collection's type.
-     *
-     * @return string name
-     */
-    public String getCollectionType()
-    {
-        return collectionType;
-    }
-
-
-    /**
-     * Set up a descriptive name for the collection's type.
-     *
-     * @param collectionType string name
-     */
-    public void setCollectionType(String collectionType)
-    {
-        this.collectionType = collectionType;
     }
 
 
@@ -138,52 +65,6 @@ public class CollectionProperties extends ReferenceableProperties
     public String toString()
     {
         return "CollectionProperties{" +
-                       "name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       ", collectionType='" + collectionType + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
-    }
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        CollectionProperties that = (CollectionProperties) objectToCompare;
-        return Objects.equals(getName(), that.getName()) && Objects.equals(getCollectionType(), that.getCollectionType()) &&
-                       Objects.equals(getDescription(), that.getDescription());
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), getName(), getDescription(), getCollectionType());
+                "} " + super.toString();
     }
 }

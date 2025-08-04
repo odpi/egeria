@@ -3,27 +3,16 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKeyProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabasePrimaryKeyProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelationshipProperties provides the base class for relationships items.  This provides extended properties with the ability to
- * set effectivity dates.
+ * ClassificationProperties provides the base class for classification attributes.  The implementation
+ * may either be an element properties object or a bean.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,33 +22,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = ActivityDescriptionProperties.class, name = "ActivityDescriptionProperties"),
-                @JsonSubTypes.Type(value = AssetOriginProperties.class, name = "AssetOriginProperties"),
-                @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),
-                @JsonSubTypes.Type(value = DatabasePrimaryKeyProperties.class, name = "DatabasePrimaryKeyProperties"),
-                @JsonSubTypes.Type(value = CyberLocationProperties.class, name = "CyberLocationProperties"),
-                @JsonSubTypes.Type(value = EditingGlossaryProperties.class, name = "EditingGlossaryProperties"),
-                @JsonSubTypes.Type(value = FixedLocationProperties.class, name = "FixedLocationProperties"),
-                @JsonSubTypes.Type(value = GlossaryTermContextDefinition.class, name = "GlossaryTermContextDefinition"),
-                @JsonSubTypes.Type(value = GovernanceClassificationBase.class, name = "GovernanceClassificationBase"),
-                @JsonSubTypes.Type(value = GovernanceMeasurementsDataSetProperties.class, name = "GovernanceMeasurementsDataSetProperties"),
-                @JsonSubTypes.Type(value = GovernanceMeasurementsProperties.class, name = "GovernanceMeasurementsProperties"),
-                @JsonSubTypes.Type(value = GovernanceExpectationsProperties.class, name = "GovernanceExpectationsProperties"),
-                @JsonSubTypes.Type(value = OwnershipProperties.class, name = "OwnershipProperties"),
-                @JsonSubTypes.Type(value = PrimaryKeyProperties.class, name = "PrimaryKeyProperties"),
-                @JsonSubTypes.Type(value = SecureLocationProperties.class, name = "SecureLocationProperties"),
-                @JsonSubTypes.Type(value = SecurityGroupMembershipProperties.class, name = "SecurityGroupMembershipProperties"),
-                @JsonSubTypes.Type(value = SecurityTagsProperties.class, name = "SecurityTagsProperties"),
-                @JsonSubTypes.Type(value = StagingGlossaryProperties.class, name = "StagingGlossaryProperties"),
-                @JsonSubTypes.Type(value = SubjectAreaClassificationProperties.class, name = "SubjectAreaClassificationProperties"),
-                @JsonSubTypes.Type(value = TaxonomyProperties.class, name = "TaxonomyProperties"),
+                @JsonSubTypes.Type(value = ClassificationElementProperties.class, name = "ClassificationElementProperties"),
+                @JsonSubTypes.Type(value = ClassificationBeanProperties.class, name = "ClassificationBeanProperties"),
         })
 public class ClassificationProperties
 {
-    private Date                 effectiveFrom        = null;
-    private Date                 effectiveTo          = null;
-    private String               typeName             = null;
-    private Map<String, Object>  extendedProperties   = null;
+    private Date effectiveFrom = null;
+    private Date effectiveTo   = null;
 
 
     /**
@@ -82,8 +51,6 @@ public class ClassificationProperties
         {
             effectiveFrom      = template.getEffectiveFrom();
             effectiveTo        = template.getEffectiveTo();
-            typeName           = template.getTypeName();
-            extendedProperties = template.getExtendedProperties();
         }
     }
 
@@ -132,51 +99,6 @@ public class ClassificationProperties
     }
 
 
-    /**
-     * Return the name of the open metadata type for this classification.
-     *
-     * @return string name
-     */
-    public String getTypeName()
-    {
-        return typeName;
-    }
-
-
-    /**
-     * Set up the name of the open metadata type for this classification.
-     *
-     * @param typeName string name
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
-
-
-    /**
-     * Return the properties that have been defined for a subtype of this object that are not supported explicitly
-     * by this bean.
-     *
-     * @return property map
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        return extendedProperties;
-    }
-
-
-    /**
-     * Set up the properties that have been defined for a subtype of this object that are not supported explicitly
-     * by this bean.
-     *
-     * @param extendedProperties property map
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties)
-    {
-        this.extendedProperties = extendedProperties;
-    }
-
 
     /**
      * Standard toString method.
@@ -186,11 +108,9 @@ public class ClassificationProperties
     @Override
     public String toString()
     {
-        return "ClassificationProperties{" +
+        return "ClassificationBeanProperties{" +
                 "effectiveFrom=" + effectiveFrom +
                 ", effectiveTo=" + effectiveTo +
-                ", typeName='" + typeName + '\'' +
-                ", extendedProperties=" + extendedProperties +
                 '}';
     }
 
@@ -214,9 +134,7 @@ public class ClassificationProperties
         }
         ClassificationProperties that = (ClassificationProperties) objectToCompare;
         return Objects.equals(effectiveFrom, that.effectiveFrom) &&
-                Objects.equals(effectiveTo, that.effectiveTo) &&
-                Objects.equals(typeName, that.typeName) &&
-                Objects.equals(extendedProperties, that.extendedProperties);
+                Objects.equals(effectiveTo, that.effectiveTo);
     }
 
 
@@ -228,6 +146,6 @@ public class ClassificationProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveFrom, effectiveTo, typeName, extendedProperties);
+        return Objects.hash(effectiveFrom, effectiveTo);
     }
 }

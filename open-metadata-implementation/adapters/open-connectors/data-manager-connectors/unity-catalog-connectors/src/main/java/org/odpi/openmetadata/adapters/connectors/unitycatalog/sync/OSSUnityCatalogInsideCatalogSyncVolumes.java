@@ -10,12 +10,13 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaI
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeInfo;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
@@ -24,7 +25,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronizat
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,9 +57,10 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
      * @param excludeNames list of catalogs to ignore (and include all others)
      * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     public OSSUnityCatalogInsideCatalogSyncVolumes(String                           connectorName,
-                                                   CatalogIntegratorContext         context,
+                                                   IntegrationContext               context,
                                                    String                           catalogTargetName,
                                                    String                           catalogGUID,
                                                    String                           catalogName,
@@ -71,7 +72,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                    Map<String, Object>              configurationProperties,
                                                    List<String>                     excludeNames,
                                                    List<String>                     includeNames,
-                                                   AuditLog                         auditLog)
+                                                   AuditLog                         auditLog) throws UserNotAuthorizedException
     {
         super(connectorName,
               context,
@@ -118,7 +119,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                                    catalogName,
                                                                                    connectorName,
                                                                                    entityTypeName,
-                                                                                   openMetadataAccess,
+                                                                                   openMetadataStore,
                                                                                    targetPermittedSynchronization,
                                                                                    context.getMaxPageSize(),
                                                                                    auditLog);
@@ -289,41 +290,45 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
             ElementProperties replacementProperties = propertyHelper.addStringProperty(null,
                                                                                        OpenMetadataProperty.PATH_NAME.name,
                                                                                        super.getPathNameFromStorageLocation(volumeInfo.getStorage_location()));
-            ucVolumeGUID = openMetadataAccess.getMetadataElementFromTemplate(catalogGUID,
-                                                                             catalogQualifiedName,
-                                                                             deployedImplementationType.getAssociatedTypeName(),
-                                                                             schemaGUID,
-                                                                             false,
-                                                                             schemaGUID,
-                                                                             null,
-                                                                             null,
-                                                                             templateGUID,
-                                                                             replacementProperties,
-                                                                             this.getPlaceholderProperties(volumeInfo),
-                                                                             schemaGUID,
-                                                                             parentLinkTypeName,
-                                                                             null,
-                                                                             parentAtEnd1);
+
+            TemplateOptions templateOptions = new TemplateOptions(super.getMetadataSourceOptions());
+
+            templateOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
+            templateOptions.setAnchorGUID(schemaGUID);
+            templateOptions.setIsOwnAnchor(false);
+            templateOptions.setAnchorScopeGUID(catalogGUID);
+
+            templateOptions.setParentGUID(schemaGUID);
+            templateOptions.setParentAtEnd1(parentAtEnd1);
+            templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
+
+            ucVolumeGUID = openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+                                                                               templateGUID,
+                                                                               replacementProperties,
+                                                                               this.getPlaceholderProperties(volumeInfo),
+                                                                               null);
         }
         else
         {
             String qualifiedName = super.getQualifiedName(volumeInfo.getFull_name());
 
-            ucVolumeGUID = openMetadataAccess.createMetadataElementInStore(catalogGUID,
-                                                                           catalogQualifiedName,
-                                                                           deployedImplementationType.getAssociatedTypeName(),
-                                                                           ElementStatus.ACTIVE,
-                                                                           null,
-                                                                           schemaGUID,
-                                                                           false,
-                                                                           schemaGUID,
-                                                                           null,
-                                                                           null,
-                                                                           this.getElementProperties(qualifiedName, volumeInfo),
-                                                                           schemaGUID,
-                                                                           parentLinkTypeName,
-                                                                           null,
-                                                                           parentAtEnd1);
+            NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
+
+            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+            newElementOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
+
+            newElementOptions.setAnchorGUID(schemaGUID);
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorScopeGUID(catalogGUID);
+
+            newElementOptions.setParentGUID(schemaGUID);
+            newElementOptions.setParentAtEnd1(parentAtEnd1);
+            newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
+
+            ucVolumeGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+                                                                          null,
+                                                                          new NewElementProperties(this.getElementProperties(qualifiedName, volumeInfo)),
+                                                                          null);
 
             Map<String, String> facetProperties = new HashMap<>();
 
@@ -333,7 +338,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
             super.addPropertyFacet(ucVolumeGUID, qualifiedName, volumeInfo, facetProperties);
         }
 
-        context.addExternalIdentifier(catalogGUID,
+        openMetadataStore.addExternalIdentifier(catalogGUID,
                                       catalogQualifiedName,
                                       catalogTypeName,
                                       ucVolumeGUID,
@@ -365,13 +370,14 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
     {
         String egeriaVolumeGUID = memberElement.getElement().getElementGUID();
 
-        openMetadataAccess.updateMetadataElementInStore(catalogGUID,
-                                                        catalogQualifiedName,
-                                                        egeriaVolumeGUID,
-                                                        false,
-                                                        this.getElementProperties(volumeInfo));
+        UpdateOptions updateOptions = new UpdateOptions(super.getMetadataSourceOptions());
 
-        context.confirmSynchronization(catalogGUID,
+        updateOptions.setMergePropertyUpdate(true);
+        openMetadataStore.updateMetadataElementInStore(egeriaVolumeGUID,
+                                                       updateOptions,
+                                                       this.getElementProperties(volumeInfo));
+
+        openMetadataStore.confirmSynchronization(catalogGUID,
                                        catalogQualifiedName,
                                        egeriaVolumeGUID,
                                        entityTypeName,
@@ -401,7 +407,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
         if (memberElement.getExternalIdentifier() == null)
         {
-            context.addExternalIdentifier(catalogGUID,
+            openMetadataStore.addExternalIdentifier(catalogGUID,
                                           catalogQualifiedName,
                                           catalogTypeName,
                                           memberElement.getElement().getElementGUID(),
@@ -415,7 +421,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         }
         else
         {
-            context.confirmSynchronization(catalogGUID,
+            openMetadataStore.confirmSynchronization(catalogGUID,
                                            catalogQualifiedName,
                                            memberElement.getElement().getElementGUID(),
                                            deployedImplementationType.getAssociatedTypeName(),
@@ -464,7 +470,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                            volumeInfo.getFull_name(),
                                                                            ucServerEndpoint));
 
-        context.confirmSynchronization(catalogGUID,
+        openMetadataStore.confirmSynchronization(catalogGUID,
                                        catalogName,
                                        memberElement.getElement().getElementGUID(),
                                        deployedImplementationType.getAssociatedTypeName(),
@@ -525,7 +531,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
     private ElementProperties getElementProperties(VolumeInfo info)
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                               OpenMetadataProperty.NAME.name,
+                                                                               OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                info.getName());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,

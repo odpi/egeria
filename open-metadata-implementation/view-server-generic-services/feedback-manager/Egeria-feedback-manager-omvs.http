@@ -16,15 +16,7 @@
 # of any other active view service.
 # The URL marker is derived from the name of the requested service - take the short two-word service name, convert to
 # lower case and add a hyphen between the two words - so Automated Curation's OMVS's URL Marker is automated-curation.
-#
-# There are optional request bodies for query parameters.
-#
-# * forLineage (default=false) - set this request parameter to true if this request is to support a lineage query -
-#                                it will include the mementos representing elements in the graph that are deleted.
-# * forDuplicateProcessing (default=false) - set this request parameter to true if the query is supporting
-#                                            deduplication processing and so it turns off the automatic
-#                                            deduplicate processing
-#
+
 
 
 ###
@@ -64,8 +56,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ReferenceableUpdateRequestBody",
-  "elementProperties" : {
+  "class" : "NewFeedbackRequestBody",
+  "properties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
     "commentText" : "Add comment text here",
@@ -87,8 +79,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ReferenceableUpdateRequestBody",
-  "elementProperties" : {
+  "class" : "NewFeedbackRequestBody",
+  "properties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
     "commentText" : "Add comment text here",
@@ -104,15 +96,16 @@ Content-Type: application/json
 ###
 # @name updateComment
 # Update an existing comment.
-# The request parameter isMergeUpdate indicates wither the new properties should be merged with existing properties (true) or completely replace them (false)?
+# The request body property mergeUpdate indicates wither the new properties should be merged with existing properties (true) or completely replace them (false)?
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/comments/{{commentGUID}}/update?isMergeUpdate
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/comments/{{commentGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ReferenceableUpdateRequestBody",
-  "elementProperties" : {
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
     "text" : "Add comment text here",
@@ -123,14 +116,6 @@ Content-Type: application/json
     }
   }
 }
-
-
-###
-# @name updateCommentVisibility
-# Update an existing comment's visibility.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/parents/{parentGUID}/comments/{{commentGUID}}/update-visibility?isPublic=true
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
 
 ###
@@ -195,11 +180,19 @@ Content-Type: application/json
 
 ###
 # @name addLikeToElement
-# Creates a "like" object and attaches it to an element.
+# Creates a "like" object and attaches it to an element. Request body is optional.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/likes?isPublic=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/likes
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+{
+  "class" : "NewFeedbackRequestBody",
+  "properties" : {
+    "class" : "LikeProperties",
+    "emoji" : "Add characters here as text"
+  }
+}
 
 
 ###
@@ -216,6 +209,7 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/likes/retrieve?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
 
 ###
 # =====================================================================================================================
@@ -406,18 +400,27 @@ Content-Type: application/json
 # @name createNoteLog
 # Creates a new noteLog and returns the unique identifier for it.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/note-logs?isPublic=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/note-logs
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "NoteLogProperties",
-    "qualifiedName" : "Add unique name here",
-    "name" : "Add name here",
-    "description" : "Add description here",
-    "additionalProperties" : {
-      "propertyName 1" : "property value 1",
-      "propertyName 2" : "property value 2"
+    "class" : "NewFeedbackRequestBody",
+    "initialClassifications": {
+      "ZoneMembership" : {
+        "class" : "ZoneMembershipProperties",
+        "zoneMembership" : [ "erinoverview", "peterprofile" ]
+      }
+    },
+    "properties": {
+      "class": "NoteLogProperties",
+      "qualifiedName": "Add unique name here",
+      "name": "Add name here",
+      "description": "Add description here",
+      "additionalProperties": {
+        "propertyName 1": "property value 1",
+        "propertyName 2": "property value 2"
+      }
     }
 }
 
@@ -426,13 +429,14 @@ Content-Type: application/json
 # @name updateNoteLog
 # Update an existing note log.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/{{noteLogGUID}}?isMergeUpdate=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/{{noteLogGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ReferenceableUpdateRequestBody",
-  "elementProperties" : {
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties" : {
     "class" : "NoteLogProperties",
     "qualifiedName" : "Add unique name here",
     "name" : "Add name here",
@@ -513,13 +517,22 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NoteProperties",
-  "qualifiedName" : "Add unique name here",
-  "title" : "Add name here",
-  "text" : "Add description here",
-  "additionalProperties" : {
-    "propertyName 1" : "property value 1",
-    "propertyName 2" : "property value 2"
+  "class" : "NewFeedbackRequestBody",
+  "initialClassifications": {
+    "ZoneMembership" : {
+      "class" : "ZoneMembershipProperties",
+      "zoneMembership" : [ "erinoverview", "peterprofile" ]
+    }
+  },
+  "properties": {
+    "class" : "NoteProperties",
+    "qualifiedName" : "Add unique name here",
+    "title" : "Add name here",
+    "text" : "Add description here",
+    "additionalProperties" : {
+      "propertyName 1" : "property value 1",
+      "propertyName 2" : "property value 2"
+    }
   }
 }
 
@@ -527,13 +540,14 @@ Content-Type: application/json
 ###
 # @name updateNote
 # Update an existing note.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/notes/{{noteGUID}}?isMergeUpdate=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/notes/{{noteGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ReferenceableUpdateRequestBody",
-  "elementProperties" : {
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties" : {
     "class" : "NoteProperties",
     "qualifiedName" : "Add unique name here",
     "title" : "Add name here",

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.admin;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore;
@@ -134,7 +135,7 @@ public class OMRSOperationalServices
     /**
      * Return the Enterprise OMRS Topic Connector.
      *
-     * @return OMRSTopicConnector for use by the Conformance Test Services or Access Services.
+     * @return OMRSTopicConnector for use by the Conformance Test Services or Open Metadata Services.
      */
     public OMRSTopicConnector getEnterpriseOMRSTopicConnector()
     {
@@ -910,8 +911,9 @@ public class OMRSOperationalServices
      * OpenMetadataServerSecurityConnector.
      *
      * @param securityVerifier new security verifier
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
-    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
+    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier) throws UserNotAuthorizedException
     {
         if (securityVerifier != null)
         {

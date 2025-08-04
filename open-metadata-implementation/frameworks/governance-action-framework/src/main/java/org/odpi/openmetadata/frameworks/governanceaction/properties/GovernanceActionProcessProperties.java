@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 
 import java.util.*;
 
@@ -20,16 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionProcessProperties extends ReferenceableProperties
+public class GovernanceActionProcessProperties extends ProcessProperties
 {
     private int    domainIdentifier     = 0;
-    private String displayName          = null;
-    private String description          = null;
-    private String versionIdentifier    = null;
-    private String formula              = null;
-    private String formulaType          = null;
-    private Date   processStartTime     = null;
-    private Date   processEndTime       = null;
 
 
     /**
@@ -54,16 +47,7 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
         {
             domainIdentifier = template.getDomainIdentifier();
 
-            displayName = template.getDisplayName();
-            description = template.getDescription();
 
-            versionIdentifier = template.getVersionIdentifier();
-
-            formula = template.getFormula();
-            formulaType = template.getFormulaType();
-
-            processStartTime = template.getProcessStartTime();
-            processEndTime = template.getProcessEndTime();
         }
     }
 
@@ -91,159 +75,6 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
 
 
     /**
-     * Returns the stored display name property for the process.
-     * If no display name is available then null is returned.
-     *
-     * @return String name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the stored display name property for the process.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Returns the stored description property for the process.
-     * If no description is provided then null is returned.
-     *
-     * @return  String text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the stored description property for the process.
-     *
-     * @param description String text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Set up the version identifier of the process.
-     *
-     * @return string version name
-     */
-    public String getVersionIdentifier()
-    {
-        return versionIdentifier;
-    }
-
-
-    /**
-     * Set up the version identifier of the process.
-     *
-     * @param versionIdentifier string version name
-     */
-    public void setVersionIdentifier(String versionIdentifier)
-    {
-        this.versionIdentifier = versionIdentifier;
-    }
-
-
-    /**
-     * Return the description of the processing performed by this process.
-     *
-     * @return string description
-     */
-    public String getFormula() { return formula; }
-
-
-    /**
-     * Set up the description of the processing performed by this process.
-     *
-     * @param formula string description
-     */
-    public void setFormula(String formula)
-    {
-        this.formula = formula;
-    }
-
-
-    /**
-     * Return the name of the language that the formula is implemented in.
-     *
-     * @return string name
-     */
-    public String getFormulaType()
-    {
-        return formulaType;
-    }
-
-
-    /**
-     * Set up the name of the language that the formula is implemented in.
-     *
-     * @param formulaType string name
-     */
-    public void setFormulaType(String formulaType)
-    {
-        this.formulaType = formulaType;
-    }
-
-
-    /**
-     * Return the date/time that this process started (instance only).
-     *
-     * @return date
-     */
-    public Date getProcessStartTime()
-    {
-        return processStartTime;
-    }
-
-
-    /**
-     * Set up the the date/time that this process started (instance only).
-     *
-     * @param processStartTime date
-     */
-    public void setProcessStartTime(Date processStartTime)
-    {
-        this.processStartTime = processStartTime;
-    }
-
-
-    /**
-     * Return the date/time that this process ended (instance only).
-     *
-     * @return date
-     */
-    public Date getProcessEndTime()
-    {
-        return processEndTime;
-    }
-
-
-    /**
-     * Set up the date/time that this process ended (instance only).
-     *
-     * @param processEndTime date
-     */
-    public void setProcessEndTime(Date processEndTime)
-    {
-        this.processEndTime = processEndTime;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -253,13 +84,6 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
     {
         return "GovernanceActionProcessProperties{" +
                 "domainIdentifier=" + domainIdentifier +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", versionIdentifier='" + versionIdentifier + '\'' +
-                ", formula='" + formula + '\'' +
-                ", formulaType='" + formulaType + '\'' +
-                ", processStartTime=" + processStartTime +
-                ", processEndTime=" + processEndTime +
                 "} " + super.toString();
     }
 
@@ -277,14 +101,7 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         GovernanceActionProcessProperties that = (GovernanceActionProcessProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
-                Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(versionIdentifier, that.versionIdentifier) &&
-                Objects.equals(formula, that.formula) &&
-                Objects.equals(formulaType, that.formulaType) &&
-                Objects.equals(processStartTime, that.processStartTime) &&
-                Objects.equals(processEndTime, that.processEndTime);
+        return domainIdentifier == that.domainIdentifier;
     }
 
     /**
@@ -295,7 +112,6 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, versionIdentifier,
-                            formula, formulaType, processStartTime, processEndTime);
+        return Objects.hash(super.hashCode(), domainIdentifier);
     }
 }

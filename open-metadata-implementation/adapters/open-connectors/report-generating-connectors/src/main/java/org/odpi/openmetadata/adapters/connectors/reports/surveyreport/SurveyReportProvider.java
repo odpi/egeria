@@ -37,7 +37,6 @@ public class SurveyReportProvider extends GovernanceActionServiceProviderBase
         producedGuards             = ReportGuard.getGuardTypes();
 
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeQualifiedName);
         connectorType.setDisplayName(connectorTypeDisplayName);

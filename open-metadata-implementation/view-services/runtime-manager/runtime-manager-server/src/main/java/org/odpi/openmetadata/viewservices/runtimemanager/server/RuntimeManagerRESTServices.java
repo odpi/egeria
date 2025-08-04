@@ -3,39 +3,32 @@
 package org.odpi.openmetadata.viewservices.runtimemanager.server;
 
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectedAssetClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.IntegrationDaemonConnector;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerPlatformElement;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.MetadataAccessServerConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.OMAGServerConnectorBase;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.viewservices.runtimemanager.rest.*;
-import org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.viewservices.runtimemanager.rest.PlatformReportResponse;
+import org.odpi.openmetadata.viewservices.runtimemanager.rest.ServerReportResponse;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -64,8 +57,6 @@ public class RuntimeManagerRESTServices extends TokenController
      * Returns the list of platforms with a particular qualifiedName or name.
      *
      * @param serverName         name of called server
-     * @param startFrom          index of the list to start from (0 for start)
-     * @param pageSize           maximum number of elements to return
      * @param requestBody qualified name or display name of the platform
      *
      * @return a list of projects
@@ -73,17 +64,15 @@ public class RuntimeManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SoftwareServerPlatformsResponse getPlatformsByName(String            serverName,
-                                                              int               startFrom,
-                                                              int               pageSize,
-                                                              FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getPlatformsByName(String            serverName,
+                                                               FilterRequestBody requestBody)
     {
         final String methodName = "getPlatformsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServerPlatformsResponse response = new SoftwareServerPlatformsResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -93,11 +82,11 @@ public class RuntimeManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            PlatformManagerClient handler = instanceHandler.getPlatformManagerClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getSoftwareServerPlatformsByName(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize));
+                response.setElements(handler.getAssetsByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -118,8 +107,6 @@ public class RuntimeManagerRESTServices extends TokenController
      * Returns the list of platforms with a particular deployed implementation type.
      *
      * @param serverName         name of called server
-     * @param startFrom          index of the list to start from (0 for start)
-     * @param pageSize           maximum number of elements to return
      * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
      * @param requestBody qualified name or display name of the platform
      *
@@ -128,18 +115,16 @@ public class RuntimeManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SoftwareServerPlatformsResponse getPlatformsByDeployedImplType(String            serverName,
-                                                                          int               startFrom,
-                                                                          int               pageSize,
-                                                                          boolean           getTemplates,
-                                                                          FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getPlatformsByDeployedImplType(String                  serverName,
+                                                                           boolean                 getTemplates,
+                                                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "getPlatformsByDeployedImplType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServerPlatformsResponse response = new SoftwareServerPlatformsResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -149,23 +134,15 @@ public class RuntimeManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            PlatformManagerClient handler = instanceHandler.getPlatformManagerClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
 
-            List<SoftwareServerPlatformElement> platforms;
-            if (requestBody != null)
-            {
-                platforms = handler.getSoftwareServerPlatformsByDeployedImplType(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize);
-            }
-            else
-            {
-                platforms = handler.getSoftwareServerPlatformsByDeployedImplType(userId, null, new Date(), startFrom, pageSize);
-            }
+            List<OpenMetadataRootElement> platforms = handler.getAssetsByDeployedImplementationType(userId, requestBody.getSearchString(), requestBody);
 
             if (platforms != null)
             {
-                List<SoftwareServerPlatformElement> filteredPlatforms = new ArrayList<>();
+                List<OpenMetadataRootElement> filteredPlatforms = new ArrayList<>();
 
-                for (SoftwareServerPlatformElement platformElement : platforms)
+                for (OpenMetadataRootElement platformElement : platforms)
                 {
                     if (platformElement != null)
                     {
@@ -205,21 +182,7 @@ public class RuntimeManagerRESTServices extends TokenController
      */
     private boolean isTemplate(ElementHeader elementHeader)
     {
-        if (elementHeader.getClassifications() != null)
-        {
-            for (ElementClassification classification : elementHeader.getClassifications())
-            {
-                if (classification != null)
-                {
-                    if (classification.getClassificationName().equals(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+        return elementHeader.getTemplate() != null;
     }
 
 
@@ -234,17 +197,16 @@ public class RuntimeManagerRESTServices extends TokenController
      * PropertyServerException    there is a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public SoftwareServerPlatformResponse getPlatformByGUID(String                        serverName,
-                                                            String                        platformGUID,
-                                                            EffectiveTimeQueryRequestBody requestBody)
+    public OpenMetadataRootElementResponse getPlatformByGUID(String             serverName,
+                                                             String             platformGUID,
+                                                             GetRequestBody requestBody)
     {
         final String methodName = "getPlatformByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServerPlatformResponse response = new SoftwareServerPlatformResponse();
-        AuditLog                       auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -254,9 +216,9 @@ public class RuntimeManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            PlatformManagerClient handler = instanceHandler.getPlatformManagerClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getSoftwareServerPlatformByGUID(userId, platformGUID));
+            response.setElement(handler.getAssetByGUID(userId, platformGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -296,18 +258,20 @@ public class RuntimeManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+            ConnectedAssetClient connectedAssetClient = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+            AssetHandler         platformHandler      = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
 
-            AssetUniverse asset = handler.getAssetProperties(userId, platformGUID);
+            OpenMetadataRootElement asset = platformHandler.getAssetByGUID(userId, platformGUID, null);
 
-            Connector     connector = handler.getConnectorForAsset(userId, platformGUID, auditLog);
+            Connector     connector = connectedAssetClient.getConnectorForAsset(userId, platformGUID, auditLog);
 
             if (connector instanceof OMAGServerPlatformConnector omagServerPlatformConnector)
             {
-                if (asset != null)
+                if ((asset != null) && (asset.getProperties() instanceof AssetProperties assetProperties))
                 {
-                    omagServerPlatformConnector.setPlatformName(asset.getResourceName());
+                    omagServerPlatformConnector.setPlatformName(assetProperties.getResourceName());
                 }
+
                 omagServerPlatformConnector.setClientUserId(userId);
                 omagServerPlatformConnector.start();
                 response.setElement(omagServerPlatformConnector.getPlatformReport());
@@ -328,8 +292,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * Returns the list of platforms with a particular qualifiedName or name.
      *
      * @param serverName         name of called server
-     * @param startFrom          index of the list to start from (0 for start)
-     * @param pageSize           maximum number of elements to return
+
      * @param requestBody qualified name or display name of the platform
      *
      * @return a list of projects
@@ -337,17 +300,15 @@ public class RuntimeManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SoftwareServersResponse getServersByName(String            serverName,
-                                                    int               startFrom,
-                                                    int               pageSize,
-                                                    FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getServersByName(String            serverName,
+                                                             FilterRequestBody requestBody)
     {
         final String methodName = "getServersByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServersResponse response = new SoftwareServersResponse();
-        AuditLog                auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -357,11 +318,11 @@ public class RuntimeManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ServerManagerClient handler = instanceHandler.getServerManagerClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getSoftwareServerHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getSoftwareServersByName(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize));
+                response.setElements(handler.getAssetsByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -382,8 +343,6 @@ public class RuntimeManagerRESTServices extends TokenController
      * Returns the list of servers with a particular deployed implementation type.
      *
      * @param serverName         name of called server
-     * @param startFrom          index of the list to start from (0 for start)
-     * @param pageSize           maximum number of elements to return
      * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
      * @param requestBody qualified name or display name of the platform
      *
@@ -392,18 +351,16 @@ public class RuntimeManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SoftwareServersResponse getServersByDeployedImplType(String            serverName,
-                                                                int               startFrom,
-                                                                int               pageSize,
-                                                                boolean           getTemplates,
-                                                                FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getServersByDeployedImplType(String            serverName,
+                                                                         boolean           getTemplates,
+                                                                         FilterRequestBody requestBody)
     {
         final String methodName = "getServersByDeployedImplType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServersResponse response = new SoftwareServersResponse();
-        AuditLog                auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -413,23 +370,15 @@ public class RuntimeManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ServerManagerClient handler = instanceHandler.getServerManagerClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getSoftwareServerHandler(userId, serverName, methodName);
 
-            List<SoftwareServerElement> servers;
-            if (requestBody != null)
-            {
-                servers = handler.getSoftwareServersByDeployedImplType(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize);
-            }
-            else
-            {
-                servers = handler.getSoftwareServersByDeployedImplType(userId, null, new Date(), startFrom, pageSize);
-            }
+            List<OpenMetadataRootElement> servers = handler.getAssetsByDeployedImplementationType(userId, requestBody.getFilter(), requestBody);
 
             if (servers != null)
             {
-                List<SoftwareServerElement> filteredServers = new ArrayList<>();
+                List<OpenMetadataRootElement> filteredServers = new ArrayList<>();
 
-                for (SoftwareServerElement serverElement : servers)
+                for (OpenMetadataRootElement serverElement : servers)
                 {
                     if (serverElement != null)
                     {
@@ -474,16 +423,16 @@ public class RuntimeManagerRESTServices extends TokenController
      */
     @SuppressWarnings(value = "unused")
 
-    public SoftwareServerResponse getServerByGUID(String                        serverName,
-                                                  String                        serverGUID,
-                                                  EffectiveTimeQueryRequestBody requestBody)
+    public OpenMetadataRootElementResponse getServerByGUID(String             serverName,
+                                                           String             serverGUID,
+                                                           GetRequestBody requestBody)
     {
         final String methodName = "getServerByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServerResponse response = new SoftwareServerResponse();
-        AuditLog               auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -493,9 +442,9 @@ public class RuntimeManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ServerManagerClient handler = instanceHandler.getServerManagerClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getSoftwareServerHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getSoftwareServerByGUID(userId, serverGUID));
+            response.setElement(handler.getAssetByGUID(userId, serverGUID, null));
         }
         catch (Throwable error)
         {

@@ -8,20 +8,14 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SupportingDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -80,48 +74,13 @@ public class GovernanceOfficerRESTServices extends TokenController
             {
                 GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-                GovernanceDefinitionStatus initialStatus = GovernanceDefinitionStatus.ACTIVE;
-
-                if (requestBody instanceof NewGovernanceDefinitionRequestBody newGovernanceDefinitionRequestBody)
-                {
-                    initialStatus = newGovernanceDefinitionRequestBody.getInitialStatus();
-                }
-
                 if (requestBody.getProperties() instanceof GovernanceDefinitionProperties properties)
                 {
                     response.setGUID(handler.createGovernanceDefinition(userId,
-                                                                        requestBody.getExternalSourceGUID(),
-                                                                        requestBody.getExternalSourceName(),
-                                                                        requestBody.getAnchorGUID(),
-                                                                        requestBody.getIsOwnAnchor(),
-                                                                        requestBody.getAnchorScopeGUID(),
+                                                                        requestBody,
+                                                                        requestBody.getInitialClassifications(),
                                                                         properties,
-                                                                        initialStatus,
-                                                                        requestBody.getParentGUID(),
-                                                                        requestBody.getParentRelationshipTypeName(),
-                                                                        requestBody.getParentRelationshipProperties(),
-                                                                        requestBody.getParentAtEnd1(),
-                                                                        requestBody.getForLineage(),
-                                                                        requestBody.getForDuplicateProcessing(),
-                                                                        requestBody.getEffectiveTime()));
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    response.setGUID(handler.createGovernanceDefinition(userId,
-                                                                        requestBody.getExternalSourceGUID(),
-                                                                        requestBody.getExternalSourceName(),
-                                                                        requestBody.getAnchorGUID(),
-                                                                        requestBody.getIsOwnAnchor(),
-                                                                        requestBody.getAnchorScopeGUID(),
-                                                                        null,
-                                                                        initialStatus,
-                                                                        requestBody.getParentGUID(),
-                                                                        requestBody.getParentRelationshipTypeName(),
-                                                                        requestBody.getParentRelationshipProperties(),
-                                                                        requestBody.getParentAtEnd1(),
-                                                                        requestBody.getForLineage(),
-                                                                        requestBody.getForDuplicateProcessing(),
-                                                                        requestBody.getEffectiveTime()));
+                                                                        requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -180,23 +139,11 @@ public class GovernanceOfficerRESTServices extends TokenController
                 GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setGUID(handler.createGovernanceDefinitionFromTemplate(userId,
-                                                                                requestBody.getExternalSourceGUID(),
-                                                                                requestBody.getExternalSourceName(),
-                                                                                requestBody.getAnchorGUID(),
-                                                                                requestBody.getIsOwnAnchor(),
-                                                                                requestBody.getAnchorScopeGUID(),
-                                                                                null,
-                                                                                null,
+                                                                                requestBody,
                                                                                 requestBody.getTemplateGUID(),
                                                                                 requestBody.getReplacementProperties(),
                                                                                 requestBody.getPlaceholderPropertyValues(),
-                                                                                requestBody.getParentGUID(),
-                                                                                requestBody.getParentRelationshipTypeName(),
-                                                                                requestBody.getParentRelationshipProperties(),
-                                                                                requestBody.getParentAtEnd1(),
-                                                                                requestBody.getForLineage(),
-                                                                                requestBody.getForDuplicateProcessing(),
-                                                                                requestBody.getEffectiveTime()));
+                                                                                requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -219,8 +166,6 @@ public class GovernanceOfficerRESTServices extends TokenController
      * @param serverName         name of called server.
      * @param viewServiceURLMarker  view service URL marker
      * @param governanceDefinitionGUID unique identifier of the governance definition (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -231,7 +176,6 @@ public class GovernanceOfficerRESTServices extends TokenController
     public VoidResponse updateGovernanceDefinition(String                   serverName,
                                                    String                   viewServiceURLMarker,
                                                    String                   governanceDefinitionGUID,
-                                                   boolean                  replaceAllProperties,
                                                    UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateGovernanceDefinition";
@@ -256,92 +200,21 @@ public class GovernanceOfficerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof GovernanceDefinitionProperties governanceDefinitionProperties)
                 {
                     handler.updateGovernanceDefinition(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        governanceDefinitionGUID,
-                                                       replaceAllProperties,
-                                                       governanceDefinitionProperties,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       governanceDefinitionProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.updateGovernanceDefinition(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        governanceDefinitionGUID,
-                                                       replaceAllProperties,
-                                                       null,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       null);
                 }
                 else
                 {
                     restExceptionHandler.handleInvalidPropertiesObject(GovernanceDefinitionProperties.class.getName(), methodName);
                 }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the status of a governance definition.
-     *
-     * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
-     * @param governanceDefinitionGUID unique identifier of the governance definition (returned from create)
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse updateGovernanceDefinitionStatus(String                                serverName,
-                                                         String                                viewServiceURLMarker,
-                                                         String                                governanceDefinitionGUID,
-                                                         GovernanceDefinitionStatusRequestBody requestBody)
-    {
-        final String methodName = "updateGovernanceDefinitionStatus";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-                handler.updateGovernanceDefinitionStatus(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
-                                                         governanceDefinitionGUID,
-                                                         requestBody.getStatus(),
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getEffectiveTime());
             }
             else
             {
@@ -378,7 +251,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                             String                  governanceDefinitionOneGUID,
                                             String                  governanceDefinitionTwoGUID,
                                             String                  relationshipTypeName,
-                                            RelationshipRequestBody requestBody)
+                                            NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkPeerDefinitions";
 
@@ -401,28 +274,20 @@ public class GovernanceOfficerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof PeerDefinitionProperties peerDefinitionProperties)
                 {
                     handler.linkPeerDefinitions(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
                                                 governanceDefinitionOneGUID,
                                                 governanceDefinitionTwoGUID,
                                                 relationshipTypeName,
-                                                peerDefinitionProperties,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                                                requestBody,
+                                                peerDefinitionProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkPeerDefinitions(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
                                                 governanceDefinitionOneGUID,
                                                 governanceDefinitionTwoGUID,
                                                 relationshipTypeName,
-                                                null,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                                                requestBody,
+                                                null);
                 }
                 else
                 {
@@ -435,15 +300,11 @@ public class GovernanceOfficerRESTServices extends TokenController
             else
             {
                 handler.linkPeerDefinitions(userId,
-                                            null,
-                                            null,
                                             governanceDefinitionOneGUID,
                                             governanceDefinitionTwoGUID,
                                             relationshipTypeName,
                                             null,
-                                            false,
-                                            false,
-                                            new Date());
+                                            null);
             }
         }
         catch (Throwable error)
@@ -471,12 +332,12 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachPeerDefinitions(String                    serverName,
-                                              String                    viewServiceURLMarker,
-                                              String                    governanceDefinitionOneGUID,
-                                              String                    governanceDefinitionTwoGUID,
-                                              String                    relationshipTypeName,
-                                              MetadataSourceRequestBody requestBody)
+    public VoidResponse detachPeerDefinitions(String                   serverName,
+                                              String                   viewServiceURLMarker,
+                                              String                   governanceDefinitionOneGUID,
+                                              String                   governanceDefinitionTwoGUID,
+                                              String                   relationshipTypeName,
+                                              DeleteRequestBody requestBody)
     {
         final String methodName = "detachPeerDefinitions";
 
@@ -495,30 +356,11 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachPeerDefinitions(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
-                                              governanceDefinitionOneGUID,
-                                              governanceDefinitionTwoGUID,
-                                              relationshipTypeName,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachPeerDefinitions(userId,
-                                              null,
-                                              null,
-                                              governanceDefinitionOneGUID,
-                                              governanceDefinitionTwoGUID,
-                                              relationshipTypeName,
-                                              false,
-                                              false,
-                                              new Date());
-            }
+            handler.detachPeerDefinitions(userId,
+                                          governanceDefinitionOneGUID,
+                                          governanceDefinitionTwoGUID,
+                                          relationshipTypeName,
+                                          requestBody);
         }
         catch (Throwable error)
         {
@@ -551,7 +393,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                    String                  governanceDefinitionOneGUID,
                                                    String                  governanceDefinitionTwoGUID,
                                                    String                  relationshipTypeName,
-                                                   RelationshipRequestBody requestBody)
+                                                   NewRelationshipRequestBody requestBody)
     {
         final String methodName = "attachSupportingDefinition";
 
@@ -574,28 +416,20 @@ public class GovernanceOfficerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof SupportingDefinitionProperties supportingDefinitionProperties)
                 {
                     handler.attachSupportingDefinition(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        governanceDefinitionOneGUID,
                                                        governanceDefinitionTwoGUID,
                                                        relationshipTypeName,
-                                                       supportingDefinitionProperties,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       supportingDefinitionProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.attachSupportingDefinition(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        governanceDefinitionOneGUID,
                                                        governanceDefinitionTwoGUID,
                                                        relationshipTypeName,
-                                                       null,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       null);
                 }
                 else
                 {
@@ -605,15 +439,11 @@ public class GovernanceOfficerRESTServices extends TokenController
             else
             {
                 handler.attachSupportingDefinition(userId,
-                                                   null,
-                                                   null,
                                                    governanceDefinitionOneGUID,
                                                    governanceDefinitionTwoGUID,
                                                    relationshipTypeName,
                                                    null,
-                                                   false,
-                                                   false,
-                                                   new Date());
+                                                   null);
             }
         }
         catch (Throwable error)
@@ -641,12 +471,12 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSupportingDefinition(String                    serverName,
-                                                   String                    viewServiceURLMarker,
-                                                   String                    governanceDefinitionOneGUID,
-                                                   String                    governanceDefinitionTwoGUID,
-                                                   String                    relationshipTypeName,
-                                                   MetadataSourceRequestBody requestBody)
+    public VoidResponse detachSupportingDefinition(String                   serverName,
+                                                   String                   viewServiceURLMarker,
+                                                   String                   governanceDefinitionOneGUID,
+                                                   String                   governanceDefinitionTwoGUID,
+                                                   String                   relationshipTypeName,
+                                                   DeleteRequestBody requestBody)
     {
         final String methodName = "detachSupportingDefinition";
 
@@ -665,30 +495,11 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachSupportingDefinition(userId,
-                                                   requestBody.getExternalSourceGUID(),
-                                                   requestBody.getExternalSourceName(),
-                                                   governanceDefinitionOneGUID,
-                                                   governanceDefinitionTwoGUID,
-                                                   relationshipTypeName,
-                                                   requestBody.getForLineage(),
-                                                   requestBody.getForDuplicateProcessing(),
-                                                   requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachSupportingDefinition(userId,
-                                                   null,
-                                                   null,
-                                                   governanceDefinitionOneGUID,
-                                                   governanceDefinitionTwoGUID,
-                                                   relationshipTypeName,
-                                                   false,
-                                                   false,
-                                                   new Date());
-            }
+            handler.detachSupportingDefinition(userId,
+                                               governanceDefinitionOneGUID,
+                                               governanceDefinitionTwoGUID,
+                                               relationshipTypeName,
+                                               requestBody);
         }
         catch (Throwable error)
         {
@@ -706,7 +517,6 @@ public class GovernanceOfficerRESTServices extends TokenController
      * @param serverName         name of called server
      * @param viewServiceURLMarker  view service URL marker
      * @param governanceDefinitionGUID  unique identifier of the element to delete
-     * @param cascadedDelete can governance definitions be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -714,11 +524,10 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteGovernanceDefinition(String                    serverName,
-                                                   String                    viewServiceURLMarker,
-                                                   String                    governanceDefinitionGUID,
-                                                   boolean                   cascadedDelete,
-                                                   MetadataSourceRequestBody requestBody)
+    public VoidResponse deleteGovernanceDefinition(String                   serverName,
+                                                   String                   viewServiceURLMarker,
+                                                   String                   governanceDefinitionGUID,
+                                                   DeleteRequestBody requestBody)
     {
         final String methodName = "deleteGovernanceDefinition";
 
@@ -737,28 +546,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteGovernanceDefinition(userId,
-                                                   requestBody.getExternalSourceGUID(),
-                                                   requestBody.getExternalSourceName(),
-                                                   governanceDefinitionGUID,
-                                                   cascadedDelete,
-                                                   requestBody.getForLineage(),
-                                                   requestBody.getForDuplicateProcessing(),
-                                                   requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteGovernanceDefinition(userId,
-                                                   null,
-                                                   null,
-                                                   governanceDefinitionGUID,
-                                                   cascadedDelete,
-                                                   false,
-                                                   false,
-                                                   new Date());
-            }
+            handler.deleteGovernanceDefinition(userId, governanceDefinitionGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -775,8 +563,6 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -784,17 +570,15 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDefinitionsResponse getGovernanceDefinitionsByName(String            serverName,
-                                                                        String            viewServiceURLMarker,
-                                                                        int               startFrom,
-                                                                        int               pageSize,
-                                                                        FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getGovernanceDefinitionsByName(String            serverName,
+                                                                           String            viewServiceURLMarker,
+                                                                           FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceDefinitionsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        GovernanceDefinitionsResponse response = new GovernanceDefinitionsResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                        auditLog = null;
 
         try
@@ -811,16 +595,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             {
                 response.setElements(handler.getGovernanceDefinitionsByName(userId,
                                                                             requestBody.getFilter(),
-                                                                            requestBody.getTemplateFilter(),
-                                                                            requestBody.getLimitResultsByStatus(),
-                                                                            requestBody.getAsOfTime(),
-                                                                            requestBody.getSequencingOrder(),
-                                                                            requestBody.getSequencingProperty(),
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getForLineage(),
-                                                                            requestBody.getForDuplicateProcessing(),
-                                                                            requestBody.getEffectiveTime()));
+                                                                            requestBody));
             }
             else
             {
@@ -850,16 +625,16 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDefinitionResponse getGovernanceDefinitionByGUID(String             serverName,
-                                                                      String             viewServiceURLMarker,
-                                                                      String             governanceDefinitionGUID,
-                                                                      AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getGovernanceDefinitionByGUID(String             serverName,
+                                                                         String             viewServiceURLMarker,
+                                                                         String             governanceDefinitionGUID,
+                                                                         GetRequestBody requestBody)
     {
         final String methodName = "getGovernanceDefinitionByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        GovernanceDefinitionResponse response = new GovernanceDefinitionResponse();
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
         AuditLog                      auditLog = null;
 
         try
@@ -872,24 +647,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getGovernanceDefinitionByGUID(userId,
-                                                                          governanceDefinitionGUID,
-                                                                          requestBody.getAsOfTime(),
-                                                                          requestBody.getForLineage(),
-                                                                          requestBody.getForDuplicateProcessing(),
-                                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getGovernanceDefinitionByGUID(userId,
-                                                                          governanceDefinitionGUID,
-                                                                          null,
-                                                                          false,
-                                                                          false,
-                                                                          new Date()));
-            }
+            response.setElement(handler.getGovernanceDefinitionByGUID(userId, governanceDefinitionGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -906,11 +664,6 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -918,21 +671,16 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDefinitionsResponse findGovernanceDefinitions(String            serverName,
-                                                                   String            viewServiceURLMarker,
-                                                                   boolean           startsWith,
-                                                                   boolean           endsWith,
-                                                                   boolean           ignoreCase,
-                                                                   int               startFrom,
-                                                                   int               pageSize,
-                                                                   FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findGovernanceDefinitions(String                  serverName,
+                                                                      String                  viewServiceURLMarker,
+                                                                      SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceDefinitions";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        GovernanceDefinitionsResponse response = new GovernanceDefinitionsResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -947,32 +695,12 @@ public class GovernanceOfficerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.findGovernanceDefinitions(userId,
-                                                                       instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                       requestBody.getTemplateFilter(),
-                                                                       requestBody.getLimitResultsByStatus(),
-                                                                       requestBody.getAsOfTime(),
-                                                                       requestBody.getSequencingOrder(),
-                                                                       requestBody.getSequencingProperty(),
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       requestBody.getForLineage(),
-                                                                       requestBody.getForDuplicateProcessing(),
-                                                                       requestBody.getEffectiveTime()));
+                                                                       requestBody.getSearchString(),
+                                                                       requestBody));
             }
             else
             {
-                response.setElements(handler.findGovernanceDefinitions(userId,
-                                                                       instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                                       TemplateFilter.ALL,
-                                                                       null,
-                                                                       null,
-                                                                       SequencingOrder.CREATION_DATE_RECENT,
-                                                                       null,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       false,
-                                                                       false,
-                                                                       new Date()));
+                response.setElements(handler.findGovernanceDefinitions(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -991,8 +719,6 @@ public class GovernanceOfficerRESTServices extends TokenController
      * @param serverName name of the server instance to connect to
      * @param viewServiceURLMarker  view service URL marker
      * @param governanceDefinitionGUID unique identifier of the governance definition
-     * @param startFrom paging start
-     * @param pageSize max elements that can be returned
      * @param requestBody additional query parameters
      *
      * @return governance definition and its linked elements or
@@ -1000,19 +726,17 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the caller is not authorized to issue the request
      *  PropertyServerException the metadata service has problems
      */
-    public GovernanceDefinitionGraphResponse getGovernanceDefinitionInContext(String             serverName,
-                                                                              String             viewServiceURLMarker,
-                                                                              String             governanceDefinitionGUID,
-                                                                              int                startFrom,
-                                                                              int                pageSize,
-                                                                              ResultsRequestBody requestBody)
+    public OpenMetadataRootElementResponse getGovernanceDefinitionInContext(String             serverName,
+                                                                            String             viewServiceURLMarker,
+                                                                            String             governanceDefinitionGUID,
+                                                                            ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernanceDefinitionInContext";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        GovernanceDefinitionGraphResponse response = new GovernanceDefinitionGraphResponse();
-        AuditLog                          auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -1024,34 +748,9 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getGovernanceDefinitionInContext(userId,
-                                                                             governanceDefinitionGUID,
-                                                                             requestBody.getLimitResultsByStatus(),
-                                                                             requestBody.getAsOfTime(),
-                                                                             requestBody.getSequencingProperty(),
-                                                                             requestBody.getSequencingOrder(),
-                                                                             requestBody.getForLineage(),
-                                                                             requestBody.getForDuplicateProcessing(),
-                                                                             requestBody.getEffectiveTime(),
-                                                                             startFrom,
-                                                                             pageSize));
-            }
-            else
-            {
-                response.setElement(handler.getGovernanceDefinitionInContext(userId,
-                                                                             governanceDefinitionGUID,
-                                                                             null,
-                                                                             null,
-                                                                             null,
-                                                                             SequencingOrder.CREATION_DATE_RECENT,
-                                                                             false,
-                                                                             false,
-                                                                             new Date(),
-                                                                             startFrom,
-                                                                             pageSize));
-            }
+            response.setElement(handler.getGovernanceDefinitionInContext(userId,
+                                                                         governanceDefinitionGUID,
+                                                                         requestBody));
         }
         catch (Throwable error)
         {
@@ -1061,7 +760,6 @@ public class GovernanceOfficerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -1082,7 +780,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                    String                  viewServiceURLMarker,
                                                    String                  designGUID,
                                                    String                  implementationGUID,
-                                                   RelationshipRequestBody requestBody)
+                                                   NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkDesignToImplementation";
 
@@ -1105,26 +803,18 @@ public class GovernanceOfficerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ImplementedByProperties implementedByProperties)
                 {
                     handler.linkDesignToImplementation(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        designGUID,
                                                        implementationGUID,
-                                                       implementedByProperties,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       implementedByProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkDesignToImplementation(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        designGUID,
                                                        implementationGUID,
-                                                       null,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       null);
                 }
                 else
                 {
@@ -1134,14 +824,10 @@ public class GovernanceOfficerRESTServices extends TokenController
             else
             {
                 handler.linkDesignToImplementation(userId,
-                                                   null,
-                                                   null,
                                                    designGUID,
                                                    implementationGUID,
                                                    null,
-                                                   false,
-                                                   false,
-                                                   new Date());
+                                                   null);
             }
         }
         catch (Throwable error)
@@ -1168,11 +854,11 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachDesignFromImplementation(String                    serverName,
-                                                       String                    viewServiceURLMarker,
-                                                       String                    designGUID,
-                                                       String                    implementationGUID,
-                                                       MetadataSourceRequestBody requestBody)
+    public VoidResponse detachDesignFromImplementation(String                   serverName,
+                                                       String                   viewServiceURLMarker,
+                                                       String                   designGUID,
+                                                       String                   implementationGUID,
+                                                       DeleteRequestBody requestBody)
     {
         final String methodName = "detachDesignFromImplementation";
 
@@ -1191,28 +877,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachDesignFromImplementation(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
-                                                       designGUID,
-                                                       implementationGUID,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachDesignFromImplementation(userId,
-                                                       null,
-                                                       null,
-                                                       designGUID,
-                                                       implementationGUID,
-                                                       false,
-                                                       false,
-                                                       new Date());
-            }
+            handler.detachDesignFromImplementation(userId, designGUID, implementationGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1243,7 +908,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                    String                  viewServiceURLMarker,
                                                    String                  designGUID,
                                                    String                  implementationResourceGUID,
-                                                   RelationshipRequestBody requestBody)
+                                                   NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkImplementationResource";
 
@@ -1266,26 +931,18 @@ public class GovernanceOfficerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ImplementationResourceProperties implementationResourceProperties)
                 {
                     handler.linkImplementationResource(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        designGUID,
                                                        implementationResourceGUID,
-                                                       implementationResourceProperties,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       implementationResourceProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkImplementationResource(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        designGUID,
                                                        implementationResourceGUID,
-                                                       null,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       null);
                 }
                 else
                 {
@@ -1295,14 +952,10 @@ public class GovernanceOfficerRESTServices extends TokenController
             else
             {
                 handler.linkImplementationResource(userId,
-                                                   null,
-                                                   null,
                                                    designGUID,
                                                    implementationResourceGUID,
                                                    null,
-                                                   false,
-                                                   false,
-                                                   new Date());
+                                                   null);
             }
         }
         catch (Throwable error)
@@ -1329,11 +982,11 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachImplementationResource(String                    serverName,
-                                                     String                    viewServiceURLMarker,
-                                                     String                    designGUID,
-                                                     String                    implementationResourceGUID,
-                                                     MetadataSourceRequestBody requestBody)
+    public VoidResponse detachImplementationResource(String                   serverName,
+                                                     String                   viewServiceURLMarker,
+                                                     String                   designGUID,
+                                                     String                   implementationResourceGUID,
+                                                     DeleteRequestBody requestBody)
     {
         final String methodName = "detachImplementationResource";
 
@@ -1352,28 +1005,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachImplementationResource(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     designGUID,
-                                                     implementationResourceGUID,
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachImplementationResource(userId,
-                                                     null,
-                                                     null,
-                                                     designGUID,
-                                                     implementationResourceGUID,
-                                                     false,
-                                                     false,
-                                                     new Date());
-            }
+            handler.detachImplementationResource(userId, designGUID, implementationResourceGUID, requestBody);
         }
         catch (Throwable error)
         {

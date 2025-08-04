@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseTableProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
 
 import java.util.function.BiConsumer;
 
@@ -16,22 +16,29 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the updateDatabaseTable call to access service
  */
-class OmasUpdateTable implements BiConsumer<String, DatabaseTableProperties> {
+class OmasUpdateTable implements BiConsumer<String, RelationalTableProperties>
+{
+    private final SchemaAttributeClient databaseTableClient;
+    private final AuditLog              auditLog;
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
-
-    OmasUpdateTable(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasUpdateTable(SchemaAttributeClient databaseTableClient, AuditLog auditLog)
+    {
+        this.databaseTableClient = databaseTableClient;
+        this.auditLog            = auditLog;
     }
 
     @Override
-    public void accept(String tableGuid, DatabaseTableProperties tableProperties){
-        String methodName = "OmasUpdateTable";
+    public void accept(String tableGuid, RelationalTableProperties tableProperties)
+    {
+        final String methodName = "OmasUpdateTable";
+
         try {
-            databaseIntegratorContext.updateDatabaseTable(tableGuid, false, tableProperties);
-        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
+            databaseTableClient.updateSchemaAttribute(tableGuid,
+                                                      databaseTableClient.getUpdateOptions(false),
+                                                      tableProperties);
+        }
+        catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
+        {
             auditLog.logException("Updating table with qualifiedName " + tableProperties.getQualifiedName()
                     + " and guid " + tableGuid,
                     EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);

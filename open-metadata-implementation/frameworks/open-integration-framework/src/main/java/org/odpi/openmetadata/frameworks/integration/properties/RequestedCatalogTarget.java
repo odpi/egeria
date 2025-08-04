@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.integration.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 
 import java.util.Objects;
 
@@ -14,29 +15,24 @@ import java.util.Objects;
  */
 public class RequestedCatalogTarget extends CatalogTarget
 {
-    private Connector catalogTargetConnector = null;
-
-    /**
-     * Default constructor
-     */
-    public RequestedCatalogTarget()
-    {
-        super();
-    }
+    protected final Connector            connectorToTarget;
+    protected final CatalogTargetContext integrationContext;
 
 
     /**
-     * Copy/clone constructor
+     * Constructor for new catalog target processor
      *
      * @param template object to copy
      * @param connectorToTarget connector to access the target resource
      */
-    public RequestedCatalogTarget(CatalogTarget template,
-                                  Connector     connectorToTarget)
+    public RequestedCatalogTarget(CatalogTarget        template,
+                                  CatalogTargetContext catalogTargetContext,
+                                  Connector            connectorToTarget)
     {
         super(template);
 
-        catalogTargetConnector = connectorToTarget;
+        this.connectorToTarget  = connectorToTarget;
+        this.integrationContext = catalogTargetContext;
     }
 
 
@@ -51,21 +47,36 @@ public class RequestedCatalogTarget extends CatalogTarget
 
         if (template != null)
         {
-            catalogTargetConnector = template.getCatalogTargetConnector();
+            connectorToTarget  = template.getConnectorToTarget();
+            integrationContext = template.getIntegrationContext();
+        }
+        else
+        {
+            connectorToTarget = null;
+            integrationContext = null;
         }
     }
 
 
-
-    public Connector getCatalogTargetConnector()
+    /**
+     * Return the connector to access the catalog target.
+     *
+     * @return connector
+     */
+    public Connector getConnectorToTarget()
     {
-        return catalogTargetConnector;
+        return connectorToTarget;
     }
 
 
-    public void setCatalogTargetConnector(Connector catalogTargetConnector)
+    /**
+     * Return the integration context for this catalog target.
+     *
+     * @return specialized context for this connector
+     */
+    public CatalogTargetContext getIntegrationContext()
     {
-        this.catalogTargetConnector = catalogTargetConnector;
+        return integrationContext;
     }
 
 
@@ -78,10 +89,10 @@ public class RequestedCatalogTarget extends CatalogTarget
     public String toString()
     {
         return "RequestedCatalogTarget{" +
-                "catalogTargetConnector=" + catalogTargetConnector +
+                "connectorToTarget=" + connectorToTarget +
+                ", integrationContext=" + integrationContext +
                 "} " + super.toString();
     }
-
 
 
     /**
@@ -106,7 +117,7 @@ public class RequestedCatalogTarget extends CatalogTarget
             return false;
         }
         RequestedCatalogTarget that = (RequestedCatalogTarget) objectToCompare;
-        return Objects.equals(catalogTargetConnector, that.catalogTargetConnector);
+        return Objects.equals(connectorToTarget, that.connectorToTarget) && Objects.equals(integrationContext, that.integrationContext);
     }
 
     /**
@@ -117,6 +128,6 @@ public class RequestedCatalogTarget extends CatalogTarget
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), catalogTargetConnector);
+        return Objects.hash(super.hashCode(), connectorToTarget, integrationContext);
     }
 }

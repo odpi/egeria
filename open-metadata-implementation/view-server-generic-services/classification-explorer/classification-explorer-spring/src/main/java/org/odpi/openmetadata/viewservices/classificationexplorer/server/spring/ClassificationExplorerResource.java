@@ -6,11 +6,12 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindDigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.viewservices.classificationexplorer.server.ClassificationExplorerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +23,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
-
 @Tag(name="API: Classification Explorer OMVS",
         description="Retrieve elements by type, or by classifications/relationships attached to them.",
         externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/classification-explorer/overview/"))
 
 public class ClassificationExplorerResource
 {
-
     private final ClassificationExplorerRESTServices restAPI = new ClassificationExplorerRESTServices();
 
 
@@ -42,14 +41,38 @@ public class ClassificationExplorerResource
 
 
     /**
+     * Return information about the elements classified with the impact classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-impact")
+
+    @Operation(summary="getImpactClassifiedElements",
+            description="Return information about the elements classified with the impact classification.",
+            externalDocs=@ExternalDocumentation(description="Governance data classifications", url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
+
+
+    public MetadataElementSummariesResponse getImpactClassifiedElements(@PathVariable String                      serverName,
+                                                                        @PathVariable String                        urlMarker,
+                                                                        @RequestBody(required = false)
+                                                                            LevelIdentifierQueryProperties requestBody)
+    {
+        return restAPI.getImpactClassifiedElements(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
      * Return information about the elements classified with the confidence classification.
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return classified elements or
@@ -66,18 +89,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getConfidenceClassifiedElements(@PathVariable String                      serverName,
                                                                             @PathVariable String                        urlMarker,
-                                                                            @RequestParam(required = false, defaultValue = "0")
-                                                                            int                         startFrom,
-                                                                            @RequestParam(required = false, defaultValue = "0")
-                                                                            int                         pageSize,
-                                                                            @RequestParam(required = false, defaultValue = "false")
-                                                                            boolean                     forLineage,
-                                                                            @RequestParam(required = false, defaultValue = "false")
-                                                                            boolean                     forDuplicateProcessing,
                                                                             @RequestBody(required = false)
                                                                             LevelIdentifierQueryProperties requestBody)
     {
-        return restAPI.getConfidenceClassifiedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getConfidenceClassifiedElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -86,10 +101,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return classified elements or
@@ -105,18 +116,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getCriticalityClassifiedElements(@PathVariable String                      serverName,
                                                                              @PathVariable String                        urlMarker,
-                                                                             @RequestParam(required = false, defaultValue = "0")
-                                                                             int                         startFrom,
-                                                                             @RequestParam(required = false, defaultValue = "0")
-                                                                             int                         pageSize,
-                                                                             @RequestParam(required = false, defaultValue = "false")
-                                                                             boolean                     forLineage,
-                                                                             @RequestParam(required = false, defaultValue = "false")
-                                                                             boolean                     forDuplicateProcessing,
                                                                              @RequestBody(required = false)
                                                                              LevelIdentifierQueryProperties requestBody)
     {
-        return restAPI.getCriticalityClassifiedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getCriticalityClassifiedElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -125,10 +128,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return classified elements or
@@ -144,18 +143,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getConfidentialityClassifiedElements(@PathVariable String                      serverName,
                                                                                  @PathVariable String                        urlMarker,
-                                                                                 @RequestParam(required = false, defaultValue = "0")
-                                                                                 int                         startFrom,
-                                                                                 @RequestParam(required = false, defaultValue = "0")
-                                                                                 int                         pageSize,
-                                                                                 @RequestParam(required = false, defaultValue = "false")
-                                                                                 boolean                     forLineage,
-                                                                                 @RequestParam(required = false, defaultValue = "false")
-                                                                                 boolean                     forDuplicateProcessing,
                                                                                  @RequestBody(required = false)
                                                                                  LevelIdentifierQueryProperties requestBody)
     {
-        return restAPI.getConfidentialityClassifiedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getConfidentialityClassifiedElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -164,10 +155,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return classified elements or
@@ -183,18 +170,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getRetentionClassifiedElements(@PathVariable String                      serverName,
                                                                            @PathVariable String                        urlMarker,
-                                                                           @RequestParam(required = false, defaultValue = "0")
-                                                                           int                         startFrom,
-                                                                           @RequestParam(required = false, defaultValue = "0")
-                                                                           int                         pageSize,
-                                                                           @RequestParam(required = false, defaultValue = "false")
-                                                                           boolean                     forLineage,
-                                                                           @RequestParam(required = false, defaultValue = "false")
-                                                                           boolean                     forDuplicateProcessing,
                                                                            @RequestBody(required = false)
                                                                            LevelIdentifierQueryProperties requestBody)
     {
-        return restAPI.getRetentionClassifiedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRetentionClassifiedElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -203,10 +182,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return classified elements or
@@ -222,18 +197,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getSecurityTaggedElements(@PathVariable String                      serverName,
                                                                       @PathVariable String                        urlMarker,
-                                                                      @RequestParam(required = false, defaultValue = "0")
-                                                                      int                         startFrom,
-                                                                      @RequestParam(required = false, defaultValue = "0")
-                                                                      int                         pageSize,
-                                                                      @RequestParam(required = false, defaultValue = "false")
-                                                                      boolean                     forLineage,
-                                                                      @RequestParam(required = false, defaultValue = "false")
-                                                                      boolean                     forDuplicateProcessing,
                                                                       @RequestBody(required = false)
                                                                       SecurityTagQueryProperties requestBody)
     {
-        return restAPI.getSecurityTaggedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getSecurityTaggedElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -242,10 +209,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return classified elements or
@@ -261,18 +224,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getOwnersElements(@PathVariable String                      serverName,
                                                               @PathVariable String                        urlMarker,
-                                                              @RequestParam(required = false, defaultValue = "0")
-                                                              int                         startFrom,
-                                                              @RequestParam(required = false, defaultValue = "0")
-                                                              int                         pageSize,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean                     forLineage,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean                     forDuplicateProcessing,
                                                               @RequestBody(required = false)
-                                                              FindNameProperties requestBody)
+                                                                  FindNameProperties requestBody)
     {
-        return restAPI.getOwnersElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getOwnersElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -281,10 +236,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return classified elements or
@@ -300,18 +251,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getMembersOfSubjectArea(@PathVariable String                      serverName,
                                                                     @PathVariable String                        urlMarker,
-                                                                    @RequestParam(required = false, defaultValue = "0")
-                                                                    int                         startFrom,
-                                                                    @RequestParam(required = false, defaultValue = "0")
-                                                                    int                         pageSize,
-                                                                    @RequestParam(required = false, defaultValue = "false")
-                                                                    boolean                     forLineage,
-                                                                    @RequestParam(required = false, defaultValue = "false")
-                                                                    boolean                     forDuplicateProcessing,
                                                                     @RequestBody(required = false)
                                                                     FindNameProperties requestBody)
     {
-        return restAPI.getMembersOfSubjectArea(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getMembersOfSubjectArea(serverName, urlMarker, requestBody);
     }
 
 
@@ -320,10 +263,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return classified elements or
@@ -339,18 +278,49 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getAssetsByOrigin(@PathVariable String                      serverName,
                                                               @PathVariable String                        urlMarker,
-                                                              @RequestParam(required = false, defaultValue = "0")
-                                                              int                         startFrom,
-                                                              @RequestParam(required = false, defaultValue = "0")
-                                                              int                         pageSize,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean                     forLineage,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean                     forDuplicateProcessing,
                                                               @RequestBody(required = false)
-                                                              FindAssetOriginProperties requestBody)
+                                                                  FindAssetOriginProperties requestBody)
     {
-        return restAPI.getAssetsByOrigin(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        if (requestBody != null)
+        {
+            return restAPI.getElementsByOrigin(serverName,
+                                               urlMarker,
+                                               new FindDigitalResourceOriginProperties(requestBody));
+        }
+        else
+        {
+            return restAPI.getElementsByOrigin(serverName,
+                                               urlMarker,
+                                               null);
+        }
+    }
+
+
+
+    /**
+     * Return information about the digital resources from a specific origin.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-digital-resource-origin")
+
+    @Operation(summary="getElementsByOrigin",
+            description="Return information about the digital resources from a specific origin.",
+            externalDocs=@ExternalDocumentation(description="Asset Origins", url="https://egeria-project.org/types/4/0440-Organizational-Controls/"))
+
+    public MetadataElementSummariesResponse getElementsByOrigin(@PathVariable String                      serverName,
+                                                                @PathVariable String                        urlMarker,
+                                                                @RequestBody(required = false)
+                                                                FindDigitalResourceOriginProperties requestBody)
+    {
+        return restAPI.getElementsByOrigin(serverName, urlMarker, requestBody);
     }
 
 
@@ -360,10 +330,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -381,18 +347,9 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getMeanings(@PathVariable String                        serverName,
                                                                @PathVariable String                        urlMarker,
                                                                @PathVariable String                        elementGUID,
-                                                               @RequestParam(required = false, defaultValue = "0")
-                                                               int                         startFrom,
-                                                               @RequestParam(required = false, defaultValue = "0")
-                                                               int                         pageSize,
-                                                               @RequestParam(required = false, defaultValue = "false")
-                                                               boolean                     forLineage,
-                                                               @RequestParam(required = false, defaultValue = "false")
-                                                               boolean                     forDuplicateProcessing,
-                                                               @RequestBody(required = false)
                                                                SemanticAssignmentQueryProperties requestBody)
     {
-        return restAPI.getMeanings(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getMeanings(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -402,10 +359,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param glossaryTermGUID unique identifier of the glossary term that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -422,18 +375,10 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getSemanticAssignees(@PathVariable String                        serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @PathVariable String                        glossaryTermGUID,
-                                                                        @RequestParam(required = false, defaultValue = "0")
-                                                                        int                         startFrom,
-                                                                        @RequestParam(required = false, defaultValue = "0")
-                                                                        int                         pageSize,
-                                                                        @RequestParam(required = false, defaultValue = "false")
-                                                                        boolean                     forLineage,
-                                                                        @RequestParam(required = false, defaultValue = "false")
-                                                                        boolean                     forDuplicateProcessing,
                                                                         @RequestBody(required = false)
                                                                         SemanticAssignmentQueryProperties requestBody)
     {
-        return restAPI.getSemanticAssignees(serverName, urlMarker, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getSemanticAssignees(serverName, urlMarker, glossaryTermGUID, requestBody);
     }
 
 
@@ -443,10 +388,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID unique identifier of the governance definition that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -463,18 +404,10 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getGovernedElements(@PathVariable String                        serverName,
                                                                        @PathVariable String                        urlMarker,
                                                                        @PathVariable String                        governanceDefinitionGUID,
-                                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                       int                         startFrom,
-                                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                       int                         pageSize,
-                                                                       @RequestParam(required = false, defaultValue = "false")
-                                                                       boolean                     forLineage,
-                                                                       @RequestParam(required = false, defaultValue = "false")
-                                                                       boolean                     forDuplicateProcessing,
                                                                        @RequestBody(required = false)
-                                                                       FindProperties requestBody)
+                                                                           FindProperties requestBody)
     {
-        return restAPI.getGovernedElements(serverName, urlMarker, governanceDefinitionGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getGovernedElements(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }
 
 
@@ -484,10 +417,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -504,18 +433,10 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getGovernedByDefinitions(@PathVariable String                        serverName,
                                                                             @PathVariable String                        urlMarker,
                                                                             @PathVariable String                        elementGUID,
-                                                                            @RequestParam(required = false, defaultValue = "0")
-                                                                            int                         startFrom,
-                                                                            @RequestParam(required = false, defaultValue = "0")
-                                                                            int                         pageSize,
-                                                                            @RequestParam(required = false, defaultValue = "false")
-                                                                            boolean                     forLineage,
-                                                                            @RequestParam(required = false, defaultValue = "false")
-                                                                            boolean                     forDuplicateProcessing,
                                                                             @RequestBody(required = false)
                                                                             FindProperties requestBody)
     {
-        return restAPI.getGovernedByDefinitions(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getGovernedByDefinitions(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -526,10 +447,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -546,18 +463,10 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getSourceElements(@PathVariable String                        serverName,
                                                                      @PathVariable String                        urlMarker,
                                                                      @PathVariable String elementGUID,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int                         startFrom,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int                         pageSize,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                     forLineage,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                     forDuplicateProcessing,
                                                                      @RequestBody  (required = false)
                                                                      FindProperties requestBody)
     {
-        return restAPI.getSourceElements(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getSourceElements(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -568,10 +477,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -588,18 +493,10 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getElementsSourcedFrom(@PathVariable String                        serverName,
                                                                           @PathVariable String                        urlMarker,
                                                                           @PathVariable String                        elementGUID,
-                                                                          @RequestParam (required = false, defaultValue = "0")
-                                                                          int                           startFrom,
-                                                                          @RequestParam (required = false, defaultValue = "0")
-                                                                          int                           pageSize,
-                                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                       forLineage,
-                                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                       forDuplicateProcessing,
                                                                           @RequestBody  (required = false)
                                                                           FindProperties requestBody)
     {
-        return restAPI.getElementsSourcedFrom(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getElementsSourcedFrom(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -609,10 +506,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -629,18 +522,10 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getStakeholders(@PathVariable String                        serverName,
                                                                    @PathVariable String                        urlMarker,
                                                                    @PathVariable String                        elementGUID,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                   int                           startFrom,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                   int                           pageSize,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                       forLineage,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                       forDuplicateProcessing,
                                                                    @RequestBody  (required = false)
                                                                    FindProperties requestBody)
     {
-        return restAPI.getStakeholders(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getStakeholders(serverName, urlMarker, elementGUID,  requestBody);
     }
 
 
@@ -651,10 +536,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param stakeholderGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -668,21 +549,13 @@ public class ClassificationExplorerResource
             description="Retrieve the elements linked via a Stakeholders relationship to the requested stakeholder.",
             externalDocs=@ExternalDocumentation(description="Stakeholders", url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
 
-    public RelatedMetadataElementSummariesResponse getStakeholderElements(@PathVariable String                        serverName,
-                                                                          @PathVariable String                        urlMarker,
+    public RelatedMetadataElementSummariesResponse getStakeholderElements(@PathVariable String serverName,
+                                                                          @PathVariable String urlMarker,
                                                                           @PathVariable String stakeholderGUID,
-                                                                          @RequestParam (required = false, defaultValue = "0")
-                                                                          int                           startFrom,
-                                                                          @RequestParam (required = false, defaultValue = "0")
-                                                                          int                           pageSize,
-                                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                       forLineage,
-                                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                       forDuplicateProcessing,
                                                                           @RequestBody  (required = false)
                                                                           FindProperties requestBody)
     {
-        return restAPI.getStakeholderElements(serverName, urlMarker, stakeholderGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getStakeholderElements(serverName, urlMarker, stakeholderGUID, requestBody);
     }
 
 
@@ -692,10 +565,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -712,18 +581,10 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getScopes(@PathVariable String                        serverName,
                                                              @PathVariable String                        urlMarker,
                                                              @PathVariable String                        elementGUID,
-                                                             @RequestParam (required = false, defaultValue = "0")
-                                                             int                           startFrom,
-                                                             @RequestParam (required = false, defaultValue = "0")
-                                                             int                           pageSize,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                       forLineage,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                       forDuplicateProcessing,
                                                              @RequestBody  (required = false)
                                                              FindProperties requestBody)
     {
-        return restAPI.getScopes(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getScopes(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -733,10 +594,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param scopeGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return linked elements or
@@ -753,18 +610,68 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getScopedElements(@PathVariable String                        serverName,
                                                                      @PathVariable String                        urlMarker,
                                                                      @PathVariable String scopeGUID,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int                           startFrom,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int                           pageSize,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                       forLineage,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                       forDuplicateProcessing,
                                                                      @RequestBody  (required = false)
                                                                      FindProperties requestBody)
     {
-        return restAPI.getScopedElements(serverName, urlMarker, scopeGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getScopedElements(serverName, urlMarker, scopeGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "ScopedBy" relationship to the requested scope.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/resource-list")
+
+    @Operation(summary="getResourceList",
+            description="Retrieve the elements linked via a ResourceList relationship to the requested element.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/0/0019-More-Information/"))
+
+    public RelatedMetadataElementSummariesResponse getResourceList(@PathVariable String                        serverName,
+                                                             @PathVariable String                        urlMarker,
+                                                             @PathVariable String                        elementGUID,
+                                                             @RequestBody  (required = false)
+                                                             FindProperties requestBody)
+    {
+        return restAPI.getResourceList(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "ResourceList" relationship to the requested resource.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param resourceGUID unique identifier of the element that the returned elements are linked to
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/resource-list/{resourceGUID}")
+
+    @Operation(summary="getSupportedByResource",
+            description="Retrieve the elements linked via a ResourceList relationship to the requested resource.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/0/0019-More-Information/"))
+
+    public RelatedMetadataElementSummariesResponse getSupportedByResource(@PathVariable String                        serverName,
+                                                                     @PathVariable String                        urlMarker,
+                                                                     @PathVariable String resourceGUID,
+                                                                     @RequestBody  (required = false)
+                                                                     FindProperties requestBody)
+    {
+        return restAPI.getSupportedByResource(serverName, urlMarker, resourceGUID, requestBody);
     }
 
 
@@ -774,8 +681,6 @@ public class ClassificationExplorerResource
      * @param serverName name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param licenseTypeGUID unique identifier for the license
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody additional query parameters
      *
      * @return properties of the license or
@@ -788,13 +693,9 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse  getLicensedElements(@PathVariable String serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @PathVariable String licenseTypeGUID,
-                                                                        @RequestParam (required = false, defaultValue = "0")
-                                                                        int                           startFrom,
-                                                                        @RequestParam (required = false, defaultValue = "0")
-                                                                        int                           pageSize,
                                                                         @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getLicensedElements(serverName, urlMarker, licenseTypeGUID, startFrom, pageSize, requestBody);
+        return restAPI.getLicensedElements(serverName, urlMarker, licenseTypeGUID, requestBody);
     }
 
 
@@ -804,8 +705,6 @@ public class ClassificationExplorerResource
      * @param serverName name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier for the license
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody additional query parameters
      *
      * @return properties of the license or
@@ -818,13 +717,9 @@ public class ClassificationExplorerResource
     public RelatedMetadataElementSummariesResponse getLicenses(@PathVariable String serverName,
                                                                @PathVariable String urlMarker,
                                                                @PathVariable String elementGUID,
-                                                               @RequestParam (required = false, defaultValue = "0")
-                                                               int                           startFrom,
-                                                               @RequestParam (required = false, defaultValue = "0")
-                                                               int                           pageSize,
                                                                @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getLicenses(serverName, urlMarker, elementGUID, startFrom, pageSize, requestBody);
+        return restAPI.getLicenses(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -834,8 +729,6 @@ public class ClassificationExplorerResource
      * @param serverName name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param certificationTypeGUID unique identifier for the license
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody additional query parameters
      *
      * @return properties of the license or
@@ -848,13 +741,9 @@ public class ClassificationExplorerResource
     public CertificationElementsResponse  geCertifiedElements(@PathVariable String serverName,
                                                               @PathVariable String                        urlMarker,
                                                               @PathVariable String certificationTypeGUID,
-                                                              @RequestParam (required = false, defaultValue = "0")
-                                                              int                           startFrom,
-                                                              @RequestParam (required = false, defaultValue = "0")
-                                                              int                           pageSize,
                                                               @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getCertifiedElements(serverName, urlMarker, certificationTypeGUID, startFrom, pageSize, requestBody);
+        return restAPI.getCertifiedElements(serverName, urlMarker, certificationTypeGUID, requestBody);
     }
 
 
@@ -864,8 +753,6 @@ public class ClassificationExplorerResource
      * @param serverName name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier for the license
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody additional query parameters
      *
      * @return properties of the license or
@@ -878,13 +765,9 @@ public class ClassificationExplorerResource
     public CertificationElementsResponse getCertifications(@PathVariable String serverName,
                                                            @PathVariable String urlMarker,
                                                            @PathVariable String elementGUID,
-                                                           @RequestParam (required = false, defaultValue = "0")
-                                                           int                           startFrom,
-                                                           @RequestParam (required = false, defaultValue = "0")
-                                                           int                           pageSize,
                                                            @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getCertifications(serverName, urlMarker, elementGUID, startFrom, pageSize, requestBody);
+        return restAPI.getCertifications(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -894,8 +777,6 @@ public class ClassificationExplorerResource
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier for the metadata element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -913,14 +794,10 @@ public class ClassificationExplorerResource
     public MetadataElementSummaryResponse getMetadataElementByGUID(@PathVariable String  serverName,
                                                                    @PathVariable String                        urlMarker,
                                                                    @PathVariable String  elementGUID,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean forLineage,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean forDuplicateProcessing,
                                                                    @RequestBody  (required = false)
-                                                                   FindRequest requestBody)
+                                                                       FindRequest requestBody)
     {
-        return restAPI.getMetadataElementByGUID(serverName, urlMarker, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getMetadataElementByGUID(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -929,8 +806,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element properties or
@@ -947,13 +822,9 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummaryResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
                                                                          @PathVariable String                        urlMarker,
-                                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                         boolean         forLineage,
-                                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                         boolean         forDuplicateProcessing,
                                                                          @RequestBody (required = false) FindPropertyNameProperties requestBody)
     {
-        return restAPI.getMetadataElementByUniqueName(serverName, urlMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getMetadataElementByUniqueName(serverName, urlMarker, requestBody);
     }
 
 
@@ -962,8 +833,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element unique identifier (guid) or
@@ -980,13 +849,9 @@ public class ClassificationExplorerResource
 
     public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
                                                            @PathVariable String                        urlMarker,
-                                                           @RequestParam (required = false, defaultValue = "false")
-                                                           boolean         forLineage,
-                                                           @RequestParam (required = false, defaultValue = "false")
-                                                           boolean         forDuplicateProcessing,
                                                            @RequestBody  FindPropertyNameProperties requestBody)
     {
-        return restAPI.getMetadataElementGUIDByUniqueName(serverName, urlMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getMetadataElementGUIDByUniqueName(serverName, urlMarker, requestBody);
     }
 
 
@@ -995,10 +860,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -1014,18 +875,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getElements(@PathVariable String                    serverName,
                                                         @PathVariable String                        urlMarker,
-                                                        @RequestParam(required = false, defaultValue = "0")
-                                                        int                       startFrom,
-                                                        @RequestParam(required = false, defaultValue = "0")
-                                                        int                       pageSize,
-                                                        @RequestParam(required = false, defaultValue = "false")
-                                                        boolean                       forLineage,
-                                                        @RequestParam (required = false, defaultValue = "false")
-                                                        boolean                       forDuplicateProcessing,
                                                         @RequestBody  (required = false)
                                                         FindProperties requestBody)
     {
-        return restAPI.getElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -1036,10 +889,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1054,18 +903,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse getElementsByPropertyValue(@PathVariable String                       serverName,
                                                                        @PathVariable String                        urlMarker,
-                                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                       int                       startFrom,
-                                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                       int                       pageSize,
-                                                                       @RequestParam(required = false, defaultValue = "false")
-                                                                       boolean                       forLineage,
-                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                       forDuplicateProcessing,
                                                                        @RequestBody  (required = false)
-                                                                       FindPropertyNamesProperties requestBody)
+                                                                           FindPropertyNamesProperties requestBody)
     {
-        return restAPI.getElementsByPropertyValue(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getElementsByPropertyValue(serverName, urlMarker, requestBody);
     }
 
 
@@ -1077,10 +918,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1096,18 +933,10 @@ public class ClassificationExplorerResource
 
     public MetadataElementSummariesResponse findElementsByPropertyValue(@PathVariable String                       serverName,
                                                                         @PathVariable String                        urlMarker,
-                                                                        @RequestParam(required = false, defaultValue = "0")
-                                                                        int                       startFrom,
-                                                                        @RequestParam(required = false, defaultValue = "0")
-                                                                        int                       pageSize,
-                                                                        @RequestParam(required = false, defaultValue = "false")
-                                                                        boolean                       forLineage,
-                                                                        @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                       forDuplicateProcessing,
                                                                         @RequestBody  (required = false)
                                                                         FindPropertyNamesProperties requestBody)
     {
-        return restAPI.findElementsByPropertyValue(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.findElementsByPropertyValue(serverName, urlMarker, requestBody);
     }
 
 
@@ -1119,10 +948,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param classificationName name of classification
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -1139,18 +964,10 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse getElementsByClassification(@PathVariable String                    serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @PathVariable String                    classificationName,
-                                                                        @RequestParam(required = false, defaultValue = "0")
-                                                                        int                       startFrom,
-                                                                        @RequestParam(required = false, defaultValue = "0")
-                                                                        int                       pageSize,
-                                                                        @RequestParam(required = false, defaultValue = "false")
-                                                                        boolean                       forLineage,
-                                                                        @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                       forDuplicateProcessing,
                                                                         @RequestBody  (required = false)
                                                                         FindProperties requestBody)
     {
-        return restAPI.getElementsByClassification(serverName, urlMarker, classificationName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getElementsByClassification(serverName, urlMarker, classificationName, requestBody);
     }
 
 
@@ -1163,10 +980,6 @@ public class ClassificationExplorerResource
      * @param urlMarker  view service URL marker
      * @param classificationName name of classification
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1182,18 +995,10 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse getElementsByClassificationWithPropertyValue(@PathVariable String                       serverName,
                                                                                          @PathVariable String                        urlMarker,
                                                                                          @PathVariable String                    classificationName,
-                                                                                         @RequestParam(required = false, defaultValue = "0")
-                                                                                         int                       startFrom,
-                                                                                         @RequestParam(required = false, defaultValue = "0")
-                                                                                         int                       pageSize,
-                                                                                         @RequestParam(required = false, defaultValue = "false")
-                                                                                         boolean                       forLineage,
-                                                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                                         boolean                       forDuplicateProcessing,
                                                                                          @RequestBody  (required = false)
                                                                                          FindPropertyNamesProperties requestBody)
     {
-        return restAPI.getElementsByClassificationWithPropertyValue(serverName, urlMarker, classificationName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getElementsByClassificationWithPropertyValue(serverName, urlMarker, classificationName, requestBody);
     }
 
 
@@ -1207,10 +1012,6 @@ public class ClassificationExplorerResource
      * @param urlMarker  view service URL marker
      * @param classificationName name of classification
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1228,20 +1029,11 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse findElementsByClassificationWithPropertyValue(@PathVariable String                       serverName,
                                                                                           @PathVariable String                        urlMarker,
                                                                                           @PathVariable String                    classificationName,
-                                                                                          @RequestParam(required = false, defaultValue = "0")
-                                                                                          int                       startFrom,
-                                                                                          @RequestParam(required = false, defaultValue = "0")
-                                                                                          int                       pageSize,
-                                                                                          @RequestParam(required = false, defaultValue = "false")
-                                                                                          boolean                       forLineage,
-                                                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                                          boolean                       forDuplicateProcessing,
                                                                                           @RequestBody  (required = false)
                                                                                           FindPropertyNamesProperties requestBody)
     {
-        return restAPI.findElementsByClassificationWithPropertyValue(serverName, urlMarker, classificationName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.findElementsByClassificationWithPropertyValue(serverName, urlMarker, classificationName,  requestBody);
     }
-
 
 
     /**
@@ -1251,10 +1043,6 @@ public class ClassificationExplorerResource
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the starting element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -1273,18 +1061,10 @@ public class ClassificationExplorerResource
                                                                       @PathVariable String                  elementGUID,
                                                                       @RequestParam (required = false, defaultValue = "0")
                                                                       int     startingAtEnd,
-                                                                      @RequestParam(required = false, defaultValue = "0")
-                                                                      int                       startFrom,
-                                                                      @RequestParam(required = false, defaultValue = "0")
-                                                                      int                       pageSize,
-                                                                      @RequestParam(required = false, defaultValue = "false")
-                                                                      boolean                       forLineage,
-                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                      boolean                       forDuplicateProcessing,
                                                                       @RequestBody  (required = false)
                                                                       FindProperties requestBody)
     {
-        return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, null, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, null, startingAtEnd, requestBody);
     }
 
 
@@ -1298,10 +1078,6 @@ public class ClassificationExplorerResource
      * @param elementGUID unique identifier of the starting element
      * @param relationshipTypeName name of relationship
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -1321,18 +1097,10 @@ public class ClassificationExplorerResource
                                                                       @PathVariable String       relationshipTypeName,
                                                                       @RequestParam (required = false, defaultValue = "0")
                                                                       int     startingAtEnd,
-                                                                      @RequestParam(required = false, defaultValue = "0")
-                                                                      int                       startFrom,
-                                                                      @RequestParam(required = false, defaultValue = "0")
-                                                                      int                       pageSize,
-                                                                      @RequestParam(required = false, defaultValue = "false")
-                                                                      boolean                       forLineage,
-                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                      boolean                       forDuplicateProcessing,
                                                                       @RequestBody  (required = false)
                                                                       FindProperties requestBody)
     {
-        return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, relationshipTypeName, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, relationshipTypeName, startingAtEnd, requestBody);
     }
 
 
@@ -1348,10 +1116,6 @@ public class ClassificationExplorerResource
      * @param relationshipTypeName name of relationship
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1370,18 +1134,10 @@ public class ClassificationExplorerResource
                                                                                        @PathVariable String       relationshipTypeName,
                                                                                        @RequestParam (required = false, defaultValue = "0")
                                                                                        int     startingAtEnd,
-                                                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                                       int                       startFrom,
-                                                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                                       int                       pageSize,
-                                                                                       @RequestParam(required = false, defaultValue = "false")
-                                                                                       boolean                       forLineage,
-                                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                                       boolean                       forDuplicateProcessing,
                                                                                        @RequestBody  (required = false)
                                                                                        FindPropertyNamesProperties requestBody)
     {
-        return restAPI.getRelatedElementsWithPropertyValue(serverName, urlMarker, elementGUID, relationshipTypeName, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRelatedElementsWithPropertyValue(serverName, urlMarker, elementGUID, relationshipTypeName, startingAtEnd, requestBody);
     }
 
 
@@ -1398,10 +1154,6 @@ public class ClassificationExplorerResource
      * @param relationshipTypeName name of relationship
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1420,18 +1172,10 @@ public class ClassificationExplorerResource
                                                                                         @PathVariable String       relationshipTypeName,
                                                                                         @RequestParam (required = false, defaultValue = "0")
                                                                                         int     startingAtEnd,
-                                                                                        @RequestParam(required = false, defaultValue = "0")
-                                                                                        int                       startFrom,
-                                                                                        @RequestParam(required = false, defaultValue = "0")
-                                                                                        int                       pageSize,
-                                                                                        @RequestParam(required = false, defaultValue = "false")
-                                                                                        boolean                       forLineage,
-                                                                                        @RequestParam (required = false, defaultValue = "false")
-                                                                                        boolean                       forDuplicateProcessing,
                                                                                         @RequestBody  (required = false)
                                                                                         FindPropertyNamesProperties requestBody)
     {
-        return restAPI.findRelatedElementsWithPropertyValue(serverName, urlMarker, elementGUID, relationshipTypeName, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.findRelatedElementsWithPropertyValue(serverName, urlMarker, elementGUID, relationshipTypeName, startingAtEnd, requestBody);
     }
 
 
@@ -1440,10 +1184,6 @@ public class ClassificationExplorerResource
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -1459,18 +1199,10 @@ public class ClassificationExplorerResource
 
     public MetadataRelationshipSummariesResponse getRelationships(@PathVariable String                    serverName,
                                                                   @PathVariable String                        urlMarker,
-                                                                  @RequestParam(required = false, defaultValue = "0")
-                                                                  int                       startFrom,
-                                                                  @RequestParam(required = false, defaultValue = "0")
-                                                                  int                       pageSize,
-                                                                  @RequestParam(required = false, defaultValue = "false")
-                                                                  boolean                       forLineage,
-                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                       forDuplicateProcessing,
                                                                   @RequestBody  (required = false)
                                                                   FindProperties requestBody)
     {
-        return restAPI.getRelationships(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRelationships(serverName, urlMarker, requestBody);
     }
 
 
@@ -1481,10 +1213,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1499,18 +1227,10 @@ public class ClassificationExplorerResource
 
     public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(@PathVariable String                       serverName,
                                                                                    @PathVariable String                        urlMarker,
-                                                                                   @RequestParam(required = false, defaultValue = "0")
-                                                                                   int                       startFrom,
-                                                                                   @RequestParam(required = false, defaultValue = "0")
-                                                                                   int                       pageSize,
-                                                                                   @RequestParam(required = false, defaultValue = "false")
-                                                                                   boolean                       forLineage,
-                                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                       forDuplicateProcessing,
                                                                                    @RequestBody  (required = false)
                                                                                    FindPropertyNamesProperties requestBody)
     {
-        return restAPI.getRelationshipsWithPropertyValue(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRelationshipsWithPropertyValue(serverName, urlMarker, requestBody);
     }
 
 
@@ -1522,10 +1242,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1540,18 +1256,10 @@ public class ClassificationExplorerResource
 
     public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(@PathVariable String                       serverName,
                                                                                     @PathVariable String                        urlMarker,
-                                                                                    @RequestParam(required = false, defaultValue = "0")
-                                                                                    int                       startFrom,
-                                                                                    @RequestParam(required = false, defaultValue = "0")
-                                                                                    int                       pageSize,
-                                                                                    @RequestParam(required = false, defaultValue = "false")
-                                                                                    boolean                       forLineage,
-                                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                    boolean                       forDuplicateProcessing,
                                                                                     @RequestBody  (required = false)
                                                                                     FindPropertyNamesProperties requestBody)
     {
-        return restAPI.findRelationshipsWithPropertyValue(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.findRelationshipsWithPropertyValue(serverName, urlMarker, requestBody);
     }
 
 
@@ -1561,8 +1269,6 @@ public class ClassificationExplorerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param guid identifier to use in the lookup
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1578,13 +1284,9 @@ public class ClassificationExplorerResource
     public ElementHeaderResponse retrieveInstanceForGUID(@PathVariable String                       serverName,
                                                          @PathVariable String                        urlMarker,
                                                          @PathVariable String       guid,
-                                                         @RequestParam(required = false, defaultValue = "false")
-                                                         boolean                       forLineage,
-                                                         @RequestParam (required = false, defaultValue = "false")
-                                                         boolean                       forDuplicateProcessing,
-                                                         @RequestBody(required = false) ResultsRequestBody requestBody)
+                                                         @RequestBody(required = false) GetRequestBody requestBody)
     {
-        return restAPI.retrieveInstanceForGUID(serverName, urlMarker, guid, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.retrieveInstanceForGUID(serverName, urlMarker, guid, requestBody);
     }
 }
 

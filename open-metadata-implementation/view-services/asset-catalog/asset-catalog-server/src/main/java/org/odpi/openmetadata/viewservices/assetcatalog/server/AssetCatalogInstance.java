@@ -2,16 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.assetcatalog.server;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
-import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.Type;
 
 import java.util.ArrayList;
@@ -28,9 +29,9 @@ public class AssetCatalogInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.ASSET_CATALOG;
 
-    private final AssetConsumer                assetConsumerClient;
-    private final OpenMetadataStoreClient      openMetadataStoreClient;
-    private final List<Type>                   supportedAssetTypes;
+    private final AssetHandler       assetHandler;
+    private final OpenMetadataClient openMetadataClient;
+    private final List<Type>         supportedAssetTypes;
 
 
     /**
@@ -69,14 +70,14 @@ public class AssetCatalogInstance extends OMVSServiceInstance
 
         if (localServerUserPassword == null)
         {
-            this.assetConsumerClient     = new AssetConsumer(remoteServerName, remoteServerURL, auditLog);
-            this.openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+            this.openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
         }
         else
         {
-            this.assetConsumerClient     = new AssetConsumer(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog);
-            this.openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            this.openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
         }
+
+        this.assetHandler = new AssetHandler(serverName, auditLog, myDescription.getViewServiceFullName(), openMetadataClient);
 
         this.supportedAssetTypes = this.setupSupportedAssetTypes(supportedAssetTypeNames);
     }
@@ -142,13 +143,13 @@ public class AssetCatalogInstance extends OMVSServiceInstance
     {
         List<Type> results = new ArrayList<>();
 
-        OpenMetadataTypeDef openMetadataTypeDef = openMetadataStoreClient.getTypeDefByName(userId, typeName);
+        OpenMetadataTypeDef openMetadataTypeDef = openMetadataClient.getTypeDefByName(userId, typeName);
 
         if (openMetadataTypeDef != null)
         {
             results.add(this.convertOpenMetadataType(openMetadataTypeDef));
 
-            List<OpenMetadataTypeDef> subTypes = openMetadataStoreClient.getSubTypes(userId, typeName);
+            List<OpenMetadataTypeDef> subTypes = openMetadataClient.getSubTypes(userId, typeName);
 
             if (subTypes != null)
             {
@@ -210,8 +211,8 @@ public class AssetCatalogInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public AssetConsumer getAssetConsumerClient()
+    public AssetHandler getAssetHandler()
     {
-        return assetConsumerClient;
+        return assetHandler;
     }
 }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,7 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DatabaseColumnProperties.class, name = "DatabaseColumnProperties"),
+                @JsonSubTypes.Type(value = RelationalColumnProperties.class, name = "RelationalColumnProperties"),
+                @JsonSubTypes.Type(value = TabularFileColumnProperties.class, name = "TabularFileColumnProperties"),
         })
 public class TabularColumnProperties extends SchemaAttributeProperties
 {

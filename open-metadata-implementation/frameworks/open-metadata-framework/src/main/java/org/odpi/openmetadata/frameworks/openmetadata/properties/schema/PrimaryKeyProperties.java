@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -23,10 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PrimaryKeyProperties extends ClassificationProperties
+public class PrimaryKeyProperties extends ClassificationBeanProperties
 {
-    private String     name       = null;
-    private KeyPattern keyPattern = null;
+    private String     displayName = null;
+    private KeyPattern keyPattern  = null;
 
 
     /**
@@ -50,8 +50,8 @@ public class PrimaryKeyProperties extends ClassificationProperties
 
         if (template != null)
         {
-            name             = template.getName();
-            keyPattern       = template.getKeyPattern();
+            displayName = template.getDisplayName();
+            keyPattern  = template.getKeyPattern();
         }
     }
 
@@ -59,11 +59,11 @@ public class PrimaryKeyProperties extends ClassificationProperties
     /**
      * Set up name of the primary key.
      *
-     * @param name String
+     * @param displayName String
      */
-    public void setName(String name)
+    public void setDisplayName(String displayName)
     {
-        this.name = name;
+        this.displayName = displayName;
     }
 
 
@@ -72,9 +72,9 @@ public class PrimaryKeyProperties extends ClassificationProperties
      *
      * @return String description
      */
-    public String getName()
+    public String getDisplayName()
     {
-        return name;
+        return displayName;
     }
 
 
@@ -109,7 +109,7 @@ public class PrimaryKeyProperties extends ClassificationProperties
     public String toString()
     {
         return "PrimaryKeyProperties{" +
-                "name='" + name + '\'' +
+                "displayName='" + displayName + '\'' +
                 ", keyPattern=" + keyPattern +
                 "} " + super.toString();
     }
@@ -128,7 +128,7 @@ public class PrimaryKeyProperties extends ClassificationProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         PrimaryKeyProperties that = (PrimaryKeyProperties) objectToCompare;
-        return Objects.equals(name, that.name) && keyPattern == that.keyPattern;
+        return Objects.equals(displayName, that.displayName) && keyPattern == that.keyPattern;
     }
 
     /**
@@ -139,6 +139,6 @@ public class PrimaryKeyProperties extends ClassificationProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, keyPattern);
+        return Objects.hash(super.hashCode(), displayName, keyPattern);
     }
 }

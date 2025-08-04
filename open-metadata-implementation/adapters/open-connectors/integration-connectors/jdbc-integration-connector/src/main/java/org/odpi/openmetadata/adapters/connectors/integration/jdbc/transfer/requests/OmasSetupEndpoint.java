@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
 
 import java.util.function.BiConsumer;
 
@@ -17,11 +18,11 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
  */
 class OmasSetupEndpoint implements BiConsumer<String, String> {
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final IntegrationContext integrationContext;
+    private final AuditLog           auditLog;
 
-    OmasSetupEndpoint(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
+    OmasSetupEndpoint(IntegrationContext integrationContext, AuditLog auditLog){
+        this.integrationContext = integrationContext;
         this.auditLog = auditLog;
     }
 
@@ -32,11 +33,17 @@ class OmasSetupEndpoint implements BiConsumer<String, String> {
      * @param endpointGuid guid
      */
     @Override
-    public void accept(String connectionGuid, String endpointGuid){
+    public void accept(String connectionGuid, String endpointGuid)
+    {
         String methodName = "OmasSetupEndpoint";
-        try {
-            databaseIntegratorContext.setupEndpoint(connectionGuid, endpointGuid);
-        } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
+
+        try
+        {
+            ConnectionClient connectionClient = integrationContext.getConnectionClient();
+            connectionClient.linkConnectionEndpoint(connectionGuid, endpointGuid, connectionClient.getMetadataSourceOptions(), null);
+        }
+        catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
+        {
             auditLog.logException("Setting endpoint for connection with guid " + connectionGuid +
                     " and endpoint with guid " + endpointGuid,
                     EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);

@@ -175,7 +175,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      */
 
     /**
-     * Set up the name and platform URL root for the metadata server running the Governance Engine OMAS that provides
+     * Set up the name and platform URL root for the metadata server running the Open Metadata Store that provides
      * the governance engine definitions used by the engine services.
      *
      * @param clientConfig  URL root and server name for the metadata server.

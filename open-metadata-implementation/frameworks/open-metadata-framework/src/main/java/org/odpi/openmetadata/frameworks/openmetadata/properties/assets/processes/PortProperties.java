@@ -24,7 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PortProperties extends ReferenceableProperties
 {
-    private String   displayName = null;
     private PortType portType    = null;
 
 
@@ -49,31 +48,8 @@ public class PortProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
             portType = template.getPortType();
         }
-    }
-
-
-    /**
-     * Return a human memorable name for the port.
-     *
-     * @return string  name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up a human memorable name for the port.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
     }
 
 
@@ -108,8 +84,7 @@ public class PortProperties extends ReferenceableProperties
     public String toString()
     {
         return "PortProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", portType=" + portType +
+                "portType=" + portType +
                 "} " + super.toString();
     }
 
@@ -136,8 +111,7 @@ public class PortProperties extends ReferenceableProperties
             return false;
         }
         PortProperties that = (PortProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                       getPortType() == that.getPortType();
+        return getPortType() == that.getPortType();
     }
 
 
@@ -149,6 +123,6 @@ public class PortProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, portType);
+        return Objects.hash(super.hashCode(), portType);
     }
 }

@@ -34,8 +34,29 @@ public class ElementHeader extends ElementControlHeader
     /*
      * Common header for entities from a metadata repository
      */
-    private String                      guid = null;
-    private List<ElementClassification> classifications  = null;
+    private String                      guid                      = null;
+    private ElementClassification       anchor                    = null;
+    private ElementClassification       zoneMembership            = null;
+    private ElementClassification       subjectArea               = null;
+    private ElementClassification       impact                    = null;
+    private ElementClassification       criticality               = null;
+    private ElementClassification       confidentiality           = null;
+    private ElementClassification       confidence                = null;
+    private ElementClassification       retention                 = null;
+    private List<ElementClassification> executionPoints           = null;
+    private List<ElementClassification> duplicateClassifications  = null;
+    private ElementClassification       digitalResourceOrigin     = null;
+    private ElementClassification       ownership                 = null;
+    private ElementClassification       memento                   = null;
+    private ElementClassification       template                  = null;
+    private ElementClassification       schemaType                = null; // TypeEmbeddedAttribute
+    private ElementClassification       calculatedValue           = null;
+    private ElementClassification       primaryKey                = null;
+    private List<ElementClassification> resourceManagerCategories = null;
+    private List<ElementClassification> serverPurposes            = null;
+    private List<ElementClassification> collectionCategories      = null;
+    private List<ElementClassification> projectCategories         = null;
+    private List<ElementClassification> otherClassifications      = null;
 
 
     /**
@@ -57,8 +78,29 @@ public class ElementHeader extends ElementControlHeader
 
         if (template != null)
         {
-            guid             = template.getGUID();
-            classifications  = template.getClassifications();
+            this.guid                      = template.getGUID();
+            this.anchor                    = template.getAnchor();
+            this.zoneMembership            = template.getZoneMembership();
+            this.subjectArea               = template.getSubjectArea();
+            this.impact                    = template.getImpact();
+            this.criticality               = template.getCriticality();
+            this.confidentiality           = template.getConfidentiality();
+            this.confidence                = template.getConfidence();
+            this.retention                 = template.getRetention();
+            this.executionPoints           = template.getExecutionPoints();
+            this.duplicateClassifications  = template.getDuplicateClassifications();
+            this.digitalResourceOrigin     = template.getDigitalResourceOrigin();
+            this.ownership                 = template.getOwnership();
+            this.memento                   = template.getMemento();
+            this.template                  = template.getTemplate();
+            this.schemaType                = template.getSchemaType();
+            this.calculatedValue           = template.getCalculatedValue();
+            this.primaryKey                = template.getPrimaryKey();
+            this.serverPurposes            = template.getServerPurposes();
+            this.resourceManagerCategories = template.getResourceManagerCategories();
+            this.collectionCategories      = template.getCollectionCategories();
+            this.projectCategories         = template.getProjectCategories();
+            this.otherClassifications      = template.getOtherClassifications();
         }
     }
 
@@ -97,24 +139,486 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
-     * Return the list of classifications associated with the metadata element.
+     * Return the Anchors classification
      *
-     * @return Classifications  list of classifications
+     * @return classification
      */
-    public List<ElementClassification> getClassifications()
+    public ElementClassification getAnchor()
     {
-        return classifications;
+        return anchor;
     }
 
 
     /**
-     * Set up the classifications associated with this metadata element.
+     * Set up the Anchors classification.
      *
-     * @param classifications list of classifications
+     * @param anchor classification
      */
-    public void setClassifications(List<ElementClassification> classifications)
+    public void setAnchor(ElementClassification anchor)
     {
-        this.classifications = classifications;
+        this.anchor = anchor;
+    }
+
+
+    /**
+     * Return the zoneMembership classification.
+     *
+     * @return classification
+     */
+    public ElementClassification getZoneMembership()
+    {
+        return zoneMembership;
+    }
+
+
+    /**
+     * Set up the zoneMembership classification.
+     *
+     * @param zoneMembership classification
+     */
+    public void setZoneMembership(ElementClassification zoneMembership)
+    {
+        this.zoneMembership = zoneMembership;
+    }
+
+
+    /**
+     * Return the subject area.
+     *
+     * @return classification
+     */
+    public ElementClassification getSubjectArea()
+    {
+        return subjectArea;
+    }
+
+
+    /**
+     * Set up the subject area.
+     *
+     * @param subjectArea classification
+     */
+    public void setSubjectArea(ElementClassification subjectArea)
+    {
+        this.subjectArea = subjectArea;
+    }
+
+
+    /**
+     * Return the impact assessment for this element.
+     *
+     * @return classification
+     */
+    public ElementClassification getImpact()
+    {
+        return impact;
+    }
+
+
+    /**
+     * Set up the impact assessment for this element.
+     *
+     * @param impact classification
+     */
+    public void setImpact(ElementClassification impact)
+    {
+        this.impact = impact;
+    }
+
+
+    /**
+     * Return the criticality assessment for this element.
+     *
+     * @return classification
+     */
+    public ElementClassification getCriticality()
+    {
+        return criticality;
+    }
+
+
+    /**
+     * Set up the criticality assessment for this element.
+     *
+     * @param criticality classification
+     */
+    public void setCriticality(ElementClassification criticality)
+    {
+        this.criticality = criticality;
+    }
+
+
+    /**
+     * Return the level of confidentiality assigned to this element.
+     *
+     * @return classification
+     */
+    public ElementClassification getConfidentiality()
+    {
+        return confidentiality;
+    }
+
+
+    /**
+     * Set up the level of confidentiality assigned to this element.
+     *
+     * @param confidentiality classification
+     */
+    public void setConfidentiality(ElementClassification confidentiality)
+    {
+        this.confidentiality = confidentiality;
+    }
+
+
+    /**
+     * Return any confidence assessment associated with this element.
+     *
+     * @return classification
+     */
+    public ElementClassification getConfidence()
+    {
+        return confidence;
+    }
+
+
+    /**
+     * Set up any confidence assessment associated with this element.
+     *
+     * @param confidence classification
+     */
+    public void setConfidence(ElementClassification confidence)
+    {
+        this.confidence = confidence;
+    }
+
+
+    /**
+     * Return any retention requirements.
+     *
+     * @return classification
+     */
+    public ElementClassification getRetention()
+    {
+        return retention;
+    }
+
+
+    /**
+     * Set up any retention requirements.
+     *
+     * @param retention classification
+     */
+    public void setRetention(ElementClassification retention)
+    {
+        this.retention = retention;
+    }
+
+
+    /**
+     * Return details of whether this element is identified as providing the implementation of one or more execution points.
+     *
+     * @return list
+     */
+    public List<ElementClassification> getExecutionPoints()
+    {
+        return executionPoints;
+    }
+
+
+    /**
+     * Set up details of whether this element is identified as providing the implementation of one or more execution points.
+     *
+     * @param executionPoints list
+     */
+    public void setExecutionPoints(List<ElementClassification> executionPoints)
+    {
+        this.executionPoints = executionPoints;
+    }
+
+
+    /**
+     * Return the DigitalResourceOrigin classification.
+     *
+     * @return classification
+     */
+    public ElementClassification getDigitalResourceOrigin()
+    {
+        return digitalResourceOrigin;
+    }
+
+
+    /**
+     * Set up the DigitalResourceOrigin classification.
+     *
+     * @param digitalResourceOrigin classification
+     */
+    public void setDigitalResourceOrigin(ElementClassification digitalResourceOrigin)
+    {
+        this.digitalResourceOrigin = digitalResourceOrigin;
+    }
+
+
+    /**
+     * Return the Ownership classification.
+     *
+     * @return classification
+     */
+    public ElementClassification getOwnership()
+    {
+        return ownership;
+    }
+
+
+    /**
+     * Set up the Ownership classification.
+     *
+     * @param ownership classification
+     */
+    public void setOwnership(ElementClassification ownership)
+    {
+        this.ownership = ownership;
+    }
+
+
+    /**
+     * Return the memento classification that shows that the element has been archived.
+     *
+     * @return classification
+     */
+    public ElementClassification getMemento()
+    {
+        return memento;
+    }
+
+
+    /**
+     * Set up the memento classification that shows that the element has been archived.
+     *
+     * @param memento classification
+     */
+    public void setMemento(ElementClassification memento)
+    {
+        this.memento = memento;
+    }
+
+
+    /**
+     * Return whether this element has the Template classification that shows that the element is a template.
+     *
+     * @return classification
+     */
+    public ElementClassification getTemplate()
+    {
+        return template;
+    }
+
+
+    /**
+     * Set up whether this element has the Template classification that shows that the element is a template.
+     *
+     * @param template classification
+     */
+    public void setTemplate(ElementClassification template)
+    {
+        this.template = template;
+    }
+
+
+    /**
+     * Return whether this element is involved in duplicate processing.
+     *
+     * @return list
+     */
+    public List<ElementClassification> getDuplicateClassifications()
+    {
+        return duplicateClassifications;
+    }
+
+
+    /**
+     * Set up whether this element is involved in duplicate processing.
+     *
+     * @param duplicateClassifications list
+     */
+    public void setDuplicateClassifications(List<ElementClassification> duplicateClassifications)
+    {
+        this.duplicateClassifications = duplicateClassifications;
+    }
+
+
+    /**
+     * Return the TypeEmbeddedAttribute classification - only attached to a SchemaAttribute.
+     *
+     * @return classification
+     */
+    public ElementClassification getSchemaType()
+    {
+        return schemaType;
+    }
+
+
+    /**
+     * Set the TypeEmbeddedAttribute classification - only attached to a SchemaAttribute.
+     *
+     * @param schemaType classification
+     */
+    public void setSchemaType(ElementClassification schemaType)
+    {
+        this.schemaType = schemaType;
+    }
+
+
+    /**
+     * Return the CalculatedValue classification - only attached to a SchemaAttribute.
+     *
+     * @return   classification
+     */
+    public ElementClassification getCalculatedValue()
+    {
+        return calculatedValue;
+    }
+
+
+    /**
+     * Set the CalculatedValue classification - only attached to a SchemaAttribute.
+     *
+     * @param calculatedValue classification
+     */
+    public void setCalculatedValue(ElementClassification calculatedValue)
+    {
+        this.calculatedValue = calculatedValue;
+    }
+
+
+    /**
+     * Return whether this element (TabularColumn) is a primary key.
+     *
+     * @return classification
+     */
+    public ElementClassification getPrimaryKey()
+    {
+        return primaryKey;
+    }
+
+
+    /**
+     * Set up whether this element (TabularColumn) is a primary key.
+     *
+     * @param primaryKey classification
+     */
+    public void setPrimaryKey(ElementClassification primaryKey)
+    {
+        this.primaryKey = primaryKey;
+    }
+
+
+    /**
+     * Return any server purposes defined for this element.
+     *
+     * @return list
+     */
+    public List<ElementClassification> getServerPurposes()
+    {
+        return serverPurposes;
+    }
+
+
+    /**
+     * Set up any server purposes defined for this element.
+     *
+     * @param serverPurposes list
+     */
+    public void setServerPurposes(List<ElementClassification> serverPurposes)
+    {
+        this.serverPurposes = serverPurposes;
+    }
+
+
+    /**
+     * Return the resource manager classifications attached to this element.
+     *
+     * @return list
+     */
+    public List<ElementClassification> getResourceManagerCategories()
+    {
+        return resourceManagerCategories;
+    }
+
+
+    /**
+     * Set up the resource manager classifications attached to this element.
+     *
+     * @param resourceManagerCategories list
+     */
+    public void setResourceManagerCategories(List<ElementClassification> resourceManagerCategories)
+    {
+        this.resourceManagerCategories = resourceManagerCategories;
+    }
+
+
+    /**
+     * Return the optional list of category classifications found on a collection entity that indicate how a collection is being used.
+     *
+     * @return list of classifications
+     */
+    public List<ElementClassification> getCollectionCategories()
+    {
+        return collectionCategories;
+    }
+
+
+    /**
+     * Set up the optional list of category classifications found on a collection entity that indicate how a collection is being used.
+
+     * @param collectionCategories list of classifications
+     */
+    public void setCollectionCategories(List<ElementClassification> collectionCategories)
+    {
+        this.collectionCategories = collectionCategories;
+    }
+
+
+    /**
+     * Return the optional list of category classifications found on a project entity that indicate how a collection is being used.
+     *
+     * @return list of classifications
+     */
+    public List<ElementClassification> getProjectCategories()
+    {
+        return projectCategories;
+    }
+
+
+    /**
+     * Set up the optional list of category classifications found on a project entity that indicate how a collection is being used.
+
+     * @param projectCategories list of classifications
+     */
+    public void setProjectCategories(List<ElementClassification> projectCategories)
+    {
+        this.projectCategories = projectCategories;
+    }
+
+
+    /**
+     * Return the list of remaining classifications associated with the metadata element.
+     *
+     * @return Classifications  list of classifications
+     */
+    public List<ElementClassification> getOtherClassifications()
+    {
+        return otherClassifications;
+    }
+
+
+    /**
+     * Set up the list of remaining classifications associated with this metadata element.
+     *
+     * @param otherClassifications list of classifications
+     */
+    public void setOtherClassifications(List<ElementClassification> otherClassifications)
+    {
+        this.otherClassifications = otherClassifications;
     }
 
 
@@ -127,15 +631,30 @@ public class ElementHeader extends ElementControlHeader
     public String toString()
     {
         return "ElementHeader{" +
-                       "status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", guid='" + guid + '\'' +
-                       ", classifications=" + classifications +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", headerVersion=" + getHeaderVersion() +
-                       '}';
+                "guid='" + guid + '\'' +
+                ", anchor=" + anchor +
+                ", zoneMembership=" + zoneMembership +
+                ", subjectArea=" + subjectArea +
+                ", impact=" + impact +
+                ", criticality=" + criticality +
+                ", confidentiality=" + confidentiality +
+                ", confidence=" + confidence +
+                ", retention=" + retention +
+                ", executionPoints=" + executionPoints +
+                ", duplicateClassifications=" + duplicateClassifications +
+                ", digitalResourceOrigin=" + digitalResourceOrigin +
+                ", ownership=" + ownership +
+                ", memento=" + memento +
+                ", template=" + template +
+                ", schemaType=" + schemaType +
+                ", calculatedValue=" + calculatedValue +
+                ", primaryKey=" + primaryKey +
+                ", serverPurposes=" + serverPurposes +
+                ", resourceManagerCategories=" + resourceManagerCategories +
+                ", collectionCategories=" + collectionCategories +
+                ", projectCategories=" + projectCategories +
+                ", otherClassifications=" + otherClassifications +
+                "} " + super.toString();
     }
 
 
@@ -148,20 +667,33 @@ public class ElementHeader extends ElementControlHeader
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         ElementHeader that = (ElementHeader) objectToCompare;
-        return Objects.equals(guid, that.guid) && Objects.equals(classifications, that.classifications);
+        return Objects.equals(guid, that.guid) &&
+                Objects.equals(anchor, that.anchor) &&
+                Objects.equals(zoneMembership, that.zoneMembership) &&
+                Objects.equals(subjectArea, that.subjectArea) &&
+                Objects.equals(impact, that.impact) &&
+                Objects.equals(criticality, that.criticality) &&
+                Objects.equals(confidentiality, that.confidentiality) &&
+                Objects.equals(confidence, that.confidence) &&
+                Objects.equals(retention, that.retention) &&
+                Objects.equals(executionPoints, that.executionPoints) &&
+                Objects.equals(duplicateClassifications, that.duplicateClassifications) &&
+                Objects.equals(digitalResourceOrigin, that.digitalResourceOrigin) &&
+                Objects.equals(ownership, that.ownership) &&
+                Objects.equals(memento, that.memento) &&
+                Objects.equals(template, that.template) &&
+                Objects.equals(schemaType, that.schemaType) &&
+                Objects.equals(calculatedValue, that.calculatedValue) &&
+                Objects.equals(primaryKey, that.primaryKey) &&
+                Objects.equals(serverPurposes, that.serverPurposes) &&
+                Objects.equals(resourceManagerCategories, that.resourceManagerCategories) &&
+                Objects.equals(collectionCategories, that.collectionCategories) &&
+                Objects.equals(projectCategories, that.projectCategories) &&
+                Objects.equals(otherClassifications, that.otherClassifications);
     }
 
 
@@ -173,6 +705,9 @@ public class ElementHeader extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), guid, classifications);
+        return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, subjectArea, impact, criticality,
+                            confidentiality, confidence, retention, executionPoints, duplicateClassifications, ownership,
+                            digitalResourceOrigin, memento, template, schemaType, calculatedValue, primaryKey, serverPurposes,
+                            resourceManagerCategories, collectionCategories, projectCategories, otherClassifications);
     }
 }

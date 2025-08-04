@@ -19,7 +19,7 @@ import java.util.List;
 public class ServerTypeClassifier
 {
     private static final String ACCESS_SERVICES_NAME      = "Open Metadata Access Services (OMAS)";
-    private static final String INTEGRATION_SERVICES_NAME = "Open Metadata Integration Services (OMIS)";
+    private static final String INTEGRATION_SERVICES_NAME = "Dynamic Integration Group Services";
     private static final String VIEW_SERVICES_NAME        = "Open Metadata View Services (OMVS)";
 
     private final OMAGServerConfig configurationDocument;
@@ -57,7 +57,6 @@ public class ServerTypeClassifier
 
         RepositoryServicesConfig        repositoryServicesConfig          = configurationDocument.getRepositoryServicesConfig();
         List<AccessServiceConfig>       accessServiceConfigList           = configurationDocument.getAccessServicesConfig();
-        List<IntegrationServiceConfig>  integrationServiceConfigList      = configurationDocument.getIntegrationServicesConfig();
         List<IntegrationGroupConfig>    dynamicIntegrationGroupConfigList = configurationDocument.getDynamicIntegrationGroupsConfig();
         List<ViewServiceConfig>         viewServiceConfigList             = configurationDocument.getViewServicesConfig();
         ConformanceSuiteConfig          conformanceSuiteConfig            = configurationDocument.getConformanceSuiteConfig();
@@ -66,7 +65,6 @@ public class ServerTypeClassifier
         if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
                 (engineHostServicesConfig == null) &&
-                (integrationServiceConfigList == null) &&
                 (dynamicIntegrationGroupConfigList == null) &&
                 (viewServiceConfigList == null) &&
                 (conformanceSuiteConfig == null))
@@ -130,7 +128,7 @@ public class ServerTypeClassifier
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
+                                                dynamicIntegrationGroupConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -155,7 +153,7 @@ public class ServerTypeClassifier
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
+                                                dynamicIntegrationGroupConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -175,12 +173,12 @@ public class ServerTypeClassifier
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
+                                                dynamicIntegrationGroupConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 VIEW_SERVICES_NAME,
-                                                integrationServiceConfigList);
+                                                viewServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -188,7 +186,7 @@ public class ServerTypeClassifier
                                                 conformanceSuiteConfig);
         }
 
-        if ((integrationServiceConfigList != null) || (dynamicIntegrationGroupConfigList != null))
+        if  (dynamicIntegrationGroupConfigList != null)
         {
             serverTypeClassification = ServerTypeClassification.INTEGRATION_DAEMON;
 
@@ -230,7 +228,7 @@ public class ServerTypeClassifier
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
+                                                dynamicIntegrationGroupConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),

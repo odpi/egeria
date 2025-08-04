@@ -11,10 +11,6 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.rest.IntegrationServiceRequestBody;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.List;
@@ -100,35 +96,6 @@ public class OMAGServerErrorHandler
         validateServerName(serverName, methodName);
         validateOMAGServerServiceRootURL(clientConfig.getOMAGServerPlatformRootURL(), serverName, methodName);
         validateOMAGServerName(clientConfig.getOMAGServerPlatformRootURL(), serverName, methodName);
-    }
-
-
-    /**
-     * Validate that the server name is not null and save it in the config.
-     *
-     * @param serverName  serverName passed on a request
-     * @param integrationServiceConfig  integration service config
-     * @param methodName  method receiving the call
-     * @throws OMAGInvalidParameterException null server name
-     */
-    void validateIntegrationServiceConfig(String                        serverName,
-                                          IntegrationServiceRequestBody integrationServiceConfig,
-                                          String                        methodName) throws OMAGInvalidParameterException
-    {
-        final String connectorConfigPropertyName = "integrationServerConfig.connectorConfig";
-        final String connectorNamePropertyName = "integrationServerConfig.connectorConfig.connectorName";
-
-        this.validateOMAGServerClientConfig(serverName, integrationServiceConfig, methodName);
-
-        if (integrationServiceConfig.getIntegrationConnectorConfigs() != null)
-        {
-            for (IntegrationConnectorConfig connectorConfig : integrationServiceConfig.getIntegrationConnectorConfigs())
-            {
-                this.validatePropertyNotNull(connectorConfig, connectorConfigPropertyName, serverName, methodName);
-                this.validatePropertyNotNull(connectorConfig.getConnectorName(), connectorNamePropertyName, serverName, methodName);
-                this.validateServerConnection(connectorConfig.getConnection(), serverName, methodName);
-            }
-        }
     }
 
 

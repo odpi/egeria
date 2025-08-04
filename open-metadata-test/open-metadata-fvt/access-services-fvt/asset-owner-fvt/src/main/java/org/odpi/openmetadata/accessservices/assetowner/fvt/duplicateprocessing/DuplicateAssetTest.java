@@ -158,7 +158,7 @@ public class DuplicateAssetTest
             properties.setTypeName("Asset");
             properties.setQualifiedName(assetName);
             properties.setDisplayName(assetDisplayName);
-            properties.setResourceDescription(assetDescription);
+            properties.setDescription(assetDescription);
             properties.setAdditionalProperties(additionalProperties);
 
             String assetGUID = client.addAssetToCatalog(userId, properties);
@@ -184,7 +184,7 @@ public class DuplicateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
+            if (! assetDescription.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -225,7 +225,7 @@ public class DuplicateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
+            if (! assetDescription.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }

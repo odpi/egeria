@@ -286,7 +286,7 @@ public enum PlaceholderProperty
      */
     public String getPlaceholder()
     {
-        return "{{" + name + "}}";
+        return "~{" + name + "}~";
     }
 
     /**

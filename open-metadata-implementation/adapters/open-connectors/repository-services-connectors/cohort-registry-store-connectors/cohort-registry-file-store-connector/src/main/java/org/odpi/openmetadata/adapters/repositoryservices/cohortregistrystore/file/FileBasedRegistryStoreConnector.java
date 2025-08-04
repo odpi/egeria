@@ -10,8 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStoreConnectorBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.CohortMembership;
@@ -60,11 +58,11 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * @param connectionDetails - POJO for the configuration used to create the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionDetails connectionDetails)
+    public void initialize(String connectorInstanceId, Connection connectionDetails)
     {
         super.initialize(connectorInstanceId, connectionDetails);
 
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {

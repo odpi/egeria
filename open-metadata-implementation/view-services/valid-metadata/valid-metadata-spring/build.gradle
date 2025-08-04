@@ -9,9 +9,8 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:view-services:valid-metadata:valid-metadata-server')
-    implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-api')
+    implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-api')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

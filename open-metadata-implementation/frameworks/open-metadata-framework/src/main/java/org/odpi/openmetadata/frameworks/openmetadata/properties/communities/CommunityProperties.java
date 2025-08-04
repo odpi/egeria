@@ -21,9 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CommunityProperties extends ReferenceableProperties
 {
-    private String name        = null;
-    private String description = null;
-    private String mission     = null;
+    private String mission = null;
 
 
     /**
@@ -47,54 +45,8 @@ public class CommunityProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            name = template.getName();
-            description = template.getDescription();
             mission = template.getMission();
         }
-    }
-
-
-    /**
-     * Return the name of the community.
-     *
-     * @return string name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the name of the community.
-     *
-     * @param name string name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-     * Return the description of the community's aims and operations.
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the community's aims and operations.
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -129,18 +81,10 @@ public class CommunityProperties extends ReferenceableProperties
     public String toString()
     {
         return "CommunityProperties{" +
-                       "name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       ", mission='" + mission + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "mission='" + mission + '\'' +
+                "} " + super.toString();
     }
+
 
 
     /**
@@ -165,9 +109,7 @@ public class CommunityProperties extends ReferenceableProperties
             return false;
         }
         CommunityProperties community = (CommunityProperties) objectToCompare;
-        return Objects.equals(getMission(), community.getMission()) &&
-                Objects.equals(getName(), community.getName()) &&
-                Objects.equals(getDescription(), community.getDescription());
+        return Objects.equals(mission, community.mission);
     }
 
 
@@ -179,6 +121,6 @@ public class CommunityProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMission(), getName(), getDescription());
+        return Objects.hash(super.hashCode(), mission);
     }
 }

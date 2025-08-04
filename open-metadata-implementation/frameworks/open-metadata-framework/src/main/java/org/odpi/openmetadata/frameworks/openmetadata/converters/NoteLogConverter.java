@@ -71,7 +71,7 @@ public class NoteLogConverter<B> extends OpenMetadataConverterBase<B>
 
                     properties.setQualifiedName(this.removeQualifiedName(elementProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-                    properties.setDisplayName(this.removeName(elementProperties));
+                    properties.setDisplayName(this.removeDisplayName(elementProperties));
                     properties.setDescription(this.removeDescription(elementProperties));
                     properties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
                     properties.setEffectiveTo(openMetadataElement.getEffectiveToTime());

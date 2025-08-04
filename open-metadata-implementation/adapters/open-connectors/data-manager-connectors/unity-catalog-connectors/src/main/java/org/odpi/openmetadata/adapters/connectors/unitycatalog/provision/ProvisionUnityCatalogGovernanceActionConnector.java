@@ -6,11 +6,12 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.provision;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
-import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -21,7 +22,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -32,7 +35,7 @@ import java.util.List;
  * ProvisionUnityCatalogGovernanceActionConnector creates a server and attaches it to an appropriate integration
  * connector (passed as an action target).
  */
-public class ProvisionUnityCatalogGovernanceActionConnector extends ProvisioningGovernanceActionService
+public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /**
      * Default constructor
@@ -48,9 +51,10 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends Provisioning
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -247,7 +251,7 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends Provisioning
                                                                                        null,
                                                                                        governanceContext.getRequestParameters(),
                                                                                        serverGUID,
-                                                                                       OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                       OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
                                                                                        propertyHelper.addEnumProperty(null,
                                                                                                                       OpenMetadataProperty.OPERATIONAL_STATUS.name,
                                                                                                                       OperationalStatus.getOpenTypeName(),
@@ -274,25 +278,29 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends Provisioning
         String catalogGUID = this.getCatalogAnchorGUID(serverNetworkAddress, catalogName);
         String catalogQualifiedName = this.getCatalogQualifiedName(catalogGUID);
 
+        MetadataSourceOptions metadataSourceOptions = governanceContext.getOpenMetadataStore().getMetadataSourceOptions();
 
-        return governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(catalogGUID,
-                                                                                       catalogQualifiedName,
-                                                                                       UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
-                                                                                       catalogGUID,
-                                                                                       false,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       templateGUID,
-                                                                                       null,
-                                                                                       governanceContext.getRequestParameters(),
-                                                                                       catalogGUID,
-                                                                                       OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                                       propertyHelper.addEnumProperty(null,
-                                                                                                                      OpenMetadataProperty.USE_TYPE.name,
-                                                                                                                      ServerAssetUseType.getOpenTypeName(),
-                                                                                                                      ServerAssetUseType.OWNS.getName()),
-                                                                                       true);
+        metadataSourceOptions.setExternalSourceGUID(catalogGUID);
+        metadataSourceOptions.setExternalSourceName(catalogQualifiedName);
+
+        TemplateOptions templateOptions = new TemplateOptions(metadataSourceOptions);
+
+        templateOptions.setOpenMetadataTypeName(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName());
+        templateOptions.setAnchorGUID(catalogGUID);
+        templateOptions.setIsOwnAnchor(false);
+        templateOptions.setAnchorScopeGUID(catalogGUID);
+        templateOptions.setParentGUID(catalogGUID);
+        templateOptions.setParentAtEnd1(true);
+        templateOptions.setParentRelationshipTypeName(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
+
+        return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(templateOptions,
+                                                                                          templateGUID,
+                                                                                          null,
+                                                                                          governanceContext.getRequestParameters(),
+                                                                                          new NewElementProperties(propertyHelper.addEnumProperty(null,
+                                                                                                                                                  OpenMetadataProperty.USE_TYPE.name,
+                                                                                                                                                  CapabilityAssetUseType.getOpenTypeName(),
+                                                                                                                                                  CapabilityAssetUseType.OWNS.getName())));
     }
 
 
@@ -320,21 +328,27 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends Provisioning
                                                      catalogName,
                                                      super.getProperty(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), null));
 
-        String elementGUID = governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(catalogGUID,
-                                                                                                     catalogQualifiedName,
-                                                                                                     openMetadataTypeName,
-                                                                                                     schemaGUID,
-                                                                                                     false,
-                                                                                                     schemaGUID,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     templateGUID,
-                                                                                                     null,
-                                                                                                     governanceContext.getRequestParameters(),
-                                                                                                     schemaGUID,
-                                                                                                     OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
-                                                                                                     null,
-                                                                                                     true);
+        MetadataSourceOptions metadataSourceOptions = governanceContext.getOpenMetadataStore().getMetadataSourceOptions();
+
+        metadataSourceOptions.setExternalSourceGUID(catalogGUID);
+        metadataSourceOptions.setExternalSourceName(catalogQualifiedName);
+
+        TemplateOptions templateOptions = new TemplateOptions(metadataSourceOptions);
+
+        templateOptions.setOpenMetadataTypeName(openMetadataTypeName);
+        templateOptions.setAllowRetrieve(true);
+        templateOptions.setAnchorGUID(schemaGUID);
+        templateOptions.setIsOwnAnchor(false);
+        templateOptions.setAnchorScopeGUID(catalogGUID);
+        templateOptions.setParentGUID(schemaGUID);
+        templateOptions.setParentAtEnd1(true);
+        templateOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
+
+        String elementGUID = governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(templateOptions,
+                                                                                                        templateGUID,
+                                                                                                        null,
+                                                                                                        governanceContext.getRequestParameters(),
+                                                                                                        null);
 
         String rootSchemaTypeQualifiedName = this.getProperty(PlaceholderProperty.ROOT_SCHEMA_TYPE_QUALIFIED_NAME.getName(), null);
 
@@ -344,13 +358,10 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends Provisioning
 
             if (rootSchemaTypeGUID != null)
             {
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(catalogGUID,
-                                                                                      catalogQualifiedName,
-                                                                                      OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                                                       elementGUID,
                                                                                       rootSchemaTypeGUID,
-                                                                                      null,
-                                                                                      null,
+                                                                                      metadataSourceOptions,
                                                                                       null);
             }
         }

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
@@ -15,7 +16,8 @@ import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * PostgresDatabaseSurveyActionService surveys the content of a particular database.
@@ -26,9 +28,10 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
      * Indicates that the survey action service is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the survey service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String  methodName = "start";
 
@@ -54,7 +57,7 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
             if (databaseName == null)
             {
                 auditLog.logMessage(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                    assetStore.getAssetProperties().getQualifiedName(),
+                                                                                                    assetStore.getQualifiedName(),
                                                                                                     assetStore.getAssetGUID()));
             }
             else

@@ -6,7 +6,9 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 
 import java.util.Map;
 import java.util.Objects;
@@ -21,11 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TemplateRequestBody extends NewElementOptionsRequestBody
+public class TemplateRequestBody extends TemplateOptions
 {
-    private String                         templateGUID                 = null;
-    private ElementProperties              replacementProperties        = null;
-    private Map<String, String>            placeholderPropertyValues    = null;
+    private String                 templateGUID                 = null;
+    private ElementProperties      replacementProperties        = null;
+    private Map<String, String>    placeholderPropertyValues    = null;
+    private RelationshipProperties parentRelationshipProperties = null;
 
 
     /**
@@ -48,10 +51,22 @@ public class TemplateRequestBody extends NewElementOptionsRequestBody
 
         if (template != null)
         {
-            replacementProperties = template.getReplacementProperties();
-            templateGUID          = template.getTemplateGUID();
-            placeholderPropertyValues  = template.getPlaceholderPropertyValues();
+            replacementProperties        = template.getReplacementProperties();
+            templateGUID                 = template.getTemplateGUID();
+            placeholderPropertyValues    = template.getPlaceholderPropertyValues();
+            parentRelationshipProperties = template.getParentRelationshipProperties();
         }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public TemplateRequestBody(TemplateOptions template)
+    {
+        super(template);
     }
 
 
@@ -122,6 +137,28 @@ public class TemplateRequestBody extends NewElementOptionsRequestBody
 
 
     /**
+     * Return any properties that should be included in the parent relationship.
+     *
+     * @return element properties
+     */
+    public RelationshipProperties getParentRelationshipProperties()
+    {
+        return parentRelationshipProperties;
+    }
+
+
+    /**
+     * Set up any properties that should be included in the parent relationship.
+     *
+     * @param parentRelationshipProperties element properties
+     */
+    public void setParentRelationshipProperties(RelationshipProperties parentRelationshipProperties)
+    {
+        this.parentRelationshipProperties = parentRelationshipProperties;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -133,6 +170,7 @@ public class TemplateRequestBody extends NewElementOptionsRequestBody
                 "templateGUID='" + templateGUID + '\'' +
                 ", replacementProperties=" + replacementProperties +
                 ", placeholderPropertyValues=" + placeholderPropertyValues +
+                ", parentRelationshipProperties=" + parentRelationshipProperties +
                 "} " + super.toString();
     }
 
@@ -159,8 +197,9 @@ public class TemplateRequestBody extends NewElementOptionsRequestBody
             return false;
         }
         return Objects.equals(replacementProperties, that.replacementProperties) &&
-                       Objects.equals(placeholderPropertyValues, that.placeholderPropertyValues) &&
-                       Objects.equals(templateGUID, that.templateGUID);
+                Objects.equals(placeholderPropertyValues, that.placeholderPropertyValues) &&
+                Objects.equals(templateGUID, that.templateGUID)&&
+                Objects.equals(parentRelationshipProperties, that.parentRelationshipProperties);
     }
 
 
@@ -172,6 +211,7 @@ public class TemplateRequestBody extends NewElementOptionsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), replacementProperties, templateGUID, placeholderPropertyValues);
+        return Objects.hash(super.hashCode(), replacementProperties, templateGUID,
+                            placeholderPropertyValues, parentRelationshipProperties);
     }
 }

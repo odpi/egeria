@@ -259,10 +259,10 @@ public class CreateEventsTest
 
             EventBrokerProperties properties = new EventBrokerProperties();
             properties.setQualifiedName(eventBrokerName);
-            properties.setResourceName(eventBrokerDisplayName);
-            properties.setResourceDescription(eventBrokerDescription);
+            properties.setDisplayName(eventBrokerDisplayName);
+            properties.setDescription(eventBrokerDescription);
             properties.setDeployedImplementationType(eventBrokerTypeDescription);
-            properties.setVersion(eventBrokerVersion);
+            properties.setVersionIdentifier(eventBrokerVersion);
 
             String eventBrokerGUID = client.createEventBroker(userId, null, null, properties);
 
@@ -371,11 +371,11 @@ public class CreateEventsTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! topicDisplayName.equals(retrievedTopic.getName()))
+            if (! topicDisplayName.equals(retrievedTopic.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! topicDescription.equals(retrievedTopic.getResourceDescription()))
+            if (! topicDescription.equals(retrievedTopic.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -408,11 +408,11 @@ public class CreateEventsTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! topicDisplayName.equals(retrievedTopic.getName()))
+            if (! topicDisplayName.equals(retrievedTopic.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! topicDescription.equals(retrievedTopic.getResourceDescription()))
+            if (! topicDescription.equals(retrievedTopic.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -459,8 +459,8 @@ public class CreateEventsTest
             TopicProperties properties = new TopicProperties();
 
             properties.setQualifiedName(topicName);
-            properties.setName(topicDisplayName);
-            properties.setResourceDescription(topicDescription);
+            properties.setDisplayName(topicDisplayName);
+            properties.setDescription(topicDescription);
             properties.setTopicType(topicType);
 
             String topicGUID = client.createTopic(userId, eventBrokerGUID, eventBrokerName, true, properties);

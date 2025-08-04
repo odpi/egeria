@@ -5,21 +5,24 @@ package org.odpi.openmetadata.accessservices.samples.assetsetup;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
-import org.odpi.openmetadata.accessservices.communityprofile.client.ActorProfileManagement;
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.ExternalReferenceManagerClient;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ConnectionManager;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.LocationManager;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ReferenceDataManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceZoneManager;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceZoneProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 
@@ -54,9 +57,9 @@ public class AssetSetUp
     private final String clientUserId;
 
     private AssetConsumer                  assetConsumerClient            = null;
-    private CSVFileAssetOwner              csvOnboardingClient            = null;
-    private ActorProfileManagement         actorProfileManagement         = null;
-    private ExternalAssetManagerClient     externalAssetManagerClient     = null;
+    private CSVFileAssetOwner              csvOnboardingClient        = null;
+    private ActorProfileHandler            actorProfileManagement     = null;
+    private ExternalAssetManagerClient     externalAssetManagerClient = null;
     private DatabaseManagerClient          databaseManagerClient          = null;
     private ExternalReferenceManagerClient externalReferenceManagerClient = null;
     private ConnectionManager              connectionManager              = null;
@@ -89,9 +92,13 @@ public class AssetSetUp
 
         try
         {
+            OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreHandler(serverName,
+                                                                                       platformURLRoot,
+                                                                                       CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceURLMarker(),
+                                                                                       100);
             csvOnboardingClient            = new CSVFileAssetOwner(serverName, platformURLRoot);
             assetConsumerClient            = new AssetConsumer(serverName, platformURLRoot);
-            actorProfileManagement         = new ActorProfileManagement(this.getClass().getName(), serverName, platformURLRoot, null, 100);
+            actorProfileManagement         = new ActorProfileHandler(this.getClass().getName(), null, "Asset Setup", openMetadataClient);
             externalAssetManagerClient     = new ExternalAssetManagerClient(serverName, platformURLRoot, 100);
             databaseManagerClient          = new DatabaseManagerClient(serverName, platformURLRoot);
             externalReferenceManagerClient = new ExternalReferenceManagerClient(serverName, platformURLRoot);
@@ -257,23 +264,18 @@ public class AssetSetUp
             ActorProfileProperties profileProperties = new ActorProfileProperties();
 
             profileProperties.setQualifiedName("Organization:" + organizationName);
-            profileProperties.setKnownName(organizationName);
+            profileProperties.setDisplayName(organizationName);
             profileProperties.setTypeName("Organization");
 
+            NewElementOptions newElementOptions = new NewElementOptions();
+            newElementOptions.setIsOwnAnchor(true);
+            newElementOptions.setEffectiveTime(new Date());
+
             String orgGUID = actorProfileManagement.createActorProfile(clientUserId,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       true,
+                                                                       newElementOptions,
                                                                        null,
                                                                        profileProperties,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       true,
-                                                                       false,
-                                                                       false,
-                                                                       new Date());
+                                                                       null);
             orgMap.put(organizationName, orgGUID);
         }
         catch (Exception error)

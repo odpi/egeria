@@ -508,8 +508,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                      OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
                                       null,
                                       effectiveFrom,
                                       effectiveTo,
@@ -1612,8 +1612,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            assetGUID,
                                            assetGUIDParameterName,
                                            OpenMetadataType.ASSET.typeName,
-                                           OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeGUID,
-                                           OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName,
+                                           OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName,
                                            properties,
                                            isMergeUpdate,
                                            forLineage,
@@ -1653,8 +1653,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 assetGUID,
                                                 assetGUIDParameterName,
                                                 OpenMetadataType.ASSET.typeName,
-                                                OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeGUID,
-                                                OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName,
+                                                OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeGUID,
+                                                OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1717,7 +1717,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.ASSET.typeName,
-                                                                                         OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName,
+                                                                                         OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName,
                                                                                          classificationMatchProperties,
                                                                                          MatchCriteria.ALL,
                                                                                          null,
@@ -1840,8 +1840,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            assetGUID,
                                            assetGUIDParameterName,
                                            OpenMetadataType.ASSET.typeName,
-                                           OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeGUID,
-                                           OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                           OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
                                            builder.getZoneMembershipProperties(assetZones, methodName),
                                            isMergeUpdate,
                                            forLineage,
@@ -2122,7 +2122,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.RESOURCE_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         List<EntityDetail> results = this.getEntitiesByValue(userId,
                                                              name,
@@ -2675,7 +2675,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                                   resultTypeGUID,
-                                                                                                  OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                  OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
                                                                                                   matchClassificationProperties,
                                                                                                   MatchCriteria.ANY,
                                                                                                   null,
@@ -2803,7 +2803,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.RESOURCE_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
@@ -2931,7 +2931,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.RESOURCE_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 
@@ -3061,7 +3061,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.RESOURCE_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 

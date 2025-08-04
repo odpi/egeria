@@ -232,4 +232,5 @@ public enum GlossaryTermAssignmentStatus implements OpenMetadataEnum
     public String toString()
     {
         return "GlossaryTermAssignmentStatus{name='" + name + '}';
-    }}
+    }
+}

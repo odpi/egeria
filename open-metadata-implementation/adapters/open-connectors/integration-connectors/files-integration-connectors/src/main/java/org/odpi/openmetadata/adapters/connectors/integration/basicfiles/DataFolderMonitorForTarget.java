@@ -3,13 +3,15 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +48,7 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
                                        Map<String,String>                        templates,
                                        Map<String, Object>                       configurationProperties,
                                        BasicFilesMonitorIntegrationConnectorBase integrationConnector,
-                                       FileFolderElement                         dataFolderElement,
+                                       OpenMetadataRootElement                   dataFolderElement,
                                        AuditLog                                  auditLog)
     {
         super(connectorName,
@@ -91,20 +93,21 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
                             directoryToMonitor.dataFolderElement = integrationConnector.getFolderElement(directoryToMonitor.directoryFile);
                         }
 
-                        if (directoryToMonitor.dataFolderElement != null)
+                        if ((directoryToMonitor.dataFolderElement != null) &&
+                                (directoryToMonitor.dataFolderElement.getProperties() instanceof FileFolderProperties fileFolderProperties))
                         {
-                            Date lastRecordedChange   = directoryToMonitor.dataFolderElement.getFileFolderProperties().getModifiedTime();
+                            Date lastRecordedChange   = fileFolderProperties.getStoreUpdateTime();
 
                             if ((lastRecordedChange == null) || (lastRecordedChange.before(new Date(directoryToMonitor.directoryFile.lastModified()))))
                             {
+                                AssetClient dataFolderClient = integrationConnector.integrationContext.getAssetClient(OpenMetadataType.DATA_FOLDER.typeName);
                                 FileFolderProperties properties = new FileFolderProperties();
 
-                                properties.setModifiedTime(modifiedTime);
-                                integrationConnector.getContext().updateDataFolderInCatalog(directoryToMonitor.metadataSourceGUID,
-                                                                                            directoryToMonitor.metadataSourceName,
-                                                                                            directoryToMonitor.dataFolderElement.getElementHeader().getGUID(),
-                                                                                            true,
-                                                                                            properties);
+                                properties.setStoreUpdateTime(modifiedTime);
+
+                                dataFolderClient.updateAsset(directoryToMonitor.dataFolderElement.getElementHeader().getGUID(),
+                                                             dataFolderClient.getUpdateOptions(true),
+                                                             properties);
 
                                 if (auditLog != null)
                                 {

@@ -4,8 +4,6 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
-import java.io.Serializable;
-
 /**
  * AccessServiceRegistrationEntry is used by an access service to register its admin services interface.
  * The registration is dynamic because access services from third parties can be written and run in the
@@ -14,21 +12,18 @@ import java.io.Serializable;
 public class AccessServiceRegistrationEntry
 {
     private static final String   defaultTopicRoot    = "omas.";
-    private static final String   defaultInTopicLeaf  = ".inTopic";
     private static final String   defaultOutTopicLeaf = ".outTopic";
 
 
     private int                        accessServiceCode;
     private ComponentDevelopmentStatus accessServiceDevelopmentStatus = null;
     private String                     accessServiceName;
-    private String                     accessServiceFullName;
     private String                     accessServiceURLMarker;
     private String                     accessServiceDescription;
     private String                     accessServiceWiki;
     private ServiceOperationalStatus   accessServiceOperationalStatus;
     private String                     accessServiceAdminClassName;
 
-    private ServiceOperationalStatus   accessServiceInTopicStatus = ServiceOperationalStatus.NOT_IMPLEMENTED;
     private ServiceOperationalStatus   accessServiceOutTopicStatus = ServiceOperationalStatus.NOT_IMPLEMENTED;
 
 
@@ -38,11 +33,9 @@ public class AccessServiceRegistrationEntry
      * @param accessServiceCode ordinal for this access service
      * @param accessServiceDevelopmentStatus development status
      * @param accessServiceName symbolic name for this access service
-     * @param accessServiceFullName full name for this access service
      * @param accessServiceURLMarker name of the part of the URL that is the name of the access service
      * @param accessServiceDescription short description for this access service
      * @param accessServiceWiki wiki page for the access service for this access service
-     * @param accessServiceInTopicStatus is the access service inTopic implemented, operational or disabled?
      * @param accessServiceOutTopicStatus is the access service outTopic implemented, operational or disabled?
      * @param accessServiceOperationalStatus default initial operational status for the access service
      * @param accessServiceAdminClassName  name of AccessServiceAdmin implementation class for the access service
@@ -50,11 +43,9 @@ public class AccessServiceRegistrationEntry
     public AccessServiceRegistrationEntry(int                        accessServiceCode,
                                           ComponentDevelopmentStatus accessServiceDevelopmentStatus,
                                           String                     accessServiceName,
-                                          String                     accessServiceFullName,
                                           String                     accessServiceURLMarker,
                                           String                     accessServiceDescription,
                                           String                     accessServiceWiki,
-                                          ServiceOperationalStatus   accessServiceInTopicStatus,
                                           ServiceOperationalStatus   accessServiceOutTopicStatus,
                                           ServiceOperationalStatus   accessServiceOperationalStatus,
                                           String                     accessServiceAdminClassName)
@@ -62,11 +53,9 @@ public class AccessServiceRegistrationEntry
         this.accessServiceCode = accessServiceCode;
         this.accessServiceDevelopmentStatus = accessServiceDevelopmentStatus;
         this.accessServiceName = accessServiceName;
-        this.accessServiceFullName = accessServiceFullName;
         this.accessServiceURLMarker = accessServiceURLMarker;
         this.accessServiceDescription = accessServiceDescription;
         this.accessServiceWiki = accessServiceWiki;
-        this.accessServiceInTopicStatus = accessServiceInTopicStatus;
         this.accessServiceOutTopicStatus = accessServiceOutTopicStatus;
         this.accessServiceOperationalStatus = accessServiceOperationalStatus;
         this.accessServiceAdminClassName = accessServiceAdminClassName;
@@ -84,15 +73,13 @@ public class AccessServiceRegistrationEntry
                                           ServiceOperationalStatus accessServiceOperationalStatus,
                                           String                   accessServiceAdminClassName)
     {
-        this(accessServiceDescription.getAccessServiceCode(),
-             accessServiceDescription.getAccessServiceDevelopmentStatus(),
-             accessServiceDescription.getAccessServiceName(),
-             accessServiceDescription.getAccessServiceFullName(),
-             accessServiceDescription.getAccessServiceURLMarker(),
-             accessServiceDescription.getAccessServiceDescription(),
-             accessServiceDescription.getAccessServiceWiki(),
-             accessServiceDescription.getAccessServiceInTopicStatus(),
-             accessServiceDescription.getAccessServiceOutTopicStatus(),
+        this(accessServiceDescription.getServiceCode(),
+             accessServiceDescription.getServiceDevelopmentStatus(),
+             accessServiceDescription.getServiceName(),
+             accessServiceDescription.getServiceURLMarker(),
+             accessServiceDescription.getServiceDescription(),
+             accessServiceDescription.getServiceWiki(),
+             accessServiceDescription.getOutTopicStatus(),
              accessServiceOperationalStatus,
              accessServiceAdminClassName);
     }
@@ -169,29 +156,6 @@ public class AccessServiceRegistrationEntry
     public void setAccessServiceName(String accessServiceName)
     {
         this.accessServiceName = accessServiceName;
-    }
-
-
-    /**
-     * Return the full name for this access service.
-     *
-     * @return String default name
-     */
-    public String getAccessServiceFullName()
-    {
-        return accessServiceFullName;
-    }
-
-
-
-    /**
-     * Set up the full name for this access service.
-     *
-     * @param accessServiceFullName  String default name
-     */
-    public void setAccessServiceFullName(String accessServiceFullName)
-    {
-        this.accessServiceFullName = accessServiceFullName;
     }
 
 
@@ -308,23 +272,6 @@ public class AccessServiceRegistrationEntry
         this.accessServiceAdminClassName = accessServiceAdminClassName;
     }
 
-
-
-    /**
-     * Return the InTopic name for the access service.  Null means that the topic is either not implemented
-     * or not enabled.
-     *
-     * @return String topic name
-     */
-    public String getAccessServiceInTopic()
-    {
-        if (accessServiceInTopicStatus == ServiceOperationalStatus.ENABLED)
-        {
-            return defaultTopicRoot + accessServiceURLMarker.replaceAll("-", "") + defaultInTopicLeaf;
-        }
-
-        return null;
-    }
 
 
     /**

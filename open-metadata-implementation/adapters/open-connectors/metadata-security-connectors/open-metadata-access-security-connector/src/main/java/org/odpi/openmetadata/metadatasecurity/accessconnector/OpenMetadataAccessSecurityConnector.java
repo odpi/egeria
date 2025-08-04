@@ -85,81 +85,82 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
         serverServiceGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_SERVICE_GROUP_NAME_PATTERN.getName(),
-                                                                         connectionDetails.getConfigurationProperties(),
+                                                                         connectionBean.getConfigurationProperties(),
                                                                          OpenMetadataSecurityConfigurationProperty.SERVER_SERVICE_GROUP_NAME_PATTERN.getDefaultValue());
 
         serverServiceOperationGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_SERVICE_OPERATION_GROUP_NAME_PATTERN.getName(),
-                                                                                  connectionDetails.getConfigurationProperties(),
+                                                                                  connectionBean.getConfigurationProperties(),
                                                                                   OpenMetadataSecurityConfigurationProperty.SERVER_SERVICE_OPERATION_GROUP_NAME_PATTERN.getDefaultValue());
 
         ownershipGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.OWNER_GROUP_NAME_PATTERN.getName(),
-                                                                     connectionDetails.getConfigurationProperties(),
+                                                                     connectionBean.getConfigurationProperties(),
                                                                      OpenMetadataSecurityConfigurationProperty.OWNER_GROUP_NAME_PATTERN.getDefaultValue());
 
         elementGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.ELEMENT_GROUP_NAME_PATTERN.getName(),
-                                                                   connectionDetails.getConfigurationProperties(),
+                                                                   connectionBean.getConfigurationProperties(),
                                                                    OpenMetadataSecurityConfigurationProperty.ELEMENT_GROUP_NAME_PATTERN.getDefaultValue());
 
         zoneGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.ZONE_GROUP_NAME_PATTERN.getName(),
-                                                                connectionDetails.getConfigurationProperties(),
+                                                                connectionBean.getConfigurationProperties(),
                                                                 OpenMetadataSecurityConfigurationProperty.ZONE_GROUP_NAME_PATTERN.getDefaultValue());
 
         serverAdministratorsGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_ADMINISTRATOR_GROUP.getName(),
-                                                                         connectionDetails.getConfigurationProperties(),
+                                                                         connectionBean.getConfigurationProperties(),
                                                                          OpenMetadataSecurityConfigurationProperty.SERVER_ADMINISTRATOR_GROUP.getDefaultValue());
 
         serverOperatorsGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_OPERATORS_GROUP.getName(),
-                                                                    connectionDetails.getConfigurationProperties(),
+                                                                    connectionBean.getConfigurationProperties(),
                                                                     OpenMetadataSecurityConfigurationProperty.SERVER_OPERATORS_GROUP.getDefaultValue());
 
         serverInvestigatorsGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_INVESTIGATORS_GROUP.getName(),
-                                                                        connectionDetails.getConfigurationProperties(),
+                                                                        connectionBean.getConfigurationProperties(),
                                                                         OpenMetadataSecurityConfigurationProperty.SERVER_INVESTIGATORS_GROUP.getDefaultValue());
 
         serverGroup = resolveServerGroupName(super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_GROUP_NAME_PATTERN.getName(),
-                                                                                  connectionDetails.getConfigurationProperties(),
+                                                                                  connectionBean.getConfigurationProperties(),
                                                                                   OpenMetadataSecurityConfigurationProperty.SERVER_GROUP_NAME_PATTERN.getDefaultValue()),
                                              serverName);
 
         dynamicTypeAuthorGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.DYNAMIC_TYPE_AUTHOR_GROUP.getName(),
-                                                                      connectionDetails.getConfigurationProperties(),
+                                                                      connectionBean.getConfigurationProperties(),
                                                                       OpenMetadataSecurityConfigurationProperty.DYNAMIC_TYPE_AUTHOR_GROUP.getDefaultValue());
 
         instanceHeaderAuthorGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.INSTANCE_HEADER_AUTHOR_GROUP.getName(),
-                                                                         connectionDetails.getConfigurationProperties(),
+                                                                         connectionBean.getConfigurationProperties(),
                                                                          OpenMetadataSecurityConfigurationProperty.INSTANCE_HEADER_AUTHOR_GROUP.getDefaultValue());
 
         /*
          * The policy groups add simple policies to the zones - to reduce the need to list all users under certain groups.
          */
         personalZonesPolicyGroup   = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.PERSONAL_ZONES_GROUP.getName(),
-                                                                          connectionDetails.getConfigurationProperties(),
+                                                                          connectionBean.getConfigurationProperties(),
                                                                           OpenMetadataSecurityConfigurationProperty.PERSONAL_ZONES_GROUP.getDefaultValue());
         stewardshipZonePolicyGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.STEWARDSHIP_ZONES_GROUP.getName(),
-                                                                          connectionDetails.getConfigurationProperties(),
+                                                                          connectionBean.getConfigurationProperties(),
                                                                           OpenMetadataSecurityConfigurationProperty.STEWARDSHIP_ZONES_GROUP.getDefaultValue());
 
         allUserZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.ALL_USER_ZONES_GROUP.getName(),
-                                                                       connectionDetails.getConfigurationProperties(),
+                                                                       connectionBean.getConfigurationProperties(),
                                                                        OpenMetadataSecurityConfigurationProperty.ALL_USER_ZONES_GROUP.getDefaultValue());
         allEmployeeZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.EMPLOYEE_ONLY_ZONES_GROUP.getName(),
-                                                                           connectionDetails.getConfigurationProperties(),
+                                                                           connectionBean.getConfigurationProperties(),
                                                                            OpenMetadataSecurityConfigurationProperty.EMPLOYEE_ONLY_ZONES_GROUP.getDefaultValue());
         dataLakeZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.READABLE_ZONES_GROUP.getName(),
-                                                                        connectionDetails.getConfigurationProperties(),
+                                                                        connectionBean.getConfigurationProperties(),
                                                                         OpenMetadataSecurityConfigurationProperty.READABLE_ZONES_GROUP.getDefaultValue());
         automatedZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.AUTOMATED_ZONES_GROUP.getName(),
-                                                                         connectionDetails.getConfigurationProperties(),
+                                                                         connectionBean.getConfigurationProperties(),
                                                                          OpenMetadataSecurityConfigurationProperty.AUTOMATED_ZONES_GROUP.getDefaultValue());
         nonExternalZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.NOT_EXTERNAL_ZONES_GROUP.getName(),
-                                                                           connectionDetails.getConfigurationProperties(),
+                                                                           connectionBean.getConfigurationProperties(),
                                                                            OpenMetadataSecurityConfigurationProperty.NOT_EXTERNAL_ZONES_GROUP.getDefaultValue());
     }
 
@@ -727,28 +728,29 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
 
     /**
-     * Tests for whether a specific user should have access to an asset based on its zones.
+     * Tests for whether a specific user should have access to an element based on its zones.
      * Various tests are tried - only one has to be successful.  However, the user must have
      * a user account.
      *
      * @param userAccount details of user
-     * @param assetZones name of the zones
+     * @param elementZones name of the zones
      * @param zoneAccessType is the asset to be changed
-     * @param isUserOwner is the user one of the owner's of the asset
+     * @param isUserOwner is the user one of the owner's of the element
+     * @param elementCreator who created the element
      * @return whether the user is authorized to access asset in these zones
      */
-    private boolean userHasAccessToAssetZones(OpenMetadataUserAccount userAccount,
-                                              List<String>            assetZones,
-                                              AccessOperation         zoneAccessType,
-                                              String                  assetCreator,
-                                              boolean                 isUserOwner) throws UserNotAuthorizedException
+    private boolean userHasAccessToZones(OpenMetadataUserAccount userAccount,
+                                         List<String>            elementZones,
+                                         AccessOperation         zoneAccessType,
+                                         String                  elementCreator,
+                                         boolean                 isUserOwner) throws UserNotAuthorizedException
     {
         if (userAccount != null)
         {
             /*
              * No zones set up so zones do not restrict or provide access
              */
-            if ((assetZones == null) || (assetZones.isEmpty()))
+            if ((elementZones == null) || (elementZones.isEmpty()))
             {
                 return false;
             }
@@ -759,7 +761,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                  */
                 if (userAccount.getZoneAccess() != null)
                 {
-                    for (String zoneName : assetZones)
+                    for (String zoneName : elementZones)
                     {
                         if (zoneName != null)
                         {
@@ -771,7 +773,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                 {
                                     if (checkZonePolicies(zoneName,
                                                           userAccount,
-                                                          assetCreator,
+                                                          elementCreator,
                                                           isUserOwner))
                                     {
                                         return true;
@@ -786,7 +788,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                  * If the zone has specific group, check whether the user is in the group. Notice that the group
                  * name optionally includes both the zone name and the type of operation.
                  */
-                for (String zoneName : assetZones)
+                for (String zoneName : elementZones)
                 {
                     if (zoneName != null)
                     {
@@ -796,7 +798,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                         {
                             if (checkZonePolicies(zoneName,
                                                   userAccount,
-                                                  assetCreator,
+                                                  elementCreator,
                                                   isUserOwner))
                             {
                                 return true;
@@ -820,25 +822,25 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
 
     /**
-     * The following policies further restrict which assets in a zone the user has access to.
+     * The following policies further restrict which elements in a zone the user has access to.
      * When this method is called, it is after the connector has established that the user
      * has access to the zone and operation.  These checks ensure the user has access to the
-     * specific instance of the asset.
+     * specific instance.
      *
      * @param zoneName name of the zone
      * @param userAccount details of the user
-     * @param assetCreator who created the asset
-     * @param isUserOwner who is the asset owner
+     * @param elementCreator who created the element
+     * @param isUserOwner who is the element owner
      * @return boolean indicating whether the user has access to the asset instance
      */
     private boolean checkZonePolicies(String                  zoneName,
                                       OpenMetadataUserAccount userAccount,
-                                      String                  assetCreator,
+                                      String                  elementCreator,
                                       boolean                 isUserOwner)
     {
         if (isZoneInPolicyGroup(zoneName, personalZonesPolicyGroup))
         {
-            if (! userAccount.getUserId().equals(assetCreator))
+            if (! userAccount.getUserId().equals(elementCreator))
             {
                 return false;
             }
@@ -1049,11 +1051,11 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                          String                  serviceName,
                                          String                  methodName) throws UserNotAuthorizedException
     {
-        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.OPEN_METADATA_ROOT.typeName))
         {
             InstanceProperties zoneMembershipProperties = repositoryHelper.getClassificationProperties(serviceName,
                                                                                                        classifications,
-                                                                                                       OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                       OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
                                                                                                        methodName);
 
             if (zoneMembershipProperties != null)
@@ -1065,11 +1067,11 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
                 if (zoneMembership != null)
                 {
-                    return userHasAccessToAssetZones(userAccount,
-                                              zoneMembership,
-                                              operation,
-                                              createdBy,
-                                              isUserOwner);
+                    return userHasAccessToZones(userAccount,
+                                                zoneMembership,
+                                                operation,
+                                                createdBy,
+                                                isUserOwner);
                 }
             }
         }

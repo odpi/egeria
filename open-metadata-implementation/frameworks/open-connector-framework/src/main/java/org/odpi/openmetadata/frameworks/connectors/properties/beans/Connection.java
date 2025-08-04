@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
@@ -91,8 +92,6 @@ public class Connection extends Referenceable
     /*
      * Attributes of a connector
      */
-    private String              displayName             = null;
-    private String              description             = null;
     private ConnectorType       connectorType           = null;
     private Endpoint            endpoint                = null;
     private String              userId                  = null;
@@ -117,6 +116,7 @@ public class Connection extends Referenceable
         elementType.setTypeName(OpenMetadataType.CONNECTION.typeName);
         elementType.setTypeVersion(elementTypeVersion);
         elementType.setTypeDescription(OpenMetadataType.CONNECTION.description);
+        elementType.setTypeCategory(OpenMetadataTypeDefCategory.ENTITY_DEF);
 
         return elementType;
     }
@@ -142,8 +142,6 @@ public class Connection extends Referenceable
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
             userId = template.getUserId();
             clearPassword = template.getClearPassword();
             encryptedPassword = template.getEncryptedPassword();
@@ -153,50 +151,6 @@ public class Connection extends Referenceable
             securedProperties = template.getSecuredProperties();
         }
     }
-
-
-    /**
-     * Returns the stored display name property for the connection.
-     * Null means that no displayName is available.
-     *
-     * @return displayName
-     */
-    public String getDisplayName() { return displayName; }
-
-
-    /**
-     * Set up the display name for UIs and reports.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Set up description of the element.
-     *
-     * @param description String
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Returns the stored description property for the connection.
-     * If no description is provided then null is returned.
-     *
-     * @return description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
 
     /**
      * Set up the connector type properties for this Connection.
@@ -364,8 +318,6 @@ public class Connection extends Referenceable
     public String toString()
     {
         return "Connection{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
                 ", connectorType=" + connectorType +
                 ", endpoint=" + endpoint +
                 ", userId='" + userId + '\'' +
@@ -399,9 +351,7 @@ public class Connection extends Referenceable
             return false;
         }
         Connection that = (Connection) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getConnectorType(), that.getConnectorType()) &&
+        return Objects.equals(getConnectorType(), that.getConnectorType()) &&
                 Objects.equals(getEndpoint(), that.getEndpoint()) &&
                 Objects.equals(getUserId(), that.getUserId()) &&
                 Objects.equals(getEncryptedPassword(), that.getEncryptedPassword()) &&
@@ -419,7 +369,7 @@ public class Connection extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getConnectorType(), getEndpoint(),
+        return Objects.hash(super.hashCode(), getConnectorType(), getEndpoint(),
                             getUserId(), getEncryptedPassword(), getClearPassword(), getSecuredProperties(),
                             getConfigurationProperties());
     }

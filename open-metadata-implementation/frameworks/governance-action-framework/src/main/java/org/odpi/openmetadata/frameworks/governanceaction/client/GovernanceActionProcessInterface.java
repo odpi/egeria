@@ -3,10 +3,12 @@
 package org.odpi.openmetadata.frameworks.governanceaction.client;
 
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 
 import java.util.Date;
 import java.util.List;
@@ -36,7 +38,7 @@ public interface GovernanceActionProcessInterface
      */
     String createGovernanceActionProcess(String                            userId,
                                          GovernanceActionProcessProperties processProperties,
-                                         ProcessStatus initialStatus) throws InvalidParameterException,
+                                         ElementStatus initialStatus) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException;
 
@@ -57,7 +59,7 @@ public interface GovernanceActionProcessInterface
     void updateGovernanceActionProcess(String                            userId,
                                        String                            processGUID,
                                        boolean                           isMergeUpdate,
-                                       ProcessStatus                     processStatus,
+                                       ElementStatus                     processStatus,
                                        GovernanceActionProcessProperties processProperties) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException;
@@ -121,9 +123,7 @@ public interface GovernanceActionProcessInterface
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime effective date/time for query
+     * @param searchOptions additional options to control the query
      *
      * @return list of matching metadata elements
      *
@@ -131,13 +131,11 @@ public interface GovernanceActionProcessInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GovernanceActionProcessElement> findGovernanceActionProcesses(String userId,
-                                                                       String searchString,
-                                                                       int    startFrom,
-                                                                       int    pageSize,
-                                                                       Date   effectiveTime) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException;
+    List<GovernanceActionProcessElement> findGovernanceActionProcesses(String        userId,
+                                                                       String        searchString,
+                                                                       SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException;
 
 
     /**
@@ -146,9 +144,7 @@ public interface GovernanceActionProcessInterface
      *
      * @param userId calling user
      * @param name name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime effective date/time for query
+     * @param queryOptions options to control the query
      *
      * @return list of matching metadata elements
      *
@@ -156,13 +152,11 @@ public interface GovernanceActionProcessInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GovernanceActionProcessElement> getGovernanceActionProcessesByName(String userId,
-                                                                            String name,
-                                                                            int    startFrom,
-                                                                            int    pageSize,
-                                                                            Date   effectiveTime) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException;
+    List<GovernanceActionProcessElement> getGovernanceActionProcessesByName(String       userId,
+                                                                            String       name,
+                                                                            QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException;
 
 
     /**
@@ -268,9 +262,7 @@ public interface GovernanceActionProcessInterface
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime effective date/time for query
+     * @param searchOptions additional options for the query
      *
      * @return list of matching metadata elements
      *
@@ -278,13 +270,11 @@ public interface GovernanceActionProcessInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GovernanceActionProcessStepElement> findGovernanceActionProcessSteps(String userId,
-                                                                              String searchString,
-                                                                              int    startFrom,
-                                                                              int    pageSize,
-                                                                              Date   effectiveTime) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException;
+    List<GovernanceActionProcessStepElement> findGovernanceActionProcessSteps(String        userId,
+                                                                              String        searchString,
+                                                                              SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException;
 
 
     /**
@@ -293,9 +283,7 @@ public interface GovernanceActionProcessInterface
      *
      * @param userId calling user
      * @param name name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime effective date/time for query
+     * @param queryOptions additional options to control the query
      *
      * @return list of matching metadata elements
      *
@@ -303,13 +291,11 @@ public interface GovernanceActionProcessInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GovernanceActionProcessStepElement> getGovernanceActionProcessStepsByName(String userId,
-                                                                                   String name,
-                                                                                   int    startFrom,
-                                                                                   int    pageSize,
-                                                                                   Date   effectiveTime) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException;
+    List<GovernanceActionProcessStepElement> getGovernanceActionProcessStepsByName(String       userId,
+                                                                                   String       name,
+                                                                                   QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException;
 
 
     /**

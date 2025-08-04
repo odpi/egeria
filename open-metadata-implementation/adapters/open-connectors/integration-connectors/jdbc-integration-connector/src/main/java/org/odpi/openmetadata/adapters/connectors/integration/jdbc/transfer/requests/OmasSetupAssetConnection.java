@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
 
 import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS;
 
@@ -15,11 +16,11 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
  */
 class OmasSetupAssetConnection implements TriConsumer<String, String, String> {
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final IntegrationContext integrationContext;
+    private final AuditLog           auditLog;
 
-    OmasSetupAssetConnection(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
+    OmasSetupAssetConnection(IntegrationContext integrationContext, AuditLog auditLog){
+        this.integrationContext = integrationContext;
         this.auditLog = auditLog;
     }
 
@@ -33,9 +34,13 @@ class OmasSetupAssetConnection implements TriConsumer<String, String, String> {
     @Override
     public void accept(String assetGuid, String assetSummary, String connectionGuid){
         String methodName = "OmasSetupAssetConnection";
-        try {
-            databaseIntegratorContext.setupAssetConnection(assetGuid, connectionGuid);
-        } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
+        try
+        {
+            ConnectionClient connectionClient = integrationContext.getConnectionClient();
+            connectionClient.linkAssetToConnection(assetGuid, connectionGuid, connectionClient.getMetadataSourceOptions(), null);
+        }
+        catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
+        {
             auditLog.logException("Setting up asset connection for asset with guid " + assetGuid
                             + ", with summary  " + assetSummary
                             + ", and connection with guid " + connectionGuid,

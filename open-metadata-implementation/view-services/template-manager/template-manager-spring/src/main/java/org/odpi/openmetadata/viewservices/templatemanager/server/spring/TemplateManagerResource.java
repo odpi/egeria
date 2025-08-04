@@ -4,8 +4,10 @@ package org.odpi.openmetadata.viewservices.templatemanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.viewservices.templatemanager.server.TemplateManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -70,8 +72,8 @@ public class TemplateManagerResource
      */
     @PostMapping(path = "/metadata-elements/from-template")
 
-    public GUIDResponse createMetadataElementFromTemplate(@PathVariable String              serverName,
-                                                          @RequestBody  TemplateRequestBody requestBody)
+    public GUIDResponse createMetadataElementFromTemplate(@PathVariable String                         serverName,
+                                                          @RequestBody OpenMetadataTemplateRequestBody requestBody)
     {
         return restAPI.createMetadataElementFromTemplate(serverName, requestBody);
     }
@@ -124,7 +126,6 @@ public class TemplateManagerResource
     }
 
 
-
     /**
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
@@ -152,8 +153,7 @@ public class TemplateManagerResource
      *
      * @param serverName     name of server instance to route request to
      * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
-     * @param requestBody null request body
+     * @param requestBody delete options request body
      *
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
@@ -164,10 +164,9 @@ public class TemplateManagerResource
 
     public  VoidResponse deleteMetadataElementInStore(@PathVariable String            serverName,
                                                       @PathVariable String            metadataElementGUID,
-                                                      @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
-                                                      @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
+                                                      @RequestBody(required = false) OpenMetadataDeleteRequestBody requestBody)
     {
-        return restAPI.deleteMetadataElementInStore(serverName,metadataElementGUID, cascadedDelete, requestBody);
+        return restAPI.deleteMetadataElementInStore(serverName, metadataElementGUID, requestBody);
     }
 
 
@@ -187,7 +186,7 @@ public class TemplateManagerResource
 
     public  VoidResponse archiveMetadataElementInStore(@PathVariable String            serverName,
                                                        @PathVariable String            metadataElementGUID,
-                                                       @RequestBody(required = false)  ArchiveRequestBody requestBody)
+                                                       @RequestBody(required = false) DeleteRequestBody requestBody)
     {
         return restAPI.archiveMetadataElementInStore(serverName, metadataElementGUID, requestBody);
     }
@@ -214,7 +213,7 @@ public class TemplateManagerResource
     public VoidResponse classifyMetadataElementInStore(@PathVariable String                       serverName,
                                                        @PathVariable String                       metadataElementGUID,
                                                        @PathVariable String                       classificationName,
-                                                       @RequestBody  NewClassificationRequestBody requestBody)
+                                                       @RequestBody NewOpenMetadataClassificationRequestBody requestBody)
     {
         return restAPI.classifyMetadataElementInStore(serverName, metadataElementGUID, classificationName, requestBody);
     }
@@ -378,8 +377,35 @@ public class TemplateManagerResource
 
     public VoidResponse deleteRelatedElementsInStore(@PathVariable String            serverName,
                                                      @PathVariable String            relationshipGUID,
-                                                     @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
+                                                     @RequestBody(required = false)  OpenMetadataDeleteRequestBody requestBody)
     {
         return restAPI.deleteRelatedElementsInStore(serverName, relationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a relationship between two metadata elements.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param requestBody  options to control access to open metadata
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/related-elements/{metadataElement1GUID}/{relationshipTypeName}/{metadataElement2GUID}/detach-all")
+
+    public VoidResponse detachRelatedElementsInStore(@PathVariable String            serverName,
+                                                     @PathVariable String            metadataElement1GUID,
+                                                     @PathVariable String            relationshipTypeName,
+                                                     @PathVariable String            metadataElement2GUID,
+                                                     @RequestBody(required = false)  OpenMetadataDeleteRequestBody requestBody)
+    {
+        return restAPI.detachRelatedElementsInStore(serverName, relationshipTypeName,metadataElement1GUID, metadataElement2GUID, requestBody);
     }
 }

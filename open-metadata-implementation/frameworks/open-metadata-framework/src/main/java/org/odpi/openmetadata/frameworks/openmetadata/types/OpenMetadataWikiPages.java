@@ -25,14 +25,29 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0012_SEARCH_KEYWORDS              = "https://egeria-project.org/types/0/0012-Search-Keywords/";
 
     /**
+     * <a href="https://egeria-project.org/types/0/0013-Actions-For-People/">...</a>
+     */
+    public static final String MODEL_0013_ACTIONS              = "https://egeria-project.org/types/0/0013-Actions-For-People/";
+
+    /**
      * <a href="https://egeria-project.org/types/0/0013-Translations/">...</a>
      */
     public static final String MODEL_0013_TRANSLATIONS              = "https://egeria-project.org/types/0/0013-Translations/";
 
     /**
+     * <a href="https://egeria-project.org/types/0/0014-External-References/">...</a>
+     */
+    public static final String MODEL_0014_EXTERNAL_REFERENCES       = "https://egeria-project.org/types/0/0014-External-References/";
+
+    /**
      * <a href="https://egeria-project.org/types/0/0015-Linked-Media-Types/">...</a>
      */
     public static final String MODEL_0015_LINKED_MEDIA_TYPES           = "https://egeria-project.org/types/0/0015-Linked-Media-Types/";
+
+    /**
+     * <a href="https://egeria-project.org/types/0/0016-Cited-Documents/">...</a>
+     */
+    public static final String MODEL_0016_CITED_DOCUMENTS       = "https://egeria-project.org/types/0/0016-Cited-Documents/";
 
     /**
      * <a href="https://egeria-project.org/types/0/0017-External-Identifiers/">...</a>
@@ -185,14 +200,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0130_PROJECTS                     = "https://egeria-project.org/types/1/0130-Projects/";
 
     /**
-     * <a href="https://egeria-project.org/types/1/0135-Meetings/">...</a>
-     */
-    public static final String MODEL_0135_MEETINGS                     = "https://egeria-project.org/types/1/0135-Meetings/";
-
-    /**
      * <a href="https://egeria-project.org/types/1/0137-Actions/">...</a>
      */
-    public static final String MODEL_0137_ACTIONS_FOR_PEOPLE           = "https://egeria-project.org/types/1/0137-Actions/";
+    public static final String MODEL_0135_ACTIONS_FOR_PEOPLE = "https://egeria-project.org/types/1/0135-Actions-For-People/";
 
     /**
      * <a href="https://egeria-project.org/types/1/0140-Communities/">...</a>

@@ -36,7 +36,7 @@ The Apache Atlas integration connector publishes glossary terms, assets and line
 ### Deployment and configuration
 
 The Apache Atlas integration connector is included in the main Egeria assembly: omag-server-platform.
-It runs in the [integration daemon](https://egeria-project.org/concepts/integration-daemon/) and uses the  [Catalog Integrator OMIS](https://egeria-project.org/services/omis/catalog-integrator/overview/).
+It runs in the [integration daemon](https://egeria-project.org/concepts/integration-daemon/).
 
 
 ----

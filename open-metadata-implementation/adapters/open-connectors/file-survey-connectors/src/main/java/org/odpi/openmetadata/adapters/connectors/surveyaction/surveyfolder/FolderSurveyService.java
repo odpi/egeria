@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFolderAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.SurveyServiceAuditCode;
@@ -13,9 +14,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
@@ -60,9 +60,10 @@ public class FolderSurveyService extends SurveyActionServiceConnector
      * Indicates that the survey action service is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String  methodName = "start";
 
@@ -70,9 +71,9 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
         try
         {
-            AnnotationStore          annotationStore   = getSurveyContext().getAnnotationStore();
-            SurveyAssetStore         assetStore        = surveyContext.getAssetStore();
-            AssetUniverse            assetUniverse     = assetStore.getAssetProperties();
+            AnnotationStore         annotationStore = getSurveyContext().getAnnotationStore();
+            SurveyAssetStore        assetStore      = surveyContext.getAssetStore();
+            OpenMetadataRootElement assetElement    = assetStore.getAssetProperties();
 
             performCheckAssetAnalysisStep(OpenMetadataType.FILE_FOLDER.typeName);
 
@@ -115,8 +116,8 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             if (! rootFolder.isDirectory())
             {
-                throwWrongTypeOfResource(assetUniverse.getGUID(),
-                                         assetUniverse.getType().getTypeName(),
+                throwWrongTypeOfResource(assetElement.getElementHeader().getGUID(),
+                                         assetElement.getElementHeader().getType().getTypeName(),
                                          rootFolder.getName(),
                                          "file",
                                          "directory (folder)",
@@ -126,8 +127,8 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             if (! rootFolder.exists())
             {
-                throwMissingResource(assetUniverse.getGUID(),
-                                     assetUniverse.getType().getTypeName(),
+                throwMissingResource(assetElement.getElementHeader().getGUID(),
+                                     assetElement.getElementHeader().getType().getTypeName(),
                                      rootFolder.getName(),
                                      methodName);
             }

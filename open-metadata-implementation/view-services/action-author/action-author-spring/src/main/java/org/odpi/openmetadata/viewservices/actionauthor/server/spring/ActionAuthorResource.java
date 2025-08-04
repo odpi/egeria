@@ -123,11 +123,6 @@ public class  ActionAuthorResource
      * Retrieve the list of governance action type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -142,17 +137,9 @@ public class  ActionAuthorResource
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
     public GovernanceActionTypesResponse findGovernanceActionTypes(@PathVariable String                  serverName,
-                                                                   @RequestParam int                     startFrom,
-                                                                   @RequestParam int                     pageSize,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                 startsWith,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                 endsWith,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                 ignoreCase,
-                                                                   @RequestBody  FilterRequestBody requestBody)
+                                                                   @RequestBody(required = false)  SearchStringRequestBody requestBody)
     {
-        return restAPI.findGovernanceActionTypes(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findGovernanceActionTypes(serverName, requestBody);
     }
 
 
@@ -161,8 +148,6 @@ public class  ActionAuthorResource
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -177,11 +162,9 @@ public class  ActionAuthorResource
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
     public GovernanceActionTypesResponse getGovernanceActionTypesByName(@PathVariable String            serverName,
-                                                                        @RequestParam int               startFrom,
-                                                                        @RequestParam int               pageSize,
-                                                                        @RequestBody  FilterRequestBody requestBody)
+                                                                        @RequestBody  (required = false) FilterRequestBody requestBody)
     {
-        return restAPI.getGovernanceActionTypesByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getGovernanceActionTypesByName(serverName,  requestBody);
     }
 
 
@@ -350,11 +333,6 @@ public class  ActionAuthorResource
      * Retrieve the list of governance action process metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -369,17 +347,9 @@ public class  ActionAuthorResource
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
     public GovernanceActionProcessElementsResponse findGovernanceActionProcesses(@PathVariable String                  serverName,
-                                                                                 @RequestParam int                     startFrom,
-                                                                                 @RequestParam int                     pageSize,
-                                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                                               boolean                 startsWith,
-                                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                                               boolean                 endsWith,
-                                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                                               boolean                 ignoreCase,
-                                                                                 @RequestBody  FilterRequestBody       requestBody)
+                                                                                 @RequestBody (required = false) SearchStringRequestBody       requestBody)
     {
-        return restAPI.findGovernanceActionProcesses(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findGovernanceActionProcesses(serverName, requestBody);
     }
 
 
@@ -549,11 +519,6 @@ public class  ActionAuthorResource
      * Retrieve the list of governance action process step metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -568,17 +533,9 @@ public class  ActionAuthorResource
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
     public GovernanceActionProcessStepsResponse findGovernanceActionProcessSteps(@PathVariable String                  serverName,
-                                                                                 @RequestParam int                     startFrom,
-                                                                                 @RequestParam int                     pageSize,
-                                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                                               boolean                 startsWith,
-                                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                                               boolean                 endsWith,
-                                                                                 @RequestParam (required = false, defaultValue = "false")
-                                                                                               boolean                 ignoreCase,
-                                                                                 @RequestBody  FilterRequestBody       requestBody)
+                                                                                 @RequestBody (required = false) SearchStringRequestBody       requestBody)
     {
-        return restAPI.findGovernanceActionProcessSteps(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findGovernanceActionProcessSteps(serverName, requestBody);
     }
 
 
@@ -587,8 +544,6 @@ public class  ActionAuthorResource
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -603,11 +558,9 @@ public class  ActionAuthorResource
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
     public GovernanceActionProcessStepsResponse getGovernanceActionProcessStepsByName(@PathVariable String            serverName,
-                                                                                      @RequestParam int               startFrom,
-                                                                                      @RequestParam int               pageSize,
-                                                                                      @RequestBody  FilterRequestBody requestBody)
+                                                                                      @RequestBody(required = false)  FilterRequestBody requestBody)
     {
-        return restAPI.getGovernanceActionProcessStepsByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getGovernanceActionProcessStepsByName(serverName, requestBody);
     }
 
 

@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBas
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
@@ -46,9 +47,10 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -96,14 +98,14 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                actionTargetElement.getTargetElement().getElementProperties(),
                                                                                methodName);
                             clinicalTrialName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
-                                                                                 OpenMetadataProperty.NAME.name,
+                                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                  actionTargetElement.getTargetElement().getElementProperties(),
                                                                                  methodName);
                         }
                         else if (CocoClinicalTrialActionTarget.HOSPITAL.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             hospitalName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
-                                                                            OpenMetadataProperty.NAME.name,
+                                                                            OpenMetadataProperty.DISPLAY_NAME.name,
                                                                             actionTargetElement.getTargetElement().getElementProperties(),
                                                                             methodName);
                             hospitalGUID = actionTargetElement.getTargetElement().getElementGUID();
@@ -411,12 +413,12 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         {
             RelatedMetadataElement validDataSetCollection = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(dataLakeFolderGUID, 2, OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName, null);
 
-            Map<String, RelationshipProperties> effectedDataSources = new HashMap<>();
-            ContextEventProperties              contextEventProperties = new ContextEventProperties();
+            Map<String, RelationshipProperties> effectedDataSources    = new HashMap<>();
+            ContextEventProperties                  contextEventProperties = new ContextEventProperties();
             String                              contextEventName = "Hospital " + hospitalName + " ready to onboard data into clinical trial " + clinicalTrialId + ": " + clinicalTrialName;
 
             contextEventProperties.setQualifiedName("ContextEvent:" + contextEventName);
-            contextEventProperties.setName(contextEventName);
+            contextEventProperties.setDisplayName(contextEventName);
             contextEventProperties.setEventEffect("Data from a new hospital will be incorporated in the measurements data sets.");
             contextEventProperties.setContextEventType("NewDataFeed");
             contextEventProperties.setActualStartDate(new Date());
@@ -424,7 +426,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
             effectedDataSources.put(dataLakeFolderGUID, new RelationshipProperties());
             if (validDataSetCollection != null)
             {
-                effectedDataSources.put(validDataSetCollection.getElement().getElementGUID(), new RelationshipProperties());
+                effectedDataSources.put(validDataSetCollection.getElement().getElementGUID(), new RelationshipBeanProperties());
             }
 
             governanceContext.registerContextEvent(clinicalTrialGUID,
@@ -488,11 +490,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                          * First check it is an active certification.
                          */
                         Date startDate = propertyHelper.getDateProperty(governanceServiceName,
-                                                                        OpenMetadataProperty.START.name,
+                                                                        OpenMetadataProperty.COVERAGE_START.name,
                                                                         certification.getRelationshipProperties(),
                                                                         methodName);
                         Date endDate = propertyHelper.getDateProperty(governanceServiceName,
-                                                                      OpenMetadataProperty.END.name,
+                                                                      OpenMetadataProperty.COVERAGE_END.name,
                                                                       certification.getRelationshipProperties(),
                                                                       methodName);
 
@@ -730,11 +732,12 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                                       null,
                                                                                                       true);
 
-        ElementProperties classificationProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.NAME.name, clinicalTrialId + " specialized " + templateType + " template for " + hospitalName + " hospital");
+        ElementProperties classificationProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.DISPLAY_NAME.name, clinicalTrialId + " specialized " + templateType + " template for " + hospitalName + " hospital");
 
         governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(templateGUID,
                                                                                 OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
-                                                                                classificationProperties);
+                                                                                governanceContext.getOpenMetadataStore().getMetadataSourceOptions(),
+                                                                                new NewElementProperties(classificationProperties));
 
         OpenMetadataElement templateElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(templateGUID);
 
@@ -820,7 +823,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
             RelatedMetadataElement firstProcessStep = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(onboardingProcessGUID,
                                                                                                                          1,
                                                                                                                          OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
-                                                                                                                         new Date());
+                                                                                                                         governanceContext.getOpenMetadataStore().getGetOptions());
 
             if (firstProcessStep != null)
             {
@@ -965,9 +968,9 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         catalogTargetProperties.setConfigurationProperties(configurationProperties);
 
-        governanceContext.addCatalogTarget(integrationConnectorGUID,
-                                           folderGUID,
-                                           catalogTargetProperties);
+        governanceContext.getConnectorConfigClient().addCatalogTarget(integrationConnectorGUID,
+                                                                      folderGUID,
+                                                                      catalogTargetProperties);
     }
 
 

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ForeignKeyProperties extends RelationshipProperties
+public class ForeignKeyProperties extends RelationshipBeanProperties
 {
-    private String name        = null;
+    private String displayName = null;
     private String description = null;
     private int    confidence  = 0;
     private String steward     = null;
@@ -53,7 +53,7 @@ public class ForeignKeyProperties extends RelationshipProperties
 
         if (template != null)
         {
-            name        = template.getName();
+            displayName = template.getDisplayName();
             description = template.getDescription();
             confidence  = template.getConfidence();
             steward     = template.getSteward();
@@ -65,11 +65,11 @@ public class ForeignKeyProperties extends RelationshipProperties
     /**
      * Set up the display name for UIs and reports.
      *
-     * @param name String name
+     * @param displayName String name
      */
-    public void setName(String name)
+    public void setDisplayName(String displayName)
     {
-        this.name = name;
+        this.displayName = displayName;
     }
 
 
@@ -78,9 +78,9 @@ public class ForeignKeyProperties extends RelationshipProperties
      *
      * @return String name
      */
-    public String getName()
+    public String getDisplayName()
     {
-        return name;
+        return displayName;
     }
 
 
@@ -181,7 +181,7 @@ public class ForeignKeyProperties extends RelationshipProperties
     public String toString()
     {
         return "ForeignKeyProperties{" +
-                "name='" + name + '\'' +
+                "name='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", confidence=" + confidence +
                 ", steward='" + steward + '\'' +
@@ -212,8 +212,8 @@ public class ForeignKeyProperties extends RelationshipProperties
             return false;
         }
         ForeignKeyProperties that = (ForeignKeyProperties) objectToCompare;
-        return confidence == that.confidence && Objects.equals(name, that.name) && Objects.equals(description,
-                                                                                                  that.description) && Objects.equals(
+        return confidence == that.confidence && Objects.equals(displayName, that.displayName) && Objects.equals(description,
+                                                                                                                that.description) && Objects.equals(
                 steward, that.steward) && Objects.equals(source, that.source);
     }
 
@@ -226,6 +226,6 @@ public class ForeignKeyProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, description, confidence, steward, source);
+        return Objects.hash(super.hashCode(), displayName, description, confidence, steward, source);
     }
 }

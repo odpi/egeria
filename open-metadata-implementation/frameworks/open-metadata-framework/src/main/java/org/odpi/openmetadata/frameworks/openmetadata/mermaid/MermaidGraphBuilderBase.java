@@ -3,11 +3,14 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementStub;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -57,55 +60,44 @@ public class MermaidGraphBuilderBase
      */
     protected void extractAnchorInfo(ElementHeader elementHeader)
     {
-        if ((elementHeader != null) && (elementHeader.getClassifications() != null))
+        if (elementHeader != null)
         {
-            for (ElementClassification classification : elementHeader.getClassifications())
+            ElementClassification classification = elementHeader.getAnchor();
+
+            if (classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name) != null)
             {
-                if (classification != null)
+                String anchorGUID = classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString();
+
+                if ((anchorGUID != null) && (! anchorGUID.equals(elementHeader.getGUID())))
                 {
-                    if (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                    if (extractedAnchors.get(anchorGUID) == null)
                     {
-                        if (classification.getClassificationProperties() != null)
+                        String anchorTypeName;
+
+                        if (classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_TYPE_NAME.name) != null)
                         {
-
-                            if (classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name) != null)
-                            {
-                                String anchorGUID = classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString();
-
-                                if ((anchorGUID != null) && (! anchorGUID.equals(elementHeader.getGUID())))
-                                {
-                                    if (extractedAnchors.get(anchorGUID) == null)
-                                    {
-                                        String anchorTypeName;
-
-                                        if (classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_TYPE_NAME.name) != null)
-                                        {
-                                            anchorTypeName = classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_TYPE_NAME.name).toString();
-                                        }
-                                        else
-                                        {
-                                            anchorTypeName = "null";
-                                        }
-
-                                        AnchorNode anchorNode = new AnchorNode(anchorGUID, anchorTypeName);
-
-                                        extractedAnchors.put(anchorGUID, anchorNode);
-                                    }
-
-                                    Set<String> anchoredElements = anchorLinks.get(anchorGUID);
-
-                                    if (anchoredElements == null)
-                                    {
-                                        anchoredElements = new HashSet<>();
-                                    }
-
-                                    anchoredElements.add(elementHeader.getGUID());
-
-                                    anchorLinks.put(anchorGUID, anchoredElements);
-                                }
-                            }
+                            anchorTypeName = classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_TYPE_NAME.name).toString();
                         }
+                        else
+                        {
+                            anchorTypeName = "null";
+                        }
+
+                        AnchorNode anchorNode = new AnchorNode(anchorGUID, anchorTypeName);
+
+                        extractedAnchors.put(anchorGUID, anchorNode);
                     }
+
+                    Set<String> anchoredElements = anchorLinks.get(anchorGUID);
+
+                    if (anchoredElements == null)
+                    {
+                        anchoredElements = new HashSet<>();
+                    }
+
+                    anchoredElements.add(elementHeader.getGUID());
+
+                    anchorLinks.put(anchorGUID, anchoredElements);
                 }
             }
         }
@@ -159,7 +151,7 @@ public class MermaidGraphBuilderBase
      * @param classificationName name
      * @return visual style to use
      */
-    protected VisualStyle getVisualStyleForClassifications(String classificationName)
+    protected VisualStyle getVisualStyleForClassification(String classificationName)
     {
         if (classificationName != null)
         {
@@ -175,21 +167,13 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.TEMPLATE;
             }
-            else if (OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
+            else if (OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName.equals(classificationName))
             {
-                return VisualStyle.DATA_DICTIONARY;
-            }
-            else if (OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return VisualStyle.DATA_SPEC;
+                return VisualStyle.OBJECT_IDENTIFIER;
             }
             else if (OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.DATA_SHARING_AGREEMENT;
-            }
-            else if (OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return VisualStyle.OBJECT_IDENTIFIER;
             }
             else if (OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
@@ -203,7 +187,7 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.HOME_COLLECTION;
             }
-            else if (OpenMetadataType.RESULTS_SET.typeName.equals(classificationName))
+            else if (OpenMetadataType.RESULTS_SET_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.RESULTS_SET;
             }
@@ -214,10 +198,6 @@ public class MermaidGraphBuilderBase
             else if (OpenMetadataType.WORK_ITEM_LIST_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.WORK_ITEM_LIST;
-            }
-            else if (OpenMetadataType.DIGITAL_PRODUCT.typeName.equals(classificationName))
-            {
-                return VisualStyle.DIGITAL_PRODUCT;
             }
         }
 
@@ -247,14 +227,6 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
-            else if (OpenMetadataType.DATA_DICTIONARY_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-            else if (OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
             else if (OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
@@ -275,7 +247,7 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
-            else if (OpenMetadataType.RESULTS_SET.typeName.equals(classificationName))
+            else if (OpenMetadataType.RESULTS_SET_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
@@ -291,7 +263,7 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
-            else if (OpenMetadataType.EVENT_SET_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
+            else if (OpenMetadataType.EVENT_SET_COLLECTION.typeName.equals(classificationName))
             {
                 return true;
             }
@@ -317,17 +289,62 @@ public class MermaidGraphBuilderBase
     protected VisualStyle getVisualStyleForClassifications(ElementHeader elementHeader,
                                                            VisualStyle   defaultVisualStyle)
     {
-        if ((elementHeader != null) && (elementHeader.getClassifications() != null))
+        if (elementHeader != null)
         {
-            for (ElementClassification classification : elementHeader.getClassifications())
+            if (elementHeader.getMemento() != null)
             {
-                if (classification != null)
-                {
-                    VisualStyle specialVisualStyle = this.getVisualStyleForClassifications(classification.getClassificationName());
+                return VisualStyle.MEMENTO;
+            }
 
-                    if (specialVisualStyle != null)
+            if (elementHeader.getTemplate() != null)
+            {
+                return VisualStyle.TEMPLATE;
+            }
+
+            if (elementHeader.getCollectionCategories() != null)
+            {
+                for (ElementClassification classification : elementHeader.getCollectionCategories())
+                {
+                    if (classification != null)
                     {
-                        return specialVisualStyle;
+                        VisualStyle specialVisualStyle = this.getVisualStyleForClassification(classification.getClassificationName());
+
+                        if (specialVisualStyle != null)
+                        {
+                            return specialVisualStyle;
+                        }
+                    }
+                }
+            }
+
+            if (elementHeader.getProjectCategories() != null)
+            {
+                for (ElementClassification classification : elementHeader.getProjectCategories())
+                {
+                    if (classification != null)
+                    {
+                        VisualStyle specialVisualStyle = this.getVisualStyleForClassification(classification.getClassificationName());
+
+                        if (specialVisualStyle != null)
+                        {
+                            return specialVisualStyle;
+                        }
+                    }
+                }
+            }
+
+            if (elementHeader.getOtherClassifications() != null)
+            {
+                for (ElementClassification classification : elementHeader.getOtherClassifications())
+                {
+                    if (classification != null)
+                    {
+                        VisualStyle specialVisualStyle = this.getVisualStyleForClassification(classification.getClassificationName());
+
+                        if (specialVisualStyle != null)
+                        {
+                            return specialVisualStyle;
+                        }
                     }
                 }
             }
@@ -353,7 +370,7 @@ public class MermaidGraphBuilderBase
             {
                 if (classification != null)
                 {
-                    VisualStyle specialVisualStyle = this.getVisualStyleForClassifications(classification.getClassificationName());
+                    VisualStyle specialVisualStyle = this.getVisualStyleForClassification(classification.getClassificationName());
 
                     if (specialVisualStyle != null)
                     {
@@ -383,7 +400,7 @@ public class MermaidGraphBuilderBase
             {
                 if (classification != null)
                 {
-                    VisualStyle specialVisualStyle = this.getVisualStyleForClassifications(classification.getClassificationName());
+                    VisualStyle specialVisualStyle = this.getVisualStyleForClassification(classification.getClassificationName());
 
                     if (specialVisualStyle != null)
                     {
@@ -405,37 +422,79 @@ public class MermaidGraphBuilderBase
      */
     protected void addClassifications(ElementHeader elementHeader)
     {
-
-        if ((elementHeader.getClassifications() != null) && (! elementHeader.getClassifications().isEmpty()))
+        if (elementHeader != null)
         {
             this.startSubgraph("Classifications", VisualStyle.DESCRIPTION, "TB");
 
-            for (ElementClassification classification : elementHeader.getClassifications())
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getAnchor());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getZoneMembership());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getSubjectArea());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getImpact());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getCriticality());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getConfidentiality());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getConfidence());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getRetention());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getDigitalResourceOrigin());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getOwnership());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getMemento());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getTemplate());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getSchemaType());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getCalculatedValue());
+            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getPrimaryKey());
+
+            if (elementHeader.getExecutionPoints() != null)
             {
-                if (classification != null)
+                for (ElementClassification classification : elementHeader.getExecutionPoints())
                 {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    if (classification.getClassificationProperties() != null)
-                    {
-                        for (String propertyName : classification.getClassificationProperties().keySet())
-                        {
-                            stringBuilder.append(propertyName);
+                    addClassificationToGraph(elementHeader.getGUID(), classification);
+                }
+            }
 
-                            Object propertyValue = classification.getClassificationProperties().get(propertyName);
-                            if (propertyValue != null)
-                            {
-                                stringBuilder.append("\n");
-                                stringBuilder.append(" - ");
-                                stringBuilder.append(propertyValue);
-                                stringBuilder.append("\n");
-                            }
-                        }
-                    }
+            if (elementHeader.getResourceManagerCategories() != null)
+            {
+                for (ElementClassification classification : elementHeader.getResourceManagerCategories())
+                {
+                    addClassificationToGraph(elementHeader.getGUID(), classification);
+                }
+            }
 
-                    appendNewMermaidNode(elementHeader.getGUID() + ":" + classification.getClassificationName(),
-                                         stringBuilder.toString(),
-                                         classification.getClassificationName(),
-                                         getVisualStyleForClassifications(elementHeader, VisualStyle.ANCHOR_ELEMENT));
+            if (elementHeader.getServerPurposes() != null)
+            {
+                for (ElementClassification classification : elementHeader.getServerPurposes())
+                {
+                    addClassificationToGraph(elementHeader.getGUID(), classification);
+                }
+            }
+
+            if (elementHeader.getCollectionCategories() != null)
+            {
+                for (ElementClassification classification : elementHeader.getCollectionCategories())
+                {
+                    addClassificationToGraph(elementHeader.getGUID(), classification);
+                }
+            }
+
+            if (elementHeader.getProjectCategories() != null)
+            {
+                for (ElementClassification classification : elementHeader.getProjectCategories())
+                {
+                    addClassificationToGraph(elementHeader.getGUID(), classification);
+                }
+            }
+
+            if (elementHeader.getDuplicateClassifications() != null)
+            {
+                for (ElementClassification classification : elementHeader.getDuplicateClassifications())
+                {
+                    addClassificationToGraph(elementHeader.getGUID(), classification);
+                }
+            }
+
+            if (elementHeader.getOtherClassifications() != null)
+            {
+                for (ElementClassification classification : elementHeader.getOtherClassifications())
+                {
+                    addClassificationToGraph(elementHeader.getGUID(), classification);
                 }
             }
 
@@ -445,6 +504,42 @@ public class MermaidGraphBuilderBase
 
 
     /**
+     * Add a classification as a node in the graph.
+     *
+     * @param elementGUID unique identifier of the element that the classification cones from
+     * @param classification classification to add
+     */
+    protected void addClassificationToGraph(String                elementGUID,
+                                            ElementClassification classification)
+    {
+        if (classification != null)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            if (classification.getClassificationProperties() != null)
+            {
+                for (String propertyName : classification.getClassificationProperties().keySet())
+                {
+                    stringBuilder.append(propertyName);
+
+                    Object propertyValue = classification.getClassificationProperties().get(propertyName);
+                    if (propertyValue != null)
+                    {
+                        stringBuilder.append("\n");
+                        stringBuilder.append(" - ");
+                        stringBuilder.append(propertyValue);
+                        stringBuilder.append("\n");
+                    }
+                }
+            }
+
+            appendNewMermaidNode(elementGUID + ":" + classification.getClassificationName(),
+                                 stringBuilder.toString(),
+                                 classification.getClassificationName(),
+                                 getVisualStyleForClassification(classification.getClassificationName()));
+        }
+    }
+
+    /**
      * Return the standard visual styles for entities.
      *
      * @param elementHeader header of the entity
@@ -452,9 +547,69 @@ public class MermaidGraphBuilderBase
      */
     protected String getTypeNameForEntity(ElementHeader elementHeader)
     {
-        if (elementHeader.getClassifications() != null)
+        if (elementHeader.getTemplate() != null)
         {
-            for (ElementClassification classification : elementHeader.getClassifications())
+            return elementHeader.getType().getTypeName() + " [" + elementHeader.getTemplate().getClassificationName() + "]";
+        }
+
+        if (elementHeader.getCalculatedValue() != null)
+        {
+            return elementHeader.getType().getTypeName() + " [" + elementHeader.getCalculatedValue().getClassificationName() + "]";
+        }
+
+        if (elementHeader.getPrimaryKey() != null)
+        {
+            return elementHeader.getType().getTypeName() + " [" + elementHeader.getPrimaryKey().getClassificationName() + "]";
+        }
+
+        if (elementHeader.getDuplicateClassifications() != null)
+        {
+            for (ElementClassification classification : elementHeader.getDuplicateClassifications())
+            {
+                if (classification != null)
+                {
+                    return elementHeader.getType().getTypeName() + " [" + classification.getClassificationName() + "]";
+                }
+            }
+        }
+
+
+        if (elementHeader.getProjectCategories() != null)
+        {
+            for (ElementClassification classification : elementHeader.getProjectCategories())
+            {
+                if (classification != null)
+                {
+                    return elementHeader.getType().getTypeName() + " [" + classification.getClassificationName() + "]";
+                }
+            }
+        }
+
+        if (elementHeader.getCollectionCategories() != null)
+        {
+            for (ElementClassification classification : elementHeader.getCollectionCategories())
+            {
+                if (classification != null)
+                {
+                    return elementHeader.getType().getTypeName() + " [" + classification.getClassificationName() + "]";
+                }
+            }
+        }
+
+        if (elementHeader.getServerPurposes() != null)
+        {
+            for (ElementClassification classification : elementHeader.getCollectionCategories())
+            {
+                if (classification != null)
+                {
+                    return elementHeader.getType().getTypeName() + " [" + classification.getClassificationName() + "]";
+                }
+            }
+        }
+
+        if (elementHeader.getOtherClassifications() != null)
+        {
+            for (ElementClassification classification : elementHeader.getOtherClassifications())
             {
                 if (checkForClassificationTypeName(classification.getClassificationName()))
                 {
@@ -571,7 +726,35 @@ public class MermaidGraphBuilderBase
     protected VisualStyle getVisualStyleForEntityType(ElementControlHeader elementControlHeader,
                                                       VisualStyle          defaultVisualStyle)
     {
-        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.COLLECTION.typeName))
+        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.EXTERNAL_ID.typeName))
+        {
+            return VisualStyle.EXTERNAL_ID;
+        }
+        else if ((propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.COMMENT.typeName)) ||
+                 (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.LIKE.typeName)) ||
+                 (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.RATING.typeName)))
+        {
+            return VisualStyle.FEEDBACK;
+        }
+        else if ((propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.SEARCH_KEYWORD.typeName)) ||
+                 (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.INFORMAL_TAG.typeName)))
+        {
+            return VisualStyle.TAG;
+        }
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.ACTOR.typeName))
+        {
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.USER_IDENTITY.typeName))
+            {
+                return VisualStyle.USER_IDENTITY;
+            }
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.TEAM.typeName))
+            {
+                return VisualStyle.GOVERNANCE_TEAM;
+            }
+
+            return VisualStyle.GOVERNANCE_ACTOR;
+        }
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.COLLECTION.typeName))
         {
             if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName))
             {
@@ -586,6 +769,16 @@ public class MermaidGraphBuilderBase
                 }
 
                 return VisualStyle.AGREEMENT;
+            }
+
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName))
+            {
+                return VisualStyle.DATA_DICTIONARY;
+            }
+
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DATA_SPEC_COLLECTION.typeName))
+            {
+                return VisualStyle.DATA_SPEC;
             }
 
             return VisualStyle.COLLECTION;
@@ -621,7 +814,7 @@ public class MermaidGraphBuilderBase
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
         {
-            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.VALID_VALUE_SET.typeName))
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
             {
                 return VisualStyle.VALID_VALUE_SET;
             }
@@ -1402,10 +1595,6 @@ public class MermaidGraphBuilderBase
 
             if (nodeDisplayName == null)
             {
-                nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.NAME.name);
-            }
-            if (nodeDisplayName == null)
-            {
                 nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.RESOURCE_NAME.name);
             }
             if (nodeDisplayName == null)
@@ -1427,14 +1616,6 @@ public class MermaidGraphBuilderBase
             if (nodeDisplayName == null)
             {
                 nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.IDENTIFIER.name);
-            }
-            if (nodeDisplayName == null)
-            {
-                nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.TAG_NAME.name);
-            }
-            if (nodeDisplayName == null)
-            {
-                nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.TITLE.name);
             }
             if (nodeDisplayName == null)
             {
@@ -1473,30 +1654,122 @@ public class MermaidGraphBuilderBase
     /**
      * Extract the name of a node.
      *
+     * @param openMetadataRootElement description of an element
+     * @return string name
+     */
+    protected String getNodeDisplayName(OpenMetadataRootElement openMetadataRootElement)
+    {
+        String nodeDisplayName = null;
+
+        if (openMetadataRootElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
+        {
+            nodeDisplayName = referenceableProperties.getDisplayName();
+
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = referenceableProperties.getQualifiedName();
+            }
+        }
+        else if (openMetadataRootElement.getProperties() instanceof LikeProperties)
+        {
+            nodeDisplayName = openMetadataRootElement.getElementHeader().getVersions().getCreatedBy();
+        }
+
+        if (nodeDisplayName == null)
+        {
+            if (openMetadataRootElement.getElementHeader().getType().getTypeName().equals(OpenMetadataType.LIKE.typeName))
+            {
+                nodeDisplayName = openMetadataRootElement.getElementHeader().getVersions().getCreatedBy();
+            }
+            else
+            {
+                nodeDisplayName = openMetadataRootElement.getElementHeader().getGUID();
+            }
+        }
+
+        return nodeDisplayName;
+    }
+
+
+    /**
+     * Extract the name of a node.
+     *
      * @param elementHeader element header
      * @param properties description of an element
      * @return string name
      */
-    protected String getNodeDisplayName(ElementHeader           elementHeader,
-                                        ReferenceableProperties properties)
+    protected String getNodeDisplayName(ElementHeader              elementHeader,
+                                        OpenMetadataRootProperties properties)
     {
         Object nodeDisplayName = null;
 
-        if (properties != null)
+        if (properties instanceof ReferenceableProperties referenceableProperties)
+        {
+            nodeDisplayName = referenceableProperties.getDisplayName();
+
+            if (nodeDisplayName == null)
+            {
+                if (properties instanceof AssetProperties assetProperties)
+                {
+                    nodeDisplayName = assetProperties.getResourceName();
+                }
+                else if (properties instanceof ActorProperties)
+                {
+                    if (properties instanceof UserIdentityProperties userIdentityProperties)
+                    {
+                        nodeDisplayName = userIdentityProperties.getUserId();
+
+                        if (nodeDisplayName == null)
+                        {
+                            nodeDisplayName = userIdentityProperties.getDistinguishedName();
+                        }
+                    }
+                    else if (properties instanceof ActorRoleProperties actorRoleProperties)
+                    {
+                        nodeDisplayName = actorRoleProperties.getIdentifier();
+                    }
+                    else if (properties instanceof ActorProfileProperties)
+                    {
+                        if (properties instanceof PersonProperties personProperties)
+                        {
+                            nodeDisplayName = personProperties.getFullName();
+                        }
+                        else if (properties instanceof TeamProperties teamProperties)
+                        {
+                            nodeDisplayName = teamProperties.getIdentifier();
+                        }
+                    }
+                }
+                else if (properties instanceof ContributionRecordProperties contributionRecordProperties)
+                {
+                    nodeDisplayName = "karma points: " + contributionRecordProperties.getKarmaPoints();
+                }
+                else if (properties instanceof ProjectProperties projectProperties)
+                {
+                    nodeDisplayName = projectProperties.getIdentifier();
+                }
+                else if (properties instanceof ExternalReferenceProperties externalReferenceProperties)
+                {
+                    nodeDisplayName = externalReferenceProperties.getURI();
+                }
+                else if (properties instanceof ExternalIdProperties externalIdentifierProperties)
+                {
+                    nodeDisplayName = externalIdentifierProperties.getIdentifier();
+                }
+            }
+
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = referenceableProperties.getQualifiedName();
+            }
+        }
+        else if (properties != null)
         {
             nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
 
             if (nodeDisplayName == null)
             {
-                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.NAME.name);
-            }
-            if (nodeDisplayName == null)
-            {
                 nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.RESOURCE_NAME.name);
-            }
-            if (nodeDisplayName == null)
-            {
-                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.ROLE.name);
             }
             if (nodeDisplayName == null)
             {
@@ -1516,14 +1789,6 @@ public class MermaidGraphBuilderBase
             }
             if (nodeDisplayName == null)
             {
-                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.TAG_NAME.name);
-            }
-            if (nodeDisplayName == null)
-            {
-                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.TITLE.name);
-            }
-            if (nodeDisplayName == null)
-            {
                 nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.ANNOTATION_TYPE.name);
             }
             if (nodeDisplayName == null)
@@ -1536,7 +1801,7 @@ public class MermaidGraphBuilderBase
             }
             if (nodeDisplayName == null)
             {
-                nodeDisplayName = properties.getQualifiedName();
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
             }
         }
 
@@ -1632,6 +1897,41 @@ public class MermaidGraphBuilderBase
                                    memberDataField.getElementHeader().getGUID());
         }
     }
+
+
+    /**
+     * Link the related element into the graph.
+     *
+     * @param relatedMetadataElement related element (if null, nothing is added to the graph)
+     * @param visualStyle visual style for new nodes
+     */
+    public void addRelatedNodeSummary(RelatedMetadataNodeSummary relatedMetadataElement,
+                                      VisualStyle                visualStyle)
+    {
+        if (relatedMetadataElement != null)
+        {
+            addRelatedElementSummary(relatedMetadataElement, visualStyle, relatedMetadataElement.getStartingElementGUID());
+        }
+    }
+
+
+    /**
+     * Link the related element into the graph.
+     *
+     * @param relatedMetadataElement related element (if null, nothing is added to the graph)
+     * @param visualStyle visual style for new nodes
+     * @param lineStyle visual style of lines
+     */
+    public void addRelatedNodeSummary(RelatedMetadataNodeSummary relatedMetadataElement,
+                                      VisualStyle                visualStyle,
+                                      LineStyle                  lineStyle)
+    {
+        if (relatedMetadataElement != null)
+        {
+            addRelatedElementSummary(relatedMetadataElement, visualStyle, relatedMetadataElement.getStartingElementGUID(), lineStyle);
+        }
+    }
+
 
     /**
      * Link the list of related elements into the graph.
@@ -1835,7 +2135,7 @@ public class MermaidGraphBuilderBase
     {
         if (memberDataFieldProperties != null)
         {
-            return this.getCardinalityLabel(memberDataFieldProperties.getDataFieldPosition(),
+            return this.getCardinalityLabel(memberDataFieldProperties.getPosition(),
                                             memberDataFieldProperties.getMinCardinality(),
                                             memberDataFieldProperties.getMaxCardinality());
         }

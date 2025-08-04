@@ -89,13 +89,13 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                         "to be adjusted to allow this user to perform the request."),
 
     /**
-     * OMAG-SERVER-SECURITY-403-005 - User {0} is not authorized to change the zone membership for asset {1} from {2} to {3}
+     * OMAG-SERVER-SECURITY-403-005 - User {0} is not authorized to change the zone membership for element {1} from {2} to {3}
      */
     UNAUTHORIZED_ZONE_CHANGE(403, "OMAG-SERVER-SECURITY-403-005",
-                             "User {0} is not authorized to change the zone membership for asset {1} from {2} to {3}",
+                             "User {0} is not authorized to change the zone membership for element {1} from {2} to {3}",
                              "The system is unable to process a request from the user because they do not have access to update " +
-                                     "the requested asset.  The request fails with a UserNotAuthorizedException exception.",
-                             "Using information about the asset, the zones and the user, determine if this result is expected, " +
+                                     "the requested element.  The request fails with a UserNotAuthorizedException exception.",
+                             "Using information about the element, the zones and the user, determine if this result is expected, " +
                                      "or if the configuration needs to be adjusted to allow this user to perform the request."),
 
 

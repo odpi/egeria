@@ -12,7 +12,6 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.In
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorCacheMap;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 
@@ -27,7 +26,6 @@ import java.util.Map;
  */
 public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 {
-    private final Map<String, IntegrationServiceHandler> integrationServiceHandlers;
     private final Map<String, IntegrationGroupHandler>   integrationGroupHandlers;
     private final IntegrationConnectorCacheMap           integrationConnectorCacheMap;
 
@@ -39,67 +37,19 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
      * @param auditLog link to the repository responsible for servicing the REST calls.
      * @param localServerUserId userId to use for local server initiated actions
      * @param maxPageSize max number of results to return on single request.
-     * @param integrationServiceHandlers handler for all the active integration services in this server.
      */
     IntegrationDaemonInstance(String                                 serverName,
                               String                                 serviceName,
                               AuditLog                               auditLog,
                               String                                 localServerUserId,
                               int                                    maxPageSize,
-                              Map<String, IntegrationServiceHandler> integrationServiceHandlers,
                               Map<String, IntegrationGroupHandler>   integrationGroupHandlers,
                               IntegrationConnectorCacheMap           integrationConnectorCacheMap)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
 
-        this.integrationServiceHandlers = integrationServiceHandlers;
         this.integrationGroupHandlers = integrationGroupHandlers;
         this.integrationConnectorCacheMap = integrationConnectorCacheMap;
-    }
-
-
-    /**
-     * Return the list of all the integration service handlers for this integration daemon.
-     *
-     * @param serviceOperationName name of calling request
-     * @return list of integration service handlers.
-     * @throws PropertyServerException there are no integration services in this integration daemon
-     */
-    synchronized List<IntegrationServiceHandler> getAllIntegrationServiceHandlers(String serviceOperationName) throws PropertyServerException
-    {
-        if ((integrationServiceHandlers == null) || (integrationServiceHandlers.isEmpty()))
-        {
-            return null;
-        }
-
-        return new ArrayList<>(integrationServiceHandlers.values());
-    }
-
-
-    /**
-     * Return the integration service instance requested on an integration daemon services request.
-     *
-     * @param serviceURLMarker identifier of integration service
-     * @param serviceOperationName name of calling request
-     * @return integration service handler.
-     */
-    synchronized IntegrationServiceHandler getIntegrationServiceHandler(String serviceURLMarker,
-                                                                        String serviceOperationName) throws InvalidParameterException
-    {
-        final String nameParameterName = "serviceURLMarker";
-
-        IntegrationServiceHandler handler = integrationServiceHandlers.get(serviceURLMarker);
-
-        if (handler == null)
-        {
-            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_INTEGRATION_SERVICE.getMessageDefinition(serviceURLMarker,
-                                                                                                                                    serverName),
-                                                this.getClass().getName(),
-                                                serviceOperationName,
-                                                nameParameterName);
-        }
-
-        return handler;
     }
 
 

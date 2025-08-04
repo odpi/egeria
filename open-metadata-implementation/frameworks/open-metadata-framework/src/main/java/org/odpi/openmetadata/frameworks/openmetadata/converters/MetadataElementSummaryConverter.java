@@ -57,10 +57,7 @@ public class MetadataElementSummaryConverter<B> extends OpenMetadataConverterBas
 
                 if (returnBean instanceof MetadataElementSummary elementSummary)
                 {
-                    ElementHeader          elementHeader  = new ElementHeader(openMetadataElement);
-
-                    elementHeader.setGUID(openMetadataElement.getElementGUID());
-                    elementHeader.setClassifications(this.getElementClassifications(openMetadataElement.getClassifications()));
+                    ElementHeader elementHeader  = super.getMetadataElementHeader(beanClass, openMetadataElement, methodName);
 
                     elementSummary.setElementHeader(elementHeader);
                     if (openMetadataElement.getElementProperties() != null)

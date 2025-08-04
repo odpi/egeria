@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.viewservices.solutionarchitect.server.SolutionArchitectRESTServices;
@@ -94,8 +93,6 @@ public class SolutionArchitectResource
      *
      * @param serverName         name of called server.
      * @param informationSupplyChainGUID unique identifier of the information supply chain (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -113,12 +110,10 @@ public class SolutionArchitectResource
                                                      String                                  serverName,
                                                      @PathVariable
                                                      String                                  informationSupplyChainGUID,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                                 replaceAllProperties,
                                                      @RequestBody (required = false)
                                                      UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateInformationSupplyChain(serverName, informationSupplyChainGUID, replaceAllProperties, requestBody);
+        return restAPI.updateInformationSupplyChain(serverName, informationSupplyChainGUID, requestBody);
     }
 
 
@@ -149,7 +144,7 @@ public class SolutionArchitectResource
                                                         @PathVariable
                                      String peerTwoGUID,
                                                         @RequestBody (required = false)
-                                     RelationshipRequestBody requestBody)
+                                                              NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkPeersInInformationSupplyChain(serverName, peerOneGUID, peerTwoGUID, requestBody);
     }
@@ -181,7 +176,7 @@ public class SolutionArchitectResource
                                        @PathVariable
                                        String peerTwoGUID,
                                        @RequestBody (required = false)
-                                       MetadataSourceRequestBody requestBody)
+                                                              DeleteRequestBody requestBody)
     {
         return restAPI.unlinkPeersInInformationSupplyChain(serverName, peerOneGUID, peerTwoGUID, requestBody);
     }
@@ -213,7 +208,7 @@ public class SolutionArchitectResource
                                                         @PathVariable
                                                         String nestedInformationSupplyChainGUID,
                                                         @RequestBody (required = false)
-                                                        RelationshipRequestBody requestBody)
+                                                           NewRelationshipRequestBody requestBody)
     {
         return restAPI.composeInformationSupplyChains(serverName, informationSupplyChainGUID, nestedInformationSupplyChainGUID, requestBody);
     }
@@ -245,7 +240,7 @@ public class SolutionArchitectResource
                                                           @PathVariable
                                                           String nestedInformationSupplyChainGUID,
                                                           @RequestBody (required = false)
-                                                          MetadataSourceRequestBody requestBody)
+                                                             DeleteRequestBody requestBody)
     {
         return restAPI.decomposeInformationSupplyChains(serverName, informationSupplyChainGUID, nestedInformationSupplyChainGUID, requestBody);
     }
@@ -256,7 +251,6 @@ public class SolutionArchitectResource
      *
      * @param serverName         name of called server
      * @param informationSupplyChainGUID  unique identifier of the element to delete
-     * @param cascadedDelete can information supply chains be deleted if nested elements are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -274,12 +268,10 @@ public class SolutionArchitectResource
                                                      String                    serverName,
                                                      @PathVariable
                                                      String                    informationSupplyChainGUID,
-                                                     @RequestParam(required = false, defaultValue = "false")
-                                                     boolean                   cascadedDelete,
                                                      @RequestBody (required = false)
-                                                     MetadataSourceRequestBody requestBody)
+                                                         DeleteRequestBody requestBody)
     {
-        return restAPI.deleteInformationSupplyChain(serverName, informationSupplyChainGUID, cascadedDelete, requestBody);
+        return restAPI.deleteInformationSupplyChain(serverName, informationSupplyChainGUID, requestBody);
     }
 
 
@@ -288,8 +280,6 @@ public class SolutionArchitectResource
      *
      * @param serverName name of the service to route the request to
      * @param addImplementation should details of the implementation of the information supply chain be extracted too?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -307,14 +297,10 @@ public class SolutionArchitectResource
                                                                             String            serverName,
                                                                             @RequestParam (required = false, defaultValue = "true")
                                                                             boolean           addImplementation,
-                                                                            @RequestParam (required = false, defaultValue = "0")
-                                                                            int                     startFrom,
-                                                                            @RequestParam (required = false, defaultValue = "0")
-                                                                            int                     pageSize,
                                                                             @RequestBody (required = false)
                                                                             FilterRequestBody requestBody)
     {
-        return restAPI.getInformationSupplyChainsByName(serverName, addImplementation, startFrom, pageSize, requestBody);
+        return restAPI.getInformationSupplyChainsByName(serverName, addImplementation,  requestBody);
     }
 
 
@@ -323,11 +309,6 @@ public class SolutionArchitectResource
      *
      * @param serverName name of the service to route the request to
      * @param addImplementation should details of the implementation of the information supply chain be extracted too?
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -345,20 +326,10 @@ public class SolutionArchitectResource
                                                                        String                  serverName,
                                                                        @RequestParam (required = false, defaultValue = "true")
                                                                        boolean                 addImplementation,
-                                                                       @RequestParam (required = false, defaultValue = "0")
-                                                                       int                     startFrom,
-                                                                       @RequestParam (required = false, defaultValue = "0")
-                                                                       int                     pageSize,
-                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                 startsWith,
-                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                 endsWith,
-                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                 ignoreCase,
                                                                        @RequestBody (required = false)
-                                                                       FilterRequestBody requestBody)
+                                                                       SearchStringRequestBody requestBody)
     {
-        return restAPI.findInformationSupplyChains(serverName, addImplementation, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findInformationSupplyChains(serverName, addImplementation, requestBody);
     }
 
 
@@ -389,7 +360,7 @@ public class SolutionArchitectResource
                                                                           @RequestParam (required = false, defaultValue = "true")
                                                                           boolean            addImplementation,
                                                                           @RequestBody (required = false)
-                                                                          AnyTimeRequestBody requestBody)
+                                                                              GetRequestBody requestBody)
     {
         return restAPI.getInformationSupplyChainByGUID(serverName, informationSupplyChainGUID, addImplementation, requestBody);
     }
@@ -454,8 +425,6 @@ public class SolutionArchitectResource
      *
      * @param serverName         name of called server.
      * @param solutionBlueprintGUID unique identifier of the solution blueprint (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -473,12 +442,10 @@ public class SolutionArchitectResource
                                                 String                                  serverName,
                                                 @PathVariable
                                                 String                                  solutionBlueprintGUID,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                boolean                                 replaceAllProperties,
                                                 @RequestBody (required = false)
                                                 UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateSolutionBlueprint(serverName, solutionBlueprintGUID, replaceAllProperties, requestBody);
+        return restAPI.updateSolutionBlueprint(serverName, solutionBlueprintGUID, requestBody);
     }
 
 
@@ -508,7 +475,7 @@ public class SolutionArchitectResource
                                                          @PathVariable
                                                          String solutionComponentGUID,
                                                          @RequestBody (required = false)
-                                                         RelationshipRequestBody requestBody)
+                                                             NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSolutionComponentToBlueprint(serverName, parentSolutionBlueprintGUID, solutionComponentGUID, requestBody);
     }
@@ -540,7 +507,7 @@ public class SolutionArchitectResource
                                                              @PathVariable
                                                              String solutionComponentGUID,
                                                              @RequestBody (required = false)
-                                                             MetadataSourceRequestBody requestBody)
+                                                                 DeleteRequestBody requestBody)
     {
         return restAPI.detachSolutionComponentFromBlueprint(serverName, parentSolutionBlueprintGUID, solutionComponentGUID, requestBody);
     }
@@ -574,7 +541,7 @@ public class SolutionArchitectResource
                                            @PathVariable
                                                String solutionBlueprintGUID,
                                            @RequestBody (required = false)
-                                               RelationshipRequestBody requestBody)
+                                               NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSolutionDesign(serverName, parentGUID, solutionBlueprintGUID, requestBody);
     }
@@ -606,7 +573,7 @@ public class SolutionArchitectResource
                                              @PathVariable
                                                  String solutionBlueprintGUID,
                                              @RequestBody (required = false)
-                                                 MetadataSourceRequestBody requestBody)
+                                                 DeleteRequestBody requestBody)
     {
         return restAPI.detachSolutionDesign(serverName, parentGUID, solutionBlueprintGUID, requestBody);
     }
@@ -617,7 +584,6 @@ public class SolutionArchitectResource
      *
      * @param serverName         name of called server
      * @param solutionBlueprintGUID  unique identifier of the element to delete
-     * @param cascadedDelete can solution blueprints be deleted if solution components are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -635,12 +601,10 @@ public class SolutionArchitectResource
                                                 String                    serverName,
                                                 @PathVariable
                                                 String                    solutionBlueprintGUID,
-                                                @RequestParam(required = false, defaultValue = "false")
-                                                boolean                   cascadedDelete,
                                                 @RequestBody (required = false)
-                                                MetadataSourceRequestBody requestBody)
+                                                    DeleteRequestBody requestBody)
     {
-        return restAPI.deleteSolutionBlueprint(serverName, solutionBlueprintGUID, cascadedDelete, requestBody);
+        return restAPI.deleteSolutionBlueprint(serverName, solutionBlueprintGUID, requestBody);
     }
 
 
@@ -648,8 +612,6 @@ public class SolutionArchitectResource
      * Returns the list of solution blueprints with a particular name.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -665,14 +627,10 @@ public class SolutionArchitectResource
 
     public SolutionBlueprintsResponse getSolutionBlueprintsByName(@PathVariable
                                                                   String            serverName,
-                                                                  @RequestParam (required = false, defaultValue = "0")
-                                                                  int                     startFrom,
-                                                                  @RequestParam (required = false, defaultValue = "0")
-                                                                  int                     pageSize,
                                                                   @RequestBody (required = false)
                                                                   FilterRequestBody requestBody)
     {
-        return restAPI.getSolutionBlueprintsByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getSolutionBlueprintsByName(serverName, requestBody);
     }
 
 
@@ -699,7 +657,7 @@ public class SolutionArchitectResource
                                                                 @PathVariable
                                                                 String             solutionBlueprintGUID,
                                                                 @RequestBody (required = false)
-                                                                AnyTimeRequestBody requestBody)
+                                                                    GetRequestBody requestBody)
     {
         return restAPI.getSolutionBlueprintByGUID(serverName, solutionBlueprintGUID, requestBody);
     }
@@ -709,11 +667,6 @@ public class SolutionArchitectResource
      * Retrieve the list of solution blueprint metadata elements that contain the search string.  The returned blueprints include a list of the components that are associated with it.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -728,20 +681,10 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
     public SolutionBlueprintsResponse findSolutionBlueprints(@PathVariable String                  serverName,
-                                                             @RequestParam (required = false, defaultValue = "0")
-                                                             int                     startFrom,
-                                                             @RequestParam (required = false, defaultValue = "0")
-                                                             int                     pageSize,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                 startsWith,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                 endsWith,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                 ignoreCase,
                                                              @RequestBody  (required = false)
-                                                             FilterRequestBody requestBody)
+                                                             SearchStringRequestBody requestBody)
     {
-        return restAPI.findSolutionBlueprints(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findSolutionBlueprints(serverName, requestBody);
     }
 
 
@@ -771,7 +714,7 @@ public class SolutionArchitectResource
                                                    @PathVariable
                                                    String                     dataFieldGUID,
                                                    @RequestBody (required = false)
-                                                   RelationshipRequestBody requestBody)
+                                                       NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSolutionComponentActor(serverName, solutionRoleGUID, dataFieldGUID, requestBody);
     }
@@ -803,7 +746,7 @@ public class SolutionArchitectResource
                                                      @PathVariable
                                                      String solutionComponentGUID,
                                                      @RequestBody (required = false)
-                                                     MetadataSourceRequestBody requestBody)
+                                                         DeleteRequestBody requestBody)
     {
         return restAPI.detachSolutionComponentActor(serverName, solutionRoleGUID, solutionComponentGUID, requestBody);
     }
@@ -868,8 +811,6 @@ public class SolutionArchitectResource
      *
      * @param serverName         name of called server.
      * @param solutionComponentGUID unique identifier of the solution component (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -887,42 +828,10 @@ public class SolutionArchitectResource
                                                 String                   serverName,
                                                 @PathVariable
                                                 String                   solutionComponentGUID,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                boolean                  replaceAllProperties,
                                                 @RequestBody (required = false)
                                                 UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateSolutionComponent(serverName, solutionComponentGUID, replaceAllProperties, requestBody);
-    }
-
-
-
-    /**
-     * Update the status of a solution blueprint, solution component or solution port.
-     *
-     * @param serverName         name of called server.
-     * @param solutionElementGUID unique identifier of the governance definition (returned from create)
-     * @param requestBody     properties for the new status.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/solution-elements/{solutionElementGUID}/update-status")
-    @Operation(summary="updateSolutionElementStatus",
-            description="Update the status of a solution blueprint, solution component or solution port.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/solution-component"))
-
-    public VoidResponse updateSolutionElementStatus(@PathVariable
-                                                        String                                  serverName,
-                                                    @PathVariable
-                                                    String solutionElementGUID,
-                                                    @RequestBody (required = false)
-                                                        SolutionElementStatusRequestBody requestBody)
-    {
-        return restAPI.updateSolutionElementStatus(serverName, solutionElementGUID, requestBody);
+        return restAPI.updateSolutionComponent(serverName, solutionComponentGUID, requestBody);
     }
 
 
@@ -952,7 +861,7 @@ public class SolutionArchitectResource
                                          @PathVariable
                                          String                     subcomponentGUID,
                                          @RequestBody (required = false)
-                                         RelationshipRequestBody requestBody)
+                                             NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSubcomponent(serverName, solutionComponentGUID, subcomponentGUID, requestBody);
     }
@@ -984,7 +893,7 @@ public class SolutionArchitectResource
                                            @PathVariable
                                            String subcomponentGUID,
                                            @RequestBody (required = false)
-                                           MetadataSourceRequestBody requestBody)
+                                               DeleteRequestBody requestBody)
     {
         return restAPI.detachSubcomponent(serverName, parentSolutionComponentGUID, subcomponentGUID, requestBody);
     }
@@ -1016,7 +925,7 @@ public class SolutionArchitectResource
                                          @PathVariable
                                          String solutionComponentTwoGUID,
                                          @RequestBody (required = false)
-                                         RelationshipRequestBody requestBody)
+                                                    NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
     }
@@ -1048,7 +957,7 @@ public class SolutionArchitectResource
                                            @PathVariable
                                            String solutionComponentTwoGUID,
                                            @RequestBody (required = false)
-                                           MetadataSourceRequestBody requestBody)
+                                                      DeleteRequestBody requestBody)
     {
         return restAPI.detachSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
     }
@@ -1059,7 +968,6 @@ public class SolutionArchitectResource
      *
      * @param serverName         name of called server
      * @param solutionComponentGUID  unique identifier of the element to delete
-     * @param cascadedDelete can solution components be deleted if solution components are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1077,12 +985,10 @@ public class SolutionArchitectResource
                                                 String                    serverName,
                                                 @PathVariable
                                                 String                    solutionComponentGUID,
-                                                @RequestParam(required = false, defaultValue = "false")
-                                                boolean                   cascadedDelete,
-                                                @RequestBody (required = false)
-                                                MetadataSourceRequestBody requestBody)
+                                               @RequestBody (required = false)
+                                                    DeleteRequestBody requestBody)
     {
-        return restAPI.deleteSolutionComponent(serverName, solutionComponentGUID, cascadedDelete, requestBody);
+        return restAPI.deleteSolutionComponent(serverName, solutionComponentGUID, requestBody);
     }
 
 
@@ -1090,8 +996,6 @@ public class SolutionArchitectResource
      * Returns the list of solution components with a particular name.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1107,14 +1011,10 @@ public class SolutionArchitectResource
 
     public SolutionComponentsResponse getSolutionComponentsByName(@PathVariable
                                                                   String            serverName,
-                                                                  @RequestParam (required = false, defaultValue = "0")
-                                                                  int                     startFrom,
-                                                                  @RequestParam (required = false, defaultValue = "0")
-                                                                  int                     pageSize,
                                                                   @RequestBody (required = false)
                                                                   FilterRequestBody requestBody)
     {
-        return restAPI.getSolutionComponentsByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getSolutionComponentsByName(serverName, requestBody);
     }
 
 
@@ -1122,11 +1022,6 @@ public class SolutionArchitectResource
      * Retrieve the list of solution component metadata elements that contain the search string.  The solutions components returned include information about the consumers, actors and other solution components that are associated with them.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1141,20 +1036,10 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-component"))
 
     public SolutionComponentsResponse findSolutionComponents(@PathVariable String                  serverName,
-                                                             @RequestParam (required = false, defaultValue = "0")
-                                                             int                     startFrom,
-                                                             @RequestParam (required = false, defaultValue = "0")
-                                                             int                     pageSize,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                 startsWith,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                 endsWith,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                 ignoreCase,
                                                              @RequestBody (required = false)
-                                                             FilterRequestBody requestBody)
+                                                             SearchStringRequestBody requestBody)
     {
-        return restAPI.findSolutionComponents(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findSolutionComponents(serverName,  requestBody);
     }
 
 
@@ -1182,7 +1067,7 @@ public class SolutionArchitectResource
                                                                 @PathVariable
                                                                 String             solutionComponentGUID,
                                                                 @RequestBody (required = false)
-                                                                AnyTimeRequestBody requestBody)
+                                                                    GetRequestBody requestBody)
     {
         return restAPI.getSolutionComponentByGUID(serverName, solutionComponentGUID, requestBody);
     }
@@ -1194,8 +1079,6 @@ public class SolutionArchitectResource
      *
      * @param serverName name of the service to route the request to
      * @param solutionComponentGUID unique identifier of the solution component to query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1211,13 +1094,9 @@ public class SolutionArchitectResource
 
     public RelatedMetadataElementsResponse getSolutionComponentImplementations(@PathVariable String                  serverName,
                                                                                @PathVariable String                  solutionComponentGUID,
-                                                                               @RequestParam (required = false, defaultValue = "0")
-                                                                               int                     startFrom,
-                                                                               @RequestParam (required = false, defaultValue = "0")
-                                                                               int                     pageSize,
                                                                                @RequestBody(required = false)
                                                                                ResultsRequestBody requestBody)
     {
-        return restAPI.getSolutionComponentImplementations(serverName, solutionComponentGUID, startFrom, pageSize, requestBody);
+        return restAPI.getSolutionComponentImplementations(serverName, solutionComponentGUID, requestBody);
     }
 }

@@ -7,6 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 
@@ -19,21 +21,25 @@ public class KafkaTopicSourceCatalogTargetProcessor extends CatalogTargetProcess
      * Copy/clone constructor
      *
      * @param template object to copy
+     * @param catalogTargetContext specialized context for this catalog target
      * @param connectorToTarget connector to access the target resource
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
      * @param listener listener
      * @throws ConnectorCheckedException problem connecting to topic
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     public KafkaTopicSourceCatalogTargetProcessor(CatalogTarget             template,
+                                                  CatalogTargetContext      catalogTargetContext,
                                                   Connector                 connectorToTarget,
                                                   String                    connectorName,
                                                   AuditLog                  auditLog,
-                                                  OpenMetadataTopicListener listener) throws ConnectorCheckedException
+                                                  OpenMetadataTopicListener listener) throws ConnectorCheckedException,
+                                                                                             UserNotAuthorizedException
     {
-        super(template, connectorToTarget, connectorName, auditLog);
+        super(template, catalogTargetContext, connectorToTarget, connectorName, auditLog);
 
-        if (super.getCatalogTargetConnector() instanceof OpenMetadataTopicConnector topicConnector)
+        if (super.getConnectorToTarget() instanceof OpenMetadataTopicConnector topicConnector)
         {
             topicConnector.registerListener(listener);
 
@@ -53,6 +59,6 @@ public class KafkaTopicSourceCatalogTargetProcessor extends CatalogTargetProcess
     @Override
     public void refresh()
     {
-        // nothing to do
+        // nothing to do - it all happens with the events.
     }
 }

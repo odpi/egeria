@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +20,16 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the getConnectionsByName call to access service
  */
-class OmasGetConnectionsByName implements Function<String, List<ConnectionElement>> {
+class OmasGetConnectionsByName implements Function<String, List<OpenMetadataRootElement>>
+{
+    private final ConnectionClient connectionClient;
+    private final AuditLog         auditLog;
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
-
-    OmasGetConnectionsByName(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasGetConnectionsByName(ConnectionClient connectionClient,
+                             AuditLog         auditLog)
+    {
+        this.connectionClient = connectionClient;
+        this.auditLog         = auditLog;
     }
 
     /**
@@ -37,16 +40,22 @@ class OmasGetConnectionsByName implements Function<String, List<ConnectionElemen
      * @return connections
      */
     @Override
-    public List<ConnectionElement> apply(String connectionQualifiedName){
-        String methodName = "OmasGetConnectionsByName";
-        try{
+    public List<OpenMetadataRootElement> apply(String connectionQualifiedName)
+    {
+        final String methodName = "OmasGetConnectionsByName";
+
+        try
+        {
             return Optional.ofNullable(
-                    databaseIntegratorContext.getConnectionsByName(connectionQualifiedName, 0, 0))
+                            connectionClient.getConnectionsByName(connectionQualifiedName, connectionClient.getQueryOptions()))
                     .orElseGet(ArrayList::new);
-        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+        }
+        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
+        {
             auditLog.logMessage("Reading connection with qualified name " + connectionQualifiedName,
                     EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()));
         }
+
         return new ArrayList<>();
     }
 

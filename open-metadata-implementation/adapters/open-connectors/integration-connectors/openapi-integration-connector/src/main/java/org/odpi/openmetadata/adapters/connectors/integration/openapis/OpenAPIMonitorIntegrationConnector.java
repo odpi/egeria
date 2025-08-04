@@ -5,28 +5,31 @@ package org.odpi.openmetadata.adapters.connectors.integration.openapis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
-import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
-import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEventType;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIOperationElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIOperation;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPISpecification;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPITag;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.EndpointClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaTypeClient;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorConnector;
-import org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorContext;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +38,7 @@ import java.util.Map;
 /**
  * OpenAPIMonitorIntegrationConnector provides common methods for the connectors in this module.
  */
-public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector implements DataManagerEventListener
+public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase implements OpenMetadataEventListener
 {
     private static final String urlMarker = "http";
 
@@ -44,8 +47,8 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
     private final Map<String, RESTClient> restClients = new HashMap<>();
 
-    private APIIntegratorContext myContext = null;
-    public static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
+    private             IntegrationContext myContext     = null;
+    public static final ObjectReader       OBJECT_READER = new ObjectMapper().reader();
 
 
     /**
@@ -53,27 +56,28 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
      * This call can be used to register with non-blocking services.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
         final String methodName = "start";
 
-        myContext = super.getContext();
+        myContext = integrationContext;
 
         /*
          * Retrieve information from the supplied connection.
          */
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint != null)
         {
             targetRootURL = endpoint.getAddress();
         }
 
-        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
 
         if (configurationProperties != null)
         {
@@ -128,19 +132,20 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
      *
      * @param event event object - call getEventType to find out what type of event.
      */
-    public void processEvent(DataManagerOutboundEvent event)
+    public void processEvent(OpenMetadataOutTopicEvent event)
     {
         /*
          * Only interested in Endpoint events.
          */
         final String methodName = "processEvent";
 
-        if ((event.getEventType() == DataManagerOutboundEventType.NEW_ELEMENT_CREATED) &&
-                (propertyHelper.isTypeOf(event.getPrincipleElement(), OpenMetadataType.ENDPOINT.typeName)))
+        if ((event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED) &&
+                (propertyHelper.isTypeOf(event.getElementHeader(), OpenMetadataType.ENDPOINT.typeName)))
         {
             try
             {
-                EndpointElement endpointElement = myContext.getEndpointByGUID(event.getPrincipleElement().getGUID());
+                EndpointClient          endpointClient  = myContext.getEndpointClient();
+                OpenMetadataRootElement endpointElement = endpointClient.getEndpointByGUID(event.getElementHeader().getGUID(), endpointClient.getGetOptions());
 
                 if (endpointElement != null)
                 {
@@ -156,8 +161,6 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                                                                                                                        error.getClass().getName(),
                                                                                                                        methodName,
                                                                                                                        error.getMessage()));
-
-
                 }
             }
         }
@@ -173,11 +176,11 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
         try
         {
-            List<EndpointElement> endpointElements = myContext.findEndpoints(urlMarker, 0, 0);
+            List<OpenMetadataRootElement> endpointElements = myContext.getEndpointClient().findEndpoints(urlMarker, myContext.getEndpointClient().getSearchOptions());
 
             if (endpointElements != null)
             {
-                for (EndpointElement endpointElement : endpointElements)
+                for (OpenMetadataRootElement endpointElement : endpointElements)
                 {
                     if (endpointElement != null)
                     {
@@ -208,35 +211,33 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
      * @param endpointElement endpoint element
      * @param methodName calling method
      */
-    private void registerEndpoint(EndpointElement endpointElement,
-                                  String          methodName)
+    private void registerEndpoint(OpenMetadataRootElement endpointElement,
+                                  String                  methodName)
     {
 
-        if ((endpointElement.getElementHeader() != null) &&
-            (endpointElement.getElementHeader().getGUID() != null) &&
-            (endpointElement.getProperties() != null) &&
-            (endpointElement.getProperties().getAddress() != null))
+        if ((endpointElement.getProperties() instanceof EndpointProperties endpointProperties) &&
+            (endpointProperties.getNetworkAddress() != null))
         {
-            if (endpointElement.getProperties().getAddress().startsWith(urlMarker))
+            if (endpointProperties.getNetworkAddress().startsWith(urlMarker))
             {
                 try
                 {
                     /*
                      * If this is new endpoint then add it to the restClients being monitored.
                      */
-                    if (restClients.get(endpointElement.getProperties().getAddress()) == null)
+                    if (restClients.get(endpointProperties.getNetworkAddress()) == null)
                     {
                         if (auditLog != null)
                         {
                             auditLog.logMessage(methodName,
                                                 OpenAPIIntegrationConnectorAuditCode.NEW_ENDPOINT.getMessageDefinition(connectorName,
-                                                                                                                       endpointElement.getProperties().getDisplayName(),
-                                                                                                                       endpointElement.getProperties().getAddress()));
+                                                                                                                       endpointProperties.getDisplayName(),
+                                                                                                                       endpointProperties.getNetworkAddress()));
                         }
 
-                        RESTClient restClient = new RESTClient(connectorName, endpointElement.getProperties().getAddress(), auditLog);
+                        RESTClient restClient = new RESTClient(connectorName, endpointProperties.getNetworkAddress(), auditLog);
 
-                        restClients.put(endpointElement.getProperties().getAddress(), restClient);
+                        restClients.put(endpointProperties.getNetworkAddress(), restClient);
                     }
                 }
                 catch (Exception error)
@@ -428,17 +429,20 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        List<EndpointElement> endpointElements = myContext.findEndpoints(".*.", 0, 0);
-        String                endpointGUID = null;
-        String                endpointQualifiedName = "ServerEndpoint:" + url;
+        List<OpenMetadataRootElement> endpointElements = myContext.getEndpointClient().findEndpoints(".*.", myContext.getEndpointClient().getSearchOptions());
+        String                        endpointGUID = null;
+        String                        endpointQualifiedName = "ServerEndpoint:" + url;
 
         if (endpointElements != null)
         {
-            for (EndpointElement endpointElement : endpointElements)
+            for (OpenMetadataRootElement endpointElement : endpointElements)
             {
-                if (endpointQualifiedName.equals(endpointElement.getProperties().getQualifiedName()))
+                if ((endpointElement != null) && (endpointElement.getProperties() instanceof EndpointProperties endpointProperties))
                 {
-                    endpointGUID = endpointElement.getElementHeader().getGUID();
+                    if (endpointQualifiedName.equals(endpointProperties.getQualifiedName()))
+                    {
+                        endpointGUID = endpointElement.getElementHeader().getGUID();
+                    }
                 }
             }
         }
@@ -452,10 +456,13 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
             if (openAPISpecification.getInfo() != null)
             {
                 properties.setDisplayName(openAPISpecification.getInfo().getTitle());
-                properties.setResourceDescription(openAPISpecification.getInfo().getDescription());
+                properties.setDescription(openAPISpecification.getInfo().getDescription());
             }
 
-            endpointGUID = myContext.createEndpoint(properties);
+            endpointGUID = myContext.getEndpointClient().createEndpoint(new NewElementOptions(),
+                                                                        null,
+                                                                        properties,
+                                                                        null);
         }
 
         /*
@@ -484,34 +491,47 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                                                      UserNotAuthorizedException,
                                                      PropertyServerException
     {
-        String apiGUID          = null;
+        String apiGUID = null;
 
         if (tag.getName() != null)
         {
-            String apiQualifiedName = "API:" + tag.getName() + "(" + url + ")";
+            String apiQualifiedName = "DeployedAPI:" + tag.getName() + "(" + url + ")";
 
-            List<APIElement> apiElements = myContext.getAPIsByName(apiQualifiedName, 0, 0);
+            AssetClient apiClient = myContext.getAssetClient(OpenMetadataType.DEPLOYED_API.typeName);
+
+            List<OpenMetadataRootElement> apiElements = apiClient.getAssetsByName(apiQualifiedName, apiClient.getQueryOptions());
 
             if (apiElements != null)
             {
-                for (APIElement apiElement : apiElements)
+                for (OpenMetadataRootElement apiElement : apiElements)
                 {
-                    if (apiQualifiedName.equals(apiElement.getAPIProperties().getQualifiedName()))
+                    if ((apiElement != null) && (apiElement.getProperties() instanceof AssetProperties assetProperties))
                     {
-                        apiGUID = apiElement.getElementHeader().getGUID();
+                        if (apiQualifiedName.equals(assetProperties.getQualifiedName()))
+                        {
+                            apiGUID = apiElement.getElementHeader().getGUID();
+                        }
                     }
                 }
             }
 
             if (apiGUID == null)
             {
-                APIProperties properties = new APIProperties();
+                DeployedAPIProperties properties = new DeployedAPIProperties();
 
                 properties.setQualifiedName(apiQualifiedName);
-                properties.setName(tag.getName());
-                properties.setDisplayDescription(tag.getDescription());
+                properties.setDisplayName(tag.getName());
+                properties.setDescription(tag.getDescription());
 
-                apiGUID = myContext.createAPI(endpointGUID, properties);
+                NewElementOptions newElementOptions = new NewElementOptions(apiClient.getMetadataSourceOptions());
+
+                newElementOptions.setAnchorGUID(endpointGUID);
+                newElementOptions.setIsOwnAnchor(false);
+                newElementOptions.setParentGUID(endpointGUID);
+                newElementOptions.setParentAtEnd1(false);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName);
+
+                apiGUID = apiClient.createAsset(newElementOptions, null, properties, null);
             }
 
             /*
@@ -565,13 +585,14 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
              * should return all elements with the same qualified name - there should be only one.  This code could be enhanced to validate that
              * when there are duplicates, they are logged and the selected one is the one created by this process.
              */
-            List<APIOperationElement> apiOperationElements = myContext.getAPIOperationsByName(apiOperationQualifiedName, 0, 0);
+            SchemaTypeClient              apiOperationClient   = myContext.getSchemaTypeClient(OpenMetadataType.API_OPERATION.typeName);
+            List<OpenMetadataRootElement> apiOperationElements = apiOperationClient.getSchemaTypesByName(apiOperationQualifiedName, apiOperationClient.getQueryOptions());
 
             if (apiOperationElements != null)
             {
-                for (APIOperationElement apiOperationElement : apiOperationElements)
+                for (OpenMetadataRootElement apiOperationElement : apiOperationElements)
                 {
-                    if (apiOperationQualifiedName.equals(apiOperationElement.getProperties().getQualifiedName()))
+                    if ((apiOperationElement.getProperties() instanceof APIOperationProperties apiOperationProperties) && (apiOperationQualifiedName.equals(apiOperationProperties.getQualifiedName())))
                     {
                         apiOperationGUID = apiOperationElement.getElementHeader().getGUID();
                     }
@@ -588,8 +609,8 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                 properties.setQualifiedName(apiOperationQualifiedName);
                 properties.setDisplayName(operation.getOperationId());
                 properties.setDescription(operation.getDescription());
-
-                apiOperationGUID = myContext.createAPIOperation(apiGUID, properties);
+                // todo create schema type and add operation
+                //apiOperationGUID = apiOperationClient.createSchemaType(apiGUID, properties);
             }
         }
 

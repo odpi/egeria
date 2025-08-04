@@ -8,8 +8,8 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SchemaAttributeHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SchemaTypeHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SchemaAttributeHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SchemaTypeHandler;
 
 
 /**

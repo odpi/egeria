@@ -26,7 +26,7 @@ public class ExternalIdentifierProperties
 {
     private PermittedSynchronization permittedSynchronization       = null;
     private String                   synchronizationDescription     = null;
-    private String                   externalIdentifier             = null;
+    private String                   identifier                     = null;
     private String                   externalIdentifierName         = null;
     private String                   externalInstanceTypeName       = null;
     private String                   externalIdentifierUsage        = null;
@@ -58,9 +58,9 @@ public class ExternalIdentifierProperties
         if (template != null)
         {
             permittedSynchronization       = template.getSynchronizationDirection();
-            synchronizationDescription     = template.getSynchronizationDescription();
-            externalIdentifier             = template.getExternalIdentifier();
-            externalIdentifierName         = template.getExternalIdentifierName();
+            synchronizationDescription = template.getSynchronizationDescription();
+            identifier                 = template.getIdentifier();
+            externalIdentifierName     = template.getExternalIdentifierName();
             externalInstanceTypeName       = template.getExternalInstanceTypeName();
             externalIdentifierUsage        = template.getExternalIdentifierUsage();
             externalIdentifierSource       = template.getExternalIdentifierSource();
@@ -124,20 +124,20 @@ public class ExternalIdentifierProperties
      *
      * @return string identifier
      */
-    public String getExternalIdentifier()
+    public String getIdentifier()
     {
-        return externalIdentifier;
+        return identifier;
     }
 
 
     /**
      * Set up the unique identifier used in the external asset manager for this element.
      *
-     * @param externalIdentifier string identifier
+     * @param identifier string identifier
      */
-    public void setExternalIdentifier(String externalIdentifier)
+    public void setIdentifier(String identifier)
     {
-        this.externalIdentifier = externalIdentifier;
+        this.identifier = identifier;
     }
 
 
@@ -398,7 +398,7 @@ public class ExternalIdentifierProperties
         return "ExternalIdentifierProperties{" +
                 "permittedSynchronization=" + permittedSynchronization +
                 ", synchronizationDescription='" + synchronizationDescription + '\'' +
-                ", externalIdentifier='" + externalIdentifier + '\'' +
+                ", externalIdentifier='" + identifier + '\'' +
                 ", externalIdentifierName='" + externalIdentifierName + '\'' +
                 ", externalIdentifierTypeName='" + externalInstanceTypeName + '\'' +
                 ", externalIdentifierUsage='" + externalIdentifierUsage + '\'' +
@@ -429,7 +429,7 @@ public class ExternalIdentifierProperties
         return externalInstanceVersion == that.externalInstanceVersion &&
                 permittedSynchronization == that.permittedSynchronization &&
                 Objects.equals(synchronizationDescription, that.synchronizationDescription) &&
-                Objects.equals(externalIdentifier, that.externalIdentifier) &&
+                Objects.equals(identifier, that.identifier) &&
                 Objects.equals(externalIdentifierName, that.externalIdentifierName) &&
                 Objects.equals(externalInstanceTypeName, that.externalInstanceTypeName) &&
                 Objects.equals(externalIdentifierUsage, that.externalIdentifierUsage) &&
@@ -451,7 +451,7 @@ public class ExternalIdentifierProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(permittedSynchronization, synchronizationDescription, externalIdentifier,
+        return Objects.hash(permittedSynchronization, synchronizationDescription, identifier,
                             externalIdentifierName, externalInstanceTypeName, externalIdentifierUsage,
                             externalIdentifierSource, keyPattern, externalInstanceCreatedBy,
                             externalInstanceCreationTime, externalInstanceLastUpdatedBy,

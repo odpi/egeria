@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedConnectorProperties;
 
 import java.util.Objects;
 
@@ -22,12 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-public class IntegrationConnectorProperties extends ReferenceableProperties
+public class IntegrationConnectorProperties extends DeployedConnectorProperties
 {
-    private String     name                       = null;
-    private String     versionIdentifier          = null;
-    private String     description                = null;
-    private String     deployedImplementationType = null;
     private boolean    usesBlockingCalls          = false;
     private Connection connection                 = null;
 
@@ -52,102 +48,9 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            name                       = template.getName();
-            versionIdentifier          = template.getVersionIdentifier();
-            description                = template.getDescription();
-            deployedImplementationType = template.getDeployedImplementationType();
-            usesBlockingCalls          = template.getUsesBlockingCalls();
-            connection                 = template.getConnection();
+            usesBlockingCalls = template.getUsesBlockingCalls();
+            connection        = template.getConnection();
         }
-    }
-
-
-    /**
-     * Return the name of the resource that this asset represents.
-     *
-     * @return string resource name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the name of the resource that this asset represents.
-     *
-     * @param name string resource name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-     * Set up the version identifier of the resource.
-     *
-     * @return string version name
-     */
-    public String getVersionIdentifier()
-    {
-        return versionIdentifier;
-    }
-
-
-    /**
-     * Set up the version identifier of the resource.
-     *
-     * @param versionIdentifier string version name
-     */
-    public void setVersionIdentifier(String versionIdentifier)
-    {
-        this.versionIdentifier = versionIdentifier;
-    }
-
-
-    /**
-     * Returns the stored description property for the asset.
-     * If no description is provided then null is returned.
-     *
-     * @return description String text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the stored description property associated with the asset.
-     *
-     * @param description String text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Retrieve the name of the technology used for this data asset.
-     *
-     * @return string name
-     */
-    public String getDeployedImplementationType()
-    {
-        return deployedImplementationType;
-    }
-
-
-    /**
-     * Set up the name of the technology used for this data asset.
-     *
-     * @param deployedImplementationType string name
-     */
-    public void setDeployedImplementationType(String deployedImplementationType)
-    {
-        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -204,11 +107,7 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
     public String toString()
     {
         return "IntegrationConnectorProperties{" +
-                "name='" + name + '\'' +
-                ", versionIdentifier='" + versionIdentifier + '\'' +
-                ", description='" + description + '\'' +
-                ", deployedImplementationType='" + deployedImplementationType + '\'' +
-                ", usesBlockingCalls=" + usesBlockingCalls +
+                "usesBlockingCalls=" + usesBlockingCalls +
                 ", connection=" + connection +
                 "} " + super.toString();
     }
@@ -236,11 +135,7 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
             return false;
         }
         IntegrationConnectorProperties that = (IntegrationConnectorProperties) objectToCompare;
-        return Objects.equals(name, that.name) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(versionIdentifier, that.versionIdentifier) &&
-                       Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
-                       (usesBlockingCalls == that.usesBlockingCalls) &&
+        return (usesBlockingCalls == that.usesBlockingCalls) &&
                        Objects.equals(connection, that.connection);
     }
 
@@ -253,6 +148,6 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, description, versionIdentifier, usesBlockingCalls, connection);
+        return Objects.hash(super.hashCode(), usesBlockingCalls, connection);
     }
 }

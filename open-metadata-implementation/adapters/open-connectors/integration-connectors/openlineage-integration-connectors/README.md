@@ -9,7 +9,7 @@ The kafka monitor integration connector catalogues the topics active in an Apach
 ## Deployment and configuration
 
 The kafka monitor integration connector is included in the main Egeria assembly.
-It runs in the [Topic Integrator OMIS](../../../../integration-services/topic-integrator).
+It runs in the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon).
 
 ----
 * Return to [Integration Connectors module](..)

@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * DataAssetProperties is a java bean used to create assets associated with the IT Infrastructure.
+ * DataAssetProperties is a java bean used to create assets associated with data.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,8 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataStoreProperties.class, name = "DataStoreProperties"),
         @JsonSubTypes.Type(value = DataSetProperties.class, name = "DataSetProperties"),
-
-
+        @JsonSubTypes.Type(value = DataFeedProperties.class, name = "DataFeedProperties"),
 })
 public class DataAssetProperties extends AssetProperties
 {
@@ -57,18 +56,6 @@ public class DataAssetProperties extends AssetProperties
     public DataAssetProperties(AssetProperties template)
     {
         super(template);
-    }
-
-
-    /**
-     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
-     * into the extended properties.
-     *
-     * @return asset properties
-     */
-    public AssetProperties cloneToAsset()
-    {
-        return super.cloneToAsset("Asset");
     }
 
 

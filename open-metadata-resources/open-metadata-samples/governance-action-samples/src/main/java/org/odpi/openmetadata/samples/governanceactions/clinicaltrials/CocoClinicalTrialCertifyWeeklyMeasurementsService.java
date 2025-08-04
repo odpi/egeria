@@ -7,13 +7,13 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.SchemaAttributes;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -48,9 +48,10 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
      * Indicates that the survey action service is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the survey service.
+     * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String  methodName = "start";
 
@@ -139,7 +140,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                 OpenMetadataType.CSV_FILE.typeName);
 
 
-                AssetUniverse         assetUniverse  = assetStore.getAssetProperties();
+                AssetElement          assetUniverse  = assetStore.getAssetProperties();
                 CSVFileStoreConnector assetConnector = (CSVFileStoreConnector) connector;
                 long                  recordCount    = assetConnector.getRecordCount();
 
@@ -171,29 +172,43 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                  */
                 annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_VALIDATION.getName());
 
-                String           schemaTypeGUID;
-                SchemaAttributes schemaAttributes;
+                String                              schemaTypeGUID;
+                List<RelatedMetadataElementSummary> schemaAttributes;
 
-                NestedSchemaType nestedSchemaType = getNestedSchemaType(assetUniverse, schemaType);
+                OpenMetadataRootElement nestedSchemaType = getRootSchemaType(assetUniverse, schemaType);
 
                 if (nestedSchemaType == null)
                 {
-                    super.throwMissingSchemaType(assetUniverse.getGUID());
+                    super.throwMissingSchemaType(assetUniverse.getElementHeader().getGUID());
                     return;
                 }
 
-                schemaTypeGUID   = nestedSchemaType.getGUID();
+                schemaTypeGUID   = nestedSchemaType.getElementHeader().getGUID();
                 schemaAttributes = nestedSchemaType.getSchemaAttributes();
 
-                Map<String,String> expectedColumns = new HashMap<>();
+                Map<String,String>   expectedColumns      = new HashMap<>();
                 Map<Integer, String> expectedColumnNames = new HashMap<>();
 
-                while (schemaAttributes.hasNext())
+                if (schemaAttributes != null)
                 {
-                    SchemaAttribute schemaAttribute = schemaAttributes.next();
+                    for (RelatedMetadataElementSummary schemaAttribute: schemaAttributes)
+                    {
+                        if (schemaAttribute.getRelatedElement().getProperties() != null)
+                        {
+                            String displayName = schemaAttribute.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
 
-                    expectedColumns.put(schemaAttribute.getDisplayName(), schemaAttribute.getGUID());
-                    expectedColumnNames.put(schemaAttribute.getElementPosition(), schemaAttribute.getDisplayName());
+                            if (displayName != null)
+                            {
+                                if ((schemaAttribute.getRelationshipProperties() != null) && (schemaAttribute.getRelationshipProperties().get(OpenMetadataProperty.POSITION.name) != null))
+                                {
+                                    int position = Integer.parseInt(schemaAttribute.getRelationshipProperties().get(OpenMetadataProperty.POSITION.name));
+
+                                    expectedColumns.put(displayName, schemaAttribute.getRelatedElement().getElementHeader().getGUID());
+                                    expectedColumnNames.put(position, displayName);
+                                }
+                            }
+                        }
+                    }
                 }
 
                 List<String> actualColumnNames = assetConnector.getColumnNames();
@@ -341,7 +356,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                     angleRightAnnotation.getQualityScore() == 0)
                 {
                     ElementProperties elementProperties = propertyHelper.addDateProperty(null,
-                                                                                         OpenMetadataProperty.START.name,
+                                                                                         OpenMetadataProperty.COVERAGE_START.name,
                                                                                          new Date());
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -373,7 +388,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                          OpenMetadataProperty.GUID.name);
 
                     surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
-                                                                                      assetUniverse.getGUID(),
+                                                                                      assetUniverse.getElementHeader().getGUID(),
                                                                                       certificationTypeGUID,
                                                                                       null,
                                                                                       null,
@@ -381,7 +396,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
 
                     surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
                                                                                       validateDataFilesDataSetGUID,
-                                                                                      assetUniverse.getGUID(),
+                                                                                      assetUniverse.getElementHeader().getGUID(),
                                                                                       null,
                                                                                       null,
                                                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, informationSupplyChainQualifiedName));

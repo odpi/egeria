@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.viewservices.schemamaker.server.SchemaMakerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,8 +96,6 @@ public class SchemaMakerResource
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param schemaTypeGUID unique identifier of the schema type (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -116,351 +114,10 @@ public class SchemaMakerResource
                                            @PathVariable String             urlMarker,
                                            @PathVariable
                                            String                                  schemaTypeGUID,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                           boolean                                 replaceAllProperties,
                                            @RequestBody (required = false)
                                            UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateSchemaType(serverName, urlMarker, schemaTypeGUID, replaceAllProperties, requestBody);
-    }
-
-
-    /**
-     * Attach a profile to a location.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param locationGUID           unique identifier of the location
-     * @param schemaTypeGUID       unique identifier of the schema type
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{schemaTypeGUID}/profile-locations/{locationGUID}/attach")
-    @Operation(summary="linkLocationToProfile",
-            description="Attach a profile to a location.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
-
-    public VoidResponse linkLocationToProfile(@PathVariable
-                                              String                     serverName,
-                                              @PathVariable String             urlMarker,
-                                              @PathVariable
-                                              String schemaTypeGUID,
-                                              @PathVariable
-                                              String locationGUID,
-                                              @RequestBody (required = false)
-                                              RelationshipRequestBody requestBody)
-    {
-        return restAPI.linkLocationToProfile(serverName, urlMarker, schemaTypeGUID, locationGUID, requestBody);
-    }
-
-
-    /**
-     * Detach a schema type from a location.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param schemaTypeGUID       unique identifier of the schema type
-     * @param locationGUID           unique identifier of the location
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{schemaTypeGUID}/profile-locations/{locationGUID}/detach")
-    @Operation(summary="detachLocationFromProfile",
-            description="Detach a schema type from a location.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
-
-    public VoidResponse detachLocationFromProfile(@PathVariable
-                                                  String                    serverName,
-                                                  @PathVariable String             urlMarker,
-                                                  @PathVariable
-                                                  String schemaTypeGUID,
-                                                  @PathVariable
-                                                  String locationGUID,
-                                                  @RequestBody (required = false)
-                                                  MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.detachLocationFromProfile(serverName, urlMarker, schemaTypeGUID, locationGUID, requestBody);
-    }
-
-
-    /**
-     * Attach a person profile to one of its peers.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param personOneGUID          unique identifier of the first person profile
-     * @param personTwoGUID          unique identifier of the second person profile
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{personOneGUID}/peer-persons/{personTwoGUID}/attach")
-    @Operation(summary="linkPeerPerson",
-            description="Attach a person profile to one of its peers.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/personal-profile/"))
-
-    public VoidResponse linkPeerPerson(@PathVariable
-                                       String                     serverName,
-                                       @PathVariable String             urlMarker,
-                                       @PathVariable
-                                       String                     personOneGUID,
-                                       @PathVariable
-                                       String                     personTwoGUID,
-                                       @RequestBody (required = false)
-                                       RelationshipRequestBody requestBody)
-    {
-        return restAPI.linkPeerPerson(serverName, urlMarker, personOneGUID, personTwoGUID, requestBody);
-    }
-
-
-    /**
-     * Detach a person profile from one of its peers.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param personOneGUID          unique identifier of the first person profile
-     * @param personTwoGUID          unique identifier of the second person profile
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{personOneGUID}/peer-persons/{personTwoGUID}/detach")
-    @Operation(summary="detachSupportingDefinition",
-            description="Detach a person profile from one of its peers.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/personal-profile/"))
-
-    public VoidResponse detachPeerPerson(@PathVariable
-                                         String                    serverName,
-                                         @PathVariable String             urlMarker,
-                                         @PathVariable
-                                         String                     personOneGUID,
-                                         @PathVariable
-                                         String                     personTwoGUID,
-                                         @RequestBody (required = false)
-                                         MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.detachPeerPerson(serverName, urlMarker, personOneGUID, personTwoGUID, requestBody);
-    }
-
-
-    /**
-     * Attach a super team to a subteam.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param superTeamGUID          unique identifier of the super team
-     * @param subteamGUID            unique identifier of the subteam
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{superTeamGUID}/team-structures/{subteamGUID}/attach")
-    @Operation(summary="linkTeamStructure",
-            description="Attach a super team to a subteam.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/team"))
-
-    public VoidResponse linkTeamStructure(@PathVariable
-                                          String                     serverName,
-                                          @PathVariable String             urlMarker,
-                                          @PathVariable
-                                          String superTeamGUID,
-                                          @PathVariable
-                                          String subteamGUID,
-                                          @RequestBody (required = false)
-                                          RelationshipRequestBody requestBody)
-    {
-        return restAPI.linkTeamStructure(serverName, urlMarker, superTeamGUID, subteamGUID, requestBody);
-    }
-
-
-    /**
-     * Detach a super team from a subteam.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param superTeamGUID          unique identifier of the super team
-     * @param subteamGUID            unique identifier of the subteam
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{superTeamGUID}/team-structures/{subteamGUID}/detach")
-    @Operation(summary="detachTeamStructure",
-            description="Detach a super team from a subteam.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/team"))
-
-    public VoidResponse detachTeamStructure(@PathVariable
-                                            String                    serverName,
-                                            @PathVariable String             urlMarker,
-                                            @PathVariable
-                                            String superTeamGUID,
-                                            @PathVariable
-                                            String subteamGUID,
-                                            @RequestBody (required = false)
-                                            MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.detachTeamStructure(serverName, urlMarker, superTeamGUID, subteamGUID, requestBody);
-    }
-
-
-    /**
-     * Attach a team to its membership role.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{teamGUID}/team-membership-roles/{personRoleGUID}/attach")
-    @Operation(summary="linkTeamToMembershipRole",
-            description="Attach a team to its membership role.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/team"))
-
-    public VoidResponse linkTeamToMembershipRole(@PathVariable
-                                                 String                     serverName,
-                                                 @PathVariable String             urlMarker,
-                                                 @PathVariable
-                                                 String teamGUID,
-                                                 @PathVariable
-                                                 String personRoleGUID,
-                                                 @RequestBody (required = false)
-                                                 RelationshipRequestBody requestBody)
-    {
-        return restAPI.linkTeamToMembershipRole(serverName, urlMarker, teamGUID, personRoleGUID, requestBody);
-    }
-
-
-    /**
-     * Detach a team profile from its membership role.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{teamGUID}/team-membership-roles/{personRoleGUID}/detach")
-    @Operation(summary="detachTeamFromMembershipRole",
-            description="Detach a schema type from a supporting schema type.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/team"))
-
-    public VoidResponse detachTeamFromMembershipRole(@PathVariable
-                                                     String                    serverName,
-                                                     @PathVariable String             urlMarker,
-                                                     @PathVariable
-                                                     String teamGUID,
-                                                     @PathVariable
-                                                     String personRoleGUID,
-                                                     @RequestBody (required = false)
-                                                     MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.detachTeamFromMembershipRole(serverName, urlMarker, teamGUID, personRoleGUID, requestBody);
-    }
-
-    /**
-     * Attach a team to its leadership role.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{teamGUID}/team-leadership-roles/{personRoleGUID}/attach")
-    @Operation(summary="linkTeamToLeadershipRole",
-            description="Attach a team to its leadership role.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/team"))
-
-    public VoidResponse linkTeamToLeadershipRole(@PathVariable
-                                                 String                     serverName,
-                                                 @PathVariable String             urlMarker,
-                                                 @PathVariable
-                                                 String teamGUID,
-                                                 @PathVariable
-                                                 String personRoleGUID,
-                                                 @RequestBody (required = false)
-                                                 RelationshipRequestBody requestBody)
-    {
-        return restAPI.linkTeamToLeadershipRole(serverName, urlMarker, teamGUID, personRoleGUID, requestBody);
-    }
-
-
-    /**
-     * Detach a team profile from its leadership role.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/schema-types/{teamGUID}/team-leadership-roles/{personRoleGUID}/detach")
-    @Operation(summary="detachTeamFromLeadershipRole",
-            description="Detach a schema type from a supporting schema type.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/team"))
-
-    public VoidResponse detachTeamFromLeadershipRole(@PathVariable
-                                                     String                    serverName,
-                                                     @PathVariable String             urlMarker,
-                                                     @PathVariable
-                                                     String teamGUID,
-                                                     @PathVariable
-                                                     String personRoleGUID,
-                                                     @RequestBody (required = false)
-                                                     MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.detachTeamFromLeadershipRole(serverName, urlMarker, teamGUID, personRoleGUID, requestBody);
+        return restAPI.updateSchemaType(serverName, urlMarker, schemaTypeGUID, requestBody);
     }
 
 
@@ -470,7 +127,6 @@ public class SchemaMakerResource
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param schemaTypeGUID  unique identifier of the element to delete
-     * @param cascadedDelete ca schema types be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -489,12 +145,10 @@ public class SchemaMakerResource
                                            @PathVariable String             urlMarker,
                                            @PathVariable
                                            String                    schemaTypeGUID,
-                                           @RequestParam(required = false, defaultValue = "false")
-                                           boolean                   cascadedDelete,
                                            @RequestBody (required = false)
-                                           MetadataSourceRequestBody requestBody)
+                                             DeleteRequestBody requestBody)
     {
-        return restAPI.deleteSchemaType(serverName, urlMarker, schemaTypeGUID, cascadedDelete, requestBody);
+        return restAPI.deleteSchemaType(serverName, urlMarker, schemaTypeGUID, requestBody);
     }
 
 
@@ -503,8 +157,6 @@ public class SchemaMakerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -518,17 +170,13 @@ public class SchemaMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/schema-type"))
 
-    public SchemaTypesResponse getSchemaTypesByName(@PathVariable
+    public OpenMetadataRootElementsResponse getSchemaTypesByName(@PathVariable
                                                         String            serverName,
                                                         @PathVariable String             urlMarker,
-                                                        @RequestParam (required = false, defaultValue = "0")
-                                                        int                     startFrom,
-                                                        @RequestParam (required = false, defaultValue = "0")
-                                                        int                     pageSize,
                                                         @RequestBody (required = false)
                                                         FilterRequestBody requestBody)
     {
-        return restAPI.getSchemaTypesByName(serverName, urlMarker, startFrom, pageSize, requestBody);
+        return restAPI.getSchemaTypesByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -537,11 +185,6 @@ public class SchemaMakerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -555,23 +198,13 @@ public class SchemaMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/schema-type"))
 
-    public SchemaTypesResponse findSchemaTypes(@PathVariable
+    public OpenMetadataRootElementsResponse findSchemaTypes(@PathVariable
                                                    String                  serverName,
                                                    @PathVariable String             urlMarker,
-                                                   @RequestParam (required = false, defaultValue = "0")
-                                                   int                     startFrom,
-                                                   @RequestParam (required = false, defaultValue = "0")
-                                                   int                     pageSize,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                 startsWith,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                 endsWith,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                 ignoreCase,
                                                    @RequestBody (required = false)
-                                                   FilterRequestBody requestBody)
+                                                   SearchStringRequestBody requestBody)
     {
-        return restAPI.findSchemaTypes(serverName, urlMarker, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findSchemaTypes(serverName, urlMarker,  requestBody);
     }
 
 
@@ -594,13 +227,13 @@ public class SchemaMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/schema-type"))
 
-    public SchemaTypeResponse getSchemaTypeByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getSchemaTypeByGUID(@PathVariable
                                                       String             serverName,
                                                       @PathVariable String             urlMarker,
                                                       @PathVariable
                                                       String             schemaTypeGUID,
                                                       @RequestBody (required = false)
-                                                      AnyTimeRequestBody requestBody)
+                                                                   GetRequestBody requestBody)
     {
         return restAPI.getSchemaTypeByGUID(serverName, urlMarker, schemaTypeGUID, requestBody);
     }
@@ -669,8 +302,6 @@ public class SchemaMakerResource
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param schemaAttributeGUID unique identifier of the schema attribute (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -689,12 +320,10 @@ public class SchemaMakerResource
                                         @PathVariable String             urlMarker,
                                         @PathVariable
                                         String                                  schemaAttributeGUID,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                        boolean                                 replaceAllProperties,
                                         @RequestBody (required = false)
                                         UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateSchemaAttribute(serverName, urlMarker, schemaAttributeGUID, replaceAllProperties, requestBody);
+        return restAPI.updateSchemaAttribute(serverName, urlMarker, schemaAttributeGUID, requestBody);
     }
 
 
@@ -705,7 +334,6 @@ public class SchemaMakerResource
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param schemaAttributeGUID  unique identifier of the element to delete
-     * @param cascadedDelete ca schemaAttributes be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -724,12 +352,10 @@ public class SchemaMakerResource
                                         @PathVariable String             urlMarker,
                                         @PathVariable
                                         String                    schemaAttributeGUID,
-                                        @RequestParam(required = false, defaultValue = "false")
-                                        boolean                   cascadedDelete,
                                         @RequestBody (required = false)
-                                        MetadataSourceRequestBody requestBody)
+                                                  DeleteRequestBody requestBody)
     {
-        return restAPI.deleteSchemaAttribute(serverName, urlMarker, schemaAttributeGUID, cascadedDelete, requestBody);
+        return restAPI.deleteSchemaAttribute(serverName, urlMarker, schemaAttributeGUID, requestBody);
     }
 
 
@@ -738,8 +364,6 @@ public class SchemaMakerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -753,17 +377,13 @@ public class SchemaMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
-    public SchemaAttributesResponse getSchemaAttributesByName(@PathVariable
+    public OpenMetadataRootElementsResponse getSchemaAttributesByName(@PathVariable
                                                   String            serverName,
                                                   @PathVariable String             urlMarker,
-                                                  @RequestParam (required = false, defaultValue = "0")
-                                                  int                     startFrom,
-                                                  @RequestParam (required = false, defaultValue = "0")
-                                                  int                     pageSize,
                                                   @RequestBody (required = false)
                                                   FilterRequestBody requestBody)
     {
-        return restAPI.getSchemaAttributesByName(serverName, urlMarker, startFrom, pageSize, requestBody);
+        return restAPI.getSchemaAttributesByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -772,11 +392,7 @@ public class SchemaMakerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
+
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -790,23 +406,13 @@ public class SchemaMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
-    public SchemaAttributesResponse findSchemaAttributes(@PathVariable
+    public OpenMetadataRootElementsResponse findSchemaAttributes(@PathVariable
                                              String                  serverName,
                                              @PathVariable String             urlMarker,
-                                             @RequestParam (required = false, defaultValue = "0")
-                                             int                     startFrom,
-                                             @RequestParam (required = false, defaultValue = "0")
-                                             int                     pageSize,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 startsWith,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 endsWith,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 ignoreCase,
                                              @RequestBody (required = false)
-                                             FilterRequestBody requestBody)
+                                             SearchStringRequestBody requestBody)
     {
-        return restAPI.findSchemaAttributes(serverName, urlMarker, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findSchemaAttributes(serverName, urlMarker,  requestBody);
     }
 
 
@@ -829,13 +435,13 @@ public class SchemaMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
-    public SchemaAttributeResponse getSchemaAttributeByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getSchemaAttributeByGUID(@PathVariable
                                                 String             serverName,
                                                 @PathVariable String             urlMarker,
                                                 @PathVariable
                                                 String             schemaAttributeGUID,
                                                 @RequestBody (required = false)
-                                                AnyTimeRequestBody requestBody)
+                                                                        GetRequestBody requestBody)
     {
         return restAPI.getSchemaAttributeByGUID(serverName, urlMarker, schemaAttributeGUID, requestBody);
     }

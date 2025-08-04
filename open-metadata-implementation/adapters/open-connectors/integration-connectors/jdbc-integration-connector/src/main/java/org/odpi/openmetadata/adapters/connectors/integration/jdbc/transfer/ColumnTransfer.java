@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseTableElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseColumnProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabasePrimaryKeyProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcColumn;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcPrimaryKey;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Jdbc;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKeyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
 
 import java.sql.JDBCType;
 import java.util.HashMap;
@@ -24,19 +23,25 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Transfers metadata of a column
  */
-public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElement>
+public class ColumnTransfer implements Function<JdbcColumn, OpenMetadataRootElement>
 {
 
     private final Omas omas;
+    private final OpenMetadataRootElement anchorAsset;
     private final AuditLog auditLog;
-    private final List<DatabaseColumnElement> omasColumns;
+    private final List<OpenMetadataRootElement> omasColumns;
     private final List<JdbcPrimaryKey> jdbcPrimaryKeys;
-    private final DatabaseTableElement omasTable;
+    private final OpenMetadataRootElement omasTable;
 
-    public ColumnTransfer(Omas omas, AuditLog auditLog, List<DatabaseColumnElement> omasColumns,
-                          List<JdbcPrimaryKey> jdbcPrimaryKeys, DatabaseTableElement omasTable)
+    public ColumnTransfer(Omas omas,
+                          OpenMetadataRootElement anchorAsset,
+                          AuditLog auditLog,
+                          List<OpenMetadataRootElement> omasColumns,
+                          List<JdbcPrimaryKey> jdbcPrimaryKeys,
+                          OpenMetadataRootElement omasTable)
     {
         this.omas = omas;
+        this.anchorAsset = anchorAsset;
         this.auditLog = auditLog;
         this.omasColumns = omasColumns;
         this.jdbcPrimaryKeys = jdbcPrimaryKeys;
@@ -51,23 +56,27 @@ public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElemen
      * @return column
      */
     @Override
-    public DatabaseColumnElement apply(JdbcColumn jdbcColumn)
+    public OpenMetadataRootElement apply(JdbcColumn jdbcColumn)
     {
-        DatabaseColumnProperties columnProperties = buildColumnProperties(jdbcColumn, omasTable);
+        RelationalColumnProperties columnProperties = buildColumnProperties(jdbcColumn, omasTable);
 
-        Optional<DatabaseColumnElement> omasColumn = omasColumns.stream()
-                .filter(dce -> dce.getDatabaseColumnProperties().getQualifiedName().equals(columnProperties.getQualifiedName()))
+        Optional<OpenMetadataRootElement> omasColumn = omasColumns.stream()
+                .filter(dce -> omas.getQualifiedName(dce).equals(columnProperties.getQualifiedName()))
                 .findFirst();
 
-        if(omasColumn.isPresent()){
+        if (omasColumn.isPresent())
+        {
             removeForeignKey(omasColumn.get());
             omas.updateColumn(omasColumn.get().getElementHeader().getGUID(), columnProperties);
             auditLog.logMessage("Updated column with qualified name " + columnProperties.getQualifiedName(),
                     TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
 
-            this.updateOrRemovePrimaryKey(jdbcPrimaryKeys, jdbcColumn, omasColumn.get().getElementHeader().getGUID(), omasColumn.get().getPrimaryKeyProperties());
+            // todo covert properties
+            //  this.updateOrRemovePrimaryKey(jdbcPrimaryKeys, jdbcColumn, omasColumn.get().getElementHeader().getGUID(), omasColumn.get().getElementHeader().getPrimaryKey().getClassificationProperties());
+
             return omasColumn.get();
         }
+
         Optional<String> columnGuid = omas.createColumn(omasTable.getElementHeader().getGUID(), columnProperties);
         auditLog.logMessage("Created column with qualified name " + columnProperties.getQualifiedName(),
                 TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
@@ -85,17 +94,22 @@ public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElemen
      *
      * @return properties
      */
-    private DatabaseColumnProperties buildColumnProperties(JdbcColumn jdbcColumn, DatabaseTableElement omasTable){
+    private RelationalColumnProperties buildColumnProperties(JdbcColumn              jdbcColumn,
+                                                             OpenMetadataRootElement omasTable)
+    {
         Map<String, String> additionalProperties = new HashMap<>();
+
         additionalProperties.put(Jdbc.JDBC_CATALOG_KEY, jdbcColumn.getTableCat());
         additionalProperties.put(Jdbc.JDBC_SCHEMA_KEY, jdbcColumn.getTableSchem());
         additionalProperties.put(Jdbc.JDBC_TABLE_KEY, jdbcColumn.getTableName());
         additionalProperties.put(Jdbc.JDBC_COLUMN_KEY, jdbcColumn.getColumnName());
 
-        DatabaseColumnProperties properties = new DatabaseColumnProperties();
+        RelationalColumnProperties properties = new RelationalColumnProperties();
+
         properties.setDisplayName(jdbcColumn.getColumnName());
-        properties.setQualifiedName(omasTable.getDatabaseTableProperties().getQualifiedName() + "::" + jdbcColumn.getColumnName());
-        properties.setDataType(extractDataType(jdbcColumn.getDataType()));
+        properties.setQualifiedName(omas.getQualifiedName(omasTable) + "::" + jdbcColumn.getColumnName());
+        // todo add to typeEmbeddedAttribute
+        //  properties.setDataType(extractDataType(jdbcColumn.getDataType()));
         properties.setAdditionalProperties(additionalProperties);
 
         return properties;
@@ -108,11 +122,15 @@ public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElemen
      *
      * @return data type or "<unknown>"
      */
-    private String extractDataType(int jdbcDataType){
+    private String extractDataType(int jdbcDataType)
+    {
         String dataType = "<unknown>";
-        try {
+        try
+        {
             dataType = JDBCType.valueOf(jdbcDataType).getName();
-        }catch(IllegalArgumentException iae){
+        }
+        catch(IllegalArgumentException iae)
+        {
             // do nothing
         }
         return dataType;
@@ -127,18 +145,23 @@ public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElemen
      * @param primaryKeyProperties primary key properties
      */
     private void updateOrRemovePrimaryKey(List<JdbcPrimaryKey> jdbcPrimaryKeys, JdbcColumn jdbcColumn, String columnGuid,
-                                          DatabasePrimaryKeyProperties primaryKeyProperties){
+                                          PrimaryKeyProperties primaryKeyProperties)
+    {
         Optional<JdbcPrimaryKey> jdbcPrimaryKey = jdbcPrimaryKeys.stream().filter(
                 key -> (key.getTableCat() == null ? jdbcColumn.getTableCat() == null : key.getTableCat().equals(jdbcColumn.getTableCat()))
                         && (key.getTableSchem() == null ? jdbcColumn.getTableSchem() == null : key.getTableSchem().equals(jdbcColumn.getTableSchem()))
                         && key.getTableName().equals(jdbcColumn.getTableName())
                         && key.getColumnName().equals(jdbcColumn.getColumnName())
         ).findFirst();
-        if(jdbcPrimaryKey.isEmpty()){
-            if(primaryKeyProperties != null) {
+
+        if (jdbcPrimaryKey.isEmpty())
+        {
+            if (primaryKeyProperties != null)
+            {
                 omas.removePrimaryKey(columnGuid);
                 auditLog.logMessage("Primary key removed from column with guid " + columnGuid, null);
             }
+
             return;
         }
 
@@ -147,16 +170,21 @@ public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElemen
         auditLog.logMessage("Primary key set on column with guid " + columnGuid, null);
     }
 
+
     /**
      * Remove foreign key relationship
      *
      * @param databaseColumnElement column element
      */
-    private void removeForeignKey(DatabaseColumnElement databaseColumnElement){
-        String foreignKeyGuid = databaseColumnElement.getReferencedColumnGUID();
-        if(foreignKeyGuid == null){
+    private void removeForeignKey(OpenMetadataRootElement databaseColumnElement)
+    {
+        String foreignKeyGuid = null; // todo databaseColumnElement.getReferencedColumnGUID();
+
+        if (foreignKeyGuid == null)
+        {
             return;
         }
+
         String primaryKeyGuid = databaseColumnElement.getElementHeader().getGUID();
         omas.removeForeignKey(primaryKeyGuid, foreignKeyGuid);
     }
@@ -168,9 +196,10 @@ public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElemen
      *
      * @return properties
      */
-    private DatabasePrimaryKeyProperties buildPrimaryKeyProperties(JdbcPrimaryKey jdbcPrimaryKey){
-        DatabasePrimaryKeyProperties properties = new DatabasePrimaryKeyProperties();
-        properties.setName(jdbcPrimaryKey.getPkName());
+    private PrimaryKeyProperties buildPrimaryKeyProperties(JdbcPrimaryKey jdbcPrimaryKey)
+    {
+        PrimaryKeyProperties properties = new PrimaryKeyProperties();
+        properties.setDisplayName(jdbcPrimaryKey.getPkName());
 
         return properties;
     }

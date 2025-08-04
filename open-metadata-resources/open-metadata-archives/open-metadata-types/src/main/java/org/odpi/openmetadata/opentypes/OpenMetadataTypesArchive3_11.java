@@ -465,7 +465,6 @@ public class OpenMetadataTypesArchive3_11
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTACT_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -746,7 +745,6 @@ public class OpenMetadataTypesArchive3_11
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -908,7 +906,6 @@ public class OpenMetadataTypesArchive3_11
         this.archiveBuilder.addTypeDefPatch(updateReferenceValueAssignment());
         this.archiveBuilder.addTypeDefPatch(updateValidValuesMapping());
         this.archiveBuilder.addTypeDefPatch(updateValidValuesImplementation());
-        this.archiveBuilder.addTypeDefPatch(updateValidValueMember());
     }
 
 
@@ -975,28 +972,6 @@ public class OpenMetadataTypesArchive3_11
         return typeDefPatch;
     }
 
-
-    private TypeDefPatch updateValidValueMember()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_DEFAULT_VALUE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
     /*

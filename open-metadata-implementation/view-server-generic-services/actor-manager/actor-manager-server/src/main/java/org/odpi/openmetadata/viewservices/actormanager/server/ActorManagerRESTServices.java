@@ -8,14 +8,15 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SupportingDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.*;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -81,36 +82,10 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ActorProfileProperties actorProfileProperties)
                 {
                     response.setGUID(handler.createActorProfile(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
-                                                                requestBody.getAnchorGUID(),
-                                                                requestBody.getIsOwnAnchor(),
-                                                                requestBody.getAnchorScopeGUID(),
+                                                                requestBody,
+                                                                requestBody.getInitialClassifications(),
                                                                 actorProfileProperties,
-                                                                requestBody.getParentGUID(),
-                                                                requestBody.getParentRelationshipTypeName(),
-                                                                requestBody.getParentRelationshipProperties(),
-                                                                requestBody.getParentAtEnd1(),
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    response.setGUID(handler.createActorProfile(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
-                                                                requestBody.getAnchorGUID(),
-                                                                requestBody.getIsOwnAnchor(),
-                                                                requestBody.getAnchorScopeGUID(),
-                                                                null,
-                                                                requestBody.getParentGUID(),
-                                                                requestBody.getParentRelationshipTypeName(),
-                                                                requestBody.getParentRelationshipProperties(),
-                                                                requestBody.getParentAtEnd1(),
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
+                                                                requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -169,23 +144,11 @@ public class ActorManagerRESTServices extends TokenController
                 ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setGUID(handler.createActorProfileFromTemplate(userId,
-                                                                        requestBody.getExternalSourceGUID(),
-                                                                        requestBody.getExternalSourceName(),
-                                                                        requestBody.getAnchorGUID(),
-                                                                        requestBody.getIsOwnAnchor(),
-                                                                        requestBody.getAnchorScopeGUID(),
-                                                                        null,
-                                                                        null,
+                                                                        requestBody,
                                                                         requestBody.getTemplateGUID(),
                                                                         requestBody.getReplacementProperties(),
                                                                         requestBody.getPlaceholderPropertyValues(),
-                                                                        requestBody.getParentGUID(),
-                                                                        requestBody.getParentRelationshipTypeName(),
-                                                                        requestBody.getParentRelationshipProperties(),
-                                                                        requestBody.getParentAtEnd1(),
-                                                                        requestBody.getForLineage(),
-                                                                        requestBody.getForDuplicateProcessing(),
-                                                                        requestBody.getEffectiveTime()));
+                                                                        requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -208,8 +171,6 @@ public class ActorManagerRESTServices extends TokenController
      * @param serverName         name of called server.
      * @param viewServiceURLMarker  view service URL marker
      * @param actorProfileGUID unique identifier of the actor profile (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -220,7 +181,6 @@ public class ActorManagerRESTServices extends TokenController
     public VoidResponse updateActorProfile(String                   serverName,
                                            String                   viewServiceURLMarker,
                                            String                   actorProfileGUID,
-                                           boolean                  replaceAllProperties,
                                            UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateActorProfile";
@@ -245,26 +205,9 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ActorProfileProperties actorProfileProperties)
                 {
                     handler.updateActorProfile(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
                                                actorProfileGUID,
-                                               replaceAllProperties,
-                                               actorProfileProperties,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateActorProfile(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               actorProfileGUID,
-                                               replaceAllProperties,
-                                               null,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
+                                               requestBody,
+                                               actorProfileProperties);
                 }
                 else
                 {
@@ -304,7 +247,7 @@ public class ActorManagerRESTServices extends TokenController
                                               String                  viewServiceURLMarker,
                                               String                  actorProfileGUID,
                                               String                  locationGUID,
-                                              RelationshipRequestBody requestBody)
+                                              NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkLocationToProfile";
 
@@ -327,46 +270,26 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ProfileLocationProperties profileLocationProperties)
                 {
                     handler.linkLocationToProfile(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
                                                   actorProfileGUID,
                                                   locationGUID,
-                                                  profileLocationProperties,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkLocationToProfile(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
-                                                  actorProfileGUID,
-                                                  locationGUID,
-                                                  null,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
+                                                  requestBody,
+                                                  profileLocationProperties);
                 }
                 else
                 {
-                    /*
-                     * Wrong type of properties ...
-                     */
                     restExceptionHandler.handleInvalidPropertiesObject(ProfileLocationProperties.class.getName(), methodName);
                 }
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkLocationToProfile(userId,
-                                              null,
-                                              null,
                                               actorProfileGUID,
                                               locationGUID,
-                                              null,
-                                              false,
-                                              false,
-                                              new Date());
+                                              metadataSourceOptions,
+                                              null);
             }
         }
         catch (Throwable error)
@@ -393,11 +316,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachLocationFromProfile(String                    serverName,
-                                                  String                    viewServiceURLMarker,
-                                                  String                    actorProfileGUID,
-                                                  String                    locationGUID,
-                                                  MetadataSourceRequestBody requestBody)
+    public VoidResponse detachLocationFromProfile(String                   serverName,
+                                                  String                   viewServiceURLMarker,
+                                                  String                   actorProfileGUID,
+                                                  String                   locationGUID,
+                                                  DeleteRequestBody requestBody)
     {
         final String methodName = "detachLocationFromProfile";
 
@@ -416,28 +339,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachLocationFromProfile(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
-                                                  actorProfileGUID,
-                                                  locationGUID,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachLocationFromProfile(userId,
-                                                  null,
-                                                  null,
-                                                  actorProfileGUID,
-                                                  locationGUID,
-                                                  false,
-                                                  false,
-                                                  new Date());
-            }
+            handler.detachLocationFromProfile(userId, actorProfileGUID, locationGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -467,7 +369,7 @@ public class ActorManagerRESTServices extends TokenController
                                        String                  viewServiceURLMarker,
                                        String                  personOneGUID,
                                        String                  personTwoGUID,
-                                       RelationshipRequestBody requestBody)
+                                       NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkPeerPerson";
 
@@ -490,26 +392,10 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof PeerProperties peerProperties)
                 {
                     handler.linkPeerPerson(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
                                            personOneGUID,
                                            personTwoGUID,
-                                           peerProperties,
-                                           requestBody.getForLineage(),
-                                           requestBody.getForDuplicateProcessing(),
-                                           requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkPeerPerson(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
-                                           personOneGUID,
-                                           personTwoGUID,
-                                           null,
-                                           requestBody.getForLineage(),
-                                           requestBody.getForDuplicateProcessing(),
-                                           requestBody.getEffectiveTime());
+                                           requestBody,
+                                           peerProperties);
                 }
                 else
                 {
@@ -518,15 +404,14 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkPeerPerson(userId,
-                                       null,
-                                       null,
                                        personOneGUID,
                                        personTwoGUID,
-                                       null,
-                                       false,
-                                       false,
-                                       new Date());
+                                       metadataSourceOptions,
+                                       null);
             }
         }
         catch (Throwable error)
@@ -553,11 +438,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachPeerPerson(String                    serverName,
-                                         String                    viewServiceURLMarker,
-                                         String                    personOneGUID,
-                                         String                    personTwoGUID,
-                                         MetadataSourceRequestBody requestBody)
+    public VoidResponse detachPeerPerson(String                   serverName,
+                                         String                   viewServiceURLMarker,
+                                         String                   personOneGUID,
+                                         String                   personTwoGUID,
+                                         DeleteRequestBody requestBody)
     {
         final String methodName = "detachPeerPerson";
 
@@ -576,28 +461,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachPeerPerson(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
-                                         personOneGUID,
-                                         personTwoGUID,
-                                         requestBody.getForLineage(),
-                                         requestBody.getForDuplicateProcessing(),
-                                         requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachPeerPerson(userId,
-                                         null,
-                                         null,
-                                         personOneGUID,
-                                         personTwoGUID,
-                                         false,
-                                         false,
-                                         new Date());
-            }
+            handler.detachPeerPerson(userId, personOneGUID, personTwoGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -627,7 +491,7 @@ public class ActorManagerRESTServices extends TokenController
                                           String                  viewServiceURLMarker,
                                           String                  superTeamGUID,
                                           String                  subteamGUID,
-                                          RelationshipRequestBody requestBody)
+                                          NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkTeamStructure";
 
@@ -650,26 +514,10 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof TeamStructureProperties teamStructureProperties)
                 {
                     handler.linkTeamStructure(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
                                               superTeamGUID,
                                               subteamGUID,
-                                              teamStructureProperties,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkTeamStructure(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
-                                              superTeamGUID,
-                                              subteamGUID,
-                                              null,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
+                                              requestBody,
+                                              teamStructureProperties);
                 }
                 else
                 {
@@ -678,15 +526,14 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkTeamStructure(userId,
-                                          null,
-                                          null,
                                           superTeamGUID,
                                           subteamGUID,
-                                          null,
-                                          false,
-                                          false,
-                                          new Date());
+                                          metadataSourceOptions,
+                                          null);
             }
         }
         catch (Throwable error)
@@ -713,11 +560,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachTeamStructure(String                    serverName,
-                                            String                    viewServiceURLMarker,
-                                            String                    superTeamGUID,
-                                            String                    subteamGUID,
-                                            MetadataSourceRequestBody requestBody)
+    public VoidResponse detachTeamStructure(String                   serverName,
+                                            String                   viewServiceURLMarker,
+                                            String                   superTeamGUID,
+                                            String                   subteamGUID,
+                                            DeleteRequestBody requestBody)
     {
         final String methodName = "detachTeamStructure";
 
@@ -736,28 +583,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachTeamStructure(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
-                                            superTeamGUID,
-                                            subteamGUID,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachTeamStructure(userId,
-                                            null,
-                                            null,
-                                            superTeamGUID,
-                                            subteamGUID,
-                                            false,
-                                            false,
-                                            new Date());
-            }
+            handler.detachTeamStructure(userId, superTeamGUID, subteamGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -787,7 +613,7 @@ public class ActorManagerRESTServices extends TokenController
                                            String                  viewServiceURLMarker,
                                            String                  assetGUID,
                                            String                  itProfileGUID,
-                                           RelationshipRequestBody requestBody)
+                                           NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkAssetToProfile";
 
@@ -810,26 +636,10 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ITInfrastructureProfileProperties itInfrastructureProfileProperties)
                 {
                     handler.linkAssetToProfile(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
                                                assetGUID,
                                                itProfileGUID,
-                                               itInfrastructureProfileProperties,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkAssetToProfile(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               assetGUID,
-                                               itProfileGUID,
-                                               null,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
+                                               requestBody,
+                                               itInfrastructureProfileProperties);
                 }
                 else
                 {
@@ -838,15 +648,14 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkAssetToProfile(userId,
-                                           null,
-                                           null,
                                            assetGUID,
                                            itProfileGUID,
-                                           null,
-                                           false,
-                                           false,
-                                           new Date());
+                                           metadataSourceOptions,
+                                           null);
             }
         }
         catch (Throwable error)
@@ -873,11 +682,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachAssetFromProfile(String                    serverName,
-                                               String                    viewServiceURLMarker,
-                                               String                    assetGUID,
-                                               String                    itProfileGUID,
-                                               MetadataSourceRequestBody requestBody)
+    public VoidResponse detachAssetFromProfile(String                   serverName,
+                                               String                   viewServiceURLMarker,
+                                               String                   assetGUID,
+                                               String                   itProfileGUID,
+                                               DeleteRequestBody requestBody)
     {
         final String methodName = "detachAssetFromProfile";
 
@@ -896,28 +705,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachAssetFromProfile(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               assetGUID,
-                                               itProfileGUID,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachAssetFromProfile(userId,
-                                               null,
-                                               null,
-                                               assetGUID,
-                                               itProfileGUID,
-                                               false,
-                                               false,
-                                               new Date());
-            }
+            handler.detachAssetFromProfile(userId, assetGUID, itProfileGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -947,7 +735,7 @@ public class ActorManagerRESTServices extends TokenController
                                                  String                  viewServiceURLMarker,
                                                  String                  teamGUID,
                                                  String                  personRoleGUID,
-                                                 RelationshipRequestBody requestBody)
+                                                 NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkTeamToMembershipRole";
 
@@ -970,26 +758,10 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof TeamMembershipProperties teamMembershipProperties)
                 {
                     handler.linkTeamToMembershipRole(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
                                                      teamGUID,
                                                      personRoleGUID,
-                                                     teamMembershipProperties,
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkTeamToMembershipRole(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     teamGUID,
-                                                     personRoleGUID,
-                                                     null,
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
+                                                     requestBody,
+                                                     teamMembershipProperties);
                 }
                 else
                 {
@@ -998,15 +770,14 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkTeamToMembershipRole(userId,
-                                                 null,
-                                                 null,
                                                  teamGUID,
                                                  personRoleGUID,
-                                                 null,
-                                                 false,
-                                                 false,
-                                                 new Date());
+                                                 metadataSourceOptions,
+                                                 null);
             }
         }
         catch (Throwable error)
@@ -1033,11 +804,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachTeamFromMembershipRole(String                    serverName,
-                                                     String                    viewServiceURLMarker,
-                                                     String                    teamGUID,
-                                                     String                    personRoleGUID,
-                                                     MetadataSourceRequestBody requestBody)
+    public VoidResponse detachTeamFromMembershipRole(String                   serverName,
+                                                     String                   viewServiceURLMarker,
+                                                     String                   teamGUID,
+                                                     String                   personRoleGUID,
+                                                     DeleteRequestBody requestBody)
     {
         final String methodName = "detachTeamFromMembershipRole";
 
@@ -1056,28 +827,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachTeamFromMembershipRole(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     teamGUID,
-                                                     personRoleGUID,
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachTeamFromMembershipRole(userId,
-                                                     null,
-                                                     null,
-                                                     teamGUID,
-                                                     personRoleGUID,
-                                                     false,
-                                                     false,
-                                                     new Date());
-            }
+            handler.detachTeamFromMembershipRole(userId, teamGUID, personRoleGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1107,7 +857,7 @@ public class ActorManagerRESTServices extends TokenController
                                                  String                  viewServiceURLMarker,
                                                  String                  teamGUID,
                                                  String                  personRoleGUID,
-                                                 RelationshipRequestBody requestBody)
+                                                 NewRelationshipRequestBody requestBody)
     {
         final String methodName = "attachSupportingDefinition";
 
@@ -1130,26 +880,10 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof TeamLeadershipProperties teamLeadershipProperties)
                 {
                     handler.linkTeamToLeadershipRole(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
                                                      teamGUID,
                                                      personRoleGUID,
-                                                     teamLeadershipProperties,
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkTeamToLeadershipRole(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     teamGUID,
-                                                     personRoleGUID,
-                                                     null,
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
+                                                     requestBody,
+                                                     teamLeadershipProperties);
                 }
                 else
                 {
@@ -1158,15 +892,14 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkTeamToLeadershipRole(userId,
-                                                 null,
-                                                 null,
                                                  teamGUID,
                                                  personRoleGUID,
-                                                 null,
-                                                 false,
-                                                 false,
-                                                 new Date());
+                                                 metadataSourceOptions,
+                                                 null);
             }
         }
         catch (Throwable error)
@@ -1193,11 +926,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachTeamFromLeadershipRole(String                    serverName,
-                                                     String                    viewServiceURLMarker,
-                                                     String                    teamGUID,
-                                                     String                    personRoleGUID,
-                                                     MetadataSourceRequestBody requestBody)
+    public VoidResponse detachTeamFromLeadershipRole(String                   serverName,
+                                                     String                   viewServiceURLMarker,
+                                                     String                   teamGUID,
+                                                     String                   personRoleGUID,
+                                                     DeleteRequestBody requestBody)
     {
         final String methodName = "detachTeamFromLeadershipRole";
 
@@ -1216,28 +949,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachTeamFromLeadershipRole(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     teamGUID,
-                                                     personRoleGUID,
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachTeamFromLeadershipRole(userId,
-                                                     null,
-                                                     null,
-                                                     teamGUID,
-                                                     personRoleGUID,
-                                                     false,
-                                                     false,
-                                                     new Date());
-            }
+            handler.detachTeamFromLeadershipRole(userId, teamGUID, personRoleGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1255,7 +967,6 @@ public class ActorManagerRESTServices extends TokenController
      * @param serverName         name of called server
      * @param viewServiceURLMarker  view service URL marker
      * @param actorProfileGUID  unique identifier of the element to delete
-     * @param cascadedDelete can actor profiles be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1263,11 +974,10 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteActorProfile(String                    serverName,
-                                           String                    viewServiceURLMarker,
-                                           String                    actorProfileGUID,
-                                           boolean                   cascadedDelete,
-                                           MetadataSourceRequestBody requestBody)
+    public VoidResponse deleteActorProfile(String                   serverName,
+                                           String                   viewServiceURLMarker,
+                                           String                   actorProfileGUID,
+                                           DeleteRequestBody requestBody)
     {
         final String methodName = "deleteActorProfile";
 
@@ -1286,28 +996,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteActorProfile(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
-                                           actorProfileGUID,
-                                           cascadedDelete,
-                                           requestBody.getForLineage(),
-                                           requestBody.getForDuplicateProcessing(),
-                                           requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteActorProfile(userId,
-                                           null,
-                                           null,
-                                           actorProfileGUID,
-                                           cascadedDelete,
-                                           false,
-                                           false,
-                                           new Date());
-            }
+            handler.deleteActorProfile(userId, actorProfileGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1324,8 +1013,6 @@ public class ActorManagerRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1333,18 +1020,16 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ActorProfilesResponse getActorProfilesByName(String            serverName,
-                                                        String            viewServiceURLMarker,
-                                                        int               startFrom,
-                                                        int               pageSize,
-                                                        FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getActorProfilesByName(String            serverName,
+                                                                   String            viewServiceURLMarker,
+                                                                   FilterRequestBody requestBody)
     {
         final String methodName = "getActorProfilesByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ActorProfilesResponse response = new ActorProfilesResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1358,18 +1043,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getActorProfilesByName(userId,
-                                                                    requestBody.getFilter(),
-                                                                    requestBody.getTemplateFilter(),
-                                                                    requestBody.getLimitResultsByStatus(),
-                                                                    requestBody.getAsOfTime(),
-                                                                    requestBody.getSequencingOrder(),
-                                                                    requestBody.getSequencingProperty(),
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    requestBody.getForLineage(),
-                                                                    requestBody.getForDuplicateProcessing(),
-                                                                    requestBody.getEffectiveTime()));
+                response.setElements(handler.getActorProfilesByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -1399,17 +1073,17 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ActorProfileResponse getActorProfileByGUID(String             serverName,
-                                                      String             viewServiceURLMarker,
-                                                      String             actorProfileGUID,
-                                                      AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getActorProfileByGUID(String             serverName,
+                                                                 String             viewServiceURLMarker,
+                                                                 String             actorProfileGUID,
+                                                                 GetRequestBody requestBody)
     {
         final String methodName = "getActorProfileByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ActorProfileResponse response = new ActorProfileResponse();
-        AuditLog                      auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1421,24 +1095,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getActorProfileByGUID(userId,
-                                                                  actorProfileGUID,
-                                                                  requestBody.getAsOfTime(),
-                                                                  requestBody.getForLineage(),
-                                                                  requestBody.getForDuplicateProcessing(),
-                                                                  requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getActorProfileByGUID(userId,
-                                                                  actorProfileGUID,
-                                                                  null,
-                                                                  false,
-                                                                  false,
-                                                                  new Date()));
-            }
+            response.setElement(handler.getActorProfileByGUID(userId, actorProfileGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -1455,11 +1112,6 @@ public class ActorManagerRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1467,21 +1119,16 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ActorProfilesResponse findActorProfiles(String            serverName,
-                                                   String            viewServiceURLMarker,
-                                                   boolean           startsWith,
-                                                   boolean           endsWith,
-                                                   boolean           ignoreCase,
-                                                   int               startFrom,
-                                                   int               pageSize,
-                                                   FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findActorProfiles(String                  serverName,
+                                                              String                  viewServiceURLMarker,
+                                                              SearchStringRequestBody requestBody)
     {
         final String methodName = "findActorProfiles";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ActorProfilesResponse response = new ActorProfilesResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1493,36 +1140,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.findActorProfiles(userId,
-                                                               instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                               requestBody.getTemplateFilter(),
-                                                               requestBody.getLimitResultsByStatus(),
-                                                               requestBody.getAsOfTime(),
-                                                               requestBody.getSequencingOrder(),
-                                                               requestBody.getSequencingProperty(),
-                                                               startFrom,
-                                                               pageSize,
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.findActorProfiles(userId,
-                                                               instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                               TemplateFilter.ALL,
-                                                               null,
-                                                               null,
-                                                               SequencingOrder.CREATION_DATE_RECENT,
-                                                               null,
-                                                               startFrom,
-                                                               pageSize,
-                                                               false,
-                                                               false,
-                                                               new Date()));
-            }
+            response.setElements(handler.findActorProfiles(userId, requestBody.getSearchString(), requestBody));
         }
         catch (Throwable error)
         {
@@ -1532,7 +1150,6 @@ public class ActorManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -1573,36 +1190,10 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ActorRoleProperties actorRoleProperties)
                 {
                     response.setGUID(handler.createActorRole(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             requestBody.getAnchorGUID(),
-                                                             requestBody.getIsOwnAnchor(),
-                                                             requestBody.getAnchorScopeGUID(),
+                                                             requestBody,
+                                                             requestBody.getInitialClassifications(),
                                                              actorRoleProperties,
-                                                             requestBody.getParentGUID(),
-                                                             requestBody.getParentRelationshipTypeName(),
-                                                             requestBody.getParentRelationshipProperties(),
-                                                             requestBody.getParentAtEnd1(),
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    response.setGUID(handler.createActorRole(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             requestBody.getAnchorGUID(),
-                                                             requestBody.getIsOwnAnchor(),
-                                                             requestBody.getAnchorScopeGUID(),
-                                                             null,
-                                                             requestBody.getParentGUID(),
-                                                             requestBody.getParentRelationshipTypeName(),
-                                                             requestBody.getParentRelationshipProperties(),
-                                                             requestBody.getParentAtEnd1(),
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
+                                                             requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -1661,23 +1252,11 @@ public class ActorManagerRESTServices extends TokenController
                 ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setGUID(handler.createActorRoleFromTemplate(userId,
-                                                                     requestBody.getExternalSourceGUID(),
-                                                                     requestBody.getExternalSourceName(),
-                                                                     requestBody.getAnchorGUID(),
-                                                                     requestBody.getIsOwnAnchor(),
-                                                                     requestBody.getAnchorScopeGUID(),
-                                                                     null,
-                                                                     null,
+                                                                     requestBody,
                                                                      requestBody.getTemplateGUID(),
                                                                      requestBody.getReplacementProperties(),
                                                                      requestBody.getPlaceholderPropertyValues(),
-                                                                     requestBody.getParentGUID(),
-                                                                     requestBody.getParentRelationshipTypeName(),
-                                                                     requestBody.getParentRelationshipProperties(),
-                                                                     requestBody.getParentAtEnd1(),
-                                                                     requestBody.getForLineage(),
-                                                                     requestBody.getForDuplicateProcessing(),
-                                                                     requestBody.getEffectiveTime()));
+                                                                     requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -1700,8 +1279,6 @@ public class ActorManagerRESTServices extends TokenController
      * @param serverName         name of called server.
      * @param viewServiceURLMarker  view service URL marker
      * @param actorRoleGUID unique identifier of the actor role (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -1712,7 +1289,6 @@ public class ActorManagerRESTServices extends TokenController
     public VoidResponse updateActorRole(String                   serverName,
                                         String                   viewServiceURLMarker,
                                         String                   actorRoleGUID,
-                                        boolean                  replaceAllProperties,
                                         UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateActorRole";
@@ -1737,26 +1313,9 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ActorRoleProperties actorRoleProperties)
                 {
                     handler.updateActorRole(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
                                             actorRoleGUID,
-                                            replaceAllProperties,
-                                            actorRoleProperties,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateActorRole(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
-                                            actorRoleGUID,
-                                            replaceAllProperties,
-                                            null,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                                            requestBody,
+                                            actorRoleProperties);
                 }
                 else
                 {
@@ -1777,7 +1336,7 @@ public class ActorManagerRESTServices extends TokenController
         return response;
     }
 
-    
+
     /**
      * Attach a team role to a team profile.
      *
@@ -1793,10 +1352,10 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkPersonRoleToProfile(String                  serverName,
-                                            String                  viewServiceURLMarker,
-                                            String                  personRoleGUID,
-                                            String                  personProfileGUID,
-                                            RelationshipRequestBody requestBody)
+                                                String                  viewServiceURLMarker,
+                                                String                  personRoleGUID,
+                                                String                  personProfileGUID,
+                                                NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkPersonRoleToProfile";
 
@@ -1816,49 +1375,30 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
+
                 if (requestBody.getProperties() instanceof PersonRoleAppointmentProperties peerDefinitionProperties)
                 {
                     handler.linkPersonRoleToProfile(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
-                                                personRoleGUID,
-                                                personProfileGUID,
-                                                peerDefinitionProperties,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkPersonRoleToProfile(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
-                                                personRoleGUID,
-                                                personProfileGUID,
-                                                null,
-                                                requestBody.getForLineage(),
-                                                requestBody.getForDuplicateProcessing(),
-                                                requestBody.getEffectiveTime());
+                                                    personRoleGUID,
+                                                    personProfileGUID,
+                                                    requestBody,
+                                                    peerDefinitionProperties);
                 }
                 else
                 {
-                    /*
-                     * Wrong type of properties ...
-                     */
                     restExceptionHandler.handleInvalidPropertiesObject(PersonRoleAppointmentProperties.class.getName(), methodName);
                 }
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkPersonRoleToProfile(userId,
-                                            null,
-                                            null,
-                                            personRoleGUID,
-                                            personProfileGUID,
-                                            null,
-                                            false,
-                                            false,
-                                            new Date());
+                                                personRoleGUID,
+                                                personProfileGUID,
+                                                metadataSourceOptions,
+                                                null);
             }
         }
         catch (Throwable error)
@@ -1885,11 +1425,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachPersonRoleFromProfile(String                    serverName,
-                                                  String                    viewServiceURLMarker,
-                                                  String                    personRoleGUID,
-                                                  String                    personProfileGUID,
-                                                  MetadataSourceRequestBody requestBody)
+    public VoidResponse detachPersonRoleFromProfile(String                   serverName,
+                                                    String                   viewServiceURLMarker,
+                                                    String                   personRoleGUID,
+                                                    String                   personProfileGUID,
+                                                    DeleteRequestBody requestBody)
     {
         final String methodName = "detachPersonRoleFromProfile";
 
@@ -1908,28 +1448,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachPersonRoleFromProfile(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
-                                              personRoleGUID,
-                                              personProfileGUID,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachPersonRoleFromProfile(userId,
-                                              null,
-                                              null,
-                                              personRoleGUID,
-                                              personProfileGUID,
-                                              false,
-                                              false,
-                                              new Date());
-            }
+            handler.detachPersonRoleFromProfile(userId, personRoleGUID, personProfileGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1959,7 +1478,7 @@ public class ActorManagerRESTServices extends TokenController
                                               String                  viewServiceURLMarker,
                                               String                  teamRoleGUID,
                                               String                  teamProfileGUID,
-                                              RelationshipRequestBody requestBody)
+                                              NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkTeamRoleToProfile";
 
@@ -1982,46 +1501,26 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof TeamRoleAppointmentProperties peerDefinitionProperties)
                 {
                     handler.linkTeamRoleToProfile(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
                                                   teamRoleGUID,
                                                   teamProfileGUID,
-                                                  peerDefinitionProperties,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkTeamRoleToProfile(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
-                                                  teamRoleGUID,
-                                                  teamProfileGUID,
-                                                  null,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
+                                                  requestBody,
+                                                  peerDefinitionProperties);
                 }
                 else
                 {
-                    /*
-                     * Wrong type of properties ...
-                     */
                     restExceptionHandler.handleInvalidPropertiesObject(TeamRoleAppointmentProperties.class.getName(), methodName);
                 }
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkTeamRoleToProfile(userId,
-                                              null,
-                                              null,
                                               teamRoleGUID,
                                               teamProfileGUID,
-                                              null,
-                                              false,
-                                              false,
-                                              new Date());
+                                              metadataSourceOptions,
+                                              null);
             }
         }
         catch (Throwable error)
@@ -2048,11 +1547,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachTeamRoleFromProfile(String                    serverName,
-                                                  String                    viewServiceURLMarker,
-                                                  String                    teamRoleGUID,
-                                                  String                    teamProfileGUID,
-                                                  MetadataSourceRequestBody requestBody)
+    public VoidResponse detachTeamRoleFromProfile(String                   serverName,
+                                                  String                   viewServiceURLMarker,
+                                                  String                   teamRoleGUID,
+                                                  String                   teamProfileGUID,
+                                                  DeleteRequestBody requestBody)
     {
         final String methodName = "detachTeamRoleFromProfile";
 
@@ -2071,28 +1570,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachTeamRoleFromProfile(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
-                                                  teamRoleGUID,
-                                                  teamProfileGUID,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachTeamRoleFromProfile(userId,
-                                                  null,
-                                                  null,
-                                                  teamRoleGUID,
-                                                  teamProfileGUID,
-                                                  false,
-                                                  false,
-                                                  new Date());
-            }
+            handler.detachTeamRoleFromProfile(userId, teamRoleGUID, teamProfileGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -2122,7 +1600,7 @@ public class ActorManagerRESTServices extends TokenController
                                                    String                  viewServiceURLMarker,
                                                    String                  itProfileRoleGUID,
                                                    String                  itProfileGUID,
-                                                   RelationshipRequestBody requestBody)
+                                                   NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkITProfileRoleToProfile";
 
@@ -2138,7 +1616,7 @@ public class ActorManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            
+
             ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             if (requestBody != null)
@@ -2147,26 +1625,10 @@ public class ActorManagerRESTServices extends TokenController
                 {
 
                     handler.linkITProfileRoleToProfile(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        itProfileRoleGUID,
                                                        itProfileGUID,
-                                                       properties,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkITProfileRoleToProfile(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
-                                                       itProfileRoleGUID,
-                                                       itProfileGUID,
-                                                       null,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       properties);
                 }
                 else
                 {
@@ -2175,15 +1637,14 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkITProfileRoleToProfile(userId,
-                                                   null,
-                                                   null,
                                                    itProfileRoleGUID,
                                                    itProfileGUID,
-                                                   null,
-                                                   false,
-                                                   false,
-                                                   new Date());
+                                                   metadataSourceOptions,
+                                                   null);
             }
         }
         catch (Throwable error)
@@ -2210,11 +1671,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachITProfileRoleFromProfile(String                    serverName,
-                                                       String                    viewServiceURLMarker,
-                                                       String                    itProfileRoleGUID,
-                                                       String                    itProfileGUID,
-                                                       MetadataSourceRequestBody requestBody)
+    public VoidResponse detachITProfileRoleFromProfile(String                   serverName,
+                                                       String                   viewServiceURLMarker,
+                                                       String                   itProfileRoleGUID,
+                                                       String                   itProfileGUID,
+                                                       DeleteRequestBody requestBody)
     {
         final String methodName = "detachITProfileRoleFromProfile";
 
@@ -2233,28 +1694,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachITProfileRoleFromProfile(userId,
-                                                   requestBody.getExternalSourceGUID(),
-                                                   requestBody.getExternalSourceName(),
-                                                   itProfileRoleGUID,
-                                                   itProfileGUID,
-                                                   requestBody.getForLineage(),
-                                                   requestBody.getForDuplicateProcessing(),
-                                                   requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachITProfileRoleFromProfile(userId,
-                                                   null,
-                                                   null,
-                                                   itProfileRoleGUID,
-                                                   itProfileGUID,
-                                                   false,
-                                                   false,
-                                                   new Date());
-            }
+            handler.detachITProfileRoleFromProfile(userId, itProfileRoleGUID, itProfileGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -2272,7 +1712,6 @@ public class ActorManagerRESTServices extends TokenController
      * @param serverName         name of called server
      * @param viewServiceURLMarker  view service URL marker
      * @param actorRoleGUID  unique identifier of the element to delete
-     * @param cascadedDelete can actor roles be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -2280,11 +1719,10 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteActorRole(String                    serverName,
-                                                   String                    viewServiceURLMarker,
-                                                   String                    actorRoleGUID,
-                                                   boolean                   cascadedDelete,
-                                                   MetadataSourceRequestBody requestBody)
+    public VoidResponse deleteActorRole(String                   serverName,
+                                        String                   viewServiceURLMarker,
+                                        String                   actorRoleGUID,
+                                        DeleteRequestBody requestBody)
     {
         final String methodName = "deleteActorRole";
 
@@ -2303,28 +1741,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteActorRole(userId,
-                                                   requestBody.getExternalSourceGUID(),
-                                                   requestBody.getExternalSourceName(),
-                                                   actorRoleGUID,
-                                                   cascadedDelete,
-                                                   requestBody.getForLineage(),
-                                                   requestBody.getForDuplicateProcessing(),
-                                                   requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteActorRole(userId,
-                                                   null,
-                                                   null,
-                                                   actorRoleGUID,
-                                                   cascadedDelete,
-                                                   false,
-                                                   false,
-                                                   new Date());
-            }
+            handler.deleteActorRole(userId, actorRoleGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -2341,8 +1758,6 @@ public class ActorManagerRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -2350,18 +1765,16 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ActorRolesResponse getActorRolesByName(String            serverName,
-                                                                        String            viewServiceURLMarker,
-                                                                        int               startFrom,
-                                                                        int               pageSize,
-                                                                        FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getActorRolesByName(String            serverName,
+                                                                String            viewServiceURLMarker,
+                                                                FilterRequestBody requestBody)
     {
         final String methodName = "getActorRolesByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ActorRolesResponse response = new ActorRolesResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -2375,18 +1788,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getActorRolesByName(userId,
-                                                                            requestBody.getFilter(),
-                                                                            requestBody.getTemplateFilter(),
-                                                                            requestBody.getLimitResultsByStatus(),
-                                                                            requestBody.getAsOfTime(),
-                                                                            requestBody.getSequencingOrder(),
-                                                                            requestBody.getSequencingProperty(),
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getForLineage(),
-                                                                            requestBody.getForDuplicateProcessing(),
-                                                                            requestBody.getEffectiveTime()));
+                response.setElements(handler.getActorRolesByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -2416,17 +1818,17 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ActorRoleResponse getActorRoleByGUID(String             serverName,
-                                                                      String             viewServiceURLMarker,
-                                                                      String             actorRoleGUID,
-                                                                      AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getActorRoleByGUID(String             serverName,
+                                                              String             viewServiceURLMarker,
+                                                              String             actorRoleGUID,
+                                                              GetRequestBody requestBody)
     {
         final String methodName = "getActorRoleByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ActorRoleResponse response = new ActorRoleResponse();
-        AuditLog                      auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -2438,24 +1840,7 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getActorRoleByGUID(userId,
-                                                                          actorRoleGUID,
-                                                                          requestBody.getAsOfTime(),
-                                                                          requestBody.getForLineage(),
-                                                                          requestBody.getForDuplicateProcessing(),
-                                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getActorRoleByGUID(userId,
-                                                                          actorRoleGUID,
-                                                                          null,
-                                                                          false,
-                                                                          false,
-                                                                          new Date()));
-            }
+            response.setElement(handler.getActorRoleByGUID(userId, actorRoleGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -2472,11 +1857,6 @@ public class ActorManagerRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -2484,20 +1864,15 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ActorRolesResponse findActorRoles(String            serverName,
-                                                                   String            viewServiceURLMarker,
-                                                                   boolean           startsWith,
-                                                                   boolean           endsWith,
-                                                                   boolean           ignoreCase,
-                                                                   int               startFrom,
-                                                                   int               pageSize,
-                                                                   FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findActorRoles(String                  serverName,
+                                                           String                  viewServiceURLMarker,
+                                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findActorRoles";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ActorRolesResponse response = new ActorRolesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                        auditLog = null;
 
         try
@@ -2513,32 +1888,14 @@ public class ActorManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.findActorRoles(userId,
-                                                                       instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                       requestBody.getTemplateFilter(),
-                                                                       requestBody.getLimitResultsByStatus(),
-                                                                       requestBody.getAsOfTime(),
-                                                                       requestBody.getSequencingOrder(),
-                                                                       requestBody.getSequencingProperty(),
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       requestBody.getForLineage(),
-                                                                       requestBody.getForDuplicateProcessing(),
-                                                                       requestBody.getEffectiveTime()));
+                                                            requestBody.getSearchString(),
+                                                            requestBody));
             }
             else
             {
                 response.setElements(handler.findActorRoles(userId,
-                                                                       instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                                       TemplateFilter.ALL,
-                                                                       null,
-                                                                       null,
-                                                                       SequencingOrder.CREATION_DATE_RECENT,
-                                                                       null,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       false,
-                                                                       false,
-                                                                       new Date()));
+                                                            null,
+                                                            null));
             }
         }
         catch (Throwable error)
@@ -2549,7 +1906,6 @@ public class ActorManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -2590,36 +1946,10 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof UserIdentityProperties userIdentityProperties)
                 {
                     response.setGUID(handler.createUserIdentity(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
-                                                                requestBody.getAnchorGUID(),
-                                                                requestBody.getIsOwnAnchor(),
-                                                                requestBody.getAnchorScopeGUID(),
+                                                                requestBody,
+                                                                requestBody.getInitialClassifications(),
                                                                 userIdentityProperties,
-                                                                requestBody.getParentGUID(),
-                                                                requestBody.getParentRelationshipTypeName(),
-                                                                requestBody.getParentRelationshipProperties(),
-                                                                requestBody.getParentAtEnd1(),
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    response.setGUID(handler.createUserIdentity(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
-                                                                requestBody.getAnchorGUID(),
-                                                                requestBody.getIsOwnAnchor(),
-                                                                requestBody.getAnchorScopeGUID(),
-                                                                null,
-                                                                requestBody.getParentGUID(),
-                                                                requestBody.getParentRelationshipTypeName(),
-                                                                requestBody.getParentRelationshipProperties(),
-                                                                requestBody.getParentAtEnd1(),
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
+                                                                requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -2678,23 +2008,11 @@ public class ActorManagerRESTServices extends TokenController
                 UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setGUID(handler.createUserIdentityFromTemplate(userId,
-                                                                        requestBody.getExternalSourceGUID(),
-                                                                        requestBody.getExternalSourceName(),
-                                                                        requestBody.getAnchorGUID(),
-                                                                        requestBody.getIsOwnAnchor(),
-                                                                        requestBody.getAnchorScopeGUID(),
-                                                                        null,
-                                                                        null,
+                                                                        requestBody,
                                                                         requestBody.getTemplateGUID(),
                                                                         requestBody.getReplacementProperties(),
                                                                         requestBody.getPlaceholderPropertyValues(),
-                                                                        requestBody.getParentGUID(),
-                                                                        requestBody.getParentRelationshipTypeName(),
-                                                                        requestBody.getParentRelationshipProperties(),
-                                                                        requestBody.getParentAtEnd1(),
-                                                                        requestBody.getForLineage(),
-                                                                        requestBody.getForDuplicateProcessing(),
-                                                                        requestBody.getEffectiveTime()));
+                                                                        requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -2717,8 +2035,6 @@ public class ActorManagerRESTServices extends TokenController
      * @param serverName         name of called server.
      * @param viewServiceURLMarker  view service URL marker
      * @param userIdentityGUID unique identifier of the user identity (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -2729,7 +2045,6 @@ public class ActorManagerRESTServices extends TokenController
     public VoidResponse updateUserIdentity(String                   serverName,
                                            String                   viewServiceURLMarker,
                                            String                   userIdentityGUID,
-                                           boolean                  replaceAllProperties,
                                            UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateUserIdentity";
@@ -2754,26 +2069,9 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof UserIdentityProperties userIdentityProperties)
                 {
                     handler.updateUserIdentity(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
                                                userIdentityGUID,
-                                               replaceAllProperties,
-                                               userIdentityProperties,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateUserIdentity(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               userIdentityGUID,
-                                               replaceAllProperties,
-                                               null,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
+                                               requestBody,
+                                               userIdentityProperties);
                 }
                 else
                 {
@@ -2813,7 +2111,7 @@ public class ActorManagerRESTServices extends TokenController
                                               String                  viewServiceURLMarker,
                                               String                  userIdentityGUID,
                                               String                  profileGUID,
-                                              RelationshipRequestBody requestBody)
+                                              NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkIdentityToProfile";
 
@@ -2836,26 +2134,10 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ProfileIdentityProperties profileIdentityProperties)
                 {
                     handler.linkIdentityToProfile(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
                                                   userIdentityGUID,
                                                   profileGUID,
-                                                  profileIdentityProperties,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.linkIdentityToProfile(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
-                                                  userIdentityGUID,
-                                                  profileGUID,
-                                                  null,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime());
+                                                  requestBody,
+                                                  profileIdentityProperties);
                 }
                 else
                 {
@@ -2864,15 +2146,14 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
                 handler.linkIdentityToProfile(userId,
-                                              null,
-                                              null,
                                               userIdentityGUID,
                                               profileGUID,
-                                              null,
-                                              false,
-                                              false,
-                                              new Date());
+                                              metadataSourceOptions,
+                                              null);
             }
         }
         catch (Throwable error)
@@ -2899,11 +2180,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachProfileIdentity(String                    serverName,
-                                              String                    viewServiceURLMarker,
-                                              String                    userIdentityGUID,
-                                              String                    profileGUID,
-                                              MetadataSourceRequestBody requestBody)
+    public VoidResponse detachProfileIdentity(String                   serverName,
+                                              String                   viewServiceURLMarker,
+                                              String                   userIdentityGUID,
+                                              String                   profileGUID,
+                                              DeleteRequestBody requestBody)
     {
         final String methodName = "detachProfileIdentity";
 
@@ -2922,28 +2203,7 @@ public class ActorManagerRESTServices extends TokenController
 
             UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachProfileIdentity(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
-                                              userIdentityGUID,
-                                              profileGUID,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachProfileIdentity(userId,
-                                              null,
-                                              null,
-                                              userIdentityGUID,
-                                              profileGUID,
-                                              false,
-                                              false,
-                                              new Date());
-            }
+            handler.detachProfileIdentity(userId, userIdentityGUID, profileGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -2971,7 +2231,7 @@ public class ActorManagerRESTServices extends TokenController
     public VoidResponse addSecurityGroupMembership(String                    serverName,
                                                    String                    viewServiceURLMarker,
                                                    String                    userIdentityGUID,
-                                                   ClassificationRequestBody requestBody)
+                                                   NewClassificationRequestBody requestBody)
     {
         final String methodName = "addSecurityGroupMembership";
 
@@ -2993,25 +2253,7 @@ public class ActorManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof SecurityGroupMembershipProperties properties)
                 {
-                    handler.addSecurityGroupMembership(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
-                                                       userIdentityGUID,
-                                                       properties,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.addSecurityGroupMembership(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
-                                                       userIdentityGUID,
-                                                       null,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                    handler.addSecurityGroupMembership(userId, userIdentityGUID, properties, requestBody);
                 }
                 else
                 {
@@ -3020,14 +2262,10 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
-                handler.addSecurityGroupMembership(userId,
-                                                   null,
-                                                   null,
-                                                   userIdentityGUID,
-                                                   null,
-                                                   false,
-                                                   false,
-                                                   new Date());
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
+                handler.addSecurityGroupMembership(userId, userIdentityGUID, null, metadataSourceOptions);
             }
         }
         catch (Throwable error)
@@ -3053,10 +2291,10 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateSecurityGroupMembership(String                    serverName,
-                                                      String                    viewServiceURLMarker,
-                                                      String                    userIdentityGUID,
-                                                      ClassificationRequestBody requestBody)
+    public VoidResponse updateSecurityGroupMembership(String                          serverName,
+                                                      String                          viewServiceURLMarker,
+                                                      String                          userIdentityGUID,
+                                                      UpdateClassificationRequestBody requestBody)
     {
         final String methodName = "updateSecurityGroupMembership";
 
@@ -3078,25 +2316,7 @@ public class ActorManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof SecurityGroupMembershipProperties properties)
                 {
-                    handler.updateSecurityGroupMembership(userId,
-                                                          requestBody.getExternalSourceGUID(),
-                                                          requestBody.getExternalSourceName(),
-                                                          userIdentityGUID,
-                                                          properties,
-                                                          requestBody.getForLineage(),
-                                                          requestBody.getForDuplicateProcessing(),
-                                                          requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateSecurityGroupMembership(userId,
-                                                          requestBody.getExternalSourceGUID(),
-                                                          requestBody.getExternalSourceName(),
-                                                          userIdentityGUID,
-                                                          null,
-                                                          requestBody.getForLineage(),
-                                                          requestBody.getForDuplicateProcessing(),
-                                                          requestBody.getEffectiveTime());
+                    handler.updateSecurityGroupMembership(userId, userIdentityGUID, requestBody, properties);
                 }
                 else
                 {
@@ -3105,14 +2325,10 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
-                handler.addSecurityGroupMembership(userId,
-                                                   null,
-                                                   null,
-                                                   userIdentityGUID,
-                                                   null,
-                                                   false,
-                                                   false,
-                                                   new Date());
+                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+                metadataSourceOptions.setEffectiveTime(new Date());
+
+                handler.addSecurityGroupMembership(userId, userIdentityGUID, null, metadataSourceOptions);
             }
         }
         catch (Throwable error)
@@ -3160,26 +2376,7 @@ public class ActorManagerRESTServices extends TokenController
 
             UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.removeAllSecurityGroupMembership(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
-                                                         userIdentityGUID,
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.removeAllSecurityGroupMembership(userId,
-                                                         null,
-                                                         null,
-                                                         userIdentityGUID,
-                                                         false,
-                                                         false,
-                                                         new Date());
-            }
+            handler.removeAllSecurityGroupMembership(userId, userIdentityGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -3197,7 +2394,6 @@ public class ActorManagerRESTServices extends TokenController
      * @param serverName         name of called server
      * @param viewServiceURLMarker  view service URL marker
      * @param userIdentityGUID  unique identifier of the element to delete
-     * @param cascadedDelete can user identities be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -3208,8 +2404,7 @@ public class ActorManagerRESTServices extends TokenController
     public VoidResponse deleteUserIdentity(String                    serverName,
                                            String                    viewServiceURLMarker,
                                            String                    userIdentityGUID,
-                                           boolean                   cascadedDelete,
-                                           MetadataSourceRequestBody requestBody)
+                                           DeleteRequestBody requestBody)
     {
         final String methodName = "deleteUserIdentity";
 
@@ -3228,28 +2423,7 @@ public class ActorManagerRESTServices extends TokenController
 
             UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteUserIdentity(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
-                                           userIdentityGUID,
-                                           cascadedDelete,
-                                           requestBody.getForLineage(),
-                                           requestBody.getForDuplicateProcessing(),
-                                           requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteUserIdentity(userId,
-                                           null,
-                                           null,
-                                           userIdentityGUID,
-                                           cascadedDelete,
-                                           false,
-                                           false,
-                                           new Date());
-            }
+            handler.deleteUserIdentity(userId, userIdentityGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -3266,8 +2440,6 @@ public class ActorManagerRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -3275,18 +2447,16 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public UserIdentitiesResponse getUserIdentitiesByName(String            serverName,
-                                                          String            viewServiceURLMarker,
-                                                          int               startFrom,
-                                                          int               pageSize,
-                                                          FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getUserIdentitiesByName(String            serverName,
+                                                                    String            viewServiceURLMarker,
+                                                                    FilterRequestBody requestBody)
     {
         final String methodName = "getUserIdentitiesByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        UserIdentitiesResponse response = new UserIdentitiesResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -3300,18 +2470,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getUserIdentitiesByName(userId,
-                                                                     requestBody.getFilter(),
-                                                                     requestBody.getTemplateFilter(),
-                                                                     requestBody.getLimitResultsByStatus(),
-                                                                     requestBody.getAsOfTime(),
-                                                                     requestBody.getSequencingOrder(),
-                                                                     requestBody.getSequencingProperty(),
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     requestBody.getForLineage(),
-                                                                     requestBody.getForDuplicateProcessing(),
-                                                                     requestBody.getEffectiveTime()));
+                response.setElements(handler.getUserIdentitiesByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -3341,17 +2500,17 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public UserIdentityResponse getUserIdentityByGUID(String             serverName,
-                                                      String             viewServiceURLMarker,
-                                                      String             userIdentityGUID,
-                                                      AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getUserIdentityByGUID(String             serverName,
+                                                                 String             viewServiceURLMarker,
+                                                                 String             userIdentityGUID,
+                                                                 GetRequestBody requestBody)
     {
         final String methodName = "getUserIdentityByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        UserIdentityResponse response = new UserIdentityResponse();
-        AuditLog                      auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -3363,24 +2522,7 @@ public class ActorManagerRESTServices extends TokenController
 
             UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getUserIdentityByGUID(userId,
-                                                                  userIdentityGUID,
-                                                                  requestBody.getAsOfTime(),
-                                                                  requestBody.getForLineage(),
-                                                                  requestBody.getForDuplicateProcessing(),
-                                                                  requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getUserIdentityByGUID(userId,
-                                                                  userIdentityGUID,
-                                                                  null,
-                                                                  false,
-                                                                  false,
-                                                                  new Date()));
-            }
+            response.setElement(handler.getUserIdentityByGUID(userId, userIdentityGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -3397,11 +2539,6 @@ public class ActorManagerRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -3409,21 +2546,16 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public UserIdentitiesResponse findUserIdentities(String            serverName,
-                                                     String            viewServiceURLMarker,
-                                                     boolean           startsWith,
-                                                     boolean           endsWith,
-                                                     boolean           ignoreCase,
-                                                     int               startFrom,
-                                                     int               pageSize,
-                                                     FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findUserIdentities(String                  serverName,
+                                                               String                  viewServiceURLMarker,
+                                                               SearchStringRequestBody requestBody)
     {
         final String methodName = "findUserIdentities";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        UserIdentitiesResponse response = new UserIdentitiesResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog               auditLog = null;
 
         try
         {
@@ -3435,35 +2567,14 @@ public class ActorManagerRESTServices extends TokenController
 
             UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
 
+
             if (requestBody != null)
             {
-                response.setElements(handler.findUserIdentities(userId,
-                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                requestBody.getTemplateFilter(),
-                                                                requestBody.getLimitResultsByStatus(),
-                                                                requestBody.getAsOfTime(),
-                                                                requestBody.getSequencingOrder(),
-                                                                requestBody.getSequencingProperty(),
-                                                                startFrom,
-                                                                pageSize,
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
+                response.setElements(handler.findUserIdentities(userId, requestBody.getSearchString(), requestBody));
             }
             else
             {
-                response.setElements(handler.findUserIdentities(userId,
-                                                                instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                                TemplateFilter.ALL,
-                                                                null,
-                                                                null,
-                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                null,
-                                                                startFrom,
-                                                                pageSize,
-                                                                false,
-                                                                false,
-                                                                new Date()));
+                response.setElements(handler.findUserIdentities(userId, null, null));
             }
         }
         catch (Throwable error)

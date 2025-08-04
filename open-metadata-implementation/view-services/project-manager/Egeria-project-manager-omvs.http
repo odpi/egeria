@@ -296,7 +296,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NullRequestBody"
+  "class" : "DeleteRequestBody"
 }
 
 ###

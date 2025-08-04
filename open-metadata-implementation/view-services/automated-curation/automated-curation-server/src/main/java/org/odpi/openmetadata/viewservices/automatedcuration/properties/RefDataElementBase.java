@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class RefDataElementBase
 {
     private Map<String, List<Map<String, String>>> specification  = null;
-    private ElementStub                            relatedElement = null;
+    private MetadataElementSummary                 relatedElement = null;
 
     /**
      * Default constructor
@@ -60,7 +61,7 @@ public class RefDataElementBase
      *
      * @return element stub object
      */
-    public ElementStub getRelatedElement()
+    public MetadataElementSummary getRelatedElement()
     {
         return relatedElement;
     }
@@ -71,7 +72,7 @@ public class RefDataElementBase
      *
      * @param relatedElement element stub object
      */
-    public void setRelatedElement(ElementStub relatedElement)
+    public void setRelatedElement(MetadataElementSummary relatedElement)
     {
         this.relatedElement = relatedElement;
     }

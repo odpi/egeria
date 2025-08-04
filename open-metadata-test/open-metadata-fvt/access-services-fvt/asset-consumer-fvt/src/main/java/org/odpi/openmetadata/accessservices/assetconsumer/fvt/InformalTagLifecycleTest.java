@@ -325,9 +325,9 @@ public class InformalTagLifecycleTest
             throw new FVTUnexpectedCondition(testCaseName, activityName + "(no tag from Retrieve of " + tagTypeName + " by GUID)");
         }
 
-        if (! tagName.equals(retrievedTag.getName()))
+        if (! tagName.equals(retrievedTag.getDisplayName()))
         {
-            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad tag name <" + retrievedTag.getName() + "> from Retrieve of " + tagTypeName + " by GUID).  Full Tag is " + retrievedElement.toString());
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad tag name <" + retrievedTag.getDisplayName() + "> from Retrieve of " + tagTypeName + " by GUID).  Full Tag is " + retrievedElement.toString());
         }
         if (! tagDescription.equals(retrievedTag.getDescription()))
         {

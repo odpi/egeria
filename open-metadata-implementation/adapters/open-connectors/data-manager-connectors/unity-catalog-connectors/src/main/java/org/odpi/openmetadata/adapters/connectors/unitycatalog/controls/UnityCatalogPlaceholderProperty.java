@@ -174,7 +174,7 @@ public enum UnityCatalogPlaceholderProperty
      */
     public String getPlaceholder()
     {
-        return "{{" + name + "}}";
+        return "~{" + name + "}~";
     }
 
 

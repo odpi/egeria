@@ -212,8 +212,12 @@ public class OMAGServerConfigurationClient
 
     /**
      * Set up the default event bus for embedding in event-driven connector.   The resulting connector will
-     * be used in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
-     * the local repository's event mapper.
+     * be used in the OMRS Topic Connector for each cohort, the open metadata out topic and
+     * the local repositories' event mapper.
+     * When the event bus is configured, it is used only on future configuration.  It does not affect
+     * existing configuration.
+     * If openMetadataOutTopic is null, a default connection for this topic is created.  It can be removed using
+     * clearOpenMetadataOutTopic.
      *
      * @param connectorProvider  connector provider for the event bus (if it is null then Kafka is assumed).
      * @param topicURLRoot the common root of the topics used by the open metadata server.

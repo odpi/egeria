@@ -3,14 +3,11 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,16 +26,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = ReferenceableProperties.class, name = "ReferenceableProperties"),
-                @JsonSubTypes.Type(value = GovernanceDefinitionProperties.class, name = "GovernanceDefinitionProperties"),
                 @JsonSubTypes.Type(value = InformalTagProperties.class, name = "InformalTagProperties"),
-                @JsonSubTypes.Type(value = RatingProperties.class, name = "RatingProperties"),
                 @JsonSubTypes.Type(value = LikeProperties.class, name = "LikeProperties"),
+                @JsonSubTypes.Type(value = RatingProperties.class, name = "RatingProperties"),
+                @JsonSubTypes.Type(value = ReferenceableProperties.class, name = "ReferenceableProperties"),
+                @JsonSubTypes.Type(value = SearchKeywordProperties.class, name = "SearchKeywordProperties"),
         })
-public class OpenMetadataRootProperties
+public class OpenMetadataRootProperties extends EntityProperties
 {
-    private Date                 effectiveFrom        = null;
-    private Date                 effectiveTo          = null;
     private String               typeName             = null;
     private Map<String, Object>  extendedProperties   = null;
 
@@ -58,57 +53,13 @@ public class OpenMetadataRootProperties
      */
     public OpenMetadataRootProperties(OpenMetadataRootProperties template)
     {
+        super(template);
+
         if (template != null)
         {
-            effectiveFrom        = template.getEffectiveFrom();
-            effectiveTo          = template.getEffectiveTo();
             typeName             = template.getTypeName();
             extendedProperties   = template.getExtendedProperties();
         }
-    }
-
-
-    /**
-     * Return the date/time that this element is effective from (null means effective from the epoch).
-     *
-     * @return date object
-     */
-    public Date getEffectiveFrom()
-    {
-        return effectiveFrom;
-    }
-
-
-    /**
-     * Set up the date/time that this element is effective from (null means effective from the epoch).
-     *
-     * @param effectiveFrom date object
-     */
-    public void setEffectiveFrom(Date effectiveFrom)
-    {
-        this.effectiveFrom = effectiveFrom;
-    }
-
-
-    /**
-     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
-     *
-     * @return date object
-     */
-    public Date getEffectiveTo()
-    {
-        return effectiveTo;
-    }
-
-
-    /**
-     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
-     *
-     * @param effectiveTo date object
-     */
-    public void setEffectiveTo(Date effectiveTo)
-    {
-        this.effectiveTo = effectiveTo;
     }
 
 
@@ -167,11 +118,9 @@ public class OpenMetadataRootProperties
     public String toString()
     {
         return "OpenMetadataRootProperties{" +
-                "effectiveFrom=" + effectiveFrom +
-                ", effectiveTo=" + effectiveTo +
-                ", typeName='" + typeName + '\'' +
+                "typeName='" + typeName + '\'' +
                 ", extendedProperties=" + extendedProperties +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -184,21 +133,12 @@ public class OpenMetadataRootProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         OpenMetadataRootProperties that = (OpenMetadataRootProperties) objectToCompare;
-        return Objects.equals(effectiveFrom, that.effectiveFrom) &&
-                       Objects.equals(effectiveTo, that.effectiveTo) &&
-                       Objects.equals(typeName, that.typeName) &&
-                       Objects.equals(extendedProperties, that.extendedProperties);
+        return Objects.equals(typeName, that.typeName) && Objects.equals(extendedProperties, that.extendedProperties);
     }
-
 
     /**
      * Return hash code based on properties.
@@ -208,6 +148,6 @@ public class OpenMetadataRootProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveFrom, effectiveTo, typeName, extendedProperties);
+        return Objects.hash(super.hashCode(), typeName, extendedProperties);
     }
 }

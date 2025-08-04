@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction.client;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ public interface GovernanceCompletionInterface
      *
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request
-     * @param engineActionStatus new status enum
+     * @param activityStatus new status enum
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
@@ -32,9 +32,9 @@ public interface GovernanceCompletionInterface
      */
     void updateEngineActionStatus(String             userId,
                                   String             engineActionGUID,
-                                  EngineActionStatus engineActionStatus) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+                                  ActivityStatus activityStatus) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
@@ -94,7 +94,7 @@ public interface GovernanceCompletionInterface
      */
     void updateActionTargetStatus(String             userId,
                                   String             actionTargetGUID,
-                                  EngineActionStatus status,
+                                  ActivityStatus status,
                                   Date               startDate,
                                   Date               completionDate,
                                   String             completionMessage) throws InvalidParameterException,

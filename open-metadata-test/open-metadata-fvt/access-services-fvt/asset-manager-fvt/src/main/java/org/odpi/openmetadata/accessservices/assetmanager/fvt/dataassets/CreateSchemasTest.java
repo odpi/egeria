@@ -334,10 +334,10 @@ public class CreateSchemasTest
 
             AssetManagerProperties properties = new AssetManagerProperties();
             properties.setQualifiedName(assetManagerName);
-            properties.setResourceName(assetManagerDisplayName);
-            properties.setResourceDescription(assetManagerDescription);
+            properties.setDisplayName(assetManagerDisplayName);
+            properties.setDescription(assetManagerDescription);
             properties.setDeployedImplementationType(assetManagerTypeDescription);
-            properties.setVersion(assetManagerVersion);
+            properties.setVersionIdentifier(assetManagerVersion);
 
             String assetManagerGUID = client.createExternalAssetManager(userId, properties);
 
@@ -451,7 +451,7 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! assetShortName.equals(retrievedAsset.getName()))
+            if (! assetShortName.equals(retrievedAsset.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from Retrieve)");
             }
@@ -459,7 +459,7 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad resource from Retrieve)");
             }
-            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
+            if (! assetDescription.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -488,7 +488,7 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! assetShortName.equals(retrievedAsset.getName()))
+            if (! assetShortName.equals(retrievedAsset.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from RetrieveByName)");
             }
@@ -496,7 +496,7 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad resourceName from RetrieveByName)");
             }
-            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
+            if (! assetDescription.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -539,9 +539,9 @@ public class CreateSchemasTest
             DataAssetProperties properties = new DataAssetProperties();
 
             properties.setQualifiedName(assetName);
-            properties.setName(assetShortName);
+            properties.setDisplayName(assetShortName);
             properties.setResourceName(assetResourceName);
-            properties.setResourceDescription(assetDescription);
+            properties.setDescription(assetDescription);
             
             properties.setTypeName("AvroFile");
 
@@ -1250,9 +1250,9 @@ public class CreateSchemasTest
     {
         if (metadataElement.getElementHeader() != null)
         {
-            if (metadataElement.getElementHeader().getClassifications() != null)
+            if (metadataElement.getElementHeader().getOtherClassifications() != null)
             {
-                for (ElementClassification classification : metadataElement.getElementHeader().getClassifications())
+                for (ElementClassification classification : metadataElement.getElementHeader().getOtherClassifications())
                 {
                     if ("Anchors".equals(classification.getClassificationName()))
                     {

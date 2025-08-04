@@ -1,26 +1,25 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project */
-/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.accessservices.assetowner.client.OpenGovernanceClient;
-import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
+
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
-import org.odpi.openmetadata.frameworkservices.omf.rest.TemplateRequestBody;
-import org.odpi.openmetadata.frameworkservices.omf.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
+import org.odpi.openmetadata.frameworkservices.omf.rest.ExternalIdEffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.frameworkservices.omf.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.frameworkservices.omf.rest.UpdateMetadataCorrelatorsRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -47,6 +46,7 @@ public class AutomatedCurationRESTServices extends TokenController
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AutomatedCurationRESTServices.class),
                                                                             instanceHandler.getServiceName());
 
+    private final OpenMetadataRelationshipBuilder relationshipBuilder = new OpenMetadataRelationshipBuilder();
 
     /**
      * Default constructor
@@ -64,8 +64,6 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the list of deployed implementation type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -73,13 +71,8 @@ public class AutomatedCurationRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public TechnologyTypeSummaryListResponse findTechnologyTypes(String            serverName,
-                                                                 boolean           startsWith,
-                                                                 boolean           endsWith,
-                                                                 boolean           ignoreCase,
-                                                                 int               startFrom,
-                                                                 int               pageSize,
-                                                                 FilterRequestBody requestBody)
+    public TechnologyTypeSummaryListResponse findTechnologyTypes(String                  serverName,
+                                                                 SearchStringRequestBody requestBody)
     {
         final String methodName = "findTechnologyTypes";
 
@@ -99,27 +92,11 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.findTechnologyTypes(userId,
-                                                                 instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 requestBody.getEffectiveTime(),
-                                                                 requestBody.getLimitResultsByStatus(),
-                                                                 requestBody.getAsOfTime(),
-                                                                 requestBody.getSequencingOrder(),
-                                                                 requestBody.getSequencingProperty()));
+                response.setElements(handler.findTechnologyTypes(userId, requestBody.getSearchString(), requestBody));
             }
             else
             {
-                response.setElements(handler.findTechnologyTypes(userId,
-                                                                 instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 new Date(),
-                                                                 null,
-                                                                 null,
-                                                                 SequencingOrder.CREATION_DATE_OLDEST,
-                                                                 null));
+                response.setElements(handler.findTechnologyTypes(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -137,8 +114,6 @@ public class AutomatedCurationRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param typeName the type name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody does the value start with the supplied string?
      *
      * @return list of matching metadata elements or
@@ -149,8 +124,6 @@ public class AutomatedCurationRESTServices extends TokenController
 
     public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(String             serverName,
                                                                                    String             typeName,
-                                                                                   int                startFrom,
-                                                                                   int                pageSize,
                                                                                    ResultsRequestBody requestBody)
     {
         final String methodName = "getTechnologyTypesForOpenMetadataType";
@@ -177,24 +150,12 @@ public class AutomatedCurationRESTServices extends TokenController
                 {
                     response.setElements(handler.getTechnologyTypesForOpenMetadataType(userId,
                                                                                        typeName,
-                                                                                       startFrom,
-                                                                                       pageSize,
-                                                                                       requestBody.getEffectiveTime(),
-                                                                                       requestBody.getLimitResultsByStatus(),
-                                                                                       requestBody.getAsOfTime(),
-                                                                                       requestBody.getSequencingOrder(),
-                                                                                       requestBody.getSequencingProperty()));
+                                                                                       requestBody));
                 }
                 else
                 {
                     response.setElements(handler.getTechnologyTypesForOpenMetadataType(userId,
                                                                                        typeName,
-                                                                                       startFrom,
-                                                                                       pageSize,
-                                                                                       new Date(),
-                                                                                       null,
-                                                                                       null,
-                                                                                       SequencingOrder.CREATION_DATE_OLDEST,
                                                                                        null));
                 }
             }
@@ -251,11 +212,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
                     response.setElement(handler.getTechnologyTypeDetail(userId,
                                                                         requestBody.getFilter(),
-                                                                        requestBody.getEffectiveTime(),
-                                                                        requestBody.getLimitResultsByStatus(),
-                                                                        requestBody.getAsOfTime(),
-                                                                        requestBody.getSequencingOrder(),
-                                                                        requestBody.getSequencingProperty()));
+                                                                        requestBody));
                 }
                 else
                 {
@@ -315,11 +272,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
                     response.setElement(handler.getTechnologyTypeHierarchy(userId,
                                                                            requestBody.getFilter(),
-                                                                           requestBody.getEffectiveTime(),
-                                                                           requestBody.getLimitResultsByStatus(),
-                                                                           requestBody.getAsOfTime(),
-                                                                           requestBody.getSequencingOrder(),
-                                                                           requestBody.getSequencingProperty()));
+                                                                           requestBody));
 
                     response.setMermaidString(handler.getTechnologyTypeHierarchyMermaidString(response.getElement()));
                 }
@@ -347,9 +300,6 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param getTemplates boolean indicating whether templates or non-template elements should be returned.
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -358,9 +308,6 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public TechnologyTypeElementListResponse getTechnologyTypeElements(String            serverName,
-                                                                       int               startFrom,
-                                                                       int               pageSize,
-                                                                       boolean           getTemplates,
                                                                        FilterRequestBody requestBody)
     {
         final String methodName = "getTechnologyTypeElements";
@@ -387,14 +334,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
                     response.setElements(technologyTypeHandler.getTechnologyTypeElements(userId,
                                                                                          requestBody.getFilter(),
-                                                                                         getTemplates,
-                                                                                         startFrom,
-                                                                                         pageSize,
-                                                                                         requestBody.getEffectiveTime(),
-                                                                                         requestBody.getLimitResultsByStatus(),
-                                                                                         requestBody.getAsOfTime(),
-                                                                                         requestBody.getSequencingOrder(),
-                                                                                         requestBody.getSequencingProperty()));
+                                                                                         requestBody));
                 }
                 else
                 {
@@ -452,96 +392,14 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                EgeriaOpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                 response.setGUID(openHandler.createMetadataElementFromTemplate(userId,
-                                                                               requestBody.getExternalSourceGUID(),
-                                                                               requestBody.getExternalSourceName(),
-                                                                               requestBody.getTypeName(),
-                                                                               requestBody.getAnchorGUID(),
-                                                                               requestBody.getIsOwnAnchor(),
-                                                                               requestBody.getAnchorScopeGUID(),
-                                                                               requestBody.getEffectiveFrom(),
-                                                                               requestBody.getEffectiveTo(),
+                                                                               requestBody,
                                                                                requestBody.getTemplateGUID(),
                                                                                requestBody.getReplacementProperties(),
                                                                                requestBody.getPlaceholderPropertyValues(),
-                                                                               requestBody.getParentGUID(),
-                                                                               requestBody.getParentRelationshipTypeName(),
-                                                                               requestBody.getParentRelationshipProperties(),
-                                                                               requestBody.getParentAtEnd1(),
-                                                                               requestBody.getForLineage(),
-                                                                               requestBody.getForDuplicateProcessing(),
-                                                                               requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /**
-     * Create a new element from a template.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody information about the template
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GUIDResponse getElementFromTemplate(String              serverName,
-                                               TemplateRequestBody requestBody)
-    {
-        final String methodName = "getElementFromTemplate";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog                     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                OpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
-
-                response.setGUID(openHandler.getMetadataElementFromTemplate(userId,
-                                                                            requestBody.getExternalSourceGUID(),
-                                                                            requestBody.getExternalSourceName(),
-                                                                            requestBody.getTypeName(),
-                                                                            requestBody.getAnchorGUID(),
-                                                                            requestBody.getIsOwnAnchor(),
-                                                                            requestBody.getAnchorScopeGUID(),
-                                                                            requestBody.getEffectiveFrom(),
-                                                                            requestBody.getEffectiveTo(),
-                                                                            requestBody.getTemplateGUID(),
-                                                                            requestBody.getReplacementProperties(),
-                                                                            requestBody.getPlaceholderPropertyValues(),
-                                                                            requestBody.getParentGUID(),
-                                                                            requestBody.getParentRelationshipTypeName(),
-                                                                            requestBody.getParentRelationshipProperties(),
-                                                                            requestBody.getParentAtEnd1(),
-                                                                            requestBody.getForLineage(),
-                                                                            requestBody.getForDuplicateProcessing(),
-                                                                            requestBody.getEffectiveTime()));
+                                                                               relationshipBuilder.getNewElementProperties(requestBody.getParentRelationshipProperties())));
             }
             else
             {
@@ -816,11 +674,6 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the list of governance action type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -829,12 +682,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionTypesResponse findGovernanceActionTypes(String                  serverName,
-                                                                   boolean                 startsWith,
-                                                                   boolean                 endsWith,
-                                                                   boolean                 ignoreCase,
-                                                                   int                     startFrom,
-                                                                   int                     pageSize,
-                                                                   FilterRequestBody       requestBody)
+                                                                   SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceActionTypes";
 
@@ -855,18 +703,14 @@ public class AutomatedCurationRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.findGovernanceActionTypes(userId,
-                                                                       instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       requestBody.getEffectiveTime()));
+                                                                       requestBody.getSearchString(),
+                                                                       requestBody));
             }
             else
             {
                 response.setElements(handler.findGovernanceActionTypes(userId,
-                                                                       instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       new Date()));
+                                                                       null,
+                                                                       null));
             }
         }
         catch (Throwable error)
@@ -884,8 +728,6 @@ public class AutomatedCurationRESTServices extends TokenController
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -894,8 +736,6 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionTypesResponse getGovernanceActionTypesByName(String            serverName,
-                                                                        int               startFrom,
-                                                                        int               pageSize,
                                                                         FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionTypesByName";
@@ -918,9 +758,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
                 response.setElements(handler.getGovernanceActionTypesByName(userId,
                                                                             requestBody.getFilter(),
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getEffectiveTime()));
+                                                                            requestBody));
             }
             else
             {
@@ -989,11 +827,6 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the list of governance action process metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1002,12 +835,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionProcessElementsResponse findGovernanceActionProcesses(String                  serverName,
-                                                                                 boolean                 startsWith,
-                                                                                 boolean                 endsWith,
-                                                                                 boolean                 ignoreCase,
-                                                                                 int                     startFrom,
-                                                                                 int                     pageSize,
-                                                                                 FilterRequestBody       requestBody)
+                                                                                 SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceActionProcesses";
 
@@ -1028,18 +856,14 @@ public class AutomatedCurationRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.findGovernanceActionProcesses(userId,
-                                                                           instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                           startFrom,
-                                                                           pageSize,
-                                                                           requestBody.getEffectiveTime()));
+                                                                           requestBody.getSearchString(),
+                                                                           requestBody));
             }
             else
             {
                 response.setElements(handler.findGovernanceActionProcesses(userId,
-                                                                           instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                                           startFrom,
-                                                                           pageSize,
-                                                                           new Date()));
+                                                                           null,
+                                                                           null));
             }
         }
         catch (Throwable error)
@@ -1057,8 +881,6 @@ public class AutomatedCurationRESTServices extends TokenController
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -1067,8 +889,6 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(String            serverName,
-                                                                                      int               startFrom,
-                                                                                      int               pageSize,
                                                                                       FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessesByName";
@@ -1089,11 +909,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
-                response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                requestBody.getFilter(),
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                requestBody.getEffectiveTime()));
+                response.setElements(handler.getGovernanceActionProcessesByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -1390,11 +1206,6 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the list of engine action metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1402,13 +1213,8 @@ public class AutomatedCurationRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public EngineActionElementsResponse findEngineActions(String            serverName,
-                                                          boolean           startsWith,
-                                                          boolean           endsWith,
-                                                          boolean           ignoreCase,
-                                                          int               startFrom,
-                                                          int               pageSize,
-                                                          FilterRequestBody requestBody)
+    public EngineActionElementsResponse findEngineActions(String                  serverName,
+                                                          SearchStringRequestBody requestBody)
     {
         final String methodName = "findEngineActions";
 
@@ -1429,16 +1235,12 @@ public class AutomatedCurationRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.findEngineActions(userId,
-                                                               instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                               startFrom,
-                                                               pageSize));
+                                                               requestBody.getSearchString(),
+                                                               requestBody));
             }
             else
             {
-                response.setElements(handler.findEngineActions(userId,
-                                                               instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                               startFrom,
-                                                               pageSize));
+                response.setElements(handler.findEngineActions(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -1456,8 +1258,6 @@ public class AutomatedCurationRESTServices extends TokenController
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -1466,8 +1266,6 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public EngineActionElementsResponse getEngineActionsByName(String            serverName,
-                                                               int               startFrom,
-                                                               int               pageSize,
                                                                FilterRequestBody requestBody)
     {
         final String methodName = "getEngineActionsByName";
@@ -1488,10 +1286,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
-                response.setElements(handler.getEngineActionsByName(userId,
-                                                                    requestBody.getFilter(),
-                                                                    startFrom,
-                                                                    pageSize));
+                response.setElements(handler.getEngineActionsByName(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -1904,7 +1699,7 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
-                if ((requestBody.getMetadataCorrelationProperties().getExternalIdentifier() != null) &&
+                if ((requestBody.getMetadataCorrelationProperties().getIdentifier() != null) &&
                         (requestBody.getMetadataCorrelationProperties().getExternalScopeGUID() != null) &&
                         (requestBody.getMetadataCorrelationProperties().getExternalScopeName() != null))
                 {
@@ -1913,7 +1708,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                         requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                                         openMetadataElementGUID,
                                                                         openMetadataElementTypeName,
-                                                                        requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                                        requestBody.getMetadataCorrelationProperties().getIdentifier(),
                                                                         forLineage,
                                                                         forDuplicateProcessing,
                                                                         requestBody.getEffectiveTime()));
@@ -1998,7 +1793,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                  openMetadataElementGUID,
                                                  openMetadataElementTypeName,
-                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                 requestBody.getMetadataCorrelationProperties().getIdentifier(),
                                                  forLineage,
                                                  forDuplicateProcessing,
                                                  requestBody.getEffectiveTime());
@@ -2146,7 +1941,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 handler.confirmSynchronization(userId,
                                                openMetadataElementGUID,
                                                openMetadataElementTypeName,
-                                               requestBody.getExternalIdentifier(),
+                                               requestBody.getIdentifier(),
                                                requestBody.getExternalScopeGUID(),
                                                requestBody.getExternalScopeName());
             }
@@ -2202,7 +1997,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                      int                           pageSize,
                                                                      boolean                       forLineage,
                                                                      boolean                       forDuplicateProcessing,
-                                                                     EffectiveTimeQueryRequestBody requestBody)
+                                                                     ExternalIdEffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getExternalIdentifiers";
 
@@ -2308,7 +2103,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 response.setElementHeaders(handler.getElementsForExternalIdentifier(userId,
                                                                                     requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
                                                                                     requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
-                                                                                    requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                                                    requestBody.getMetadataCorrelationProperties().getIdentifier(),
                                                                                     startFrom,
                                                                                     pageSize,
                                                                                     forLineage,

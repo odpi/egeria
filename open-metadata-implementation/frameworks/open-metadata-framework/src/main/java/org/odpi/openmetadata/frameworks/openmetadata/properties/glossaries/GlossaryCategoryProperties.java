@@ -20,10 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossaryCategoryProperties extends ReferenceableProperties
 {
-    private String displayName = null;
-    private String description = null;
-
-
     /**
      * Default constructor
      */
@@ -39,61 +35,10 @@ public class GlossaryCategoryProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public GlossaryCategoryProperties(GlossaryCategoryProperties template)
+    public GlossaryCategoryProperties(ReferenceableProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-        }
     }
-
-
-    /**
-     * Return a human memorable name for the glossary category.
-     *
-     * @return string  name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up a human memorable name for the glossary category.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the glossary category.
-     *
-     * @return string text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the glossary category.
-     *
-     * @param description string text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
 
 
     /**
@@ -104,9 +49,6 @@ public class GlossaryCategoryProperties extends ReferenceableProperties
     @Override
     public String toString()
     {
-        return "GlossaryCategoryProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                "} " + super.toString();
+        return "GlossaryCategoryProperties{} " + super.toString();
     }
 }

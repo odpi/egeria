@@ -236,7 +236,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.NAME.name,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
 
@@ -254,7 +254,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.CAPABILITY_VERSION.name,
+                                                                  OpenMetadataProperty.VERSION_IDENTIFIER.name,
                                                                   version,
                                                                   methodName);
 

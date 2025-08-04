@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * DeleteAssetGovernanceActionProvider is the OCF connector provider for the "Delete Asset"
@@ -37,12 +38,11 @@ public class DeleteAssetGovernanceActionProvider extends GovernanceActionService
 
         super.supportedRequestParameters = ManageAssetRequestParameter.getRequestParameterTypes();
         super.producedGuards = ManageAssetGuard.getGuardTypes();
-        super.producedActionTargetTypes = Arrays.asList(new ActionTargetType[]{ActionTarget.DELETED_ASSET.getActionTargetType()});
+        super.producedActionTargetTypes = List.of(ActionTarget.DELETED_ASSET.getActionTargetType());
 
         super.setConnectorClassName(connectorClassName);
 
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeQualifiedName);
         connectorType.setDisplayName(connectorTypeDisplayName);

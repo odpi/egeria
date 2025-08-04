@@ -2,17 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.admin;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
-import org.odpi.openmetadata.engineservices.governanceaction.listener.GovernanceServerOutTopicListener;
+import org.odpi.openmetadata.engineservices.governanceaction.listener.OpenMetadataOutTopicListener;
 import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataEventClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 
@@ -107,14 +108,15 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
 
             }
 
-            GovernanceServerEventClient eventClient = new GovernanceServerEventClient(accessServiceServerName,
-                                                                                      accessServiceRootURL,
-                                                                                      governanceEngineRESTClient,
-                                                                                      maxPageSize,
-                                                                                      auditLog,
-                                                                                      localServerId + localServerName + EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName());
+            OpenMetadataEventClient eventClient = new EgeriaOpenMetadataEventClient(accessServiceServerName,
+                                                                                    accessServiceRootURL,
+                                                                                    localServerUserId,
+                                                                                    localServerPassword,
+                                                                                    maxPageSize,
+                                                                                    auditLog,
+                                                                                    localServerId + localServerName + EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName());
 
-            eventClient.registerListener(localServerUserId, new GovernanceServerOutTopicListener(governanceEngineMap, auditLog));
+            eventClient.registerListener(localServerUserId, new OpenMetadataOutTopicListener(governanceEngineMap, auditLog));
         }
         catch (Exception error)
         {

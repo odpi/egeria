@@ -1,0 +1,168 @@
+# Egeria-open-metadata-store
+
+@serverName=active-metadata-store
+@serviceURLMarker=asset-owner
+@userId=erinoverview
+
+###
+# Working with entities
+@elementGUID=dcca9788-b30f-4007-b1ac-ec634aff6879
+
+
+###
+# @name getMetadataElementByGUID
+# Retrieve the metadata element using its unique identifier.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}
+
+# Optional request parameters
+#    ?forLineage=false&forDuplicateProcessing=false&effectiveTime=0
+
+
+###
+# @name getMetadataElementByUniqueName
+# Retrieve the metadata element using its unique name. The namePropertyName identifies which proeprty ot match on
+# (typically this is the qualified name, but the example shows retrieving the asset for a file by its path name).
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/by-unique-name
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "namePropertyName" : "pathName",
+  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.4-SNAPSHOT-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
+}
+
+
+###
+# @name getMetadataElementGUIDByUniqueName
+# Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/guid-by-unique-name
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "namePropertyName" : "pathName",
+  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.4-SNAPSHOT-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
+}
+
+
+###
+# @name findMetadataElementsWithString
+# Retrieve the metadata elements that contain the requested string.
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : ".*Template.*"
+}
+
+
+###
+# @name findMetadataElements
+# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/by-search-conditions?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName" : "Asset",
+  "metadataElementSubtypeName" : ["CSVFile", "Document" ],
+  "searchProperties" : {
+    "conditions" : [ {
+      "class" : "PropertyCondition",
+      "property" : "fileName",
+      "operator" : "EQ",
+      "value" : {
+        "class" : "PrimitiveTypePropertyValue",
+        "typeName" : "string",
+        "primitiveTypeCategory" : "OM_PRIMITIVE_TYPE_STRING",
+        "primitiveValue" : "week1.csv"
+      }
+    }],
+    "matchCriteria" : "ALL"
+  }
+}
+
+###
+# Navigating the relationships to related elements
+
+@relationshipTypeName=DataSetContent
+
+
+###
+# @name getAllRelatedMetadataElements
+# Retrieve the metadata elements connected to the supplied element.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/related-elements/{{elementGUID}}/any-type?
+    startingAtEnd=0&
+    startFrom=0&
+    pageSize=0
+
+
+###
+# @name getRelatedMetadataElements
+# Retrieve the metadata elements connected to the supplied element via a specific relationship type.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/related-elements/{{elementGUID}}/type/{{relationshipTypeName}}?
+    startingAtEnd=0&
+    startFrom=0&
+    pageSize=0
+
+###
+# Querying relationships
+
+@metadataElementAtEnd1GUID=guid
+@metadataElementAtEnd2GUID=guid
+@relationshipGUID=687bf1ab-fe42-403c-a2aa-abec3904e080
+
+
+###
+# @name getAllMetadataElementRelationships
+# Retrieve the relationships linking the supplied elements.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-any-type/to-elements/{{metadataElementAtEnd2GUID}}?
+    startFrom=0&
+    pageSize=0
+
+
+###
+# @name getMetadataElementRelationships
+# Retrieve the relationships linking the supplied elements via a specific type of relationship.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-type/{{relationshipTypeName}}/to-elements/{{metadataElementAtEnd2GUID}}?
+    startFrom=0&
+    pageSize=0
+
+
+###
+# @name getRelationshipByGUID
+# Retrieve the relationship using its unique identifier.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/relationships/by-guid/{{relationshipGUID}}
+
+
+###
+# @name findRelationshipsBetweenMetadataElements
+# Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/relationships/by-search-conditions?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+  "class" : "FindRelationshipRequestBody",
+  "relationshipTypeName" : "SourcedFrom",
+  "searchProperties" : {
+     "conditions" : [ {
+         "class" : "PropertyCondition",
+         "property" : "sourceVersionIdentifier",
+         "operator" : "GT",
+         "value" : {
+             "class" : "PrimitiveTypePropertyValue",
+             "typeName" : "long",
+             "primitiveTypeCategory" : "OM_PRIMITIVE_TYPE_LONG",
+             "primitiveValue" : 0
+         }
+     }],
+     "matchCriteria" : "ALL"
+  }
+}

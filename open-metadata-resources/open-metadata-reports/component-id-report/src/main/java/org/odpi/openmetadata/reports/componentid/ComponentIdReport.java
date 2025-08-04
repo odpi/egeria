@@ -8,7 +8,6 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 import java.io.File;
@@ -154,11 +153,11 @@ public class ComponentIdReport
 
         for (AccessServiceDescription serviceDescription : AccessServiceDescription.values())
         {
-            ComponentDescription componentDescription = new AuditLogReportingComponent(serviceDescription.getAccessServiceCode(),
-                                                                                       serviceDescription.getAccessServiceDevelopmentStatus(),
-                                                                                       serviceDescription.getAccessServiceName(),
-                                                                                       serviceDescription.getAccessServiceDescription(),
-                                                                                       serviceDescription.getAccessServiceWiki());
+            ComponentDescription componentDescription = new AuditLogReportingComponent(serviceDescription.getServiceCode(),
+                                                                                       serviceDescription.getServiceDevelopmentStatus(),
+                                                                                       serviceDescription.getServiceName(),
+                                                                                       serviceDescription.getServiceDescription(),
+                                                                                       serviceDescription.getServiceWiki());
 
             ComponentDescription existingComponentDescription = report.put(componentDescription.getComponentId(), componentDescription);
 
@@ -175,22 +174,6 @@ public class ComponentIdReport
                                                                                        serviceDescription.getEngineServiceName(),
                                                                                        serviceDescription.getEngineServiceDescription(),
                                                                                        serviceDescription.getEngineServiceWiki());
-
-            ComponentDescription existingComponentDescription = report.put(componentDescription.getComponentId(), componentDescription);
-
-            if (existingComponentDescription != null)
-            {
-                System.out.println("Error - componentId conflict between: " + existingComponentDescription.getComponentName() + " and: " + componentDescription.getComponentName());
-            }
-        }
-
-        for (IntegrationServiceDescription serviceDescription : IntegrationServiceDescription.values())
-        {
-            ComponentDescription componentDescription = new AuditLogReportingComponent(serviceDescription.getIntegrationServiceCode(),
-                                                                                       serviceDescription.getIntegrationServiceDevelopmentStatus(),
-                                                                                       serviceDescription.getIntegrationServiceName(),
-                                                                                       serviceDescription.getIntegrationServiceDescription(),
-                                                                                       serviceDescription.getIntegrationServiceWiki());
 
             ComponentDescription existingComponentDescription = report.put(componentDescription.getComponentId(), componentDescription);
 

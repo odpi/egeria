@@ -8,16 +8,17 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
-import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 
 
 /**
  * HarvestOpenMetadataConnector extracts relevant metadata from the open metadata ecosystem into the ObservationsByEgeria database.
  * The open metadata ecosystem is the home copy so its values will be pushed to the database. The database design matches the
- * beans returned by Asset Manager OMAS/Catalog Integrator OMIS.
+ * beans returned by the Open Metadata Store.
  */
-public class HarvestOpenMetadataConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator
+public class HarvestOpenMetadataConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator
 {
     /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
@@ -53,11 +54,13 @@ public class HarvestOpenMetadataConnector extends CatalogIntegratorConnector imp
      * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).
      *
      * @param retrievedCatalogTarget details of the open metadata elements describing the catalog target
+     * @param catalogTargetContext specialized context for this catalog target
      * @param connectorToTarget connector to access the target resource
      * @return new processor based on the catalog target information
      */
     @Override
     public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget,
+                                                                       CatalogTargetContext catalogTargetContext,
                                                                        Connector     connectorToTarget) throws ConnectorCheckedException
     {
         final String methodName = "getNewRequestedCatalogTargetSkeleton";
@@ -65,12 +68,10 @@ public class HarvestOpenMetadataConnector extends CatalogIntegratorConnector imp
         try
         {
             return new HarvestOpenMetadataCatalogTargetProcessor(retrievedCatalogTarget,
+                                                                 catalogTargetContext,
                                                                  connectorToTarget,
                                                                  connectorName,
-                                                                 auditLog,
-                                                                 super.getContext().getDataAssetExchangeService(),
-                                                                 super.getContext().getGlossaryExchangeService(),
-                                                                 super.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess());
+                                                                 auditLog);
         }
         catch (Exception error)
         {

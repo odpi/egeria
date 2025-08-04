@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBas
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
@@ -40,9 +41,10 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -551,7 +553,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
             RelatedMetadataElement governanceActionExecutorRelationship = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(governanceActionTypeGUID,
                                                                                                                                              1,
                                                                                                                                              OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
-                                                                                                                                             new Date());
+                                                                                                                                             null);
 
             if (governanceActionExecutorRelationship != null)
             {
@@ -571,12 +573,10 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                                 processGUID,
                                                                                                                 false,
                                                                                                                 topLevelProjectGUID,
-                                                                                                                null,
-                                                                                                                null,
-                                                                                                                processStepProperties,
+                                                                                                                new NewElementProperties(processStepProperties),
                                                                                                                 processGUID,
                                                                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
-                                                                                                                processFlowProperties,
+                                                                                                                new NewElementProperties(processFlowProperties),
                                                                                                                 true);
 
                 governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
@@ -760,7 +760,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                         "Project::" + clinicalTrialId + "::" + clinicalTrialName);
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId);
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, clinicalTrialDescription);
         properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.START_DATE.name, new Date());
 
@@ -770,9 +770,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                      parentProjectGUID,
                                                                                      false,
                                                                                      null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     properties,
+                                                                                     new NewElementProperties(properties),
                                                                                      parentProjectGUID,
                                                                                      OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                                      null,
@@ -810,7 +808,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                          String clinicalTrialManagerGUID,
                                          String dataScientistGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+        Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
 
@@ -819,7 +817,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                         "Project::" + clinicalTrialId + "::DataSpecification");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-SPEC");
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create Data Specification for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create Data Specification for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Define the specification of the data needed to conduct this clinical trial.");
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
@@ -828,9 +826,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    topLevelProjectGUID,
                                                                                                    false,
                                                                                                    null,
-                                                                                                   null,
-                                                                                                   null,
-                                                                                                   properties,
+                                                                                                   new NewElementProperties(properties),
                                                                                                    topLevelProjectGUID,
                                                                                                    OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                                                    null,
@@ -857,13 +853,13 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         initialClassifications = new HashMap<>();
 
-        initialClassifications.put(OpenMetadataType.DATA_SPEC_COLLECTION_CLASSIFICATION.typeName, null);
+        initialClassifications.put(OpenMetadataType.DATA_SPEC_COLLECTION.typeName, null);
 
         properties = propertyHelper.addStringProperty(null,
                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
                                                       "Collection::" + clinicalTrialId + "::DataSpecification");
 
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Data Specification for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Data Specification for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "The data needed to conduct this clinical trial.");
 
         String dataSpecGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.COLLECTION.typeName,
@@ -872,9 +868,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                     topLevelProjectGUID,
                                                                                                     false,
                                                                                                     null,
-                                                                                                    null,
-                                                                                                    null,
-                                                                                                    properties,
+                                                                                                    new NewElementProperties(properties),
                                                                                                     topLevelProjectGUID,
                                                                                                     OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                                                                     getResourceUseProperties(ResourceUse.DATA_SPECIFICATION),
@@ -912,7 +906,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                      String clinicalTrialOwnerGUID,
                                                      String clinicalTrialManagerGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+        Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
 
@@ -921,7 +915,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                         "Project::" + clinicalTrialId + "::DataSharingAgreement");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-AGREEMENT");
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create Base Data Sharing Agreement for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create Base Data Sharing Agreement for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Define the data sharing agreement offered to hospitals participating in this clinical trial.");
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
@@ -930,9 +924,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    topLevelProjectGUID,
                                                                                                    false,
                                                                                                    null,
-                                                                                                   null,
-                                                                                                   null,
-                                                                                                   properties,
+                                                                                                   new NewElementProperties(properties),
                                                                                                    topLevelProjectGUID,
                                                                                                    OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                                                    null,
@@ -980,7 +972,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                     String clinicalTrialName,
                                     String itProjectManager) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+        Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
 
@@ -989,7 +981,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                         "Project::" + clinicalTrialId + "::ITDevelopment");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-DEV");
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create new components for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create new components for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Define the data-oriented components to support this clinical trial.");
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
@@ -998,9 +990,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    topLevelProjectGUID,
                                                                                                    false,
                                                                                                    null,
-                                                                                                   null,
-                                                                                                   null,
-                                                                                                   properties,
+                                                                                                   new NewElementProperties(properties),
                                                                                                    topLevelProjectGUID,
                                                                                                    OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                                                    null,
@@ -1043,7 +1033,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                           String clinicalTrialName,
                                           String dataEngineerGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+        Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
 
@@ -1052,7 +1042,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                         "Project::" + clinicalTrialId + "::TemplatesAndStores");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-TEMPLATES");
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create new templates and data stores for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create new templates and data stores for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Define the metadata templates and data store definitions to support this clinical trial.");
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
@@ -1061,9 +1051,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    topLevelProjectGUID,
                                                                                                    false,
                                                                                                    null,
-                                                                                                   null,
-                                                                                                   null,
-                                                                                                   properties,
+                                                                                                   new NewElementProperties(properties),
                                                                                                    devProjectGUID,
                                                                                                    OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                                                    null,
@@ -1099,7 +1087,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                    String clinicalTrialName,
                                    String integrationDeveloperGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+        Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
 
@@ -1108,7 +1096,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                         "Project::" + clinicalTrialId + "::DataQualityComponents");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-DQ");
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create new data quality survey services for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create new data quality survey services for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Create the survey action services used to validate the values delivered to this clinical trial.");
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
@@ -1117,9 +1105,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    topLevelProjectGUID,
                                                                                                    false,
                                                                                                    topLevelProjectGUID,
-                                                                                                   null,
-                                                                                                   null,
-                                                                                                   properties,
+                                                                                                   new NewElementProperties(properties),
                                                                                                    devProjectGUID,
                                                                                                    OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                                                    null,
@@ -1155,7 +1141,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                    String clinicalTrialName,
                                                    String clinicalTrialManagerGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+        Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
 
@@ -1164,7 +1150,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                         "Project::" + clinicalTrialId + "::HospitalManagement");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-HM");
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Manage hospitals relationships for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Manage hospitals relationships for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Set up the data sharing agreements and ensure certification and data delivery by the hospitals chosen to support this clinical trial.");
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
@@ -1173,9 +1159,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    topLevelProjectGUID,
                                                                                                    false,
                                                                                                    topLevelProjectGUID,
-                                                                                                   null,
-                                                                                                   null,
-                                                                                                   properties,
+                                                                                                   new NewElementProperties(properties),
                                                                                                    topLevelProjectGUID,
                                                                                                    OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                                                    null,
@@ -1217,7 +1201,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                     String clinicalTrialName,
                                                     String dataEngineerGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+        Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
 
@@ -1226,7 +1210,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                         "Project::" + clinicalTrialId + "::OnboardingPipelines");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-PIPELINES");
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Weekly data onboarding pipelines for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Weekly data onboarding pipelines for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Set up data onboarding pipelines from hospitals to support this clinical trial.");
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
@@ -1235,9 +1219,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    topLevelProjectGUID,
                                                                                                    false,
                                                                                                    topLevelProjectGUID,
-                                                                                                   null,
-                                                                                                   null,
-                                                                                                   properties,
+                                                                                                   new NewElementProperties(properties),
                                                                                                    topLevelProjectGUID,
                                                                                                    OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                                                    null,
@@ -1279,7 +1261,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                          String clinicalTrialName,
                                          String dataScientistGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        Map<String, ElementProperties> initialClassifications = new HashMap<>();
+        Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
 
@@ -1288,7 +1270,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                         "Project::" + clinicalTrialId + "::DataAnalysis");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-ANALYSIS");
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Data analysis for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Data analysis for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Analyse the data from the hospitals to support this clinical trial.");
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
@@ -1297,9 +1279,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    topLevelProjectGUID,
                                                                                                    false,
                                                                                                    topLevelProjectGUID,
-                                                                                                   null,
-                                                                                                   null,
-                                                                                                   properties,
+                                                                                                   new NewElementProperties(properties),
                                                                                                    topLevelProjectGUID,
                                                                                                    OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                                                    null,

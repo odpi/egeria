@@ -5,7 +5,7 @@ package org.odpi.openmetadata.viewservices.templatemanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
 
 import java.util.List;
 import java.util.Map;
@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TemplateClassificationRequestBody
 {
-    private TemplateClassificationProperties       templateClassificationProperties = null;
-    private Map<String, List<Map<String, String>>> specification                    = null;
+    private TemplateProperties                     templateProperties = null;
+    private Map<String, List<Map<String, String>>> specification      = null;
 
     /**
      * Default constructor
@@ -42,8 +42,8 @@ public class TemplateClassificationRequestBody
     {
         if (template != null)
         {
-            templateClassificationProperties = template.getTemplateClassificationProperties();
-            specification = template.getSpecification();
+            templateProperties = template.getTemplateClassificationProperties();
+            specification      = template.getSpecification();
         }
     }
 
@@ -53,20 +53,20 @@ public class TemplateClassificationRequestBody
      *
      * @return properties
      */
-    public TemplateClassificationProperties getTemplateClassificationProperties()
+    public TemplateProperties getTemplateClassificationProperties()
     {
-        return templateClassificationProperties;
+        return templateProperties;
     }
 
 
     /**
      *  Set up the properties that describe the template.
      *
-     * @param templateClassificationProperties properties
+     * @param templateProperties properties
      */
-    public void setTemplateClassificationProperties(TemplateClassificationProperties templateClassificationProperties)
+    public void setTemplateClassificationProperties(TemplateProperties templateProperties)
     {
-        this.templateClassificationProperties = templateClassificationProperties;
+        this.templateProperties = templateProperties;
     }
 
 
@@ -102,7 +102,7 @@ public class TemplateClassificationRequestBody
     public String toString()
     {
         return "TemplateClassificationRequestBody{" +
-                "templateClassificationProperties=" + templateClassificationProperties +
+                "templateProperties=" + templateProperties +
                 ", specification=" + specification +
                 '}';
     }
@@ -120,7 +120,7 @@ public class TemplateClassificationRequestBody
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         TemplateClassificationRequestBody that = (TemplateClassificationRequestBody) objectToCompare;
-        return Objects.equals(templateClassificationProperties, that.templateClassificationProperties) &&
+        return Objects.equals(templateProperties, that.templateProperties) &&
                 Objects.equals(specification, that.specification);
     }
 
@@ -133,6 +133,6 @@ public class TemplateClassificationRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(templateClassificationProperties, specification);
+        return Objects.hash(templateProperties, specification);
     }
 }

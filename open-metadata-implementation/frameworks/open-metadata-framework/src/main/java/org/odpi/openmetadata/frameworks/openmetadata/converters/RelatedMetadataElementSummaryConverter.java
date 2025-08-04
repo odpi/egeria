@@ -59,19 +59,16 @@ public class RelatedMetadataElementSummaryConverter<B> extends OpenMetadataConve
             if (returnBean instanceof RelatedMetadataElementSummary relatedElementSummary)
             {
                 MetadataElementSummary        elementSummary = new MetadataElementSummary();
-                ElementHeader                 elementHeader  = new ElementHeader(relatedMetadataElement);
-
-                elementHeader.setGUID(relatedMetadataElement.getRelationshipGUID());
-
+                ElementHeader                 elementHeader  = propertyHelper.getElementHeader(relatedMetadataElement,
+                                                                                               relatedMetadataElement.getRelationshipGUID(),
+                                                                                               null);
                 relatedElementSummary.setRelationshipHeader(elementHeader);
                 if (relatedMetadataElement.getRelationshipProperties() != null)
                 {
                     relatedElementSummary.setRelationshipProperties(relatedMetadataElement.getRelationshipProperties().getPropertiesAsStrings());
                 }
 
-                elementHeader = new ElementHeader(relatedMetadataElement.getElement());
-                elementHeader.setGUID(relatedMetadataElement.getElement().getElementGUID());
-                elementHeader.setClassifications(this.getElementClassifications(relatedMetadataElement.getElement().getClassifications()));
+                elementHeader = getMetadataElementHeader(beanClass, relatedMetadataElement, relatedMetadataElement.getRelationshipGUID(), null, methodName);
 
                 elementSummary.setElementHeader(elementHeader);
                 if (relatedMetadataElement.getElement().getElementProperties() != null)

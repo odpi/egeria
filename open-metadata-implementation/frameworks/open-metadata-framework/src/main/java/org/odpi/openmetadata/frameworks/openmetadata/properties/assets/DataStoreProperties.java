@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -34,14 +33,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               })
 public class DataStoreProperties extends DataAssetProperties
 {
-    private String              deployedImplementationType = null;
-    private String              pathName            = null;
-    private Date                createTime          = null;
-    private Date                modifiedTime        = null;
-    private String              encodingType        = null;
-    private String              encodingLanguage    = null;
-    private String              encodingDescription = null;
-    private Map<String, String> encodingProperties  = null;
+    private String pathName      = null;
+    private Date storeCreateTime = null;
+    private Date storeUpdateTime = null;
+
 
 
     /**
@@ -65,14 +60,10 @@ public class DataStoreProperties extends DataAssetProperties
 
         if (template != null)
         {
-            pathName            = template.getPathName();
-            createTime          = template.getCreateTime();
-            modifiedTime        = template.getModifiedTime();
-            encodingType        = template.getEncodingType();
-            encodingLanguage    = template.getEncodingLanguage();
-            encodingDescription = template.getEncodingDescription();
-            encodingProperties  = template.getEncodingProperties();
-            deployedImplementationType = template.getDeployedImplementationType();
+            pathName        = template.getPathName();
+            storeCreateTime = template.getStoreCreateTime();
+            storeUpdateTime = template.getStoreUpdateTime();
+
         }
     }
 
@@ -117,20 +108,20 @@ public class DataStoreProperties extends DataAssetProperties
      *
      * @return date
      */
-    public Date getCreateTime()
+    public Date getStoreCreateTime()
     {
-        return createTime;
+        return storeCreateTime;
     }
 
 
     /**
      * Set up the time that the data store was created.
      *
-     * @param createTime date
+     * @param storeCreateTime date
      */
-    public void setCreateTime(Date createTime)
+    public void setStoreCreateTime(Date storeCreateTime)
     {
-        this.createTime = createTime;
+        this.storeCreateTime = storeCreateTime;
     }
 
 
@@ -139,139 +130,22 @@ public class DataStoreProperties extends DataAssetProperties
      *
      * @return date
      */
-    public Date getModifiedTime()
+    public Date getStoreUpdateTime()
     {
-        return modifiedTime;
+        return storeUpdateTime;
     }
 
 
     /**
      * Setup the last known time the data store was modified.
      *
-     * @param modifiedTime date
+     * @param storeUpdateTime date
      */
-    public void setModifiedTime(Date modifiedTime)
+    public void setStoreUpdateTime(Date storeUpdateTime)
     {
-        this.modifiedTime = modifiedTime;
+        this.storeUpdateTime = storeUpdateTime;
     }
 
-
-    /**
-     * Return the name of the encoding style used in the data store.
-     *
-     * @return string name
-     */
-    public String getEncodingType()
-    {
-        return encodingType;
-    }
-
-
-    /**
-     * Set up the name of the encoding style used in the data store.
-     *
-     * @param encodingType string name
-     */
-    public void setEncodingType(String encodingType)
-    {
-        this.encodingType = encodingType;
-    }
-
-
-    /**
-     * Return the name of the natural language used for text strings within the data store.
-     *
-     * @return string language name
-     */
-    public String getEncodingLanguage()
-    {
-        return encodingLanguage;
-    }
-
-
-    /**
-     * Set up the name of the natural language used for text strings within the data store.
-     *
-     * @param encodingLanguage string language name
-     */
-    public void setEncodingLanguage(String encodingLanguage)
-    {
-        this.encodingLanguage = encodingLanguage;
-    }
-
-
-    /**
-     * Return the description of the encoding used in the data store.
-     *
-     * @return string text
-     */
-    public String getEncodingDescription()
-    {
-        return encodingDescription;
-    }
-
-
-    /**
-     * Set up the description of the encoding used in the data store.
-     *
-     * @param encodingDescription string text
-     */
-    public void setEncodingDescription(String encodingDescription)
-    {
-        this.encodingDescription = encodingDescription;
-    }
-
-
-    /**
-     * Return the additional properties associated with the encoding process.
-     *
-     * @return map of name-value pairs
-     */
-    public Map<String, String> getEncodingProperties()
-    {
-        if (encodingProperties == null)
-        {
-            return null;
-        }
-        else if (encodingProperties.isEmpty())
-        {
-            return null;
-        }
-        return encodingProperties;
-    }
-
-
-    /**
-     * Set up the additional properties associated with the encoding process.
-     *
-     * @param encodingProperties map of name-value pairs
-     */
-    public void setEncodingProperties(Map<String, String> encodingProperties)
-    {
-        this.encodingProperties = encodingProperties;
-    }
-
-
-    /**
-     * Retrieve the name of the technology used for this data asset.
-     *
-     * @return string name
-     */
-    public String getDeployedImplementationType()
-    {
-        return deployedImplementationType;
-    }
-
-
-    /**
-     * Set up the name of the technology used for this data asset.
-     *
-     * @param deployedImplementationType string name
-     */
-    public void setDeployedImplementationType(String deployedImplementationType)
-    {
-        this.deployedImplementationType = deployedImplementationType;
-    }
 
 
     /**
@@ -283,14 +157,9 @@ public class DataStoreProperties extends DataAssetProperties
     public String toString()
     {
         return "DataStoreProperties{" +
-                "deployedImplementationType='" + deployedImplementationType + '\'' +
-                ", pathName='" + pathName + '\'' +
-                ", createTime=" + createTime +
-                ", modifiedTime=" + modifiedTime +
-                ", encodingType='" + encodingType + '\'' +
-                ", encodingLanguage='" + encodingLanguage + '\'' +
-                ", encodingDescription='" + encodingDescription + '\'' +
-                ", encodingProperties=" + encodingProperties +
+                "pathName='" + pathName + '\'' +
+                ", createTime=" + storeCreateTime +
+                ", modifiedTime=" + storeUpdateTime +
                 "} " + super.toString();
     }
 
@@ -317,13 +186,8 @@ public class DataStoreProperties extends DataAssetProperties
         }
         DataStoreProperties that = (DataStoreProperties) objectToCompare;
         return Objects.equals(pathName, that.pathName) &&
-                       Objects.equals(createTime, that.createTime) &&
-                       Objects.equals(modifiedTime, that.modifiedTime) &&
-                       Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
-                       Objects.equals(encodingType, that.encodingType) &&
-                       Objects.equals(encodingLanguage, that.encodingLanguage) &&
-                       Objects.equals(encodingDescription, that.encodingDescription) &&
-                       Objects.equals(encodingProperties, that.encodingProperties);
+                       Objects.equals(storeCreateTime, that.storeCreateTime) &&
+                       Objects.equals(storeUpdateTime, that.storeUpdateTime);
     }
 
 
@@ -335,7 +199,6 @@ public class DataStoreProperties extends DataAssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), pathName, createTime, modifiedTime, deployedImplementationType, encodingType,
-                            encodingLanguage, encodingDescription, encodingProperties);
+        return Objects.hash(super.hashCode(), pathName, storeCreateTime, storeUpdateTime);
     }
 }

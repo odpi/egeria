@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReferenceableElement implements MetadataElement
 {
-    private ElementHeader           elementHeader = null;
+    private ElementHeader           elementHeader           = null;
     private ReferenceableProperties referenceableProperties = null;
 
 

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Objects;
 
@@ -19,12 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DerivedSchemaTypeQueryTargetProperties
+public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProperties
 {
     private String queryId         = null;
     private String query           = null;
     private String queryType       = null;
-    private String queryTargetGUID = null;
 
 
     /**
@@ -43,14 +43,13 @@ public class DerivedSchemaTypeQueryTargetProperties
      */
     public DerivedSchemaTypeQueryTargetProperties(DerivedSchemaTypeQueryTargetProperties template)
     {
-        super();
+        super(template);
 
         if (template != null)
         {
             queryId = template.getQueryId();
             query = template.getQuery();
             queryType = template.getQueryType();
-            queryTargetGUID = template.getQueryTargetGUID();
         }
     }
 
@@ -117,28 +116,6 @@ public class DerivedSchemaTypeQueryTargetProperties
 
 
     /**
-     * Return the unique identifier that describes the data source that will be queried to get part of the derived value.
-     *
-     * @return string guid
-     */
-    public String getQueryTargetGUID()
-    {
-        return queryTargetGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier that describes the data source that will be queried to get part of the derived value.
-     *
-     * @param queryTargetGUID string guid
-     */
-    public void setQueryTargetGUID(String queryTargetGUID)
-    {
-        this.queryTargetGUID = queryTargetGUID;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -147,11 +124,10 @@ public class DerivedSchemaTypeQueryTargetProperties
     public String toString()
     {
         return "DerivedSchemaTypeQueryTargetProperties{" +
-                "queryId=" + queryId +
+                "queryId='" + queryId + '\'' +
                 ", query='" + query + '\'' +
                 ", queryType='" + queryType + '\'' +
-                ", queryTargetGUID=" + queryTargetGUID +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -164,18 +140,13 @@ public class DerivedSchemaTypeQueryTargetProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (!(objectToCompare instanceof DerivedSchemaTypeQueryTargetProperties that))
-        {
-            return false;
-        }
-        return Objects.equals(getQueryId(), that.getQueryId()) &&
-                Objects.equals(getQuery(), that.getQuery()) &&
-                Objects.equals(getQueryType(), that.getQueryType()) &&
-                Objects.equals(getQueryTargetGUID(), that.getQueryTargetGUID());
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        DerivedSchemaTypeQueryTargetProperties that = (DerivedSchemaTypeQueryTargetProperties) objectToCompare;
+        return Objects.equals(queryId, that.queryId) &&
+                Objects.equals(query, that.query) &&
+                Objects.equals(queryType, that.queryType);
     }
 
 
@@ -187,6 +158,6 @@ public class DerivedSchemaTypeQueryTargetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(getQueryId(), getQuery(), getQueryType(), getQueryTargetGUID());
+        return Objects.hash(super.hashCode(), queryId, query, queryType);
     }
 }

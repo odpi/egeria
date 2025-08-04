@@ -13,23 +13,7 @@ import java.util.List;
  */
 public enum EngineServiceDescription
 {
-    /**
-     * Analyses the content of an asset's real world counterpart (resource), generates annotations
-     * in a discovery analysis report that is attached to the asset in the open metadata repositories.
-     */
-    ASSET_ANALYSIS_OMES(400,
-                        ComponentDevelopmentStatus.DEPRECATED,
-                        "Asset Analysis",
-                        "Asset Analysis OMES",
-                        "asset-analysis",
-                        "Analyses the content of an asset's real world counterpart (resource), generates annotations " +
-                                "in a discovery analysis report that is attached to the asset in the open metadata repositories.",
-                        "https://egeria-project.org/services/omes/asset-analysis/overview/",
-                        AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
-                        null,
-                        null,
-                        null,
-                        null),
+
 
     /**
      * Executes requested governance action services to monitor, assess and maintain metadata and its real-world counterparts.
@@ -42,7 +26,7 @@ public enum EngineServiceDescription
                            "Executes requested governance action services to monitor, assess and maintain metadata and its " +
                                    "real-world counterparts.",
                            "https://egeria-project.org/services/omes/governance-action/overview/",
-                           AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName(),
+                           AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName(),
                            DeployedImplementationType.GOVERNANCE_ACTION_ENGINE.getAssociatedTypeName(),
                            DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                            DeployedImplementationType.GOVERNANCE_ACTION_ENGINE.getDeployedImplementationType(),
@@ -77,7 +61,7 @@ public enum EngineServiceDescription
                        "Analyses the content of an asset's real world counterpart (resource), generates annotations " +
                                "in a survey report that is attached to the asset in the open metadata repositories.",
                        "https://egeria-project.org/services/omes/survey-action/overview/",
-                       AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
+                       AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName(),
                        DeployedImplementationType.SURVEY_ACTION_ENGINE.getAssociatedTypeName(),
                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                        DeployedImplementationType.SURVEY_ACTION_ENGINE.getDeployedImplementationType(),

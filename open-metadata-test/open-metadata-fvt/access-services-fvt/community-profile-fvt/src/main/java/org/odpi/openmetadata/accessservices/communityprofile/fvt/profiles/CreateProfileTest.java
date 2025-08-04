@@ -4,16 +4,19 @@
 package org.odpi.openmetadata.accessservices.communityprofile.fvt.profiles;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.client.ActorProfileManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.client.ActorRoleManagement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -115,17 +118,17 @@ public class CreateProfileTest
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceWiki());
 
-        ActorProfileManagement actorProfileManagement = thisTest.getActorProfileClient(serverName, serverPlatformRootURL, auditLog);
-        ActorRoleManagement actorRoleManagement = thisTest.getActorRoleClient(serverName, serverPlatformRootURL, auditLog);
+        ActorProfileHandler actorProfileManagement = thisTest.getActorProfileClient(serverName, serverPlatformRootURL, auditLog);
+        ActorRoleHandler    actorRoleManagement    = thisTest.getActorRoleClient(serverName, serverPlatformRootURL, auditLog);
 
         thisTest.runOrganizationTest(actorProfileManagement, actorRoleManagement, userId);
 
     }
 
 
-    private void runOrganizationTest(ActorProfileManagement actorProfileManagement,
-                                     ActorRoleManagement    actorRoleManagement,
-                                     String                 userId) throws FVTUnexpectedCondition
+    private void runOrganizationTest(ActorProfileHandler actorProfileManagement,
+                                     ActorRoleHandler    actorRoleManagement,
+                                     String              userId) throws FVTUnexpectedCondition
     {
         String activityName = "create persons";
 
@@ -134,7 +137,7 @@ public class CreateProfileTest
             ActorProfileProperties actorProfileProperties = new ActorProfileProperties();
             actorProfileProperties.setTypeName(OpenMetadataType.PERSON.typeName);
             actorProfileProperties.setQualifiedName(profile1QualifiedName);
-            actorProfileProperties.setKnownName(profile1KnownName);
+            actorProfileProperties.setDisplayName(profile1KnownName);
             actorProfileProperties.setDescription(profile1Description);
 
             Map<String, Object> extendedProperties = new HashMap<>();
@@ -149,55 +152,44 @@ public class CreateProfileTest
 
             actorProfileProperties.setAdditionalProperties(additionalProperties);
 
+            NewElementOptions newElementOptions = new NewElementOptions();
+            newElementOptions.setIsOwnAnchor(true);
+            newElementOptions.setEffectiveTime(new Date());
 
             String profile1GUID = actorProfileManagement.createActorProfile(userId,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            true,
+                                                                            newElementOptions,
                                                                             null,
                                                                             actorProfileProperties,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            true,
-                                                                            false,
-                                                                            false,
-                                                                            new Date());
+                                                                            null);
 
-            PersonProfileProperties personProfileProperties = new PersonProfileProperties();
-            personProfileProperties.setTypeName(OpenMetadataType.PERSON.typeName);
-            personProfileProperties.setQualifiedName(profile2QualifiedName);
-            personProfileProperties.setKnownName(profile2KnownName);
-            personProfileProperties.setDescription(profile2Description);
-            personProfileProperties.setFullName(profile2FullName);
-            personProfileProperties.setJobTitle(profile2JobTitle);
+            PersonProperties personProperties = new PersonProperties();
+            personProperties.setTypeName(OpenMetadataType.PERSON.typeName);
+            personProperties.setQualifiedName(profile2QualifiedName);
+            personProperties.setDisplayName(profile2KnownName);
+            personProperties.setDescription(profile2Description);
+            personProperties.setFullName(profile2FullName);
+            personProperties.setJobTitle(profile2JobTitle);
 
             additionalProperties = new HashMap<>();
             additionalProperties.put("jobRole", profile2jobRole);
             additionalProperties.put("addProp", profile2AddProp);
 
-            personProfileProperties.setAdditionalProperties(additionalProperties);
+            personProperties.setAdditionalProperties(additionalProperties);
+
+            newElementOptions = new NewElementOptions();
+            newElementOptions.setIsOwnAnchor(true);
+            newElementOptions.setEffectiveTime(new Date());
 
             String profile2GUID = actorProfileManagement.createActorProfile(userId,
+                                                                            newElementOptions,
                                                                             null,
-                                                                            null,
-                                                                            null,
-                                                                            true,
-                                                                            null,
-                                                                            personProfileProperties,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            true,
-                                                                            false,
-                                                                            false,
-                                                                            new Date());
+                                                                            personProperties,
+                                                                            null);
 
             actorProfileProperties = new ActorProfileProperties();
             actorProfileProperties.setTypeName(OpenMetadataType.ORGANIZATION.typeName);
             actorProfileProperties.setQualifiedName(team1QualifiedName);
-            actorProfileProperties.setKnownName(team1KnownName);
+            actorProfileProperties.setDisplayName(team1KnownName);
             actorProfileProperties.setDescription(team1Description);
 
             extendedProperties = new HashMap<>();
@@ -205,43 +197,33 @@ public class CreateProfileTest
             extendedProperties.put(OpenMetadataProperty.IDENTIFIER.name, team1Identifier);
             actorProfileProperties.setExtendedProperties(extendedProperties);
 
+            newElementOptions = new NewElementOptions();
+            newElementOptions.setIsOwnAnchor(true);
+            newElementOptions.setEffectiveTime(new Date());
+
             String team1GUID = actorProfileManagement.createActorProfile(userId,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         true,
+                                                                         newElementOptions,
                                                                          null,
                                                                          actorProfileProperties,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         true,
-                                                                         false,
-                                                                         false,
-                                                                         new Date());
+                                                                         null);
 
-            TeamProfileProperties teamProfileProperties = new TeamProfileProperties();
-            teamProfileProperties.setTypeName("Team");
-            teamProfileProperties.setQualifiedName(team2QualifiedName);
-            teamProfileProperties.setKnownName(team2KnownName);
-            teamProfileProperties.setDescription(team2Description);
-            teamProfileProperties.setTeamType(team2TeamType);
-            teamProfileProperties.setIdentifier(team2Identifier);
+            TeamProperties teamProperties = new TeamProperties();
+            teamProperties.setTypeName("Team");
+            teamProperties.setQualifiedName(team2QualifiedName);
+            teamProperties.setDisplayName(team2KnownName);
+            teamProperties.setDescription(team2Description);
+            teamProperties.setTeamType(team2TeamType);
+            teamProperties.setIdentifier(team2Identifier);
+
+            newElementOptions = new NewElementOptions();
+            newElementOptions.setIsOwnAnchor(true);
+            newElementOptions.setEffectiveTime(new Date());
 
             String team2GUID = actorProfileManagement.createActorProfile(userId,
+                                                                         newElementOptions,
                                                                          null,
-                                                                         null,
-                                                                         null,
-                                                                         true,
-                                                                         null,
-                                                                         teamProfileProperties,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         true,
-                                                                         false,
-                                                                         false,
-                                                                         new Date());
+                                                                         teamProperties,
+                                                                         null);
 
             actorProfileManagement.linkTeamStructure(userId,
                                                      null,
@@ -303,7 +285,6 @@ public class CreateProfileTest
                                                             new Date());
 
             PersonRoleAppointmentProperties appointmentProperties = new PersonRoleAppointmentProperties();
-            appointmentProperties.setIsPublic(true);
 
             actorRoleManagement.linkPersonRoleToProfile(userId,
                                                         null,
@@ -324,18 +305,13 @@ public class CreateProfileTest
                                                         false,
                                                         new Date());
 
-            List<ActorProfileElement> actorProfileElements = actorProfileManagement.findActorProfiles(userId,
-                                                                                                      ".*",
-                                                                                                      TemplateFilter.ALL,
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                      null,
-                                                                                                      0,
-                                                                                                      0,
-                                                                                                      false,
-                                                                                                      false,
-                                                                                                      new Date());
+            QueryOptions queryOptions = new QueryOptions();
+
+            List<OpenMetadataRootElement> actorProfileElements = actorProfileManagement.findActorProfiles(userId,
+                                                                                                          ".*",
+                                                                                                          queryOptions,
+                                                                                                          0,
+                                                                                                          0);
 
 
         }
@@ -355,19 +331,22 @@ public class CreateProfileTest
      * @return client
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private ActorProfileManagement getActorProfileClient(String   serverName,
-                                                         String   serverPlatformRootURL,
-                                                         AuditLog auditLog) throws FVTUnexpectedCondition
+    private ActorProfileHandler getActorProfileClient(String   serverName,
+                                                      String   serverPlatformRootURL,
+                                                      AuditLog auditLog) throws FVTUnexpectedCondition
     {
         final String activityName = "getActorProfileClient";
 
         try
         {
-            return new ActorProfileManagement(this.getClass().getName(),
-                                              serverName,
-                                              serverPlatformRootURL,
-                                              auditLog,
-                                              maxPageSize);
+            OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreHandler(serverName,
+                                                                                       serverPlatformRootURL,
+                                                                                       CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceURLMarker(),
+                                                                                       100);
+            return new ActorProfileHandler(this.getClass().getName(),
+                                           auditLog,
+                                           AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                           openMetadataClient);
         }
         catch (Exception unexpectedError)
         {
@@ -384,19 +363,22 @@ public class CreateProfileTest
      * @return client
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private ActorRoleManagement getActorRoleClient(String   serverName,
-                                                   String   serverPlatformRootURL,
-                                                   AuditLog auditLog) throws FVTUnexpectedCondition
+    private ActorRoleHandler getActorRoleClient(String   serverName,
+                                                String   serverPlatformRootURL,
+                                                AuditLog auditLog) throws FVTUnexpectedCondition
     {
         final String activityName = "getActorRoleClient";
 
         try
         {
-            return new ActorRoleManagement(this.getClass().getName(),
-                                           serverName,
-                                           serverPlatformRootURL,
-                                           auditLog,
-                                           maxPageSize);
+            OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreHandler(serverName,
+                                                                                       serverPlatformRootURL,
+                                                                                       CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceURLMarker(),
+                                                                                       100);
+            return new ActorRoleHandler(this.getClass().getName(),
+                                        auditLog,
+                                        AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                        openMetadataClient);
         }
         catch (Exception unexpectedError)
         {

@@ -19,22 +19,6 @@ import java.util.List;
 class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvider
 {
     /**
-     * The optional qualified name of a data asset used for cataloguing files.  If this is null, no template is used.
-     */
-    static public final String FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "fileTemplateQualifiedName";
-
-    /**
-     * The optional qualified name of a data asset used for cataloguing directories (folders).  If it is null, no template is used.
-     */
-    static public final String DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "directoryTemplateQualifiedName";
-
-    /**
-     * An optional boolean flag to indicate whether the connector should delete the catalog entry for files that have
-     * been deleted (true) or just archive them (false - the default).
-     */
-    static public final String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY     = "allowCatalogDelete";
-
-    /**
      * An optional boolean flag to indicate that all files should be catalogued, whether they are classified or not.
      */
     static public final String CATALOG_ALL_FILES_CONFIGURATION_PROPERTY     = "catalogAllFiles";
@@ -95,7 +79,6 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
          * Set up the connector type that should be included in a connection used to configure this connector.
          */
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorDisplayName);
@@ -103,10 +86,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
-        recognizedConfigurationProperties.add(DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(CATALOG_ALL_FILES_CONFIGURATION_PROPERTY);
-        recognizedConfigurationProperties.add(ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(TO_DO_TEMPLATE_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(WAIT_FOR_DIRECTORY_CONFIGURATION_PROPERTY);

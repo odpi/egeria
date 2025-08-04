@@ -206,10 +206,10 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
             parentSetGUID =  archiveHelper.addValidValue(requestedGUID,
                                                          grandParentSetGUID,
                                                          grandParentSetGUID,
-                                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                          null,
-                                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                          parentQualifiedName,
                                                          parentDisplayName,
                                                          parentDescription,
@@ -218,7 +218,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                                          null,
                                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                          null,
-                                                         false,
+                                                         null,
                                                          false,
                                                          null);
 

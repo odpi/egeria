@@ -4,37 +4,39 @@
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
 import org.apache.commons.io.FileUtils;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFileElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
+import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls.FilesTemplateType;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.ConfigException;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
  * BasicFilesMonitorIntegrationConnectorBase provides common methods for the connectors in this module.
  */
-public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesIntegratorConnector
+public abstract class BasicFilesMonitorIntegrationConnectorBase extends IntegrationConnectorBase
 {
-
+    Map<String, String> defaultTemplates = new HashMap<>();
 
     /**
      * Maintains a list of directories that are the root of the monitoring.
@@ -47,20 +49,26 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      * It extracts all the useful configuration from the connection object.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
+
+        for (FilesTemplateType templateType : FilesTemplateType.values())
+        {
+            defaultTemplates.put(templateType.getTemplateName(), templateType.getTemplateGUID());
+        }
 
         /*
          * The first possible catalog target is the endpoint from the connection.  It may be null.
          */
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint != null)
         {
-            monitorEndpoint(connectionDetails.getConfigurationProperties());
+            monitorEndpoint(connectionBean.getConfigurationProperties());
         }
     }
 
@@ -76,7 +84,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         /*
          * The first possible catalog target is the endpoint from the connection.  It may be null.
          */
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if ((endpoint != null) && (endpoint.getAddress() != null))
         {
@@ -97,7 +105,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                                                                             endpoint.getAddress(),
                                                                             null,
                                                                             null,
-                                                                            null,
+                                                                            defaultTemplates,
                                                                             configurationProperties);
 
             directoriesToMonitor.add(directoryToMonitor);
@@ -226,7 +234,9 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
             int startFrom   = 0;
             int maxPageSize = integrationContext.getMaxPageSize();
 
-            List<CatalogTarget> catalogTargets = this.getContext().getCatalogTargets(startFrom, maxPageSize);
+            List<CatalogTarget> catalogTargets = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                                 startFrom,
+                                                                                                                 maxPageSize);
 
             while (catalogTargets != null)
             {
@@ -237,7 +247,9 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                 }
 
                 startFrom = startFrom + maxPageSize;
-                catalogTargets = this.getContext().getCatalogTargets(startFrom, maxPageSize);
+                catalogTargets = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                 startFrom,
+                                                                                                 maxPageSize);
             }
 
             /*
@@ -258,7 +270,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
                     if (! directoryToMonitor.isListening)
                     {
-                        this.getContext().registerDirectoryTreeListener(directoryToMonitor, directoryToMonitor.directoryFile, null);
+                        integrationContext.registerDirectoryTreeListener(directoryToMonitor, directoryToMonitor.directoryFile, null);
                         directoryToMonitor.isListening = true;
                     }
                 }
@@ -324,19 +336,21 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         /*
          * Seems to be new - but we need to check that this is not matching the endpoint catalog target.
          */
-        if (this.getContext().isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.FILE_FOLDER.typeName))
+        if (integrationContext.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.FILE_FOLDER.typeName))
         {
             /*
              * It is the right type of catalog target.  We now need the path name associated with this catalog target.
              */
-            FileFolderElement fileFolderElement = this.getFolderElement(catalogTarget.getCatalogTargetElement().getGUID());
+            OpenMetadataRootElement fileFolderElement = this.getFolderElement(catalogTarget.getCatalogTargetElement().getGUID());
 
-            if ((fileFolderElement != null) && (fileFolderElement.getFileFolderProperties() != null) && (fileFolderElement.getFileFolderProperties().getPathName() != null))
+            if ((fileFolderElement != null) &&
+                    (fileFolderElement.getProperties() instanceof FileFolderProperties fileFolderProperties) &&
+                    (fileFolderProperties.getPathName() != null))
             {
                 /*
                  * Create a file object to perform the comparison on the absolute path name.
                  */
-                File pathFile = new File(fileFolderElement.getFileFolderProperties().getPathName());
+                File pathFile = new File(fileFolderProperties.getPathName());
 
                 for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
                 {
@@ -353,11 +367,18 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                  */
                 try
                 {
+                    Map<String, String> templates = defaultTemplates;
+
+                    if (catalogTarget.getTemplateProperties() != null)
+                    {
+                        templates.putAll(catalogTarget.getTemplateProperties());
+                    }
+
                     DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName + "::" + catalogTarget.getRelationshipGUID(),
-                                                                                    fileFolderElement.getFileFolderProperties().getPathName(),
+                                                                                    fileFolderProperties.getPathName(),
                                                                                     catalogTarget.getRelationshipGUID(),
                                                                                     catalogTarget.getDeleteMethod(),
-                                                                                    catalogTarget.getTemplateProperties(),
+                                                                                    templates,
                                                                                     catalogTarget.getConfigurationProperties());
 
                     directoriesToMonitor.add(directoryToMonitor);
@@ -378,7 +399,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      * @param dataFolderFile the directory to retrieve the folder from
      * @throws ConnectorCheckedException there is a problem retrieving the folder element.
      */
-    abstract FileFolderElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException;
+    abstract OpenMetadataRootElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException;
 
 
 
@@ -389,13 +410,11 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      * @param dataFolderFile the directory to retrieve the folder from
      * @param assetTypeName name of the asset type to use if the folder is not catalogued
      * @param deployedImplementationType deployed implementation type to use if the folder is not catalogued
-     * @param connectorProviderName connector provider name to use if the folder is not catalogued
      * @throws ConnectorCheckedException there is a problem retrieving the folder element.
      */
-    FileFolderElement getFolderElement(File   dataFolderFile,
-                                       String assetTypeName,
-                                       String deployedImplementationType,
-                                       String connectorProviderName) throws ConnectorCheckedException
+    OpenMetadataRootElement getFolderElement(File   dataFolderFile, 
+                                             String assetTypeName, 
+                                             String deployedImplementationType) throws ConnectorCheckedException
     {
         final String methodName = "getFolderElementByPathName";
 
@@ -403,41 +422,46 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         {
             try
             {
-                FileFolderElement folderElement = this.getContext().getFolderByPathName(dataFolderFile.getCanonicalPath());
+                String      pathName         = dataFolderFile.getCanonicalPath();
+                AssetClient fileFolderClient = integrationContext.getAssetClient(OpenMetadataType.FILE_FOLDER.typeName);
+
+                OpenMetadataRootElement folderElement = fileFolderClient.getAssetByUniqueName(pathName, 
+                                                                                              OpenMetadataProperty.PATH_NAME.name, 
+                                                                                              fileFolderClient.getGetOptions());
 
                 if (folderElement == null)
                 {
-                    FileFolderProperties properties = new FileFolderProperties();
+                    Map<String, String> placeholderProperties = new HashMap<>();
 
-                    properties.setTypeName(assetTypeName);
-                    properties.setPathName(dataFolderFile.getCanonicalPath());
-                    properties.setName(dataFolderFile.getName());
-                    properties.setDeployedImplementationType(deployedImplementationType);
-
-                    this.getContext().addDataFolderToCatalog(properties, connectorProviderName);
-
-                    folderElement = this.getContext().getFolderByPathName(dataFolderFile.getCanonicalPath());
-                }
-
-                /*
-                 * The folder element should not be null at this point so an NPE at this point is unexpected.
-                 */
-                if ((folderElement.getElementHeader() == null) ||
-                            (folderElement.getElementHeader().getGUID() == null) ||
-                            (folderElement.getFileFolderProperties() == null))
-                {
-                    if (auditLog != null)
+                    if (integrationContext.getMetadataSourceQualifiedName() != null)
                     {
-                        auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FOLDER_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                                             dataFolderFile.getCanonicalPath(),
-                                                                                                                             folderElement.toString()));
+                        placeholderProperties.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), integrationContext.getMetadataSourceQualifiedName());
                     }
+                    else
+                    {
+                        placeholderProperties.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), connectorName);
+                    }
+                    placeholderProperties.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), dataFolderFile.getCanonicalPath());
+                    placeholderProperties.put(PlaceholderProperty.DIRECTORY_NAME.getName(), dataFolderFile.getName());
+                    placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
+                    placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), null);
+
+                    TemplateOptions templateOptions = new TemplateOptions(fileFolderClient.getMetadataSourceOptions());
+
+                    templateOptions.setAllowRetrieve(true);
+                    templateOptions.setOpenMetadataTypeName(assetTypeName);
+
+
+                    String folderGUID = fileFolderClient.createAssetFromTemplate(templateOptions,
+                                                                                 defaultTemplates.get(deployedImplementationType),
+                                                                                 null,
+                                                                                 placeholderProperties,
+                                                                                 null);
+
+                    folderElement = this.getFolderElement(folderGUID);
                 }
-                else
-                {
-                    return folderElement;
-                }
+
+                return folderElement;
             }
             catch (Exception error)
             {
@@ -479,35 +503,15 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      * @param folderElementGUID the unique identifier of the folder
      * @throws ConnectorCheckedException there is a problem retrieving the folder element.
      */
-    synchronized FileFolderElement getFolderElement(String folderElementGUID) throws ConnectorCheckedException
+    synchronized OpenMetadataRootElement getFolderElement(String folderElementGUID) throws ConnectorCheckedException
     {
         final String methodName = "getFolderElementByGUID";
 
         try
         {
-            FileFolderElement folderElement = this.getContext().getFolderByGUID(folderElementGUID);
+            AssetClient folderClient = integrationContext.getAssetClient(OpenMetadataType.FILE_FOLDER.typeName);
 
-            if (folderElement == null)
-            {
-                return null;
-            }
-
-            if ((folderElement.getElementHeader() == null) ||
-                        (folderElement.getElementHeader().getGUID() == null) ||
-                        (folderElement.getFileFolderProperties() == null))
-            {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        BasicFilesIntegrationConnectorsAuditCode.BAD_FOLDER_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                                         folderElementGUID,
-                                                                                                                         folderElement.toString()));
-                }
-            }
-            else
-            {
-                return folderElement;
-            }
+            return folderClient.getAssetByGUID(folderElementGUID, folderClient.getGetOptions());
         }
         catch (Exception error)
         {
@@ -532,8 +536,6 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                     error,
                     null);
         }
-
-        return null;
     }
 
 
@@ -545,68 +547,60 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      * @param retrievedElement catalogued element
      * @param methodName calling method
      */
-    public void archiveFileInCatalog(File            file,
-                                     DataFileElement retrievedElement,
-                                     boolean         allowCatalogDelete,
-                                     String          methodName)
+    public void deleteFileInCatalog(File         file,
+                                    OpenMetadataRootElement retrievedElement,
+                                    String       methodName)
     {
         if (this.isActive())
         {
             try
             {
-                DataFileElement cataloguedElement = retrievedElement;
+                AssetClient fileClient = integrationContext.getAssetClient(OpenMetadataType.DATA_FILE.typeName);
+                OpenMetadataRootElement cataloguedElement = retrievedElement;
+
+                String pathName = file.getCanonicalPath();
 
                 if (cataloguedElement == null)
                 {
-                    cataloguedElement = this.getContext().getFileByPathName(file.getCanonicalPath());
+
+                    /*
+                     * Just check that it is not catalogued
+                     */
+                    cataloguedElement = fileClient.getAssetByUniqueName(pathName,
+                                                                        OpenMetadataProperty.PATH_NAME.name,
+                                                                        fileClient.getGetOptions());
                 }
 
                 if (cataloguedElement == null)
                 {
+                    /*
+                     * No catalog entry for the file
+                     */
                     return;
                 }
 
-                if ((cataloguedElement.getElementHeader() != null) && (cataloguedElement.getElementHeader().getGUID() != null) &&
-                        (cataloguedElement.getProperties() != null) && (cataloguedElement.getProperties().getPathName() != null))
-                {
-                    if (allowCatalogDelete)
-                    {
-                        this.getContext().deleteDataFileFromCatalog(cataloguedElement.getElementHeader().getGUID(),
-                                                                                    cataloguedElement.getProperties().getPathName());
+                DeleteOptions deleteOptions = new DeleteOptions();
 
-                        if (auditLog != null)
-                        {
-                            auditLog.logMessage(methodName,
-                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_DELETED.getMessageDefinition(connectorName,
-                                                                                                                                cataloguedElement.getProperties().getPathName(),
-                                                                                                                                cataloguedElement.getElementHeader().getGUID()));
-                        }
+                deleteOptions.setArchiveDate(new Date());
+                deleteOptions.setArchiveProcess(connectorName);
+
+                fileClient.deleteAsset(cataloguedElement.getElementHeader().getGUID(), deleteOptions);
+
+                if (auditLog != null)
+                {
+                    if (deleteOptions.getDeleteMethod() == DeleteMethod.ARCHIVE)
+                    {
+                        auditLog.logMessage(methodName,
+                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_ARCHIVED.getMessageDefinition(connectorName,
+                                                                                                                             pathName,
+                                                                                                                             cataloguedElement.getElementHeader().getGUID()));
                     }
                     else
                     {
-                        ArchiveProperties archiveProperties = new ArchiveProperties();
-
-                        archiveProperties.setArchiveDate(new Date());
-                        archiveProperties.setArchiveProcess(connectorName);
-
-                        this.getContext().archiveDataFileInCatalog(cataloguedElement.getElementHeader().getGUID(), archiveProperties);
-
-                        if (auditLog != null)
-                        {
-                            auditLog.logMessage(methodName,
-                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_ARCHIVED.getMessageDefinition(connectorName,
-                                                                                                                                 cataloguedElement.getProperties().getPathName(),
-                                                                                                                                 cataloguedElement.getElementHeader().getGUID()));
-                        }
-                    }
-                }
-                else
-                {
-                    if (auditLog != null)
-                    {
                         auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                                           cataloguedElement.toString()));
+                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_DELETED.getMessageDefinition(connectorName,
+                                                                                                                            pathName,
+                                                                                                                            cataloguedElement.getElementHeader().getGUID()));
                     }
                 }
             }

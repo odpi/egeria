@@ -2,13 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 
 import java.util.List;
 
@@ -17,10 +25,13 @@ import java.util.List;
  * information about the Asset that a survey action service is to analyze.  It is built around the Open Connector
  * Framework (OCF) services and Governance Action Framework (GAF).
  */
-public abstract class SurveyAssetStore
+public class SurveyAssetStore
 {
-    protected String        assetGUID;
-    protected String        userId;
+    private final String assetGUID;
+    private final String userId;
+    ConnectedAssetClient connectedAssetClient;
+    AssetHandler         assetHandler;
+    private final AuditLog             auditLog;
 
     /**
      * Constructor sets up the key parameters for accessing the asset store.
@@ -28,11 +39,17 @@ public abstract class SurveyAssetStore
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the annotations should be attached to
      */
-    public SurveyAssetStore(String assetGUID,
-                            String userId)
+    public SurveyAssetStore(String               assetGUID,
+                            String               userId,
+                            ConnectedAssetClient connectedAssetClient,
+                            AssetHandler         assetHandler,
+                            AuditLog             auditLog)
     {
-        this.assetGUID = assetGUID;
-        this.userId = userId;
+        this.assetGUID            = assetGUID;
+        this.userId               = userId;
+        this.connectedAssetClient = connectedAssetClient;
+        this.assetHandler         = assetHandler;
+        this.auditLog             = auditLog;
     }
 
 
@@ -58,10 +75,15 @@ public abstract class SurveyAssetStore
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws UserNotAuthorizedException connector disconnected
      */
-    public abstract Connector getConnectorByConnection(Connection connection) throws InvalidParameterException,
-                                                                                     ConnectionCheckedException,
-                                                                                     ConnectorCheckedException;
+    public Connector getConnectorByConnection(Connection connection) throws InvalidParameterException,
+                                                                            ConnectionCheckedException,
+                                                                            ConnectorCheckedException,
+                                                                            UserNotAuthorizedException
+    {
+        return connectedAssetClient.getConnectorByConnection(userId, connection);
+    }
 
 
     /**
@@ -73,25 +95,43 @@ public abstract class SurveyAssetStore
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public abstract AssetUniverse getAssetProperties() throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException;
+    public AssetElement getAssetProperties() throws InvalidParameterException,
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException
+    {
+        OpenMetadataRootElement openMetadataRootElement = assetHandler.getAssetByGUID(userId, assetGUID, null);
+
+        if (openMetadataRootElement instanceof AssetElement assetElement)
+        {
+            return assetElement;
+        }
+
+        return null;
+    }
 
 
     /**
-     * Log an audit message about this asset.
+     * Returns a comprehensive collection of properties about the requested asset.
      *
-     * @param surveyService name of survey service
-     * @param message message to log
+     * @return a comprehensive collection of properties about the asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public abstract void logAssetAuditMessage(String    surveyService,
-                                              String    message) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException;
+    public String getQualifiedName() throws InvalidParameterException,
+                                            PropertyServerException,
+                                            UserNotAuthorizedException
+    {
+        AssetElement assetElement = this.getAssetProperties();
+
+        if (assetElement.getProperties() instanceof AssetProperties assetProperties)
+        {
+            return assetProperties.getQualifiedName();
+        }
+
+        return null;
+    }
 
 
     /**
@@ -106,35 +146,14 @@ public abstract class SurveyAssetStore
      *                                    create the connector.
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
-    public abstract Connector  getConnectorToAsset() throws InvalidParameterException,
-                                                            ConnectionCheckedException,
-                                                            ConnectorCheckedException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
-
-
-    /**
-     * Creates a new data file asset and links it to the folder structure implied in the path name.  If the folder
-     * structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
-     * For example, a pathName of "one/two/three/MyFile.txt" potentially creates 3 new folder assets, one called "one",
-     * the next called "one/two" and the last one called "one/two/three" plus a file asset called
-     * "one/two/three/MyFile.txt".
-     *
-     * @param displayName display name for the file in the catalog
-     * @param description description of the file in the catalog
-     * @param pathName pathname of the data file
-     *
-     * @return list of GUIDs from the top level to the root of the pathname
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public abstract String addDataFileAssetToCatalog(String   displayName,
-                                                     String   description,
-                                                     String   pathName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+    public Connector  getConnectorToAsset() throws InvalidParameterException,
+                                                   ConnectionCheckedException,
+                                                   ConnectorCheckedException,
+                                                   UserNotAuthorizedException,
+                                                   PropertyServerException
+    {
+        return connectedAssetClient.getConnectorForAsset(userId, assetGUID);
+    }
 
 
     /**
@@ -153,12 +172,21 @@ public abstract class SurveyAssetStore
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public abstract String  addCSVFileToCatalog(String       displayName,
-                                                String       description,
-                                                String       pathName,
-                                                List<String> columnHeaders,
-                                                Character    delimiterCharacter,
-                                                Character    quoteCharacter) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException;
+    public  String  addCSVFileToCatalog(String       displayName,
+                                        String       description,
+                                        String       pathName,
+                                        List<String> columnHeaders,
+                                        Character    delimiterCharacter,
+                                        Character    quoteCharacter) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return assetHandler.addCSVFileToCatalog(userId,
+                                                displayName,
+                                                description,
+                                                pathName,
+                                                columnHeaders,
+                                                delimiterCharacter,
+                                                quoteCharacter);
+    }
 }

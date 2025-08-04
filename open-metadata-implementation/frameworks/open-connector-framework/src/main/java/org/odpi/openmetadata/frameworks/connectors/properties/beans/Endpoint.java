@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 
 import java.util.Objects;
 
@@ -22,10 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     </li>
  *     <li>
  *         guid   Globally unique identifier for the endpoint.
- *     </li>
- *     <li>
- *         url   External link address for the endpoint properties in the metadata repository.
- *         This URL can be stored as a property in another entity to create an explicit link to this endpoint.
  *     </li>
  *     <li>
  *         qualifiedName   The official (unique) name for the endpoint. This is often defined by the IT systems management
@@ -69,8 +66,6 @@ public class Endpoint extends Referenceable
     /*
      * Properties of an Endpoint
      */
-    protected   String                 displayName      = null;
-    protected   String                 description      = null;
     protected   String                 address          = null;
     protected   String                 protocol         = null;
     protected   String                 encryptionMethod = null;
@@ -93,6 +88,7 @@ public class Endpoint extends Referenceable
         elementType.setTypeName(elementTypeName);
         elementType.setTypeVersion(elementTypeVersion);
         elementType.setTypeDescription(elementTypeDescription);
+        elementType.setTypeCategory(OpenMetadataTypeDefCategory.ENTITY_DEF);
 
         return elementType;
     }
@@ -118,57 +114,10 @@ public class Endpoint extends Referenceable
 
         if (templateEndpoint != null)
         {
-            displayName      = templateEndpoint.getDisplayName();
-            description      = templateEndpoint.getDescription();
             address          = templateEndpoint.getAddress();
             protocol         = templateEndpoint.getProtocol();
             encryptionMethod = templateEndpoint.getEncryptionMethod();
         }
-    }
-
-
-    /**
-     * Set up the display name for UIs and reports.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Returns the stored display name property for the endpoint.
-     * If no display name is available then null is returned.
-     *
-     * @return displayName
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up description of the element.
-     *
-     * @param description String
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the description for the endpoint.
-     *
-     * @return String description
-     */
-    public String getDescription()
-    {
-        return description;
     }
 
 
@@ -252,22 +201,10 @@ public class Endpoint extends Referenceable
     public String toString()
     {
         return "Endpoint{" +
-                       "extendedProperties=" + getExtendedProperties() +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", address='" + address + '\'' +
-                       ", protocol='" + protocol + '\'' +
-                       ", encryptionMethod='" + encryptionMethod + '\'' +
-                       ", headerVersion=" + getHeaderVersion() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       '}';
+                "address='" + address + '\'' +
+                ", protocol='" + protocol + '\'' +
+                ", encryptionMethod='" + encryptionMethod + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -293,9 +230,7 @@ public class Endpoint extends Referenceable
             return false;
         }
         Endpoint endpoint = (Endpoint) objectToCompare;
-        return Objects.equals(getDisplayName(), endpoint.getDisplayName()) &&
-                       Objects.equals(getDescription(), endpoint.getDescription()) &&
-                       Objects.equals(getAddress(), endpoint.getAddress()) &&
+        return Objects.equals(getAddress(), endpoint.getAddress()) &&
                        Objects.equals(getProtocol(), endpoint.getProtocol()) &&
                        Objects.equals(getEncryptionMethod(), endpoint.getEncryptionMethod());
     }
@@ -309,6 +244,6 @@ public class Endpoint extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getAddress(), getProtocol(), getEncryptionMethod());
+        return Objects.hash(super.hashCode(), getAddress(), getProtocol(), getEncryptionMethod());
     }
 }

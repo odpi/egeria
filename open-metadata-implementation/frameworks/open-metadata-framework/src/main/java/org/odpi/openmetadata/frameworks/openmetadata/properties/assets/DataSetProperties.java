@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DeployedDatabaseSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.FormProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.QueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.ReportProperties;
@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DatabaseSchemaProperties.class, name = "DatabaseSchemaProperties"),
+                @JsonSubTypes.Type(value = DeployedDatabaseSchemaProperties.class, name = "DeployedDatabaseSchemaProperties"),
                 @JsonSubTypes.Type(value = FormProperties.class, name = "FormProperties"),
                 @JsonSubTypes.Type(value = ReportProperties.class, name = "ReportProperties"),
                 @JsonSubTypes.Type(value = QueryProperties.class, name = "QueryProperties"),

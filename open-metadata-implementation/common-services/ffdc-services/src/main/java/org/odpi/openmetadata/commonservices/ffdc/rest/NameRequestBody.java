@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 
 import java.util.Objects;
 
@@ -50,6 +51,17 @@ public class NameRequestBody extends ResultsRequestBody
             nameParameterName = template.getNameParameterName();
             namePropertyName = template.getNamePropertyName();
         }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public NameRequestBody(QueryOptions template)
+    {
+        super(template);
     }
 
 

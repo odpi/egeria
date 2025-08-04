@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.viewservices.governanceofficer.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.viewservices.governanceofficer.ffdc.GovernanceOfficerErrorCode;
 
 import java.util.HashMap;
@@ -24,12 +26,7 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GOVERNANCE_OFFICER;
 
-    /*
-     * This map caches clients for specific view services/access services.
-     */
-    private final Map<String, GovernanceDefinitionHandler> governanceDefinitionHandlerMap = new HashMap<>();
-
-    private final List<ViewServiceConfig> activeViewServices;
+    private final ViewServiceClientMap<GovernanceDefinitionHandler> viewServiceClientMap;
 
 
 
@@ -63,7 +60,14 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        this.activeViewServices = activeViewServices;
+        this.viewServiceClientMap = new ViewServiceClientMap<>(GovernanceDefinitionHandler.class,
+                                                               serverName,
+                                                               localServerUserId,
+                                                               localServerUserPassword,
+                                                               auditLog,
+                                                               activeViewServices,
+                                                               myDescription.getViewServiceFullName(),
+                                                               maxPageSize);
     }
 
 
@@ -71,74 +75,16 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * governance definition artifacts.
      *
+     * @param viewServiceURLMarker calling view service
+     * @param methodName calling operation
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String viewServiceURLMarker,
-                                                                      String methodName) throws InvalidParameterException
+                                                                      String methodName) throws InvalidParameterException,
+                                                                                                PropertyServerException
     {
-
-        GovernanceDefinitionHandler governanceDefinitionHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            governanceDefinitionHandler = governanceDefinitionHandlerMap.get(viewServiceURLMarker);
-
-            if (governanceDefinitionHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword == null)
-                                    {
-                                        governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
-                                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                                      auditLog,
-                                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                                      ViewServiceDescription.GOVERNANCE_OFFICER.getViewServiceFullName(),
-                                                                                                      maxPageSize);
-                                    }
-                                    else
-                                    {
-                                        governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
-                                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                                      localServerUserId,
-                                                                                                      localServerUserPassword,
-                                                                                                      auditLog,
-                                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                                      ViewServiceDescription.GOVERNANCE_OFFICER.getViewServiceFullName(),
-                                                                                                      maxPageSize);
-                                    }
-
-                                    governanceDefinitionHandlerMap.put(viewServiceURLMarker,
-                                                                       governanceDefinitionHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (governanceDefinitionHandler == null)
-        {
-            throw new InvalidParameterException(GovernanceOfficerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return governanceDefinitionHandler;
+        return viewServiceClientMap.getClient(viewServiceURLMarker, methodName);
     }
 }

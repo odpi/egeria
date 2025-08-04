@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceMeasurementsProperties extends ClassificationProperties
+public class GovernanceMeasurementsProperties extends ClassificationBeanProperties
 {
     private Map<String, Integer> counts = null;
     private Map<String, String>  values = null;
@@ -129,14 +129,11 @@ public class GovernanceMeasurementsProperties extends ClassificationProperties
     @Override
     public String toString()
     {
-        return "GovernanceExpectationsProperties{" +
-                       "effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", counts=" + counts +
-                       ", values=" + values +
-                       ", flags=" + flags +
-                       '}';
+        return "GovernanceMeasurementsProperties{" +
+                "counts=" + counts +
+                ", values=" + values +
+                ", flags=" + flags +
+                "} " + super.toString();
     }
 
 
@@ -153,7 +150,7 @@ public class GovernanceMeasurementsProperties extends ClassificationProperties
         {
             return true;
         }
-        if (! (objectToCompare instanceof GovernanceMeasurementsProperties))
+        if (! (objectToCompare instanceof GovernanceMeasurementsProperties that))
         {
             return false;
         }
@@ -161,7 +158,6 @@ public class GovernanceMeasurementsProperties extends ClassificationProperties
         {
             return false;
         }
-        GovernanceMeasurementsProperties that = (GovernanceMeasurementsProperties) objectToCompare;
         return Objects.equals(counts, that.counts) &&
                        Objects.equals(values, that.values) &&
                        Objects.equals(flags, that.flags);

@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 
 import java.util.function.Consumer;
 
@@ -16,16 +16,16 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the removeDatabaseColumn call to access service
  */
-class OmasRemoveColumn implements Consumer<DatabaseColumnElement>
+class OmasRemoveColumn implements Consumer<OpenMetadataRootElement>
 {
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final SchemaAttributeClient databaseColumnClient;
+    private final AuditLog              auditLog;
 
-    OmasRemoveColumn(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog)
+    OmasRemoveColumn(SchemaAttributeClient databaseColumnClient, AuditLog auditLog)
     {
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+        this.databaseColumnClient = databaseColumnClient;
+        this.auditLog             = auditLog;
     }
 
     /**
@@ -34,14 +34,14 @@ class OmasRemoveColumn implements Consumer<DatabaseColumnElement>
      * @param columnElement column
      */
     @Override
-    public void accept(DatabaseColumnElement columnElement)
+    public void accept(OpenMetadataRootElement columnElement)
     {
         String columnGuid = columnElement.getElementHeader().getGUID();
-        String columnQualifiedName = columnElement.getDatabaseColumnProperties().getQualifiedName();
+        String columnQualifiedName = databaseColumnClient.getQualifiedName(columnElement);
+
         try
         {
-            databaseIntegratorContext.removePrimaryKeyFromColumn(columnGuid);
-            databaseIntegratorContext.removeDatabaseColumn(columnGuid);
+            databaseColumnClient.deleteSchemaAttribute(columnGuid, databaseColumnClient.getDeleteOptions(false));
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {

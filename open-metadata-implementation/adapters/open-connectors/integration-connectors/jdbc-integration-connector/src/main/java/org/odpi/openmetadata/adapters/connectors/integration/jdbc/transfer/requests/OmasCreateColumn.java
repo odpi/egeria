@@ -2,29 +2,27 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseColumnProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS;
-
 /**
  * Manages the createDatabaseColumn call to access service
  */
-class OmasCreateColumn implements BiFunction<String, DatabaseColumnProperties, Optional<String>> {
+class OmasCreateColumn implements BiFunction<String, RelationalColumnProperties, Optional<String>>
+{
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final SchemaAttributeClient databaseColumnClient;
+    private final AuditLog              auditLog;
 
-    OmasCreateColumn(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasCreateColumn(SchemaAttributeClient databaseColumnClient,
+                     AuditLog              auditLog)
+    {
+        this.databaseColumnClient = databaseColumnClient;
+        this.auditLog             = auditLog;
     }
 
     /**
@@ -36,16 +34,23 @@ class OmasCreateColumn implements BiFunction<String, DatabaseColumnProperties, O
      * @return guid
      */
     @Override
-    public Optional<String> apply(String tableGuid, DatabaseColumnProperties newColumnProperties){
-        String methodName = "OmasCreateColumn";
-        try {
-            return Optional.ofNullable(
-                    databaseIntegratorContext.createDatabaseColumn(tableGuid, newColumnProperties));
-        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
+    public Optional<String> apply(String tableGuid, RelationalColumnProperties newColumnProperties)
+    {
+        final String methodName = "OmasCreateColumn";
+        /*
+        try
+        {
+
+            // todo return Optional.ofNullable(databaseColumnClient.createSchemaAttribute(tableGuid, newColumnProperties));
+        }
+        catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
+        {
             auditLog.logException("Creating column with qualified name " + newColumnProperties.getQualifiedName()
                     + " in table with guid " + tableGuid,
                     EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
         }
+
+         */
         return Optional.empty();
     }
 

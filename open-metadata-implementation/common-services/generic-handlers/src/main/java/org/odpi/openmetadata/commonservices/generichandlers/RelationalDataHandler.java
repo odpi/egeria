@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -355,9 +355,9 @@ public class RelationalDataHandler<DATABASE,
                 InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                                        null,
                                                                                                        OpenMetadataProperty.USE_TYPE.name,
-                                                                                                       ServerAssetUseType.getOpenTypeGUID(),
-                                                                                                       ServerAssetUseType.getOpenTypeName(),
-                                                                                                       ServerAssetUseType.OWNS.getOrdinal(),
+                                                                                                       CapabilityAssetUseType.getOpenTypeGUID(),
+                                                                                                       CapabilityAssetUseType.getOpenTypeName(),
+                                                                                                       CapabilityAssetUseType.OWNS.getOrdinal(),
                                                                                                        methodName);
 
                 databaseHandler.linkElementToElement(userId,
@@ -371,8 +371,8 @@ public class RelationalDataHandler<DATABASE,
                                                      OpenMetadataType.DATABASE.typeName,
                                                      forLineage,
                                                      forDuplicateProcessing,
-                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
-                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                     OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
                                                      relationshipProperties,
                                                      effectiveFrom,
                                                      effectiveTo,
@@ -643,7 +643,7 @@ public class RelationalDataHandler<DATABASE,
 
         classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                 null,
-                                                                                OpenMetadataProperty.ENCODING.name,
+                                                                                OpenMetadataProperty.ENCODING_TYPE.name,
                                                                                 encodingType,
                                                                                 methodName);
         classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -942,8 +942,8 @@ public class RelationalDataHandler<DATABASE,
                                                    databaseManagerGUID,
                                                    databaseManagerGUIDParameterName,
                                                    OpenMetadataType.DATABASE_MANAGER.typeName,
-                                                   OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
-                                                   OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                   OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
                                                    OpenMetadataType.DATABASE.typeName,
                                                    null,
                                                    null,
@@ -2360,11 +2360,6 @@ public class RelationalDataHandler<DATABASE,
                                                                   description,
                                                                   methodName);
 
-        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   OpenMetadataProperty.IS_DEPRECATED.name,
-                                                                   isDeprecated,
-                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
@@ -4548,7 +4543,7 @@ public class RelationalDataHandler<DATABASE,
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataProperty.NAME.name,
+                                                                                     OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                      name,
                                                                                      methodName);
 
@@ -4686,7 +4681,7 @@ public class RelationalDataHandler<DATABASE,
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataProperty.NAME.name,
+                                                                                     OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                      name,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

@@ -6,6 +6,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 
 import java.util.Date;
 import java.util.List;
@@ -75,9 +77,7 @@ public interface GovernanceActionTypeInterface
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime effective date/time for query
+     * @param searchOptions additional options to control the search
      *
      * @return list of matching metadata elements
      *
@@ -85,13 +85,11 @@ public interface GovernanceActionTypeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GovernanceActionTypeElement> findGovernanceActionTypes(String userId,
-                                                                String searchString,
-                                                                int    startFrom,
-                                                                int    pageSize,
-                                                                Date   effectiveTime) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException;
+    List<GovernanceActionTypeElement> findGovernanceActionTypes(String        userId,
+                                                                String        searchString,
+                                                                SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException;
 
 
     /**
@@ -100,9 +98,7 @@ public interface GovernanceActionTypeInterface
      *
      * @param userId calling user
      * @param name name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime effective date/time for query
+     * @param queryOptions additional options to control the query
      *
      * @return list of matching metadata elements
      *
@@ -110,13 +106,11 @@ public interface GovernanceActionTypeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GovernanceActionTypeElement> getGovernanceActionTypesByName(String  userId,
-                                                                     String  name,
-                                                                     int     startFrom,
-                                                                     int     pageSize,
-                                                                     Date    effectiveTime) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException;
+    List<GovernanceActionTypeElement> getGovernanceActionTypesByName(String       userId,
+                                                                     String       name,
+                                                                     QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException;
 
 
     /**

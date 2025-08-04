@@ -3,12 +3,15 @@
 
 package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.GovernanceEngineHandlerFactory;
 
@@ -19,7 +22,7 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
 {
 
     /**
-     * Create a client-side object for calling a survey action engine.
+     * Create a client-side object for calling a governance action engine.
      *
      * @param engineConfig        information about the governance engine.
      * @param localServerName     the name of the engine host server where the survey action engine is running
@@ -47,11 +50,19 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
     {
         if (engineConfig != null)
         {
-            GovernanceContextClient governanceContextClient;
-            GAFRESTClient           restClient;
+            GovernanceContextClient       governanceContextClient;
+            OpenGovernanceClient          openGovernanceClient;
+            EgeriaOpenMetadataStoreClient openMetadataStoreClient;
+            GAFRESTClient                 restClient;
 
             if ((localServerName != null) && (localServerPassword != null))
             {
+                openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
+                                                                            partnerURLRoot,
+                                                                            maxPageSize);
+                openGovernanceClient = new EgeriaOpenGovernanceClient(partnerServerName,
+                                                                      partnerURLRoot,
+                                                                      maxPageSize);
                 restClient = new GAFRESTClient(partnerServerName,
                                                partnerURLRoot,
                                                localServerUserId,
@@ -59,6 +70,16 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
             }
             else
             {
+                openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
+                                                                            partnerURLRoot,
+                                                                            localServerUserId,
+                                                                            localServerPassword,
+                                                                            maxPageSize);
+                openGovernanceClient = new EgeriaOpenGovernanceClient(partnerServerName,
+                                                                      partnerURLRoot,
+                                                                      localServerUserId,
+                                                                      localServerPassword,
+                                                                      maxPageSize);
                 restClient = new GAFRESTClient(partnerServerName, partnerURLRoot);
             }
 
@@ -67,11 +88,14 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
                                                                   restClient,
                                                                   maxPageSize);
 
+
+
             return new GovernanceActionEngineHandler(engineConfig,
                                                      localServerName,
                                                      partnerServerName,
                                                      partnerURLRoot,
                                                      localServerUserId,
+                                                     openMetadataStoreClient,
                                                      configurationClient,
                                                      serverClient,
                                                      governanceContextClient,

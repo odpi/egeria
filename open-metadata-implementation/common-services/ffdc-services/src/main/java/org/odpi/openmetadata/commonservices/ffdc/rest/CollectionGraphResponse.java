@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionHierarchy;
 
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CollectionGraphResponse extends FFDCResponseBase
 {
-    private CollectionGraph graph = null;
+    private CollectionHierarchy graph = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class CollectionGraphResponse extends FFDCResponseBase
      *
      * @return details of person role
      */
-    public CollectionGraph getGraph()
+    public CollectionHierarchy getGraph()
     {
         return graph;
     }
@@ -66,7 +66,7 @@ public class CollectionGraphResponse extends FFDCResponseBase
      *
      * @param graph details of person role
      */
-    public void setGraph(CollectionGraph graph)
+    public void setGraph(CollectionHierarchy graph)
     {
         this.graph = graph;
     }

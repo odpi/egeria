@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataClassProperties extends ReferenceableProperties
 {
-    private String              displayName           = null;
-    private String              description           = null;
     private List<String>        matchPropertyNames    = null;
     private String              namespace             = null;
     private int                 matchThreshold        = 100;
@@ -43,6 +41,7 @@ public class DataClassProperties extends ReferenceableProperties
     private String              valueRangeTo          = null;
     private List<String>        sampleValues          = null;
     private List<String>        dataPatterns          = null;
+    private String              userDefinedStatus     = null;
 
 
     /**
@@ -66,8 +65,6 @@ public class DataClassProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName           = template.getDisplayName();
-            description           = template.getDescription();
             matchPropertyNames    = template.getMatchPropertyNames();
             namespace             = template.getNamespace();
             specification         = template.getSpecification();
@@ -84,52 +81,8 @@ public class DataClassProperties extends ReferenceableProperties
             valueRangeTo          = template.getValueRangeTo();
             sampleValues          = template.getSampleValues();
             dataPatterns          = template.getDataPatterns();
+            userDefinedStatus     = template.getUserDefinedStatus();
         }
-    }
-
-
-
-    /**
-     * Return the display name of the data class.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name of the data class.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the data class.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the data class.
-     *
-     * @param description string description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -483,6 +436,28 @@ public class DataClassProperties extends ReferenceableProperties
 
 
     /**
+     * Return the status used when element status is OTHER.
+     *
+     * @return string
+     */
+    public String getUserDefinedStatus()
+    {
+        return userDefinedStatus;
+    }
+
+
+    /**
+     * Set up the status used when element status is OTHER.
+     *
+     * @param userDefinedStatus string
+     */
+    public void setUserDefinedStatus(String userDefinedStatus)
+    {
+        this.userDefinedStatus = userDefinedStatus;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -491,9 +466,7 @@ public class DataClassProperties extends ReferenceableProperties
     public String toString()
     {
         return "DataClassProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", matchPropertyNames=" + matchPropertyNames +
+                "matchPropertyNames=" + matchPropertyNames +
                 ", namespace='" + namespace + '\'' +
                 ", matchThreshold=" + matchThreshold +
                 ", specification='" + specification + '\'' +
@@ -509,6 +482,7 @@ public class DataClassProperties extends ReferenceableProperties
                 ", valueRangeTo='" + valueRangeTo + '\'' +
                 ", sampleValues=" + sampleValues +
                 ", dataPatterns=" + dataPatterns +
+                ", userDefinedStatus='" + userDefinedStatus + '\'' +
                 "} " + super.toString();
     }
 
@@ -529,8 +503,7 @@ public class DataClassProperties extends ReferenceableProperties
         return allowsDuplicateValues == that.allowsDuplicateValues &&
                 isNullable == that.isNullable &&
                 isCaseSensitive == that.isCaseSensitive &&
-                Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
+                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
                 Objects.equals(matchPropertyNames, that.matchPropertyNames) &&
                 Objects.equals(namespace, that.namespace) &&
                 Objects.equals(matchThreshold, that.matchThreshold) &&
@@ -554,7 +527,7 @@ public class DataClassProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, matchPropertyNames, namespace,
+        return Objects.hash(super.hashCode(), matchPropertyNames, namespace, userDefinedStatus,
                             matchThreshold, specification, specificationDetails, dataType, allowsDuplicateValues,
                             isCaseSensitive, isNullable, defaultValue, averageValue, valueList, valueRangeFrom,
                             valueRangeTo, sampleValues, dataPatterns);

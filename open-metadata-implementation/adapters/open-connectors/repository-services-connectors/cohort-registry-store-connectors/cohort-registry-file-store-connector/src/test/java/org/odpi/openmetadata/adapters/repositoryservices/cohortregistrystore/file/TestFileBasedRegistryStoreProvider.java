@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  * Ensures FileBasedRegistryStoreProvider correctly initializes its superclass.
@@ -16,12 +16,12 @@ public class TestFileBasedRegistryStoreProvider
     {
         FileBasedRegistryStoreProvider  provider = new FileBasedRegistryStoreProvider();
 
-        assertTrue(provider.getConnectorClassName().equals(FileBasedRegistryStoreConnector.class.getName()));
+        assertEquals(FileBasedRegistryStoreConnector.class.getName(), provider.getConnectorClassName());
 
-        ConnectorTypeDetails connectorTypeDetails = provider.getConnectorTypeProperties();
+        ConnectorType connectorTypeDetails = provider.getConnectorType();
 
-        assertTrue(connectorTypeDetails != null);
+        assertNotNull(connectorTypeDetails);
 
-        assertTrue(connectorTypeDetails.getConnectorProviderClassName().equals(FileBasedRegistryStoreProvider.class.getName()));
+        assertEquals(FileBasedRegistryStoreProvider.class.getName(), connectorTypeDetails.getConnectorProviderClassName());
     }
 }

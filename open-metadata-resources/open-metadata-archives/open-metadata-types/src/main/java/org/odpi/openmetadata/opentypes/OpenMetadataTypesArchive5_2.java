@@ -212,8 +212,6 @@ public class OpenMetadataTypesArchive5_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
 
@@ -453,7 +451,6 @@ public class OpenMetadataTypesArchive5_2
     {
         this.archiveBuilder.addEntityDef(getDeployedAnalyticsModelEntity());
         this.archiveBuilder.addEntityDef(getAnalyticsModelRunEntity());
-        this.archiveBuilder.addTypeDefPatch(updateTransientEmbeddedProcess());
     }
 
 
@@ -479,29 +476,6 @@ public class OpenMetadataTypesArchive5_2
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.ANALYTICS_MODEL_RUN,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName));
-    }
-
-
-    private TypeDefPatch updateTransientEmbeddedProcess()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 

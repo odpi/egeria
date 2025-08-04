@@ -18,7 +18,7 @@ public enum SpecificationPropertyType
     /**
      * Map of placeholder names to values that should be replaced in a template.
      */
-    PLACEHOLDER_PROPERTY("placeholderProperty", "Placeholder names are located through the attribute values found in a template.  They are identified with double braces, for example {{variableName}}.  The value supplied is substituted for the placeholder variable."),
+    PLACEHOLDER_PROPERTY("placeholderProperty", "Placeholder names are located through the attribute values found in a template.  They are identified with tilda+left-curley-brace...right-curley-brace+tilda, for example ~{variableName}~.  The value supplied is substituted for the placeholder variable."),
 
     /**
      * Description of a template that should be used by the connector when creating new elements of a certain type.

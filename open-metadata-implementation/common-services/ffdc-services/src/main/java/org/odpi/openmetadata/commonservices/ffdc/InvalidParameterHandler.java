@@ -577,129 +577,45 @@ public class InvalidParameterHandler
 
 
     /**
-     * Validate that an instance is from the expected metadata collection.
-     *
-     * @param instanceGUID unique identifier of the instance
-     * @param parameterName name of the parameter tha supplied the instance
-     * @param instanceHeader header of the instance
-     * @param expectedOriginCategory expected origin (defined by the type of API) - null means any
-     * @param expectedMetadataCollectionGUID unique identifier of expected metadata collection id - null means any
-     * @param expectedMetadataCollectionName unique name of expected metadata collection id - used for error logging
-     * @param serviceName name of calling service
-     * @param methodName name of calling method
-     *
-     * @throws InvalidParameterException the metadata collection id or origin is not correct
-     */
-    public void  validateInstanceProvenanceForUpdate(String                instanceGUID,
-                                                     String                parameterName,
-                                                     ElementBase           instanceHeader,
-                                                     ElementOriginCategory expectedOriginCategory,
-                                                     String                expectedMetadataCollectionGUID,
-                                                     String                expectedMetadataCollectionName,
-                                                     String                serviceName,
-                                                     String                methodName) throws InvalidParameterException
-    {
-        if (instanceHeader != null)
-        {
-            if (instanceHeader.getOrigin() != null)
-            {
-                ElementOrigin elementOrigin = instanceHeader.getOrigin();
-
-                if ((expectedOriginCategory == null) || (elementOrigin.getOriginCategory() == expectedOriginCategory))
-                {
-                    if (expectedMetadataCollectionGUID == null)
-                    {
-                        return;
-                    }
-
-                    if (expectedMetadataCollectionGUID.equals(elementOrigin.getHomeMetadataCollectionId()))
-                    {
-                        return;
-                    }
-                }
-
-                String expectedOriginName = "null";
-
-                if (expectedOriginCategory != null)
-                {
-                    expectedOriginName = expectedOriginCategory.getName();
-                }
-
-                throw new InvalidParameterException(OMAGCommonErrorCode.WRONG_METADATA_COLLECTION_FOR_UPDATE.getMessageDefinition(methodName,
-                                                                                                                                  serviceName,
-                                                                                                                                  instanceGUID,
-                                                                                                                                  instanceHeader.getType().getTypeName(),
-                                                                                                                                  expectedOriginName,
-                                                                                                                                  expectedMetadataCollectionName,
-                                                                                                                                  expectedMetadataCollectionGUID,
-                                                                                                                                  elementOrigin.getOriginCategory().getName(),
-                                                                                                                                  elementOrigin.getHomeMetadataCollectionName(),
-                                                                                                                                  elementOrigin.getHomeMetadataCollectionId()),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-            }
-            else
-            {
-                throw new InvalidParameterException(OMAGCommonErrorCode.NULL_OBJECT.getMessageDefinition("instanceHeader.getType()",
-                                                                                                         methodName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-            }
-        }
-        else
-        {
-            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_OBJECT.getMessageDefinition("instanceHeader",
-                                                                                                     methodName),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                parameterName);
-        }
-    }
-
-
-    /**
-     * Compare the supported zones with the zones stored in the asset.  If the asset is not in
+     * Compare the supported zones with the zones stored in the element.  If the element is not in
      * one of the supported zones then throw an exception. Otherwise, return ok.
      * Null values in either returns ok.
+     * Note the error message implies that the element does not exist.  This is because the consequence
+     * of not being in the visible zone is that the element is invisible - just like it does not exist.
      *
-     * Note the error message implies that the asset does not exist.  This is because the consequence
-     * of not being in the supported zone is that the asset is invisible - just like it does not exist.
-     *
-     * @param assetGUID unique identifier of the asset
+     * @param elementGUID unique identifier of the asset
      * @param parameterName name of the parameter that passed the asset guid
-     * @param assetZones list of zone names from the asset
-     * @param supportedZones list of zone names supported by the service
+     * @param zoneMembership list of zone names from the element
+     * @param visibleZones list of zone names visible to the caller
      * @param serviceName calling service
      * @param methodName calling method
      *
      * @throws InvalidParameterException the asset is not in the supported zone.
      */
-    public void  validateAssetInSupportedZone(String        assetGUID,
-                                              String        parameterName,
-                                              List<String>  assetZones,
-                                              List<String>  supportedZones,
-                                              String        serviceName,
-                                              String        methodName) throws InvalidParameterException
+    public void validateElementInSupportedZone(String        elementGUID,
+                                               String        parameterName,
+                                               List<String>  zoneMembership,
+                                               List<String>  visibleZones,
+                                               String        serviceName,
+                                               String        methodName) throws InvalidParameterException
     {
-        if ((supportedZones == null) || (supportedZones.isEmpty()))
+        if ((visibleZones == null) || (visibleZones.isEmpty()))
         {
             return;
         }
 
-        if ((assetZones == null) || (assetZones.isEmpty()))
+        if ((zoneMembership == null) || (zoneMembership.isEmpty()))
         {
             return;
         }
 
-        for (String    assetZoneName : assetZones)
+        for (String    memberZone : zoneMembership)
         {
-            if (assetZoneName != null)
+            if (memberZone != null)
             {
-                for (String  supportedZoneName : supportedZones)
+                for (String  supportedZoneName : visibleZones)
                 {
-                    if (assetZoneName.equals(supportedZoneName))
+                    if (memberZone.equals(supportedZoneName))
                     {
                         return;
                     }
@@ -707,7 +623,7 @@ public class InvalidParameterHandler
             }
         }
 
-        throw new InvalidParameterException(OMAGCommonErrorCode.NOT_IN_THE_ZONE.getMessageDefinition(assetGUID, serviceName),
+        throw new InvalidParameterException(OMAGCommonErrorCode.NOT_IN_THE_ZONE.getMessageDefinition(elementGUID, serviceName),
                                             this.getClass().getName(),
                                             methodName,
                                             parameterName);

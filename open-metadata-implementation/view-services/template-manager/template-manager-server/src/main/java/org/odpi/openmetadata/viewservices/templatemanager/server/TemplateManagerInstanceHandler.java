@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.viewservices.templatemanager.server;
 
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.TemplateManager;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.TemplateHandler;
 
 
 /**
@@ -41,7 +41,7 @@ public class TemplateManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public TemplateManager getTemplateManagerClient(String userId,
+    public TemplateHandler getTemplateManagerClient(String userId,
                                                     String serverName,
                                                     String serviceOperationName) throws InvalidParameterException,
                                                                                         PropertyServerException,
@@ -51,7 +51,7 @@ public class TemplateManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getTemplateManagerClient();
+            return instance.getTemplateHandler();
         }
 
         return null;
@@ -69,17 +69,17 @@ public class TemplateManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient(String userId,
-                                                              String serverName,
-                                                              String serviceOperationName) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
+    public OpenMetadataClient getOpenMetadataClient(String userId,
+                                                    String serverName,
+                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         TemplateManagerInstance instance = (TemplateManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getOpenMetadataStoreClient();
+            return instance.getOpenMetadataClient();
         }
 
         return null;

@@ -3,32 +3,26 @@
 package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NewElementRequestBody provides a structure used when creating actor profiles.
+ * NewElementRequestBody provides a structure used when creating new elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = NewAgreementRequestBody.class, name = "NewAgreementRequestBody"),
-                @JsonSubTypes.Type(value = NewDigitalProductRequestBody.class, name = "NewDigitalProductRequestBody"),
-                @JsonSubTypes.Type(value = NewGovernanceDefinitionRequestBody.class, name = "NewGovernanceDefinitionRequestBody"),
-                @JsonSubTypes.Type(value = NewSolutionElementRequestBody.class, name = "NewSolutionElementRequestBody"),
-        })
-public class NewElementRequestBody extends NewElementOptionsRequestBody
+public class NewElementRequestBody extends NewElementOptions
 {
-    private OpenMetadataRootProperties properties = null;
+    private OpenMetadataRootProperties            properties                   = null;
+    private Map<String, ClassificationProperties> initialClassifications       = null;
+    private RelationshipProperties                parentRelationshipProperties = null;
 
 
     /**
@@ -51,6 +45,8 @@ public class NewElementRequestBody extends NewElementOptionsRequestBody
         if (template != null)
         {
             this.properties = template.getProperties();
+            this.initialClassifications = template.getInitialClassifications();
+            this.parentRelationshipProperties = template.getParentRelationshipProperties();
         }
     }
 
@@ -78,6 +74,51 @@ public class NewElementRequestBody extends NewElementOptionsRequestBody
 
 
     /**
+     * Return the map of classification names to classification properties to include in the entity creation request.
+     *
+     * @return map
+     */
+    public Map<String, ClassificationProperties> getInitialClassifications()
+    {
+        return initialClassifications;
+    }
+
+
+    /**
+     * Set up map of classification names to classification properties to include in the entity creation request.
+     *
+     * @param initialClassifications map
+     */
+    public void setInitialClassifications(Map<String, ClassificationProperties> initialClassifications)
+    {
+        this.initialClassifications = initialClassifications;
+    }
+
+
+    /**
+     * Return any properties to include in parent relationship.
+     *
+     * @return relationship properties
+     */
+    public RelationshipProperties getParentRelationshipProperties()
+    {
+        return parentRelationshipProperties;
+    }
+
+
+    /**
+     * Set up any properties to include in parent relationship.
+     *
+     * @param parentRelationshipProperties relationship properties
+     */
+    public void setParentRelationshipProperties(RelationshipProperties parentRelationshipProperties)
+    {
+        this.parentRelationshipProperties = parentRelationshipProperties;
+    }
+
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -87,6 +128,8 @@ public class NewElementRequestBody extends NewElementOptionsRequestBody
     {
         return "NewElementRequestBody{" +
                 "properties=" + properties +
+                ", initialClassifications=" + initialClassifications +
+                ", parentRelationshipProperties=" + parentRelationshipProperties +
                 "} " + super.toString();
     }
 
@@ -112,7 +155,9 @@ public class NewElementRequestBody extends NewElementOptionsRequestBody
         {
             return false;
         }
-        return Objects.equals(properties, that.properties);
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(initialClassifications, that.initialClassifications) &&
+                Objects.equals(parentRelationshipProperties, that.parentRelationshipProperties);
     }
 
 
@@ -124,6 +169,6 @@ public class NewElementRequestBody extends NewElementOptionsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(super.hashCode(), properties, initialClassifications, parentRelationshipProperties);
     }
 }

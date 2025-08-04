@@ -32,7 +32,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
     private static final String connectorDisplayName   = "Governance Action to Open Lineage Integration Connector";
     private static final String connectorDescription   = "Connector to listen for governance actions executing in the open metadata ecosystem, " +
                                                                  "generate open lineage events for them and publish them to any integration " +
-                                                                 "connectors running in the same instance of Lineage Integrator OMIS.";
+                                                                 "connectors running in the same instance of the integration daemon.";
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/governance-action-open-lineage-integration-connector/";
 
     /*
@@ -59,7 +59,6 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
          * Set up the connector type that should be included in a connection used to configure this connector.
          */
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorDisplayName);

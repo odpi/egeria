@@ -191,7 +191,7 @@ public class OpenMetadataTypesArchive2_0
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
 
@@ -214,8 +214,8 @@ public class OpenMetadataTypesArchive2_0
     private ClassificationDef getFileManagerClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.FILE_MANAGER_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName),
                                                   false);
     }
 
@@ -234,8 +234,8 @@ public class OpenMetadataTypesArchive2_0
     private ClassificationDef getContentCollectionManagerClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.CONTENT_COLLECTION_MANAGER,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName),
                                                   false);
     }
 
@@ -256,7 +256,7 @@ public class OpenMetadataTypesArchive2_0
     private EntityDef addDatabaseManagerEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATABASE_MANAGER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
 
     }
 

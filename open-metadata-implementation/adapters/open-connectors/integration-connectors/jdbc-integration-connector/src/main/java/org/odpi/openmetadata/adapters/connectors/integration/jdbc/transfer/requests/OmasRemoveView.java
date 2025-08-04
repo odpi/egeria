@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseViewElement;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 
 import java.util.function.Consumer;
 
@@ -16,14 +16,17 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the removeDatabaseTable call to access service
  */
-class OmasRemoveView implements Consumer<DatabaseViewElement> {
+class OmasRemoveView implements Consumer<OpenMetadataRootElement>
+{
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final SchemaAttributeClient databaseViewClient;
+    private final AuditLog              auditLog;
 
-    OmasRemoveView(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasRemoveView(SchemaAttributeClient databaseViewClient,
+                   AuditLog              auditLog)
+    {
+        this.databaseViewClient = databaseViewClient;
+        this.auditLog           = auditLog;
     }
 
     /**
@@ -32,15 +35,18 @@ class OmasRemoveView implements Consumer<DatabaseViewElement> {
      * @param viewElement view
      */
     @Override
-    public void accept(DatabaseViewElement viewElement) {
+    public void accept(OpenMetadataRootElement viewElement)
+    {
         String viewGuid = viewElement.getElementHeader().getGUID();
-        String viewQualifiedName = viewElement.getDatabaseViewProperties().getQualifiedName();
-        try {
-            databaseIntegratorContext.removeDatabaseView(viewGuid , false);
-        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
-            auditLog.logMessage("Removing view with guid " + viewGuid
-                    + " and qualified name " + viewQualifiedName,
-                    EXCEPTION_WHEN_REMOVING_ELEMENT_IN_OMAS.getMessageDefinition(viewGuid, viewQualifiedName));
+
+        try
+        {
+            databaseViewClient.deleteSchemaAttribute(viewGuid, databaseViewClient.getDeleteOptions(true));
+        }
+        catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
+        {
+            auditLog.logMessage("Removing view with guid " + viewGuid,
+                    EXCEPTION_WHEN_REMOVING_ELEMENT_IN_OMAS.getMessageDefinition(viewGuid, "null"));
         }
     }
 

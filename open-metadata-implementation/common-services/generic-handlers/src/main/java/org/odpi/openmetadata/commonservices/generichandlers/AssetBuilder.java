@@ -186,7 +186,7 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                  OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -195,7 +195,7 @@ public class AssetBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
         }
     }
 
@@ -321,7 +321,7 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                                       null,
                                                                                       InstanceProvenanceType.LOCAL_COHORT,
                                                                                       userId,
-                                                                                      OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName,
+                                                                                      OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName,
                                                                                       typeName,
                                                                                       ClassificationOrigin.ASSIGNED,
                                                                                       null,
@@ -335,7 +335,7 @@ public class AssetBuilder extends ReferenceableBuilder
             }
             catch (TypeErrorException error)
             {
-                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
+                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName);
             }
         }
     }
@@ -447,7 +447,7 @@ public class AssetBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.NAME.name,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   name,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

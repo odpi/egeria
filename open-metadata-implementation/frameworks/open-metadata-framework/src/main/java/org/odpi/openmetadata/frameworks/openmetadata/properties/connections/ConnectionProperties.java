@@ -4,10 +4,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.connections;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -17,7 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The connection is an object that contains the properties needed to create and initialise a connector to access a
  * specific data assets.
- *
  * The properties for a connection are defined in model 0201.  They include the following options for connector name:
  * <ul>
  *     <li>
@@ -40,7 +37,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * </ul>
  *
  *  Either the guid, qualifiedName or displayName can be used to specify the name for a connection.
- *
  *  Other properties for the connection include:
  *  <ul>
  *      <li>
@@ -92,8 +88,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ConnectionProperties extends ReferenceableProperties
 {
-    private String              displayName             = null;
-    private String              description             = null;
     private String              userId                  = null;
     private String              encryptedPassword       = null;
     private String              clearPassword           = null;
@@ -122,57 +116,12 @@ public class ConnectionProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
             userId = template.getUserId();
             clearPassword = template.getClearPassword();
             encryptedPassword = template.getEncryptedPassword();
             configurationProperties = template.getConfigurationProperties();
             securedProperties = template.getSecuredProperties();
         }
-    }
-
-
-    /**
-     * Returns the stored display name property for the connection.
-     * Null means no displayName is available.
-     *
-     * @return displayName
-     */
-    public String getDisplayName() { return displayName; }
-
-
-    /**
-     * Set up the display name for UIs and reports.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Set up description of the element.
-     *
-     * @param description String
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Returns the stored description property for the connection.
-     * If no description is provided then null is returned.
-     *
-     * @return description
-     */
-    public String getDescription()
-    {
-        return description;
     }
 
 
@@ -260,18 +209,7 @@ public class ConnectionProperties extends ReferenceableProperties
      */
     public Map<String, Object> getConfigurationProperties()
     {
-        if (configurationProperties == null)
-        {
-            return null;
-        }
-        else if (configurationProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(configurationProperties);
-        }
+        return configurationProperties;
     }
 
 
@@ -293,18 +231,7 @@ public class ConnectionProperties extends ReferenceableProperties
      */
     public Map<String, String> getSecuredProperties()
     {
-        if (securedProperties == null)
-        {
-            return null;
-        }
-        else if (securedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(securedProperties);
-        }
+        return securedProperties;
     }
 
 
@@ -318,19 +245,14 @@ public class ConnectionProperties extends ReferenceableProperties
     public String toString()
     {
         return "ConnectionProperties{" +
-                       "displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", userId='" + userId + '\'' +
-                       ", encryptedPassword='" + encryptedPassword + '\'' +
-                       ", clearPassword='" + clearPassword + '\'' +
-                       ", configurationProperties=" + configurationProperties +
-                       ", securedProperties=" + securedProperties +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "userId='" + userId + '\'' +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                ", clearPassword='" + clearPassword + '\'' +
+                ", configurationProperties=" + configurationProperties +
+                ", securedProperties=" + securedProperties +
+                "} " + super.toString();
     }
+
 
 
     /**
@@ -342,26 +264,11 @@ public class ConnectionProperties extends ReferenceableProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         ConnectionProperties that = (ConnectionProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getUserId(), that.getUserId()) &&
-                Objects.equals(getEncryptedPassword(), that.getEncryptedPassword()) &&
-                Objects.equals(getClearPassword(), that.getClearPassword()) &&
-                Objects.equals(getConfigurationProperties(), that.getConfigurationProperties()) &&
-                Objects.equals(getSecuredProperties(), that.getSecuredProperties());
+        return Objects.equals(userId, that.userId) && Objects.equals(encryptedPassword, that.encryptedPassword) && Objects.equals(clearPassword, that.clearPassword) && Objects.equals(configurationProperties, that.configurationProperties) && Objects.equals(securedProperties, that.securedProperties);
     }
 
 
@@ -373,8 +280,6 @@ public class ConnectionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(),
-                            getUserId(), getEncryptedPassword(), getClearPassword(), getSecuredProperties(),
-                            getConfigurationProperties());
+        return Objects.hash(super.hashCode(), userId, encryptedPassword, clearPassword, configurationProperties, securedProperties);
     }
 }

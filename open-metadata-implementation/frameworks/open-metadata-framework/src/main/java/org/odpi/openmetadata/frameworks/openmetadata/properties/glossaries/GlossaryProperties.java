@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossaryProperties extends ReferenceableProperties
 {
-    private String displayName = null;
-    private String description = null;
     private String language    = null;
     private String usage       = null;
 
@@ -46,55 +44,9 @@ public class GlossaryProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
             language = template.getLanguage();
             usage = template.getUsage();
         }
-    }
-
-
-    /**
-     * Return a human memorable name for the glossary.
-     *
-     * @return string  name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up a human memorable name for the glossary.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the glossary.
-     *
-     * @return string text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the glossary.
-     *
-     * @param description string text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -151,9 +103,7 @@ public class GlossaryProperties extends ReferenceableProperties
     public String toString()
     {
         return "GlossaryProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", language='" + language + '\'' +
+                "language='" + language + '\'' +
                 ", usage='" + usage + '\'' +
                 "} " + super.toString();
     }
@@ -181,9 +131,7 @@ public class GlossaryProperties extends ReferenceableProperties
             return false;
         }
         GlossaryProperties that = (GlossaryProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(language, that.language) &&
+        return Objects.equals(language, that.language) &&
                 Objects.equals(usage, that.usage);
     }
 
@@ -196,6 +144,6 @@ public class GlossaryProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, language, usage);
+        return Objects.hash(super.hashCode(), language, usage);
     }
 }

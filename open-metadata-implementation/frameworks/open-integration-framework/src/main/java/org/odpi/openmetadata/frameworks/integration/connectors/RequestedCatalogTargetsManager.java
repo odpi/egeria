@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Manages the map of catalog targets that this integration connector is working with.
+ * Manages the map of catalog targets that this integration connector is working with.  It is also responsible for
+ * keeping the list current.
  */
 public class RequestedCatalogTargetsManager implements CatalogTargetChangeListener
 {
@@ -97,7 +98,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      * @param catalogTargetIntegrator subclass of connector implementation
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
-    public List<RequestedCatalogTarget> refreshKnownCatalogTargets(IntegrationContext integrationContext,
+    public List<RequestedCatalogTarget> refreshKnownCatalogTargets(IntegrationContext      integrationContext,
                                                                    CatalogTargetIntegrator catalogTargetIntegrator) throws ConnectorCheckedException
     {
         final String methodName = "refreshKnownCatalogTargets";
@@ -106,7 +107,9 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
         {
             int startFrom = 0;
 
-            List<CatalogTarget> catalogTargetList  = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
+            List<CatalogTarget> catalogTargetList  = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                                     startFrom,
+                                                                                                                     integrationContext.getMaxPageSize());
 
             while (catalogTargetList != null)
             {
@@ -141,7 +144,9 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                 }
 
                 startFrom         = startFrom + integrationContext.getMaxPageSize();
-                catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
+                catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                    startFrom,
+                                                                                                    integrationContext.getMaxPageSize());
             }
 
             return new ArrayList<>(currentCatalogTargetMap.values());
@@ -191,10 +196,12 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
 
         if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
         {
-            connectorToTarget = integrationContext.getConnectedAssetContext().getConnectorToAsset(retrievedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
+            connectorToTarget = integrationContext.getConnectedAssetContext().getConnectorForAsset(retrievedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
         }
 
-        RequestedCatalogTarget newRequestedCatalogTarget = catalogTargetIntegrator.getNewRequestedCatalogTargetSkeleton(retrievedCatalogTarget, connectorToTarget);
+        RequestedCatalogTarget newRequestedCatalogTarget = catalogTargetIntegrator.getNewRequestedCatalogTargetSkeleton(retrievedCatalogTarget,
+                                                                                                                        integrationContext.getCatalogTargetContext(retrievedCatalogTarget),
+                                                                                                                        connectorToTarget);
         newRequestedCatalogTarget.setConfigurationProperties(this.getCombinedConfigurationProperties(retrievedCatalogTarget.getConfigurationProperties()));
 
         return newRequestedCatalogTarget;
@@ -302,11 +309,11 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
     private void startConnector(RequestedCatalogTarget catalogTarget,
                                 String                 methodName)
     {
-        if (catalogTarget.getCatalogTargetConnector() != null)
+        if (catalogTarget.getConnectorToTarget() != null)
         {
             try
             {
-                catalogTarget.getCatalogTargetConnector().start();
+                catalogTarget.getConnectorToTarget().start();
             }
             catch (Exception error)
             {
@@ -330,11 +337,11 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
     private void disconnectConnector(RequestedCatalogTarget catalogTarget,
                                      String                 methodName)
     {
-        if ((catalogTarget != null) && (catalogTarget.getCatalogTargetConnector() != null))
+        if ((catalogTarget != null) && (catalogTarget.getConnectorToTarget() != null))
         {
             try
             {
-                catalogTarget.getCatalogTargetConnector().disconnect();
+                catalogTarget.getConnectorToTarget().disconnect();
             }
             catch (Exception error)
             {
@@ -356,9 +363,9 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
     {
         for (RequestedCatalogTarget catalogTarget : currentCatalogTargetMap.values())
         {
-            if (catalogTarget.getCatalogTargetConnector() != null)
+            if (catalogTarget.getConnectorToTarget() != null)
             {
-                catalogTarget.getCatalogTargetConnector().disconnect();
+                catalogTarget.getConnectorToTarget().disconnect();
             }
         }
     }

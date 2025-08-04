@@ -184,12 +184,12 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                     "Update the caller to provide a valid type name for this request."),
 
     /**
-     * OMAG-COMMON-400-020 - Asset {0} is not recognized by the {1} service
+     * OMAG-COMMON-400-020 - Element {0} is not recognized by the {1} service
      */
     NOT_IN_THE_ZONE(400, "OMAG-COMMON-400-020",
-                      "Asset {0} is not recognized by the {1} service",
-                      "The system is unable to process the request because it can not retrieve the asset.",
-                      "Update the caller to provide a recognized asset identifier."),
+                      "Element {0} is not recognized by the {1} service",
+                      "The system is unable to process the request because it can not retrieve the element.",
+                      "Update the caller to provide a recognized identifier."),
 
     /**
      * OMAG-COMMON-400-021 - The identifier {0} of the {1} passed by {2} to method {3} of service {4} is not recognized by the {5} server

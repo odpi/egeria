@@ -4,29 +4,29 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads;
 
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataEventClient;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.listener.GovernanceServerOutTopicListener;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.listener.OpenMetadataOutTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
  * GroupConfigurationRefreshThread is the class responsible for establishing the listener for configuration
- * updates.  It runs as a separate thread until the listener is registered with the Governance Group OMAS.
+ * updates.  It runs as a separate thread until the listener is registered with the Open Metadata Services.
  * At that point, the listener is able to process incoming configuration updates and this thread can end.
  */
 public class GroupConfigurationRefreshThread implements Runnable
 {
     private final String                      groupName;
-    private final IntegrationGroupHandler     groupHandler;
-    private final GovernanceServerEventClient eventClient;
-    private final AuditLog                    auditLog;
+    private final IntegrationGroupHandler       groupHandler;
+    private final EgeriaOpenMetadataEventClient eventClient;
+    private final AuditLog                      auditLog;
     private final String                      localServerUserId;
     private final String                      localServerName;
     private final String                      accessServiceServerName;
@@ -39,7 +39,7 @@ public class GroupConfigurationRefreshThread implements Runnable
 
 
     /**
-     * The constructor takes details of the governance group handlers needed by the listener and the information
+     * The constructor takes details of the integration group handlers needed by the listener and the information
      * needed to log errors if the metadata server is not available.
      *
      * @param groupName name of the group to manage the configuration for
@@ -52,15 +52,15 @@ public class GroupConfigurationRefreshThread implements Runnable
      * @param accessServiceRootURL platform location for metadata server
      * @param maxPageSize max results
      */
-    public GroupConfigurationRefreshThread(String                               groupName,
-                                           IntegrationGroupHandler              groupHandler,
-                                           GovernanceServerEventClient          eventClient,
-                                           AuditLog                             auditLog,
-                                           String                               localServerUserId,
-                                           String                               localServerName,
-                                           String                               accessServiceServerName,
-                                           String                               accessServiceRootURL,
-                                           int                                  maxPageSize)
+    public GroupConfigurationRefreshThread(String                  groupName,
+                                           IntegrationGroupHandler groupHandler,
+                                           EgeriaOpenMetadataEventClient eventClient,
+                                           AuditLog                auditLog,
+                                           String                  localServerUserId,
+                                           String                  localServerName,
+                                           String                  accessServiceServerName,
+                                           String                  accessServiceRootURL,
+                                           int                     maxPageSize)
     {
         this.groupName               = groupName;
         this.groupHandler            = groupHandler;
@@ -97,11 +97,11 @@ public class GroupConfigurationRefreshThread implements Runnable
                                                                                                           accessServiceRootURL,
                                                                                                           maxPageSize);
                     eventClient.registerListener(localServerUserId,
-                                                 new GovernanceServerOutTopicListener(groupName,
-                                                                                      groupHandler,
-                                                                                      configurationClient,
-                                                                                      localServerUserId,
-                                                                                      auditLog));
+                                                 new OpenMetadataOutTopicListener(groupName,
+                                                                                  groupHandler,
+                                                                                  configurationClient,
+                                                                                  localServerUserId,
+                                                                                  auditLog));
                     listenerRegistered = true;
 
                     auditLog.logMessage(actionDescription,

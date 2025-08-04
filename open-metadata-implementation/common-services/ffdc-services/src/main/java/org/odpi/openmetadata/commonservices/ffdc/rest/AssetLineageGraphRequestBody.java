@@ -5,9 +5,8 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,10 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
+public class AssetLineageGraphRequestBody extends QueryOptions
 {
-    private Date         asOfTime                  = null;
-    private List<String> relationshipTypes         = null;
     private String       limitToISCQualifiedName   = null;
     private String       highlightISCQualifiedName = null;
     private boolean      allAnchors                = false;
@@ -47,56 +44,10 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
 
         if (template != null)
         {
-            this.asOfTime                  = template.getAsOfTime();
-            this.relationshipTypes         = template.getRelationshipTypes();
             this.limitToISCQualifiedName   = template.getLimitToISCQualifiedName();
             this.highlightISCQualifiedName = template.getHighlightISCQualifiedName();
             this.allAnchors                = template.getAllAnchors();
         }
-    }
-
-
-    /**
-     * Return the repository time that should be used when retrieving metadata.
-     *
-     * @return date/time (default null which means now)
-     */
-    public Date getAsOfTime()
-    {
-        return asOfTime;
-    }
-
-
-    /**
-     * Set up the repository time that should be used when retrieving metadata.
-     *
-     * @param asOfTime date/time (default null which means now)
-     */
-    public void setAsOfTime(Date asOfTime)
-    {
-        this.asOfTime = asOfTime;
-    }
-
-
-    /**
-     * Return the types of relationships that should be queried.
-     *
-     * @return list
-     */
-    public List<String> getRelationshipTypes()
-    {
-        return relationshipTypes;
-    }
-
-
-    /**
-     * Set up he types of relationships that should be queried.
-     *
-     * @param relationshipTypes list
-     */
-    public void setRelationshipTypes(List<String> relationshipTypes)
-    {
-        this.relationshipTypes = relationshipTypes;
     }
 
 
@@ -177,9 +128,7 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
     public String toString()
     {
         return "AssetLineageGraphRequestBody{" +
-                "asOfTime=" + asOfTime +
-                ", relationshipTypes=" + relationshipTypes +
-                ", limitToISCQualifiedName='" + limitToISCQualifiedName + '\'' +
+                "limitToISCQualifiedName='" + limitToISCQualifiedName + '\'' +
                 ", highlightISCQualifiedName='" + highlightISCQualifiedName + '\'' +
                 ", allAnchors=" + allAnchors +
                 "} " + super.toString();
@@ -209,8 +158,6 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
         }
         AssetLineageGraphRequestBody that = (AssetLineageGraphRequestBody) objectToCompare;
         return  allAnchors == that.allAnchors &&
-                Objects.equals(asOfTime, that.asOfTime) &&
-                Objects.equals(relationshipTypes, that.relationshipTypes) &&
                 Objects.equals(limitToISCQualifiedName, that.limitToISCQualifiedName) &&
                 Objects.equals(highlightISCQualifiedName, that.highlightISCQualifiedName);
     }
@@ -224,6 +171,6 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), allAnchors, asOfTime, relationshipTypes, limitToISCQualifiedName, highlightISCQualifiedName);
+        return Objects.hash(super.hashCode(), allAnchors, limitToISCQualifiedName, highlightISCQualifiedName);
     }
 }

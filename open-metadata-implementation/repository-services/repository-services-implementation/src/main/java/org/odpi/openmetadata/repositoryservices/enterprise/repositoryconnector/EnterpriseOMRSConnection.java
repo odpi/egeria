@@ -2,17 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 /**
  * EnterpriseOMRSConnection provides a valid connection for the EnterpriseOMRSConnector.
  */
-public class EnterpriseOMRSConnection extends ConnectionDetails
+public class EnterpriseOMRSConnection extends Connection
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default Constructor that sets up the connector
      */
@@ -20,7 +17,7 @@ public class EnterpriseOMRSConnection extends ConnectionDetails
     {
         super(new Connection());
 
-        Connection    connectionBean = super.getConnectionBean();
+        Connection    connectionBean = this;
         ConnectorType connectorType = new ConnectorType();
 
         connectorType.setConnectorProviderClassName(EnterpriseOMRSConnectorProvider.class.getName());

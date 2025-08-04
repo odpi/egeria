@@ -228,13 +228,13 @@ public class ProcessBuilder extends AssetBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataProperty.PROCESS_START_TIME.name,
+                                                                OpenMetadataProperty.START_TIME.name,
                                                                 processStartTime,
                                                                 methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataProperty.PROCESS_END_TIME.name,
+                                                                OpenMetadataProperty.COMPLETION_TIME.name,
                                                                 processEndTime,
                                                                 methodName);
 

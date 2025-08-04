@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 
@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ActionTargetElement extends NewActionTarget
 {
-    private String             actionTargetRelationshipGUID = null;
-    private EngineActionStatus status                       = null;
-    private Date               startDate                    = null;
+    private String         actionTargetRelationshipGUID = null;
+    private ActivityStatus status                       = null;
+    private Date           startDate                    = null;
     private Date               completionDate               = null;
     private String             completionMessage            = null;
 
@@ -90,7 +90,7 @@ public class ActionTargetElement extends NewActionTarget
      *
      * @return status enum
      */
-    public EngineActionStatus getStatus()
+    public ActivityStatus getStatus()
     {
         return status;
     }
@@ -103,7 +103,7 @@ public class ActionTargetElement extends NewActionTarget
      *
      * @param status enum
      */
-    public void setStatus(EngineActionStatus status)
+    public void setStatus(ActivityStatus status)
     {
         this.status = status;
     }

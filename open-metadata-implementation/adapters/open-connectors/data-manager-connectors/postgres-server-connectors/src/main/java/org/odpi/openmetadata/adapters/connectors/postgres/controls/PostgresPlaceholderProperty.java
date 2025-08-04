@@ -109,7 +109,7 @@ public enum PostgresPlaceholderProperty
      */
     public String getPlaceholder()
     {
-        return "{{" + name + "}}";
+        return "~{" + name + "}~";
     }
 
 

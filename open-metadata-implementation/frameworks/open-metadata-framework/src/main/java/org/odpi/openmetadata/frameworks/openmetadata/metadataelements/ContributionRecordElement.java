@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecord;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecordProperties;
 
 import java.util.Objects;
 
@@ -21,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ContributionRecordElement implements MetadataElement
 {
-    private ElementHeader      elementHeader = null;
-    private ContributionRecord properties    = null;
+    private ElementHeader                elementHeader = null;
+    private ContributionRecordProperties properties    = null;
 
 
     /**
@@ -78,7 +78,7 @@ public class ContributionRecordElement implements MetadataElement
      *
      * @return  properties
      */
-    public ContributionRecord getProperties()
+    public ContributionRecordProperties getProperties()
     {
         return properties;
     }
@@ -89,7 +89,7 @@ public class ContributionRecordElement implements MetadataElement
      *
      * @param properties  properties
      */
-    public void setProperties(ContributionRecord properties)
+    public void setProperties(ContributionRecordProperties properties)
     {
         this.properties = properties;
     }

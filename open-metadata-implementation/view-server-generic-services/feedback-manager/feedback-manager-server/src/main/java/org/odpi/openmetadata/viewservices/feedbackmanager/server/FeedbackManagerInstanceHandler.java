@@ -8,7 +8,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.CollaborationManagerHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.FeedbackHandler;
 
 
 /**
@@ -42,10 +42,10 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public CollaborationManagerHandler getCollaborationManagerHandler(String userId,
-                                                                      String serverName,
-                                                                      String viewServiceURLMarker,
-                                                                      String serviceOperationName) throws InvalidParameterException,
+    public FeedbackHandler getCollaborationManagerHandler(String userId,
+                                                          String serverName,
+                                                          String viewServiceURLMarker,
+                                                          String serviceOperationName) throws InvalidParameterException,
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException
     {

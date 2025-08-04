@@ -109,11 +109,11 @@ public class CreateGovernanceZoneSample
             {
                 for (GovernanceZoneSampleDefinitions zoneDefinition : zoneSampleDefinitions)
                 {
-                     if (zoneDefinition.getZoneName().equals(zone.getGovernanceZoneProperties().getZoneName()))
+                     if (zoneDefinition.getZoneName().equals(zone.getProperties().getZoneName()))
                      {
-                         if ((zoneDefinition.getDisplayName().equals(zone.getGovernanceZoneProperties().getDisplayName())) &&
-                             (zoneDefinition.getDisplayName().equals(zone.getGovernanceZoneProperties().getDisplayName())) &&
-                             (zoneDefinition.getDisplayName().equals(zone.getGovernanceZoneProperties().getDisplayName())))
+                         if ((zoneDefinition.getDisplayName().equals(zone.getProperties().getDisplayName())) &&
+                             (zoneDefinition.getDisplayName().equals(zone.getProperties().getDisplayName())) &&
+                             (zoneDefinition.getDisplayName().equals(zone.getProperties().getDisplayName())))
                          {
                              matchingZones++;
                          }

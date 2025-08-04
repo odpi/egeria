@@ -20,12 +20,6 @@ Below are some pre-built repository connectors from Egeria that natively manage
 the open metadata types and instances and so can provide the local repository
 implementation in a [Metadata Access Store](https://egeria-project.org/concepts/metadata-access-store).
 
-* **[xtdb-repository-connector](xtdb-repository-connector)** - 
-provides a local repository with the highest performance persistence store plus historical (as of time) queries.
-
-* **[graph-repository-connector](graph-repository-connector)** -
-provides a local repository that uses a graph store as its persistence store.
-
 * **[postgres-repository-connector](postgres-repository-connector)** -
   provides a local repository that uses a postgres database as its persistence store.  Each server/repository has its own database schema.
 

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -180,8 +180,8 @@ public class CreateValidValuesSetTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
             }
 
-            ValidValueElement    retrievedElement = client.getValidValueByGUID(userId, validValuesSetGUID);
-            ValidValueProperties retrievedSet     = retrievedElement.getValidValueProperties();
+            ValidValueElement              retrievedElement = client.getValidValueByGUID(userId, validValuesSetGUID);
+            ValidValueDefinitionProperties retrievedSet     = retrievedElement.getProperties();
 
             if (retrievedSet == null)
             {
@@ -231,7 +231,7 @@ public class CreateValidValuesSetTest
             }
 
             retrievedElement = validValueList.get(0);
-            retrievedSet = retrievedElement.getValidValueProperties();
+            retrievedSet = retrievedElement.getProperties();
 
             if (! validValuesSetName.equals(retrievedSet.getQualifiedName()))
             {
@@ -309,8 +309,8 @@ public class CreateValidValuesSetTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create of definition 1)");
             }
 
-            ValidValueElement    retrievedElement  = client.getValidValueByGUID(userId, validValue1GUID);
-            ValidValueProperties retrievedDefinition = retrievedElement.getValidValueProperties();
+            ValidValueElement              retrievedElement    = client.getValidValueByGUID(userId, validValue1GUID);
+            ValidValueDefinitionProperties retrievedDefinition = retrievedElement.getProperties();
 
             if (retrievedDefinition == null)
             {
@@ -368,7 +368,7 @@ public class CreateValidValuesSetTest
             }
 
             retrievedElement = validValueList.get(0);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (retrievedDefinition == null)
             {
@@ -436,7 +436,7 @@ public class CreateValidValuesSetTest
             else
             {
                 retrievedElement = validValueList.get(0);
-                retrievedDefinition = retrievedElement.getValidValueProperties();
+                retrievedDefinition = retrievedElement.getProperties();
             }
 
             if (retrievedDefinition == null)
@@ -518,7 +518,7 @@ public class CreateValidValuesSetTest
             }
 
             retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (retrievedDefinition == null)
             {
@@ -572,7 +572,7 @@ public class CreateValidValuesSetTest
             }
 
             retrievedElement = validValueList.get(0);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (! validValue2Name.equals(retrievedDefinition.getQualifiedName()))
             {
@@ -656,7 +656,7 @@ public class CreateValidValuesSetTest
                                     null);
 
             retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (! validValue2Name.equals(retrievedDefinition.getQualifiedName()))
             {
@@ -719,7 +719,7 @@ public class CreateValidValuesSetTest
              * Valid value 2 should be exactly as it was
              */
             retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (! validValue2Name.equals(retrievedDefinition.getQualifiedName()))
             {
@@ -774,7 +774,7 @@ public class CreateValidValuesSetTest
              * Valid value 2 should be updated
              */
             retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
-            retrievedDefinition = retrievedElement.getValidValueProperties();
+            retrievedDefinition = retrievedElement.getProperties();
 
             if (! validValue2NameUpdate.equals(retrievedDefinition.getQualifiedName()))
             {
@@ -830,7 +830,7 @@ public class CreateValidValuesSetTest
             else
             {
                 retrievedElement = validValueList.get(0);
-                retrievedDefinition = retrievedElement.getValidValueProperties();
+                retrievedDefinition = retrievedElement.getProperties();
             }
 
             if (retrievedDefinition == null)

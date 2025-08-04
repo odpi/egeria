@@ -23,13 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataFieldProperties extends ReferenceableProperties
 {
-    private String            displayName       = null;
     private String            namespace         = null;
     private List<String>      aliases           = null;
     private List<String>      namePatterns      = null;
-    private String            description       = null;
-    private boolean           isDeprecated      = false;
-    private String            versionIdentifier = null;
     private String            defaultValue      = null;
     private boolean           isNullable        = true;
     private String            dataType          = null;
@@ -39,6 +35,7 @@ public class DataFieldProperties extends ReferenceableProperties
     private int               precision         = 0;
     private boolean           orderedValues     = false;
     private DataItemSortOrder sortOrder         = null;
+    private String            userDefinedStatus = null;
 
 
     /**
@@ -62,13 +59,9 @@ public class DataFieldProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName       = template.getDisplayName();
             namespace         = template.getNamespace();
             aliases           = template.getAliases();
             namePatterns      = template.getNamePatterns();
-            description       = template.getDescription();
-            isDeprecated      = template.getIsDeprecated();
-            versionIdentifier = template.getVersionIdentifier();
             defaultValue      = template.getDefaultValue();
             isNullable        = template.getIsNullable();
             dataType          = template.getDataType();
@@ -78,29 +71,8 @@ public class DataFieldProperties extends ReferenceableProperties
             precision         = template.getPrecision();
             orderedValues     = template.getOrderedValues();
             sortOrder         = template.getSortOrder();
+            userDefinedStatus = template.getUserDefinedStatus();
         }
-    }
-
-
-    /**
-     * Return the display name of the file
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name of the file.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
     }
 
 
@@ -171,68 +143,24 @@ public class DataFieldProperties extends ReferenceableProperties
 
 
     /**
-     * Return the description of the file.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the file.
-     *
-     * @param description string description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Is the schema element deprecated?
-     *
-     * @return boolean flag
-     */
-    public boolean getIsDeprecated()
-    {
-        return isDeprecated;
-    }
-
-
-    /**
-     * Set whether the schema element deprecated or not.  Default is false.
-     *
-     * @param deprecated boolean flag
-     */
-    public void setIsDeprecated(boolean deprecated)
-    {
-        isDeprecated = deprecated;
-    }
-
-
-    /**
-     * Return the version identifier for this data field.
+     * Return the status used when element status is OTHER.
      *
      * @return string
      */
-    public String getVersionIdentifier()
+    public String getUserDefinedStatus()
     {
-        return versionIdentifier;
+        return userDefinedStatus;
     }
 
 
     /**
-     * Set up the version identifier for this data field.
+     * Set up the status used when element status is OTHER.
      *
-     * @param versionIdentifier string
+     * @param userDefinedStatus string
      */
-    public void setVersionIdentifier(String versionIdentifier)
+    public void setUserDefinedStatus(String userDefinedStatus)
     {
-        this.versionIdentifier = versionIdentifier;
+        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -441,13 +369,10 @@ public class DataFieldProperties extends ReferenceableProperties
     public String toString()
     {
         return "DataFieldProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", namespace='" + namespace + '\'' +
+                "namespace='" + namespace + '\'' +
                 ", aliases=" + aliases +
                 ", namePatterns=" + namePatterns +
-                ", description='" + description + '\'' +
-                ", isDeprecated=" + isDeprecated +
-                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", userDefinedStatus=" + userDefinedStatus +
                 ", defaultValue='" + defaultValue + '\'' +
                 ", isNullable=" + isNullable +
                 ", dataType='" + dataType + '\'' +
@@ -474,14 +399,12 @@ public class DataFieldProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataFieldProperties that = (DataFieldProperties) objectToCompare;
-        return isDeprecated == that.isDeprecated &&
+        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
                 isNullable == that.isNullable &&
                 minimumLength == that.minimumLength && length == that.length && precision == that.precision &&
-                orderedValues == that.orderedValues && Objects.equals(displayName, that.displayName) &&
+                orderedValues == that.orderedValues &&
                 Objects.equals(namespace, that.namespace) && Objects.equals(aliases, that.aliases) &&
                 Objects.equals(namePatterns, that.namePatterns) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(versionIdentifier, that.versionIdentifier) &&
                 Objects.equals(defaultValue, that.defaultValue) &&
                 Objects.equals(dataType, that.dataType) &&
                 Objects.equals(units, that.units) &&
@@ -496,8 +419,8 @@ public class DataFieldProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, namespace, aliases, namePatterns, description, isDeprecated,
-                            versionIdentifier, defaultValue, isNullable, dataType, units,
+        return Objects.hash(super.hashCode(), namespace, aliases, namePatterns, userDefinedStatus,
+                            defaultValue, isNullable, dataType, units,
                             minimumLength, length, precision, orderedValues, sortOrder);
     }
 }

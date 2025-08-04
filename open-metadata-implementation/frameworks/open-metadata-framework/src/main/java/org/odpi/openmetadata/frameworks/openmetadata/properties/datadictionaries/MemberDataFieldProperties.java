@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionarie
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -20,11 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MemberDataFieldProperties extends RelationshipProperties
+public class MemberDataFieldProperties extends RelationshipBeanProperties
 {
-    private int dataFieldPosition = 0;
-    private int minCardinality    = 0;
-    private int maxCardinality    = 0;
+    private int position       = 0;
+    private int minCardinality = 0;
+    private int maxCardinality = 0;
 
 
     /**
@@ -48,9 +48,9 @@ public class MemberDataFieldProperties extends RelationshipProperties
 
         if (template != null)
         {
-            dataFieldPosition = template.getDataFieldPosition();
-            minCardinality    = template.getMinCardinality();
-            maxCardinality    = template.getMaxCardinality();
+            position       = template.getPosition();
+            minCardinality = template.getMinCardinality();
+            maxCardinality = template.getMaxCardinality();
         }
     }
 
@@ -60,17 +60,17 @@ public class MemberDataFieldProperties extends RelationshipProperties
      *
      * @return int position in schema - 0 means first
      */
-    public int getDataFieldPosition() { return dataFieldPosition; }
+    public int getPosition() { return position; }
 
 
     /**
      * Set up the position of this data field in the data structure.
      *
-     * @param dataFieldPosition int position in schema - 0 means first
+     * @param position int position in schema - 0 means first
      */
-    public void setDataFieldPosition(int dataFieldPosition)
+    public void setPosition(int position)
     {
-        this.dataFieldPosition = dataFieldPosition;
+        this.position = position;
     }
 
 
@@ -127,7 +127,7 @@ public class MemberDataFieldProperties extends RelationshipProperties
     public String toString()
     {
         return "MemberDataFieldProperties{" +
-                "dataFieldPosition=" + dataFieldPosition +
+                "position=" + position +
                 ", minCardinality=" + minCardinality +
                 ", maxCardinality=" + maxCardinality +
                 "} " + super.toString();
@@ -158,7 +158,7 @@ public class MemberDataFieldProperties extends RelationshipProperties
         MemberDataFieldProperties that = (MemberDataFieldProperties) objectToCompare;
         return  minCardinality == that.minCardinality &&
                 maxCardinality == that.maxCardinality &&
-                dataFieldPosition == that.dataFieldPosition;
+                position == that.position;
     }
 
 
@@ -170,6 +170,6 @@ public class MemberDataFieldProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), dataFieldPosition, minCardinality, maxCardinality);
+        return Objects.hash(super.hashCode(), position, minCardinality, maxCardinality);
     }
 }

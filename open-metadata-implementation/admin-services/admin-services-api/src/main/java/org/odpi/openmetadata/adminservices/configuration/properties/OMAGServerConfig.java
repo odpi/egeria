@@ -92,7 +92,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private Connection                      serverSecurityConnection        = null;
     private EventBusConfig                  eventBusConfig                  = null;
     private List<AccessServiceConfig>       accessServicesConfig            = null;
-    private List<IntegrationServiceConfig>  integrationServicesConfig       = null;
     private List<IntegrationGroupConfig>    dynamicIntegrationGroupsConfig  = null;
     private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
@@ -134,7 +133,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             serverSecurityConnection        = template.getServerSecurityConnection();
             eventBusConfig                  = template.getEventBusConfig();
             accessServicesConfig            = template.getAccessServicesConfig();
-            integrationServicesConfig       = template.getIntegrationServicesConfig();
             dynamicIntegrationGroupsConfig  = template.getDynamicIntegrationGroupsConfig();
             engineHostServicesConfig        = template.getEngineHostServicesConfig();
             viewServicesConfig              = template.getViewServicesConfig();
@@ -416,6 +414,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         this.eventBusConfig = eventBusConfig;
     }
 
+
     /**
      * Return the configuration for the registered Open Metadata Access Services (OMASs).  Used in a metadata access server.
      *
@@ -435,28 +434,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public void setAccessServicesConfig(List<AccessServiceConfig> accessServicesConfig)
     {
         this.accessServicesConfig = accessServicesConfig;
-    }
-
-
-    /**
-     * Return the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.
-     *
-     * @return list of configuration properties, one for each OMIS
-     */
-    public List<IntegrationServiceConfig> getIntegrationServicesConfig()
-    {
-        return integrationServicesConfig;
-    }
-
-
-    /**
-     * Set up the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.
-     *
-     * @param integrationServicesConfig list of configuration properties, one for each OMIS
-     */
-    public void setIntegrationServicesConfig(List<IntegrationServiceConfig> integrationServicesConfig)
-    {
-        this.integrationServicesConfig = integrationServicesConfig;
     }
 
 
@@ -602,28 +579,27 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public String toString()
     {
         return "OMAGServerConfig{" +
-                       "versionId='" + versionId + '\'' +
-                       ", localServerId='" + localServerId + '\'' +
-                       ", localServerName='" + localServerName + '\'' +
-                       ", localServerType='" + localServerType + '\'' +
-                       ", organizationName='" + organizationName + '\'' +
-                       ", localServerURL='" + localServerURL + '\'' +
-                       ", localServerUserId='" + localServerUserId + '\'' +
-                       ", localServerPassword='" + localServerPassword + '\'' +
-                       ", maxPageSize=" + maxPageSize +
-                       ", serverSecurityConnection=" + serverSecurityConnection +
-                       ", eventBusConfig=" + eventBusConfig +
-                       ", accessServicesConfig=" + accessServicesConfig +
-                       ", dynamicIntegrationGroupsConfig=" + dynamicIntegrationGroupsConfig +
-                       ", integrationServicesConfig=" + integrationServicesConfig +
-                       ", engineHostServicesConfig=" + engineHostServicesConfig +
-                       ", viewServicesConfig=" + viewServicesConfig +
-                       ", repositoryServicesConfig=" + repositoryServicesConfig +
-                       ", conformanceSuiteConfig=" + conformanceSuiteConfig +
-                       ", auditTrail=" + auditTrail +
-                       '}';
+                "versionId='" + versionId + '\'' +
+                ", localServerId='" + localServerId + '\'' +
+                ", localServerName='" + localServerName + '\'' +
+                ", localServerDescription='" + localServerDescription + '\'' +
+                ", localServerType='" + localServerType + '\'' +
+                ", organizationName='" + organizationName + '\'' +
+                ", localServerURL='" + localServerURL + '\'' +
+                ", localServerUserId='" + localServerUserId + '\'' +
+                ", localServerPassword='" + localServerPassword + '\'' +
+                ", maxPageSize=" + maxPageSize +
+                ", serverSecurityConnection=" + serverSecurityConnection +
+                ", eventBusConfig=" + eventBusConfig +
+                ", accessServicesConfig=" + accessServicesConfig +
+                ", dynamicIntegrationGroupsConfig=" + dynamicIntegrationGroupsConfig +
+                ", viewServicesConfig=" + viewServicesConfig +
+                ", repositoryServicesConfig=" + repositoryServicesConfig +
+                ", conformanceSuiteConfig=" + conformanceSuiteConfig +
+                ", engineHostServicesConfig=" + engineHostServicesConfig +
+                ", auditTrail=" + auditTrail +
+                "} " + super.toString();
     }
-
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -657,7 +633,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
                        Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
                        Objects.equals(getDynamicIntegrationGroupsConfig(), that.getDynamicIntegrationGroupsConfig()) &&
-                       Objects.equals(getIntegrationServicesConfig(), that.getIntegrationServicesConfig()) &&
                        Objects.equals(getEngineHostServicesConfig(), that.getEngineHostServicesConfig()) &&
                        Objects.equals(getViewServicesConfig(), that.getViewServicesConfig()) &&
                        Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
@@ -674,10 +649,10 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getVersionId(), getLocalServerId(), getLocalServerName(), getLocalServerDescription(), getLocalServerType(), getOrganizationName(),
-                            getLocalServerURL(),
-                            getLocalServerUserId(), getLocalServerPassword(), getMaxPageSize(), getServerSecurityConnection(), getEventBusConfig(),
-                            getAccessServicesConfig(), getDynamicIntegrationGroupsConfig(), getIntegrationServicesConfig(), getEngineHostServicesConfig(), getViewServicesConfig(),
-                            getRepositoryServicesConfig(), getConformanceSuiteConfig(), getAuditTrail());
+        return Objects.hash(versionId, localServerId, localServerName, localServerDescription, localServerType,
+                            organizationName, localServerURL, localServerUserId, localServerPassword, maxPageSize,
+                            serverSecurityConnection, eventBusConfig, accessServicesConfig,
+                            dynamicIntegrationGroupsConfig, viewServicesConfig, engineHostServicesConfig,
+                            repositoryServicesConfig, conformanceSuiteConfig, auditTrail);
     }
 }

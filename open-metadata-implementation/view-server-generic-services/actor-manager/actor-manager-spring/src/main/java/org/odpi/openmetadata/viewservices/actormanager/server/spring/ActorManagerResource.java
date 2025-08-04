@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.viewservices.actormanager.server.ActorManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,7 +62,7 @@ public class ActorManagerResource
 
 
     /**
-     * Create a new metadata element to represent a actor profile using an existing metadata element as a template.
+     * Create a new metadata element to represent an actor profile using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
@@ -91,13 +91,11 @@ public class ActorManagerResource
 
 
     /**
-     * Update the properties of a actor profile.
+     * Update the properties of an actor profile.
      *
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param actorProfileGUID unique identifier of the actor profile (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -116,12 +114,10 @@ public class ActorManagerResource
                                            @PathVariable String             urlMarker,
                                            @PathVariable
                                            String                                  actorProfileGUID,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                           boolean                                 replaceAllProperties,
                                            @RequestBody (required = false)
                                            UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateActorProfile(serverName, urlMarker, actorProfileGUID, replaceAllProperties, requestBody);
+        return restAPI.updateActorProfile(serverName, urlMarker, actorProfileGUID, requestBody);
     }
 
 
@@ -153,7 +149,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String locationGUID,
                                               @RequestBody (required = false)
-                                              RelationshipRequestBody requestBody)
+                                                  NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkLocationToProfile(serverName, urlMarker, actorProfileGUID, locationGUID, requestBody);
     }
@@ -187,7 +183,7 @@ public class ActorManagerResource
                                                   @PathVariable
                                                   String locationGUID,
                                                   @RequestBody (required = false)
-                                                  MetadataSourceRequestBody requestBody)
+                                                      DeleteRequestBody requestBody)
     {
         return restAPI.detachLocationFromProfile(serverName, urlMarker, actorProfileGUID, locationGUID, requestBody);
     }
@@ -221,7 +217,7 @@ public class ActorManagerResource
                                        @PathVariable
                                        String                     personTwoGUID,
                                        @RequestBody (required = false)
-                                       RelationshipRequestBody requestBody)
+                                           NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkPeerPerson(serverName, urlMarker, personOneGUID, personTwoGUID, requestBody);
     }
@@ -255,7 +251,7 @@ public class ActorManagerResource
                                          @PathVariable
                                          String                     personTwoGUID,
                                          @RequestBody (required = false)
-                                         MetadataSourceRequestBody requestBody)
+                                             DeleteRequestBody requestBody)
     {
         return restAPI.detachPeerPerson(serverName, urlMarker, personOneGUID, personTwoGUID, requestBody);
     }
@@ -289,7 +285,7 @@ public class ActorManagerResource
                                           @PathVariable
                                           String subteamGUID,
                                           @RequestBody (required = false)
-                                          RelationshipRequestBody requestBody)
+                                              NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkTeamStructure(serverName, urlMarker, superTeamGUID, subteamGUID, requestBody);
     }
@@ -323,7 +319,7 @@ public class ActorManagerResource
                                             @PathVariable
                                             String subteamGUID,
                                             @RequestBody (required = false)
-                                            MetadataSourceRequestBody requestBody)
+                                                DeleteRequestBody requestBody)
     {
         return restAPI.detachTeamStructure(serverName, urlMarker, superTeamGUID, subteamGUID, requestBody);
     }
@@ -357,7 +353,7 @@ public class ActorManagerResource
                                            @PathVariable
                                            String itProfileGUID,
                                            @RequestBody (required = false)
-                                           RelationshipRequestBody requestBody)
+                                               NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkAssetToProfile(serverName, urlMarker, assetGUID, itProfileGUID, requestBody);
     }
@@ -391,7 +387,7 @@ public class ActorManagerResource
                                                @PathVariable
                                                String itProfileGUID,
                                                @RequestBody (required = false)
-                                               MetadataSourceRequestBody requestBody)
+                                                   DeleteRequestBody requestBody)
     {
         return restAPI.detachAssetFromProfile(serverName, urlMarker, assetGUID, itProfileGUID, requestBody);
     }
@@ -425,7 +421,7 @@ public class ActorManagerResource
                                                  @PathVariable
                                                  String personRoleGUID,
                                                  @RequestBody (required = false)
-                                                 RelationshipRequestBody requestBody)
+                                                     NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkTeamToMembershipRole(serverName, urlMarker, teamGUID, personRoleGUID, requestBody);
     }
@@ -459,7 +455,7 @@ public class ActorManagerResource
                                                      @PathVariable
                                                      String personRoleGUID,
                                                      @RequestBody (required = false)
-                                                     MetadataSourceRequestBody requestBody)
+                                                         DeleteRequestBody requestBody)
     {
         return restAPI.detachTeamFromMembershipRole(serverName, urlMarker, teamGUID, personRoleGUID, requestBody);
     }
@@ -492,7 +488,7 @@ public class ActorManagerResource
                                                  @PathVariable
                                                  String personRoleGUID,
                                                  @RequestBody (required = false)
-                                                 RelationshipRequestBody requestBody)
+                                                     NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkTeamToLeadershipRole(serverName, urlMarker, teamGUID, personRoleGUID, requestBody);
     }
@@ -526,7 +522,7 @@ public class ActorManagerResource
                                                      @PathVariable
                                                      String personRoleGUID,
                                                      @RequestBody (required = false)
-                                                     MetadataSourceRequestBody requestBody)
+                                                         DeleteRequestBody requestBody)
     {
         return restAPI.detachTeamFromLeadershipRole(serverName, urlMarker, teamGUID, personRoleGUID, requestBody);
     }
@@ -538,7 +534,6 @@ public class ActorManagerResource
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param actorProfileGUID  unique identifier of the element to delete
-     * @param cascadedDelete can actor profiles be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -557,12 +552,10 @@ public class ActorManagerResource
                                            @PathVariable String             urlMarker,
                                            @PathVariable
                                            String                    actorProfileGUID,
-                                           @RequestParam(required = false, defaultValue = "false")
-                                           boolean                   cascadedDelete,
                                            @RequestBody (required = false)
-                                           MetadataSourceRequestBody requestBody)
+                                               DeleteRequestBody requestBody)
     {
-        return restAPI.deleteActorProfile(serverName, urlMarker, actorProfileGUID, cascadedDelete, requestBody);
+        return restAPI.deleteActorProfile(serverName, urlMarker, actorProfileGUID, requestBody);
     }
 
 
@@ -571,8 +564,6 @@ public class ActorManagerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -586,17 +577,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/actor-profile"))
 
-    public ActorProfilesResponse getActorProfilesByName(@PathVariable
-                                                        String            serverName,
-                                                        @PathVariable String             urlMarker,
-                                                        @RequestParam (required = false, defaultValue = "0")
-                                                        int                     startFrom,
-                                                        @RequestParam (required = false, defaultValue = "0")
-                                                        int                     pageSize,
-                                                        @RequestBody (required = false)
-                                                        FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getActorProfilesByName(@PathVariable
+                                                                   String            serverName,
+                                                                   @PathVariable String             urlMarker,
+                                                                   @RequestBody (required = false)
+                                                                   FilterRequestBody requestBody)
     {
-        return restAPI.getActorProfilesByName(serverName, urlMarker, startFrom, pageSize, requestBody);
+        return restAPI.getActorProfilesByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -605,11 +592,6 @@ public class ActorManagerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -623,23 +605,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/actor-profile"))
 
-    public ActorProfilesResponse findActorProfiles(@PathVariable
-                                                   String                  serverName,
-                                                   @PathVariable String             urlMarker,
-                                                   @RequestParam (required = false, defaultValue = "0")
-                                                   int                     startFrom,
-                                                   @RequestParam (required = false, defaultValue = "0")
-                                                   int                     pageSize,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                 startsWith,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                 endsWith,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                 ignoreCase,
-                                                   @RequestBody (required = false)
-                                                   FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findActorProfiles(@PathVariable
+                                                              String                  serverName,
+                                                              @PathVariable String             urlMarker,
+                                                              @RequestBody (required = false)
+                                                              SearchStringRequestBody requestBody)
     {
-        return restAPI.findActorProfiles(serverName, urlMarker, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findActorProfiles(serverName, urlMarker, requestBody);
     }
 
 
@@ -662,13 +634,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/actor-profile"))
 
-    public ActorProfileResponse getActorProfileByGUID(@PathVariable
-                                                      String             serverName,
-                                                      @PathVariable String             urlMarker,
-                                                      @PathVariable
-                                                      String             actorProfileGUID,
-                                                      @RequestBody (required = false)
-                                                      AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getActorProfileByGUID(@PathVariable
+                                                                 String             serverName,
+                                                                 @PathVariable String             urlMarker,
+                                                                 @PathVariable
+                                                                 String             actorProfileGUID,
+                                                                 @RequestBody (required = false)
+                                                                     GetRequestBody requestBody)
     {
         return restAPI.getActorProfileByGUID(serverName, urlMarker, actorProfileGUID, requestBody);
     }
@@ -703,7 +675,7 @@ public class ActorManagerResource
 
 
     /**
-     * Create a new metadata element to represent a actor role using an existing metadata element as a template.
+     * Create a new metadata element to represent an actor role using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
@@ -732,13 +704,11 @@ public class ActorManagerResource
 
 
     /**
-     * Update the properties of a actor role.
+     * Update the properties of an actor role.
      *
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param actorRoleGUID unique identifier of the actor role (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -757,12 +727,10 @@ public class ActorManagerResource
                                         @PathVariable String             urlMarker,
                                         @PathVariable
                                         String                                  actorRoleGUID,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                        boolean                                 replaceAllProperties,
                                         @RequestBody (required = false)
                                         UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateActorRole(serverName, urlMarker, actorRoleGUID, replaceAllProperties, requestBody);
+        return restAPI.updateActorRole(serverName, urlMarker, actorRoleGUID, requestBody);
     }
 
 
@@ -787,14 +755,14 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/actor-role"))
 
     public VoidResponse linkPersonRoleToProfile(@PathVariable
-                                            String                     serverName,
-                                            @PathVariable String             urlMarker,
-                                            @PathVariable
-                                            String personRoleGUID,
-                                            @PathVariable
-                                            String personProfileGUID,
-                                            @RequestBody (required = false)
-                                            RelationshipRequestBody requestBody)
+                                                String                     serverName,
+                                                @PathVariable String             urlMarker,
+                                                @PathVariable
+                                                String personRoleGUID,
+                                                @PathVariable
+                                                String personProfileGUID,
+                                                @RequestBody (required = false)
+                                                    NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkPersonRoleToProfile(serverName, urlMarker, personRoleGUID, personProfileGUID, requestBody);
     }
@@ -821,14 +789,14 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/actor-role"))
 
     public VoidResponse detachPersonRoleFromProfile(@PathVariable
-                                              String                    serverName,
-                                              @PathVariable String             urlMarker,
-                                              @PathVariable
-                                              String personRoleGUID,
-                                              @PathVariable
-                                              String personProfileGUID,
-                                              @RequestBody (required = false)
-                                              MetadataSourceRequestBody requestBody)
+                                                    String                    serverName,
+                                                    @PathVariable String             urlMarker,
+                                                    @PathVariable
+                                                    String personRoleGUID,
+                                                    @PathVariable
+                                                    String personProfileGUID,
+                                                    @RequestBody (required = false)
+                                                        DeleteRequestBody requestBody)
     {
         return restAPI.detachPersonRoleFromProfile(serverName, urlMarker, personRoleGUID, personProfileGUID, requestBody);
     }
@@ -863,7 +831,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String teamProfileGUID,
                                               @RequestBody (required = false)
-                                              RelationshipRequestBody requestBody)
+                                                  NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkTeamRoleToProfile(serverName, urlMarker, teamRoleGUID, teamProfileGUID, requestBody);
     }
@@ -897,7 +865,7 @@ public class ActorManagerResource
                                                   @PathVariable
                                                   String teamProfileGUID,
                                                   @RequestBody (required = false)
-                                                  MetadataSourceRequestBody requestBody)
+                                                      DeleteRequestBody requestBody)
     {
         return restAPI.detachTeamRoleFromProfile(serverName, urlMarker, teamRoleGUID, teamProfileGUID, requestBody);
     }
@@ -931,7 +899,7 @@ public class ActorManagerResource
                                                    @PathVariable
                                                    String itProfileGUID,
                                                    @RequestBody (required = false)
-                                                   RelationshipRequestBody requestBody)
+                                                       NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkITProfileRoleToProfile(serverName, urlMarker, itProfileRoleGUID, itProfileGUID, requestBody);
     }
@@ -958,14 +926,14 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/actor-role"))
 
     public VoidResponse detachITProfileRoleFromProfile(@PathVariable
-                                                   String                    serverName,
-                                                   @PathVariable String             urlMarker,
-                                                   @PathVariable
-                                                   String itProfileRoleGUID,
-                                                   @PathVariable
-                                                   String itProfileGUID,
-                                                   @RequestBody (required = false)
-                                                   MetadataSourceRequestBody requestBody)
+                                                       String                    serverName,
+                                                       @PathVariable String             urlMarker,
+                                                       @PathVariable
+                                                       String itProfileRoleGUID,
+                                                       @PathVariable
+                                                       String itProfileGUID,
+                                                       @RequestBody (required = false)
+                                                           DeleteRequestBody requestBody)
     {
         return restAPI.detachITProfileRoleFromProfile(serverName, urlMarker, itProfileRoleGUID, itProfileGUID, requestBody);
     }
@@ -977,7 +945,6 @@ public class ActorManagerResource
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param actorRoleGUID  unique identifier of the element to delete
-     * @param cascadedDelete can actor roles be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -996,12 +963,10 @@ public class ActorManagerResource
                                         @PathVariable String             urlMarker,
                                         @PathVariable
                                         String                    actorRoleGUID,
-                                        @RequestParam(required = false, defaultValue = "false")
-                                        boolean                   cascadedDelete,
                                         @RequestBody (required = false)
-                                        MetadataSourceRequestBody requestBody)
+                                            DeleteRequestBody requestBody)
     {
-        return restAPI.deleteActorRole(serverName, urlMarker, actorRoleGUID, cascadedDelete, requestBody);
+        return restAPI.deleteActorRole(serverName, urlMarker, actorRoleGUID, requestBody);
     }
 
 
@@ -1010,8 +975,6 @@ public class ActorManagerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1025,17 +988,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/actor-role"))
 
-    public ActorRolesResponse getActorRolesByName(@PathVariable
-                                                  String            serverName,
-                                                  @PathVariable String             urlMarker,
-                                                  @RequestParam (required = false, defaultValue = "0")
-                                                  int                     startFrom,
-                                                  @RequestParam (required = false, defaultValue = "0")
-                                                  int                     pageSize,
-                                                  @RequestBody (required = false)
-                                                  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getActorRolesByName(@PathVariable
+                                                                String            serverName,
+                                                                @PathVariable String             urlMarker,
+                                                                @RequestBody (required = false)
+                                                                FilterRequestBody requestBody)
     {
-        return restAPI.getActorRolesByName(serverName, urlMarker, startFrom, pageSize, requestBody);
+        return restAPI.getActorRolesByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -1044,11 +1003,6 @@ public class ActorManagerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1062,23 +1016,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/actor-role"))
 
-    public ActorRolesResponse findActorRoles(@PathVariable
-                                             String                  serverName,
-                                             @PathVariable String             urlMarker,
-                                             @RequestParam (required = false, defaultValue = "0")
-                                             int                     startFrom,
-                                             @RequestParam (required = false, defaultValue = "0")
-                                             int                     pageSize,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 startsWith,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 endsWith,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 ignoreCase,
-                                             @RequestBody (required = false)
-                                             FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findActorRoles(@PathVariable
+                                                           String                  serverName,
+                                                           @PathVariable String             urlMarker,
+                                                           @RequestBody (required = false)
+                                                           SearchStringRequestBody requestBody)
     {
-        return restAPI.findActorRoles(serverName, urlMarker, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findActorRoles(serverName, urlMarker, requestBody);
     }
 
 
@@ -1101,13 +1045,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/actor-role"))
 
-    public ActorRoleResponse getActorRoleByGUID(@PathVariable
-                                                String             serverName,
-                                                @PathVariable String             urlMarker,
-                                                @PathVariable
-                                                String             actorRoleGUID,
-                                                @RequestBody (required = false)
-                                                AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getActorRoleByGUID(@PathVariable
+                                                              String             serverName,
+                                                              @PathVariable String             urlMarker,
+                                                              @PathVariable
+                                                              String             actorRoleGUID,
+                                                              @RequestBody (required = false)
+                                                                  GetRequestBody requestBody)
     {
         return restAPI.getActorRoleByGUID(serverName, urlMarker, actorRoleGUID, requestBody);
     }
@@ -1177,8 +1121,6 @@ public class ActorManagerResource
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param userIdentityGUID unique identifier of the user identity (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -1197,12 +1139,10 @@ public class ActorManagerResource
                                            @PathVariable String             urlMarker,
                                            @PathVariable
                                            String                                  userIdentityGUID,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                           boolean                                 replaceAllProperties,
                                            @RequestBody (required = false)
                                            UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateUserIdentity(serverName, urlMarker, userIdentityGUID, replaceAllProperties, requestBody);
+        return restAPI.updateUserIdentity(serverName, urlMarker, userIdentityGUID, requestBody);
     }
 
 
@@ -1234,7 +1174,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String profileGUID,
                                               @RequestBody (required = false)
-                                              RelationshipRequestBody requestBody)
+                                                  NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkIdentityToProfile(serverName, urlMarker, userIdentityGUID, profileGUID, requestBody);
     }
@@ -1268,7 +1208,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String                     profileGUID,
                                               @RequestBody (required = false)
-                                              MetadataSourceRequestBody requestBody)
+                                                  DeleteRequestBody requestBody)
     {
         return restAPI.detachProfileIdentity(serverName, urlMarker, userIdentityGUID, profileGUID, requestBody);
     }
@@ -1299,9 +1239,40 @@ public class ActorManagerResource
                                                    @PathVariable
                                                    String                     userIdentityGUID,
                                                    @RequestBody (required = false)
-                                                   ClassificationRequestBody requestBody)
+                                                       NewClassificationRequestBody requestBody)
     {
         return restAPI.addSecurityGroupMembership(serverName, urlMarker, userIdentityGUID, requestBody);
+    }
+
+
+    /**
+     * Add the SecurityGroupMembership classification to the user identity.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param userIdentityGUID unique identifier of the user identity
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/user-identities/{userIdentityGUID}/security-group-memberships/reclassify")
+    @Operation(summary="updateSecurityGroupMembership",
+            description="Update the SecurityGroupMembership classification to the user identity.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/user-identity"))
+
+    public VoidResponse updateSecurityGroupMembership(@PathVariable
+                                                      String                     serverName,
+                                                      @PathVariable String             urlMarker,
+                                                      @PathVariable
+                                                      String                     userIdentityGUID,
+                                                      @RequestBody (required = false)
+                                                      UpdateClassificationRequestBody requestBody)
+    {
+        return restAPI.updateSecurityGroupMembership(serverName, urlMarker, userIdentityGUID, requestBody);
     }
 
 
@@ -1341,7 +1312,6 @@ public class ActorManagerResource
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param userIdentityGUID  unique identifier of the element to delete
-     * @param cascadedDelete can user identities be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1360,12 +1330,10 @@ public class ActorManagerResource
                                            @PathVariable String             urlMarker,
                                            @PathVariable
                                            String                    userIdentityGUID,
-                                           @RequestParam(required = false, defaultValue = "false")
-                                           boolean                   cascadedDelete,
                                            @RequestBody (required = false)
-                                           MetadataSourceRequestBody requestBody)
+                                               DeleteRequestBody requestBody)
     {
-        return restAPI.deleteUserIdentity(serverName, urlMarker, userIdentityGUID, cascadedDelete, requestBody);
+        return restAPI.deleteUserIdentity(serverName, urlMarker, userIdentityGUID, requestBody);
     }
 
 
@@ -1374,8 +1342,6 @@ public class ActorManagerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1389,17 +1355,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/user-identity"))
 
-    public UserIdentitiesResponse getUserIdentitiesByName(@PathVariable
-                                                          String            serverName,
-                                                          @PathVariable String             urlMarker,
-                                                          @RequestParam (required = false, defaultValue = "0")
-                                                          int                     startFrom,
-                                                          @RequestParam (required = false, defaultValue = "0")
-                                                          int                     pageSize,
-                                                          @RequestBody (required = false)
-                                                          FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getUserIdentitiesByName(@PathVariable
+                                                                    String            serverName,
+                                                                    @PathVariable String             urlMarker,
+                                                                    @RequestBody (required = false)
+                                                                    FilterRequestBody requestBody)
     {
-        return restAPI.getUserIdentitiesByName(serverName, urlMarker, startFrom, pageSize, requestBody);
+        return restAPI.getUserIdentitiesByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -1408,12 +1370,7 @@ public class ActorManagerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody string to find in the properties
+      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1426,23 +1383,14 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/user-identity"))
 
-    public UserIdentitiesResponse findUserIdentities(@PathVariable
-                                                     String                  serverName,
-                                                     @PathVariable String             urlMarker,
-                                                     @RequestParam (required = false, defaultValue = "0")
-                                                     int                     startFrom,
-                                                     @RequestParam (required = false, defaultValue = "0")
-                                                     int                     pageSize,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                 startsWith,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                 endsWith,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                 ignoreCase,
-                                                     @RequestBody (required = false)
-                                                     FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findUserIdentities(@PathVariable
+                                                               String                  serverName,
+                                                               @PathVariable String             urlMarker,
+
+                                                               @RequestBody (required = false)
+                                                               SearchStringRequestBody requestBody)
     {
-        return restAPI.findUserIdentities(serverName, urlMarker, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findUserIdentities(serverName, urlMarker, requestBody);
     }
 
 
@@ -1465,13 +1413,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/user-identity"))
 
-    public UserIdentityResponse getUserIdentityByGUID(@PathVariable
-                                                      String             serverName,
-                                                      @PathVariable String             urlMarker,
-                                                      @PathVariable
-                                                      String             userIdentityGUID,
-                                                      @RequestBody (required = false)
-                                                      AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getUserIdentityByGUID(@PathVariable
+                                                                 String             serverName,
+                                                                 @PathVariable String             urlMarker,
+                                                                 @PathVariable
+                                                                 String             userIdentityGUID,
+                                                                 @RequestBody (required = false)
+                                                                     GetRequestBody requestBody)
     {
         return restAPI.getUserIdentityByGUID(serverName, urlMarker, userIdentityGUID, requestBody);
     }

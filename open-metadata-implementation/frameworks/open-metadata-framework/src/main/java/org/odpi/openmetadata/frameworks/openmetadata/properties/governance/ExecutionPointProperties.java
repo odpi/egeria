@@ -16,9 +16,6 @@ import java.util.Objects;
  */
 public class ExecutionPointProperties extends ReferenceableProperties
 {
-    private String displayName      = null;
-    private String description      = null;
-
 
     /**
      * Default constructor
@@ -34,59 +31,9 @@ public class ExecutionPointProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public ExecutionPointProperties(ExecutionPointProperties template)
+    public ExecutionPointProperties(ReferenceableProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            this.displayName = template.getDisplayName();
-            this.description = template.getDescription();
-        }
-    }
-
-
-    /**
-     * Return the short name for the governance domain.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the short name for the governance domain.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for the governance domain
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the governance domain
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -99,48 +46,6 @@ public class ExecutionPointProperties extends ReferenceableProperties
     public String toString()
     {
         return "ExecutionPointProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
                 "} " + super.toString();
-    }
-
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        ExecutionPointProperties that = (ExecutionPointProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description);
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription());
     }
 }

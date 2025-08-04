@@ -11,16 +11,17 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileExtension;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -59,7 +60,7 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
                                           Map<String,String>                        templates,
                                           Map<String, Object>                       configurationProperties,
                                           BasicFilesMonitorIntegrationConnectorBase integrationConnector,
-                                          FileFolderElement                         dataFolderElement,
+                                          OpenMetadataRootElement                   dataFolderElement,
                                           AuditLog                                  auditLog)
     {
         super(connectorName,
@@ -98,13 +99,13 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
                                                                                        null);
 
             String propertyValue = propertyHelper.getStringProperty(connectorName,
-                                                                    OpenMetadataProperty.NAME.name,
+                                                                    OpenMetadataProperty.DISPLAY_NAME.name,
                                                                     replacementProperties,
                                                                     methodName);
 
             if (propertyValue != null)
             {
-                properties.setName(propertyValue);
+                properties.setDisplayName(propertyValue);
             }
 
             propertyValue = propertyHelper.getStringProperty(connectorName,
@@ -114,7 +115,7 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
 
             if (propertyValue != null)
             {
-                properties.setResourceDescription(propertyValue);
+                properties.setDescription(propertyValue);
             }
 
             Map<String, String> additionalProperties = properties.getAdditionalProperties();
@@ -133,7 +134,9 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
                 properties.setAdditionalProperties(additionalProperties);
             }
 
-            return super.addDataFileToCatalog(properties);
+            return super.addDataFileToCatalog(OpenMetadataType.ARCHIVE_FILE.typeName,
+                                              properties,
+                                              null);
         }
         else
         {
@@ -183,7 +186,8 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
 
 
     private ElementProperties updateReplacementProperties(String            pathName,
-                                                          ElementProperties replacementProperties) throws ConnectorCheckedException
+                                                          ElementProperties replacementProperties) throws ConnectorCheckedException,
+                                                                                                          UserNotAuthorizedException
     {
         final String methodName = "updateReplacementProperties";
 
@@ -211,7 +215,7 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
                 if (properties != null)
                 {
                     archiveElementProperties = propertyHelper.addStringProperty(archiveElementProperties,
-                                                                                OpenMetadataProperty.NAME.name,
+                                                                                OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                 properties.getArchiveName());
                     archiveElementProperties = propertyHelper.addStringProperty(archiveElementProperties,
                                                                                 OpenMetadataProperty.DESCRIPTION.name,

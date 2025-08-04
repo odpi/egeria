@@ -72,13 +72,13 @@ public enum OpenMetadataType
 
 
     /**
-     * Well-defined sequence of activities performed by people or software components.
+     * Well-defined sequence of activities performed by digital resources.
      */
     PROCESS("d8f33bd7-afa9-4a11-a8c7-07dcec83c050",
             "Process",
             OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
             "f1fecd94-215c-4e42-9cd9-a945156af2a8",
-            "Well-defined sequence of activities performed by people or software components."),
+            "Well-defined sequence of activities performed by digital resources."),
 
     /**
      * Physical infrastructure or software platform.
@@ -145,24 +145,6 @@ public enum OpenMetadataType
                               "Defines source of the information for a referenceable that was created by copying from a template."),
 
     /**
-     * Link to indicate that a referenceable provides additional information about another referenceable.
-     */
-    MORE_INFORMATION_RELATIONSHIP("1cbf059e-2c11-4e0c-8aae-1da42c1ee73f",
-                                  "MoreInformation",
-                                  OpenMetadataWikiPages.MODEL_0019_MORE_INFORMATION,
-                                  "2d3f4815-d8e7-44c3-88cc-f587cfe26e70",
-                                  "Link to indicate that a referenceable provides additional information about another referenceable."),
-
-    /**
-     * Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community).
-     */
-    RESOURCE_LIST_RELATIONSHIP ("73cf5658-6a73-4ebc-8f4d-44fdfac0b437",
-                                "ResourceList",
-                                OpenMetadataWikiPages.MODEL_0019_MORE_INFORMATION,
-                                "cb027494-8de7-43cc-845c-57d4f0bbf6d5",
-                                "Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community)."),
-
-    /**
      * A shareable keyword to help locating relevant assets.
      */
     SEARCH_KEYWORD("0134c9ae-0fe6-4224-bb3b-e18b78a90b1e",
@@ -180,42 +162,93 @@ public enum OpenMetadataType
                                      "17f7fc3d-3b4d-4216-9546-256af94c9c99",
                                      "Provides a link to a keyword that helps to identify specific elements in a search."),
 
+
     /**
-     * A collection of translated properties.
+     * An action that has been identified to support the development, improvement, or remedy of an object or situation.
      */
-    TRANSLATION_DETAIL("d7df0579-8671-48f0-a8aa-38a487d418c8",
-                       "TranslationDetail",
-                       OpenMetadataWikiPages.MODEL_0013_TRANSLATIONS,
-                       "953e0048-e4da-4056-8dd1-2cb5caa5336a",
-                       "A collection of translated properties."),
+    ACTION("95261f26-8fe0-4723-b953-4ae5789ec639",
+           "Action",
+           OpenMetadataWikiPages.MODEL_0013_ACTIONS,
+           "d1df6cb0-80af-473f-aacf-f29972fd4c34",
+           "An action that has been identified to support the development, improvement, or remedy of an object or situation."),
+
 
     /**
-     * Links an entity to a collection of translated properties.
+     * The source of the action, such as a person, meeting or a governance action.
      */
-    TRANSLATION_LINK_RELATIONSHIP("576228af-33ec-4588-ba4e-6a864a097e10",
-                                  "TranslationLink",
-                                  OpenMetadataWikiPages.MODEL_0013_TRANSLATIONS,
-                                  "8baaef81-c7f8-4537-9ba7-36c629998343",
-                                  "Links an entity to a collection of translated properties."),
+    ACTION_REQUESTER_RELATIONSHIP("a0b7ba50-4c97-4b76-9a7d-c6a00e1be646",
+                                  "ActionRequester",
+                                  OpenMetadataWikiPages.MODEL_0013_ACTIONS,
+                                  "4b7c5d49-cef0-495e-8710-23c293828575",
+                                  "The source of the action, such as a person, meeting or a governance action."),
 
 
     /**
-     * Link to more information.
+     * Identifies the sponsor that requires the action to be completed.
+     */
+    ACTION_SPONSOR_RELATIONSHIP("aca1277b-bf1c-42f5-9b3b-fbc2c9047325",
+                                "ActionSponsor",
+                                OpenMetadataWikiPages.MODEL_0013_ACTIONS,
+                                "c3d68cbc-9e1e-4820-8647-cdf29a64fb2b",
+                                "Identifies the sponsor that requires the action to be completed."),
+
+    /**
+     * Identifies the cause that requires the action to be completed.
+     */
+    ACTIONS_RELATIONSHIP("aba0e7e5-c3c6-40ad-8a46-fc4793d76906",
+                         "Actions",
+                         OpenMetadataWikiPages.MODEL_0013_ACTIONS,
+                         "91071319-9737-423b-8e26-6e133e082045",
+                         "Identifies the cause that requires the action to be completed."),
+
+
+    /**
+     * Associates an action with one or more elements to work on.
+     */
+    ACTION_TARGET_RELATIONSHIP("207e2594-e3e4-4be8-a12c-4c401656e241",
+                               "ActionTarget",
+                               OpenMetadataWikiPages.MODEL_0013_ACTIONS,
+                               "e087a192-707d-41fb-97c6-84861383e4b5",
+                               "Associates an action with one or more elements to work on."),
+
+
+    /**
+     * Link to external information.
      */
     EXTERNAL_REFERENCE_LINK_RELATIONSHIP("7d818a67-ab45-481c-bc28-f6b1caf12f06",
                                          "ExternalReferenceLink",
-                                         OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                                         OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
                                          "906ea4d6-1825-40c8-b5cb-07ecca6b848e",
-                                         "Link to more information."),
+                                         "Link to external information."),
 
     /**
      * A link to an external reference source such as a web page, article or book.
      */
     EXTERNAL_REFERENCE("af536f20-062b-48ef-9c31-1ddd05b04c56",
                        "ExternalReference",
-                       OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                       OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
                        "cd59edf8-ef6d-4436-bfc5-e93403238df4",
                        "A link to an external reference source such as a web page, article or book."),
+
+    /**
+     * A link to a data set on an external site.
+     */
+    EXTERNAL_DATA_SOURCE("fc1de197-7e65-4828-9f3e-43dc12b70c6b",
+                       "ExternalDataSource",
+                       OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
+                       "4aa0042e-5391-414d-952c-fe1ee0e29ccf",
+                       "A link to a data set on an external site."),
+
+
+    /**
+     * A link to a model on an external site.
+     */
+    EXTERNAL_MODEL_SOURCE("43cc04b8-9afd-4ddc-b868-e0f0e141ffa6",
+                         "ExternalModelSource",
+                         OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
+                         "ffa65091-ebc3-4722-b1bb-f038bff0def6",
+                         "A link to a data set on an external site."),
+
 
     /**
      * Images, video or sound media.
@@ -234,6 +267,25 @@ public enum OpenMetadataType
                                  OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
                                  "3e7b1513-f7df-4de2-ba32-0b1cc82e2946",
                                  "Link to related media such as images, videos and audio."),
+
+
+    /**
+     * Images, video or sound media.
+     */
+    CITED_DOCUMENT("a52fb0d9-35aa-4483-9ccd-3c0795b07a8e",
+                  "CitedDocument",
+                  OpenMetadataWikiPages.MODEL_0016_CITED_DOCUMENTS,
+                  "895d9504-3354-4639-9852-acf3aa2e42a6",
+                  "Images, video or sound media."),
+
+    /**
+     * Link to related documents.
+     */
+    CITED_DOCUMENT_LINK_RELATIONSHIP("31964635-67f6-42a1-844d-9c1065ebe3fc",
+                                 "CitedDocumentLink",
+                                 OpenMetadataWikiPages.MODEL_0016_CITED_DOCUMENTS,
+                                 "53e8af0e-87bc-4e28-ac10-37b3e86f3a9e",
+                                 "Link to related documents."),
 
     /**
      * Alternative identifier used in another system.
@@ -262,6 +314,25 @@ public enum OpenMetadataType
                                    "e1e481ce-0536-4637-8658-5224353c7d69",
                                    "Places where an external identifier is recognized."),
 
+
+    /**
+     * Link to indicate that a referenceable provides additional information about another referenceable.
+     */
+    MORE_INFORMATION_RELATIONSHIP("1cbf059e-2c11-4e0c-8aae-1da42c1ee73f",
+                                  "MoreInformation",
+                                  OpenMetadataWikiPages.MODEL_0019_MORE_INFORMATION,
+                                  "2d3f4815-d8e7-44c3-88cc-f587cfe26e70",
+                                  "Link to indicate that a referenceable provides additional information about another referenceable."),
+
+    /**
+     * Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community).
+     */
+    RESOURCE_LIST_RELATIONSHIP ("73cf5658-6a73-4ebc-8f4d-44fdfac0b437",
+                                "ResourceList",
+                                OpenMetadataWikiPages.MODEL_0019_MORE_INFORMATION,
+                                "cb027494-8de7-43cc-845c-57d4f0bbf6d5",
+                                "Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community)."),
+
     /**
      * Additional properties that support a particular vendor or service.
      */
@@ -275,11 +346,11 @@ public enum OpenMetadataType
     /**
      * Link between a property facet and the element it relates to.
      */
-    REFERENCEABLE_FACET("58c87647-ada9-4c90-a3c3-a40ace46b1f7",
-                        "ReferenceableFacet",
-                        OpenMetadataWikiPages.MODEL_0020_PROPERTY_FACETS,
-                        "2393b97a-436a-44f6-a5ef-45ad8b16b5d4",
-                        "Link between a property facet and the element it relates to."),
+    REFERENCEABLE_FACET_RELATIONSHIP("58c87647-ada9-4c90-a3c3-a40ace46b1f7",
+                                     "ReferenceableFacet",
+                                     OpenMetadataWikiPages.MODEL_0020_PROPERTY_FACETS,
+                                     "2393b97a-436a-44f6-a5ef-45ad8b16b5d4",
+                                     "Link between a property facet and the element it relates to."),
 
 
     /**
@@ -324,11 +395,20 @@ public enum OpenMetadataType
     /**
      * Defines that a collection is a set of results from an activity, query, ...
      */
-    RESULTS_SET("3947f08d-7412-4022-81fc-344a20dfbb26",
-                "ResultsSet",
-                OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                "883529d0-f230-4fd1-93d3-13820090f320",
-                "Defines that a collection is a set of results from an activity, query, ..."),
+    RESULTS_SET_CLASSIFICATION("3947f08d-7412-4022-81fc-344a20dfbb26",
+                               "ResultsSet",
+                               OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                               "883529d0-f230-4fd1-93d3-13820090f320",
+                               "Defines that a collection is a set of results from an activity, query, ..."),
+
+    /**
+     * Defines that a collection is a set of results from an activity, query, ...
+     */
+    REFERENCE_LIST_CLASSIFICATION("f78e6fd3-0e76-42b4-9404-67dc458708ba",
+                                  "ReferenceList",
+                                  OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                  "31e8779d-226a-48f3-ba24-a75f61620d7c",
+                                  "Defines that a collection is a set of external references such as external data/model sources, links to media or cited documents."),
 
     /**
      * A collection that lists elements that have been part of recent activity.
@@ -338,6 +418,15 @@ public enum OpenMetadataType
                                             OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                             "e3c0d70e-8d9c-4575-a21d-dcc7a2bb5dcc",
                                             "A collection that lists elements that have been part of recent activity."),
+
+    /**
+     * Defines how the collection is being used.
+     */
+    COLLECTION_CATEGORY_CLASSIFICATION("a68bae73-40c7-4a93-8e07-a1247baaae3d",
+                                     "CollectionCategory",
+                                     OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                     "db68722e-39a3-49b3-ba6f-ad00a880c91c",
+                                     "Defines how the collection is being used."),
 
     /**
      * Defines that a collection should be treated like a folder.
@@ -365,6 +454,25 @@ public enum OpenMetadataType
                                         OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                         "34b65dcd-de83-463c-9be6-30d765b42a6c",
                                         "Defines a set of elements that are grouped under a particular namespace."),
+
+
+    /**
+     * A collection of translated properties.
+     */
+    TRANSLATION_DETAIL("d7df0579-8671-48f0-a8aa-38a487d418c8",
+                       "TranslationDetail",
+                       OpenMetadataWikiPages.MODEL_0022_TRANSLATIONS,
+                       "953e0048-e4da-4056-8dd1-2cb5caa5336a",
+                       "A collection of translated properties."),
+
+    /**
+     * Links an entity to a collection of translated properties.
+     */
+    TRANSLATION_LINK_RELATIONSHIP("576228af-33ec-4588-ba4e-6a864a097e10",
+                                  "TranslationLink",
+                                  OpenMetadataWikiPages.MODEL_0022_TRANSLATIONS,
+                                  "8baaef81-c7f8-4537-9ba7-36c629998343",
+                                  "Links an entity to a collection of translated properties."),
 
 
     /**
@@ -548,8 +656,6 @@ public enum OpenMetadataType
                              OpenMetadataWikiPages.MODEL_0035_HOSTS,
                              "d727b3ce-d58b-45d5-8abc-55b1394e030a",
                              "Identifies an IT Infrastructure asset that is deployed to a specific destination."),
-
-
 
     /**
      * A group of hosts operating together to provide a scalable platform.
@@ -753,22 +859,13 @@ public enum OpenMetadataType
 
 
     /**
-     * A software capability such as an application, that is deployed to a software server.
-     */
-    SOFTWARE_SERVER_CAPABILITY("fe30a033-8f86-4d17-8986-e6166fa24177",
-                               "SoftwareServerCapability",
-                               OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
-                               "a8cfffa4-a761-4fe0-be8b-6be43ac55020",
-                               "A software capability such as an application, that is deployed to a software server."),
-
-    /**
      * Identifies a software capability that is deployed to an instance of IT infrastructure.
      */
-    SUPPORTED_CAPABILITY_RELATIONSHIP("2480aa71-44c5-414d-8b32-9c4340786d77",
-                                      "SupportedSoftwareCapability",
-                                      OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
-                                      "47fc8ae9-5f6b-42e8-bb9d-c261cc9371f3",
-                                      "Identifies a software capability that is deployed to an instance of IT infrastructure."),
+    SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP("2480aa71-44c5-414d-8b32-9c4340786d77",
+                                               "SupportedSoftwareCapability",
+                                               OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
+                                               "47fc8ae9-5f6b-42e8-bb9d-c261cc9371f3",
+                                               "Identifies a software capability that is deployed to an instance of IT infrastructure."),
 
     /**
      * Stores processing state information used by various SoftwareCapabilities.
@@ -783,11 +880,11 @@ public enum OpenMetadataType
     /**
      * Defines that a server capability is associated with an asset.
      */
-    SERVER_ASSET_USE_RELATIONSHIP("56315447-88a6-4235-ba91-fead86524ebf",
-                                  "ServerAssetUse",
-                                  OpenMetadataWikiPages.MODEL_0045_SERVERS_AND_ASSETS,
-                                  "fb79cb7f-fcec-4798-a165-ebf4649c8513",
-                                  "Defines that a server capability is associated with an asset."),
+    CAPABILITY_ASSET_USE_RELATIONSHIP("56315447-88a6-4235-ba91-fead86524ebf",
+                                      "CapabilityAssetUse",
+                                      OpenMetadataWikiPages.MODEL_0045_SERVERS_AND_ASSETS,
+                                      "fb79cb7f-fcec-4798-a165-ebf4649c8513",
+                                      "Defines that a server capability is associated with an asset."),
 
     /**
      * A server capability supporting a specific business function.
@@ -942,6 +1039,17 @@ public enum OpenMetadataType
                                OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
                                "faa47e2b-4987-4ad8-bc39-5a4f91f9658c",
                                "An engine capable of creating new data sets by dynamically combining data from one or more data stores or data sets."),
+
+
+    /**
+     * Defines a manager of resources.  Typically, a software capability or an asset.
+     */
+    RESOURCE_MANAGER_CLASSIFICATION("bb6568e6-a2d8-4dfe-b9d6-6bd0119aa70e",
+                                       "ResourceManager",
+                                       OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                                       "5116814c-5745-4b53-9a44-b68e4a07b045",
+                                       "Defines a manager of resources.  Typically, a software capability or an asset."),
+
 
     /**
      * Defines a capability that manages metadata about assets.
@@ -1319,7 +1427,7 @@ public enum OpenMetadataType
      * A record of the contribution of an actor profile.
      */
     CONTRIBUTION_RECORD("6aaa1cea-d55f-4dcc-8c28-63a44132d1d7",
-                        "ContributionRecord",
+                        "ContributionRecordProperties",
                         OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
                         "84ac1aa6-f82c-4723-9c57-2b064d3c8418",
                         "A record of the contribution of an actor profile."),
@@ -1571,6 +1679,15 @@ public enum OpenMetadataType
     /**
      * A long-term strategic initiative that is implemented through multiple related projects.
      */
+    PROJECT_CATEGORY_CLASSIFICATION("42621da6-3001-479d-be1d-90f47b1fcb7f",
+                            "ProjectCategory",
+                            OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                            "bac56f15-e51f-4b53-9b95-a49fd1b2aa0f",
+                            "A superclass for the project classifications that identify a category."),
+
+    /**
+     * A long-term strategic initiative that is implemented through multiple related projects.
+     */
     CAMPAIGN_CLASSIFICATION("41437629-8609-49ef-8930-8c435c912572",
                             "Campaign",
                             OpenMetadataWikiPages.MODEL_0130_PROJECTS,
@@ -1609,85 +1726,29 @@ public enum OpenMetadataType
      */
     MEETING("6bf90c79-32f4-47ad-959c-8fff723fe744",
             "Meeting",
-            OpenMetadataWikiPages.MODEL_0135_MEETINGS,
+            OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
             "dd75c9f3-8e17-4307-9729-c391bd7981bd",
             "Two or more people come together to discuss a topic, agree and action or exchange information."),
-
-    /**
-     * A meeting about a specific project, deliverable, situation or plan of action.
-     */
-    MEETINGS("a05f918e-e7e2-419d-8016-5b37406df63a",
-             "Meetings",
-             OpenMetadataWikiPages.MODEL_0135_MEETINGS,
-             "02ff69de-bb0d-40ad-a7ec-367938b7767b",
-             "A meeting about a specific project, deliverable, situation or plan of action."),
-
-
-    /**
-     * An action that has been identified to support the development, improvement, or remedy of an object or situation.
-     */
-    ACTION("95261f26-8fe0-4723-b953-4ae5789ec639",
-           "Action",
-           OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
-           "d1df6cb0-80af-473f-aacf-f29972fd4c34",
-           "An action that has been identified to support the development, improvement, or remedy of an object or situation."),
-
-
-    /**
-     * The source of the to do, such as a person, meeting or a governance action.
-     */
-    TO_DO_SOURCE_RELATIONSHIP("a0b7ba50-4c97-4b76-9a7d-c6a00e1be646",
-                              "ToDoSource",
-                              OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
-                              "4b7c5d49-cef0-495e-8710-23c293828575",
-                              "The source of the to do, such as a person, meeting or a governance action."),
-
-
-    /**
-     * Identifies the sponsor that requires the action to be completed.
-     */
-    ACTION_SPONSOR_RELATIONSHIP("aca1277b-bf1c-42f5-9b3b-fbc2c9047325",
-                                "ActionSponsor",
-                                OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
-                                "c3d68cbc-9e1e-4820-8647-cdf29a64fb2b",
-                                "Identifies the sponsor that requires the action to be completed."),
-
-    /**
-     * Identifies the cause that requires the action to be completed.
-     */
-    ACTIONS_RELATIONSHIP("aba0e7e5-c3c6-40ad-8a46-fc4793d76906",
-                                "Actions",
-                                OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
-                                "91071319-9737-423b-8e26-6e133e082045",
-                                "Identifies the cause that requires the action to be completed."),
-
-    /**
-     * A person who has been assigned to complete the to do (action).
-     */
-    ACTION_ASSIGNMENT_RELATIONSHIP("af2b5fab-8f83-4a2b-b749-1e6219f61f79",
-                                   "ActionAssignment",
-                                   OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
-                                   "5d77cc38-d0fa-410b-85fd-e077a6f9efb1",
-                                   "A person who has been assigned to complete the to do (action)."),
-
 
     /**
      * An action assigned to an individual.
      */
     TO_DO("93dbc58d-c826-4bc2-b36f-195148d46f86",
           "ToDo",
-          OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
+          OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
           "12780d85-66e8-45b3-9d0e-ef4bebbf1ed9",
           "An action assigned to an individual."),
 
+
     /**
-     * Associates a To-Do with one or more elements to work on.
+     * A person who has been assigned to complete the to do (action).
      */
-    ACTION_TARGET_RELATIONSHIP("207e2594-e3e4-4be8-a12c-4c401656e241",
-                               "ActionTarget",
-                               OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
-                               "e087a192-707d-41fb-97c6-84861383e4b5",
-                               "Associates a To Do with one or more elements to work on."),
+    ACTION_ASSIGNMENT_RELATIONSHIP("af2b5fab-8f83-4a2b-b749-1e6219f61f79",
+                                   "ActionAssignment",
+                                   OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
+                                   "5d77cc38-d0fa-410b-85fd-e077a6f9efb1",
+                                   "A person who has been assigned to complete the to do (action)."),
+
 
     /**
      * A group of people with a common interest or skill.
@@ -1770,8 +1831,6 @@ public enum OpenMetadataType
          OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
          "b2bbaacb-c547-41b9-9bb2-e11d55bf74f7",
          "Boolean type of rating expressing a favorable impression."),
-
-
 
     /**
      * Links a like to an item.
@@ -1862,7 +1921,6 @@ public enum OpenMetadataType
                     OpenMetadataWikiPages.MODEL_0160_NOTES,
                     "58213b72-68b7-4259-938c-f0f5c59396b0",
                     "A person adding notes to a note log."),
-
 
     /**
      * Links a note log to an author.
@@ -1975,7 +2033,6 @@ public enum OpenMetadataType
              "353a074a-079b-47ad-914f-c27a6174a8ed",
              "Collection of related data, not necessarily stored together."),
 
-
     /**
      * A physical store of data
      */
@@ -1984,7 +2041,6 @@ public enum OpenMetadataType
                OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                "186e8199-1987-4578-9799-c13a8eaa08b6",
                "A physical store of data."),
-
 
     /**
      * Identifies the scope of the data stored in the digital resource(s).
@@ -2066,7 +2122,6 @@ public enum OpenMetadataType
                                       OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
                                       "7c7d9e1c-72cd-4d64-89bf-be898edad980",
                                       "Identifies an API that sends out events to other listening components."),
-
 
     /**
      * A packaged and deployed software component supporting a well-defined function.
@@ -2274,7 +2329,6 @@ public enum OpenMetadataType
                          OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                          "c2833bb5-5508-4328-a81d-f9b5971be095",
                          "A data set that consists of a collection files (do not need to be co-located)."),
-
 
     /**
      * A group of related media files.
@@ -2728,20 +2782,12 @@ public enum OpenMetadataType
     /**
      * Connects a glossary category with its owning glossary.
      */
-    CATEGORY_ANCHOR_RELATIONSHIP("c628938e-815e-47db-8d1c-59bb2e84e028",
-                                 "CategoryAnchor",
-                                 OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
-                                 "d6ddb8da-2e7e-474f-b6b1-ea2695440a5b",
-                                 "Connects a glossary category with its owning glossary."),
+    CATEGORY_HIERARCHY_RELATIONSHIP("c628938e-815e-47db-8d1c-59bb2e84e028",
+                                    "CategoryHierarchy",
+                                    OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
+                                    "d6ddb8da-2e7e-474f-b6b1-ea2695440a5b",
+                                    "Connects a glossary category with its owning glossary."),
 
-    /**
-     * Relationship between two glossary categories used to create nested categories.
-     */
-    CATEGORY_HIERARCHY_LINK_RELATIONSHIP("71e4b6fb-3412-4193-aff3-a16eccd87e8e",
-                                         "CategoryHierarchyLink",
-                                         OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
-                                         "33c98f7e-4db7-4757-b68f-750dcdd132e0",
-                                         "Relationship between two glossary categories used to create nested categories."),
 
     /**
      * A semantic description of something, such as a concept, object, asset, technology, role or group.
@@ -2755,20 +2801,11 @@ public enum OpenMetadataType
     /**
      * Links a term to its owning glossary.
      */
-    TERM_ANCHOR_RELATIONSHIP("1d43d661-bdc7-4a91-a996-3239b8f82e56",
-                             "TermAnchor",
-                             OpenMetadataWikiPages.MODEL_0330_TERMS,
-                             "712d129b-1d52-41d9-8a39-861c1fc09f85",
-                             "Links a term to its owning glossary."),
-
-    /**
-     * Links a glossary term into a glossary category.
-     */
-    TERM_CATEGORIZATION("696a81f5-ac60-46c7-b9fd-6979a1e7ad27",
-                        "TermCategorization",
-                        OpenMetadataWikiPages.MODEL_0330_TERMS,
-                        "22dc7726-e7d3-4c41-b32a-e11ddded0908",
-                        "Links a glossary term into a glossary category."),
+    PARENT_GLOSSARY_RELATIONSHIP("1d43d661-bdc7-4a91-a996-3239b8f82e56",
+                                 "ParentGlossary",
+                                 OpenMetadataWikiPages.MODEL_0330_TERMS,
+                                 "712d129b-1d52-41d9-8a39-861c1fc09f85",
+                                 "Links a term to its owning glossary."),
 
     /**
      * Identifies that this glossary term describes an activity.
@@ -2843,15 +2880,6 @@ public enum OpenMetadataType
                                   "Link to a glossary term that is replacing an obsolete glossary term."),
 
     /**
-     * Link between glossary terms that provide different natural language translation of the same concept.
-     */
-    TRANSLATION_RELATIONSHIP("6ae42e95-efc5-4256-bfa8-801140a29d2a",
-                             "Translation",
-                             OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
-                             "21eacf36-0434-4006-8a67-da484c2f8859",
-                             "Link between glossary terms that provide different natural language translation of the same concept."),
-
-    /**
      * Link between a more general glossary term and a more specific definition.
      */
     ISA_RELATIONSHIP("50fab7c7-68bc-452f-b8eb-ec76829cac85",
@@ -2859,15 +2887,6 @@ public enum OpenMetadataType
                      OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
                      "603144c6-03bc-4ce1-b557-7161e4807161",
                      "Link between a more general glossary term and a more specific definition."),
-
-    /**
-     * Link between glossary terms where one defines one of the data values for the another.
-     */
-    VALID_VALUE_RELATIONSHIP("707a156b-e579-4482-89a5-de5889da1971",
-                             "ValidValue",
-                             OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
-                             "376f795e-96f9-4e21-a673-179e198eab64",
-                             "Link between glossary terms where one defines one of the data values for the another."),
 
     /**
      * Link between glossary terms where on describes the context where the other one is valid to use.
@@ -3209,6 +3228,16 @@ public enum OpenMetadataType
                          "Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver."),
 
     /**
+     * Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver.
+     */
+    METHODOLOGY("173a4c2f-016b-4dd2-950a-6ab25bb48887",
+                         "Methodology",
+                         OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                         "94a9c08c-f636-4ef0-baec-2c4920da6a60",
+                         "Describes a system of ways of doing, teaching, or studying something."),
+
+
+    /**
      * A link between a governance control and the governance policy it is implementing.
      */
     GOVERNANCE_IMPLEMENTATION_RELATIONSHIP("787eaf46-7cf2-4096-8d6e-671a0819d57e",
@@ -3319,6 +3348,15 @@ public enum OpenMetadataType
                                   OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
                                   "de70d92a-ac47-4221-914b-bdb52bf1a161",
                                   "Links a security access control to a security group."),
+
+    /**
+     * Defines the element's membership of the governance zones.
+     */
+    ZONE_MEMBERSHIP_CLASSIFICATION("52993f4b-d853-47ae-a2e6-f22b96863533",
+                                   "ZoneMembership",
+                                   OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
+                                   "1d3983a0-a237-46fd-a07d-027a2a0cb5b1",
+                                   "Defines the element's membership of the governance zones."),
 
     /**
      * Defines the asset's membership of the governance zones.
@@ -3458,11 +3496,11 @@ public enum OpenMetadataType
     /**
      * Describes a collection of related naming standard rules.
      */
-    NAMING_STANDARD_RULE_SET_COLLECTION_CLASSIFICATION("ba70f506-1f81-4890-bb4f-1cb1d99c939e",
-                                                       "NamingStandardRuleSet",
-                                                       OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
-                                                       "44d13d19-e98d-4b8b-a1cb-1a540afe69e6",
-                                                       "Describes a collection of related naming standard rules."),
+    NAMING_STANDARD_RULE_SET_COLLECTION("ba70f506-1f81-4890-bb4f-1cb1d99c939e",
+                                        "NamingStandardRuleSet",
+                                        OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
+                                        "44d13d19-e98d-4b8b-a1cb-1a540afe69e6",
+                                        "Describes a collection of related naming standard rules."),
 
     /**
      * Describes a primary noun, used in naming standards.
@@ -3509,6 +3547,15 @@ public enum OpenMetadataType
                         OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
                         "102f73be-7baf-4a10-997e-41e6eb42d66b",
                         "Describes a function, capability or skill set."),
+
+    /**
+     * Describes the origin of a digital resource, or a collection of digital resources.
+     */
+    DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION("5842941d-91a3-40e0-8ca8-f29c300f1af1",
+                                           "DigitalResourceOrigin",
+                                           OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                                           "55349176-4812-475b-abd4-34cd92e4a9d0",
+                                           "Describes the origin of a digital resource, or a collection of digital resources."),
 
     /**
      * Describes the origin of an asset.
@@ -3990,24 +4037,6 @@ public enum OpenMetadataType
                   OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
                   "c002430c-ca96-4680-b930-1fc258747c39",
                   "An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape."),
-
-    /**
-     * Link between an engine action and the source of the request that created it.
-     */
-    ENGINE_ACTION_REQUEST_SOURCE("5323a705-4c1f-456a-9741-41fdcb8e93ac",
-                                 "EngineActionRequestSource",
-                                 OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
-                                 "cda636e7-c5ac-45ad-a1c0-edcdd5451f13",
-                                 "Link between an engine action and the source of the request that created it."),
-
-    /**
-     * The element(s) that the engine action will work on.
-     */
-    TARGET_FOR_ACTION_RELATIONSHIP("46ec49bf-af66-4575-aab7-06ce895120cd",
-                                   "TargetForAction",
-                                   OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
-                                   "3ab0a122-9bbe-4c96-bb8a-e8d8dae84a12",
-                                   "The element(s) that the engine action will work on."),
 
     /**
      * Link between an engine action and the governance engine that will execute it.
@@ -4816,11 +4845,11 @@ public enum OpenMetadataType
     /**
      * A collection of related event types.
      */
-    EVENT_SET_COLLECTION_CLASSIFICATION("bead9aa4-214a-4596-8036-aa78395bbfb1",
-                                        "EventSet",
-                                        OpenMetadataWikiPages.MODEL_0535_EVENT_SCHEMAS,
-                                        "b1eeb73c-d7dd-4edb-b0fb-b0ffc1bc04ff",
-                                        "A collection of related event types."),
+    EVENT_SET_COLLECTION("bead9aa4-214a-4596-8036-aa78395bbfb1",
+                         "EventSet",
+                         OpenMetadataWikiPages.MODEL_0535_EVENT_SCHEMAS,
+                         "b1eeb73c-d7dd-4edb-b0fb-b0ffc1bc04ff",
+                         "A collection of related event types."),
 
     /**
      * A description of an event (message)
@@ -5031,15 +5060,6 @@ public enum OpenMetadataType
                            "A single valid value for a referenceable."),
 
     /**
-     * A collection of related valid values.
-     */
-    VALID_VALUE_SET("7de10805-7c44-40e3-a410-ffc51306801b",
-                    "ValidValuesSet",
-                    OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
-                    "8a786df1-738d-44f4-960f-bce7e929f36e",
-                    "A collection of related valid values."),
-
-    /**
      * An asset that contains trusted values for use as a reference.
      */
     REFERENCE_DATA_CLASSIFICATION("55e5ae33-39c6-4834-9d05-ef0ae4e0163b",
@@ -5086,13 +5106,13 @@ public enum OpenMetadataType
                                          "Represents an association between two valid values."),
 
     /**
-     * Links valid value set to the values.
+     * Links valid value set to its child values.
      */
     VALID_VALUE_MEMBER_RELATIONSHIP("6337c9cd-8e5a-461b-97f9-5151bcb97a9e",
                                     "ValidValueMember",
                                     OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                     "4974410c-952d-4c27-bc7a-172e195f1c6b",
-                                    "Links valid value set to the values."),
+                                    "Links valid value definition to the child values it manages.  The parent valid value definition is then referred to as a valid values set."),
 
     /**
      * Identifies two valid values from different valid value sets (properties) that should be used together when in the same element for consistency.
@@ -5289,21 +5309,21 @@ public enum OpenMetadataType
     /**
      * This is a collection that describes the data requirements for a project or initiative..
      */
-    DATA_SPEC_COLLECTION_CLASSIFICATION("781c5319-af83-4195-ada7-a44914f3e63a",
-                                        "DataSpec",
-                                        OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
-                                        "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
-                                        "This is a collection that describes the data requirements for a project or initiative."),
+    DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
+                         "DataSpec",
+                         OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                         "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
+                         "This is a collection that describes the data requirements for a project or initiative."),
 
 
     /**
      * This is an organized collection of defined data fields that can be used in a data specification to describe some desired data.
      */
-    DATA_DICTIONARY_COLLECTION_CLASSIFICATION("7eec329e-e2de-481a-bd00-b1f6a5009dc9",
-                                              "DataDictionary",
-                                              OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
-                                              "88f2cf3d-5c6f-4b7a-b93e-8f14ea232bda",
-                                              "This is an organized collection of defined data fields that can be used in a data specification to describe some desired data."),
+    DATA_DICTIONARY_COLLECTION("7eec329e-e2de-481a-bd00-b1f6a5009dc9",
+                               "DataDictionary",
+                               OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                               "88f2cf3d-5c6f-4b7a-b93e-8f14ea232bda",
+                               "This is an organized collection of defined data fields that can be used in a data specification to describe some desired data."),
 
     /**
      * A list of data fields that describe the structure of a data source.
@@ -5936,7 +5956,6 @@ public enum OpenMetadataType
                                  OpenMetadataWikiPages.MODEL_0770_LINEAGE_MAPPING,
                                  "a1c53199-2c7c-4709-8e64-6ba1b303d5e3",
                                  "A lineage stitching link between two equivalent elements."),
-
 
     /**
      * A mapping relationship between schema attributes from different assets showing that data is copied from one to the other.

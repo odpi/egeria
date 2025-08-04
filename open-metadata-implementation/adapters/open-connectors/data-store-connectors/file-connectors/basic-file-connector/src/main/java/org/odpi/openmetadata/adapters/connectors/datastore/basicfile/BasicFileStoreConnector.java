@@ -8,8 +8,8 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.except
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,11 +40,11 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
      * @param connectionDetails - POJO for the configuration used to create the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionDetails connectionDetails)
+    public void initialize(String connectorInstanceId, Connection connectionDetails)
     {
         super.initialize(connectorInstanceId, connectionDetails);
 
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,9 +26,9 @@ public class ValidMetadataValue
     private String  displayName    = null;
     private String  description    = null;
     private String  preferredValue = null;
-    private String  dataType       = null;
-    private boolean isDeprecated   = false;
-    private boolean isCaseSensitive = false;
+    private String  dataType          = null;
+    private String  userDefinedStatus = null;
+    private boolean isCaseSensitive   = false;
 
     private Map<String, String> additionalProperties = null;
 
@@ -57,9 +56,9 @@ public class ValidMetadataValue
             displayName = template.getDisplayName();
             description = template.getDescription();
             preferredValue = template.getPreferredValue();
-            dataType = template.getDataType();
-            isDeprecated = template.getIsDeprecated();
-            isCaseSensitive = template.getIsCaseSensitive();
+            dataType          = template.getDataType();
+            userDefinedStatus = template.getUserDefinedStatus();
+            isCaseSensitive   = template.getIsCaseSensitive();
             additionalProperties = template.getAdditionalProperties();
             effectiveFrom = template.getEffectiveFrom();
             effectiveTo = template.getEffectiveTo();
@@ -182,22 +181,22 @@ public class ValidMetadataValue
     /**
      * Is the valid value deprecated?
      *
-     * @return boolean flag
+     * @return string
      */
-    public boolean getIsDeprecated()
+    public String getUserDefinedStatus()
     {
-        return isDeprecated;
+        return userDefinedStatus;
     }
 
 
     /**
-     * Set whether the valid value is deprecated or not.  Default is false.
+     * Set whether the valid value is deprecated or not. Used when the element status is OTHER
      *
-     * @param deprecated boolean flag
+     * @param userDefinedStatus string
      */
-    public void setIsDeprecated(boolean deprecated)
+    public void setUserDefinedStatus(String userDefinedStatus)
     {
-        isDeprecated = deprecated;
+        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -303,7 +302,7 @@ public class ValidMetadataValue
                        ", description='" + description + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
                        ", dataType='" + dataType + '\'' +
-                       ", isDeprecated=" + isDeprecated +
+                       ", userDefinedStatus=" + userDefinedStatus +
                        ", isCaseSensitive=" + isCaseSensitive +
                        ", additionalProperties=" + additionalProperties +
                        ", effectiveFrom=" + effectiveFrom +
@@ -329,7 +328,7 @@ public class ValidMetadataValue
         {
             return false;
         }
-        return isDeprecated == that.isDeprecated &&
+        return userDefinedStatus == that.userDefinedStatus &&
                        isCaseSensitive == that.isCaseSensitive &&
                        Objects.equals(category, that.category) &&
                        Objects.equals(displayName, that.displayName) &&
@@ -350,6 +349,6 @@ public class ValidMetadataValue
     @Override
     public int hashCode()
     {
-        return Objects.hash(category, displayName, description, preferredValue, dataType, isDeprecated, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
+        return Objects.hash(category, displayName, description, preferredValue, dataType, userDefinedStatus, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
     }
 }

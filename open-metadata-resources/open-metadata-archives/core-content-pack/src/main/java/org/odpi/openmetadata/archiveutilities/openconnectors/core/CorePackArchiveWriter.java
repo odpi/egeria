@@ -153,10 +153,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              resourceUseParentSetGUID,
                                              resourceUseParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              resourceUse.getQualifiedName(),
                                              resourceUse.getResourceUse(),
                                              resourceUse.getDescription(),
@@ -165,7 +165,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              DataType.STRING.getName(),
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              resourceUse.getResourceUse(),
-                                             false,
+                                             null,
                                              false,
                                              additionalProperties);
         }
@@ -184,10 +184,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              solutionComponentTypeParentSetGUID,
                                              solutionComponentTypeParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              solutionComponentType.getQualifiedName(),
                                              solutionComponentType.getSolutionComponentType(),
                                              solutionComponentType.getDescription(),
@@ -196,7 +196,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              DataType.STRING.getName(),
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              solutionComponentType.getSolutionComponentType(),
-                                             false,
+                                             null,
                                              false,
                                              null);
         }
@@ -227,10 +227,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              projectPhaseParentSetGUID,
                                              projectPhaseParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              projectStatus.getQualifiedName(),
                                              projectStatus.getName(),
                                              projectStatus.getDescription(),
@@ -239,7 +239,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              projectStatus.getName(),
-                                             false,
+                                             null,
                                              false,
                                              null);
         }
@@ -262,10 +262,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              projectHealthParentSetGUID,
                                              projectHealthParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              projectHealth.getQualifiedName(),
                                              projectHealth.getName(),
                                              projectHealth.getDescription(),
@@ -274,7 +274,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              projectHealth.getName(),
-                                             false,
+                                             null,
                                              false,
                                              additionalProperties);
         }
@@ -293,10 +293,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              projectStatusParentSetGUID,
                                              projectStatusParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              projectStatus.getQualifiedName(),
                                              projectStatus.getName(),
                                              projectStatus.getDescription(),
@@ -305,7 +305,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              projectStatus.getName(),
-                                             false,
+                                             null,
                                              false,
                                              null);
         }
@@ -316,7 +316,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         String collectionTypeParentSetGUID = this.getParentSet(null,
                                                                OpenMetadataType.COLLECTION.typeName,
-                                                               OpenMetadataProperty.COLLECTION_TYPE.name,
+                                                               OpenMetadataProperty.CATEGORY.name,
                                                                null);
 
         for (CollectionType collectionType : CollectionType.values())
@@ -324,10 +324,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              collectionTypeParentSetGUID,
                                              collectionTypeParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              collectionType.getQualifiedName(),
                                              collectionType.getName(),
                                              collectionType.getDescription(),
@@ -336,7 +336,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              collectionType.getName(),
-                                             false,
+                                             null,
                                              false,
                                              null);
         }
@@ -356,10 +356,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              portTypeParentSetGUID,
                                              portTypeParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              portType.getQualifiedName(),
                                              portType.getName(),
                                              portType.getDescription(),
@@ -368,7 +368,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              portType.getName(),
-                                             false,
+                                             null,
                                              false,
                                              null);
         }
@@ -388,10 +388,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              solutionPortDirectionParentSetGUID,
                                              solutionPortDirectionParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              solutionPortDirection.getQualifiedName(),
                                              solutionPortDirection.getName(),
                                              solutionPortDirection.getDescription(),
@@ -400,7 +400,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              solutionPortDirection.getName(),
-                                             false,
+                                             null,
                                              false,
                                              null);
         }
@@ -491,15 +491,15 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       DataItemSortOrder.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(DataItemSortOrder.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.ENGINE_ACTION.typeName,
-                                      OpenMetadataProperty.ACTION_STATUS.name,
-                                      EngineActionStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(EngineActionStatus.values())));
+        addOpenMetadataEnumValidNames(OpenMetadataType.PROCESS.typeName,
+                                      OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                      ActivityStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ActivityStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.TARGET_FOR_ACTION_RELATIONSHIP.typeName,
-                                      OpenMetadataProperty.ACTION_STATUS.name,
-                                      EngineActionStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(EngineActionStatus.values())));
+        addOpenMetadataEnumValidNames(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                      OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                      ActivityStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ActivityStatus.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName,
                                       OpenMetadataProperty.ACTIVITY_TYPE.name,
@@ -510,11 +510,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
                                       GlossaryTermAssignmentStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(GlossaryTermAssignmentStatus.values())));
-
-        addOpenMetadataEnumValidNames(OpenMetadataType.TERM_CATEGORIZATION.typeName,
-                                      OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                      GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.RELATED_TERM_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
@@ -530,9 +525,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                             OpenMetadataProperty.STATUS_IDENTIFIER.name,
                                             new ArrayList<>(Arrays.asList(GovernanceClassificationStatus.values())));
 
-        addOpenMetadataEnumValidIdentifiers(OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+        addOpenMetadataEnumValidIdentifiers(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
                                             OpenMetadataProperty.USE_TYPE.name,
-                                            new ArrayList<>(Arrays.asList(ServerAssetUseType.values())));
+                                            new ArrayList<>(Arrays.asList(CapabilityAssetUseType.values())));
 
         addOpenMetadataEnumValidIdentifiers(null,
                                             OpenMetadataProperty.SEVERITY_IDENTIFIER.name,
@@ -566,11 +561,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                       PermittedSynchronization.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(PermittedSynchronization.values())));
-
-        addOpenMetadataEnumValidNames(OpenMetadataType.TO_DO.typeName,
-                                      OpenMetadataProperty.TO_DO_STATUS.name,
-                                      ToDoStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(ToDoStatus.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.CONTAINMENT_TYPE.name,
@@ -667,14 +657,14 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
         {
-            if (accessServiceDescription.getAccessServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
+            if (accessServiceDescription.getServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
-                String guid = this.addDeployedImplementationType(accessServiceDescription.getAccessServiceFullName(),
+                String guid = this.addDeployedImplementationType(accessServiceDescription.getServiceName(),
                                                                  OpenMetadataType.SOFTWARE_SERVICE.typeName,
-                                                                 accessServiceDescription.getAccessServiceDescription(),
-                                                                 accessServiceDescription.getAccessServiceWiki());
+                                                                 accessServiceDescription.getServiceDescription(),
+                                                                 accessServiceDescription.getServiceWiki());
 
-                serviceGUIDs.put(accessServiceDescription.getAccessServiceFullName(), guid);
+                serviceGUIDs.put(accessServiceDescription.getServiceName(), guid);
 
                 archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
                                                                 guid,
@@ -755,42 +745,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             }
         }
 
-        /*
-         * Integration services are found in the integration daemon.  They each call a particular access service and
-         * host a particular type of connector.
-         */
-        serverTypeGUID = archiveHelper.queryGUID(deployedImplementationTypeQNAMEs.get(EgeriaDeployedImplementationType.INTEGRATION_DAEMON.getDeployedImplementationType()));
-
-        for (IntegrationServiceDescription integrationServiceDescription : IntegrationServiceDescription.values())
-        {
-            if (integrationServiceDescription.getIntegrationServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
-            {
-                String guid = this.addDeployedImplementationType(integrationServiceDescription.getIntegrationServiceFullName(),
-                                                                 OpenMetadataType.SOFTWARE_SERVICE.typeName,
-                                                                 integrationServiceDescription.getIntegrationServiceDescription(),
-                                                                 integrationServiceDescription.getIntegrationServiceWiki());
-
-                archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
-                                                                guid,
-                                                                ResourceUse.HOSTED_SERVICE.getResourceUse(),
-                                                                ResourceUse.HOSTED_SERVICE.getDescription());
-
-                archiveHelper.addResourceListRelationshipByGUID(guid,
-                                                                serviceGUIDs.get(integrationServiceDescription.getIntegrationServicePartnerOMAS().getAccessServiceFullName()),
-                                                                ResourceUse.CALLED_SERVICE.getResourceUse(),
-                                                                ResourceUse.CALLED_SERVICE.getDescription());
-
-                String connectorTypeGUID = archiveHelper.queryGUID(deployedImplementationTypeQNAMEs.get(integrationServiceDescription.getConnectorDeployedImplementationType()));
-
-                if (connectorTypeGUID != null)
-                {
-                    archiveHelper.addResourceListRelationshipByGUID(guid,
-                                                                    connectorTypeGUID,
-                                                                    ResourceUse.HOSTED_CONNECTOR.getResourceUse(),
-                                                                    ResourceUse.HOSTED_CONNECTOR.getDescription());
-                }
-            }
-        }
 
         /*
          * Add the valid values for the fileType property.
@@ -1020,10 +974,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(enumValue.getDescriptionGUID(),
                                              parentSetGUID,
                                              parentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              constructValidValueQualifiedName(enumConsumingTypeName,
                                                                               enumConsumingProperty,
                                                                               null,
@@ -1037,7 +991,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              enumTypeName,
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              enumPreferredValue,
-                                             false,
+                                             null,
                                              false,
                                              null);
         }
@@ -1063,10 +1017,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.archiveHelper.addValidValue(enumValue.getDescriptionGUID(),
                                              parentSetGUID,
                                              parentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              null,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              constructValidValueQualifiedName(enumConsumingTypeName,
                                                                               enumConsumingProperty,
                                                                               null,
@@ -1080,7 +1034,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              DataType.INT.getName(),
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              enumPreferredValue,
-                                             false,
+                                             null,
                                              false,
                                              null);
         }
@@ -1313,10 +1267,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         String validValueGUID = this.archiveHelper.addValidValue(openMetadataType.descriptionGUID,
                                                                  parentSetGUID,
                                                                  parentSetGUID,
-                                                                 OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                 OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                  OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                  null,
-                                                                 OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                 OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                  qualifiedName,
                                                                  openMetadataType.typeName,
                                                                  openMetadataType.description,
@@ -1325,7 +1279,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                  "string",
                                                                  OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                                  openMetadataType.typeName,
-                                                                 false,
+                                                                 null,
                                                                  false,
                                                                  null);
 
@@ -1335,7 +1289,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
                                                                                    validValueGUID,
-                                                                                   OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                                    OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                                    null,
                                                                                    qualifiedName + "_wikiLink",
@@ -1344,20 +1298,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                                    null,
                                                                                    null,
                                                                                    null,
-                                                                                   0,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
                                                                                    null,
                                                                                    null,
                                                                                    openMetadataType.wikiURL,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
                                                                                    null,
                                                                                    null,
                                                                                    null,
@@ -1398,7 +1341,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         if (encoding != null)
         {
-            additionalProperties.put(OpenMetadataProperty.ENCODING.name, encoding);
+            additionalProperties.put(OpenMetadataProperty.ENCODING_TYPE.name, encoding);
         }
 
 
@@ -1420,10 +1363,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.archiveHelper.addValidValue(null,
                                          parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          null,
-                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          qualifiedName,
                                          fileTypeName,
                                          description,
@@ -1432,7 +1375,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                          "string",
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          fileTypeName,
-                                         false,
+                                         null,
                                          false,
                                          additionalProperties);
 
@@ -1472,10 +1415,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.archiveHelper.addValidValue(null,
                                          parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          null,
-                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          qualifiedName,
                                          fileName,
                                          null,
@@ -1484,7 +1427,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                          "string",
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          fileName,
-                                         false,
+                                         null,
                                          false,
                                          null);
 
@@ -1534,10 +1477,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.archiveHelper.addValidValue(null, 
                                          parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          null,
-                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          qualifiedName,
                                          fileExtension,
                                          null,
@@ -1546,7 +1489,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                          "string",
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          fileExtension,
-                                         false,
+                                         null,
                                          false,
                                          null);
 
@@ -1590,10 +1533,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.archiveHelper.addValidValue(null,
                                          parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataType.VALID_VALUE_SET.typeGUID,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          null,
-                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          qualifiedName,
                                          attributeName,
                                          attributeDescription,
@@ -1602,7 +1545,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                          "string",
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          attributeName,
-                                         false,
+                                         null,
                                          false,
                                          null);
     }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.viewservices.glossarybrowser.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GlossaryResultsRequestBody
 {
     private Date                     effectiveTime        = null;
-    private List<GlossaryTermStatus> limitResultsByStatus = null;
+    private List<ElementStatus> limitResultsByStatus = null;
     private Date                     asOfTime             = null;
     private SequencingOrder     sequencingOrder      = null;
     private String              sequencingProperty   = null;
@@ -86,7 +86,7 @@ public class GlossaryResultsRequestBody
      *
      * @return list of statuses or null
      */
-    public List<GlossaryTermStatus> getLimitResultsByStatus()
+    public List<ElementStatus> getLimitResultsByStatus()
     {
         return limitResultsByStatus;
     }
@@ -100,7 +100,7 @@ public class GlossaryResultsRequestBody
      *
      * @param limitResultsByStatus list of statuses or null
      */
-    public void setLimitResultsByStatus(List<GlossaryTermStatus> limitResultsByStatus)
+    public void setLimitResultsByStatus(List<ElementStatus> limitResultsByStatus)
     {
         this.limitResultsByStatus = limitResultsByStatus;
     }

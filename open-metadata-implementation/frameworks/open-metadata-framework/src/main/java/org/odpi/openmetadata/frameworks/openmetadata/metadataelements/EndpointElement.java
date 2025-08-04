@@ -6,8 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,10 +19,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EndpointElement implements MetadataElement
+public class EndpointElement extends OpenMetadataRootElement
 {
-    private EndpointProperties properties    = null;
-    private ElementHeader      elementHeader = null;
+    private RelatedMetadataElementSummary       serverEndpoint    = null;
+    private List<RelatedMetadataElementSummary> deployedAPIs      = null;
+    private List<RelatedMetadataElementSummary> connections       = null;
+    private List<RelatedMetadataElementSummary> visibleInNetworks = null;
 
 
     /**
@@ -41,59 +43,115 @@ public class EndpointElement implements MetadataElement
      */
     public EndpointElement(EndpointElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties    = template.getProperties();
+            serverEndpoint = template.getServerEndpoint();
+            deployedAPIs = template.getDeployedAPIs();
+            connections = template.getConnections();
+            visibleInNetworks = template.getVisibleInNetworks();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Copy/clone constructor
      *
-     * @return element header object
+     * @param template object to copy
      */
-    @Override
-    public ElementHeader getElementHeader()
+    public EndpointElement(OpenMetadataRootElement template)
     {
-        return elementHeader;
+        super(template);
     }
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Return the IT infrastructure asset that this endpoint belongs to.
      *
-     * @param elementHeader element header object
+     * @return related elements
      */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
+    public RelatedMetadataElementSummary getServerEndpoint()
     {
-        this.elementHeader = elementHeader;
+        return serverEndpoint;
     }
 
 
     /**
-     * Return the properties for the endpoint.
+     * Set up the infrastructure asset that this endpoint belongs to.
      *
-     * @return asset properties (using appropriate subclass)
+     * @param serverEndpoint related elements
      */
-    public EndpointProperties getProperties()
+    public void setServerEndpoint(RelatedMetadataElementSummary serverEndpoint)
     {
-        return properties;
+        this.serverEndpoint = serverEndpoint;
     }
 
 
     /**
-     * Set up the properties for the endpoint.
+     * Return the list of APIs supported by this endpoint.
      *
-     * @param properties asset properties
+     * @return related elements
      */
-    public void setProperties(EndpointProperties properties)
+    public List<RelatedMetadataElementSummary> getDeployedAPIs()
     {
-        this.properties = properties;
+        return deployedAPIs;
     }
 
+
+    /**
+     * Set up the list of APIs supported by this endpoint.
+     *
+     * @param deployedAPIs related elements
+     */
+    public void setDeployedAPIs(List<RelatedMetadataElementSummary> deployedAPIs)
+    {
+        this.deployedAPIs = deployedAPIs;
+    }
+
+
+    /**
+     * Return the list of connections that connect to this endpoint.
+     *
+     * @return related elements
+     */
+    public List<RelatedMetadataElementSummary> getConnections()
+    {
+        return connections;
+    }
+
+
+    /**
+     * Set up the list of connections that connect to this endpoint.
+     *
+     * @param connections related elements
+     */
+    public void setConnections(List<RelatedMetadataElementSummary> connections)
+    {
+        this.connections = connections;
+    }
+
+
+    /**
+     * Return the list of networks that this endpoint is visible in.
+     *
+     * @return related elements
+     */
+    public List<RelatedMetadataElementSummary> getVisibleInNetworks()
+    {
+        return visibleInNetworks;
+    }
+
+
+    /**
+     * Set up the list of networks that this endpoint is visible in.
+     *
+     * @param visibleInNetworks related elements
+     */
+    public void setVisibleInNetworks(List<RelatedMetadataElementSummary> visibleInNetworks)
+    {
+        this.visibleInNetworks = visibleInNetworks;
+    }
 
     /**
      * JSON-style toString
@@ -104,10 +162,13 @@ public class EndpointElement implements MetadataElement
     public String toString()
     {
         return "EndpointElement{" +
-                       "endpointProperties=" + properties +
-                       ", elementHeader=" + elementHeader +
-                       '}';
+                "serverEndpoint=" + serverEndpoint +
+                ", deployedAPIs=" + deployedAPIs +
+                ", connections=" + connections +
+                ", visibleInNetworks=" + visibleInNetworks +
+                "} " + super.toString();
     }
+
 
 
     /**
@@ -119,17 +180,11 @@ public class EndpointElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         EndpointElement that = (EndpointElement) objectToCompare;
-        return Objects.equals(getProperties(), that.getProperties()) &&
-                       Objects.equals(getElementHeader(), that.getElementHeader());
+        return Objects.equals(serverEndpoint, that.serverEndpoint) && Objects.equals(deployedAPIs, that.deployedAPIs) && Objects.equals(connections, that.connections) && Objects.equals(visibleInNetworks, that.visibleInNetworks);
     }
 
 
@@ -141,6 +196,6 @@ public class EndpointElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), serverEndpoint, deployedAPIs, connections, visibleInNetworks);
     }
 }

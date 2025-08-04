@@ -33,7 +33,7 @@ public class ProjectGraphMermaidGraphBuilder extends ProjectMermaidGraphBuilder
     private void addProjectHierarchy(ProjectHierarchy projectHierarchy)
     {
         String currentNodeName    = projectHierarchy.getElementHeader().getGUID();
-        String currentDisplayName = projectHierarchy.getProperties().getName();
+        String currentDisplayName = projectHierarchy.getProperties().getDisplayName();
 
         if (currentDisplayName == null)
         {
@@ -76,7 +76,7 @@ public class ProjectGraphMermaidGraphBuilder extends ProjectMermaidGraphBuilder
                     currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
                     if (currentDisplayName == null)
                     {
-                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.NAME.name);
+                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
                     }
                     if (currentDisplayName == null)
                     {
@@ -110,7 +110,7 @@ public class ProjectGraphMermaidGraphBuilder extends ProjectMermaidGraphBuilder
                     currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
                     if (currentDisplayName == null)
                     {
-                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.NAME.name);
+                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
                     }
                     if (currentDisplayName == null)
                     {

@@ -67,7 +67,7 @@ public enum CocoClinicalTrialPlaceholderProperty
      */
     public String getPlaceholder()
     {
-        return "{{" + name + "}}";
+        return "~{" + name + "}~";
     }
 
 

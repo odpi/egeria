@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseColumnProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
 
 import java.util.function.BiConsumer;
 
@@ -16,14 +16,16 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the updateDatabaseColumn call to access service
  */
-class OmasUpdateColumn implements BiConsumer<String, DatabaseColumnProperties> {
+class OmasUpdateColumn implements BiConsumer<String, RelationalColumnProperties>
+{
+    private final SchemaAttributeClient databaseColumnClient;
+    private final AuditLog              auditLog;
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
-
-    OmasUpdateColumn(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasUpdateColumn(SchemaAttributeClient databaseColumnClient,
+                     AuditLog              auditLog)
+    {
+        this.databaseColumnClient = databaseColumnClient;
+        this.auditLog             = auditLog;
     }
 
     /**
@@ -33,11 +35,17 @@ class OmasUpdateColumn implements BiConsumer<String, DatabaseColumnProperties> {
      * @param columnProperties properties
      */
     @Override
-    public void accept(String columnGuid, DatabaseColumnProperties columnProperties){
+    public void accept(String columnGuid, RelationalColumnProperties columnProperties)
+    {
         String methodName = "OmasUpdateColumn";
-        try {
-            databaseIntegratorContext.updateDatabaseColumn(columnGuid, false, columnProperties);
-        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
+        try
+        {
+            databaseColumnClient.updateSchemaAttribute(columnGuid,
+                                                       databaseColumnClient.getUpdateOptions(false),
+                                                       columnProperties);
+        }
+        catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
+        {
             auditLog.logException("Updating column with qualifiedName " + columnProperties.getQualifiedName()
                     + " and guid " + columnGuid,
                     EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);

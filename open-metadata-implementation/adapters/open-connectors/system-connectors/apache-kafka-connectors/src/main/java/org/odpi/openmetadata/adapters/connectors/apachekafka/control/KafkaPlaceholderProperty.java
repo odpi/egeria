@@ -76,7 +76,7 @@ public enum KafkaPlaceholderProperty
      */
     public String getPlaceholder()
     {
-        return "{{" + name + "}}";
+        return "~{" + name + "}~";
     }
 
 

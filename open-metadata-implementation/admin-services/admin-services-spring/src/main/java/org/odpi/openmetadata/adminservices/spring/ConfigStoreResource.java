@@ -24,8 +24,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/stores")
 
-@Tag(name="Administration Services - Set up Configuration Document Store",
-     description="Dynamically change the connector that accesses the configuration document store.  This overrides the value set in the application.properties (which overrides the default Encrypted File Configuration Document Store).",
+@Tag(name="Set up Configuration Document Store",
+     description="Dynamically change the connector that accesses the configuration document store.  This overrides the value set in the application.properties (which overrides the default plain-text File Configuration Document Store).  These services are only needed when testing a new implementation of the configuration document store.",
         externalDocs=@ExternalDocumentation(description="Further information",
         url="https://egeria-project.org/services/admin-services/overview/#dynamically-configuring-the-configuration-document-store-connector"))
 

@@ -137,6 +137,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                     governanceRequestType,
                                                     serviceRequestType,
                                                     requestParameters,
+                                                    true,
                                                     governanceActionDescription.governanceServiceGUID);
 
         String governanceActionTypeQualifiedName = governanceEngineName + "::" + governanceRequestType;
@@ -523,7 +524,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
 
         requestParameters.put(noLineagePropertyName, "");
 
-        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, serviceRequestType, requestParameters, governanceServiceGUID);
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, serviceRequestType, requestParameters, true, governanceServiceGUID);
     }
 
 
@@ -539,7 +540,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         final String governanceRequestType = "watch-for-new-files";
         final String serviceRequestType = "watch-nested-in-folder";
 
-        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, serviceRequestType, null, governanceServiceGUID);
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, serviceRequestType, null, true, governanceServiceGUID);
     }
 
 
@@ -554,7 +555,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
     {
         final String governanceRequestType = "copy-file";
 
-        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, null, null, governanceServiceGUID);
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, null, null, true, governanceServiceGUID);
     }
 
 
@@ -569,7 +570,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
     {
         final String governanceRequestType = "move-file";
 
-        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, null, null, governanceServiceGUID);
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, null, null, true, governanceServiceGUID);
     }
 
 
@@ -585,7 +586,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
     {
         final String governanceRequestType = "delete-file";
 
-        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, null, null, governanceServiceGUID);
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, null, null, true, governanceServiceGUID);
     }
 
 
@@ -600,7 +601,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
     {
         final String governanceServiceRequestType = "seek-origin";
 
-        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceServiceRequestType, null, null, governanceServiceGUID);
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceServiceRequestType, null, null, true, governanceServiceGUID);
     }
 
 
@@ -615,7 +616,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
     {
         final String governanceServiceRequestType = "set-zone-membership";
 
-        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceServiceRequestType, null, null, governanceServiceGUID);
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceServiceRequestType, null, null, true, governanceServiceGUID);
     }
 
 

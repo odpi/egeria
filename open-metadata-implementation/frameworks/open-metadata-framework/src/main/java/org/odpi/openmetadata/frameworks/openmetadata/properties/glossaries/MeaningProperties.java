@@ -22,9 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MeaningProperties extends ReferenceableProperties
 {
-    private String      name = null;
-    private String      summary = null;
-    private String      description = null;
+    private String summary = null;
 
 
     /**
@@ -48,32 +46,8 @@ public class MeaningProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            name = template.getName();
             summary = template.getSummary();
-            description = template.getDescription();
         }
-    }
-
-
-    /**
-     * Return the glossary term name.
-     *
-     * @return String name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the glossary term name.
-     *
-     * @param name String name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
     }
 
 
@@ -100,28 +74,6 @@ public class MeaningProperties extends ReferenceableProperties
 
 
     /**
-     * Return the description of the glossary term.
-     *
-     * @return String description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the glossary term.
-     *
-     * @param description String description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -130,14 +82,8 @@ public class MeaningProperties extends ReferenceableProperties
     public String toString()
     {
         return "MeaningProperties{" +
-                       "name='" + name + '\'' +
-                       ", summary='" + summary + '\'' +
-                       ", description='" + description + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "summary='" + summary + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -163,9 +109,7 @@ public class MeaningProperties extends ReferenceableProperties
             return false;
         }
         MeaningProperties that = (MeaningProperties) objectToCompare;
-        return Objects.equals(name, that.name) &&
-                       Objects.equals(summary, that.summary)&&
-                       Objects.equals(description, that.description);
+        return Objects.equals(summary, that.summary);
     }
 
 
@@ -177,6 +121,6 @@ public class MeaningProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, summary, description);
+        return Objects.hash(super.hashCode(), summary);
     }
 }

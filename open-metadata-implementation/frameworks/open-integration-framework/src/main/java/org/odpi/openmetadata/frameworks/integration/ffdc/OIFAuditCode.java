@@ -22,72 +22,66 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum OIFAuditCode implements AuditLogMessageSet
 {
     /**
-     * OIF-CONNECTOR-0001 - The {0} integration connector is initiating the monitoring of file {1}
+     * OIF-CONNECTOR-0001 - The integration connector context manager is being initialized for calls to server {0} on platform {1}
      */
-    FILE_MONITORING_STARTING("OIF-CONNECTOR-0001",
-                                  AuditLogRecordSeverityLevel.INFO,
-                                  "The {0} integration connector is initiating the monitoring of file {1}",
-                                  "The connector is calling the monitoring library from Apache Commons. " +
-                                          "This will start a background thread to monitor the file.  Any changes to this file will be reported to this integration connector.",
-                                  "No action is required unless there are errors that follow indicating that the monitoring of the file failed to start."),
-
+    CONTEXT_INITIALIZING("OIF-CONNECTOR-0001",
+                         AuditLogRecordSeverityLevel.STARTUP,
+                         "The integration connector context manager is being initialized for calls to server {0} on platform {1}",
+                         "The integration daemon is initializing its context manager.",
+                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
     /**
-     * OIF-CONNECTOR-0002 - The {0} integration connector is initiating the monitoring of file directory {1}
+     * OIF-CONNECTOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}
      */
-    DIRECTORY_MONITORING_STARTING("OIF-CONNECTOR-0002",
-                                  AuditLogRecordSeverityLevel.INFO,
-                              "The {0} integration connector is initiating the monitoring of file directory {1}",
-                              "The connector is calling the monitoring library from Apache Commons. " +
-                                      "This will start a background thread to monitor the file directory.  Any changes to the files in the " +
-                                      "directory will be reported to this integration connector.",
-                              "No action is required unless there are errors that follow indicating that the monitoring of the directory failed to start."),
+    CONNECTOR_CONTEXT_INITIALIZING("OIF-CONNECTOR-0002",
+                                   AuditLogRecordSeverityLevel.STARTUP,
+                                   "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3}",
+                                   "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
+                                           "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
+                                   "Verify that this connector is being started with the correct configuration."),
 
     /**
-     * OIF-CONNECTOR-0003 - An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons
-     * FileAlterationMonitor while it was starting the monitoring service.  The error message was {2}
+     * OIF-CONNECTOR-0003 - The context for connector {0} has its permitted synchronization set to {1}
      */
-    UNEXPECTED_EXC_MONITOR_START("OIF-CONNECTOR-0003",
-                                 AuditLogRecordSeverityLevel.ERROR,
-                                     "An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons " +
-                                             "FileAlterationMonitor while it was starting the monitoring service.  The error message was {2}",
-                                     "The exception is logged and the integration connector continues to synchronize metadata " +
-                                             "through the refresh process.",
-                                     "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
-                                             "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector. " +
-                                             "Then validate that the monitoring starts successfully."),
+    PERMITTED_SYNCHRONIZATION("OIF-CONNECTOR-0003",
+                              AuditLogRecordSeverityLevel.STARTUP,
+                              "The context for connector {0} has its permitted synchronization set to {1}",
+                              "The context is set up to ensure that the connector can only issue requests that support the permitted synchronization.  " +
+                                      "If the connector issues requests that are not permitted it is returned UserNotAuthorizedExceptions.",
+                              "Check that this permitted synchronized value is as expected.  If it is not," +
+                                      "change the configuration for this connector and restart the integration daemon."),
 
     /**
-     * OIF-CONNECTOR-0004 - An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons
-     * FileAlterationMonitor while it stopping the monitoring service.  The error message was {2}
+     * OIF-CONNECTOR-0004 - Integration connector {0} has a null context
      */
-    UNEXPECTED_EXC_MONITOR_STOP("OIF-CONNECTOR-0004",
-                                AuditLogRecordSeverityLevel.ERROR,
-                                 "An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons " +
-                                         "FileAlterationMonitor while it stopping the monitoring service.  The error message was {2}",
-                                 "The exception is logged and the integration connector continues to shutdown.",
-                                 "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
-                                         "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
+    NULL_CONTEXT("OIF-CONNECTOR-0004",
+                 AuditLogRecordSeverityLevel.ERROR,
+                 "Integration connector {0} has a null context",
+                 "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
+                 "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                         "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
 
     /**
-     * OIF-CONNECTOR-0005 - The {0} integration connector has stopped its file system monitoring and is shutting down
+     * OIF-CONNECTOR-0005 - A {0} exception with message {1} occurred when parsing open lineage event: {2}
      */
-    FILE_SYSTEM_MONITORING_STOPPING("OIF-CONNECTOR-0005",
-                                    AuditLogRecordSeverityLevel.INFO,
-                                    "The {0} integration connector has stopped its file system monitoring and is shutting down",
-                                    "The connector is disconnecting.",
-                                    "No action is required unless there are errors that follow indicating that there were problems shutting down."),
-
+    OPEN_LINEAGE_FORMAT_ERROR("OIF-CONNECTOR-0005",
+                              AuditLogRecordSeverityLevel.ERROR,
+                              "A {0} exception with message {1} occurred when parsing open lineage event: {2}",
+                              "The integration daemon is unable to parse an incoming open lineage event into Egeria's OpenLineageRunEvent bean.  " +
+                                      "This may be due to either (1) an invalid open lineage event, or (2) Egeria's OpenLineageRunEvent not supporting an advancement in the open lineage standard.  " +
+                                      "The raw event is passed to the listening connectors with a null OpenLineageRunEvent bean.  The connector can use the open lineage standard server to process the event facet by facet.",
+                              "Verify the format of the open lineage event.  If incorrect, seek the source of the event.  If correct, look to enhance Egeria's OpenLineageRunEvent."),
 
     /**
-     * OIF-CONNECTOR-0006 - An unexpected {0} exception was returned to the {1} integration connector while retrieving the action targets.  The error message was {2}
+     * OIF-CONNECTOR-0006 - A {0} exception with message {1} occurred when a listening integration connector tried to push an OpenLineage event
      */
-    GET_CATALOG_TARGET_EXCEPTION("OIF-CONNECTOR-0006",
-                                AuditLogRecordSeverityLevel.ERROR,
-                                "An unexpected {0} exception was returned to the {1} integration connector while retrieving the catalog targets.  The error message was {2}",
-                                "The exception is logged and the integration connector waits for the next refresh.",
-                                "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
-                                        "resolved, follow the instructions to prepare the integration connector for the next refresh."),
+    OPEN_LINEAGE_PUBLISH_ERROR("OIF-CONNECTOR-0006",
+                               AuditLogRecordSeverityLevel.EXCEPTION,
+                               "A {0} exception with message {1} occurred when a listening integration connector tried to push an OpenLineage event",
+                               "The integration daemon has caught the exception and will continue to pass the event to the remaining listening integration connectors.",
+                               "Look at the resulting stack trace to understand what went wrong in the called integration connector."),
+
+
 
     /**
      * OIF-CONNECTOR-0007 - No action targets are defined for the {0} integration connector
@@ -154,13 +148,25 @@ public enum OIFAuditCode implements AuditLogMessageSet
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
-     * OIF-CONNECTOR-0013 - The {0} integration connector has stopped its monitoring and is shutting down
+     * OIF-CONNECTOR-0014 - The {0} integration connector has stopped its monitoring and is shutting down
      */
     CONNECTOR_STOPPING("OIF-CONNECTOR-0014",
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector has stopped its monitoring and is shutting down",
                        "The connector is disconnecting.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+
+    /**
+     * OIF-CONNECTOR-0015 - An unexpected {0} exception was returned to the {1} integration connector while retrieving the action targets.  The error message was {2}
+     */
+    GET_CATALOG_TARGET_EXCEPTION("OIF-CONNECTOR-0015",
+                                 AuditLogRecordSeverityLevel.ERROR,
+                                 "An unexpected {0} exception was returned to the {1} integration connector while retrieving the catalog targets.  The error message was {2}",
+                                 "The exception is logged and the integration connector waits for the next refresh.",
+                                 "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
+                                         "resolved, follow the instructions to prepare the integration connector for the next refresh."),
+
+
     ;
 
     private final String                      logMessageId;

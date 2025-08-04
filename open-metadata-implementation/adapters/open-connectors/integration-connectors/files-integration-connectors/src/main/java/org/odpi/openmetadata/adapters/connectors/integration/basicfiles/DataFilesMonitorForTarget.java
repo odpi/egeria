@@ -3,25 +3,28 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.odpi.openmetadata.frameworks.governanceaction.connectorcontext.StewardshipAction;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
-import org.odpi.openmetadata.frameworks.integration.context.StewardshipAction;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFileElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +60,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                                        Map<String,String>                        templates,
                                        Map<String, Object>                       configurationProperties,
                                        BasicFilesMonitorIntegrationConnectorBase integrationConnector,
-                                       FileFolderElement                         dataFolderElement,
+                                       OpenMetadataRootElement                   dataFolderElement,
                                        AuditLog                                  auditLog)
     {
         super(connectorName,
@@ -82,11 +85,9 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
      * This method performs two sweeps.  It first retrieves the files in the directory and validates that are in the
      * catalog - adding or updating them if necessary.  The second sweep is to ensure that all the assets catalogued
      * in this directory actually exist on the file system.
-     *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
     @Override
-    public void refresh() throws ConnectorCheckedException
+    public void refresh()
     {
         final String methodName = "refresh";
 
@@ -115,7 +116,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
         final String methodName = "onFileDelete";
 
         log.debug("File deleted: " + file.getName());
-        integrationConnector.archiveFileInCatalog(file, null, allowCatalogDelete, methodName);
+        integrationConnector.deleteFileInCatalog(file, null, methodName);
     }
 
 
@@ -219,15 +220,20 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
         {
             try
             {
-                FileClassifier fileClassifier = integrationConnector.getContext().getFileClassifier();
+                AssetClient fileClient = integrationConnector.integrationContext.getAssetClient(OpenMetadataType.DATA_FILE.typeName);
+
+                FileClassifier fileClassifier = integrationConnector.integrationContext.getFileClassifier();
 
                 FileClassification fileClassification = fileClassifier.classifyFile(file);
 
-                DataFileElement cataloguedElement = integrationConnector.getContext().getFileByPathName(file.getCanonicalPath());
+                OpenMetadataRootElement cataloguedElement = fileClient.getAssetByUniqueName(file.getCanonicalPath(),
+                                                                                 OpenMetadataProperty.PATH_NAME.name,
+                                                                                 fileClient.getGetOptions());
 
                 if (cataloguedElement == null)
                 {
-                    if (fileTemplateQualifiedName == null)
+                    String fileTemplateGUID = templates.get(fileClassification.getDeployedImplementationType());
+                    if (fileTemplateGUID == null)
                     {
                         if ((! catalogClassifiedFiles) ||
                                 (fileClassification.getFileType() != null) ||
@@ -239,16 +245,20 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                              */
                             DataFileProperties properties = new DataFileProperties();
 
+                            properties.setQualifiedName(fileClassification.getAssetTypeName() + "::" + fileClassification.getPathName());
                             properties.setTypeName(fileClassification.getAssetTypeName());
                             properties.setDeployedImplementationType(fileClassification.getDeployedImplementationType());
                             properties.setPathName(fileClassification.getPathName());
-                            properties.setName(fileClassification.getFileName());
+                            properties.setDisplayName(fileClassification.getFileName());
                             properties.setFileName(fileClassification.getFileName());
                             properties.setFileType(fileClassification.getFileType());
                             properties.setFileExtension(fileClassification.getFileExtension());
-                            properties.setModifiedTime(fileClassification.getLastModifiedTime());
-                            properties.setCreateTime(fileClassification.getCreationTime());
-                            properties.setEncodingType(fileClassification.getEncoding());
+                            properties.setStoreUpdateTime(fileClassification.getLastModifiedTime());
+                            properties.setStoreCreateTime(fileClassification.getCreationTime());
+
+                            DataAssetEncodingProperties encodingProperties = new DataAssetEncodingProperties();
+
+                            encodingProperties.setEncodingType(fileClassification.getEncoding());
 
                             Map<String, String> additionalProperties = new HashMap<>();
 
@@ -260,7 +270,9 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                             properties.setAdditionalProperties(additionalProperties);
 
-                            String guid = this.addDataFileToCatalog(properties);
+                            String guid = this.addDataFileToCatalog(fileClassification.getAssetTypeName(),
+                                                                    properties,
+                                                                    encodingProperties);
 
                             if (guid != null)
                             {
@@ -273,107 +285,88 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                     }
                     else
                     {
-                        OpenMetadataAccess openMetadataAccess = integrationConnector.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
+                        Map<String, String> placeholderProperties = new HashMap<>();
 
-                        if (fileTemplateGUID == null)
+                        placeholderProperties.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), "");
+                        placeholderProperties.put(PlaceholderProperty.FILE_PATH_NAME.getName(), fileClassification.getPathName());
+                        placeholderProperties.put(PlaceholderProperty.FILE_TYPE.getName(), fileClassification.getFileType());
+                        placeholderProperties.put(PlaceholderProperty.FILE_EXTENSION.getName(), fileClassification.getFileExtension());
+                        placeholderProperties.put(PlaceholderProperty.FILE_NAME.getName(), fileClassification.getFileName());
+                        if (fileClassification.getCreationTime() != null)
                         {
-                            OpenMetadataElement templateElement = openMetadataAccess.getMetadataElementByUniqueName(fileTemplateQualifiedName,
-                                                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name);
-                            if (templateElement != null)
-                            {
-                                fileTemplateGUID = templateElement.getElementGUID();
-                            }
-                            else
-                            {
-                                auditLog.logMessage(methodName,
-                                                        BasicFilesIntegrationConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName, fileTemplateQualifiedName));
-                            }
+                            placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), fileClassification.getCreationTime().toString());
+                            placeholderProperties.put(PlaceholderProperty.RECEIVED_DATE.getName(), fileClassification.getCreationTime().toString());
+                        }
+                        else
+                        {
+                            placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), "");
+                            placeholderProperties.put(PlaceholderProperty.RECEIVED_DATE.getName(), "");
+                        }
+                        if (fileClassification.getLastModifiedTime() != null)
+                        {
+                            placeholderProperties.put(PlaceholderProperty.LAST_UPDATE_DATE.getName(), fileClassification.getLastModifiedTime().toString());
+                        }
+                        else
+                        {
+                            placeholderProperties.put(PlaceholderProperty.LAST_UPDATE_DATE.getName(), "");
+                        }
+                        if (fileClassification.getLastAccessedTime() != null)
+                        {
+                            placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), fileClassification.getLastAccessedTime().toString());
+                        }
+                        else
+                        {
+                            placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), "");
                         }
 
-                        if (fileTemplateGUID != null)
+                        String newFileGUID = this.addDataFileViaTemplate(fileClassification.getAssetTypeName(),
+                                                                         fileTemplateGUID,
+                                                                         null,
+                                                                         placeholderProperties);
+
+                        if (newFileGUID != null)
                         {
-                            Map<String, String> placeholderProperties = new HashMap<>();
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED_FROM_TEMPLATE.getMessageDefinition(
+                                                        sourceName,
+                                                        fileClassification.getPathName(),
+                                                        newFileGUID,
+                                                        fileClassification.getDeployedImplementationType(),
+                                                        fileTemplateGUID));
+                        }
 
-                            placeholderProperties.put(PlaceholderProperty.FILE_PATH_NAME.getName(), fileClassification.getPathName());
-                            placeholderProperties.put(PlaceholderProperty.FILE_TYPE.getName(), fileClassification.getFileType());
-                            placeholderProperties.put(PlaceholderProperty.FILE_EXTENSION.getName(), fileClassification.getFileExtension());
-                            placeholderProperties.put(PlaceholderProperty.FILE_NAME.getName(), fileClassification.getFileName());
-                            if (fileClassification.getCreationTime() != null)
-                            {
-                                placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), fileClassification.getCreationTime().toString());
-                                placeholderProperties.put(PlaceholderProperty.RECEIVED_DATE.getName(), fileClassification.getCreationTime().toString());
-                            }
-                            else
-                            {
-                                placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), "");
-                                placeholderProperties.put(PlaceholderProperty.RECEIVED_DATE.getName(), "");
-                            }
-                            if (fileClassification.getLastModifiedTime() != null)
-                            {
-                                placeholderProperties.put(PlaceholderProperty.LAST_UPDATE_DATE.getName(), fileClassification.getLastModifiedTime().toString());
-                            }
-                            else
-                            {
-                                placeholderProperties.put(PlaceholderProperty.LAST_UPDATE_DATE.getName(), "");
-                            }
-                            if (fileClassification.getLastAccessedTime() != null)
-                            {
-                                placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), fileClassification.getLastAccessedTime().toString());
-                            }
-                            else
-                            {
-                                placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), "");
-                            }
+                        if (newFileProcessName != null)
+                        {
+                            StewardshipAction stewardshipAction = integrationConnector.integrationContext.getStewardshipAction();
 
-                            String newFileGUID = this.addDataFileViaTemplate(fileClassification.getAssetTypeName(),
-                                                                             fileTemplateGUID,
-                                                                             null,
-                                                                             placeholderProperties);
+                            Map<String, String> requestParameters = new HashMap<>();
 
-                            if (newFileGUID != null)
+                            if (configurationProperties != null)
                             {
-                                auditLog.logMessage(methodName,
-                                                    BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED_FROM_TEMPLATE.getMessageDefinition(
-                                                            sourceName,
-                                                            fileClassification.getPathName(),
-                                                            newFileGUID,
-                                                            fileTemplateQualifiedName,
-                                                            fileTemplateGUID));
-                            }
-
-                            if (newFileProcessName != null)
-                            {
-                                StewardshipAction stewardshipAction = integrationConnector.getContext().getIntegrationGovernanceContext().getStewardshipAction();
-
-                                Map<String, String> requestParameters = new HashMap<>();
-
-                                if (configurationProperties != null)
+                                for (String configurationProperty : configurationProperties.keySet())
                                 {
-                                    for (String configurationProperty : configurationProperties.keySet())
+                                    if (configurationProperties.get(configurationProperty) != null)
                                     {
-                                        if (configurationProperties.get(configurationProperty) != null)
-                                        {
-                                            requestParameters.put(configurationProperty, configurationProperties.get(configurationProperty).toString());
-                                        }
+                                        requestParameters.put(configurationProperty, configurationProperties.get(configurationProperty).toString());
                                     }
                                 }
-
-                                List<NewActionTarget> actionTargets = new ArrayList<>();
-
-                                NewActionTarget actionTarget = new NewActionTarget();
-
-                                actionTarget.setActionTargetGUID(newFileGUID);
-                                actionTarget.setActionTargetName("sourceFile");
-                                actionTargets.add(actionTarget);
-
-                                stewardshipAction.initiateGovernanceActionProcess(newFileProcessName,
-                                                                                  null,
-                                                                                  actionTargets,
-                                                                                  null,
-                                                                                  requestParameters,
-                                                                                  connectorName,
-                                                                                  null);
                             }
+
+                            List<NewActionTarget> actionTargets = new ArrayList<>();
+
+                            NewActionTarget actionTarget = new NewActionTarget();
+
+                            actionTarget.setActionTargetGUID(newFileGUID);
+                            actionTarget.setActionTargetName("sourceFile");
+                            actionTargets.add(actionTarget);
+
+                            stewardshipAction.initiateGovernanceActionProcess(newFileProcessName,
+                                                                              null,
+                                                                              actionTargets,
+                                                                              null,
+                                                                              requestParameters,
+                                                                              connectorName,
+                                                                              null);
                         }
                     }
                 }
@@ -413,26 +406,29 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
             try
             {
-                DataFileElement dataFileInCatalog = integrationConnector.getContext().getFileByPathName(file.getCanonicalPath());
+                AssetClient fileClient = integrationConnector.integrationContext.getAssetClient(OpenMetadataType.DATA_FILE.typeName);
 
-                if (dataFileInCatalog != null)
+                OpenMetadataRootElement dataFileInCatalog = fileClient.getAssetByUniqueName(file.getCanonicalPath(),
+                                                                                 OpenMetadataProperty.PATH_NAME.name,
+                                                                                 null);
+
+                if ((dataFileInCatalog != null) && (dataFileInCatalog.getProperties() instanceof DataFileProperties dataFileProperties))
                 {
-                    if ((dataFileInCatalog.getElementHeader() != null) && (dataFileInCatalog.getElementHeader().getGUID() != null) &&
-                            (dataFileInCatalog.getProperties() != null) && (dataFileInCatalog.getProperties().getPathName() != null))
+                    if (dataFileProperties.getPathName() != null)
                     {
                         DataFileProperties properties = new DataFileProperties();
 
                         Date fileLastModifiedDate = new Date(file.lastModified());
 
-                        if ((properties.getModifiedTime() == null) || (fileLastModifiedDate.after(properties.getModifiedTime())))
+                        if ((properties.getStoreUpdateTime() == null) || (fileLastModifiedDate.after(properties.getStoreUpdateTime())))
                         {
-                            properties.setModifiedTime(fileLastModifiedDate);
+                            properties.setStoreUpdateTime(fileLastModifiedDate);
 
-                            integrationConnector.getContext().updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
+                            fileClient.updateAsset(dataFileInCatalog.getElementHeader().getGUID(), fileClient.getUpdateOptions(true), properties);
 
                             auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                                dataFileInCatalog.getProperties().getPathName(),
+                                                                                                                                dataFileProperties.getPathName(),
                                                                                                                                 dataFileInCatalog.getElementHeader().getGUID()));
                         }
                     }
@@ -461,26 +457,43 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
     /**
      * Return the unique identifier of a new metadata element describing the file.
      *
+     * @param typeName subtype name for file
      * @param properties basic properties to use
+     * @param encodingProperties properties for DataAssetEncoding classification
      * @return unique identifier (guid)
      * @throws ConnectorCheckedException connector has been shutdown
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException unable to communicate with the repository
      * @throws UserNotAuthorizedException access problem for userId
      */
-    protected String addDataFileToCatalog(DataFileProperties properties) throws ConnectorCheckedException,
-                                                                                InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    protected String addDataFileToCatalog(String                      typeName,
+                                          DataFileProperties          properties,
+                                          DataAssetEncodingProperties encodingProperties) throws ConnectorCheckedException,
+                                                                                                 InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
     {
-        List<String> guids = integrationConnector.getContext().addDataFileToCatalog(properties, null);
+        AssetClient fileClient = integrationConnector.integrationContext.getAssetClient(OpenMetadataType.DATA_FILE.typeName);
 
-        if ((guids != null) && (!guids.isEmpty()))
+        Map<String, ClassificationProperties> initialClassifications = null;
+
+        if (encodingProperties != null)
         {
-            return guids.get(guids.size() - 1);
+            initialClassifications = new HashMap<>();
+
+            initialClassifications.put(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
+                                       encodingProperties);
         }
 
-        return null;
+        NewElementOptions newElementOptions = new NewElementOptions(fileClient.getMetadataSourceOptions());
+
+        newElementOptions.setIsOwnAnchor(true);
+        newElementOptions.setOpenMetadataTypeName(typeName);
+
+        return fileClient.createAsset(newElementOptions,
+                                      initialClassifications,
+                                      properties,
+                                      null);
     }
 
 
@@ -505,9 +518,9 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
-        OpenMetadataAccess openMetadataAccess = integrationConnector.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
+        OpenMetadataStore openMetadataStore = integrationConnector.integrationContext.getOpenMetadataStore();
 
-        return openMetadataAccess.getMetadataElementFromTemplate(assetTypeName,
+        return openMetadataStore.getMetadataElementFromTemplate(assetTypeName,
                                                                  null,
                                                                  true,
                                                                  null,

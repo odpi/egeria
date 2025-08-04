@@ -19,7 +19,7 @@ of the corresponding DataFolder asset.
 ## Deployment and configuration
 
 The basic files integration connectors are included in the main Egeria assembly.
-They run in the [Files Integrator OMIS](../../../../integration-services/files-integrator).
+They run in the integration daemon.
 
 
 ----

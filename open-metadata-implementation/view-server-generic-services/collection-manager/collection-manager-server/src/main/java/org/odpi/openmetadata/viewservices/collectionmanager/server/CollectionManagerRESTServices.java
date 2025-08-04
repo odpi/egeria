@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project */
-/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.collectionmanager.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -8,21 +7,19 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.CollectionHandler;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -57,8 +54,6 @@ public class CollectionManagerRESTServices extends TokenController
      * @param urlMarker  view service URL marker
      * @param parentGUID     unique identifier of referenceable object (typically a personal profile, project or
      *                       community) that the collections hang off of
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
      * @param requestBody filter response by collection type - if null, any value will do
      *
      * @return a list of collections
@@ -66,19 +61,17 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionsResponse getAttachedCollections(String            serverName,
-                                                      String            urlMarker,
-                                                      String            parentGUID,
-                                                      int               startFrom,
-                                                      int               pageSize,
-                                                      FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getAttachedCollections(String             serverName,
+                                                                   String             urlMarker,
+                                                                   String             parentGUID,
+                                                                   ResultsRequestBody requestBody)
     {
         final String methodName = "getAttachedCollections";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionsResponse response = new CollectionsResponse();
-        AuditLog            auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -90,38 +83,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.getAttachedCollections(userId,
-                                                                    parentGUID,
-                                                                    requestBody.getFilter(),
-                                                                    requestBody.getTemplateFilter(),
-                                                                    requestBody.getLimitResultsByStatus(),
-                                                                    requestBody.getAsOfTime(),
-                                                                    requestBody.getSequencingOrder(),
-                                                                    requestBody.getSequencingProperty(),
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    requestBody.getForLineage(),
-                                                                    requestBody.getForDuplicateProcessing(),
-                                                                    requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElements(handler.getAttachedCollections(userId,
-                                                                    parentGUID,
-                                                                    null,
-                                                                    TemplateFilter.ALL,
-                                                                    null,
-                                                                    null,
-                                                                    SequencingOrder.CREATION_DATE_RECENT,
-                                                                    null,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    false,
-                                                                    false,
-                                                                    new Date()));
-            }
+            response.setElements(handler.getAttachedCollections(userId, parentGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -138,12 +100,6 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param classificationName option name of a collection classification
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return a list of collections
@@ -151,22 +107,16 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionsResponse findCollections(String            serverName,
-                                               String            urlMarker,
-                                               String            classificationName,
-                                               boolean           startsWith,
-                                               boolean           endsWith,
-                                               boolean           ignoreCase,
-                                               int               startFrom,
-                                               int               pageSize,
-                                               FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findCollections(String                  serverName,
+                                                            String                  urlMarker,
+                                                            SearchStringRequestBody requestBody)
     {
         final String methodName = "findCollections";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionsResponse response = new CollectionsResponse();
-        AuditLog            auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -181,34 +131,14 @@ public class CollectionManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.findCollections(userId,
-                                                             classificationName,
-                                                             instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                             requestBody.getTemplateFilter(),
-                                                             requestBody.getLimitResultsByStatus(),
-                                                             requestBody.getAsOfTime(),
-                                                             requestBody.getSequencingOrder(),
-                                                             requestBody.getSequencingProperty(),
-                                                             startFrom,
-                                                             pageSize,
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime()));
+                                                             requestBody.getSearchString(),
+                                                             requestBody));
             }
             else
             {
                 response.setElements(handler.findCollections(userId,
-                                                             classificationName,
-                                                             instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                             TemplateFilter.ALL,
                                                              null,
-                                                             null,
-                                                             SequencingOrder.CREATION_DATE_RECENT,
-                                                             null,
-                                                             startFrom,
-                                                             pageSize,
-                                                             false,
-                                                             false,
-                                                             new Date()));
+                                                             null));
             }
         }
         catch (Throwable error)
@@ -227,28 +157,23 @@ public class CollectionManagerRESTServices extends TokenController
      * @param serverName    name of called server
      * @param urlMarker  view service URL marker
      * @param requestBody      name of the collections to return - match is full text match in qualifiedName or name
-     * @param classificationName option name of a collection classification
-     * @param startFrom index of the list to start from (0 for start)
-     * @param pageSize  maximum number of elements to return
+
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionsResponse getCollectionsByName(String            serverName,
-                                                    String            urlMarker,
-                                                    String            classificationName,
-                                                    int               startFrom,
-                                                    int               pageSize,
-                                                    FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getCollectionsByName(String            serverName,
+                                                                 String            urlMarker,
+                                                                 FilterRequestBody requestBody)
     {
         final String methodName = "getCollectionsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionsResponse response = new CollectionsResponse();
-        AuditLog               auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -260,19 +185,14 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            response.setElements(handler.getCollectionsByName(userId,
-                                                              classificationName,
-                                                              requestBody.getFilter(),
-                                                              requestBody.getTemplateFilter(),
-                                                              requestBody.getLimitResultsByStatus(),
-                                                              requestBody.getAsOfTime(),
-                                                              requestBody.getSequencingOrder(),
-                                                              requestBody.getSequencingProperty(),
-                                                              startFrom,
-                                                              pageSize,
-                                                              requestBody.getForLineage(),
-                                                              requestBody.getForDuplicateProcessing(),
-                                                              requestBody.getEffectiveTime()));
+            if (requestBody != null)
+            {
+                response.setElements(handler.getCollectionsByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -289,29 +209,23 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
-     * @param classificationName option name of a collection classification
      * @param requestBody the collection type value to match on.  If it is null, all collections with a null collectionType are returned
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionsResponse getCollectionsByType(String            serverName,
-                                                    String            urlMarker,
-                                                    String            classificationName,
-                                                    int               startFrom,
-                                                    int               pageSize,
-                                                    FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getCollectionsByCategory(String            serverName,
+                                                                     String            urlMarker,
+                                                                     FilterRequestBody requestBody)
     {
-        final String methodName = "getCollectionsByType";
+        final String methodName = "getCollectionsByCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionsResponse response = new CollectionsResponse();
-        AuditLog            auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -325,35 +239,15 @@ public class CollectionManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getCollectionsByType(userId,
-                                                                  classificationName,
-                                                                  requestBody.getFilter(),
-                                                                  requestBody.getTemplateFilter(),
-                                                                  requestBody.getLimitResultsByStatus(),
-                                                                  requestBody.getAsOfTime(),
-                                                                  requestBody.getSequencingOrder(),
-                                                                  requestBody.getSequencingProperty(),
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  requestBody.getForLineage(),
-                                                                  requestBody.getForDuplicateProcessing(),
-                                                                  requestBody.getEffectiveTime()));
+                response.setElements(handler.getCollectionsByCategory(userId,
+                                                                      requestBody.getFilter(),
+                                                                      requestBody));
             }
             else
             {
-                response.setElements(handler.getCollectionsByType(userId,
-                                                                  classificationName,
-                                                                  null,
-                                                                  TemplateFilter.ALL,
-                                                                  null,
-                                                                  null,
-                                                                  SequencingOrder.PROPERTY_ASCENDING,
-                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  false,
-                                                                  false,
-                                                                  new Date()));
+                response.setElements(handler.getCollectionsByCategory(userId,
+                                                                      null,
+                                                                      null));
             }
         }
         catch (Throwable error)
@@ -379,17 +273,17 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionResponse getCollection(String             serverName,
-                                            String             urlMarker,
-                                            String             collectionGUID,
-                                            AnyTimeRequestBody requestBody)
+    public OpenMetadataRootElementResponse getCollectionByGUID(String             serverName,
+                                                               String             urlMarker,
+                                                               String             collectionGUID,
+                                                               GetRequestBody requestBody)
     {
-        final String methodName = "getCollection";
+        final String methodName = "getCollectionByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionResponse response = new CollectionResponse();
-        AuditLog           auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -401,19 +295,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getCollection(userId,
-                                                          collectionGUID,
-                                                          requestBody.getAsOfTime(),
-                                                          requestBody.getForLineage(),
-                                                          requestBody.getForDuplicateProcessing(),
-                                                          requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getCollection(userId, collectionGUID, null, false, false, new Date()));
-            }
+            response.setElement(handler.getCollectionByGUID(userId, collectionGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -430,7 +312,6 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @param serverName                 name of called server.
      * @param urlMarker  view service URL marker
-     * @param optionalClassificationName name of collection classification
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -440,7 +321,6 @@ public class CollectionManagerRESTServices extends TokenController
      */
     public GUIDResponse createCollection(String                serverName,
                                          String                urlMarker,
-                                         String                optionalClassificationName,
                                          NewElementRequestBody requestBody)
     {
         final String methodName = "createCollection";
@@ -462,54 +342,13 @@ public class CollectionManagerRESTServices extends TokenController
             {
                 CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-                ElementStatus initialStatus = ElementStatus.ACTIVE;
-
-                if (requestBody instanceof NewDigitalProductRequestBody digitalProductRequestBody)
-                {
-                    initialStatus = handler.getElementStatus(digitalProductRequestBody.getInitialStatus());
-                }
-                else if (requestBody instanceof NewAgreementRequestBody agreementRequestBody)
-                {
-                    initialStatus = handler.getElementStatus(agreementRequestBody.getInitialStatus());
-                }
-
                 if (requestBody.getProperties() instanceof CollectionProperties collectionProperties)
                 {
                     response.setGUID(handler.createCollection(userId,
-                                                              requestBody.getExternalSourceGUID(),
-                                                              requestBody.getExternalSourceName(),
-                                                              requestBody.getAnchorGUID(),
-                                                              requestBody.getIsOwnAnchor(),
-                                                              requestBody.getAnchorScopeGUID(),
-                                                              optionalClassificationName,
+                                                              requestBody,
+                                                              requestBody.getInitialClassifications(),
                                                               collectionProperties,
-                                                              initialStatus,
-                                                              requestBody.getParentGUID(),
-                                                              requestBody.getParentRelationshipTypeName(),
-                                                              requestBody.getParentRelationshipProperties(),
-                                                              requestBody.getParentAtEnd1(),
-                                                              requestBody.getForLineage(),
-                                                              requestBody.getForDuplicateProcessing(),
-                                                              requestBody.getEffectiveTime()));
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    response.setGUID(handler.createCollection(userId,
-                                                              requestBody.getExternalSourceGUID(),
-                                                              requestBody.getExternalSourceName(),
-                                                              requestBody.getAnchorGUID(),
-                                                              requestBody.getIsOwnAnchor(),
-                                                              requestBody.getAnchorScopeGUID(),
-                                                              optionalClassificationName,
-                                                              null,
-                                                              initialStatus,
-                                                              requestBody.getParentGUID(),
-                                                              requestBody.getParentRelationshipTypeName(),
-                                                              requestBody.getParentRelationshipProperties(),
-                                                              requestBody.getParentAtEnd1(),
-                                                              requestBody.getForLineage(),
-                                                              requestBody.getForDuplicateProcessing(),
-                                                              requestBody.getEffectiveTime()));
+                                                              requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -568,23 +407,11 @@ public class CollectionManagerRESTServices extends TokenController
                 CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createCollectionFromTemplate(userId,
-                                                                      requestBody.getExternalSourceGUID(),
-                                                                      requestBody.getExternalSourceName(),
-                                                                      requestBody.getAnchorGUID(),
-                                                                      requestBody.getIsOwnAnchor(),
-                                                                      requestBody.getAnchorScopeGUID(),
-                                                                      null,
-                                                                      null,
+                                                                      requestBody,
                                                                       requestBody.getTemplateGUID(),
                                                                       requestBody.getReplacementProperties(),
                                                                       requestBody.getPlaceholderPropertyValues(),
-                                                                      requestBody.getParentGUID(),
-                                                                      requestBody.getParentRelationshipTypeName(),
-                                                                      requestBody.getParentRelationshipProperties(),
-                                                                      requestBody.getParentAtEnd1(),
-                                                                      requestBody.getForLineage(),
-                                                                      requestBody.getForDuplicateProcessing(),
-                                                                      requestBody.getEffectiveTime()));
+                                                                      requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -607,8 +434,6 @@ public class CollectionManagerRESTServices extends TokenController
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the collection.
      *
      * @return void or
@@ -619,7 +444,6 @@ public class CollectionManagerRESTServices extends TokenController
     public VoidResponse   updateCollection(String                   serverName,
                                            String                   urlMarker,
                                            String                   collectionGUID,
-                                           boolean                  replaceAllProperties,
                                            UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateCollection";
@@ -643,27 +467,7 @@ public class CollectionManagerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof CollectionProperties properties)
                 {
-                    handler.updateCollection(userId,
-                                             requestBody.getExternalSourceGUID(),
-                                             requestBody.getExternalSourceName(),
-                                             collectionGUID,
-                                             replaceAllProperties,
-                                             properties,
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime());
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateCollection(userId,
-                                             requestBody.getExternalSourceGUID(),
-                                             requestBody.getExternalSourceName(),
-                                             collectionGUID,
-                                             replaceAllProperties,
-                                             null,
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime());
+                    handler.updateCollection(userId, collectionGUID, requestBody, properties);
                 }
                 else
                 {
@@ -687,129 +491,6 @@ public class CollectionManagerRESTServices extends TokenController
 
 
     /**
-     * Update the status of a digital product.
-     *
-     * @param serverName         name of called server.
-     * @param urlMarker  view service URL marker
-     * @param digitalProductGUID unique identifier of the digital product (returned from create)
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse updateDigitalProductStatus(String                          serverName,
-                                                   String                          urlMarker,
-                                                   String                          digitalProductGUID,
-                                                   DigitalProductStatusRequestBody requestBody)
-    {
-        final String methodName = "updateDigitalProductStatus";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
-
-                handler.updateCollectionStatus(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               digitalProductGUID,
-                                               handler.getElementStatus(requestBody.getStatus()),
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /**
-     * Update the status of an agreement.
-     *
-     * @param serverName         name of called server.
-     * @param urlMarker  view service URL marker
-     * @param agreementGUID unique identifier of the agreement (returned from create)
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse updateAgreementStatus(String                     serverName,
-                                              String                     urlMarker,
-                                              String                     agreementGUID,
-                                              AgreementStatusRequestBody requestBody)
-    {
-        final String methodName = "updateAgreementStatus";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
-
-                handler.updateCollectionStatus(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               agreementGUID,
-                                               handler.getElementStatus(requestBody.getStatus()),
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Connect an existing collection to an element using the ResourceList relationship (0019).
      *
      * @param serverName         name of called server
@@ -817,7 +498,6 @@ public class CollectionManagerRESTServices extends TokenController
      * @param collectionGUID unique identifier of the collection
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to
      * @param requestBody  description of how the collection will be used.
-     * @param makeAnchor     like the lifecycle of the collection to that of the parent so that if the parent is deleted, so is the collection
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -828,8 +508,7 @@ public class CollectionManagerRESTServices extends TokenController
                                          String                  urlMarker,
                                          String                  collectionGUID,
                                          String                  parentGUID,
-                                         boolean                 makeAnchor,
-                                         RelationshipRequestBody requestBody)
+                                         NewRelationshipRequestBody requestBody)
     {
         final String methodName = "attachCollection";
 
@@ -853,28 +532,18 @@ public class CollectionManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ResourceListProperties properties)
                 {
                     handler.attachCollection(userId,
-                                             requestBody.getExternalSourceGUID(),
-                                             requestBody.getExternalSourceName(),
                                              collectionGUID,
                                              parentGUID,
-                                             properties,
-                                             makeAnchor,
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime());
+                                             requestBody,
+                                             properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.attachCollection(userId,
-                                             requestBody.getExternalSourceGUID(),
-                                             requestBody.getExternalSourceName(),
                                              collectionGUID,
                                              parentGUID,
-                                             null,
-                                             makeAnchor,
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime());
+                                             requestBody,
+                                             null);
                 }
                 else
                 {
@@ -884,15 +553,10 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 handler.attachCollection(userId,
-                                         null,
-                                         null,
                                          collectionGUID,
                                          parentGUID,
-                                         null,
-                                         makeAnchor,
-                                         false,
-                                         false,
-                                         new Date());
+                                         new MakeAnchorOptions(),
+                                         null);
             }
         }
         catch (Throwable error)
@@ -919,11 +583,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachCollection(String                    serverName,
-                                         String                    urlMarker,
-                                         String                    collectionGUID,
-                                         String                    parentGUID,
-                                         MetadataSourceRequestBody requestBody)
+    public VoidResponse detachCollection(String                   serverName,
+                                         String                   urlMarker,
+                                         String                   collectionGUID,
+                                         String                   parentGUID,
+                                         DeleteRequestBody requestBody)
     {
         final String methodName = "detachCollection";
 
@@ -942,28 +606,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachCollection(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
-                                         collectionGUID,
-                                         parentGUID,
-                                         requestBody.getForLineage(),
-                                         requestBody.getForDuplicateProcessing(),
-                                         requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachCollection(userId,
-                                         null,
-                                         null,
-                                         collectionGUID,
-                                         parentGUID,
-                                         false,
-                                         false,
-                                         new Date());
-            }
+            handler.detachCollection(userId, collectionGUID, parentGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -994,7 +637,7 @@ public class CollectionManagerRESTServices extends TokenController
                                                      String                  urlMarker,
                                                      String                  consumerDigitalProductGUID,
                                                      String                  consumedDigitalProductGUID,
-                                                     RelationshipRequestBody requestBody)
+                                                     NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkDigitalProductDependency";
 
@@ -1017,26 +660,18 @@ public class CollectionManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof DigitalProductDependencyProperties properties)
                 {
                     handler.linkDigitalProductDependency(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
                                                          consumerDigitalProductGUID,
                                                          consumedDigitalProductGUID,
-                                                         properties,
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getEffectiveTime());
+                                                         requestBody,
+                                                         properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkDigitalProductDependency(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
                                                          consumerDigitalProductGUID,
                                                          consumedDigitalProductGUID,
-                                                         null,
-                                                         requestBody.getForLineage(),
-                                                         requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getEffectiveTime());
+                                                         requestBody,
+                                                         null);
                 }
                 else
                 {
@@ -1046,14 +681,10 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 handler.linkDigitalProductDependency(userId,
-                                                     null,
-                                                     null,
                                                      consumerDigitalProductGUID,
                                                      consumedDigitalProductGUID,
-                                                     null,
-                                                     false,
-                                                     false,
-                                                     new Date());
+                                                     new MetadataSourceOptions(),
+                                                     null);
             }
         }
         catch (Throwable error)
@@ -1080,11 +711,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachDigitalProductDependency(String                    serverName,
-                                                       String                    urlMarker,
-                                                       String                    consumerDigitalProductGUID,
-                                                       String                    consumedDigitalProductGUID,
-                                                       MetadataSourceRequestBody requestBody)
+    public VoidResponse detachDigitalProductDependency(String                   serverName,
+                                                       String                   urlMarker,
+                                                       String                   consumerDigitalProductGUID,
+                                                       String                   consumedDigitalProductGUID,
+                                                       DeleteRequestBody requestBody)
     {
         final String methodName = "detachDigitalProductDependency";
 
@@ -1103,28 +734,10 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachDigitalProductDependency(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
-                                                       consumerDigitalProductGUID,
-                                                       consumedDigitalProductGUID,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachDigitalProductDependency(userId,
-                                                       null,
-                                                       null,
-                                                       consumerDigitalProductGUID,
-                                                       consumedDigitalProductGUID,
-                                                       false,
-                                                       false,
-                                                       new Date());
-            }
+            handler.detachDigitalProductDependency(userId,
+                                                   consumerDigitalProductGUID,
+                                                   consumedDigitalProductGUID,
+                                                   requestBody);
         }
         catch (Throwable error)
         {
@@ -1154,7 +767,7 @@ public class CollectionManagerRESTServices extends TokenController
                                        String                  urlMarker,
                                        String                  digitalSubscriberGUID,
                                        String                  digitalSubscriptionGUID,
-                                       RelationshipRequestBody requestBody)
+                                       NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkSubscriber";
 
@@ -1177,26 +790,18 @@ public class CollectionManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof DigitalSubscriberProperties properties)
                 {
                     handler.linkSubscriber(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
                                            digitalSubscriberGUID,
                                            digitalSubscriptionGUID,
-                                           properties,
-                                           requestBody.getForLineage(),
-                                           requestBody.getForDuplicateProcessing(),
-                                           requestBody.getEffectiveTime());
+                                           requestBody,
+                                           properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkSubscriber(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
                                            digitalSubscriberGUID,
                                            digitalSubscriptionGUID,
-                                           null,
-                                           requestBody.getForLineage(),
-                                           requestBody.getForDuplicateProcessing(),
-                                           requestBody.getEffectiveTime());
+                                           requestBody,
+                                           null);
                 }
                 else
                 {
@@ -1206,14 +811,10 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 handler.linkSubscriber(userId,
-                                       null,
-                                       null,
                                        digitalSubscriberGUID,
                                        digitalSubscriptionGUID,
-                                       null,
-                                       false,
-                                       false,
-                                       new Date());
+                                       new MetadataSourceOptions(),
+                                       null);
             }
         }
         catch (Throwable error)
@@ -1240,11 +841,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSubscriber(String                    serverName,
-                                         String                    urlMarker,
-                                         String                    digitalSubscriberGUID,
-                                         String                    digitalSubscriptionGUID,
-                                         MetadataSourceRequestBody requestBody)
+    public VoidResponse detachSubscriber(String                   serverName,
+                                         String                   urlMarker,
+                                         String                   digitalSubscriberGUID,
+                                         String                   digitalSubscriptionGUID,
+                                         DeleteRequestBody requestBody)
     {
         final String methodName = "detachSubscriber";
 
@@ -1263,28 +864,10 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachSubscriber(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
-                                         digitalSubscriberGUID,
-                                         digitalSubscriptionGUID,
-                                         requestBody.getForLineage(),
-                                         requestBody.getForDuplicateProcessing(),
-                                         requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachSubscriber(userId,
-                                         null,
-                                         null,
-                                         digitalSubscriberGUID,
-                                         digitalSubscriptionGUID,
-                                         false,
-                                         false,
-                                         new Date());
-            }
+            handler.detachSubscriber(userId,
+                                     digitalSubscriberGUID,
+                                     digitalSubscriptionGUID,
+                                     requestBody);
         }
         catch (Throwable error)
         {
@@ -1302,7 +885,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param digitalProductGUID  unique identifier of the digital product
-     * @param digitalProductManagerGUID      unique identifier of the product manager role
+     * @param digitalProductManagerRoleGUID      unique identifier of the product manager role
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1310,11 +893,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkProductManager(String                  serverName,
-                                           String                  urlMarker,
-                                           String                  digitalProductGUID,
-                                           String                  digitalProductManagerGUID,
-                                           RelationshipRequestBody requestBody)
+    public VoidResponse linkProductManager(String                     serverName,
+                                           String                     urlMarker,
+                                           String                     digitalProductGUID,
+                                           String                     digitalProductManagerRoleGUID,
+                                           NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkProductManager";
 
@@ -1334,29 +917,21 @@ public class CollectionManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DigitalProductManagementProperties properties)
+                if (requestBody.getProperties() instanceof AssignmentScopeProperties properties)
                 {
                     handler.linkProductManager(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
                                                digitalProductGUID,
-                                               digitalProductManagerGUID,
-                                               properties,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
+                                               digitalProductManagerRoleGUID,
+                                               requestBody,
+                                               properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkProductManager(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
                                                digitalProductGUID,
-                                               digitalProductManagerGUID,
-                                               null,
-                                               requestBody.getForLineage(),
-                                               requestBody.getForDuplicateProcessing(),
-                                               requestBody.getEffectiveTime());
+                                               digitalProductManagerRoleGUID,
+                                               requestBody,
+                                               null);
                 }
                 else
                 {
@@ -1366,14 +941,10 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 handler.linkProductManager(userId,
-                                           null,
-                                           null,
                                            digitalProductGUID,
-                                           digitalProductManagerGUID,
-                                           null,
-                                           false,
-                                           false,
-                                           new Date());
+                                           digitalProductManagerRoleGUID,
+                                           requestBody,
+                                           null);
             }
         }
         catch (Throwable error)
@@ -1392,7 +963,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param digitalProductGUID  unique identifier of the digital product
-     * @param digitalProductManagerGUID      unique identifier of the product manager role
+     * @param digitalProductManagerRoleGUID      unique identifier of the product manager role
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1400,11 +971,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachProductManager(String                    serverName,
-                                             String                    urlMarker,
-                                             String                    digitalProductGUID,
-                                             String                    digitalProductManagerGUID,
-                                             MetadataSourceRequestBody requestBody)
+    public VoidResponse detachProductManager(String            serverName,
+                                             String            urlMarker,
+                                             String            digitalProductGUID,
+                                             String            digitalProductManagerRoleGUID,
+                                             DeleteRequestBody requestBody)
     {
         final String methodName = "detachProductManager";
 
@@ -1423,28 +994,10 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachProductManager(userId,
-                                             requestBody.getExternalSourceGUID(),
-                                             requestBody.getExternalSourceName(),
-                                             digitalProductGUID,
-                                             digitalProductManagerGUID,
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachProductManager(userId,
-                                             null,
-                                             null,
-                                             digitalProductGUID,
-                                             digitalProductManagerGUID,
-                                             false,
-                                             false,
-                                             new Date());
-            }
+            handler.detachProductManager(userId,
+                                         digitalProductGUID,
+                                         digitalProductManagerRoleGUID,
+                                         requestBody);
         }
         catch (Throwable error)
         {
@@ -1475,7 +1028,7 @@ public class CollectionManagerRESTServices extends TokenController
                                            String                  urlMarker,
                                            String                  agreementGUID,
                                            String                  actorGUID,
-                                           RelationshipRequestBody requestBody)
+                                           NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkAgreementActor";
 
@@ -1498,26 +1051,18 @@ public class CollectionManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof AgreementActorProperties properties)
                 {
                     response.setGUID(handler.linkAgreementActor(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
                                                                 agreementGUID,
                                                                 actorGUID,
-                                                                properties,
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
+                                                                requestBody,
+                                                                properties));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setGUID(handler.linkAgreementActor(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
                                                                 agreementGUID,
                                                                 actorGUID,
-                                                                null,
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveTime()));
+                                                                requestBody,
+                                                                null));
                 }
                 else
                 {
@@ -1527,14 +1072,10 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 response.setGUID(handler.linkAgreementActor(userId,
-                                                            null,
-                                                            null,
                                                             agreementGUID,
                                                             actorGUID,
-                                                            null,
-                                                            false,
-                                                            false,
-                                                            new Date()));
+                                                            new MetadataSourceOptions(),
+                                                            null));
             }
         }
         catch (Throwable error)
@@ -1560,10 +1101,10 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachAgreementActor(String                    serverName,
-                                             String                    urlMarker,
-                                             String                    agreementActorRelationshipGUID,
-                                             MetadataSourceRequestBody requestBody)
+    public VoidResponse detachAgreementActor(String                   serverName,
+                                             String                   urlMarker,
+                                             String                   agreementActorRelationshipGUID,
+                                             DeleteRequestBody requestBody)
     {
         final String methodName = "detachAgreementActor";
 
@@ -1582,26 +1123,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachAgreementActor(userId,
-                                             requestBody.getExternalSourceGUID(),
-                                             requestBody.getExternalSourceName(),
-                                             agreementActorRelationshipGUID,
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachAgreementActor(userId,
-                                             null,
-                                             null,
-                                             agreementActorRelationshipGUID,
-                                             false,
-                                             false,
-                                             new Date());
-            }
+            handler.detachAgreementActor(userId, agreementActorRelationshipGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1631,7 +1153,7 @@ public class CollectionManagerRESTServices extends TokenController
                                           String                  urlMarker,
                                           String                  agreementGUID,
                                           String                  agreementItemGUID,
-                                          RelationshipRequestBody requestBody)
+                                          NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkAgreementItem";
 
@@ -1654,26 +1176,18 @@ public class CollectionManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof AgreementItemProperties properties)
                 {
                     handler.linkAgreementItem(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
                                               agreementGUID,
                                               agreementItemGUID,
-                                              properties,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
+                                              requestBody,
+                                              properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkAgreementItem(userId,
-                                              requestBody.getExternalSourceGUID(),
-                                              requestBody.getExternalSourceName(),
                                               agreementGUID,
                                               agreementItemGUID,
-                                              null,
-                                              requestBody.getForLineage(),
-                                              requestBody.getForDuplicateProcessing(),
-                                              requestBody.getEffectiveTime());
+                                              requestBody,
+                                              null);
                 }
                 else
                 {
@@ -1683,14 +1197,10 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 handler.linkAgreementItem(userId,
-                                          null,
-                                          null,
                                           agreementGUID,
                                           agreementItemGUID,
-                                          null,
-                                          false,
-                                          false,
-                                          new Date());
+                                          new MetadataSourceOptions(),
+                                          null);
             }
         }
         catch (Throwable error)
@@ -1717,11 +1227,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachAgreementItem(String                    serverName,
-                                            String                    urlMarker,
-                                            String                    agreementGUID,
-                                            String                    agreementItemGUID,
-                                            MetadataSourceRequestBody requestBody)
+    public VoidResponse detachAgreementItem(String                   serverName,
+                                            String                   urlMarker,
+                                            String                   agreementGUID,
+                                            String                   agreementItemGUID,
+                                            DeleteRequestBody requestBody)
     {
         final String methodName = "detachAgreementItem";
 
@@ -1740,28 +1250,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachAgreementItem(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
-                                            agreementGUID,
-                                            agreementItemGUID,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachAgreementItem(userId,
-                                            null,
-                                            null,
-                                            agreementGUID,
-                                            agreementItemGUID,
-                                            false,
-                                            false,
-                                            new Date());
-            }
+            handler.detachAgreementItem(userId, agreementGUID, agreementItemGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1791,7 +1280,7 @@ public class CollectionManagerRESTServices extends TokenController
                                      String                  urlMarker,
                                      String                  agreementGUID,
                                      String                  externalReferenceGUID,
-                                     RelationshipRequestBody requestBody)
+                                     NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkContract";
 
@@ -1814,26 +1303,18 @@ public class CollectionManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ContractLinkProperties properties)
                 {
                     handler.linkContract(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
                                          agreementGUID,
                                          externalReferenceGUID,
-                                         properties,
-                                         requestBody.getForLineage(),
-                                         requestBody.getForDuplicateProcessing(),
-                                         requestBody.getEffectiveTime());
+                                         requestBody,
+                                         properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkContract(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
                                          agreementGUID,
                                          externalReferenceGUID,
-                                         null,
-                                         requestBody.getForLineage(),
-                                         requestBody.getForDuplicateProcessing(),
-                                         requestBody.getEffectiveTime());
+                                         requestBody,
+                                         null);
                 }
                 else
                 {
@@ -1843,14 +1324,10 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 handler.linkContract(userId,
-                                     null,
-                                     null,
                                      agreementGUID,
                                      externalReferenceGUID,
-                                     null,
-                                     false,
-                                     false,
-                                     new Date());
+                                     new MetadataSourceOptions(),
+                                     null);
             }
         }
         catch (Throwable error)
@@ -1877,11 +1354,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachContract(String                    serverName,
-                                       String                    urlMarker,
-                                       String                    agreementGUID,
-                                       String                    externalReferenceGUID,
-                                       MetadataSourceRequestBody requestBody)
+    public VoidResponse detachContract(String                   serverName,
+                                       String                   urlMarker,
+                                       String                   agreementGUID,
+                                       String                   externalReferenceGUID,
+                                       DeleteRequestBody requestBody)
     {
         final String methodName = "detachContract";
 
@@ -1900,28 +1377,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.detachContract(userId,
-                                       requestBody.getExternalSourceGUID(),
-                                       requestBody.getExternalSourceName(),
-                                       agreementGUID,
-                                       externalReferenceGUID,
-                                       requestBody.getForLineage(),
-                                       requestBody.getForDuplicateProcessing(),
-                                       requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.detachContract(userId,
-                                       null,
-                                       null,
-                                       agreementGUID,
-                                       externalReferenceGUID,
-                                       false,
-                                       false,
-                                       new Date());
-            }
+            handler.detachContract(userId, agreementGUID, externalReferenceGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1940,10 +1396,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection
-     * @param cascadedDelete should nested collections be deleted? If false, the delete fails if there are nested
-     *                       collections.  If true, nested collections are delete - but not member elements
-     *                       unless they are anchored to the collection
-     * @param requestBody null request body
+     * @param requestBody delete request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -1954,8 +1407,7 @@ public class CollectionManagerRESTServices extends TokenController
     public VoidResponse deleteCollection(String                    serverName,
                                          String                    urlMarker,
                                          String                    collectionGUID,
-                                         boolean                   cascadedDelete,
-                                         MetadataSourceRequestBody requestBody)
+                                         DeleteRequestBody requestBody)
     {
         final String methodName = "deleteCollection";
 
@@ -1974,28 +1426,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.deleteCollection(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
-                                         collectionGUID,
-                                         cascadedDelete,
-                                         requestBody.getForLineage(),
-                                         requestBody.getForDuplicateProcessing(),
-                                         requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.deleteCollection(userId,
-                                         null,
-                                         null,
-                                         collectionGUID,
-                                         cascadedDelete,
-                                         false,
-                                         false,
-                                         new Date());
-            }
+            handler.deleteCollection(userId, collectionGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -2013,27 +1444,23 @@ public class CollectionManagerRESTServices extends TokenController
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection.
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return.
      *
      * @return list of asset details
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionMembersResponse getCollectionMembers(String             serverName,
-                                                          String             urlMarker,
-                                                          String             collectionGUID,
-                                                          int                startFrom,
-                                                          int                pageSize,
-                                                          ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getCollectionMembers(String             serverName,
+                                                                 String             urlMarker,
+                                                                 String             collectionGUID,
+                                                                 ResultsRequestBody requestBody)
     {
         final String methodName = "getCollectionMembers";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionMembersResponse response = new CollectionMembersResponse();
-        AuditLog                  auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -2045,34 +1472,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElements(handler.getCollectionMembers(userId,
-                                                                  collectionGUID,
-                                                                  requestBody.getLimitResultsByStatus(),
-                                                                  requestBody.getAsOfTime(),
-                                                                  requestBody.getSequencingProperty(),
-                                                                  requestBody.getSequencingOrder(),
-                                                                  requestBody.getForLineage(),
-                                                                  requestBody.getForDuplicateProcessing(),
-                                                                  requestBody.getEffectiveTime(),
-                                                                  startFrom,
-                                                                  pageSize));
-            }
-            else
-            {
-                response.setElements(handler.getCollectionMembers(userId,
-                                                                  collectionGUID,
-                                                                  null,
-                                                                  null,
-                                                                  null,
-                                                                  SequencingOrder.CREATION_DATE_RECENT,
-                                                                  false,
-                                                                  false,
-                                                                  new Date(),
-                                                                  startFrom,
-                                                                  pageSize));
-            }
+            response.setElements(handler.getCollectionMembers(userId, collectionGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -2092,27 +1492,23 @@ public class CollectionManagerRESTServices extends TokenController
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param collectionGUID unique identifier of the collection.
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return.
      *
      * @return list of collection details
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionGraphResponse getCollectionGraph(String             serverName,
-                                                      String             urlMarker,
-                                                      String             collectionGUID,
-                                                      int                startFrom,
-                                                      int                pageSize,
-                                                      ResultsRequestBody requestBody)
+    public OpenMetadataRootElementResponse getCollectionHierarchy(String             serverName,
+                                                                  String             urlMarker,
+                                                                  String             collectionGUID,
+                                                                  ResultsRequestBody requestBody)
     {
-        final String methodName = "getCollectionGraph";
+        final String methodName = "getCollectionHierarchy";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionGraphResponse response = new CollectionGraphResponse();
-        AuditLog                auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -2124,34 +1520,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setGraph(handler.getCollectionGraph(userId,
-                                                             collectionGUID,
-                                                             requestBody.getLimitResultsByStatus(),
-                                                             requestBody.getAsOfTime(),
-                                                             requestBody.getSequencingProperty(),
-                                                             requestBody.getSequencingOrder(),
-                                                             requestBody.getForLineage(),
-                                                             requestBody.getForDuplicateProcessing(),
-                                                             requestBody.getEffectiveTime(),
-                                                             startFrom,
-                                                             pageSize));
-            }
-            else
-            {
-                response.setGraph(handler.getCollectionGraph(userId,
-                                                             collectionGUID,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             SequencingOrder.CREATION_DATE_RECENT,
-                                                             false,
-                                                             false,
-                                                             new Date(),
-                                                             startFrom,
-                                                             pageSize));
-            }
+            response.setElement(handler.getCollectionHierarchy(userId, collectionGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -2181,7 +1550,7 @@ public class CollectionManagerRESTServices extends TokenController
                                         String                  urlMarker,
                                         String                  collectionGUID,
                                         String                  elementGUID,
-                                        RelationshipRequestBody requestBody)
+                                        NewRelationshipRequestBody requestBody)
     {
         final String methodName = "addToCollection";
 
@@ -2205,26 +1574,18 @@ public class CollectionManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof CollectionMembershipProperties properties)
                 {
                     handler.addToCollection(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
                                             collectionGUID,
-                                            properties,
                                             elementGUID,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                                            requestBody,
+                                            properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.addToCollection(userId,
-                                            requestBody.getExternalSourceGUID(),
-                                            requestBody.getExternalSourceName(),
                                             collectionGUID,
-                                            null,
                                             elementGUID,
-                                            requestBody.getForLineage(),
-                                            requestBody.getForDuplicateProcessing(),
-                                            requestBody.getEffectiveTime());
+                                            requestBody,
+                                            null);
                 }
                 else
                 {
@@ -2234,14 +1595,10 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 handler.addToCollection(userId,
-                                        null,
-                                        null,
                                         collectionGUID,
-                                        null,
                                         elementGUID,
-                                        false,
-                                        false,
-                                        new Date());
+                                        new MetadataSourceOptions(),
+                                        null);
             }
         }
         catch (Throwable error)
@@ -2260,22 +1617,19 @@ public class CollectionManagerRESTServices extends TokenController
      * @param serverName               name of called server.
      * @param urlMarker  view service URL marker
      * @param collectionGUID       unique identifier of the collection.
-     * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                               the individual properties specified on the request.
-     * @param requestBody properties describing the membership characteristics.
      * @param elementGUID          unique identifier of the element.
+     * @param requestBody properties describing the membership characteristics.
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateCollectionMembership(String                  serverName,
-                                                   String                  urlMarker,
-                                                   String                  collectionGUID,
-                                                   String                  elementGUID,
-                                                   boolean                 replaceAllProperties,
-                                                   RelationshipRequestBody requestBody)
+    public VoidResponse updateCollectionMembership(String                        serverName,
+                                                   String                        urlMarker,
+                                                   String                        collectionGUID,
+                                                   String                        elementGUID,
+                                                   UpdateRelationshipRequestBody requestBody)
     {
         final String methodName = "updateCollectionMembership";
 
@@ -2299,28 +1653,18 @@ public class CollectionManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof CollectionMembershipProperties properties)
                 {
                     handler.updateCollectionMembership(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        collectionGUID,
-                                                       replaceAllProperties,
-                                                       properties,
                                                        elementGUID,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.updateCollectionMembership(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
                                                        collectionGUID,
-                                                       replaceAllProperties,
-                                                       null,
                                                        elementGUID,
-                                                       requestBody.getForLineage(),
-                                                       requestBody.getForDuplicateProcessing(),
-                                                       requestBody.getEffectiveTime());
+                                                       requestBody,
+                                                       null);
                 }
                 else
                 {
@@ -2330,15 +1674,10 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 handler.updateCollectionMembership(userId,
-                                                   null,
-                                                   null,
                                                    collectionGUID,
-                                                   replaceAllProperties,
-                                                   null,
                                                    elementGUID,
-                                                   false,
-                                                   false,
-                                                   new Date());
+                                                   new UpdateOptions(),
+                                                   null);
             }
         }
         catch (Throwable error)
@@ -2367,11 +1706,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse removeFromCollection(String                    serverName,
-                                             String                    urlMarker,
-                                             String                    collectionGUID,
-                                             String                    elementGUID,
-                                             MetadataSourceRequestBody requestBody)
+    public VoidResponse removeFromCollection(String                   serverName,
+                                             String                   urlMarker,
+                                             String                   collectionGUID,
+                                             String                   elementGUID,
+                                             DeleteRequestBody requestBody)
     {
         final String methodName = "removeFromCollection";
 
@@ -2390,28 +1729,10 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.removeFromCollection(userId,
-                                             requestBody.getExternalSourceGUID(),
-                                             requestBody.getExternalSourceName(),
-                                             collectionGUID,
-                                             elementGUID,
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime());
-            }
-            else
-            {
-                handler.removeFromCollection(userId,
-                                             null,
-                                             null,
-                                             collectionGUID,
-                                             elementGUID,
-                                             false,
-                                             false,
-                                             new Date());
-            }
+            handler.removeFromCollection(userId,
+                                         collectionGUID,
+                                         elementGUID,
+                                         requestBody);
         }
         catch (Throwable error)
         {

@@ -26,13 +26,13 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append("title: Project - ");
         mermaidGraph.append(projectElement.getProperties().getIdentifier());
         mermaidGraph.append(" - ");
-        mermaidGraph.append(projectElement.getProperties().getName());
+        mermaidGraph.append(projectElement.getProperties().getDisplayName());
         mermaidGraph.append(" [");
         mermaidGraph.append(projectElement.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
         String currentNodeName    = projectElement.getElementHeader().getGUID();
-        String currentDisplayName = projectElement.getProperties().getName();
+        String currentDisplayName = projectElement.getProperties().getDisplayName();
         if (currentDisplayName == null)
         {
             currentDisplayName = projectElement.getProperties().getIdentifier();
@@ -65,11 +65,11 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
     {
         String typeName = OpenMetadataType.PROJECT.typeName;
 
-        if ((projectHeader != null) && (projectHeader.getClassifications() != null))
+        if ((projectHeader != null) && (projectHeader.getProjectCategories() != null))
         {
             typeName = projectHeader.getType().getTypeName();
 
-            for (ElementClassification classification : projectHeader.getClassifications())
+            for (ElementClassification classification : projectHeader.getProjectCategories())
             {
                 if (classification != null)
                 {
@@ -113,7 +113,7 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
     protected void addProjectResources(ProjectElement projectElement)
     {
         String currentNodeName    = projectElement.getElementHeader().getGUID();
-        String currentDisplayName = projectElement.getProperties().getName();
+        String currentDisplayName = projectElement.getProperties().getDisplayName();
 
         if (currentDisplayName == null)
         {

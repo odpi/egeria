@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,55 +22,55 @@ public enum GovernanceActionStatus
     /**
      * The governance action has been created and is pending.
      */
-    REQUESTED       (0, 0, "Requested", "The governance action has been created and is pending.", EngineActionStatus.REQUESTED),
+    REQUESTED       (0, 0, "Requested", "The governance action has been created and is pending.", ActivityStatus.REQUESTED),
 
     /**
      * The governance action is approved to run.
      */
-    APPROVED        (1,  1,  "Approved",   "The governance action is approved to run.", EngineActionStatus.APPROVED),
+    APPROVED        (1, 1, "Approved", "The governance action is approved to run.", ActivityStatus.APPROVED),
 
     /**
      * The governance action is waiting for its start time or the right conditions to run.
      */
-    WAITING         (2,  2,  "Waiting",    "The governance action is waiting for its start time or the right conditions to run.", EngineActionStatus.WAITING),
+    WAITING         (2, 2, "Waiting", "The governance action is waiting for its start time or the right conditions to run.", ActivityStatus.WAITING),
 
     /**
      * The governance action service for the governance action is being initialized in the governance engine.
      */
-    ACTIVATING      (3,  3,  "Activating", "The governance action service for the governance action is being initialized in the governance engine.", EngineActionStatus.ACTIVATING),
+    ACTIVATING      (3, 3, "Activating", "The governance action service for the governance action is being initialized in the governance engine.", ActivityStatus.ACTIVATING),
 
     /**
      * The governance engine is running the associated governance action service for the governance action.
      */
-    IN_PROGRESS     (4,  4,  "In Progress","The governance engine is running the associated governance action service for the governance action.", EngineActionStatus.IN_PROGRESS),
+    IN_PROGRESS     (4, 4, "In Progress", "The governance engine is running the associated governance action service for the governance action.", ActivityStatus.IN_PROGRESS),
 
     /**
      * The governance action service for the governance action has successfully completed processing.
      */
-    ACTIONED        (5,  10, "Actioned",   "The governance action service for the governance action has successfully completed processing.", EngineActionStatus.ACTIONED),
+    ACTIONED        (5, 10, "Actioned", "The governance action service for the governance action has successfully completed processing.", ActivityStatus.COMPLETED),
 
     /**
      * The governance action has not been run because it is not appropriate (for example, a false positive).
      */
-    INVALID         (6,  11, "Invalid",    "The governance action has not been run because it is not appropriate (for example, a false positive).", EngineActionStatus.INVALID),
+    INVALID         (6, 11, "Invalid", "The governance action has not been run because it is not appropriate (for example, a false positive).", ActivityStatus.INVALID),
 
     /**
      * The governance action has not been run because a different governance action was chosen.
      */
-    IGNORED         (7,  12, "Ignored",    "The governance action has not been run because a different governance action was chosen.", EngineActionStatus.IGNORED),
+    IGNORED         (7, 12, "Ignored", "The governance action has not been run because a different governance action was chosen.", ActivityStatus.IGNORED),
 
     /**
      * The governance action service for the governance action failed to execute.
      */
-    FAILED          (8,  13, "Failed",     "The governance action service for the governance action failed to execute.", EngineActionStatus.FAILED),
+    FAILED          (8, 13, "Failed", "The governance action service for the governance action failed to execute.", ActivityStatus.FAILED),
 
     /**
      * Undefined or unknown governance action status.
      */
-    OTHER           (99, 99, "Other",      "Undefined or unknown governance action status.", EngineActionStatus.OTHER);
+    OTHER           (99, 99, "Other", "Undefined or unknown governance action status.", ActivityStatus.OTHER);
 
     private static final String ENUM_TYPE_GUID  = "a6e698b0-a4f7-4a39-8c80-db0bb0f972e";
-    private static final String ENUM_TYPE_NAME  = "EngineActionStatus";
+    private static final String ENUM_TYPE_NAME  = "ActivityStatus";
 
     private final String statusName;
     private final String statusDescription;
@@ -78,7 +78,7 @@ public enum GovernanceActionStatus
 
     private final int openTypeOrdinal;
 
-    private final EngineActionStatus engineActionStatus;
+    private final ActivityStatus activityStatus;
 
     /**
      * Typical Constructor
@@ -87,19 +87,19 @@ public enum GovernanceActionStatus
      * @param openTypeOrdinal ordinal used in the open metadata types
      * @param statusName short name
      * @param statusDescription longer explanation
-     * @param engineActionStatus equivalent engine action status
+     * @param activityStatus equivalent engine action status
      */
     GovernanceActionStatus(int                statusCode,
                            int                openTypeOrdinal,
                            String             statusName,
                            String             statusDescription,
-                           EngineActionStatus engineActionStatus)
+                           ActivityStatus activityStatus)
     {
         this.statusCode        = statusCode;
         this.openTypeOrdinal   = openTypeOrdinal;
         this.statusName        = statusName;
         this.statusDescription = statusDescription;
-        this.engineActionStatus = engineActionStatus;
+        this.activityStatus    = activityStatus;
     }
 
 
@@ -169,9 +169,9 @@ public enum GovernanceActionStatus
      *
      * @return enum
      */
-    public EngineActionStatus getEngineActionStatus()
+    public ActivityStatus getEngineActionStatus()
     {
-        return engineActionStatus;
+        return activityStatus;
     }
 
 
@@ -183,6 +183,6 @@ public enum GovernanceActionStatus
     @Override
     public String toString()
     {
-        return "EngineActionStatus{" + statusName + "}";
+        return "ActivityStatus{" + statusName + "}";
     }
 }

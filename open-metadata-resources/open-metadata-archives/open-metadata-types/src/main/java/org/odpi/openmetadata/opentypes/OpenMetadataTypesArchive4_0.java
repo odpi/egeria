@@ -10,7 +10,6 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
@@ -172,62 +171,12 @@ public class OpenMetadataTypesArchive4_0
         add0220DataFileCollectionDataSet();
         add0224TableDataSet();
         add0239DeployedReportType();
-        update0385ControlledGlossaries();
         update0462GovernanceActionProcesses();
         create0464DynamicIntegrationGroups();
         update0484AgreementActor();
         update0545ReferenceData();
         update0720InformationSupplyChains();
         addFormulaTypeAttribute();
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0385ControlledGlossaries()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateControlledGlossaryTermEntity());
-    }
-
-
-    private TypeDefPatch updateControlledGlossaryTermEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTROLLED_GLOSSARY_TERM.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        /*
-         * Update the valid instance statuses
-         */
-        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
-
-        validInstanceStatusList.add(InstanceStatus.DRAFT);
-        validInstanceStatusList.add(InstanceStatus.PREPARED);
-        validInstanceStatusList.add(InstanceStatus.PROPOSED);
-        validInstanceStatusList.add(InstanceStatus.APPROVED);
-        validInstanceStatusList.add(InstanceStatus.REJECTED);
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
-        validInstanceStatusList.add(InstanceStatus.OTHER);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
-
-        typeDefPatch.setValidInstanceStatusList(validInstanceStatusList);
-
-        return typeDefPatch;
     }
 
 
@@ -318,18 +267,6 @@ public class OpenMetadataTypesArchive4_0
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TO_DO_STATUS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.START_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_MESSAGE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }
@@ -446,13 +383,14 @@ public class OpenMetadataTypesArchive4_0
         this.archiveBuilder.addRelationshipDef(addRegisteredIntegrationConnectorRelationship());
         this.archiveBuilder.addRelationshipDef(addCatalogTargetRelationship());
         this.archiveBuilder.addRelationshipDef(addRelatedIntegrationReportRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
     }
 
 
     private EntityDef addIntegrationGroupEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.INTEGRATION_GROUP,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
     }
 
     private EntityDef addIntegrationConnectorEntity()
@@ -485,8 +423,10 @@ public class OpenMetadataTypesArchive4_0
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVER_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_ID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_START_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFRESH_START_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFRESH_COMPLETION_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_DISCONNECT_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CREATED_ELEMENTS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATED_ELEMENTS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELETED_ELEMENTS));
@@ -544,7 +484,7 @@ public class OpenMetadataTypesArchive4_0
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.START_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFRESH_TIME_INTERVAL));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STOP_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GENERATE_INTEGRATION_REPORT));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION));
 
@@ -552,6 +492,30 @@ public class OpenMetadataTypesArchive4_0
 
         return relationshipDef;
     }
+
+
+    private TypeDefPatch updateSupportedGovernanceServiceRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GENERATE_INTEGRATION_REPORT));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
     private RelationshipDef addCatalogTargetRelationship()
     {
@@ -682,7 +646,6 @@ public class OpenMetadataTypesArchive4_0
     private void addFormulaTypeAttribute()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataSet());
-        this.archiveBuilder.addTypeDefPatch(updateProcess());
         this.archiveBuilder.addTypeDefPatch(updateCalculatedValue());
         this.archiveBuilder.addTypeDefPatch(updateProcessCall());
         this.archiveBuilder.addTypeDefPatch(updateDataFlow());
@@ -695,28 +658,6 @@ public class OpenMetadataTypesArchive4_0
          * Create the Patch
          */
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_SET.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateProcess()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

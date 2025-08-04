@@ -3,18 +3,16 @@
 package org.odpi.openmetadata.viewservices.schemamaker.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SchemaAttributeHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SchemaTypeHandler;
-import org.odpi.openmetadata.viewservices.schemamaker.ffdc.SchemaMakerErrorCode;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SchemaAttributeHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SchemaTypeHandler;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * SchemaMakerInstance caches references to the objects it needs for a specific server.
@@ -28,11 +26,8 @@ public class SchemaMakerInstance extends OMVSServiceInstance
     /*
      * These maps cache clients for specific view services/access services.
      */
-    private final Map<String, SchemaTypeHandler>      schemaTypeHandlerMap      = new HashMap<>();
-    private final Map<String, SchemaAttributeHandler> schemaAttributeHandlerMap = new HashMap<>();
-
-    private final List<ViewServiceConfig> activeViewServices;
-
+    private final ViewServiceClientMap<SchemaTypeHandler>      schemaTypeHandlerMap;
+    private final ViewServiceClientMap<SchemaAttributeHandler> schemaAttributeHandlerMap;
 
 
     /**
@@ -65,7 +60,23 @@ public class SchemaMakerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        this.activeViewServices = activeViewServices;
+        this.schemaTypeHandlerMap = new ViewServiceClientMap<>(SchemaTypeHandler.class,
+                                                               serverName,
+                                                               localServerUserId,
+                                                               localServerUserPassword,
+                                                               auditLog,
+                                                               activeViewServices,
+                                                               myDescription.getViewServiceFullName(),
+                                                               maxPageSize);
+
+        this.schemaAttributeHandlerMap = new ViewServiceClientMap<>(SchemaAttributeHandler.class,
+                                                                    serverName,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    auditLog,
+                                                                    activeViewServices,
+                                                                    myDescription.getViewServiceFullName(),
+                                                                    maxPageSize);
     }
 
 
@@ -73,73 +84,17 @@ public class SchemaMakerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * schema type artifacts.
      *
+     * @param viewServiceURLMarker calling view service
+     * @param methodName calling operation
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public SchemaTypeHandler getSchemaTypeHandler(String viewServiceURLMarker,
-                                                      String methodName) throws InvalidParameterException
+                                                  String methodName) throws InvalidParameterException,
+                                                                            PropertyServerException
     {
-        SchemaTypeHandler schemaTypeHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            schemaTypeHandler = schemaTypeHandlerMap.get(viewServiceURLMarker);
-
-            if (schemaTypeHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword != null)
-                                    {
-                                        schemaTypeHandler = new SchemaTypeHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.SCHEMA_MAKER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-                                    else
-                                    {
-                                        schemaTypeHandler = new SchemaTypeHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      localServerUserId,
-                                                                                      localServerUserPassword,
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.SCHEMA_MAKER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-
-                                    schemaTypeHandlerMap.put(viewServiceURLMarker, schemaTypeHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (schemaTypeHandler == null)
-        {
-            throw new InvalidParameterException(SchemaMakerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return schemaTypeHandler;
+        return schemaTypeHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
 
 
@@ -149,72 +104,15 @@ public class SchemaMakerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * schema attribute artifacts.
      *
+     * @param viewServiceURLMarker calling view service
+     * @param methodName calling operation
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public SchemaAttributeHandler getSchemaAttributeHandler(String viewServiceURLMarker,
-                                                String methodName) throws InvalidParameterException
+                                                            String methodName) throws InvalidParameterException, PropertyServerException
     {
-        SchemaAttributeHandler schemaAttributeHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            schemaAttributeHandler = schemaAttributeHandlerMap.get(viewServiceURLMarker);
-
-            if (schemaAttributeHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword != null)
-                                    {
-                                        schemaAttributeHandler = new SchemaAttributeHandler(serverName,
-                                                                                            viewServiceConfig.getOMAGServerName(),
-                                                                                            viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                            auditLog,
-                                                                                            accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                            ViewServiceDescription.SCHEMA_MAKER.getViewServiceFullName(),
-                                                                                            maxPageSize);
-                                    }
-                                    else
-                                    {
-                                        schemaAttributeHandler = new SchemaAttributeHandler(serverName,
-                                                                                            viewServiceConfig.getOMAGServerName(),
-                                                                                            viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                            localServerUserId,
-                                                                                            localServerUserPassword,
-                                                                                            auditLog,
-                                                                                            accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                            ViewServiceDescription.SCHEMA_MAKER.getViewServiceFullName(),
-                                                                                            maxPageSize);
-                                    }
-
-                                    schemaAttributeHandlerMap.put(viewServiceURLMarker, schemaAttributeHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (schemaAttributeHandler == null)
-        {
-            throw new InvalidParameterException(SchemaMakerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return schemaAttributeHandler;
+        return schemaAttributeHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
 }

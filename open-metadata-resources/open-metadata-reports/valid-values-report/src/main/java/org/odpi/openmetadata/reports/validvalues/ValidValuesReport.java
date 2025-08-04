@@ -114,12 +114,12 @@ public class ValidValuesReport
 
             for (ValidValueInformation validValueInformation : validValueInformationList)
             {
-                report.printReportSubheading(validValueInformation.indentLevel,  validValueInformation.element.getValidValueProperties().getQualifiedName() );
+                report.printReportSubheading(validValueInformation.indentLevel,  validValueInformation.element.getProperties().getQualifiedName() );
 
-                if (validValueInformation.element.getValidValueProperties().getPreferredValue() != null)
+                if (validValueInformation.element.getProperties().getPreferredValue() != null)
                 {
-                    report.printReportLine(validValueInformation.indentLevel + 1, "Preferred value", validValueInformation.element.getValidValueProperties().getPreferredValue());
-                    report.printReportLine(validValueInformation.indentLevel + 1, "Description", validValueInformation.element.getValidValueProperties().getDescription());
+                    report.printReportLine(validValueInformation.indentLevel + 1, "Preferred value", validValueInformation.element.getProperties().getPreferredValue());
+                    report.printReportLine(validValueInformation.indentLevel + 1, "Description", validValueInformation.element.getProperties().getDescription());
 
                     startFrom = 0;
                     RelatedMetadataElementList relatedElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,

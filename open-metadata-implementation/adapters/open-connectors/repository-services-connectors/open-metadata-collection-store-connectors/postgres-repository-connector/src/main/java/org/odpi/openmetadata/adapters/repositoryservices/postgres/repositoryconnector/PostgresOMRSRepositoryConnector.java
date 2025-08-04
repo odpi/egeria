@@ -51,7 +51,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         final String methodName = "setMetadataCollectionId";
 
         super.metadataCollectionId = metadataCollectionId;
-        super.repositoryName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_SCHEMA.getName(), connectionDetails.getConfigurationProperties());
+        super.repositoryName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_SCHEMA.getName(), connectionBean.getConfigurationProperties());
 
         if (metadataCollectionId != null)
         {
@@ -125,7 +125,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         auditLog.logMessage(methodName, PostgresAuditCode.STARTING_REPOSITORY.getMessageDefinition(repositoryName, jdbcResourceConnector.getDatabaseName()));
 
         String schemaName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_SCHEMA.getName(),
-                                                                 connectionDetails.getConfigurationProperties());
+                                                                 connectionBean.getConfigurationProperties());
 
         if (schemaName == null)
         {
@@ -250,7 +250,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         final String methodName = "getRepositoryMode";
 
         String repositoryMode = super.getStringConfigurationProperty(PostgresConfigurationProperty.REPOSITORY_MODE.getName(),
-                                                                     connectionDetails.getConfigurationProperties());
+                                                                     connectionBean.getConfigurationProperties());
 
         if ("readOnly".equals(repositoryMode))
         {
@@ -278,7 +278,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         final String methodName = "getDefaultAsOfTime";
 
         Date defaultAsOfTime = super.getDateConfigurationProperty(PostgresConfigurationProperty.REPOSITORY_MODE.getName(),
-                                                                  connectionDetails.getConfigurationProperties());
+                                                                  connectionBean.getConfigurationProperties());
 
         if (defaultAsOfTime == null)
         {

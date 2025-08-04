@@ -23,7 +23,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
     private final String  scope;
     private final String  preferredValue;
     private final String  dataType;
-    private final boolean isDeprecated;
+    private final String  userDefinedStatus;
     private final boolean isCaseSensitive;
 
 
@@ -38,7 +38,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
      * @param scope arena where this valid value is applicable.
      * @param preferredValue preferredValue where the schema is defined.
      * @param dataType the data type of the preferred value.
-     * @param isDeprecated is the valid value deprecated
+     * @param userDefinedStatus is the valid value deprecated
      * @param isCaseSensitive is the valid value case-sensitive
      * @param additionalProperties additional properties
      * @param extendedProperties  properties from the subtype.
@@ -54,7 +54,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
                        String               scope,
                        String               preferredValue,
                        String               dataType,
-                       boolean              isDeprecated,
+                       String               userDefinedStatus,
                        boolean              isCaseSensitive,
                        Map<String, String>  additionalProperties,
                        Map<String, Object>  extendedProperties,
@@ -71,15 +71,15 @@ public class ValidValuesBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
-        this.displayName = displayName;
-        this.description = description;
-        this.category = category;
-        this.usage = usage;
-        this.scope = scope;
-        this.preferredValue = preferredValue;
-        this.dataType = dataType;
-        this.isDeprecated = isDeprecated;
-        this.isCaseSensitive = isCaseSensitive;
+        this.displayName       = displayName;
+        this.description       = description;
+        this.category          = category;
+        this.usage             = usage;
+        this.scope             = scope;
+        this.preferredValue    = preferredValue;
+        this.dataType          = dataType;
+        this.userDefinedStatus = userDefinedStatus;
+        this.isCaseSensitive   = isCaseSensitive;
     }
 
 
@@ -97,7 +97,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.NAME.name,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
 
@@ -107,11 +107,6 @@ public class ValidValuesBuilder extends ReferenceableBuilder
                                                                   description,
                                                                   methodName);
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataProperty.CATEGORY.name,
-                                                                  category,
-                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
@@ -137,11 +132,12 @@ public class ValidValuesBuilder extends ReferenceableBuilder
                                                                   dataType,
                                                                   methodName);
 
-        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   OpenMetadataProperty.IS_DEPRECATED.name,
-                                                                   isDeprecated,
-                                                                   methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.USER_DEFINED_STATUS.name,
+                                                                  userDefinedStatus,
+                                                                  methodName);
+
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,

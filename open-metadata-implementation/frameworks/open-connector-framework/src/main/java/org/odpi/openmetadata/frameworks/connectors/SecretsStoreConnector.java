@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigur
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.Date;
 import java.util.Map;
@@ -71,16 +72,17 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
         final String methodName = "start";
 
         secretsCollectionName = super.getStringConfigurationProperty(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(),
-                                                                     connectionDetails.getConfigurationProperties());
+                                                                     connectionBean.getConfigurationProperties());
 
         if (secretsCollectionName == null)
         {

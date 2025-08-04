@@ -31,9 +31,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NameRequestBody",
+  "class" : "UniqueNameRequestBody",
   "name" : "active-metadata-store",
-  "namePropertyName" : "name"
+  "namePropertyName" : "displayName"
 }
 
 > {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
@@ -69,11 +69,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -102,26 +97,15 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
-###
-# @name createInformationSupplyChain
-# Create an information supply chain.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/create
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
-{
-  "properties": {
-    "class" : "InformationSupplyChainProperties",
-    "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
-    "description": "add description here",
-    "scope": "add scope of this information supply chain's applicability."
-  }
-}
-                                                     
 ###
 # @name createInformationSupplyChainFromTemplate
 # Create a new metadata element to represent an information supply chain using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
@@ -131,11 +115,6 @@ Content-Type: application/json
 
 {
   "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -165,7 +144,12 @@ Content-Type: application/json
   "placeholderPropertyValues":  {
     "placeholder1" : "propertyValue1",
     "placeholder2" : "propertyValue2"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -178,11 +162,6 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class" : "InformationSupplyChainProperties",
     "qualifiedName": "add unique name here",
@@ -196,7 +175,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -212,19 +196,19 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "class" : "NewRelationshipRequestBody",
   "properties": {
     "class": "InformationSupplyChainLinkProperties",
     "label": "add label here",
     "description": "add description here",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
                                      
@@ -253,19 +237,17 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "InformationSupplyChainCompositionProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "InformationSupplyChainLinkProperties",
-    "label": "add label here",
-    "description": "add description here",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 
@@ -412,7 +394,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -432,18 +414,16 @@ Content-Type: application/json
 
 ###
 # @name createSolutionBlueprint
-# Create a solution blueprint.
+# Create a solution blueprint - initialStatus which can be DRAFT, PREPARED, PROPPOSED,
+# APPROVED, REJECTED, ACTIVE, DISABLED, DEPRECATED, OTHER.  The default is ACTIVE.
+# If OTHER is used, set userDefinedStatus.
+# The status can be updated using updateSolutionElementStatus
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -471,25 +451,15 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "initialStatus" : "ACTIVE"
 }
 
-###
-# @name createSolutionBlueprint
-# Create a solution blueprint.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "SolutionBlueprintProperties",
-    "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
-    "description": "add description here",
-    "versionIdentifier": "add version for this blueprint"
-  }
-}
 
 ###
 # @name createSolutionBlueprintFromTemplate
@@ -500,11 +470,6 @@ Content-Type: application/json
 
 {
   "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -534,7 +499,12 @@ Content-Type: application/json
   "placeholderPropertyValues":  {
     "placeholder1" : "propertyValue1",
     "placeholder2" : "propertyValue2"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -547,11 +517,6 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class" : "SolutionBlueprintProperties",
     "qualifiedName": "add unique name here",
@@ -564,7 +529,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -574,12 +544,12 @@ Content-Type: application/json
 ###
 # @name updateSolutionElementStatus
 # Update the status of a solution blueprint, solution component or solution port.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-elements/{{solutionElementGUID}}/update-status
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/metadata-elements/{{solutionElementGUID}}/update-status
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "SolutionElementStatusRequestBody",
+  "class" : "UpdateStatusRequestBody",
   "status" : "APPROVED",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -597,19 +567,19 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "class" : "NewRelationshipRequestBody",
   "properties": {
     "class": "SolutionBlueprintCompositionProperties",
     "role": "Add role that the component plays in the solution blueprint here",
     "description": "Add description of the solution component in the context of the solution blueprint.",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -697,7 +667,7 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
- "asOfTime" : "{{$isoTimestamp}}",
+  "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
@@ -756,7 +726,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -782,11 +752,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -814,25 +779,14 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
-###
-# @name createSolutionRole
-# Create an actor role that is of type SolutionRole.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "properties": {
-    "class" : "SolutionRoleProperties",
-    "qualifiedName": "add unique name here",
-    "name": "add short name here",
-    "description": "add description here",
-    "scope": "add scope of role here"
-  }
-}
 
 ###
 # @name createSolutionRoleFromTemplate
@@ -843,11 +797,6 @@ Content-Type: application/json
 
 {
   "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -877,7 +826,12 @@ Content-Type: application/json
   "placeholderPropertyValues":  {
     "placeholder1" : "propertyValue1",
     "placeholder2" : "propertyValue2"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -890,11 +844,6 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class" : "SolutionRoleProperties",
     "qualifiedName": "add unique name here",
@@ -907,7 +856,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -919,19 +873,19 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
+  "class" : "NewRelationshipRequestBody",
   "properties": {
     "class": "SolutionComponentActorProperties",
     "role": "Add role here",
     "description": "Add description here",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -1077,7 +1031,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -1098,18 +1052,15 @@ Content-Type: application/json
 
 ###
 # @name createSolutionComponent
-# Create a solution component.
+# Create a solution component with a lifecycle - set initialStatus which can be DRAFT, PREPARED, PROPPOSED,
+# APPROVED, REJECTED, ACTIVE, DISABLED, DEPRECATED, OTHER. Default is ACTIVE. If OTHER is used, set userDefinedStatus.
+# The status can be updated using updateSolutionElementStatus
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -1139,27 +1090,17 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "initialStatus": "ACTIVE"
 }
 
-###
-# @name createSolutionComponent
-# Create a solution component.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
-{
-  "properties": {
-    "class" : "SolutionComponentProperties",
-    "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
-    "description": "add description here",
-    "solutionComponentType": "add optional type name for this component",
-    "plannedDeployedImplementationType": "add details of the type of implementation for this component",
-    "versionIdentifier": "add version for this component"
-  }
-}
+
 
 ###
 # @name createSolutionComponentFromTemplate
@@ -1170,11 +1111,6 @@ Content-Type: application/json
 
 {
   "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -1204,7 +1140,12 @@ Content-Type: application/json
   "placeholderPropertyValues":  {
     "placeholder1" : "propertyValue1",
     "placeholder2" : "propertyValue2"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -1217,11 +1158,6 @@ Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class" : "SolutionComponentProperties",
     "qualifiedName": "add unique name here",
@@ -1236,7 +1172,12 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -1248,7 +1189,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
+  "class" : "NewRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1287,15 +1228,15 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
+  "class" : "NewRelationshipRequestBody",
   "properties" : {
      "class" : "SolutionLinkingWireProperties",
      "label" : "",
      "description" : "",
      "iscQualifiedNames" : []
   },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false
@@ -1444,7 +1385,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AnyTimeRequestBody",
+  "class" : "GetRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,

@@ -701,7 +701,7 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.ENCODING.name,
+                                                                  OpenMetadataProperty.ENCODING_TYPE.name,
                                                                   encoding,
                                                                   methodName);
 

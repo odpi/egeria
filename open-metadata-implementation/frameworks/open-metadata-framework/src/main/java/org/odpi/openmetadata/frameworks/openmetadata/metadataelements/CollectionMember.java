@@ -5,8 +5,9 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 
 import java.util.Objects;
 
@@ -24,7 +25,7 @@ public class CollectionMember implements MetadataElement
     private ElementHeader                  relationshipHeader     = null;
     private CollectionMembershipProperties relationshipProperties = null;
     private ElementHeader                  elementHeader          = null;
-    private ReferenceableProperties        properties             = null;
+    private OpenMetadataRootProperties     properties             = null;
 
 
     /**
@@ -126,7 +127,7 @@ public class CollectionMember implements MetadataElement
      *
      * @return properties
      */
-    public ReferenceableProperties getProperties()
+    public OpenMetadataRootProperties getProperties()
     {
         return properties;
     }
@@ -137,7 +138,7 @@ public class CollectionMember implements MetadataElement
      *
      * @param properties  properties
      */
-    public void setProperties(ReferenceableProperties properties)
+    public void setProperties(OpenMetadataRootProperties properties)
     {
         this.properties = properties;
     }

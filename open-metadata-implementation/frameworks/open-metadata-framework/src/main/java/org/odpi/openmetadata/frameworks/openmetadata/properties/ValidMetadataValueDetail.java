@@ -79,17 +79,8 @@ public class ValidMetadataValueDetail extends ValidMetadataValue
     public String toString()
     {
         return "ValidMetadataValueDetail{" +
-                       "validMapNameValues=" + validMapNameValues +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", preferredValue='" + getPreferredValue() + '\'' +
-                       ", dataType='" + getDataType() + '\'' +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", isCaseSensitive=" + getIsCaseSensitive() +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       '}';
+                "validMapNameValues=" + validMapNameValues +
+                "} " + super.toString();
     }
 
 

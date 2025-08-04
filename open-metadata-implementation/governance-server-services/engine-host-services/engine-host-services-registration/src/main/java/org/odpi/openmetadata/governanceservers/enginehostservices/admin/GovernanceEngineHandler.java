@@ -2,20 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
-import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
+import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
+import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
 
 import java.util.*;
 
@@ -29,16 +29,17 @@ public abstract class GovernanceEngineHandler
     protected String                  serverName;         /* Initialized in constructor */
     protected String                  serverUserId;       /* Initialized in constructor */
     protected GovernanceContextClient engineActionClient; /* Initialized in constructor */
+
     protected String                  engineUserId;      /* Initialized in constructor */
     protected AuditLog                auditLog;          /* Initialized in constructor */
     protected int                     maxPageSize;       /* Initialized in constructor */
 
-    private final String                 engineServiceName;      /* Initialized in constructor */
+    protected final String               engineServiceName;      /* Initialized in constructor */
     protected String                     governanceEngineName;   /* Initialized in constructor */
     protected String                     governanceEngineGUID       = null;
     protected GovernanceEngineProperties governanceEngineProperties = null;
-    private   GovernanceEngineElement governanceEngineElement = null;
-    private   boolean                 servicesToRestart       = true;
+    private   GovernanceEngineElement    governanceEngineElement    = null;
+    private   boolean                    servicesToRestart          = true;
 
     private String        governanceEngineTypeName = null;
     private List<String>  governanceEngineSuperTypeNames = null;
@@ -54,7 +55,7 @@ public abstract class GovernanceEngineHandler
      * Create a client-side object for calling a governance engine.
      *
      * @param engineConfig the properties of the governance engine.
-     * @param serverName the name of the engine host server where the governance engine is running
+     * @param localServerName the name of the engine host server where the governance engine is running
      * @param serverUserId user id for the server to use
      * @param engineServiceName name of the OMES that is supporting this governance engine
      * @param configurationClient client to retrieve the configuration
@@ -63,7 +64,7 @@ public abstract class GovernanceEngineHandler
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
     public GovernanceEngineHandler(EngineConfig                  engineConfig,
-                                   String                        serverName,
+                                   String                        localServerName,
                                    String                        serverUserId,
                                    String                        engineServiceName,
                                    GovernanceConfigurationClient configurationClient,
@@ -73,22 +74,22 @@ public abstract class GovernanceEngineHandler
     {
         this.engineServiceName = engineServiceName;
         this.governanceEngineName = engineConfig.getEngineQualifiedName();
-        this.serverName = serverName;
+        this.serverName = localServerName;
         this.serverUserId = serverUserId;
         this.engineUserId = engineConfig.getEngineUserId();
         if (engineUserId == null)
         {
             engineUserId = serverUserId;
         }
-        this.configurationClient = configurationClient;
-        this.engineActionClient  = engineActionClient;
-        this.auditLog            = auditLog;
-        this.maxPageSize         = maxPageSize;
+        this.configurationClient     = configurationClient;
+        this.engineActionClient      = engineActionClient;
+        this.auditLog                = auditLog;
+        this.maxPageSize             = maxPageSize;
     }
 
 
     /**
-     * Return the governance Engine name - used for error logging.
+     * Return the governance engine name - used for error logging.
      *
      * @return governance engine name
      */
@@ -147,6 +148,27 @@ public abstract class GovernanceEngineHandler
 
 
     /**
+     * A change event for a governance engine has been received.  If this is for this governance engine (or
+     * The GUID of this governance engine is not currently known), request that the governance engine refresh its configuration by calling the metadata server.
+     * This request ensures that the latest configuration is in use.
+     *
+     * @param receivedGovernanceEngineGUID incoming governance engine guid
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user id is not allowed to access configuration
+     * @throws PropertyServerException problem in configuration server
+     */
+    public synchronized void refreshConfig(String receivedGovernanceEngineGUID) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        if ((governanceEngineGUID == null) || (governanceEngineGUID.equals(receivedGovernanceEngineGUID)))
+        {
+            refreshConfig();
+        }
+    }
+
+
+    /**
      * Request that the governance engine refresh its configuration by calling the metadata server.
      * This request ensures that the latest configuration is in use.
      *
@@ -167,9 +189,10 @@ public abstract class GovernanceEngineHandler
         this.governanceEngineElement = configurationClient.getGovernanceEngineByName(serverUserId, governanceEngineName);
 
         if ((governanceEngineElement == null) ||
-                    (governanceEngineElement.getElementHeader() == null) ||
-                    (governanceEngineElement.getElementHeader().getType() == null) ||
-                    (governanceEngineElement.getProperties() == null))
+                (governanceEngineElement.getElementHeader() == null) ||
+                (governanceEngineElement.getElementHeader().getGUID() == null) ||
+                (governanceEngineElement.getElementHeader().getType() == null) ||
+                (governanceEngineElement.getProperties() == null))
         {
             this.governanceEngineGUID = null;
             this.governanceEngineTypeName = null;
@@ -262,22 +285,29 @@ public abstract class GovernanceEngineHandler
      * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public synchronized void refreshServiceConfig(String  registeredGovernanceServiceGUID,
-                                                  String  specificRequestType) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public synchronized void refreshServiceConfig(String incomingGovernanceEngineGUID,
+                                                  String registeredGovernanceServiceGUID,
+                                                  String specificRequestType) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String methodName = "refreshServiceConfig";
 
-        if (registeredGovernanceServiceGUID != null)
+        /*
+         * Only process service events if the governance engine is known and matches the incoming request.
+         */
+        if ((governanceEngineGUID != null) && (governanceEngineGUID.equals(incomingGovernanceEngineGUID)))
         {
-            RegisteredGovernanceServiceElement registeredGovernanceServiceElement = configurationClient.getRegisteredGovernanceService(serverUserId,
-                                                                                                                                       governanceEngineGUID,
-                                                                                                                                       registeredGovernanceServiceGUID);
+            if (registeredGovernanceServiceGUID != null)
+            {
+                RegisteredGovernanceServiceElement registeredGovernanceServiceElement = configurationClient.getRegisteredGovernanceService(serverUserId,
+                                                                                                                                           governanceEngineGUID,
+                                                                                                                                           registeredGovernanceServiceGUID);
 
-            this.refreshRegisteredGovernanceService(registeredGovernanceServiceElement,
-                                                    specificRequestType,
-                                                    methodName);
+                this.refreshRegisteredGovernanceService(registeredGovernanceServiceElement,
+                                                        specificRequestType,
+                                                        methodName);
+            }
         }
     }
 
@@ -461,7 +491,7 @@ public abstract class GovernanceEngineHandler
                 for (EngineActionElement engineActionElement : activeEngineActions)
                 {
                     if ((engineActionElement != null) &&
-                            (engineActionElement.getActionStatus() == EngineActionStatus.APPROVED) &&
+                            (engineActionElement.getActionStatus() == ActivityStatus.APPROVED) &&
                             (governanceEngineGUID.equals(engineActionElement.getGovernanceEngineGUID())))
                     {
 
@@ -581,22 +611,31 @@ public abstract class GovernanceEngineHandler
         {
             EngineActionElement latestEngineActionElement = engineActionClient.getEngineAction(serverUserId, engineActionGUID);
 
-            if (latestEngineActionElement.getActionStatus() == EngineActionStatus.APPROVED)
+            /*
+             * Is this engine action for this engine?
+             */
+            if (governanceEngineName.equals(latestEngineActionElement.getGovernanceEngineName()))
             {
-                engineActionClient.claimEngineAction(serverUserId, engineActionGUID);
+                /*
+                 * Is the engine action in the correct state to process it?
+                 */
+                if (latestEngineActionElement.getActionStatus() == ActivityStatus.APPROVED)
+                {
+                    engineActionClient.claimEngineAction(serverUserId, engineActionGUID);
 
-                runGovernanceService(engineActionGUID,
-                                     latestEngineActionElement.getRequestType(),
-                                     latestEngineActionElement.getRequesterUserId(),
-                                     latestEngineActionElement.getRequestedStartTime(),
-                                     latestEngineActionElement.getRequestParameters(),
-                                     latestEngineActionElement.getRequestSourceElements(),
-                                     latestEngineActionElement.getActionTargetElements());
-            }
-            else if ((latestEngineActionElement.getActionStatus() == EngineActionStatus.CANCELLED) &&
-                    (serverUserId.equals(latestEngineActionElement.getProcessingEngineUserId())))
-            {
-                cancelGovernanceService(engineActionGUID);
+                    runGovernanceService(engineActionGUID,
+                                         latestEngineActionElement.getRequestType(),
+                                         latestEngineActionElement.getRequesterUserId(),
+                                         latestEngineActionElement.getRequestedStartTime(),
+                                         latestEngineActionElement.getRequestParameters(),
+                                         latestEngineActionElement.getRequestSourceElements(),
+                                         latestEngineActionElement.getActionTargetElements());
+                }
+                else if ((latestEngineActionElement.getActionStatus() == ActivityStatus.CANCELLED) &&
+                        (serverUserId.equals(latestEngineActionElement.getProcessingEngineUserId())))
+                {
+                    cancelGovernanceService(engineActionGUID);
+                }
             }
         }
         catch (Exception error)

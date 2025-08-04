@@ -7,20 +7,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ import java.util.Map;
  * Note: This implementation currently only follows LineageMapping links between assets, it needs extending to support lineage mapping
  * between ports and schema attributes.
  */
-public class OriginSeekerGovernanceActionConnector extends RemediationGovernanceActionService
+public class OriginSeekerGovernanceActionConnector extends GeneralGovernanceActionService
 {
     private static final String detectedOriginsProperty   = "detectedOrigins";
     private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
@@ -46,9 +47,10 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -132,7 +134,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
             /*
              * Check that the AssetOrigin classification is not already set - this is an error if it is.
              */
-            AttachedClassification existingAssetOriginClassification = propertyHelper.getClassification(targetElement, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
+            AttachedClassification existingAssetOriginClassification = propertyHelper.getClassification(targetElement, OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName);
 
             if (existingAssetOriginClassification != null)
             {
@@ -166,12 +168,10 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                     /*
                      * A single origin has been found, so it is ok to add it to the action target asset.
                      */
-                    governanceContext.classifyMetadataElement(targetElement.getElementGUID(),
-                                                              OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName,
-                                                              true,
-                                                              false,
-                                                              originClassifications.get(0),
-                                                              new Date());
+                    governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(targetElement.getElementGUID(),
+                                                                                            OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName,
+                                                                                            governanceContext.getOpenMetadataStore().getMetadataSourceOptions(),
+                                                                                            new NewElementProperties(originClassifications.get(0)));
 
                     outputGuards.add(OriginSeekerGuard.ORIGIN_ASSIGNED.getName());
                     completionStatus = OriginSeekerGuard.ORIGIN_ASSIGNED.getCompletionStatus();
@@ -267,7 +267,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                             /*
                              * If we find an origin classification on this asset we stop traversing the lineage graph.
                              */
-                            AttachedClassification existingAssetOriginClassification = propertyHelper.getClassification(nextAsset, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
+                            AttachedClassification existingAssetOriginClassification = propertyHelper.getClassification(nextAsset, OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName);
 
                             if (existingAssetOriginClassification == null)
                             {

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 
 import java.util.*;
 
@@ -37,9 +37,9 @@ public class GovernanceActionProcessStepExecution extends GovernanceActionProces
     private String                               requestType              = null;
     private Map<String, String>                  requestParameters        = null;
     private List<RequestSourceElement>           requestSourceElements    = null;
-    private List<ActionTargetElement>            actionTargetElements     = null;
-    private EngineActionStatus                   actionStatus             = null;
-    private Date                                 requestedTime            = null;
+    private List<ActionTargetElement> actionTargetElements = null;
+    private ActivityStatus            actionStatus         = null;
+    private Date                      requestedTime        = null;
     private Date                                 requestedStartTime       = null;
     private Date                                 startTime                = null;
     private String                               processingEngineUserId   = null;
@@ -375,7 +375,7 @@ public class GovernanceActionProcessStepExecution extends GovernanceActionProces
      *
      * @return status enum
      */
-    public EngineActionStatus getActionStatus()
+    public ActivityStatus getActionStatus()
     {
         return actionStatus;
     }
@@ -386,7 +386,7 @@ public class GovernanceActionProcessStepExecution extends GovernanceActionProces
      *
      * @param actionStatus status enum
      */
-    public void setActionStatus(EngineActionStatus actionStatus)
+    public void setActionStatus(ActivityStatus actionStatus)
     {
         this.actionStatus = actionStatus;
     }

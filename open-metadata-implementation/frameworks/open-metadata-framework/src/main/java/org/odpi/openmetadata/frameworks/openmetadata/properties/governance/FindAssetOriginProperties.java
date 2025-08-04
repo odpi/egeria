@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetOriginProperties provides a structure for passing information about an asset's origin.
+ * DigitalResourceOriginProperties provides a structure for passing information about a digital resource's origin.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -138,7 +138,7 @@ public class FindAssetOriginProperties extends FindProperties
     @Override
     public String toString()
     {
-        return "FindAssetOriginProperties{" +
+        return "FindDigitalResourceOriginProperties{" +
                 "organizationGUID='" + organizationGUID + '\'' +
                 ", businessCapabilityGUID='" + businessCapabilityGUID + '\'' +
                 ", otherOriginValues=" + otherOriginValues +

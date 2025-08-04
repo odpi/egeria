@@ -73,6 +73,15 @@ public class RatingConverter<B> extends OpenMetadataConverterBase<B>
 
                     properties.setReview(this.removeReview(elementProperties));
                     properties.setStarRating(this.removeStarRating(elementProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    properties.setTypeName(openMetadataElement.getType().getTypeName());
+                    properties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+
+
                 }
                 else
                 {
@@ -93,32 +102,4 @@ public class RatingConverter<B> extends OpenMetadataConverterBase<B>
     }
 
 
-    /**
-     * Extract and delete the stars property from the supplied element properties.
-     *
-     * @param elementProperties properties from entity
-     * @return enum
-     */
-    StarRating removeStarRating(ElementProperties elementProperties)
-    {
-        final String methodName = "removeStarRating";
-
-        if (elementProperties != null)
-        {
-            String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
-                                                                         OpenMetadataProperty.STARS.name,
-                                                                         elementProperties,
-                                                                         methodName);
-
-            for (StarRating starRating : StarRating.values())
-            {
-                if (starRating.getName().equals(retrievedProperty))
-                {
-                    return starRating;
-                }
-            }
-        }
-
-        return null;
-    }
 }

@@ -1906,7 +1906,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                        OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeGUID,
                                                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                       OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                        2,
                                                                        forLineage,
                                                                        forDuplicateProcessing,

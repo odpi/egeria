@@ -558,8 +558,8 @@ public class SurveyReport
                                                  asset.getProperties().getExtendedProperties().get(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name).toString());
                 }
                 outputReport.printReportLine(detailIndentLevel, "Qualified Name", asset.getProperties().getQualifiedName());
-                outputReport.printReportLine(detailIndentLevel, "Display Name", asset.getProperties().getName());
-                outputReport.printReportLine(detailIndentLevel, "Description", asset.getProperties().getResourceDescription());
+                outputReport.printReportLine(detailIndentLevel, "Display Name", asset.getProperties().getDisplayName());
+                outputReport.printReportLine(detailIndentLevel, "Description", asset.getProperties().getDescription());
 
                 outputReport.printReportSubheading(detailIndentLevel, "Survey report summaries");
 

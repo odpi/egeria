@@ -57,7 +57,7 @@ public class MetadataExplorerResource
                                                                 @PathVariable String  elementGUID,
                                                                 @PathVariable String  urlMarker,
                                                                 @RequestBody (required = false)
-                                                                AnyTimeRequestBody requestBody)
+                                                                    GetRequestBody requestBody)
     {
         return restAPI.getMetadataElementByGUID(serverName, elementGUID, urlMarker, requestBody);
     }
@@ -84,7 +84,7 @@ public class MetadataExplorerResource
 
     public OpenMetadataElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
                                                                       @PathVariable String          urlMarker,
-                                                                      @RequestBody NameRequestBody requestBody)
+                                                                      @RequestBody  UniqueNameRequestBody requestBody)
     {
         return restAPI.getMetadataElementByUniqueName(serverName, urlMarker, requestBody);
     }
@@ -111,7 +111,7 @@ public class MetadataExplorerResource
 
     public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
                                                            @PathVariable String          urlMarker,
-                                                           @RequestBody  NameRequestBody requestBody)
+                                                           @RequestBody  UniqueNameRequestBody requestBody)
     {
         return restAPI.getMetadataElementGUIDByUniqueName(serverName, urlMarker, requestBody);
     }
@@ -123,11 +123,6 @@ public class MetadataExplorerResource
      * @param serverName name of the server to route the request to
      * @param elementGUID unique identifier of object to retrieve
      * @param urlMarker  view service URL marker
-     * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
-     *                         versions beyond the first page of results. Zero means start from the first element.
-     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
-     *                 return results size.
-     * @param oldestFirst  defining how the results should be ordered.
      * @param requestBody the time window required
      * @return list of beans or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -144,16 +139,10 @@ public class MetadataExplorerResource
     public OpenMetadataElementsResponse getMetadataElementHistory(@PathVariable String                 serverName,
                                                                   @PathVariable String                 elementGUID,
                                                                   @PathVariable String                 urlMarker,
-                                                                  @RequestParam (required = false, defaultValue = "0")
-                                                                      int                    startFrom,
-                                                                  @RequestParam (required = false, defaultValue = "0")
-                                                                      int                    pageSize,
-                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                oldestFirst,
                                                                   @RequestBody(required = false)
                                                                   HistoryRequestBody     requestBody)
     {
-        return restAPI.getMetadataElementHistory(serverName, elementGUID, urlMarker, startFrom, pageSize, oldestFirst, requestBody);
+        return restAPI.getMetadataElementHistory(serverName, elementGUID, urlMarker, requestBody);
     }
 
 
@@ -162,8 +151,6 @@ public class MetadataExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -180,13 +167,9 @@ public class MetadataExplorerResource
 
     public OpenMetadataElementsResponse findMetadataElementsWithString(@PathVariable String                  serverName,
                                                                        @PathVariable String                  urlMarker,
-                                                                       @RequestParam (required = false, defaultValue = "0")
-                                                                       int                     startFrom,
-                                                                       @RequestParam (required = false, defaultValue = "0")
-                                                                       int                     pageSize,
-                                                                       @RequestBody SearchStringRequestBody requestBody)
+                                                                       @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findMetadataElementsWithString(serverName, urlMarker, startFrom, pageSize, requestBody);
+        return restAPI.findMetadataElementsWithString(serverName, urlMarker, requestBody);
     }
 
 
@@ -199,8 +182,6 @@ public class MetadataExplorerResource
      * @param urlMarker  view service URL marker
      * @param anchorGUID unique identifier of anchor
      * @param requestBody string to search for in text
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
@@ -217,13 +198,9 @@ public class MetadataExplorerResource
     public AnchorSearchMatchesResponse findElementsForAnchor(@PathVariable String                  serverName,
                                                              @PathVariable String                  urlMarker,
                                                              @PathVariable String                  anchorGUID,
-                                                             @RequestParam (required = false, defaultValue = "0")
-                                                             int                     startFrom,
-                                                             @RequestParam (required = false, defaultValue = "0")
-                                                             int                     pageSize,
                                                              @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findElementsForAnchor(serverName, urlMarker, anchorGUID, startFrom, pageSize, requestBody);
+        return restAPI.findElementsForAnchor(serverName, urlMarker, anchorGUID, requestBody);
     }
 
 
@@ -472,7 +449,7 @@ public class MetadataExplorerResource
                                                               @RequestParam(required = false, defaultValue = "0")
                                                               int             pageSize,
                                                               @RequestBody (required = false)
-                                                              AnyTimeRequestBody requestBody)
+                                                              ResultsRequestBody requestBody)
     {
         return restAPI.getAnchoredElementsGraph(serverName, urlMarker, elementGUID, startFrom, pageSize, requestBody);
     }
@@ -617,7 +594,7 @@ public class MetadataExplorerResource
                                                                   @PathVariable String  relationshipGUID,
                                                                   @PathVariable String  urlMarker,
                                                                   @RequestBody (required = false)
-                                                                 AnyTimeRequestBody    requestBody)
+                                                                      GetRequestBody requestBody)
     {
         return restAPI.getRelationshipByGUID(serverName, relationshipGUID, urlMarker, requestBody);
     }
@@ -634,7 +611,6 @@ public class MetadataExplorerResource
      *                         versions beyond the first page of results. Zero means start from the first element.
      * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
      *                 return results size.
-     * @param oldestFirst  defining how the results should be ordered.
      * @param requestBody the time window required
      * @return list of beans or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -655,8 +631,6 @@ public class MetadataExplorerResource
                                                                            int                    startFrom,
                                                                        @RequestParam (required = false, defaultValue = "0")
                                                                            int                    pageSize,
-                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                oldestFirst,
                                                                        @RequestBody(required = false)
                                                                        HistoryRequestBody     requestBody)
     {
@@ -665,7 +639,6 @@ public class MetadataExplorerResource
                                               urlMarker,
                                               startFrom,
                                               pageSize,
-                                              oldestFirst,
                                               requestBody);
     }
 }

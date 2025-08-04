@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.viewservices.governanceofficer.server.GovernanceOfficerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,8 +97,6 @@ public class GovernanceOfficerResource
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID unique identifier of the governance definition (returned from create)
-     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     *                          the individual properties specified on the request.
      * @param requestBody     properties for the new element.
      *
      * @return void or
@@ -117,43 +115,10 @@ public class GovernanceOfficerResource
                                                    @PathVariable String             urlMarker,
                                                    @PathVariable
                                                    String                                  governanceDefinitionGUID,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                                 replaceAllProperties,
                                                    @RequestBody (required = false)
                                                    UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateGovernanceDefinition(serverName, urlMarker, governanceDefinitionGUID, replaceAllProperties, requestBody);
-    }
-
-
-    /**
-     * Update the status of a governance definition.
-     *
-     * @param serverName         name of called server.
-     * @param urlMarker  view service URL marker
-     * @param governanceDefinitionGUID unique identifier of the governance definition (returned from create)
-     * @param requestBody     properties for the new status.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/governance-definitions/{governanceDefinitionGUID}/update-status")
-    @Operation(summary="updateGovernanceDefinitionStatus",
-            description="Update the status of a governance definition.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-definition"))
-
-    public VoidResponse updateGovernanceDefinitionStatus(@PathVariable
-                                                         String                                  serverName,
-                                                         @PathVariable String             urlMarker,
-                                                         @PathVariable
-                                                         String                                  governanceDefinitionGUID,
-                                                         @RequestBody (required = false)
-                                                         GovernanceDefinitionStatusRequestBody requestBody)
-    {
-        return restAPI.updateGovernanceDefinitionStatus(serverName, urlMarker, governanceDefinitionGUID, requestBody);
+        return restAPI.updateGovernanceDefinition(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }
 
 
@@ -188,7 +153,7 @@ public class GovernanceOfficerResource
                                             @PathVariable
                                             String                     governanceDefinitionTwoGUID,
                                             @RequestBody (required = false)
-                                            RelationshipRequestBody requestBody)
+                                                NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkPeerDefinitions(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -225,7 +190,7 @@ public class GovernanceOfficerResource
                                               @PathVariable
                                               String                     governanceDefinitionTwoGUID,
                                               @RequestBody (required = false)
-                                              MetadataSourceRequestBody requestBody)
+                                                  DeleteRequestBody requestBody)
     {
         return restAPI.detachPeerDefinitions(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -262,7 +227,7 @@ public class GovernanceOfficerResource
                                                    @PathVariable
                                                    String                     governanceDefinitionTwoGUID,
                                                    @RequestBody (required = false)
-                                                   RelationshipRequestBody requestBody)
+                                                       NewRelationshipRequestBody requestBody)
     {
         return restAPI.attachSupportingDefinition(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -299,7 +264,7 @@ public class GovernanceOfficerResource
                                                    @PathVariable
                                                    String                     governanceDefinitionTwoGUID,
                                                    @RequestBody (required = false)
-                                                   MetadataSourceRequestBody requestBody)
+                                                       DeleteRequestBody requestBody)
     {
         return restAPI.detachSupportingDefinition(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -311,7 +276,6 @@ public class GovernanceOfficerResource
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID  unique identifier of the element to delete
-     * @param cascadedDelete can governance definitions be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -330,12 +294,10 @@ public class GovernanceOfficerResource
                                                    @PathVariable String             urlMarker,
                                                    @PathVariable
                                                    String                    governanceDefinitionGUID,
-                                                   @RequestParam(required = false, defaultValue = "false")
-                                                   boolean                   cascadedDelete,
                                                    @RequestBody (required = false)
-                                                   MetadataSourceRequestBody requestBody)
+                                                       DeleteRequestBody requestBody)
     {
-        return restAPI.deleteGovernanceDefinition(serverName, urlMarker, governanceDefinitionGUID, cascadedDelete, requestBody);
+        return restAPI.deleteGovernanceDefinition(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }
 
 
@@ -344,8 +306,6 @@ public class GovernanceOfficerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -359,17 +319,13 @@ public class GovernanceOfficerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-definition"))
 
-    public GovernanceDefinitionsResponse getGovernanceDefinitionsByName(@PathVariable
+    public OpenMetadataRootElementsResponse getGovernanceDefinitionsByName(@PathVariable
                                                                         String            serverName,
                                                                         @PathVariable String             urlMarker,
-                                                                        @RequestParam (required = false, defaultValue = "0")
-                                                                        int                     startFrom,
-                                                                        @RequestParam (required = false, defaultValue = "0")
-                                                                        int                     pageSize,
                                                                         @RequestBody (required = false)
                                                                         FilterRequestBody requestBody)
     {
-        return restAPI.getGovernanceDefinitionsByName(serverName, urlMarker, startFrom, pageSize, requestBody);
+        return restAPI.getGovernanceDefinitionsByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -378,11 +334,6 @@ public class GovernanceOfficerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -396,23 +347,13 @@ public class GovernanceOfficerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-definition"))
 
-    public GovernanceDefinitionsResponse findGovernanceDefinitions(@PathVariable
+    public  OpenMetadataRootElementsResponse findGovernanceDefinitions(@PathVariable
                                                                    String                  serverName,
                                                                    @PathVariable String             urlMarker,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                   int                     startFrom,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                   int                     pageSize,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                 startsWith,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                 endsWith,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                 ignoreCase,
                                                                    @RequestBody (required = false)
-                                                                   FilterRequestBody requestBody)
+                                                                   SearchStringRequestBody requestBody)
     {
-        return restAPI.findGovernanceDefinitions(serverName, urlMarker, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findGovernanceDefinitions(serverName, urlMarker, requestBody);
     }
 
 
@@ -435,13 +376,13 @@ public class GovernanceOfficerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-definition"))
 
-    public GovernanceDefinitionResponse getGovernanceDefinitionByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getGovernanceDefinitionByGUID(@PathVariable
                                                                       String             serverName,
                                                                       @PathVariable String             urlMarker,
                                                                       @PathVariable
                                                                       String             governanceDefinitionGUID,
                                                                       @RequestBody (required = false)
-                                                                      AnyTimeRequestBody requestBody)
+                                                                             GetRequestBody requestBody)
     {
         return restAPI.getGovernanceDefinitionByGUID(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }
@@ -453,8 +394,6 @@ public class GovernanceOfficerResource
      * @param serverName name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID unique identifier of the governance definition
-     * @param startFrom paging start
-     * @param pageSize max elements that can be returned
      * @param requestBody additional query parameters
      *
      * @return governance definition and its linked elements or
@@ -464,14 +403,12 @@ public class GovernanceOfficerResource
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionGUID}/in-context")
 
-    public GovernanceDefinitionGraphResponse getGovernanceDefinitionInContext(@PathVariable String             serverName,
+    public OpenMetadataRootElementResponse getGovernanceDefinitionInContext(@PathVariable String             serverName,
                                                                               @PathVariable String             urlMarker,
                                                                               @PathVariable String             governanceDefinitionGUID,
-                                                                              @RequestParam(required = false, defaultValue = "0") int startFrom,
-                                                                              @RequestParam(required = false, defaultValue = "0") int pageSize,
                                                                               @RequestBody (required = false)  ResultsRequestBody requestBody)
     {
-        return restAPI.getGovernanceDefinitionInContext(serverName, urlMarker, governanceDefinitionGUID, startFrom, pageSize, requestBody);
+        return restAPI.getGovernanceDefinitionInContext(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }
 
 
@@ -503,7 +440,7 @@ public class GovernanceOfficerResource
                                                    @PathVariable
                                                    String implementationGUID,
                                                    @RequestBody (required = false)
-                                                   RelationshipRequestBody requestBody)
+                                                       NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkDesignToImplementation(serverName, urlMarker, designGUID, implementationGUID, requestBody);
     }
@@ -537,7 +474,7 @@ public class GovernanceOfficerResource
                                                        @PathVariable
                                                        String                     implementationGUID,
                                                        @RequestBody (required = false)
-                                                       MetadataSourceRequestBody requestBody)
+                                                           DeleteRequestBody requestBody)
     {
         return restAPI.detachDesignFromImplementation(serverName, urlMarker, designGUID, implementationGUID, requestBody);
     }
@@ -571,7 +508,7 @@ public class GovernanceOfficerResource
                                                    @PathVariable
                                                    String implementationResourceGUID,
                                                    @RequestBody (required = false)
-                                                   RelationshipRequestBody requestBody)
+                                                       NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkImplementationResource(serverName, urlMarker, designGUID, implementationResourceGUID, requestBody);
     }
@@ -601,7 +538,7 @@ public class GovernanceOfficerResource
                                                      @PathVariable String             urlMarker,
                                                      @PathVariable String                     designGUID,
                                                      @PathVariable String implementationResourceGUID,
-                                                     @RequestBody (required = false) MetadataSourceRequestBody requestBody)
+                                                     @RequestBody (required = false) DeleteRequestBody requestBody)
     {
         return restAPI.detachImplementationResource(serverName, urlMarker, designGUID, implementationResourceGUID, requestBody);
     }

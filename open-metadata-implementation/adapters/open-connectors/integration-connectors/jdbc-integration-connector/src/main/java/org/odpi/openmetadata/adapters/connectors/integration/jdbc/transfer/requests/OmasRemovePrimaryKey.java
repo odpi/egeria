@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
 
 import java.util.function.Consumer;
 
@@ -15,14 +15,16 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the setPrimaryKeyOnColumn call to access service
  */
-class OmasRemovePrimaryKey implements Consumer<String> {
+class OmasRemovePrimaryKey implements Consumer<String>
+{
+    private final SchemaAttributeClient databaseColumnClient;
+    private final AuditLog              auditLog;
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
-
-    OmasRemovePrimaryKey(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasRemovePrimaryKey(SchemaAttributeClient databaseColumnClient,
+                         AuditLog              auditLog)
+    {
+        this.databaseColumnClient = databaseColumnClient;
+        this.auditLog             = auditLog;
     }
 
     /**
@@ -31,11 +33,16 @@ class OmasRemovePrimaryKey implements Consumer<String> {
      * @param columnGuid guid
      */
     @Override
-    public void accept(String columnGuid ) {
-        String methodName = "OmasRemovePrimaryKey";
-        try{
-            databaseIntegratorContext.removePrimaryKeyFromColumn(columnGuid);
-        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+    public void accept(String columnGuid)
+    {
+        final String methodName = "OmasRemovePrimaryKey";
+
+        try
+        {
+            databaseColumnClient.removePrimaryKeyClassification(columnGuid, databaseColumnClient.getMetadataSourceOptions());
+        }
+        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
+        {
             auditLog.logException("Removing primary key from column with guid " + columnGuid ,
                     EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
         }

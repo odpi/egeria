@@ -31,7 +31,7 @@ Content-Type: application/json
 
 ###
 # @name setConfidenceClassification
-# Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
+# Classify the element (typically an asset) to indicate the level of confidence that the organization
 # has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
 # levelIdentifier property.
 #
@@ -42,14 +42,14 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ClassificationRequestBody",
+   "class" : "NewClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
-       "class" : "GovernanceClassificationProperties",
+       "class" : "ConfidenceProperties",
        "levelIdentifier" : 0,
        "status" : 0,
        "confidence" : 0,
@@ -83,7 +83,7 @@ Content-Type: application/json
 
 ###
 # @name setCriticalityClassification
-# Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
+# Classify the element (typically an asset) to indicate how critical the element (or associated resource)
 # is to the organization.  The level of criticality is expressed by the levelIdentifier property.
 #
 # Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
@@ -93,14 +93,14 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ClassificationRequestBody",
+   "class" : "NewClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
-       "class" : "GovernanceClassificationProperties",
+       "class" : "CriticalityProperties",
        "levelIdentifier" : 0,
        "status" : 0,
        "confidence" : 0,
@@ -135,7 +135,7 @@ Content-Type: application/json
 
 ###
 # @name setConfidentialityClassification
-# Classify/reclassify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality
+# Classify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality
 # that any data associated with the element should be given.  If the classification is attached to a glossary term, the level
 # of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification.
 # The level of confidence is expressed by the levelIdentifier property.
@@ -147,14 +147,14 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ClassificationRequestBody",
+   "class" : "NewClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
-       "class" : "GovernanceClassificationProperties",
+       "class" : "ConfidentialityProperties",
        "levelIdentifier" : 0,
        "status" : 0,
        "confidence" : 0,
@@ -187,9 +187,63 @@ Content-Type: application/json
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+
+###
+# @name setImpactClassification
+# Classify the element (typically a context event, to do or incident report) to indicate the level of impact
+# that the event described will have on the organization
+# The level of impact is expressed by the levelIdentifier property.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/impact
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "ImpactProperties",
+       "levelIdentifier" : 0,
+       "status" : 0,
+       "confidence" : 0,
+       "steward" : "Add value here",
+       "stewardTypeName" : "Add value here",
+       "stewardPropertyName" : "Add value here",
+       "source" : "Add value here",
+       "notes" : "Add value here"
+   }
+}
+
+
+###
+# @name clearImpactClassification
+# Remove the impact classification from the element.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/impact/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
 ###
 # @name setRetentionClassification
-# Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource)
+# Classify the element (typically an asset) to indicate how long the element (or associated resource)
 # is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis
 # property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
 # properties respectively.
@@ -201,7 +255,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ClassificationRequestBody",
+   "class" : "NewClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -245,8 +299,163 @@ Content-Type: application/json
 
 
 ###
+# @name addGovernanceExpectations
+# Add the governance expectations classification to an element.
+#
+# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-expectations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "GovernanceExpectationsProperties",
+       "counts" : {
+         "countName1" : 23,
+         "countName2" : 42
+       },
+       "values" : {
+         "valueName1" : "Add string here",
+         "valueName2" : "Add string here"
+       },
+       "flags" : {
+         "flagName1" : true,
+         "flagName2" : false
+       }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearGovernanceExpectations
+# Remove the governance expectations classification from an element.
+#
+# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-expectations/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name addGovernanceMeasurements
+# Add the governance measurements classification to an element.
+#
+# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-measurements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "GovernanceMeasurementsProperties",
+       "counts" : {
+         "countName1" : 23,
+         "countName2" : 42
+       },
+       "values" : {
+         "valueName1" : "Add string here",
+         "valueName2" : "Add string here"
+       },
+       "flags" : {
+         "flagName1" : true,
+         "flagName2" : false
+       }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearGovernanceMeasurements
+# Remove the governance measurements classification from an element.
+#
+# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-measurements/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name addGovernanceMeasurementsResultsDataSet
+# Add the governance measurements results data set classification to an element.
+#
+# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-measurements-results-data-set
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "GovernanceMeasurementsResultsDataSetProperties",
+       "description" : "Add description of the measures this data set contains"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearGovernanceMeasurementsResultsDataSet
+# Remove the governance measurements results data set classification from an element.
+#
+# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-measurements-results-data-set/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
 # @name addSecurityTags
-# Add or replace the security tags for an element.
+# Add the security tags for an element.
 #
 # Security Tags: https://egeria-project.org/types/4/0423-Security-Definitions/
 
@@ -255,7 +464,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ClassificationRequestBody",
+   "class" : "NewClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -295,9 +504,10 @@ Content-Type: application/json
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+
 ###
 # @name addOwnership
-# Add or replace the ownership classification for an element.
+# Add the ownership classification for an element.
 #
 # Ownership: https://egeria-project.org/types/4/0445-Governance-Roles/
 
@@ -306,7 +516,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ClassificationRequestBody",
+   "class" : "NewClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -340,6 +550,98 @@ Content-Type: application/json
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+
+###
+# @name addDigitalResourceOrigin
+# Add the digital resource origin classification for an element.
+#
+# Origin: https://egeria-project.org/types/4/0440-Organizational-Controls/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/digital-resource-origin
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "DigitalResourceOriginProperties",
+       "owner" : "Add value here",
+       "ownerTypeName" : "Add value here",
+       "ownerPropertyName" : "Add value here"
+   }
+}
+
+
+###
+# @name clearDigitalResourceOrigin
+# Remove the digital resource origin classification from an element.
+#
+# Origin: https://egeria-project.org/types/4/0440-Organizational-Controls/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/digital-resource-origin/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name addZoneMembership
+# Add the zone membership classification for an element.
+#
+# Governance Zones: https://egeria-project.org/types/4/0424-Governance-Zones/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/zone-membership
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "ZoneMembershipProperties",
+       "owner" : "Add value here",
+       "ownerTypeName" : "Add value here",
+       "ownerPropertyName" : "Add value here"
+   }
+}
+
+
+###
+# @name clearZoneMembership
+# Remove the zone membership classification from an element.
+#
+# Governance Zones: https://egeria-project.org/types/4/0424-Governance-Zones/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/zone-membership/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
 ###
 # @name addElementToSubjectArea
 # Classify the element to assert that the definitions it represents are part of a subject area definition.
@@ -351,7 +653,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ClassificationRequestBody",
+   "class" : "NewClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -399,7 +701,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "RelationshipRequestBody",
+   "class" : "NewRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -451,7 +753,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "RelationshipRequestBody",
+   "class" : "NewRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -495,7 +797,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "RelationshipRequestBody",
+   "class" : "NewRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -538,7 +840,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "RelationshipRequestBody",
+   "class" : "NewRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -584,7 +886,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "RelationshipRequestBody",
+   "class" : "NewRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -623,7 +925,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "RelationshipRequestBody",
+   "class" : "UpdateRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -683,7 +985,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "RelationshipRequestBody",
+   "class" : "NewRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -718,7 +1020,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "RelationshipRequestBody",
+   "class" : "UpdateRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,

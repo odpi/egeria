@@ -20,9 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = RelatedAsset.class, name = "RelatedAsset"),
                 @JsonSubTypes.Type(value = ElementBase.class, name = "ElementBase"),
-                @JsonSubTypes.Type(value = SchemaAttributeRelationship.class, name = "SchemaAttributeRelationship"),
                 @JsonSubTypes.Type(value = EmbeddedConnection.class, name = "EmbeddedConnection")
         })
 public abstract class PropertyBase

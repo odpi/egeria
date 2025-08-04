@@ -9,7 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConne
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
@@ -40,9 +40,10 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
      * Indicates that the survey action service is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String  methodName = "start";
 
@@ -93,17 +94,17 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
             if (validDatabases.isEmpty())
             {
                 auditLog.logMessage(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                    assetStore.getAssetProperties().getQualifiedName(),
+                                                                                                    assetStore.getQualifiedName(),
                                                                                                     assetStore.getAssetGUID()));
             }
             else
             {
                 List<String> excludedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                                     connectionDetails.getConfigurationProperties(),
+                                                                                     connectionBean.getConfigurationProperties(),
                                                                                      Collections.singletonList("postgres"));
 
                 List<String> includedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                                     connectionDetails.getConfigurationProperties());
+                                                                                     connectionBean.getConfigurationProperties());
 
                 List<String> surveyDatabases = new ArrayList<>();
 
@@ -168,7 +169,7 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
      * @return jdbc connection
      */
     private java.sql.Connection getDatabaseConnection(JDBCResourceConnector serverConnector,
-                                                      String databaseName)
+                                                      String                databaseName)
     {
         final String methodName = "getDatabaseConnection";
 
@@ -177,8 +178,10 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
             String serverNetworkAddress = serverConnector.getConnection().getEndpoint().getAddress();
             String databaseSpecificURL  = serverNetworkAddress.replace("/postgres", "/" + databaseName);
 
-            ConnectionDetails databaseConnectionDetails = new ConnectionDetails(serverConnector.getConnection(),
-                                                                                databaseSpecificURL);
+            org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection databaseConnectionDetails =
+                    new org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection(serverConnector.getConnection());
+
+            databaseConnectionDetails.getEndpoint().setAddress(databaseSpecificURL);
 
             ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 

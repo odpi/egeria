@@ -1,33 +1,24 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Objects;
+import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DeleteRequestBody provides a structure for passing the qualified name of an object to be deleted.
- * This is used to verify that the right object is being deleted.
+ * DeleteRequestBody carries the options for a delete element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DeleteRequestBody implements Serializable
+public class DeleteRequestBody extends DeleteOptions
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private String  qualifiedName = null;
-
 
     /**
      * Default constructor
@@ -43,82 +34,31 @@ public class DeleteRequestBody implements Serializable
      *
      * @param template object to copy
      */
-    public DeleteRequestBody(DeleteRequestBody template)
+    public DeleteRequestBody(DeleteOptions template)
     {
-        if (template != null)
-        {
-            qualifiedName = template.getQualifiedName();
-        }
+        super(template);
     }
 
 
     /**
-     * Set up the fully qualified name.
+     * Copy/clone constructor
      *
-     * @param qualifiedName String name
+     * @param template object to copy
      */
-    public void setQualifiedName(String qualifiedName)
+    public DeleteRequestBody(MetadataSourceOptions template)
     {
-        this.qualifiedName = qualifiedName;
+        super(template);
     }
 
 
     /**
-     * Returns the stored qualified name property for the metadata entity.
-     * If no qualified name is available then the empty string is returned.
+     * JSON-style toString
      *
-     * @return qualifiedName
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-
-    /**
-     * JSON-style toString.
-     *
-     * @return list of properties and their values.
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
-        return "DeleteRequestBody{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                '}';
-    }
-
-
-    /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        DeleteRequestBody that = (DeleteRequestBody) objectToCompare;
-        return Objects.equals(getQualifiedName(), that.getQualifiedName());
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(getQualifiedName());
+        return "DeleteRequestBody{" +  '}';
     }
 }

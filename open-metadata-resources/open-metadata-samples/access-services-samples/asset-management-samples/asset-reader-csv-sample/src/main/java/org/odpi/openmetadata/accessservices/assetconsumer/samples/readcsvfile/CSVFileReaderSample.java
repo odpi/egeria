@@ -7,8 +7,6 @@ import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreC
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -288,27 +286,6 @@ public class CSVFileReaderSample
             }
 
             System.out.println("------------------------------------------------------------------------");
-
-            ConnectedAssetDetails assetProperties = connector.getConnectedAssetProperties(clientUserId);
-
-            if (assetProperties != null)
-            {
-                AssetUniverse assetUniverse = assetProperties.getAssetUniverse();
-
-                if (assetUniverse != null)
-                {
-                    System.out.println("Type Name: " + assetUniverse.getType().getTypeName());
-                    System.out.println("Qualified Name: " + assetUniverse.getQualifiedName());
-                }
-                else
-                {
-                    System.out.println(assetProperties.toString());
-                }
-            }
-            else
-            {
-                System.out.println("No asset properties  ...");
-            }
         }
         catch (FileReadException error)
         {

@@ -79,7 +79,7 @@ public class DataDefinitionConverterBase<B> extends AttributedElementConverterBa
                 dataDefinitionElement.setAssignedMeanings(semanticDefinitions);
             }
 
-            super.addRelationshipsToBean(beanClass, others, null, dataDefinitionElement);
+            super.addRelationshipsToBean(beanClass, others, dataDefinitionElement);
         }
     }
 }

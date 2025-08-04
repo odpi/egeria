@@ -5,30 +5,29 @@ package org.odpi.openmetadata.frameworks.integration.context;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 public class ConnectedAssetContext
 {
-    private final String                userId;
-    private final OpenIntegrationClient openIntegrationClient;
+    private final String               userId;
+    private final ConnectedAssetClient connectedAssetClient;
 
     /**
      * Constructor sets up the key parameters for accessing the asset store.
      *
      * @param userId calling user
-     * @param openIntegrationClient client to make the calls
+     * @param connectedAssetClient client to make the calls
      */
     public ConnectedAssetContext(String                userId,
-                                 OpenIntegrationClient openIntegrationClient)
+                                 ConnectedAssetClient connectedAssetClient)
     {
-        this.userId = userId;
-        this.openIntegrationClient = openIntegrationClient;
+        this.userId               = userId;
+        this.connectedAssetClient = connectedAssetClient;
     }
 
 
@@ -52,7 +51,7 @@ public class ConnectedAssetContext
                                                                ConnectionCheckedException,
                                                                ConnectorCheckedException
     {
-        return openIntegrationClient.saveConnection(userId, connection);
+        return connectedAssetClient.saveConnection(userId, connection);
     }
 
 
@@ -78,25 +77,7 @@ public class ConnectedAssetContext
                                                                ConnectionCheckedException,
                                                                ConnectorCheckedException
     {
-        return openIntegrationClient.saveConnection(userId, assetGUID, connection);
-    }
-
-
-    /**
-     * Returns a comprehensive collection of properties about the requested asset.
-     *
-     * @param assetGUID the unique identifier of an asset to attach the connection to
-     * @return a comprehensive collection of properties about the asset.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public AssetUniverse getAssetProperties(String assetGUID) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
-    {
-        return openIntegrationClient.getAssetProperties(userId, assetGUID);
+        return connectedAssetClient.saveConnection(userId, assetGUID, connection);
     }
 
 
@@ -114,13 +95,13 @@ public class ConnectedAssetContext
      *                                    create the connector.
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
-    public  Connector  getConnectorToAsset(String   assetGUID,
+    public  Connector getConnectorForAsset(String   assetGUID,
                                            AuditLog auditLog) throws InvalidParameterException,
                                                                      ConnectionCheckedException,
                                                                      ConnectorCheckedException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        return openIntegrationClient.getConnectorToAsset(userId, assetGUID, auditLog);
+        return connectedAssetClient.getConnectorForAsset(userId, assetGUID, auditLog);
     }
 }

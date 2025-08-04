@@ -6,10 +6,8 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.server.FeedbackManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
-
 
 
 /**
@@ -44,9 +42,6 @@ public class FeedbackManagerResource
      * @param urlMarker  view service URL marker
      * @param elementGUID        String - unique id for the anchor element.
      * @param commentGUID   String - unique id for an existing comment.  Used to add a reply to a comment.
-     * @param isPublic is this visible to other people
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody   containing type of comment enum and the text of the comment.
      *
      * @return elementGUID for new comment object or
@@ -66,15 +61,9 @@ public class FeedbackManagerResource
                                         @PathVariable String                        urlMarker,
                                         @PathVariable String                         elementGUID,
                                         @PathVariable String                         commentGUID,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                            boolean                        isPublic,
-                                        @RequestParam (required = false)
-                                            String                         viewServiceURLMarker,
-                                        @RequestParam (required = false, defaultValue = "asset-manager")
-                                            String                         accessServiceURLMarker,
-                                        @RequestBody ReferenceableUpdateRequestBody requestBody)
+                                        @RequestBody(required = false) NewFeedbackRequestBody requestBody)
     {
-        return restAPI.addCommentReply(serverName, elementGUID, commentGUID, isPublic, urlMarker, requestBody);
+        return restAPI.addCommentReply(serverName, elementGUID, commentGUID, urlMarker, requestBody);
     }
 
 
@@ -84,9 +73,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param elementGUID        String - unique id for the element.
-     * @param isPublic is this visible to other people
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody containing type of comment enum and the text of the comment.
      *
      * @return elementGUID for new comment object or
@@ -102,18 +88,12 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Element Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public GUIDResponse addCommentToElement(@PathVariable String                         serverName,
-                                            @PathVariable String                        urlMarker,
-                                            @PathVariable String                         elementGUID,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                boolean                        isPublic,
-                                            @RequestParam (required = false)
-                                                String                         viewServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "asset-manager")
-                                                String                         accessServiceURLMarker,
-                                            @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    public GUIDResponse addCommentToElement(@PathVariable String                 serverName,
+                                            @PathVariable String                 urlMarker,
+                                            @PathVariable String                 elementGUID,
+                                            @RequestBody(required = false)  NewFeedbackRequestBody requestBody)
     {
-        return restAPI.addCommentToElement(serverName, elementGUID, isPublic, urlMarker, requestBody);
+        return restAPI.addCommentToElement(serverName, elementGUID, urlMarker, requestBody);
     }
 
 
@@ -123,9 +103,6 @@ public class FeedbackManagerResource
      * @param serverName  name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param elementGUID   String - unique id for the element.
-     * @param isPublic is this visible to other people
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      *
      * @return void or
@@ -144,16 +121,10 @@ public class FeedbackManagerResource
     public VoidResponse addLikeToElement(@PathVariable String         serverName,
                                          @PathVariable String                        urlMarker,
                                          @PathVariable String         elementGUID,
-                                         @RequestParam (required = false, defaultValue = "false")
-                                             boolean                        isPublic,
-                                         @RequestParam (required = false)
-                                             String                         viewServiceURLMarker,
-                                         @RequestParam (required = false, defaultValue = "asset-manager")
-                                             String                         accessServiceURLMarker,
                                          @RequestBody (required = false)
-                                             EffectiveTimeQueryRequestBody requestBody)
+                                             UpdateElementRequestBody requestBody)
     {
-        return restAPI.addLikeToElement(serverName, elementGUID, isPublic, urlMarker, requestBody);
+        return restAPI.addLikeToElement(serverName, elementGUID, urlMarker, requestBody);
     }
 
 
@@ -163,9 +134,6 @@ public class FeedbackManagerResource
      * @param serverName  name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param elementGUID String - unique id for the element.
-     * @param isPublic    is this visible to other people
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody containing the StarRating and user review of element.
      *
      * @return elementGUID for new review object or
@@ -183,15 +151,9 @@ public class FeedbackManagerResource
     public VoidResponse addRatingToElement(@PathVariable String           serverName,
                                            @PathVariable String                        urlMarker,
                                            @PathVariable String           elementGUID,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                               boolean                        isPublic,
-                                           @RequestParam (required = false)
-                                               String                         viewServiceURLMarker,
-                                           @RequestParam (required = false, defaultValue = "asset-manager")
-                                               String                         accessServiceURLMarker,
-                                           @RequestBody  RatingProperties requestBody)
+                                           @RequestBody(required = false)  UpdateElementRequestBody requestBody)
     {
-        return restAPI.addRatingToElement(serverName, elementGUID, isPublic, urlMarker, requestBody);
+        return restAPI.addRatingToElement(serverName, elementGUID, urlMarker, requestBody);
     }
 
 
@@ -202,8 +164,6 @@ public class FeedbackManagerResource
      * @param urlMarker  view service URL marker
      * @param elementGUID        unique id for the element.
      * @param tagGUID          unique id of the tag.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody      optional effective time
      *
      * @return void or
@@ -219,19 +179,13 @@ public class FeedbackManagerResource
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
     public VoidResponse addTagToElement(@PathVariable String             serverName,
-                                        @PathVariable String                        urlMarker,
+                                        @PathVariable String             urlMarker,
                                         @PathVariable String             elementGUID,
                                         @PathVariable String             tagGUID,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                            boolean                        isPublic,
-                                        @RequestParam (required = false)
-                                            String                         viewServiceURLMarker,
-                                        @RequestParam (required = false, defaultValue = "asset-manager")
-                                            String                         accessServiceURLMarker,
                                         @RequestBody (required = false)
-                                            EffectiveTimeQueryRequestBody requestBody)
+                                            MetadataSourceRequestBody requestBody)
     {
-        return restAPI.addTagToElement(serverName, elementGUID, tagGUID, isPublic, urlMarker, requestBody);
+        return restAPI.addTagToElement(serverName, elementGUID, tagGUID, urlMarker, requestBody);
     }
 
 
@@ -240,8 +194,6 @@ public class FeedbackManagerResource
      *
      * @param serverName   name of the server instances for this request.
      * @param urlMarker  view service URL marker
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  public/private flag, name of the tag and (optional) description of the tag.
      *
      * @return new elementGUID or
@@ -256,13 +208,9 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public GUIDResponse createInformalTag(@PathVariable String        serverName,
-                                          @PathVariable String                        urlMarker,
-                                          @RequestParam (required = false)
-                                          String                         viewServiceURLMarker,
-                                          @RequestParam (required = false, defaultValue = "asset-manager")
-                                              String                         accessServiceURLMarker,
-                                          @RequestBody TagProperties requestBody)
+    public GUIDResponse createInformalTag(@PathVariable String                serverName,
+                                          @PathVariable String               urlMarker,
+                                          @RequestBody(required = false) NewElementRequestBody requestBody)
     {
         return restAPI.createInformalTag(serverName, urlMarker, requestBody);
     }
@@ -276,8 +224,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param tagGUID      String - unique id for the tag.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  null request body.
      *
      * @return void or
@@ -295,12 +241,8 @@ public class FeedbackManagerResource
     public VoidResponse   deleteTag(@PathVariable                   String          serverName,
                                     @PathVariable String                        urlMarker,
                                     @PathVariable                   String          tagGUID,
-                                    @RequestParam (required = false)
-                                        String                         viewServiceURLMarker,
-                                    @RequestParam (required = false, defaultValue = "asset-manager")
-                                        String                         accessServiceURLMarker,
                                     @RequestBody(required = false)
-                                        EffectiveTimeQueryRequestBody requestBody)
+                                        DeleteRequestBody requestBody)
     {
         return restAPI.deleteTag(serverName, tagGUID, urlMarker, requestBody);
     }
@@ -314,8 +256,6 @@ public class FeedbackManagerResource
      * @param tagGUID unique identifier of tag.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      *
      * @return element stubs list or
@@ -333,12 +273,8 @@ public class FeedbackManagerResource
     public RelatedMetadataElementStubsResponse getElementsByTag(@PathVariable String serverName,
                                                     @PathVariable String                        urlMarker,
                                                     @PathVariable String tagGUID,
-                                                    @RequestParam int    startFrom,
-                                                    @RequestParam int    pageSize,
-                                                    @RequestParam (required = false)
-                                                    String                         viewServiceURLMarker,
-                                                    @RequestParam (required = false, defaultValue = "asset-manager")
-                                                    String                         accessServiceURLMarker,
+                                                    @RequestParam(required = false, defaultValue = "0") int    startFrom,
+                                                    @RequestParam(required = false, defaultValue = "0") int    pageSize,
                                                     @RequestBody(required = false)
                                                         ResultsRequestBody requestBody)
 
@@ -353,8 +289,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param tagGUID unique identifier of the meaning.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      *
      * @return tag object or
@@ -372,12 +306,8 @@ public class FeedbackManagerResource
     public InformalTagResponse getTag(@PathVariable String   serverName,
                                       @PathVariable String                        urlMarker,
                                       @PathVariable String   tagGUID,
-                                      @RequestParam (required = false)
-                                          String                         viewServiceURLMarker,
-                                      @RequestParam (required = false, defaultValue = "asset-manager")
-                                          String                         accessServiceURLMarker,
                                       @RequestBody(required = false)
-                                          EffectiveTimeQueryRequestBody requestBody)
+                                          GetRequestBody requestBody)
     {
         return restAPI.getTag(serverName, tagGUID, urlMarker, requestBody);
     }
@@ -389,10 +319,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param requestBody name of tag.
-     * @param startFrom  index of the list to start from (0 for start).
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @return list of tag objects or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
@@ -407,15 +333,9 @@ public class FeedbackManagerResource
 
     public InformalTagsResponse getTagsByName(@PathVariable String          serverName,
                                               @PathVariable String                        urlMarker,
-                                              @RequestParam int             startFrom,
-                                              @RequestParam int             pageSize,
-                                              @RequestParam (required = false)
-                                                  String                         viewServiceURLMarker,
-                                              @RequestParam (required = false, defaultValue = "asset-manager")
-                                                  String                         accessServiceURLMarker,
-                                              @RequestBody FilterRequestBody requestBody)
+                                              @RequestBody(required = false) FilterRequestBody requestBody)
     {
-        return restAPI.getTagsByName(serverName, startFrom, pageSize, urlMarker, requestBody);
+        return restAPI.getTagsByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -424,13 +344,6 @@ public class FeedbackManagerResource
      *
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom  index of the list to start from (0 for start).
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody search string and effective time.
      *
      * @return list of comment objects or
@@ -447,31 +360,10 @@ public class FeedbackManagerResource
 
     public CommentElementsResponse findComments(@PathVariable String                  serverName,
                                                 @PathVariable String                        urlMarker,
-                                                @RequestParam (required = false, defaultValue = "0")
-                                                              int                     startFrom,
-                                                @RequestParam (required = false, defaultValue = "0")
-                                                              int                     pageSize,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                 startsWith,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                 endsWith,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                  ignoreCase,
-                                                @RequestParam (required = false)
-                                                    String                         viewServiceURLMarker,
-                                                @RequestParam (required = false, defaultValue = "asset-manager")
-                                                    String                         accessServiceURLMarker,
                                                 @RequestBody  (required = false)
-                                                    FilterRequestBody              requestBody)
+                                                    SearchStringRequestBody              requestBody)
     {
-        return restAPI.findComments(serverName,
-                                    startFrom,
-                                    pageSize,
-                                    startsWith,
-                                    endsWith,
-                                    ignoreCase,
-                                    urlMarker,
-                                    requestBody);
+        return restAPI.findComments(serverName, urlMarker, requestBody);
     }
 
 
@@ -480,13 +372,6 @@ public class FeedbackManagerResource
      *
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom  index of the list to start from (0 for start).
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody search string and effective time.
      *
      * @return list of tag objects or
@@ -503,31 +388,10 @@ public class FeedbackManagerResource
 
     public InformalTagsResponse findTags(@PathVariable String                  serverName,
                                          @PathVariable String                        urlMarker,
-                                         @RequestParam (required = false, defaultValue = "0")
-                                             int                     startFrom,
-                                         @RequestParam (required = false, defaultValue = "0")
-                                             int                     pageSize,
-                                         @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 startsWith,
-                                         @RequestParam (required = false, defaultValue = "false")
-                                             boolean                 endsWith,
-                                         @RequestParam (required = false, defaultValue = "false")
-                                             boolean                  ignoreCase,
-                                         @RequestParam (required = false)
-                                             String                         viewServiceURLMarker,
-                                         @RequestParam (required = false, defaultValue = "asset-manager")
-                                             String                         accessServiceURLMarker,
                                          @RequestBody  (required = false)
-                                             FilterRequestBody              requestBody)
+                                             SearchStringRequestBody              requestBody)
     {
-        return restAPI.findTags(serverName,
-                                startFrom,
-                                pageSize,
-                                startsWith,
-                                endsWith,
-                                ignoreCase,
-                                urlMarker,
-                                requestBody);
+        return restAPI.findTags(serverName, urlMarker, requestBody);
     }
 
 
@@ -536,13 +400,6 @@ public class FeedbackManagerResource
      *
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom  index of the list to start from (0 for start).
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody search string and effective time.
      *
      * @return list of tag objects or
@@ -559,31 +416,10 @@ public class FeedbackManagerResource
 
     public InformalTagsResponse findMyTags(@PathVariable String                  serverName,
                                            @PathVariable String                        urlMarker,
-                                           @RequestParam (required = false, defaultValue = "0")
-                                               int                     startFrom,
-                                           @RequestParam (required = false, defaultValue = "0")
-                                               int                     pageSize,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                               boolean                 startsWith,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                               boolean                 endsWith,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                               boolean                  ignoreCase,
-                                           @RequestParam (required = false)
-                                               String                         viewServiceURLMarker,
-                                           @RequestParam (required = false, defaultValue = "asset-manager")
-                                               String                         accessServiceURLMarker,
                                            @RequestBody  (required = false)
-                                               FilterRequestBody              requestBody)
+                                               SearchStringRequestBody              requestBody)
     {
-        return restAPI.findMyTags(serverName,
-                                  startFrom,
-                                  pageSize,
-                                  startsWith,
-                                  endsWith,
-                                  ignoreCase,
-                                  urlMarker,
-                                  requestBody);
+        return restAPI.findMyTags(serverName, urlMarker, requestBody);
     }
 
 
@@ -593,8 +429,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param commentGUID  String - unique id for the comment object
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -612,12 +446,8 @@ public class FeedbackManagerResource
     public VoidResponse removeCommentFromElement(@PathVariable String                         serverName,
                                                  @PathVariable String                        urlMarker,
                                                  @PathVariable String                         commentGUID,
-                                                 @RequestParam (required = false)
-                                                     String                         viewServiceURLMarker,
-                                                 @RequestParam (required = false, defaultValue = "asset-manager")
-                                                     String                         accessServiceURLMarker,
                                                  @RequestBody(required = false)
-                                                                EffectiveTimeQueryRequestBody requestBody)
+                                                     DeleteRequestBody requestBody)
     {
         return restAPI.removeCommentFromElement(serverName,  commentGUID, urlMarker, requestBody);
     }
@@ -629,8 +459,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param commentGUID  unique identifier for the comment object.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      * @return comment properties or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -647,12 +475,8 @@ public class FeedbackManagerResource
     public CommentResponse getComment(@PathVariable String                        serverName,
                                       @PathVariable String                        urlMarker,
                                       @PathVariable String                        commentGUID,
-                                      @RequestParam (required = false)
-                                                 String                         viewServiceURLMarker,
-                                      @RequestParam (required = false, defaultValue = "asset-manager")
-                                                 String                         accessServiceURLMarker,
                                       @RequestBody(required = false)
-                                          EffectiveTimeQueryRequestBody requestBody)
+                                          GetRequestBody requestBody)
     {
         return restAPI.getCommentByGUID(serverName, commentGUID, urlMarker, requestBody);
     }
@@ -664,10 +488,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      * @return list of ratings or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -684,17 +504,10 @@ public class FeedbackManagerResource
     public RatingElementsResponse getAttachedRatings(@PathVariable String                        serverName,
                                                      @PathVariable String                        urlMarker,
                                                      @PathVariable String                        elementGUID,
-                                                     @RequestParam int                           startFrom,
-                                                     @RequestParam int                           pageSize,
-                                                     @RequestParam (required = false)
-                                                           String                         viewServiceURLMarker,
-                                                     @RequestParam (required = false, defaultValue = "asset-manager")
-                                                           String                         accessServiceURLMarker,
                                                      @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getAttachedRatings(serverName, elementGUID, startFrom, pageSize, urlMarker, requestBody);
+        return restAPI.getAttachedRatings(serverName, elementGUID, urlMarker, requestBody);
     }
-
 
 
     /**
@@ -703,10 +516,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      * @return list of likes or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -723,15 +532,9 @@ public class FeedbackManagerResource
     public LikeElementsResponse getAttachedLikes(@PathVariable String                        serverName,
                                                  @PathVariable String                        urlMarker,
                                                  @PathVariable String                        elementGUID,
-                                                 @RequestParam int                           startFrom,
-                                                 @RequestParam int                           pageSize,
-                                                 @RequestParam (required = false)
-                                                     String                         viewServiceURLMarker,
-                                                 @RequestParam (required = false, defaultValue = "asset-manager")
-                                                       String                         accessServiceURLMarker,
                                                  @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getAttachedLikes(serverName, elementGUID, startFrom, pageSize, urlMarker, requestBody);
+        return restAPI.getAttachedLikes(serverName, elementGUID, urlMarker, requestBody);
     }
 
 
@@ -741,10 +544,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      * @return list of comments or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -761,15 +560,9 @@ public class FeedbackManagerResource
     public CommentElementsResponse getAttachedComments(@PathVariable String                        serverName,
                                                        @PathVariable String                        urlMarker,
                                                        @PathVariable String                        elementGUID,
-                                                       @RequestParam int                           startFrom,
-                                                       @RequestParam int                           pageSize,
-                                                       @RequestParam (required = false)
-                                                       String                         viewServiceURLMarker,
-                                                       @RequestParam (required = false, defaultValue = "asset-manager")
-                                                       String                         accessServiceURLMarker,
                                                        @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getAttachedComments(serverName, elementGUID, startFrom, pageSize, urlMarker, requestBody);
+        return restAPI.getAttachedComments(serverName, elementGUID, urlMarker, requestBody);
     }
 
 
@@ -779,10 +572,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      * @return list of informal tags or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -799,15 +588,9 @@ public class FeedbackManagerResource
     public InformalTagsResponse getAttachedTags(@PathVariable String                        serverName,
                                                 @PathVariable String                        urlMarker,
                                                 @PathVariable String                        elementGUID,
-                                                @RequestParam int                           startFrom,
-                                                       @RequestParam int                           pageSize,
-                                                       @RequestParam (required = false)
-                                                       String                         viewServiceURLMarker,
-                                                       @RequestParam (required = false, defaultValue = "asset-manager")
-                                                       String                         accessServiceURLMarker,
-                                                       @RequestBody(required = false) ResultsRequestBody requestBody)
+                                                @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getAttachedTags(serverName, elementGUID, startFrom, pageSize, urlMarker, requestBody);
+        return restAPI.getAttachedTags(serverName, elementGUID, urlMarker, requestBody);
     }
 
 
@@ -817,8 +600,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param elementGUID    unique identifier for the element where the like is attached.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -836,12 +617,8 @@ public class FeedbackManagerResource
     public VoidResponse   removeLikeFromElement(@PathVariable                  String          serverName,
                                                 @PathVariable String                        urlMarker,
                                                 @PathVariable                  String          elementGUID,
-                                                @RequestParam (required = false)
-                                                    String                         viewServiceURLMarker,
-                                                @RequestParam (required = false, defaultValue = "asset-manager")
-                                                    String                         accessServiceURLMarker,
                                                 @RequestBody(required = false)
-                                                    EffectiveTimeQueryRequestBody requestBody)
+                                                    DeleteRequestBody requestBody)
     {
         return restAPI.removeLikeFromElement(serverName, elementGUID, urlMarker, requestBody);
     }
@@ -853,8 +630,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param elementGUID         unique identifier for the element where the rating is attached.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -872,12 +647,8 @@ public class FeedbackManagerResource
     public VoidResponse   removeRatingFromElement(@PathVariable                  String          serverName,
                                                   @PathVariable String                        urlMarker,
                                                   @PathVariable                  String          elementGUID,
-                                                  @RequestParam (required = false)
-                                                      String                         viewServiceURLMarker,
-                                                  @RequestParam (required = false, defaultValue = "asset-manager")
-                                                      String                         accessServiceURLMarker,
                                                   @RequestBody(required = false)
-                                                      EffectiveTimeQueryRequestBody requestBody)
+                                                      DeleteRequestBody requestBody)
     {
         return restAPI.removeRatingFromElement(serverName, elementGUID, urlMarker, requestBody);
     }
@@ -890,8 +661,6 @@ public class FeedbackManagerResource
      * @param urlMarker  view service URL marker
      * @param elementGUID    unique id for the element.
      * @param tagGUID      unique id of the tag.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  null request body needed for correct protocol exchange.
      *
      * @return void or
@@ -910,12 +679,8 @@ public class FeedbackManagerResource
                                              @PathVariable String                        urlMarker,
                                              @PathVariable                  String          elementGUID,
                                              @PathVariable                  String          tagGUID,
-                                             @RequestParam (required = false)
-                                                 String                         viewServiceURLMarker,
-                                             @RequestParam (required = false, defaultValue = "asset-manager")
-                                                 String                         accessServiceURLMarker,
                                              @RequestBody(required = false)
-                                                 EffectiveTimeQueryRequestBody requestBody)
+                                                 DeleteRequestBody requestBody)
     {
         return restAPI.removeTagFromElement(serverName, elementGUID, tagGUID, urlMarker, requestBody);
     }
@@ -927,9 +692,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param commentGUID  unique identifier for the comment to change.
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -947,55 +709,9 @@ public class FeedbackManagerResource
     public VoidResponse   updateComment(@PathVariable String                         serverName,
                                         @PathVariable String                        urlMarker,
                                         @PathVariable String                         commentGUID,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                        isMergeUpdate,
-                                        @RequestParam (required = false)
-                                                      String                         viewServiceURLMarker,
-                                        @RequestParam (required = false, defaultValue = "asset-manager")
-                                                      String                         accessServiceURLMarker,
-                                        @RequestBody  ReferenceableUpdateRequestBody requestBody)
+                                        @RequestBody(required = false)  UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateComment(serverName, commentGUID, isMergeUpdate, urlMarker, requestBody);
-    }
-
-
-    /**
-     * Update an existing comment's visibility.
-     *
-     * @param serverName   name of the server instances for this request.
-     * @param urlMarker  view service URL marker
-     * @param commentGUID  unique identifier for the comment to change.
-     * @param isPublic is this visible to other people
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody  containing type of comment enum and the text of the comment.
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the element properties in the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/parents/{parentGUID}/comments/{commentGUID}/update-visibility")
-
-    @Operation(summary="updateCommentVisibility",
-            description="Update an existing comment's visibility.",
-            externalDocs=@ExternalDocumentation(description="Element Feedback",
-                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
-
-    public VoidResponse   updateCommentVisibility(@PathVariable String               serverName,
-                                                  @PathVariable String                        urlMarker,
-                                                  @PathVariable String               parentGUID,
-                                                  @PathVariable String               commentGUID,
-                                                  @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                        isPublic,
-                                                  @RequestParam (required = false)
-                                                      String                         viewServiceURLMarker,
-                                                  @RequestParam (required = false, defaultValue = "asset-manager")
-                                                      String                         accessServiceURLMarker,
-                                                  @RequestBody  (required = false)
-                                                      EffectiveTimeQueryRequestBody requestBody)
-    {
-        return restAPI.updateCommentVisibility(serverName, parentGUID, commentGUID, isPublic, urlMarker, requestBody);
+        return restAPI.updateComment(serverName, commentGUID, urlMarker, requestBody);
     }
 
 
@@ -1006,9 +722,6 @@ public class FeedbackManagerResource
      * @param urlMarker  view service URL marker
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
-     * @param isPublic is this visible to other people
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1027,19 +740,12 @@ public class FeedbackManagerResource
                                             @PathVariable String                        urlMarker,
                                             @PathVariable String                  questionCommentGUID,
                                             @PathVariable String                  answerCommentGUID,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                boolean                        isPublic,
-                                            @RequestParam (required = false)
-                                                String                         viewServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "asset-manager")
-                                                String                         accessServiceURLMarker,
                                             @RequestBody (required = false)
-                                                EffectiveTimeQueryRequestBody requestBody)
+                                                NewRelationshipRequestBody requestBody)
     {
         return restAPI.setupAcceptedAnswer(serverName,
                                            questionCommentGUID,
                                            answerCommentGUID,
-                                           isPublic,
                                            urlMarker,
                                            requestBody);
     }
@@ -1052,8 +758,6 @@ public class FeedbackManagerResource
      * @param urlMarker  view service URL marker
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -1072,12 +776,8 @@ public class FeedbackManagerResource
                                             @PathVariable String                        urlMarker,
                                             @PathVariable String                        questionCommentGUID,
                                             @PathVariable String                        answerCommentGUID,
-                                            @RequestParam (required = false)
-                                                          String                         viewServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "asset-manager")
-                                                          String                         accessServiceURLMarker,
                                             @RequestBody  (required = false)
-                                                          EffectiveTimeQueryRequestBody requestBody)
+                                                DeleteRequestBody requestBody)
     {
         return restAPI.clearAcceptedAnswer(serverName,
                                            questionCommentGUID,
@@ -1093,8 +793,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param tagGUID      unique id for the tag
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  contains the name of the tag and (optional) description of the tag.
      *
      * @return void or
@@ -1112,11 +810,7 @@ public class FeedbackManagerResource
     public VoidResponse   updateTagDescription(@PathVariable String                       serverName,
                                                @PathVariable String                        urlMarker,
                                                @PathVariable String                       tagGUID,
-                                               @RequestParam (required = false)
-                                                   String                         viewServiceURLMarker,
-                                               @RequestParam (required = false, defaultValue = "asset-manager")
-                                                   String                         accessServiceURLMarker,
-                                               @RequestBody  InformalTagUpdateRequestBody requestBody)
+                                               @RequestBody  UpdateElementRequestBody requestBody)
     {
         return restAPI.updateTagDescription(serverName, tagGUID, urlMarker, requestBody);
     }
@@ -1135,9 +829,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element where the note log is located
-     * @param isPublic                 is this element visible to other people.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  contains the name of the tag and (optional) description of the tag
      *
      * @return guid for new tag or
@@ -1155,15 +846,9 @@ public class FeedbackManagerResource
     public GUIDResponse createNoteLog(@PathVariable String            serverName,
                                       @PathVariable String                        urlMarker,
                                       @PathVariable String            elementGUID,
-                                      @RequestParam (required = false, defaultValue = "false")
-                                          boolean                        isPublic,
-                                      @RequestParam (required = false)
-                                          String                         viewServiceURLMarker,
-                                      @RequestParam (required = false, defaultValue = "asset-manager")
-                                          String            accessServiceURLMarker,
-                                      @RequestBody NoteLogProperties requestBody)
+                                      @RequestBody NewFeedbackRequestBody requestBody)
     {
-        return restAPI.createNoteLog(serverName, elementGUID, isPublic, urlMarker, requestBody);
+        return restAPI.createNoteLog(serverName, elementGUID, urlMarker, requestBody);
     }
 
 
@@ -1173,9 +858,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param noteLogGUID  unique identifier for the note log to change.
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -1194,14 +876,9 @@ public class FeedbackManagerResource
     public VoidResponse   updateNoteLog(@PathVariable String                         serverName,
                                         @PathVariable String                        urlMarker,
                                         @PathVariable String                         noteLogGUID,
-                                        @RequestParam boolean                        isMergeUpdate,
-                                        @RequestParam (required = false)
-                                        String                         viewServiceURLMarker,
-                                        @RequestParam (required = false, defaultValue = "asset-manager")
-                                        String                         accessServiceURLMarker,
-                                        @RequestBody ReferenceableUpdateRequestBody requestBody)
+                                        @RequestBody UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateNoteLog(serverName, noteLogGUID, isMergeUpdate, urlMarker, requestBody);
+        return restAPI.updateNoteLog(serverName, noteLogGUID, urlMarker, requestBody);
     }
 
 
@@ -1211,9 +888,7 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param noteLogGUID   unique id for the note log.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody  null request body.
+     * @param requestBody  delete request body.
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
@@ -1231,12 +906,8 @@ public class FeedbackManagerResource
     public VoidResponse   removeNoteLog(@PathVariable String          serverName,
                                         @PathVariable String                        urlMarker,
                                         @PathVariable String          noteLogGUID,
-                                        @RequestParam (required = false)
-                                        String                         viewServiceURLMarker,
-                                        @RequestParam (required = false, defaultValue = "asset-manager")
-                                        String          accessServiceURLMarker,
                                         @RequestBody (required = false)
-                                        EffectiveTimeQueryRequestBody requestBody)
+                                            DeleteRequestBody requestBody)
     {
         return restAPI.deleteNoteLog(serverName, noteLogGUID, urlMarker, requestBody);
     }
@@ -1247,13 +918,6 @@ public class FeedbackManagerResource
      *
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom  index of the list to start from (0 for start).
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody search string and effective time.
      *
      * @return list of matching metadata elements or
@@ -1270,31 +934,10 @@ public class FeedbackManagerResource
 
     public NoteLogsResponse findNoteLogs(@PathVariable String                  serverName,
                                          @PathVariable String                        urlMarker,
-                                         @RequestParam (required = false, defaultValue = "0")
-                                                    int                     startFrom,
-                                         @RequestParam (required = false, defaultValue = "0")
-                                                    int                     pageSize,
-                                         @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                 startsWith,
-                                         @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                 endsWith,
-                                         @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                  ignoreCase,
-                                         @RequestParam (required = false)
-                                                    String                         viewServiceURLMarker,
-                                         @RequestParam (required = false, defaultValue = "asset-manager")
-                                                    String                         accessServiceURLMarker,
                                          @RequestBody  (required = false)
-                                             FilterRequestBody              requestBody)
+                                             SearchStringRequestBody              requestBody)
     {
-        return restAPI.findNoteLogs(serverName,
-                                    startFrom,
-                                    pageSize,
-                                    startsWith,
-                                    endsWith,
-                                    ignoreCase,
-                                    urlMarker,
-                                    requestBody);
+        return restAPI.findNoteLogs(serverName, urlMarker, requestBody);
     }
 
 
@@ -1304,10 +947,6 @@ public class FeedbackManagerResource
      *
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody name to search for and correlators
      *
      * @return list of matching metadata elements or
@@ -1324,15 +963,9 @@ public class FeedbackManagerResource
 
     public NoteLogsResponse getNoteLogsByName(@PathVariable String          serverName,
                                               @PathVariable String                        urlMarker,
-                                              @RequestParam int             startFrom,
-                                              @RequestParam int             pageSize,
-                                              @RequestParam (required = false)
-                                                         String                         viewServiceURLMarker,
-                                              @RequestParam (required = false, defaultValue = "asset-manager")
-                                                         String                         accessServiceURLMarker,
                                               @RequestBody  FilterRequestBody requestBody)
     {
-        return restAPI.getNoteLogsByName(serverName, startFrom, pageSize, urlMarker, requestBody);
+        return restAPI.getNoteLogsByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -1342,10 +975,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param elementGUID element to start from
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      *
      * @return list of matching metadata elements or
@@ -1363,15 +992,9 @@ public class FeedbackManagerResource
     public NoteLogsResponse getNoteLogsForElement(@PathVariable String          serverName,
                                                   @PathVariable String                        urlMarker,
                                                   @PathVariable String          elementGUID,
-                                                  @RequestParam int             startFrom,
-                                                  @RequestParam int             pageSize,
-                                                  @RequestParam (required = false)
-                                                             String                         viewServiceURLMarker,
-                                                  @RequestParam (required = false, defaultValue = "asset-manager")
-                                                             String                         accessServiceURLMarker,
                                                   @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getNoteLogsForElement(serverName, elementGUID, startFrom, pageSize, urlMarker,requestBody);
+        return restAPI.getNoteLogsForElement(serverName, elementGUID, urlMarker,requestBody);
     }
 
 
@@ -1381,8 +1004,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param noteLogGUID unique identifier of the requested metadata element
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      *
      * @return requested metadata element or
@@ -1400,11 +1021,7 @@ public class FeedbackManagerResource
     public NoteLogResponse getNoteLogByGUID(@PathVariable String                        serverName,
                                             @PathVariable String                        urlMarker,
                                             @PathVariable String                        noteLogGUID,
-                                            @RequestParam (required = false)
-                                                          String                         viewServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "asset-manager")
-                                                          String                         accessServiceURLMarker,
-                                            @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
+                                            @RequestBody(required = false) GetRequestBody requestBody)
     {
         return restAPI.getNoteLogByGUID(serverName, noteLogGUID, urlMarker, requestBody);
     }
@@ -1421,8 +1038,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param noteLogGUID unique identifier of the  note log
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  contains the name of the tag and (optional) description of the tag
      *
      * @return guid for new tag or
@@ -1440,11 +1055,7 @@ public class FeedbackManagerResource
     public GUIDResponse createNote(@PathVariable String         serverName,
                                    @PathVariable String                        urlMarker,
                                    @PathVariable String         noteLogGUID,
-                                   @RequestParam (required = false)
-                                                 String                         viewServiceURLMarker,
-                                   @RequestParam (required = false, defaultValue = "asset-manager")
-                                                 String         accessServiceURLMarker,
-                                   @RequestBody NoteProperties requestBody)
+                                   @RequestBody NewFeedbackRequestBody requestBody)
     {
         return restAPI.createNote(serverName, noteLogGUID, urlMarker, requestBody);
     }
@@ -1456,9 +1067,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param noteGUID  unique identifier for the note to change.
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -1476,14 +1084,9 @@ public class FeedbackManagerResource
     public VoidResponse   updateNote(@PathVariable String                         serverName,
                                      @PathVariable String                        urlMarker,
                                      @PathVariable String                         noteGUID,
-                                     @RequestParam boolean                        isMergeUpdate,
-                                     @RequestParam (required = false)
-                                                   String                         viewServiceURLMarker,
-                                     @RequestParam (required = false, defaultValue = "asset-manager")
-                                                   String                         accessServiceURLMarker,
-                                     @RequestBody  ReferenceableUpdateRequestBody requestBody)
+                                     @RequestBody  UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateNote(serverName, noteGUID, isMergeUpdate, urlMarker, requestBody);
+        return restAPI.updateNote(serverName, noteGUID, urlMarker, requestBody);
     }
 
 
@@ -1493,8 +1096,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param noteGUID   unique id for the note .
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  null request body.
      *
      * @return void or
@@ -1512,12 +1113,8 @@ public class FeedbackManagerResource
     public VoidResponse   removeNote(@PathVariable String          serverName,
                                      @PathVariable String                        urlMarker,
                                      @PathVariable String          noteGUID,
-                                     @RequestParam (required = false)
-                                     String                         viewServiceURLMarker,
-                                     @RequestParam (required = false, defaultValue = "asset-manager")
-                                     String          accessServiceURLMarker,
                                      @RequestBody(required = false)
-                                         EffectiveTimeQueryRequestBody requestBody)
+                                         DeleteRequestBody requestBody)
     {
         return restAPI.deleteNote(serverName, noteGUID, urlMarker, requestBody);
     }
@@ -1528,13 +1125,6 @@ public class FeedbackManagerResource
      *
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom  index of the list to start from (0 for start).
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody search string and effective time.
      *
      * @return list of matching metadata elements or
@@ -1551,31 +1141,10 @@ public class FeedbackManagerResource
 
     public NotesResponse findNotes(@PathVariable String                  serverName,
                                    @PathVariable String                        urlMarker,
-                                   @RequestParam (required = false, defaultValue = "0")
-                                              int                     startFrom,
-                                   @RequestParam (required = false, defaultValue = "0")
-                                              int                     pageSize,
-                                   @RequestParam (required = false, defaultValue = "false")
-                                              boolean                 startsWith,
-                                   @RequestParam (required = false, defaultValue = "false")
-                                              boolean                 endsWith,
-                                   @RequestParam (required = false, defaultValue = "false")
-                                              boolean                  ignoreCase,
-                                   @RequestParam (required = false)
-                                              String                         viewServiceURLMarker,
-                                   @RequestParam (required = false, defaultValue = "asset-manager")
-                                              String                         accessServiceURLMarker,
                                    @RequestBody  (required = false)
-                                       FilterRequestBody              requestBody)
+                                       SearchStringRequestBody              requestBody)
     {
-        return restAPI.findNotes(serverName,
-                                 startFrom,
-                                 pageSize,
-                                 startsWith,
-                                 endsWith,
-                                 ignoreCase,
-                                 urlMarker,
-                                 requestBody);
+        return restAPI.findNotes(serverName, urlMarker, requestBody);
     }
 
 
@@ -1585,10 +1154,6 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param noteLogGUID unique identifier of the note log of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody optional effective time
      *
      * @return list of associated metadata elements or
@@ -1606,16 +1171,10 @@ public class FeedbackManagerResource
     public NotesResponse getNotesForNoteLog(@PathVariable String                        serverName,
                                             @PathVariable String                        urlMarker,
                                             @PathVariable String                        noteLogGUID,
-                                            @RequestParam int                           startFrom,
-                                            @RequestParam int                           pageSize,
-                                            @RequestParam (required = false)
-                                                       String                         viewServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "asset-manager")
-                                                       String                         accessServiceURLMarker,
                                             @RequestBody(required = false)
                                                        ResultsRequestBody requestBody)
     {
-        return restAPI.getNotesForNoteLog(serverName, noteLogGUID, startFrom, pageSize, urlMarker, requestBody);
+        return restAPI.getNotesForNoteLog(serverName, noteLogGUID, urlMarker, requestBody);
     }
 
 
@@ -1625,9 +1184,7 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param noteGUID unique identifier of the requested metadata element
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     *
+      *
      * @return matching metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
@@ -1640,14 +1197,10 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public NoteResponse getNoteByGUID(@PathVariable String                        serverName,
-                                      @PathVariable String                        urlMarker,
-                                      @PathVariable String                        noteGUID,
-                                      @RequestParam (required = false)
-                                                 String                         viewServiceURLMarker,
-                                      @RequestParam (required = false, defaultValue = "asset-manager")
-                                                 String                         accessServiceURLMarker,
-                                      @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
+    public NoteResponse getNoteByGUID(@PathVariable String                              serverName,
+                                      @PathVariable String                              urlMarker,
+                                      @PathVariable String                              noteGUID,
+                                      @RequestBody(required = false) GetRequestBody requestBody)
     {
         return restAPI.getNoteByGUID(serverName, noteGUID, urlMarker, requestBody);
     }

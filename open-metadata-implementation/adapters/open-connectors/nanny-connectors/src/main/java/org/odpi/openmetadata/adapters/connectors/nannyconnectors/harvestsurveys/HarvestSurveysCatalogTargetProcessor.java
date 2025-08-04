@@ -5,8 +5,6 @@ package org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
-import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc.HarvestSurveysAuditCode;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc.HarvestSurveysErrorCode;
@@ -22,11 +20,15 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
+import org.odpi.openmetadata.frameworks.integration.context.ConnectedAssetContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -36,7 +38,6 @@ import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnno
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFolderAnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
-import org.odpi.openmetadata.integrationservices.catalog.connector.ConnectorFactoryService;
 
 import java.util.*;
 
@@ -44,7 +45,7 @@ import java.util.*;
 /**
  * HarvestSurveysConnector extracts survey results from the open metadata ecosystem.
  */
-public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessorBase implements AssetManagerEventListener
+public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessorBase implements OpenMetadataEventListener
 {
     private static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
     
@@ -54,9 +55,9 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * a new row each time an update is made.  This is accomplished by having the sync_time
      * column as part of the primary key.
      */
-    private final OpenMetadataAccess      openMetadataAccess;
-    private final ConnectorFactoryService connectorFactoryService;
-    private       JDBCResourceConnector   databaseClient     = null;
+    private final OpenMetadataStore     openMetadataStore;
+    private final ConnectedAssetContext connectorFactoryService;
+    private       JDBCResourceConnector databaseClient     = null;
 
 
     /**
@@ -65,25 +66,24 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * @param catalogTarget catalog target information
      * @param connectorToTarget connector to access the target resource
      * @param connectorName name of this integration connector
-     * @param auditLog logging destination 
-     * @param openMetadataAccess access to open metadata
-     * @param connectorFactoryService client for creating open connectors
+     * @param auditLog logging destination
      * @throws ConnectorCheckedException error
+     * @throws UserNotAuthorizedException connector disconnected
      */
     public HarvestSurveysCatalogTargetProcessor(CatalogTarget           catalogTarget,
+                                                CatalogTargetContext    integrationContext,
                                                 Connector               connectorToTarget,
                                                 String                  connectorName,
-                                                AuditLog                auditLog,
-                                                OpenMetadataAccess      openMetadataAccess,
-                                                ConnectorFactoryService connectorFactoryService) throws ConnectorCheckedException
+                                                AuditLog                auditLog) throws ConnectorCheckedException,
+                                                                                         UserNotAuthorizedException
     {
-        super(catalogTarget, connectorToTarget, connectorName, auditLog);
+        super(catalogTarget, integrationContext, connectorToTarget, connectorName, auditLog);
 
-        this.openMetadataAccess = openMetadataAccess;
-        this.openMetadataAccess.setForLineage(true);
-        this.connectorFactoryService = connectorFactoryService;
+        this.openMetadataStore = integrationContext.getOpenMetadataStore();
+        this.openMetadataStore.setForLineage(true);
+        this.connectorFactoryService = integrationContext.getConnectedAssetContext();
 
-        if (super.getCatalogTargetConnector() instanceof JDBCResourceConnector jdbcResourceConnector)
+        if (super.getConnectorToTarget() instanceof JDBCResourceConnector jdbcResourceConnector)
         {
             this.databaseClient = jdbcResourceConnector;
             this.databaseClient.start();
@@ -176,16 +176,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             databaseConnection = databaseClient.getDataSource().getConnection();
 
             int startFrom = 0;
-            List<OpenMetadataElement> surveyReportElements = openMetadataAccess.findMetadataElements(OpenMetadataType.SURVEY_REPORT.typeName,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
+            List<OpenMetadataElement> surveyReportElements = openMetadataStore.findMetadataElements(OpenMetadataType.SURVEY_REPORT.typeName,
                                                                                                      null,
                                                                                                      null,
                                                                                                      null,
                                                                                                      startFrom,
-                                                                                                     openMetadataAccess.getMaxPagingSize());
+                                                                                                     openMetadataStore.getMaxPagingSize());
 
             while (surveyReportElements != null)
             {
@@ -194,18 +190,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     processSurveyReport(databaseConnection, surveyReportElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
 
-                surveyReportElements = openMetadataAccess.findMetadataElements(OpenMetadataType.SURVEY_REPORT.typeName,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               startFrom,
-                                                                               openMetadataAccess.getMaxPagingSize());
+                surveyReportElements = openMetadataStore.findMetadataElements(OpenMetadataType.SURVEY_REPORT.typeName,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              startFrom,
+                                                                              openMetadataStore.getMaxPagingSize());
             }
 
             databaseConnection.commit();
@@ -277,11 +269,11 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             List<RelatedMetadataElement> relatedOtherAnnotations                  = new ArrayList<>();
 
             int startFrom = 0;
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(surveyReportElement.getElementGUID(),
-                                                                                                               0,
-                                                                                                               null,
-                                                                                                               startFrom,
-                                                                                                               openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(surveyReportElement.getElementGUID(),
+                                                                                                              0,
+                                                                                                              null,
+                                                                                                              startFrom,
+                                                                                                              openMetadataStore.getMaxPagingSize());
 
             while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -323,13 +315,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     }
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
 
-                relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(surveyReportElement.getElementGUID(),
-                                                                                        0,
-                                                                                        null,
-                                                                                        startFrom,
-                                                                                        openMetadataAccess.getMaxPagingSize());
+                relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(surveyReportElement.getElementGUID(),
+                                                                                       0,
+                                                                                       null,
+                                                                                       startFrom,
+                                                                                       openMetadataStore.getMaxPagingSize());
             }
 
             syncSurveyReport(databaseConnection, surveyReportElement, relatedAsset, relatedEngineAction);
@@ -408,11 +400,11 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                    relatedAsset);
                 List<RelatedMetadataElement> relatedActionTargets = null;
                 int startFrom = 0;
-                RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
-                                                                                                                     1,
-                                                                                                                     OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
-                                                                                                                     startFrom,
-                                                                                                                     openMetadataAccess.getMaxPagingSize());
+                RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
+                                                                                                                  1,
+                                                                                                                  OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
+                                                                                                                  startFrom,
+                                                                                                                  openMetadataStore.getMaxPagingSize());
                 while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
                 {
                     for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
@@ -428,13 +420,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                         }
                     }
 
-                    startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                    startFrom = startFrom + openMetadataStore.getMaxPagingSize();
 
-                    relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
-                                                                                            1,
-                                                                                            OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
-                                                                                            startFrom,
-                                                                                            openMetadataAccess.getMaxPagingSize());
+                    relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
+                                                                                           1,
+                                                                                           OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
+                                                                                           startFrom,
+                                                                                           openMetadataStore.getMaxPagingSize());
                 }
 
                 for (RelatedMetadataElement relatedAnnotationSubject : relatedSubjects)
@@ -529,11 +521,11 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                              relatedAnnotationElement.getElement(),
                                                                                              relatedAsset);
                 int startFrom = 0;
-                RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
-                                                                                                                     1,
-                                                                                                                     OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName,
-                                                                                                                     startFrom,
-                                                                                                                     openMetadataAccess.getMaxPagingSize());
+                RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
+                                                                                                                  1,
+                                                                                                                  OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName,
+                                                                                                                  startFrom,
+                                                                                                                  openMetadataStore.getMaxPagingSize());
                 while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
                 {
                     for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
@@ -545,13 +537,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                         }
                     }
 
-                    startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                    startFrom = startFrom + openMetadataStore.getMaxPagingSize();
 
-                    relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
-                                                                                            1,
-                                                                                            OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName,
-                                                                                            startFrom,
-                                                                                            openMetadataAccess.getMaxPagingSize());
+                    relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
+                                                                                           1,
+                                                                                           OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName,
+                                                                                           startFrom,
+                                                                                           openMetadataStore.getMaxPagingSize());
                 }
 
                 if (relatedLogFile != null)
@@ -793,7 +785,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.DESCRIPTION, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.DESCRIPTION.name, surveyReportElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.PURPOSE, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.PURPOSE.name, surveyReportElement.getElementProperties(), methodName));
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.START_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.START_DATE.name, surveyReportElement.getElementProperties(), methodName));
-        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.END_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.COMPLETION_DATE.name, surveyReportElement.getElementProperties(), methodName));
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.END_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.COMPLETION_TIME.name, surveyReportElement.getElementProperties(), methodName));
 
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_GUID, relatedAsset.getElement().getElementGUID());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_TYPE_NAME, relatedAsset.getElement().getType().getTypeName());
@@ -830,11 +822,11 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         {
             List<RelatedMetadataElement> relatedAnnotationSubjects = new ArrayList<>();
             int startFrom = 0;
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(annotationElement.getElementGUID(),
-                                                                                                                 2,
-                                                                                                                 OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                                                 startFrom,
-                                                                                                                 openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(annotationElement.getElementGUID(),
+                                                                                                              2,
+                                                                                                              OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                                              startFrom,
+                                                                                                              openMetadataStore.getMaxPagingSize());
             while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
                 for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
@@ -845,13 +837,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     }
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
 
-                relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(annotationElement.getElementGUID(),
-                                                                                        2,
-                                                                                        OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                        startFrom,
-                                                                                        openMetadataAccess.getMaxPagingSize());
+                relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(annotationElement.getElementGUID(),
+                                                                                       2,
+                                                                                       OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                       startFrom,
+                                                                                       openMetadataStore.getMaxPagingSize());
             }
 
             if (relatedAnnotationSubjects.isEmpty())
@@ -1781,7 +1773,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                methodName);
 
             String encoding = propertyHelper.getStringProperty(connectorName,
-                                                               OpenMetadataProperty.ENCODING.name,
+                                                               OpenMetadataProperty.ENCODING_TYPE.name,
                                                                dataSourceMeasurementsAnnotation.getElementProperties(),
                                                                methodName);
 
@@ -2254,7 +2246,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * @param event event object - call getEventType to find out what type of event.
      */
     @Override
-    public void processEvent(AssetManagerOutTopicEvent event)
+    public void processEvent(OpenMetadataOutTopicEvent event)
     {
         final String methodName = "processEvent";
 
@@ -2262,7 +2254,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
         try
         {
-            OpenMetadataElement surveyReportElement = openMetadataAccess.getMetadataElementByGUID(event.getElementHeader().getGUID());
+            OpenMetadataElement surveyReportElement = openMetadataStore.getMetadataElementByGUID(event.getElementHeader().getGUID());
 
             if (surveyReportElement != null)
             {

@@ -760,8 +760,8 @@ public class OMAGServerAdminServices
 
     /**
      * Set up the default event bus for embedding in event-driven connector.   The resulting connector will
-     * be used in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
-     * the local repositories event mapper.
+     * be used in the OMRS Topic Connector for each cohort, the open metadata out topic and
+     * the local repositories' event mapper.
      * When the event bus is configured, it is used only on future configuration.  It does not affect
      * existing configuration.
      *
@@ -803,7 +803,7 @@ public class OMAGServerAdminServices
 
             EventBusConfig   eventBusConfig = new EventBusConfig();
 
-            if ((connectorProvider != null) && (connectorProvider.length() == 0))
+            if ((connectorProvider != null) && (connectorProvider.isEmpty()))
             {
                 eventBusConfig.setConnectorProvider(null);
             }
@@ -812,7 +812,7 @@ public class OMAGServerAdminServices
                 eventBusConfig.setConnectorProvider(connectorProvider);
             }
 
-            if ((topicURLRoot != null) && (topicURLRoot.length() == 0))
+            if ((topicURLRoot != null) && (topicURLRoot.isEmpty()))
             {
                 eventBusConfig.setTopicURLRoot(null);
             }
@@ -1032,7 +1032,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ((url != null) && (url.length() == 0))
+            if ((url != null) && (url.isEmpty()))
             {
                 url = null;
             }

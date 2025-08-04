@@ -3,14 +3,14 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
-import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFileElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.io.File;
@@ -61,12 +61,11 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      * @param dataFolderFile the directory to retrieve the folder from
      * @throws ConnectorCheckedException there is a problem retrieving the folder element.
      */
-    FileFolderElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException
+    OpenMetadataRootElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException
     {
         return super.getFolderElement(dataFolderFile,
                                       DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName(),
-                                      DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
-                                      BasicFolderProvider.class.getName());
+                                      DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
     }
 
 
@@ -102,31 +101,32 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
              */
             try
             {
-                FileFolderElement folder = this.getFolderElement(directoryToMonitor.directoryFile);
+                OpenMetadataRootElement folder = this.getFolderElement(directoryToMonitor.directoryFile);
 
                 if (folder != null)
                 {
+                    AssetClient assetClient = integrationContext.getAssetClient();
+
                     int startFrom = 0;
                     int pageSize  = 100;
 
-                    List<DataFileElement> cataloguedFiles = this.getContext().getFolderFiles(folder.getElementHeader().getGUID(),
-                                                                                             startFrom,
-                                                                                             pageSize);
+                    List<OpenMetadataRootElement> cataloguedFiles = assetClient.getFilesInFolder(folder.getElementHeader().getGUID(),
+                                                                                      startFrom,
+                                                                                      pageSize);
 
                     while ((cataloguedFiles != null) && (! cataloguedFiles.isEmpty()))
                     {
-                        for (DataFileElement dataFile : cataloguedFiles)
+                        for (OpenMetadataRootElement dataFile : cataloguedFiles)
                         {
-                            if (dataFile != null)
+                            if ((dataFile != null) && (dataFile.getProperties() instanceof DataFileProperties dataFileProperties))
                             {
-                                if ((dataFile.getElementHeader() != null) && (dataFile.getElementHeader().getGUID() != null) &&
-                                        (dataFile.getProperties() != null) && (dataFile.getProperties().getPathName() != null))
+                                if (dataFileProperties.getPathName() != null)
                                 {
-                                    File file = new File(dataFile.getProperties().getPathName());
+                                    File file = new File(dataFileProperties.getPathName());
 
                                     if (! file.exists())
                                     {
-                                        this.archiveFileInCatalog(file, dataFile, false, methodName);
+                                        this.deleteFileInCatalog(file, dataFile, methodName);
                                     }
                                 }
                                 else
@@ -143,7 +143,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         }
 
                         startFrom = startFrom + pageSize;
-                        cataloguedFiles = this.getContext().getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
+                        cataloguedFiles = assetClient.getFilesInFolder(folder.getElementHeader().getGUID(), startFrom, pageSize);
                     }
                 }
             }

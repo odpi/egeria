@@ -106,18 +106,7 @@ public class ArchiveProperties
      */
     public Map<String, String> getArchiveProperties()
     {
-        if (archiveProperties == null)
-        {
-            return null;
-        }
-        else if (archiveProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(archiveProperties);
-        }
+        return archiveProperties;
     }
 
 

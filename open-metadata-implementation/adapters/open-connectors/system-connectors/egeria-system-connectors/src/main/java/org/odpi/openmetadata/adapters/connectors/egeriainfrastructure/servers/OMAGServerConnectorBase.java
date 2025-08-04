@@ -17,10 +17,10 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 
@@ -89,23 +89,24 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
      * This call can be used to register with non-blocking services.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
         final String methodName = "start";
 
-        if (connectionDetails.getConnectionName() != null)
+        if (connectionBean.getDisplayName() != null)
         {
-            connectorName = connectionDetails.getConnectionName();
+            connectorName = connectionBean.getDisplayName();
         }
 
         /*
          * Retrieve the configuration
          */
-        EndpointDetails endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint != null)
         {
@@ -121,10 +122,10 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
 
         String serverName = null;
 
-        if ((connectionDetails.getConfigurationProperties() != null) &&
-                (connectionDetails.getConfigurationProperties().get("serverName") != null))
+        if ((connectionBean.getConfigurationProperties() != null) &&
+                (connectionBean.getConfigurationProperties().get("serverName") != null))
         {
-            serverName = connectionDetails.getConfigurationProperties().get("serverName").toString();
+            serverName = connectionBean.getConfigurationProperties().get("serverName").toString();
         }
 
         if (serverName == null)
@@ -151,7 +152,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
                 extractor = new EgeriaExtractor(targetRootURL,
                                                 null,
                                                 serverName,
-                                                connectionDetails.getUserId());
+                                                connectionBean.getUserId());
             }
         }
         catch (Exception error)

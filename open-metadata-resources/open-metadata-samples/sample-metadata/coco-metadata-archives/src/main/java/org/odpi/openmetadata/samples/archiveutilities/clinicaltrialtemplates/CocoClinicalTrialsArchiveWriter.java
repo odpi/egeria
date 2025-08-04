@@ -89,9 +89,12 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         for (GlossaryCategoryDefinition glossaryCategoryDefinition : GlossaryCategoryDefinition.values())
         {
             String glossaryCategoryGUID = archiveHelper.addGlossaryCategory(glossaryGUID,
+                                                                            true,
+                                                                            null,
                                                                             glossaryCategoryDefinition.getQualifiedName(),
                                                                             glossaryCategoryDefinition.getName(),
                                                                             glossaryCategoryDefinition.getDescription(),
+                                                                            clinicalTrialsSubjectArea,
                                                                             null);
 
             categoryLookup.put(glossaryCategoryDefinition.getName(), glossaryCategoryGUID);
@@ -179,14 +182,14 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         zones.add(CocoGovernanceZoneDefinition.LANDING_AREA.getZoneName());
         zones.add(CocoGovernanceZoneDefinition.QUARANTINE.getZoneName());
         zones.add(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder());
-        classifications.add(archiveHelper.getAssetZoneMembershipClassification(zones));
+        classifications.add(archiveHelper.getZoneMembershipClassification(zones));
 
         Map<String, String> otherOriginValues = new HashMap<>();
         otherOriginValues.put("contact", CocoClinicalTrialPlaceholderProperty.CONTACT_NAME.getPlaceholder());
         otherOriginValues.put("dept", CocoClinicalTrialPlaceholderProperty.CONTACT_EMAIL.getPlaceholder());
 
         classifications.add(archiveHelper.getAssetOriginClassification(CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
-                                                                       OpenMetadataProperty.NAME.name,
+                                                                       OpenMetadataProperty.DISPLAY_NAME.name,
                                                                        null,
                                                                        null,
                                                                        otherOriginValues));
@@ -407,7 +410,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         List<String> zones = new ArrayList<>();
         zones.add(CocoGovernanceZoneDefinition.QUARANTINE.getZoneName());
         zones.add(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder());
-        classifications.add(archiveHelper.getAssetZoneMembershipClassification(zones));
+        classifications.add(archiveHelper.getZoneMembershipClassification(zones));
 
         classifications.add(archiveHelper.getTemplateClassification("Data Lake weekly measurements for clinical trial",
                                                                     "This template supports the cataloguing of weekly measurement files. " +

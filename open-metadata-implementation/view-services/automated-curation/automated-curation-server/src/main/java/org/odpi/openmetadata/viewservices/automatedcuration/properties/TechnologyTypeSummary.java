@@ -20,10 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class TechnologyTypeSummary
 {
     private String technologyTypeGUID = null;
-    private String qualifiedName = null;
-    private String name = null;
-    private String description = null;
-    private String category = null;
+    private String qualifiedName      = null;
+    private String displayName        = null;
+    private String description        = null;
+    private String category           = null;
 
 
     public TechnologyTypeSummary()
@@ -37,8 +37,8 @@ public class TechnologyTypeSummary
         {
             technologyTypeGUID = template.getTechnologyTypeGUID();
             qualifiedName = template.getQualifiedName();
-            name = template.getName();
-            description = template.getDescription();
+            displayName   = template.getDisplayName();
+            description   = template.getDescription();
             category = template.getCategory();
         }
     }
@@ -64,14 +64,14 @@ public class TechnologyTypeSummary
         this.qualifiedName = qualifiedName;
     }
 
-    public String getName()
+    public String getDisplayName()
     {
-        return name;
+        return displayName;
     }
 
-    public void setName(String name)
+    public void setDisplayName(String displayName)
     {
-        this.name = name;
+        this.displayName = displayName;
     }
 
     public String getDescription()
@@ -106,7 +106,7 @@ public class TechnologyTypeSummary
         return "TechnologyTypeSummary{" +
                 "technologyTypeGUID='" + technologyTypeGUID + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
-                ", name='" + name + '\'' +
+                ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
                 '}';

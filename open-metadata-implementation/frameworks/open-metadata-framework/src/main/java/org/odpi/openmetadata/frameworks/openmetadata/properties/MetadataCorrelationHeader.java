@@ -89,7 +89,7 @@ public class MetadataCorrelationHeader extends MetadataCorrelationProperties
                        ", externalScopeName='" + getExternalScopeName() + '\'' +
                        ", synchronizationDirection=" + getSynchronizationDirection() +
                        ", synchronizationDescription='" + getSynchronizationDescription() + '\'' +
-                       ", externalIdentifier='" + getExternalIdentifier() + '\'' +
+                       ", externalIdentifier='" + getIdentifier() + '\'' +
                        ", externalIdentifierName='" + getExternalIdentifierName() + '\'' +
                        ", externalIdentifierUsage='" + getExternalIdentifierUsage() + '\'' +
                        ", externalIdentifierSource='" + getExternalIdentifierSource() + '\'' +

@@ -2,11 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossarybrowser.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
  * GlossaryBrowserInstance caches references to objects it needs for a specific server.
@@ -17,8 +21,8 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GLOSSARY_BROWSER;
 
-    private final GlossaryExchangeClient      glossaryExchangeClient;
-
+    private final GlossaryHandler     glossaryHandler;
+    private final GlossaryTermHandler glossaryTermHandler;
 
     /**
      * Set up the Glossary Browser OMVS instance*
@@ -48,24 +52,53 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient;
         if (localServerUserPassword == null)
         {
-            glossaryExchangeClient = new GlossaryExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
+
         }
         else
         {
-            glossaryExchangeClient = new GlossaryExchangeClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, auditLog, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
         }
+
+        glossaryHandler = new GlossaryHandler(serverName,
+                                              auditLog,
+                                              myDescription.getViewServiceFullName(),
+                                              openMetadataClient);
+
+        glossaryTermHandler = new GlossaryTermHandler(serverName,
+                                                      auditLog,
+                                                      myDescription.getViewServiceFullName(),
+                                                      openMetadataClient);
     }
 
 
     /**
-     * Return the glossary management client.  This client is from Asset Manager OMAS and is for maintaining glossaries and their content.
+     * Return the glossary handler.
      *
      * @return client
      */
-    public GlossaryExchangeClient getGlossaryExchangeClient()
+    public GlossaryHandler getGlossaryHandler()
     {
-        return glossaryExchangeClient;
+        return glossaryHandler;
+    }
+
+
+    /**
+     * Return the glossary term handler.
+     *
+     * @return client
+     */
+    public GlossaryTermHandler getGlossaryTermHandler()
+    {
+        return glossaryTermHandler;
     }
 }

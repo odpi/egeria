@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
@@ -31,8 +31,6 @@ public class EngineActionElement extends ReferenceableProperties
 {
     private ElementHeader                        elementHeader            = null;
     private int                                  domainIdentifier         = 0;
-    private String                               displayName              = null;
-    private String                               description              = null;
     private List<String>                         mandatoryGuards          = null;
     private List<String>                         receivedGuards           = null;
     private String                               governanceEngineGUID     = null;
@@ -46,9 +44,9 @@ public class EngineActionElement extends ReferenceableProperties
     private String                               requestType              = null;
     private Map<String, String>                  requestParameters        = null;
     private List<RequestSourceElement>           requestSourceElements    = null;
-    private List<ActionTargetElement>            actionTargetElements     = null;
-    private EngineActionStatus                   actionStatus             = null;
-    private Date                                 requestedTime            = null;
+    private List<ActionTargetElement> actionTargetElements = null;
+    private ActivityStatus            actionStatus         = null;
+    private Date                      requestedTime        = null;
     private Date                                 requestedStartTime       = null;
     private Date                                 startTime                = null;
     private String                               processingEngineUserId   = null;
@@ -82,8 +80,7 @@ public class EngineActionElement extends ReferenceableProperties
             elementHeader = template.getElementHeader();
 
             domainIdentifier = template.getDomainIdentifier();
-            displayName = template.getDisplayName();
-            description = template.getDescription();
+
 
             mandatoryGuards = template.getMandatoryGuards();
             receivedGuards = template.getReceivedGuards();
@@ -163,50 +160,6 @@ public class EngineActionElement extends ReferenceableProperties
     public void setDomainIdentifier(int domainIdentifier)
     {
         this.domainIdentifier = domainIdentifier;
-    }
-
-
-    /**
-     * Return the display name for the engine action.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for the engine action.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the engine action.
-     *
-     * @return string text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the engine action.
-     *
-     * @param description string text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -413,7 +366,7 @@ public class EngineActionElement extends ReferenceableProperties
      *
      * @return status enum
      */
-    public EngineActionStatus getActionStatus()
+    public ActivityStatus getActionStatus()
     {
         return actionStatus;
     }
@@ -424,7 +377,7 @@ public class EngineActionElement extends ReferenceableProperties
      *
      * @param actionStatus status enum
      */
-    public void setActionStatus(EngineActionStatus actionStatus)
+    public void setActionStatus(ActivityStatus actionStatus)
     {
         this.actionStatus = actionStatus;
     }
@@ -749,8 +702,6 @@ public class EngineActionElement extends ReferenceableProperties
         return "EngineActionElement{" +
                 "elementHeader=" + elementHeader +
                 ", domainIdentifier=" + domainIdentifier +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
                 ", mandatoryGuards=" + mandatoryGuards +
                 ", receivedGuards=" + receivedGuards +
                 ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
@@ -767,6 +718,7 @@ public class EngineActionElement extends ReferenceableProperties
                 ", actionTargetElements=" + actionTargetElements +
                 ", actionStatus=" + actionStatus +
                 ", requestedTime=" + requestedTime +
+                ", requestedStartTime=" + requestedStartTime +
                 ", startTime=" + startTime +
                 ", processingEngineUserId='" + processingEngineUserId + '\'' +
                 ", completionTime=" + completionTime +
@@ -774,10 +726,9 @@ public class EngineActionElement extends ReferenceableProperties
                 ", completionMessage='" + completionMessage + '\'' +
                 ", previousActions=" + previousActions +
                 ", followOnActions=" + followOnActions +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                "}";
+                "} " + super.toString();
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -794,8 +745,6 @@ public class EngineActionElement extends ReferenceableProperties
         EngineActionElement that = (EngineActionElement) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
                 Objects.equals(elementHeader, that.elementHeader)
-                && Objects.equals(displayName, that.displayName)
-                && Objects.equals(description, that.description)
                 && Objects.equals(mandatoryGuards, that.mandatoryGuards)
                 && Objects.equals(receivedGuards, that.receivedGuards)
                 && Objects.equals(governanceEngineGUID, that.governanceEngineGUID)
@@ -830,7 +779,7 @@ public class EngineActionElement extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, domainIdentifier, displayName, description,
+        return Objects.hash(super.hashCode(), elementHeader, domainIdentifier,
                             mandatoryGuards, receivedGuards, governanceEngineGUID, governanceEngineName,
                             governanceActionTypeGUID, governanceActionTypeName, processName, processStepGUID,
                             processStepName, requesterUserId, requestType, requestParameters, requestSourceElements,

@@ -25,11 +25,9 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-postgres-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:xtdb-repository-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
@@ -59,55 +57,37 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
-    implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
-    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
-    implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
-    implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
-    implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
-    implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-client')
-    implementation project(':open-metadata-implementation:access-services:digital-service:digital-service-client')
-    implementation project(':open-metadata-implementation:access-services:governance-server:governance-server-client')
-    implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
-    implementation project(':open-metadata-implementation:access-services:project-management:project-management-client')
-    implementation project(':open-metadata-implementation:access-services:security-manager:security-manager-client')
-    implementation project(':open-metadata-implementation:access-services:software-developer:software-developer-client')
+
     implementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
     implementation project(':open-metadata-implementation:engine-services:survey-action:survey-action-client')
     implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-client')
-    implementation project(':open-metadata-implementation:integration-services:analytics-integrator:analytics-integrator-client')
-    implementation project(':open-metadata-implementation:integration-services:api-integrator:api-integrator-client')
-    implementation project(':open-metadata-implementation:integration-services:catalog-integrator:catalog-integrator-client')
-    implementation project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-client')
-    implementation project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-client')
-    implementation project(':open-metadata-implementation:integration-services:display-integrator:display-integrator-client')
-    implementation project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-client')
-    implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-client')
-    implementation project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-client')
-    implementation project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-client')
+
     implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
     implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
-    implementation project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-client')
-    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
-    implementation project(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-client')
-    implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-client')
+
+    implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    implementation project(':open-metadata-implementation:access-services:ocf-metadata-management:ocf-metadata-client')
+    implementation project(':open-metadata-implementation:access-services:oif-metadata-management:oif-metadata-client')
+    implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
     implementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
     implementation project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
     implementation project(':open-metadata-resources:open-metadata-samples:governance-action-samples')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-set-up-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-look-up-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-set-up-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-look-up-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
+//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
     implementation project(':open-metadata-resources:open-metadata-reports:report-utilities')
 }
 
@@ -206,8 +186,6 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector').fatJar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:xtdb-repository-connector').shadowJar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector').jar }
@@ -283,9 +261,9 @@ distributions {
             }
             into('assembly/etc/reports') {
                 from { project(':open-metadata-resources:open-metadata-reports:component-id-report').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-reports:database-report').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-reports:valid-values-report').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-reports:survey-report').shadowJar }
+ //               from { project(':open-metadata-resources:open-metadata-reports:database-report').shadowJar }
+ //               from { project(':open-metadata-resources:open-metadata-reports:valid-values-report').shadowJar }
+ //               from { project(':open-metadata-resources:open-metadata-reports:survey-report').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-reports:egeria-platform-report').shadowJar }
                 rename { String fileName ->
                     fileName.replace("-$rootProject.version-jar-with-dependencies", "")
@@ -318,17 +296,17 @@ distributions {
                 fileMode = 0755
             }
             into('assembly/opt/sample-clients') {
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-look-up-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-set-up-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-look-up-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-set-up-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
+//                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample').shadowJar }
                 rename { String fileName ->
                     fileName.replace("-$rootProject.version-jar-with-dependencies", "")
@@ -401,7 +379,7 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-manager" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/governance-officer" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/governance-officer" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/actor-manager" }
                         { include 'Egeria*.http' }

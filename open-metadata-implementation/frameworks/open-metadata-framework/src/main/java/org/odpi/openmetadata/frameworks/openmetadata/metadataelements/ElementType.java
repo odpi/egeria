@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,11 +21,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ElementType
 {
-    private String       typeId          = null;
-    private String       typeName        = null;
-    private List<String> superTypeNames  = null;
-    private long         typeVersion     = 0;
-    private String       typeDescription = null;
+    private String                      typeId          = null;
+    private String                      typeName        = null;
+    private List<String>                superTypeNames  = null;
+    private long                        typeVersion     = 0;
+    private String                      typeDescription = null;
+    private OpenMetadataTypeDefCategory typeCategory    = null;
 
 
     /**
@@ -49,6 +51,7 @@ public class ElementType
             superTypeNames                    = templateType.getSuperTypeNames();
             typeVersion                       = templateType.getTypeVersion();
             typeDescription                   = templateType.getTypeDescription();
+            typeCategory                      = templateType.getTypeCategory();
         }
     }
 
@@ -164,6 +167,28 @@ public class ElementType
 
 
     /**
+     * Return the category of the element.
+     *
+     * @return enum
+     */
+    public OpenMetadataTypeDefCategory getTypeCategory()
+    {
+        return typeCategory;
+    }
+
+
+    /**
+     * Set up the category of the element.
+     *
+     * @param typeCategory enum
+     */
+    public void setTypeCategory(OpenMetadataTypeDefCategory typeCategory)
+    {
+        this.typeCategory = typeCategory;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -172,12 +197,13 @@ public class ElementType
     public String toString()
     {
         return "ElementType{" +
-                       "elementTypeId='" + typeId + '\'' +
-                       ", elementTypeName='" + typeName + '\'' +
-                       ", elementSuperTypeNames=" + superTypeNames +
-                       ", elementTypeVersion=" + typeVersion +
-                       ", elementTypeDescription='" + typeDescription +
-                       '}';
+                "elementTypeId='" + typeId + '\'' +
+                ", elementTypeName='" + typeName + '\'' +
+                ", elementSuperTypeNames=" + superTypeNames +
+                ", elementTypeVersion=" + typeVersion +
+                ", elementTypeDescription='" + typeDescription +
+                ", elementTypeCategory='" + typeCategory +
+                '}';
     }
 
 
@@ -202,7 +228,8 @@ public class ElementType
                 Objects.equals(getTypeId(), that.getTypeId()) &&
                 Objects.equals(getTypeName(), that.getTypeName()) &&
                 Objects.equals(getSuperTypeNames(), that.getSuperTypeNames()) &&
-                Objects.equals(getTypeDescription(), that.getTypeDescription());
+                Objects.equals(getTypeDescription(), that.getTypeDescription())  &&
+                Objects.equals(getTypeCategory(), that.getTypeCategory());
     }
 
 

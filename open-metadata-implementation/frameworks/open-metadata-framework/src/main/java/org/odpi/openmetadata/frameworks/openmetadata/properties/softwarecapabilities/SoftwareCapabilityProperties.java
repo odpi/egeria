@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -21,15 +21,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
+// todo this mapping is not complete
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = FileSystemProperties.class, name = "FileSystemProperties")
+        @JsonSubTypes.Type(value = FileSystemProperties.class, name = "FileSystemProperties"),
+        @JsonSubTypes.Type(value = NetworkGatewayProperties.class, name = "NetworkGatewayProperties"),
 })
-public class SoftwareCapabilityProperties extends SupplementaryProperties
+public class SoftwareCapabilityProperties extends ReferenceableProperties
 {
-    private String resourceName               = null;
-    private String resourceDescription        = null;
     private String deployedImplementationType = null;
-    private String version                    = null;
     private String patchLevel                 = null;
     private String source                     = null;
 
@@ -55,57 +54,10 @@ public class SoftwareCapabilityProperties extends SupplementaryProperties
 
         if (template != null)
         {
-            resourceName               = template.getResourceName();
-            resourceDescription        = template.getResourceDescription();
             deployedImplementationType = template.getDeployedImplementationType();
-            version                    = template.getVersion();
             patchLevel                 = template.getPatchLevel();
             source                     = template.getSource();
         }
-    }
-
-
-    /**
-     * Return the display name for messages and UI.
-     *
-     * @return string name
-     */
-    public String getResourceName()
-    {
-        return resourceName;
-    }
-
-
-    /**
-     * Set up the display name for messages and UI.
-     *
-     * @param resourceName string name
-     */
-    public void setResourceName(String resourceName)
-    {
-        this.resourceName = resourceName;
-    }
-
-
-    /**
-     * Return the description of the software capability.
-     *
-     * @return string description
-     */
-    public String getResourceDescription()
-    {
-        return resourceDescription;
-    }
-
-
-    /**
-     * Set up the description of the software capability.
-     *
-     * @param resourceDescription string
-     */
-    public void setResourceDescription(String resourceDescription)
-    {
-        this.resourceDescription = resourceDescription;
     }
 
 
@@ -128,28 +80,6 @@ public class SoftwareCapabilityProperties extends SupplementaryProperties
     public void setDeployedImplementationType(String deployedImplementationType)
     {
         this.deployedImplementationType = deployedImplementationType;
-    }
-
-
-    /**
-     * Return the version of the software capability.
-     *
-     * @return version string
-     */
-    public String getVersion()
-    {
-        return version;
-    }
-
-
-    /**
-     * Set up the version string of the software capability.
-     *
-     * @param version string
-     */
-    public void setVersion(String version)
-    {
-        this.version = version;
     }
 
 
@@ -206,10 +136,7 @@ public class SoftwareCapabilityProperties extends SupplementaryProperties
     public String toString()
     {
         return "SoftwareCapabilityProperties{" +
-                "displayName='" + resourceName + '\'' +
-                ", description='" + resourceDescription + '\'' +
-                ", deployedImplementationType='" + deployedImplementationType + '\'' +
-                ", version='" + version + '\'' +
+                "deployedImplementationType='" + deployedImplementationType + '\'' +
                 ", patchLevel='" + patchLevel + '\'' +
                 ", source='" + source + '\'' +
                 "} " + super.toString();
@@ -238,10 +165,7 @@ public class SoftwareCapabilityProperties extends SupplementaryProperties
             return false;
         }
         SoftwareCapabilityProperties that = (SoftwareCapabilityProperties) objectToCompare;
-        return Objects.equals(getResourceName(), that.getResourceName()) &&
-                Objects.equals(getResourceDescription(), that.getResourceDescription()) &&
-                Objects.equals(getDeployedImplementationType(), that.getDeployedImplementationType()) &&
-                Objects.equals(getVersion(), that.getVersion()) &&
+        return Objects.equals(getDeployedImplementationType(), that.getDeployedImplementationType()) &&
                 Objects.equals(getPatchLevel(), that.getPatchLevel()) &&
                 Objects.equals(getSource(), that.getSource());
     }
@@ -255,7 +179,6 @@ public class SoftwareCapabilityProperties extends SupplementaryProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getResourceName(), getResourceDescription(), getDeployedImplementationType(), getVersion(),
-                            getPatchLevel(), getSource());
+        return Objects.hash(super.hashCode(), getDeployedImplementationType(), getPatchLevel(), getSource());
     }
 }

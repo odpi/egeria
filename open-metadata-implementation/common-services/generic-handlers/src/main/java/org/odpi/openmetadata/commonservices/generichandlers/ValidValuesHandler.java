@@ -92,7 +92,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param category             what is the category of reference data does this fall into?
      * @param usage                how/when should this set be used.
      * @param scope                what is the scope of this set's values.
-     * @param isDeprecated         is the valid value deprecated
+     * @param userDefinedStatus         is the valid value deprecated
      * @param isCaseSensitive         is the valid value case-sensitive
      * @param preferredValue       value to use to represent this option.
      * @param dataType the data type of the preferred value.
@@ -118,7 +118,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                    String              category,
                                    String              usage,
                                    String              scope,
-                                   boolean             isDeprecated,
+                                   String              userDefinedStatus,
                                    boolean             isCaseSensitive,
                                    String              preferredValue,
                                    String              dataType,
@@ -153,84 +153,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 scope,
                                 preferredValue,
                                 dataType,
-                                isDeprecated,
-                                isCaseSensitive,
-                                additionalProperties,
-                                extendedProperties,
-                                suppliedSupportedZones,
-                                effectiveFrom,
-                                effectiveTo,
-                                false,
-                                false,
-                                effectiveTime,
-                                methodName);
-    }
-
-
-    /**
-     * Create a new valid value set.  This just creates the Set itself.  Members are added either as they are
-     * created, or they can be attached to a set after they are created.
-     *
-     * @param userId               calling user.
-     * @param externalSourceGUID   guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName   name of the software capability entity that represented the external source
-     * @param qualifiedName        unique name.
-     * @param displayName          displayable descriptive name.
-     * @param description          further information.
-     * @param category             what is the category of reference data does this fall into?
-     * @param usage                how/when should this set be used.
-     * @param scope                what is the scope of this set's values.
-     * @param isDeprecated         is the valid value deprecated
-     * @param isCaseSensitive         is the valid value case-sensitive
-     * @param additionalProperties additional properties for this set.
-     * @param extendedProperties   properties that need to be populated into a subtype.
-     * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
-     * @param effectiveFrom        starting time for this relationship (null for all time)
-     * @param effectiveTo          ending time for this relationship (null for all time)
-     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName           calling method
-     * @return unique identifier for the new set
-     * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException    the repository is not available or not working properly.
-     */
-    public String createValidValueSet(String              userId,
-                                      String              externalSourceGUID,
-                                      String              externalSourceName,
-                                      String              qualifiedName,
-                                      String              displayName,
-                                      String              description,
-                                      String              category,
-                                      String              usage,
-                                      String              scope,
-                                      boolean             isDeprecated,
-                                      boolean             isCaseSensitive,
-                                      Map<String, String> additionalProperties,
-                                      Map<String, Object> extendedProperties,
-                                      List<String>        suppliedSupportedZones,
-                                      Date                effectiveFrom,
-                                      Date                effectiveTo,
-                                      Date                effectiveTime,
-                                      String              methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        return createValidValue(userId,
-                                externalSourceGUID,
-                                externalSourceName,
-                                null,
-                                null,
-                                OpenMetadataType.VALID_VALUE_SET.typeName,
-                                false,
-                                qualifiedName,
-                                displayName,
-                                description,
-                                category,
-                                usage,
-                                scope,
-                                null,
-                                null,
-                                isDeprecated,
+                                userDefinedStatus,
                                 isCaseSensitive,
                                 additionalProperties,
                                 extendedProperties,
@@ -260,7 +183,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param scope                what is the scope of the values.
      * @param preferredValue       the value that should be used in an implementation if possible.
      * @param dataType the data type of the preferred value.
-     * @param isDeprecated         is the valid value deprecated
+     * @param userDefinedStatus         is the valid value deprecated
      * @param isCaseSensitive         is the valid value case-sensitive
      * @param additionalProperties additional properties for this definition.
      * @param extendedProperties   properties that need to be populated into a subtype.
@@ -289,7 +212,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                              String              scope,
                                              String              preferredValue,
                                              String              dataType,
-                                             boolean             isDeprecated,
+                                             String              userDefinedStatus,
                                              boolean             isCaseSensitive,
                                              Map<String, String> additionalProperties,
                                              Map<String, Object> extendedProperties,
@@ -318,7 +241,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 scope,
                                 preferredValue,
                                 dataType,
-                                isDeprecated,
+                                userDefinedStatus,
                                 isCaseSensitive,
                                 additionalProperties,
                                 extendedProperties,
@@ -350,7 +273,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param scope                what is the scope of the values.
      * @param preferredValue       the value that should be used in an implementation if possible.
      * @param dataType             the data type of the preferred value.
-     * @param isDeprecated         is the valid value deprecated
+     * @param userDefinedStatus         is the valid value deprecated
      * @param isCaseSensitive         is the valid value case-sensitive
      * @param additionalProperties additional properties for this definition.
      * @param extendedProperties   properties that need to be populated into a subtype.
@@ -381,7 +304,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                    String              scope,
                                    String              preferredValue,
                                    String              dataType,
-                                   boolean             isDeprecated,
+                                   String              userDefinedStatus,
                                    boolean             isCaseSensitive,
                                    Map<String, String> additionalProperties,
                                    Map<String, Object> extendedProperties,
@@ -403,7 +326,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        String typeName = OpenMetadataType.VALID_VALUE_SET.typeName;
+        String typeName = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -420,7 +343,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                             scope,
                                                             preferredValue,
                                                             dataType,
-                                                            isDeprecated,
+                                                            userDefinedStatus,
                                                             isCaseSensitive,
                                                             additionalProperties,
                                                             extendedProperties,
@@ -486,7 +409,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param scope                what is the scope of the values.
      * @param preferredValue       the value that should be used in an implementation if possible.
      * @param dataType the data type of the preferred value.
-     * @param isDeprecated         is the valid value deprecated
+     * @param userDefinedStatus         is the valid value deprecated
      * @param isCaseSensitive      is the valid value case-sensitive
      * @param additionalProperties additional properties for this valid value.
      * @param extendedProperties   properties that need to be populated into a subtype.
@@ -512,7 +435,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                  String              category,
                                  String              usage,
                                  String              scope,
-                                 boolean             isDeprecated,
+                                 String              userDefinedStatus,
                                  boolean             isCaseSensitive,
                                  String              preferredValue,
                                  String              dataType,
@@ -548,7 +471,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                             scope,
                                                             preferredValue,
                                                             dataType,
-                                                            isDeprecated,
+                                                            userDefinedStatus,
                                                             isCaseSensitive,
                                                             additionalProperties,
                                                             extendedProperties,
@@ -677,7 +600,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   setGUID,
                                   setGUIDParameter,
-                                  OpenMetadataType.VALID_VALUE_SET.typeName,
+                                  OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                   validValueGUID,
                                   validValueGUIDParameter,
                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
@@ -731,7 +654,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       setGUID,
                                       setGUIDParameter,
-                                      OpenMetadataType.VALID_VALUE_SET.typeName,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                       validValueGUID,
                                       validValueGUIDParameter,
                                       OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
@@ -1163,7 +1086,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.PREFERRED_VALUE.name);
 
         return this.getBeansByValue(userId,
@@ -1276,7 +1199,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         validValueSetGUID,
                                         validValueSetGUIDParameter,
-                                        OpenMetadataType.VALID_VALUE_SET.typeName,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                         OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
@@ -1393,7 +1316,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                         OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
-                                        OpenMetadataType.VALID_VALUE_SET.typeName,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                         (String)null,
                                         null,
                                         1,

@@ -6,13 +6,6 @@
 
 ###
 # group: Integration Services
-# @name Validate Connector with Files Integrator OMIS
-# Checks that the supplied connector provider class name produces a connector that will run in the integration service.
-# To check another connector replace `org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider` with the qualified class name of the connector's provider.
-GET {{baseURL}}/servers/{{server}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider
-
-###
-# group: Integration Services
 # @name Retrieve the connector type for a connector
 # Restarts the requested Integration Service
 GET {{baseURL}}/servers/{{server}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider
@@ -22,18 +15,6 @@ GET {{baseURL}}/servers/{{server}}/open-metadata/integration-services/files-inte
 # @name Refresh All integration Connectors
 # Refreshes all Integration Connectors running in an integration daemon
 POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh
-
-###
-# group: Integration Services
-# @name Refresh specific integration service
-# Restarts the requested Integration Service
-POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/refresh
-
-###
-# group: Integration Services
-# @name Restart specific integration service
-# Restarts the requested Integration Service
-POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/restart
 
 ###
 # group: Integration Connectors

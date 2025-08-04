@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.EndpointClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +20,15 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the findEndpoints call to access service
  */
-class OmasFindEndpoints implements Function<String, List<EndpointElement>> {
+class OmasFindEndpoints implements Function<String, List<OpenMetadataRootElement>>
+{
+    private final EndpointClient endpointClient;
+    private final AuditLog       auditLog;
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
-
-    OmasFindEndpoints(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasFindEndpoints(EndpointClient endpointClient, AuditLog auditLog)
+    {
+        this.endpointClient = endpointClient;
+        this.auditLog       = auditLog;
     }
 
     /**
@@ -37,17 +39,22 @@ class OmasFindEndpoints implements Function<String, List<EndpointElement>> {
      * @return endpoints
      */
     @Override
-    public List<EndpointElement> apply(String searchBy){
-        String methodName = "OmasFindEndpoints";
-        try{
+    public List<OpenMetadataRootElement> apply(String searchBy)
+    {
+        final String methodName = "OmasFindEndpoints";
+
+        try
+        {
             return Optional.ofNullable(
-                    databaseIntegratorContext.findEndpoints(searchBy, 0, 0))
+                            endpointClient.findEndpoints(searchBy, endpointClient.getSearchOptions()))
                     .orElseGet(ArrayList::new);
-        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+        }
+        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
+        {
             auditLog.logException("Reading endpoints with name " + searchBy,
                     EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
         }
+
         return new ArrayList<>();
     }
-
 }

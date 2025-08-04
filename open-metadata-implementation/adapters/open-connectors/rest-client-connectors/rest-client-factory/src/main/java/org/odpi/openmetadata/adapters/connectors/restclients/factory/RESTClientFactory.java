@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
@@ -103,7 +102,7 @@ public class RESTClientFactory
                 SecretsStoreConnector secretsStoreConnector = secretsStoreConnectorMap.get(secretsConnectorName);
                 AccessibleConnection  secretStoreConnection = new AccessibleConnection(secretsStoreConnector.getConnection());
 
-                embeddedConnection.setEmbeddedConnection(secretStoreConnection.getConnectionBean());
+                embeddedConnection.setEmbeddedConnection(secretStoreConnection);
 
                 embeddedConnections.add(embeddedConnection);
             }
@@ -156,11 +155,6 @@ public class RESTClientFactory
                 {
                     connectorType = new ConnectorType();
 
-                    ElementOrigin elementOrigin = new ElementOrigin();
-                    elementOrigin.setOriginCategory(ElementOriginCategory.CONFIGURATION);
-                    connectorType.setOrigin(elementOrigin);
-
-                    connectorType.setType(ConnectorType.getConnectorTypeType());
                     connectorType.setGUID(UUID.randomUUID().toString());
                     connectorType.setQualifiedName(connectorProviderClassName);
                     connectorType.setDisplayName(connectorProviderClass.getSimpleName());
@@ -199,21 +193,12 @@ public class RESTClientFactory
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    private static class AccessibleConnection extends ConnectionDetails
+    private static class AccessibleConnection extends Connection
     {
-        AccessibleConnection(ConnectionDetails templateConnection)
+        // todo remove
+        AccessibleConnection(Connection templateConnection)
         {
             super(templateConnection);
-        }
-
-        /**
-         * Return a copy of the ConnectionBean.
-         *
-         * @return Connection bean
-         */
-        protected Connection getConnectionBean()
-        {
-            return super.getConnectionBean();
         }
     }
 }

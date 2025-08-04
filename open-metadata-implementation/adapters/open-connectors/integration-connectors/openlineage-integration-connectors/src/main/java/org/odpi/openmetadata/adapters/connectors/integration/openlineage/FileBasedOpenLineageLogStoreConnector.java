@@ -5,9 +5,9 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
 import java.io.File;
 import java.time.ZonedDateTime;

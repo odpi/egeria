@@ -6,8 +6,8 @@ package org.odpi.openmetadata.viewservices.glossarymanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerOMASAPIResponse;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryTermStatusListResponse extends AssetManagerOMASAPIResponse
+public class GlossaryTermStatusListResponse extends FFDCResponseBase
 {
-    private List<GlossaryTermStatus> statuses = null;
+    private List<ElementStatus> statuses = null;
 
 
     /**
@@ -57,7 +57,7 @@ public class GlossaryTermStatusListResponse extends AssetManagerOMASAPIResponse
      *
      * @return result object
      */
-    public List<GlossaryTermStatus> getStatuses()
+    public List<ElementStatus> getStatuses()
     {
         if (statuses == null)
         {
@@ -79,7 +79,7 @@ public class GlossaryTermStatusListResponse extends AssetManagerOMASAPIResponse
      *
      * @param statuses result object
      */
-    public void setStatuses(List<GlossaryTermStatus> statuses)
+    public void setStatuses(List<ElementStatus> statuses)
     {
         this.statuses = statuses;
     }

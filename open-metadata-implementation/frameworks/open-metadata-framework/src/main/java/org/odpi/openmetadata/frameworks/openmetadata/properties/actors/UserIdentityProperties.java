@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.actors;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -19,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UserIdentityProperties extends ReferenceableProperties
+public class UserIdentityProperties extends ActorProperties
 {
     private String userId = null;
     private String distinguishedName = null;
@@ -32,6 +31,17 @@ public class UserIdentityProperties extends ReferenceableProperties
     {
         super();
         super.setTypeName(OpenMetadataType.USER_IDENTITY.typeName);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public UserIdentityProperties(ActorProperties template)
+    {
+        super(template);
     }
 
 
@@ -105,16 +115,9 @@ public class UserIdentityProperties extends ReferenceableProperties
     public String toString()
     {
         return "UserIdentityProperties{" +
-                       "qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", userId='" + userId + '\'' +
-                       ", distinguishedName='" + distinguishedName + '\'' +
-                       '}';
+                "userId='" + userId + '\'' +
+                ", distinguishedName='" + distinguishedName + '\'' +
+                "} " + super.toString();
     }
 
 

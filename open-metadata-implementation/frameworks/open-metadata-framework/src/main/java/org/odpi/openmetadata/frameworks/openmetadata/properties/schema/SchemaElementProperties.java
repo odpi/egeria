@@ -25,11 +25,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = SchemaTypeProperties.class, name = "SchemaTypeProperties"),
         @JsonSubTypes.Type(value = SchemaAttributeProperties.class, name = "SchemaAttributeProperties")
               })
-public abstract class SchemaElementProperties extends ReferenceableProperties
+public class SchemaElementProperties extends ReferenceableProperties
 {
-    private String  displayName  = null;
-    private String  description  = null;
-    private boolean isDeprecated = false;
+    private String userDefinedStatus = null;
 
 
     /**
@@ -53,76 +51,30 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName  = template.getDisplayName();
-            description  = template.getDescription();
-            isDeprecated = template.getIsDeprecated();
+            userDefinedStatus = template.getUserDefinedStatus();
         }
     }
 
 
     /**
-     * Return the display name of the schema element
+     * What is the status of the element if element status is OTHER?
      *
-     * @return string name
+     * @return string
      */
-    public String getDisplayName()
+    public String getUserDefinedStatus()
     {
-        return displayName;
+        return userDefinedStatus;
     }
 
 
     /**
-     * Set up the display name of the schema element.
+     * Set  the schema element userDefinedStatus.
      *
-     * @param displayName string name
+     * @param userDefinedStatus string
      */
-    public void setDisplayName(String displayName)
+    public void setUserDefinedStatus(String userDefinedStatus)
     {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the schema element.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the schema element.
-     *
-     * @param description string description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Is the schema element deprecated?
-     *
-     * @return boolean flag
-     */
-    public boolean getIsDeprecated()
-    {
-        return isDeprecated;
-    }
-
-
-    /**
-     * Set whether the schema element deprecated or not.  Default is false.
-     *
-     * @param deprecated boolean flag
-     */
-    public void setIsDeprecated(boolean deprecated)
-    {
-        isDeprecated = deprecated;
+        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -135,9 +87,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
     public String toString()
     {
         return "SchemaElementProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", isDeprecated=" + isDeprecated +
+                ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
 
@@ -161,8 +111,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
         }
         if (!super.equals(objectToCompare)) return false;
         SchemaElementProperties that = (SchemaElementProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription());
+        return Objects.equals(userDefinedStatus, that.userDefinedStatus);
     }
 
 
@@ -174,6 +123,6 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(getDisplayName(), getDescription());
+        return Objects.hash(super.hashCode(), userDefinedStatus);
     }
 }

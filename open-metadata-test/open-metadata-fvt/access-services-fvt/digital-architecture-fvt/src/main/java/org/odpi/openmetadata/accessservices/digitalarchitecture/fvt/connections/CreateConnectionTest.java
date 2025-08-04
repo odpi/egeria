@@ -509,7 +509,7 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointTechnicalName.equals(retrievedEndpoint.getName()))
+            if (! endpointTechnicalName.equals(retrievedEndpoint.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad technicalName from Retrieve) =>>" + retrievedEndpoint);
             }
@@ -543,7 +543,7 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName) =>>" + retrievedEndpoint);
             }
-            if (! endpointTechnicalName.equals(retrievedEndpoint.getName()))
+            if (! endpointTechnicalName.equals(retrievedEndpoint.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName) =>>" + retrievedEndpoint);
             }
@@ -624,7 +624,7 @@ public class CreateConnectionTest
             EndpointProperties properties = new EndpointProperties();
 
             properties.setQualifiedName(endpointName);
-            properties.setName(endpointTechnicalName);
+            properties.setDisplayName(endpointTechnicalName);
             properties.setResourceDescription(endpointTechnicalDescription);
 
             String endpointGUID = client.createEndpoint(userId, properties);

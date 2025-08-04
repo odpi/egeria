@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.metadatahighway;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.events.OpenMetadataEventsSecurity;
 import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
@@ -113,8 +114,9 @@ public class OMRSMetadataHighwayManager
      * OpenMetadataServerSecurityConnector.
      *
      * @param securityVerifier new security verifier
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
-    public void setSecurityVerifier(OpenMetadataEventsSecurity securityVerifier)
+    public void setSecurityVerifier(OpenMetadataEventsSecurity securityVerifier) throws UserNotAuthorizedException
     {
         if (securityVerifier != null)
         {

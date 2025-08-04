@@ -5,10 +5,13 @@ package org.odpi.openmetadata.commonservices.multitenant;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -24,59 +27,24 @@ public class ViewServiceClientMap<B>
 {
     private final Map<String, B> viewServiceClientMap = new HashMap<>();
 
-    private final Class<B> beanClass;
-
+    private final Class<B>                handlerClass;
     private final List<ViewServiceConfig> activeViewServices;
-    String   localServerName;
-    String   remoteServerName;
-    String   remotePlatformURLRoot;
+    private final String                  localServerName;
+    private final AuditLog                auditLog;
+    private final String                  serviceName;
+    private final int                     maxPageSize;
 
-    AuditLog auditLog;
-    String   serviceName;
-    int      maxPageSize;
+    private final String localServerUserId;
+    private final String localServerUserPassword;
 
-    String   localServerUserId = null;
-    String   localServerUserPassword = null;
-
-    /**
-     * Create new clients with no authentication embedded in the HTTP request.
-     *
-     * @param beanClass name of the class to create
-     * @param localServerName       name of this server (view server)
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param auditLog              logging destination
-     * @param serviceName           local service name
-     * @param maxPageSize           maximum number of results supported by this server
-     */
-    public ViewServiceClientMap(Class<B> beanClass,
-                                String   localServerName,
-                                String   serverName,
-                                String   serverPlatformURLRoot,
-                                AuditLog auditLog,
-                                List<ViewServiceConfig> activeViewServices,
-                                String   serviceName,
-                                int      maxPageSize)
-    {
-        this.beanClass = beanClass;
-        this.localServerName = localServerName;
-        this.activeViewServices = activeViewServices;
-        this.auditLog = auditLog;
-        this.serviceName = serviceName;
-        this.remotePlatformURLRoot = serverPlatformURLRoot;
-        this.remoteServerName = serverName;
-        this.maxPageSize = maxPageSize;
-    }
 
 
     /**
      * Create new clients that pass userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
-     * @param beanClass name of the class to create
+     * @param handlerClass          name of the class to create
      * @param localServerName       name of this server (view server)
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
      * @param maxPageSize           maximum number of results supported by this server
@@ -84,10 +52,8 @@ public class ViewServiceClientMap<B>
      * @param serviceName           local service name
      * @param auditLog              logging destination
      */
-    public ViewServiceClientMap(Class<B>                beanClass,
+    public ViewServiceClientMap(Class<B>                handlerClass,
                                 String                  localServerName,
-                                String                  serverName,
-                                String                  serverPlatformURLRoot,
                                 String                  userId,
                                 String                  password,
                                 AuditLog                auditLog,
@@ -95,15 +61,13 @@ public class ViewServiceClientMap<B>
                                 String                  serviceName,
                                 int                     maxPageSize)
     {
-        this.beanClass = beanClass;
+        this.handlerClass    = handlerClass;
         this.localServerName = localServerName;
         this.activeViewServices = activeViewServices;
         this.auditLog = auditLog;
         this.serviceName = serviceName;
         this.localServerUserId = userId;
         this.localServerUserPassword = password;
-        this.remotePlatformURLRoot = serverPlatformURLRoot;
-        this.remoteServerName = serverName;
         this.maxPageSize = maxPageSize;
     }
 
@@ -136,65 +100,23 @@ public class ViewServiceClientMap<B>
 
                         if (viewServicePartnerService != null)
                         {
+                            for (CommonServicesDescription commonServicesDescription : CommonServicesDescription.values())
+                            {
+                                if (viewServicePartnerService.equals(commonServicesDescription.getServiceName()))
+                                {
+                                    viewServiceClient = this.createViewServiceClient(viewServiceConfig,
+                                                                                     commonServicesDescription.getServiceURLMarker());
+                                    viewServiceClientMap.put(viewServiceURLMarker, viewServiceClient);
+                                    return viewServiceClient;
+                                }
+                            }
+
                             for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
                             {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
+                                if (accessServiceDescription.getServiceName().equals(viewServicePartnerService))
                                 {
-                                    if (localServerUserPassword == null)
-                                    {
-                                        try
-                                        {
-                                            Constructor<B> constructor = beanClass.getDeclaredConstructor(String.class,
-                                                                                                          String.class,
-                                                                                                          String.class,
-                                                                                                          AuditLog.class,
-                                                                                                          String.class,
-                                                                                                          String.class,
-                                                                                                          int.class);
-                                            viewServiceClient = constructor.newInstance(localServerName,
-                                                                                        viewServiceConfig.getOMAGServerName(),
-                                                                                        viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                        auditLog,
-                                                                                        accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                        serviceName,
-                                                                                        maxPageSize);
-                                        }
-                                        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException |
-                                               InvocationTargetException error)
-                                        {
-                                            this.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        try
-                                        {
-                                            Constructor<B> constructor = beanClass.getDeclaredConstructor(String.class,
-                                                                                                          String.class,
-                                                                                                          String.class,
-                                                                                                          String.class,
-                                                                                                          String.class,
-                                                                                                          AuditLog.class,
-                                                                                                          String.class,
-                                                                                                          String.class,
-                                                                                                          int.class);
-                                            viewServiceClient = constructor.newInstance(localServerName,
-                                                                                        viewServiceConfig.getOMAGServerName(),
-                                                                                        viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                        localServerUserId,
-                                                                                        localServerUserPassword,
-                                                                                        auditLog,
-                                                                                        accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                        serviceName,
-                                                                                        maxPageSize);
-                                        }
-                                        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException |
-                                               InvocationTargetException error)
-                                        {
-                                            this.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-                                        }
-                                    }
-
+                                    viewServiceClient = this.createViewServiceClient(viewServiceConfig,
+                                                                                     accessServiceDescription.getServiceURLMarker());
                                     viewServiceClientMap.put(viewServiceURLMarker, viewServiceClient);
                                     return viewServiceClient;
                                 }
@@ -211,6 +133,70 @@ public class ViewServiceClientMap<B>
                                                 this.getClass().getName(),
                                                 methodName,
                                                 "viewServiceURLMarker");
+        }
+
+        return viewServiceClient;
+    }
+
+    /**
+     * Create a new client.
+     *
+     * @param viewServiceConfig configuration from the matching view service
+     * @param partnerServiceURL url marker to call
+     * @return client
+     * @throws InvalidParameterException problem initializing the client
+     * @throws PropertyServerException problem with the client class
+     */
+    private B createViewServiceClient(ViewServiceConfig viewServiceConfig,
+                                      String            partnerServiceURL) throws InvalidParameterException,
+                                                                                  PropertyServerException
+    {
+        final String methodName = "createViewServiceClient";
+
+        B viewServiceClient = null;
+
+        EgeriaOpenMetadataStoreHandler openMetadataClient;
+        if (localServerUserPassword == null)
+        {
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
+                                                                    viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                    maxPageSize);
+
+        }
+        else
+        {
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
+                                                                    viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
+        }
+
+        try
+        {
+            if (handlerClass.isInstance(openMetadataClient))
+            {
+                viewServiceClient = handlerClass.cast(openMetadataClient);
+            }
+            else
+            {
+                /*
+                 * Add a specialized handler around the open metadata client.
+                 */
+                Constructor<B> constructor = handlerClass.getDeclaredConstructor(String.class,
+                                                                                 AuditLog.class,
+                                                                                 String.class,
+                                                                                 OpenMetadataClient.class);
+                viewServiceClient = constructor.newInstance(localServerName,
+                                                            auditLog,
+                                                            serviceName,
+                                                            openMetadataClient);
+            }
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException |
+               InvocationTargetException error)
+        {
+            this.handleInvalidBeanClass(handlerClass.getName(), error, methodName);
         }
 
         return viewServiceClient;

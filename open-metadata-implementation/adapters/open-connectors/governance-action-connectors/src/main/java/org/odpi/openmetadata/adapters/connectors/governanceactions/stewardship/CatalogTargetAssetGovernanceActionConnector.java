@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceAction
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -41,9 +42,10 @@ public class CatalogTargetAssetGovernanceActionConnector extends GeneralGovernan
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
@@ -93,7 +95,7 @@ public class CatalogTargetAssetGovernanceActionConnector extends GeneralGovernan
                 OpenMetadataElement serverElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(newAssetGUID);
 
                 String serverName = propertyHelper.getStringProperty(governanceServiceName,
-                                                                     OpenMetadataProperty.NAME.name,
+                                                                     OpenMetadataProperty.DISPLAY_NAME.name,
                                                                      serverElement.getElementProperties(),
                                                                      methodName);
 
@@ -152,9 +154,9 @@ public class CatalogTargetAssetGovernanceActionConnector extends GeneralGovernan
     {
         Map<String, Object> configurationProperties = new HashMap<>();
 
-        if (connectionDetails.getConfigurationProperties() != null)
+        if (connectionBean.getConfigurationProperties() != null)
         {
-            configurationProperties.putAll(connectionDetails.getConfigurationProperties());
+            configurationProperties.putAll(connectionBean.getConfigurationProperties());
         }
 
         if (governanceContext.getRequestParameters() != null)

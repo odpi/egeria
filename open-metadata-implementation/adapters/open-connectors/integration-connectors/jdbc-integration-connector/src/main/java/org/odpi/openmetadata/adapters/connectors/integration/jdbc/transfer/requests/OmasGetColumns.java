@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +19,19 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the getColumnsForDatabaseTable call to access service
  */
-class OmasGetColumns implements Function<String, List<DatabaseColumnElement>> {
+class OmasGetColumns implements Function<String, List<OpenMetadataRootElement>>
+{
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final SchemaAttributeClient databaseColumnClient;
+    private final AuditLog              auditLog;
 
-    OmasGetColumns(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasGetColumns(SchemaAttributeClient databaseColumnClient,
+                   AuditLog              auditLog)
+    {
+        this.databaseColumnClient = databaseColumnClient;
+        this.auditLog             = auditLog;
     }
+
 
     /**
      * Get columns of table
@@ -37,16 +41,21 @@ class OmasGetColumns implements Function<String, List<DatabaseColumnElement>> {
      * @return columns
      */
     @Override
-    public List<DatabaseColumnElement> apply(String tableGuid){
+    public List<OpenMetadataRootElement> apply(String tableGuid)
+    {
         String methodName = "OmasGetColumns";
-        try{
+        try
+        {
             return Optional.ofNullable(
-                    databaseIntegratorContext.getColumnsForDatabaseTable(tableGuid, 0, 0))
+                            databaseColumnClient.getNestedSchemaAttributes(tableGuid, databaseColumnClient.getQueryOptions()))
                     .orElseGet(ArrayList::new);
-        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+        }
+        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
+        {
             auditLog.logException("Reading columns from table with guid " + tableGuid ,
                     EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
         }
+
         return new ArrayList<>();
     }
 

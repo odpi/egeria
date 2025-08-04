@@ -107,7 +107,7 @@ public class CreateMetadataSourceTest
         metadataSourceProperties.setDisplayName(profileManagerDisplayName);
         metadataSourceProperties.setDescription(profileManagerDescription);
         metadataSourceProperties.setDeployedImplementationType(profileManagerTypeDescription);
-        metadataSourceProperties.setVersion(profileManagerVersion);
+        metadataSourceProperties.setVersionIdentifier(profileManagerVersion);
     }
 
 
@@ -222,7 +222,7 @@ public class CreateMetadataSourceTest
                                     false,
                                     false,
                                     false,
-                                    header.getClassifications());
+                                    header.getOtherClassifications());
 
             client.addUserProfileManagerClassification(userId, metadataSourceGUID);
 
@@ -244,7 +244,7 @@ public class CreateMetadataSourceTest
                                     true,
                                     false,
                                     false,
-                                    header.getClassifications());
+                                    header.getOtherClassifications());
 
             client.addUserAccessDirectoryClassification(userId, metadataSourceGUID);
 
@@ -266,7 +266,7 @@ public class CreateMetadataSourceTest
                                     true,
                                     true,
                                     false,
-                                    header.getClassifications());
+                                    header.getOtherClassifications());
 
             client.addMasterDataManagerClassification(userId, metadataSourceGUID);
 
@@ -288,7 +288,7 @@ public class CreateMetadataSourceTest
                                     true,
                                     true,
                                     true,
-                                    header.getClassifications());
+                                    header.getOtherClassifications());
 
         }
         catch (FVTUnexpectedCondition testCaseError)

@@ -3,19 +3,18 @@
 package org.odpi.openmetadata.viewservices.connectionmaker.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ConnectionHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ConnectorTypeHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EndpointHandler;
-import org.odpi.openmetadata.viewservices.connectionmaker.ffdc.ConnectionMakerErrorCode;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ConnectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ConnectorTypeHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.EndpointHandler;
 
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * ConnectionMakerInstance caches references to the objects it needs for a specific server.
@@ -29,11 +28,9 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
     /*
      * These maps cache clients for specific view services/access services.
      */
-    private final Map<String, ConnectionHandler> connectionHandlerMap = new HashMap<>();
-    private final Map<String, ConnectorTypeHandler>    connectorTypeHandlerMap    = new HashMap<>();
-    private final Map<String, EndpointHandler> endpointHandlerMap = new HashMap<>();
-
-    private final List<ViewServiceConfig> activeViewServices;
+    private final ViewServiceClientMap<ConnectionHandler>    connectionHandlerMap;
+    private final ViewServiceClientMap<ConnectorTypeHandler> connectorTypeHandlerMap;
+    private final ViewServiceClientMap<EndpointHandler>      endpointHandlerMap;
 
 
 
@@ -50,13 +47,13 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
      * @param activeViewServices list of view services active in this server
      */
     public ConnectionMakerInstance(String                  serverName,
-                                AuditLog                auditLog,
-                                String                  localServerUserId,
-                                String                  localServerUserPassword,
-                                int                     maxPageSize,
-                                String                  remoteServerName,
-                                String                  remoteServerURL,
-                                List<ViewServiceConfig> activeViewServices)
+                                   AuditLog                auditLog,
+                                   String                  localServerUserId,
+                                   String                  localServerUserPassword,
+                                   int                     maxPageSize,
+                                   String                  remoteServerName,
+                                   String                  remoteServerURL,
+                                   List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
@@ -67,7 +64,33 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        this.activeViewServices = activeViewServices;
+        this.connectionHandlerMap = new ViewServiceClientMap<>(ConnectionHandler.class,
+                                                               serverName,
+                                                               localServerUserId,
+                                                               localServerUserPassword,
+                                                               auditLog,
+                                                               activeViewServices,
+                                                               myDescription.getViewServiceFullName(),
+                                                               maxPageSize);
+
+        this.connectorTypeHandlerMap = new ViewServiceClientMap<>(ConnectorTypeHandler.class,
+                                                                  serverName,
+                                                                  localServerUserId,
+                                                                  localServerUserPassword,
+                                                                  auditLog,
+                                                                  activeViewServices,
+                                                                  myDescription.getViewServiceFullName(),
+                                                                  maxPageSize);
+
+        this.endpointHandlerMap = new ViewServiceClientMap<>(EndpointHandler.class,
+                                                             serverName,
+                                                             localServerUserId,
+                                                             localServerUserPassword,
+                                                             auditLog,
+                                                             activeViewServices,
+                                                             myDescription.getViewServiceFullName(),
+                                                             maxPageSize);
+
     }
 
 
@@ -76,75 +99,15 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
      * connection artifacts.
      *
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public ConnectionHandler getConnectionHandler(String viewServiceURLMarker,
-                                                      String methodName) throws InvalidParameterException
+                                                  String methodName) throws InvalidParameterException,
+                                                                            PropertyServerException
     {
-        ConnectionHandler connectionHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            connectionHandler = connectionHandlerMap.get(viewServiceURLMarker);
-
-            if (connectionHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword != null)
-                                    {
-                                        connectionHandler = new ConnectionHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.CONNECTION_MAKER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-                                    else
-                                    {
-                                        connectionHandler = new ConnectionHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      localServerUserId,
-                                                                                      localServerUserPassword,
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.CONNECTION_MAKER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-
-                                    connectionHandlerMap.put(viewServiceURLMarker, connectionHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (connectionHandler == null)
-        {
-            throw new InvalidParameterException(ConnectionMakerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return connectionHandler;
+        return connectionHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
-
-
 
 
     /**
@@ -152,77 +115,15 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
      * connectorType artifacts.
      *
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public ConnectorTypeHandler getConnectorTypeHandler(String viewServiceURLMarker,
-                                                String methodName) throws InvalidParameterException
+                                                String methodName) throws InvalidParameterException,
+                                                                          PropertyServerException
     {
-        ConnectorTypeHandler connectorTypeHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            connectorTypeHandler = connectorTypeHandlerMap.get(viewServiceURLMarker);
-
-            if (connectorTypeHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword != null)
-                                    {
-                                        connectorTypeHandler = new ConnectorTypeHandler(serverName,
-                                                                                viewServiceConfig.getOMAGServerName(),
-                                                                                viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                auditLog,
-                                                                                accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                ViewServiceDescription.CONNECTION_MAKER.getViewServiceFullName(),
-                                                                                maxPageSize,
-                                                                                false);
-                                    }
-                                    else
-                                    {
-                                        connectorTypeHandler = new ConnectorTypeHandler(serverName,
-                                                                                viewServiceConfig.getOMAGServerName(),
-                                                                                viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                localServerUserId,
-                                                                                localServerUserPassword,
-                                                                                auditLog,
-                                                                                accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                ViewServiceDescription.CONNECTION_MAKER.getViewServiceFullName(),
-                                                                                maxPageSize,
-                                                                                false);
-                                    }
-
-                                    connectorTypeHandlerMap.put(viewServiceURLMarker, connectorTypeHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (connectorTypeHandler == null)
-        {
-            throw new InvalidParameterException(ConnectionMakerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return connectorTypeHandler;
+        return connectorTypeHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
-
-
 
 
     /**
@@ -230,71 +131,13 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
      * governance definition artifacts.
      *
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public EndpointHandler getEndpointHandler(String viewServiceURLMarker,
-                                                      String methodName) throws InvalidParameterException
+                                              String methodName) throws InvalidParameterException,
+                                                                        PropertyServerException
     {
-        EndpointHandler endpointHandler = null;
-
-        if (viewServiceURLMarker != null)
-        {
-            endpointHandler = endpointHandlerMap.get(viewServiceURLMarker);
-
-            if (endpointHandler == null)
-            {
-                for (ViewServiceConfig viewServiceConfig : activeViewServices)
-                {
-                    if (viewServiceConfig.getViewServiceURLMarker().equals(viewServiceURLMarker))
-                    {
-                        String viewServicePartnerService = viewServiceConfig.getViewServicePartnerService();
-
-                        if (viewServicePartnerService != null)
-                        {
-                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                            {
-                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                                {
-                                    if (localServerUserPassword != null)
-                                    {
-                                        endpointHandler = new EndpointHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.CONNECTION_MAKER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-                                    else
-                                    {
-                                        endpointHandler = new EndpointHandler(serverName,
-                                                                                      viewServiceConfig.getOMAGServerName(),
-                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                      localServerUserId,
-                                                                                      localServerUserPassword,
-                                                                                      auditLog,
-                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                      ViewServiceDescription.CONNECTION_MAKER.getViewServiceFullName(),
-                                                                                      maxPageSize);
-                                    }
-
-                                    endpointHandlerMap.put(viewServiceURLMarker, endpointHandler);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (endpointHandler == null)
-        {
-            throw new InvalidParameterException(ConnectionMakerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
-        }
-
-        return endpointHandler;
+        return endpointHandlerMap.getClient(viewServiceURLMarker, methodName);
     }
 }

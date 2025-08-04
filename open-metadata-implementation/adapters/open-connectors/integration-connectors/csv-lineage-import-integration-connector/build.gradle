@@ -10,8 +10,6 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
-    compileOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
-    compileOnly project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-api')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     compileOnly 'org.slf4j:slf4j-api'

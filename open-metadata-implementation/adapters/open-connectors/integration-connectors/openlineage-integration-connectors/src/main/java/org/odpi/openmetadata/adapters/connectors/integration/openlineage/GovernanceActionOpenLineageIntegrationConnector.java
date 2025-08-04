@@ -2,19 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
-import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
-import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerEventType;
-import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
+
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.openlineage.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
-import org.odpi.openmetadata.integrationservices.lineage.properties.*;
+
 
 import java.net.URI;
 import java.time.ZoneId;
@@ -25,9 +29,9 @@ import java.util.*;
 /**
  * GovernanceActionOpenLineageIntegrationConnector is an integration connector to listen for governance actions executing in the
  * open metadata ecosystem, generate open lineage events for them and publish them to any integration
- * connector running in the same instance of Lineage Integration OMIS.
+ * connector running in the same instance of the integration daemon.
  */
-public class GovernanceActionOpenLineageIntegrationConnector extends LineageIntegratorConnector implements AssetManagerEventListener
+public class GovernanceActionOpenLineageIntegrationConnector extends IntegrationConnectorBase implements OpenMetadataEventListener
 {
     private static final URI    producer = URI.create("https://egeria-project.org/");
     private static final String defaultNameSpace = "GovernanceActions";
@@ -47,15 +51,16 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
         final String methodName = "start";
 
-        namespace = super.getStringConfigurationProperty("namespace", connectionDetails.getConfigurationProperties());
+        namespace = super.getStringConfigurationProperty("namespace", connectionBean.getConfigurationProperties());
 
         if (namespace == null || namespace.isBlank())
         {
@@ -64,7 +69,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
 
         try
         {
-            super.getContext().registerListener(this);
+            integrationContext.registerListener(this);
         }
         catch (Exception error)
         {
@@ -95,33 +100,33 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
      * @param event event object - call getEventType to find out what type of event.
      */
     @Override
-    public void processEvent(AssetManagerOutTopicEvent event)
+    public void processEvent(OpenMetadataOutTopicEvent event)
     {
         final String methodName = "processEvent";
 
         ElementHeader elementHeader = event.getElementHeader();
 
-        if (((event.getEventType() == AssetManagerEventType.NEW_ELEMENT_CREATED) ||
-             (event.getEventType() == AssetManagerEventType.REFRESH_ELEMENT_EVENT) ||
-             (event.getEventType() == AssetManagerEventType.ELEMENT_UPDATED)) &&
+        if (((event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED) ||
+             (event.getEventType() == OpenMetadataEventType.REFRESH_ELEMENT_EVENT) ||
+             (event.getEventType() == OpenMetadataEventType.ELEMENT_UPDATED)) &&
             (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.ENGINE_ACTION.typeName)))
         {
             try
             {
-                String previousActionStatus = getActionStatus(event.getPreviousElementProperties());
-                String currentActionStatus = getActionStatus(event.getElementProperties());
+                String previousActionStatus = getActivityStatus(event.getPreviousElementProperties());
+                String currentActionStatus = getActivityStatus(event.getElementProperties());
 
                 /*
                  * Only output an event if the status has changed.
                  */
                 if (! previousActionStatus.equals(currentActionStatus))
                 {
-                    if ((EngineActionStatus.IN_PROGRESS.getName().equals(currentActionStatus)) ||
-                        (EngineActionStatus.ACTIONED.getName().equals(currentActionStatus)) ||
-                        (EngineActionStatus.FAILED.getName().equals(currentActionStatus)) ||
-                        (EngineActionStatus.INVALID.getName().equals(currentActionStatus)))
+                    if ((ActivityStatus.IN_PROGRESS.getName().equals(currentActionStatus)) ||
+                        (ActivityStatus.COMPLETED.getName().equals(currentActionStatus)) ||
+                        (ActivityStatus.FAILED.getName().equals(currentActionStatus)) ||
+                        (ActivityStatus.INVALID.getName().equals(currentActionStatus)))
                     {
-                        EngineActionElement engineAction = super.getContext().getEngineAction(elementHeader.getGUID());
+                        EngineActionElement engineAction = integrationContext.getStewardshipAction().getEngineAction(elementHeader.getGUID());
 
                         publishOpenLineageEvent(currentActionStatus, event.getEventTime(), engineAction);
                     }
@@ -152,11 +157,16 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
      * @param elementProperties properties for the engine action
      * @return action status as a string
      */
-    private String getActionStatus(Map<String, Object> elementProperties)
+    private String getActivityStatus(ElementProperties elementProperties)
     {
-        if ((elementProperties != null) && (elementProperties.get(OpenMetadataProperty.ACTION_STATUS.name) != null))
+        final String methodName = "getActivityStatus";
+
+        if (elementProperties != null)
         {
-            return elementProperties.get(OpenMetadataProperty.ACTION_STATUS.name).toString();
+            return propertyHelper.getEnumPropertySymbolicName(connectorName,
+                                                              OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                                              elementProperties,
+                                                              methodName);
         }
 
         return "<null>";
@@ -180,19 +190,19 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
         event.setProducer(producer);
         event.setEventTime(getTimeStamp(eventTime));
 
-        if (EngineActionStatus.IN_PROGRESS.getName().equals(engineActionStatus))
+        if (ActivityStatus.IN_PROGRESS.getName().equals(engineActionStatus))
         {
             event.setEventType("START");
         }
-        else if (EngineActionStatus.ACTIONED.getName().equals(engineActionStatus))
+        else if (ActivityStatus.COMPLETED.getName().equals(engineActionStatus))
         {
             event.setEventType("COMPLETE");
         }
-        else if (EngineActionStatus.FAILED.getName().equals(engineActionStatus))
+        else if (ActivityStatus.FAILED.getName().equals(engineActionStatus))
         {
             event.setEventType("FAIL");
         }
-        else if (EngineActionStatus.INVALID.getName().equals(engineActionStatus))
+        else if (ActivityStatus.INVALID.getName().equals(engineActionStatus))
         {
             event.setEventType("ABORT");
         }
@@ -339,7 +349,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
             event.setOutputs(outputDataSets);
         }
 
-        super.getContext().publishOpenLineageRunEvent(event);
+        integrationContext.publishOpenLineageRunEvent(event);
     }
 
 

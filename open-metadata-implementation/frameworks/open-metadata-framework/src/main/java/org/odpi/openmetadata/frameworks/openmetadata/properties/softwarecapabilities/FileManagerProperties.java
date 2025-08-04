@@ -47,18 +47,6 @@ public class FileManagerProperties extends SoftwareCapabilityProperties
     @Override
     public String toString()
     {
-        return "FileManagerProperties{" +
-                       "displayName='" + getResourceName() + '\'' +
-                       ", description='" + getResourceDescription() + '\'' +
-                       ", typeDescription='" + getDeployedImplementationType() + '\'' +
-                       ", version='" + getVersion() + '\'' +
-                       ", patchLevel='" + getPatchLevel() + '\'' +
-                       ", source='" + getSource() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "FileManagerProperties{} " + super.toString();
     }
 }

@@ -110,7 +110,7 @@ public class AssetOwnerFactory
             properties.setTypeName("Asset");
             properties.setQualifiedName(testCaseName + ":" + assetName);
             properties.setDisplayName(assetDisplayName);
-            properties.setResourceDescription(assetDescription);
+            properties.setDescription(assetDescription);
             properties.setAdditionalProperties(additionalProperties);
 
             String assetGUID = client.addAssetToCatalog(userId, properties);

@@ -8,7 +8,9 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.DataDesignHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataClassHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataFieldHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataStructureHandler;
 
 
 /**
@@ -40,9 +42,9 @@ public class DataDesignerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public DataDesignHandler getDataDesignManager(String userId,
-                                                  String serverName,
-                                                  String serviceOperationName) throws InvalidParameterException,
+    public DataClassHandler getDataClassHandler(String userId,
+                                                String serverName,
+                                                String serviceOperationName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
@@ -50,10 +52,65 @@ public class DataDesignerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getDataDesignManagerHandler();
+            return instance.getDataClassHandler();
         }
 
         return null;
     }
 
+
+    /**
+     * This method returns a Open Metadata Store client.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public DataFieldHandler getDataFieldHandler(String userId,
+                                                String serverName,
+                                                String serviceOperationName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        DataDesignerInstance instance = (DataDesignerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getDataFieldHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns a Open Metadata Store client.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public DataStructureHandler getDataStructureHandler(String userId,
+                                                        String serverName,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        DataDesignerInstance instance = (DataDesignerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getDataStructureHandler();
+        }
+
+        return null;
+    }
 }

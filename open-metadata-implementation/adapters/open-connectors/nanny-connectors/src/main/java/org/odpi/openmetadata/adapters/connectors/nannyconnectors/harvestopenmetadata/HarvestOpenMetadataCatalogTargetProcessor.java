@@ -5,9 +5,9 @@ package org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmet
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.ffdc.HarvestOpenMetadataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.ffdc.HarvestOpenMetadataErrorCode;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.schema.HarvestOpenMetadataColumn;
@@ -22,19 +22,18 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.catalog.connector.DataAssetExchangeService;
-import org.odpi.openmetadata.integrationservices.catalog.connector.GlossaryExchangeService;
 
 import java.util.*;
 
@@ -42,52 +41,44 @@ import java.util.*;
 /**
  * Extracts relevant metadata from the open metadata ecosystem into the JDBC database.
  * The open metadata ecosystem is the home copy so its values will be pushed to the database. The database design matches the
- * beans returned by Asset Manager OMAS/Catalog Integrator OMIS.
+ * beans returned by the Open Metadata Store.
  */
 public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProcessorBase
 {
     private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
     private       JDBCResourceConnector    databaseClient = null;
-    private final DataAssetExchangeService dataAssetExchangeService;
-    private final GlossaryExchangeService  glossaryExchangeService;
-    private final OpenMetadataAccess       openMetadataAccess;
-
+    private final OpenMetadataStore        openMetadataStore;
 
 
     /**
      * Constructor
      *
      * @param catalogTarget catalog target information
+     * @param catalogTargetContext specialized context for this catalog target
      * @param connectorToTarget connector to access the target resource
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
-     * @param dataAssetExchangeService access to data assets
-     * @param glossaryExchangeService access to glossaries
-     * @param openMetadataAccess access to open metadata
      * @throws ConnectorCheckedException error
+     * @throws UserNotAuthorizedException connector is disconnected
      */
-    public HarvestOpenMetadataCatalogTargetProcessor(CatalogTarget catalogTarget,
+    public HarvestOpenMetadataCatalogTargetProcessor(CatalogTarget            catalogTarget,
+                                                     CatalogTargetContext     catalogTargetContext,
                                                      Connector                connectorToTarget,
                                                      String                   connectorName,
-                                                     AuditLog                 auditLog,
-                                                     DataAssetExchangeService dataAssetExchangeService,
-                                                     GlossaryExchangeService  glossaryExchangeService,
-                                                     OpenMetadataAccess       openMetadataAccess) throws ConnectorCheckedException
+                                                     AuditLog                 auditLog) throws ConnectorCheckedException,
+                                                                                               UserNotAuthorizedException
     {
-        super(catalogTarget, connectorToTarget, connectorName, auditLog);
-        
-        this.openMetadataAccess = openMetadataAccess;
-        this.openMetadataAccess.setForLineage(true);
-        this.dataAssetExchangeService = dataAssetExchangeService;
-        this.dataAssetExchangeService.setForLineage(true);
-        this.glossaryExchangeService = glossaryExchangeService;
-        this.glossaryExchangeService.setForLineage(true);
+        super(catalogTarget, catalogTargetContext, connectorToTarget, connectorName, auditLog);
 
-        if (super.getCatalogTargetConnector() instanceof JDBCResourceConnector jdbcResourceConnector)
+        this.openMetadataStore = catalogTargetContext.getOpenMetadataStore();
+        this.openMetadataStore.setForLineage(true);
+
+        if (super.getConnectorToTarget() instanceof JDBCResourceConnector jdbcResourceConnector)
         {
             this.databaseClient = jdbcResourceConnector;
             this.databaseClient.start();
+
             String schemaName = super.getStringConfigurationProperty(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), catalogTarget.getConfigurationProperties());
             if (schemaName == null)
             {
@@ -173,65 +164,56 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
+            /*
+             * This is the connection to the database schema used to store the harvested metadata
+             */
             databaseConnection = databaseClient.getDataSource().getConnection();
+
+            /*
+             * These clients provide access to open metadata.
+             */
+            AssetClient    dataAssetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_ASSET.typeName);
+            GlossaryClient glossaryClient = integrationContext.getGlossaryClient();
 
             /*
              * Step through the catalogued metadata elements for each interesting type.  Start with data assets.
              */
-            int startFrom = 0;
-            List<DataAssetElement> dataAssetElements = dataAssetExchangeService.findDataAssets(".*",
-                                                                                               startFrom,
-                                                                                               openMetadataAccess.getMaxPagingSize(),
-                                                                                               null);
+            SearchOptions workingSearchOptions = dataAssetClient.getSearchOptions(0, openMetadataStore.getMaxPagingSize());
+            workingSearchOptions.setForLineage(true);
+
+            List<OpenMetadataRootElement> dataAssetElements = dataAssetClient.findAssets(null, workingSearchOptions);
 
             while (dataAssetElements != null)
             {
-                for (DataAssetElement dataAssetElement : dataAssetElements)
+                for (OpenMetadataRootElement dataAssetElement : dataAssetElements)
                 {
                     processDataAsset(databaseConnection, dataAssetElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                dataAssetElements = dataAssetExchangeService.findDataAssets(".*",
-                                                                            startFrom,
-                                                                            openMetadataAccess.getMaxPagingSize(),
-                                                                            null);
+                dataAssetElements = dataAssetClient.findAssets(null, workingSearchOptions);
             }
 
-            startFrom = 0;
-            List<GlossaryElement> glossaryElements = glossaryExchangeService.findGlossaries(".*",
-                                                                                            startFrom,
-                                                                                            openMetadataAccess.getMaxPagingSize(),
-                                                                                            null);
+            workingSearchOptions.setStartFrom(0);
+            List<OpenMetadataRootElement> glossaryElements = glossaryClient.findGlossaries(null, workingSearchOptions);
 
             while (glossaryElements != null)
             {
-                for (GlossaryElement glossaryElement : glossaryElements)
+                for (OpenMetadataRootElement glossaryElement : glossaryElements)
                 {
                     processGlossary(databaseConnection, glossaryElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                glossaryElements = glossaryExchangeService.findGlossaries(".*",
-                                                                          startFrom,
-                                                                          openMetadataAccess.getMaxPagingSize(),
-                                                                          null);
+                glossaryElements = glossaryClient.findGlossaries(null, workingSearchOptions);
             }
 
 
-            startFrom = 0;
-            List<OpenMetadataElement> teamElements = openMetadataAccess.findMetadataElements(OpenMetadataType.TEAM.typeName,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             startFrom,
-                                                                                             openMetadataAccess.getMaxPagingSize());
+            workingSearchOptions.setStartFrom(0);
+            workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.TEAM.typeName);
+            List<OpenMetadataElement> teamElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
 
             while (teamElements != null)
             {
@@ -240,32 +222,15 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     processTeam(databaseConnection, teamElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                teamElements = openMetadataAccess.findMetadataElements("Team",
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       startFrom,
-                                                                       openMetadataAccess.getMaxPagingSize());
+                teamElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
             }
 
 
-            startFrom = 0;
-            List<OpenMetadataElement> toDoElements = openMetadataAccess.findMetadataElements(OpenMetadataType.TO_DO.typeName,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             startFrom,
-                                                                                             openMetadataAccess.getMaxPagingSize());
+            workingSearchOptions.setStartFrom(0);
+            workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.TO_DO.typeName);
+            List<OpenMetadataElement> toDoElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
 
             while (toDoElements != null)
             {
@@ -274,32 +239,15 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     processToDo(databaseConnection, toDoElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                toDoElements = openMetadataAccess.findMetadataElements(OpenMetadataType.TO_DO.typeName,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       startFrom,
-                                                                       openMetadataAccess.getMaxPagingSize());
+                toDoElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
             }
 
 
-            startFrom = 0;
-            List<OpenMetadataElement> roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.ACTOR_ROLE.typeName,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             startFrom,
-                                                                                             openMetadataAccess.getMaxPagingSize());
+            workingSearchOptions.setStartFrom(0);
+            workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.ACTOR_ROLE.typeName);
+            List<OpenMetadataElement> roleElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
 
             while (roleElements != null)
             {
@@ -308,32 +256,15 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     syncRole(databaseConnection, roleElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.ACTOR_ROLE.typeName,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       startFrom,
-                                                                       openMetadataAccess.getMaxPagingSize());
+                roleElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
             }
 
 
-            startFrom = 0;
-            List<OpenMetadataElement> userIdentityElements = openMetadataAccess.findMetadataElements(OpenMetadataType.USER_IDENTITY.typeName,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     startFrom,
-                                                                                                     openMetadataAccess.getMaxPagingSize());
+            workingSearchOptions.setStartFrom(0);
+            workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.USER_IDENTITY.typeName);
+            List<OpenMetadataElement> userIdentityElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
 
             while (userIdentityElements != null)
             {
@@ -342,30 +273,16 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     processUserIdentity(databaseConnection, userIdentityElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                userIdentityElements = openMetadataAccess.findMetadataElements(OpenMetadataType.USER_IDENTITY.typeName,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               startFrom,
-                                                                               openMetadataAccess.getMaxPagingSize());
+                userIdentityElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
             }
 
-            startFrom = 0;
+            workingSearchOptions.setStartFrom(0);
 
-            OpenMetadataRelationshipList personRoleAppointments = openMetadataAccess.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
-                                                                                                                               null,
-                                                                                                                               null,
-                                                                                                                               null,
-                                                                                                                               null,
-                                                                                                                               null,
-                                                                                                                               startFrom,
-                                                                                                                               openMetadataAccess.getMaxPagingSize());
+            OpenMetadataRelationshipList personRoleAppointments = openMetadataStore.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
+                                                                                                                             null,
+                                                                                                                             workingSearchOptions);
 
             while ((personRoleAppointments != null) && (personRoleAppointments.getElementList() != null))
             {
@@ -380,28 +297,15 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     }
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                personRoleAppointments = openMetadataAccess.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     startFrom,
-                                                                                                     openMetadataAccess.getMaxPagingSize());
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
+                personRoleAppointments = openMetadataStore.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
+                                                                                                    null,
+                                                                                                    workingSearchOptions);
             }
 
-            startFrom = 0;
-            List<OpenMetadataElement> projectElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PROJECT.typeName,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                startFrom,
-                                                                                                openMetadataAccess.getMaxPagingSize());
+            workingSearchOptions.setStartFrom(0);
+            workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.PROJECT.typeName);
+            List<OpenMetadataElement> projectElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
 
             while (projectElements != null)
             {
@@ -410,32 +314,17 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     processProject(databaseConnection, projectElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                projectElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PROJECT.typeName,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          startFrom,
-                                                                          openMetadataAccess.getMaxPagingSize());
+                projectElements = openMetadataStore.findMetadataElements(null,
+                                                                         null,
+                                                                         workingSearchOptions);
             }
 
 
-            startFrom = 0;
-            List<OpenMetadataElement> communityElements = openMetadataAccess.findMetadataElements(OpenMetadataType.COMMUNITY.typeName,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  startFrom,
-                                                                                                  openMetadataAccess.getMaxPagingSize());
+            workingSearchOptions.setStartFrom(0);
+            workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.COMMUNITY.typeName);
+            List<OpenMetadataElement> communityElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
 
             while (communityElements != null)
             {
@@ -444,31 +333,14 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     processCommunity(databaseConnection, communityElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                communityElements = openMetadataAccess.findMetadataElements(OpenMetadataType.COMMUNITY.typeName,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            startFrom,
-                                                                            openMetadataAccess.getMaxPagingSize());
+                communityElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
             }
 
-            startFrom = 0;
-            List<OpenMetadataElement> collectionElements = openMetadataAccess.findMetadataElements(OpenMetadataType.COLLECTION.typeName,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  startFrom,
-                                                                                                  openMetadataAccess.getMaxPagingSize());
+            workingSearchOptions.setStartFrom(0);
+            workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.COLLECTION.typeName);
+            List<OpenMetadataElement> collectionElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
 
             while (collectionElements != null)
             {
@@ -477,18 +349,9 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     processCollection(databaseConnection, collectionElement);
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                collectionElements = openMetadataAccess.findMetadataElements(OpenMetadataType.COLLECTION.typeName,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            startFrom,
-                                                                            openMetadataAccess.getMaxPagingSize());
+                collectionElements = openMetadataStore.findMetadataElements(null, null, workingSearchOptions);
             }
 
             databaseConnection.commit();
@@ -547,11 +410,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            RelatedMetadataElementList profileIdentities = openMetadataAccess.getRelatedMetadataElements(profileGUID,
-                                                                                                           1,
-                                                                                                           OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
-                                                                                                           0,
-                                                                                                           openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList profileIdentities = openMetadataStore.getRelatedMetadataElements(profileGUID,
+                                                                                                        1,
+                                                                                                        OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
+                                                                                                        0,
+                                                                                                        openMetadataStore.getMaxPagingSize());
 
 
             if ((profileIdentities != null) && (profileIdentities.getElementList() != null))
@@ -603,8 +466,8 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param databaseConnection connection to the database
      * @param dataAssetElement description of the asset
      */
-    private void processDataAsset(java.sql.Connection databaseConnection,
-                                  DataAssetElement    dataAssetElement)
+    private void processDataAsset(java.sql.Connection     databaseConnection,
+                                  OpenMetadataRootElement dataAssetElement)
     {
         final String methodName = "processDataAsset";
 
@@ -645,15 +508,18 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                           glossaryTermGUID);
 
 
-            /*
-             * Find out about other associated elements
-             */
-            findAssociatedElements(databaseConnection,
-                                   dataAssetElement.getElementHeader(),
-                                   dataAssetElement.getDataAssetProperties().getQualifiedName(),
-                                   dataAssetElement.getCorrelationHeaders(),
-                                   associatedLicense,
-                                   true);
+            if (dataAssetElement.getProperties() instanceof AssetProperties assetProperties)
+            {
+                /*
+                 * Find out about other associated elements
+                 */
+                findAssociatedElements(databaseConnection,
+                                       dataAssetElement.getElementHeader(),
+                                       assetProperties.getQualifiedName(),
+                                       dataAssetElement.getAlsoKnownAs(),
+                                       associatedLicense,
+                                       true);
+            }
         }
         catch (Exception error)
         {
@@ -681,11 +547,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(assetGUID,
-                                                                                                         1,
-                                                                                                         OpenMetadataType.ASSET_LOCATION_RELATIONSHIP.typeName,
-                                                                                                         0,
-                                                                                                         openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(assetGUID,
+                                                                                                      1,
+                                                                                                      OpenMetadataType.ASSET_LOCATION_RELATIONSHIP.typeName,
+                                                                                                      0,
+                                                                                                      openMetadataStore.getMaxPagingSize());
 
             /*
              * Return the first location retrieved.
@@ -731,11 +597,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
-                                                                                                         1,
-                                                                                                         OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
-                                                                                                         0,
-                                                                                                         openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(profileGUID,
+                                                                                                      1,
+                                                                                                      OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
+                                                                                                      0,
+                                                                                                      openMetadataStore.getMaxPagingSize());
 
             /*
              * Return the first location retrieved.
@@ -781,11 +647,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
-                                                                                                         1,
-                                                                                                         OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
-                                                                                                         0,
-                                                                                                         openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(elementGUID,
+                                                                                                      1,
+                                                                                                      OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
+                                                                                                      0,
+                                                                                                      openMetadataStore.getMaxPagingSize());
 
             /*
              * Return the license retrieved.
@@ -832,11 +698,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             int startFrom = 0;
-            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(assetGUID,
-                                                                                                         1,
-                                                                                                         OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
-                                                                                                         startFrom,
-                                                                                                         openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(assetGUID,
+                                                                                                      1,
+                                                                                                      OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                                                                                      startFrom,
+                                                                                                      openMetadataStore.getMaxPagingSize());
 
             /*
              * Return all attached tags.
@@ -848,19 +714,19 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     if (relatedMetadataElement != null)
                     {
                         String tagName = propertyHelper.getStringProperty(connectorName,
-                                                                          OpenMetadataProperty.TAG_NAME.name,
+                                                                          OpenMetadataProperty.DISPLAY_NAME.name,
                                                                           relatedMetadataElement.getElement().getElementProperties(),
                                                                           methodName);
                         tagStringBuilder.append(tagName).append(":");
                     }
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                relatedElements = openMetadataAccess.getRelatedMetadataElements(assetGUID,
-                                                                                1,
-                                                                                OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
-                                                                                startFrom,
-                                                                                openMetadataAccess.getMaxPagingSize());
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
+                relatedElements = openMetadataStore.getRelatedMetadataElements(assetGUID,
+                                                                               1,
+                                                                               OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                                                               startFrom,
+                                                                               openMetadataStore.getMaxPagingSize());
 
             }
 
@@ -901,11 +767,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
-                                                                                                         1,
-                                                                                                         OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                                                         0,
-                                                                                                         openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(elementGUID,
+                                                                                                      1,
+                                                                                                      OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                                      0,
+                                                                                                      openMetadataStore.getMaxPagingSize());
 
             /*
              * Return the first glossary term retrieved.
@@ -945,12 +811,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param license associated license
      * @param isAsset is this element an asset
      */
-    private void findAssociatedElements(java.sql.Connection             databaseConnection,
-                                        ElementHeader                   elementHeader,
-                                        String                          elementQualifiedName,
-                                        List<MetadataCorrelationHeader> correlationHeaders,
-                                        OpenMetadataElement             license,
-                                        boolean                         isAsset)
+    private void findAssociatedElements(java.sql.Connection                 databaseConnection,
+                                        ElementHeader                       elementHeader,
+                                        String                              elementQualifiedName,
+                                        List<RelatedMetadataElementSummary> correlationHeaders,
+                                        OpenMetadataElement                 license,
+                                        boolean                             isAsset)
     {
         final String methodName = "findAssociatedElements";
 
@@ -972,11 +838,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             int numberOfLikes = 0;
 
             int startFrom = 0;
-            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementHeader.getGUID(),
-                                                                                                         1,
-                                                                                                         null,
-                                                                                                         startFrom,
-                                                                                                         openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(elementHeader.getGUID(),
+                                                                                                      1,
+                                                                                                      null,
+                                                                                                      startFrom,
+                                                                                                      openMetadataStore.getMaxPagingSize());
 
             while ((relatedElements != null) && (relatedElements.getElementList() != null))
             {
@@ -1012,16 +878,16 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                     if ((isAsset) && propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.ASSET.typeName))
                     {
-                        syncRelatedAsset(databaseConnection, openMetadataAccess.getRelationshipByGUID(relatedMetadataElement.getRelationshipGUID()));
+                        syncRelatedAsset(databaseConnection, openMetadataStore.getRelationshipByGUID(relatedMetadataElement.getRelationshipGUID()));
                     }
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                relatedElements = openMetadataAccess.getRelatedMetadataElements(elementHeader.getGUID(),
-                                                                                1,
-                                                                                null,
-                                                                                startFrom,
-                                                                                openMetadataAccess.getMaxPagingSize());
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
+                relatedElements = openMetadataStore.getRelatedMetadataElements(elementHeader.getGUID(),
+                                                                               1,
+                                                                               null,
+                                                                               startFrom,
+                                                                               openMetadataStore.getMaxPagingSize());
             }
 
             int averageRatings = 0;
@@ -1084,11 +950,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             int startFrom = 0;
-            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
-                                                                                                         1,
-                                                                                                         "AttachedComment",
-                                                                                                         startFrom,
-                                                                                                         openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(elementGUID,
+                                                                                                      1,
+                                                                                                      "AttachedComment",
+                                                                                                      startFrom,
+                                                                                                      openMetadataStore.getMaxPagingSize());
 
             /*
              * Count all nested comments.
@@ -1103,12 +969,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     }
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
-                                                                                1,
-                                                                                "AttachedComment",
-                                                                                startFrom,
-                                                                                openMetadataAccess.getMaxPagingSize());
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
+                relatedElements = openMetadataStore.getRelatedMetadataElements(elementGUID,
+                                                                               1,
+                                                                               "AttachedComment",
+                                                                               startFrom,
+                                                                               openMetadataStore.getMaxPagingSize());
             }
         }
         catch (Exception error)
@@ -1144,7 +1010,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             {
                 try
                 {
-                    OpenMetadataElement softwareCapability = openMetadataAccess.getMetadataElementByGUID(elementOrigin.getHomeMetadataCollectionId());
+                    OpenMetadataElement softwareCapability = openMetadataStore.getMetadataElementByGUID(elementOrigin.getHomeMetadataCollectionId());
 
                     if (softwareCapability != null)
                     {
@@ -1205,11 +1071,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(teamGUID,
-                                                                                                               1,
-                                                                                                               OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
-                                                                                                               0,
-                                                                                                               openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(teamGUID,
+                                                                                                              1,
+                                                                                                              OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
+                                                                                                              0,
+                                                                                                              openMetadataStore.getMaxPagingSize());
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -1217,11 +1083,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 {
                     if (personRoleElement != null)
                     {
-                        RelatedMetadataElementList appointees = openMetadataAccess.getRelatedMetadataElements(teamGUID,
-                                                                                                                  2,
-                                                                                                                  OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
-                                                                                                                  0,
-                                                                                                                  openMetadataAccess.getMaxPagingSize());
+                        RelatedMetadataElementList appointees = openMetadataStore.getRelatedMetadataElements(teamGUID,
+                                                                                                             2,
+                                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
+                                                                                                             0,
+                                                                                                             openMetadataStore.getMaxPagingSize());
                         if ((appointees != null) && (appointees.getElementList() != null))
                         {
                             for (RelatedMetadataElement appointee : appointees.getElementList())
@@ -1268,11 +1134,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             RelatedMetadataElement profileElement = null;
 
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(userIdentityElement.getElementGUID(),
-                                                                                                                 2,
-                                                                                                                 OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
-                                                                                                                 0,
-                                                                                                                 openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(userIdentityElement.getElementGUID(),
+                                                                                                              2,
+                                                                                                              OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
+                                                                                                              0,
+                                                                                                              openMetadataStore.getMaxPagingSize());
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -1311,11 +1177,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 RelatedMetadataElement contributionRecord = null;
 
-                relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(profileElement.getElement().getElementGUID(),
-                                                                                        1,
-                                                                                        OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName,
-                                                                                        0,
-                                                                                        openMetadataAccess.getMaxPagingSize());
+                relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(profileElement.getElement().getElementGUID(),
+                                                                                       1,
+                                                                                       OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName,
+                                                                                       0,
+                                                                                       openMetadataStore.getMaxPagingSize());
 
                 if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
                 {
@@ -1365,11 +1231,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             RelatedMetadataElement parentProjectElement = null;
 
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(projectElement.getElementGUID(),
-                                                                                                               2,
-                                                                                                               OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                                               0,
-                                                                                                               openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(projectElement.getElementGUID(),
+                                                                                                              2,
+                                                                                                              OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                              0,
+                                                                                                              openMetadataStore.getMaxPagingSize());
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -1385,11 +1251,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             syncProject(databaseConnection, projectElement, parentProjectElement);
 
-            relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(projectElement.getElementGUID(),
-                                                                                    2,
-                                                                                    OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                                    0,
-                                                                                    openMetadataAccess.getMaxPagingSize());
+            relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(projectElement.getElementGUID(),
+                                                                                   2,
+                                                                                   OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
+                                                                                   0,
+                                                                                   openMetadataStore.getMaxPagingSize());
 
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
@@ -1397,11 +1263,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 syncActorAssignments(databaseConnection, projectElement, relatedMetadataElements.getElementList());
             }
 
-            relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(projectElement.getElementGUID(),
-                                                                                    2,
-                                                                                    OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
-                                                                                    0,
-                                                                                    openMetadataAccess.getMaxPagingSize());
+            relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(projectElement.getElementGUID(),
+                                                                                   2,
+                                                                                   OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
+                                                                                   0,
+                                                                                   openMetadataStore.getMaxPagingSize());
 
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
@@ -1436,11 +1302,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             syncCommunity(databaseConnection, communityElement);
 
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(communityElement.getElementGUID(),
-                                                                                    2,
-                                                                                    OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                                    0,
-                                                                                    openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(communityElement.getElementGUID(),
+                                                                                                              2,
+                                                                                                              OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                              0,
+                                                                                                              openMetadataStore.getMaxPagingSize());
 
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
@@ -1476,11 +1342,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             RelatedMetadataElement parentProjectElement = null;
 
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(collectionElement.getElementGUID(),
-                                                                                                               2,
-                                                                                                               OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                                                               0,
-                                                                                                               openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(collectionElement.getElementGUID(),
+                                                                                                              2,
+                                                                                                              OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                              0,
+                                                                                                              openMetadataStore.getMaxPagingSize());
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -1499,11 +1365,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             String memberTypes = null;
 
             int startFrom = 0;
-            relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(collectionElement.getElementGUID(),
-                                                                                    1,
-                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                                    startFrom,
-                                                                                    openMetadataAccess.getMaxPagingSize());
+            relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(collectionElement.getElementGUID(),
+                                                                                   1,
+                                                                                   OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                   startFrom,
+                                                                                   openMetadataStore.getMaxPagingSize());
 
             while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -1516,13 +1382,13 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     }
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
 
-                relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(collectionElement.getElementGUID(),
-                                                                                        1,
-                                                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                                        startFrom,
-                                                                                        openMetadataAccess.getMaxPagingSize());
+                relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(collectionElement.getElementGUID(),
+                                                                                       1,
+                                                                                       OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                       startFrom,
+                                                                                       openMetadataStore.getMaxPagingSize());
             }
 
             if (! memberTypeSet.isEmpty())
@@ -1584,11 +1450,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             RelatedMetadataElement toDoSourceElement = null;
             RelatedMetadataElement sponsorElement = null;
 
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
-                                                                                                                 2,
-                                                                                                                 OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName,
-                                                                                                                 0,
-                                                                                                                 openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(toDoElement.getElementGUID(),
+                                                                                                              2,
+                                                                                                              OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName,
+                                                                                                              0,
+                                                                                                              openMetadataStore.getMaxPagingSize());
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -1602,11 +1468,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 }
             }
 
-            relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
-                                                                                    2,
-                                                                                    OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
-                                                                                    0,
-                                                                                    openMetadataAccess.getMaxPagingSize());
+            relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(toDoElement.getElementGUID(),
+                                                                                   2,
+                                                                                   OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                                                                   0,
+                                                                                   openMetadataStore.getMaxPagingSize());
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -1622,11 +1488,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             syncToDo(databaseConnection, toDoElement, toDoSourceElement, sponsorElement);
 
-            relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
-                                                                                    2,
-                                                                                    OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                                    0,
-                                                                                    openMetadataAccess.getMaxPagingSize());
+            relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(toDoElement.getElementGUID(),
+                                                                                   2,
+                                                                                   OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                   0,
+                                                                                   openMetadataStore.getMaxPagingSize());
 
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
@@ -1657,11 +1523,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            RelatedMetadataElementList roleElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
-                                                                                                    1,
-                                                                                                    OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
-                                                                                                    0,
-                                                                                                    openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList roleElements = openMetadataStore.getRelatedMetadataElements(profileGUID,
+                                                                                                   1,
+                                                                                                   OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
+                                                                                                   0,
+                                                                                                   openMetadataStore.getMaxPagingSize());
 
             if ((roleElements != null) && (roleElements.getElementList() != null))
             {
@@ -1671,22 +1537,22 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 {
                     if (roleElement != null)
                     {
-                        RelatedMetadataElementList teamElements = openMetadataAccess.getRelatedMetadataElements(roleElement.getElement().getElementGUID(),
-                                                                                                                  2,
-                                                                                                                  OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                                                                  0,
-                                                                                                                  openMetadataAccess.getMaxPagingSize());
+                        RelatedMetadataElementList teamElements = openMetadataStore.getRelatedMetadataElements(roleElement.getElement().getElementGUID(),
+                                                                                                               2,
+                                                                                                               OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                               0,
+                                                                                                               openMetadataStore.getMaxPagingSize());
 
                         if ((teamElements != null) && (teamElements.getElementList() != null))
                         {
                             teams.addAll(teamElements.getElementList());
                         }
 
-                        teamElements = openMetadataAccess.getRelatedMetadataElements(roleElement.getElement().getElementGUID(),
-                                                                                     2,
-                                                                                     OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
-                                                                                     0,
-                                                                                     openMetadataAccess.getMaxPagingSize());
+                        teamElements = openMetadataStore.getRelatedMetadataElements(roleElement.getElement().getElementGUID(),
+                                                                                    2,
+                                                                                    OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
+                                                                                    0,
+                                                                                    openMetadataStore.getMaxPagingSize());
                         if ((teamElements != null) && (teamElements.getElementList() != null))
                         {
                             teams.addAll(teamElements.getElementList());
@@ -1729,11 +1595,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(departmentGUID,
-                                                                                                                 2,
-                                                                                                                 OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
-                                                                                                                 0,
-                                                                                                                 openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(departmentGUID,
+                                                                                                              2,
+                                                                                                              OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
+                                                                                                              0,
+                                                                                                              openMetadataStore.getMaxPagingSize());
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -1776,7 +1642,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         while (superTeam != null)
         {
             organizationName = propertyHelper.getStringProperty(connectorName,
-                                                                OpenMetadataProperty.NAME.name,
+                                                                OpenMetadataProperty.DISPLAY_NAME.name,
                                                                 superTeam.getElementProperties(),
                                                                 methodName);
             superTeam = this.getAssociatedParentTeam(superTeam.getElementGUID());
@@ -1789,7 +1655,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
     /**
      * Navigate to the schema attributes to find the data fields.
      *
-     * @param databaseConnection connection the the database
+     * @param databaseConnection connection to the database
      * @param assetGUID unique identifier for the anchoring asset
      * @param assetQualifiedName unique identifier for the anchoring asset
      * @param schemaType details of the related schema type
@@ -1803,20 +1669,24 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
+
             int startFrom = 0;
 
             /*
-             * Start by processing related schema types.
+             * Start by processing related schema types and schema attributes - this is where we have constructs such as .
              */
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataAccess.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
-                                                                                                                    1,
-                                                                                                                    null,
-                                                                                                                    startFrom,
-                                                                                                                    openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElementList = openMetadataStore.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
+                                                                                                                 1,
+                                                                                                                 null,
+                                                                                                                 startFrom,
+                                                                                                                 openMetadataStore.getMaxPagingSize());
             while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
             {
                 for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
                 {
+                    /*
+                     * Skip Schema Type Choice
+                     */
                     if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SCHEMA_TYPE.typeName))
                     {
                         processAssetSchemaType(databaseConnection, assetGUID, assetQualifiedName, relatedMetadataElement);
@@ -1824,32 +1694,29 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 }
 
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                relatedMetadataElementList = openMetadataAccess.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
-                                                                                           1,
-                                                                                           null,
-                                                                                           startFrom,
-                                                                                           openMetadataAccess.getMaxPagingSize());
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
+                relatedMetadataElementList = openMetadataStore.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
+                                                                                          1,
+                                                                                          null,
+                                                                                          startFrom,
+                                                                                          openMetadataStore.getMaxPagingSize());
             }
 
             /*
              * Now process schema attributes.
              */
-            startFrom = 0;
-            List<SchemaAttributeElement> schemaAttributes = dataAssetExchangeService.getNestedAttributes(schemaType.getElement().getElementGUID(),
-                                                                                                         startFrom,
-                                                                                                         openMetadataAccess.getMaxPagingSize(),
-                                                                                                         null);
+            SchemaAttributeClient schemaAttributeClient = integrationContext.getSchemaAttributeClient();
+            QueryOptions workingQueryOptions = schemaAttributeClient.getQueryOptions(0, schemaAttributeClient.getMaxPagingSize());
+            List<OpenMetadataRootElement> schemaAttributes = integrationContext.getSchemaAttributeClient().getAttributesForSchemaType(schemaType.getElement().getElementGUID(),
+                                                                                                         workingQueryOptions);
 
             while (schemaAttributes != null)
             {
                 processSchemaAttributes(databaseConnection, assetGUID, assetQualifiedName, schemaAttributes);
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                schemaAttributes = dataAssetExchangeService.getNestedAttributes(schemaType.getElement().getElementGUID(),
-                                                                                startFrom,
-                                                                                openMetadataAccess.getMaxPagingSize(),
-                                                                                null);
+                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
+                schemaAttributes = schemaAttributeClient.getAttributesForSchemaType(schemaType.getElement().getElementGUID(),
+                                                                                    workingQueryOptions);
             }
         }
         catch (Exception error)
@@ -1877,26 +1744,24 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                               String                 assetQualifiedName,
                                               RelatedMetadataElement schemaType)
     {
-        final String methodName = "processAssetSchemaType";
+        final String methodName = "processNestedSchemaAttribute";
 
-        // todo need to extend to support APIs and SchemaTypeChoices etc
+        // todo need to extend to support APIs and relational tables etc
         try
         {
+            SchemaAttributeClient schemaAttributeClient = integrationContext.getSchemaAttributeClient();
+
             int startFrom = 0;
-            List<SchemaAttributeElement> schemaAttributes = dataAssetExchangeService.getNestedAttributes(schemaType.getElement().getElementGUID(),
-                                                                                                         startFrom,
-                                                                                                         openMetadataAccess.getMaxPagingSize(),
-                                                                                                         null);
+            List<OpenMetadataRootElement> schemaAttributes = schemaAttributeClient.getNestedSchemaAttributes(schemaType.getElement().getElementGUID(),
+                                                                                                             openMetadataStore.getQueryOptions());
 
             while (schemaAttributes != null)
             {
                 processSchemaAttributes(databaseConnection, assetGUID, assetQualifiedName, schemaAttributes);
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                schemaAttributes = dataAssetExchangeService.getNestedAttributes(schemaType.getElement().getElementGUID(),
-                                                                                startFrom,
-                                                                                openMetadataAccess.getMaxPagingSize(),
-                                                                                null);
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
+                schemaAttributes = schemaAttributeClient.getNestedSchemaAttributes(schemaType.getElement().getElementGUID(),
+                                                                                   openMetadataStore.getQueryOptions());
             }
         }
         catch (Exception error)
@@ -1919,22 +1784,22 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param assetQualifiedName unique identifier for the anchoring asset
      * @param schemaAttributes retrieved schema attributes
      */
-    private void processSchemaAttributes(java.sql.Connection          databaseConnection,
-                                         String                       assetGUID,
-                                         String                       assetQualifiedName,
-                                         List<SchemaAttributeElement> schemaAttributes)
+    private void processSchemaAttributes(java.sql.Connection           databaseConnection,
+                                         String                        assetGUID,
+                                         String                        assetQualifiedName,
+                                         List<OpenMetadataRootElement> schemaAttributes)
     {
         final String methodName = "processSchemaAttributes";
 
         try
         {
-            for (SchemaAttributeElement schemaAttribute : schemaAttributes)
+            SchemaAttributeClient schemaAttributeClient = integrationContext.getSchemaAttributeClient();
+
+            for (OpenMetadataRootElement schemaAttribute : schemaAttributes)
             {
                 int nestedStartFrom = 0;
-                List<SchemaAttributeElement> nestedSchemaAttributes = dataAssetExchangeService.getNestedAttributes(schemaAttribute.getElementHeader().getGUID(),
-                                                                                                                   nestedStartFrom,
-                                                                                                                   openMetadataAccess.getMaxPagingSize(),
-                                                                                                                   null);
+                List<OpenMetadataRootElement> nestedSchemaAttributes = schemaAttributeClient.getNestedSchemaAttributes(schemaAttribute.getElementHeader().getGUID(),
+                                                                                                                      schemaAttributeClient.getQueryOptions(nestedStartFrom, openMetadataStore.getMaxPagingSize()));
                 if (nestedSchemaAttributes == null)
                 {
                     /*
@@ -1947,22 +1812,23 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                   hasProfile(schemaAttribute.getElementHeader().getGUID()),
                                   schemaAttribute);
 
-                    findAssociatedElements(databaseConnection,
-                                           schemaAttribute.getElementHeader(),
-                                           schemaAttribute.getSchemaAttributeProperties().getQualifiedName(),
-                                           schemaAttribute.getCorrelationHeaders(),
-                                           null,
-                                           false);
+                    if (schemaAttribute.getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties)
+                    {
+                        findAssociatedElements(databaseConnection,
+                                               schemaAttribute.getElementHeader(),
+                                               schemaAttributeProperties.getQualifiedName(),
+                                               schemaAttribute.getAlsoKnownAs(),
+                                               null,
+                                               false);
+                    }
                 }
                 else
                 {
                     while (nestedSchemaAttributes != null)
                     {
-                        nestedStartFrom = nestedStartFrom + openMetadataAccess.getMaxPagingSize();
-                        nestedSchemaAttributes = dataAssetExchangeService.getNestedAttributes(schemaAttribute.getElementHeader().getGUID(),
-                                                                                              nestedStartFrom,
-                                                                                              openMetadataAccess.getMaxPagingSize(),
-                                                                                              null);
+                        nestedStartFrom = nestedStartFrom + openMetadataStore.getMaxPagingSize();
+                        nestedSchemaAttributes = schemaAttributeClient.getNestedSchemaAttributes(schemaAttribute.getElementHeader().getGUID(),
+                                                                                                 schemaAttributeClient.getQueryOptions(nestedStartFrom, openMetadataStore.getMaxPagingSize()));
 
                         if (nestedSchemaAttributes != null)
                         {
@@ -1996,11 +1862,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            RelatedMetadataElementList reports = openMetadataAccess.getRelatedMetadataElements(dataFieldGUID,
-                                                                                                 1,
-                                                                                                 OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                                 0,
-                                                                                                 1);
+            RelatedMetadataElementList reports = openMetadataStore.getRelatedMetadataElements(dataFieldGUID,
+                                                                                              1,
+                                                                                              OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                              0,
+                                                                                              1);
 
             return (reports != null);
         }
@@ -2022,16 +1888,19 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * Add information to the glossary table.
      *
      * @param databaseConnection connection to the database
-     * @param glossary glossary information
+     * @param glossaryElement glossary information
      */
-    private void processGlossary(java.sql.Connection databaseConnection,
-                                 GlossaryElement     glossary)
+    private void processGlossary(java.sql.Connection     databaseConnection,
+                                 OpenMetadataRootElement glossaryElement)
     {
         final String methodName = "processGlossary";
 
         try
         {
-            OpenMetadataElement associatedLicense = getAssociatedLicense(databaseConnection, glossary.getElementHeader().getGUID());
+            GlossaryClient     glossaryClient     = integrationContext.getGlossaryClient();
+            GlossaryTermClient glossaryTermClient = integrationContext.getGlossaryTermClient();
+
+            OpenMetadataElement associatedLicense = getAssociatedLicense(databaseConnection, glossaryElement.getElementHeader().getGUID());
 
             int numberOfTerms = 0;
             int numberOfCategories = 0;
@@ -2039,89 +1908,37 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             int startFrom = 0;
 
-            List<GlossaryCategoryElement> glossaryCategoryElements = glossaryExchangeService.getCategoriesForGlossary(glossary.getElementHeader().getGUID(),
-                                                                                                                      startFrom,
-                                                                                                                      openMetadataAccess.getMaxPagingSize(),
-                                                                                                                      null);
-
-            while (glossaryCategoryElements != null)
-            {
-                for (GlossaryCategoryElement glossaryCategoryElement : glossaryCategoryElements)
-                {
-                    if (glossaryCategoryElement != null)
-                    {
-                        numberOfCategories++;
-
-                        int catTermsStartFrom = 0;
-
-                        List<GlossaryTermElement> categorizedTerms = glossaryExchangeService.getTermsForGlossaryCategory(glossaryCategoryElement.getElementHeader().getGUID(),
-                                                                                                                         null,
-                                                                                                                         catTermsStartFrom,
-                                                                                                                         openMetadataAccess.getMaxPagingSize(),
-                                                                                                                         null);
-
-                        while (categorizedTerms != null)
-                        {
-                            for (GlossaryTermElement glossaryTermElement : categorizedTerms)
-                            {
-                                if (glossaryTermElement != null)
-                                {
-                                    numberOfLinkedTerms++;
-                                }
-                            }
-
-                            catTermsStartFrom = catTermsStartFrom + openMetadataAccess.getMaxPagingSize();
-
-                            categorizedTerms = glossaryExchangeService.getTermsForGlossaryCategory(glossaryCategoryElement.getElementHeader().getGUID(),
-                                                                                                   null,
-                                                                                                   catTermsStartFrom,
-                                                                                                   openMetadataAccess.getMaxPagingSize(),
-                                                                                                   null);
-                        }
-                    }
-                }
-
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                glossaryCategoryElements = glossaryExchangeService.getCategoriesForGlossary(glossary.getElementHeader().getGUID(),
-                                                                                            startFrom,
-                                                                                            openMetadataAccess.getMaxPagingSize(),
-                                                                                            null);
-            }
-
-            startFrom = 0;
-
-            List<GlossaryTermElement> glossaryTermElements = glossaryExchangeService.getTermsForGlossary(glossary.getElementHeader().getGUID(),
-                                                                                                         startFrom,
-                                                                                                         openMetadataAccess.getMaxPagingSize(),
-                                                                                                         null);
+            List<OpenMetadataRootElement> glossaryTermElements = glossaryTermClient.getTermsForGlossary(glossaryElement.getElementHeader().getGUID(),
+                                                                                                        openMetadataStore.getQueryOptions());
 
             while (glossaryTermElements != null)
             {
-                for (GlossaryTermElement glossaryTermElement : glossaryTermElements)
+                for (OpenMetadataRootElement glossaryTermElement : glossaryTermElements)
                 {
                     if (glossaryTermElement != null)
                     {
                         numberOfTerms++;
 
-                        processGlossaryTerm(databaseConnection, glossary.getElementHeader().getGUID(), glossaryTermElement);
+                        processGlossaryTerm(databaseConnection, glossaryElement.getElementHeader().getGUID(), glossaryTermElement);
                     }
                 }
 
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                glossaryTermElements = glossaryExchangeService.getTermsForGlossary(glossary.getElementHeader().getGUID(),
-                                                                                   startFrom,
-                                                                                   openMetadataAccess.getMaxPagingSize(),
-                                                                                   null);
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
+                glossaryTermElements = glossaryTermClient.getTermsForGlossary(glossaryElement.getElementHeader().getGUID(),
+                                                                          openMetadataStore.getQueryOptions());
             }
 
-            syncGlossary(databaseConnection, glossary, numberOfTerms, numberOfCategories, numberOfLinkedTerms, associatedLicense);
+            syncGlossary(databaseConnection, glossaryElement, numberOfTerms, numberOfCategories, numberOfLinkedTerms, associatedLicense);
 
-            findAssociatedElements(databaseConnection,
-                                   glossary.getElementHeader(),
-                                   glossary.getGlossaryProperties().getQualifiedName(),
-                                   glossary.getCorrelationHeaders(),
-                                   associatedLicense,
-                                   false);
+            if (glossaryElement.getProperties() instanceof GlossaryProperties glossaryProperties)
+            {
+                findAssociatedElements(databaseConnection,
+                                       glossaryElement.getElementHeader(),
+                                       glossaryProperties.getQualifiedName(),
+                                       glossaryElement.getAlsoKnownAs(),
+                                       associatedLicense,
+                                       false);
+            }
         }
         catch (Exception error)
         {
@@ -2142,9 +1959,9 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param glossaryGUID unique identifier of the owning glossary
      * @param glossaryTerm term to add to the table
      */
-    private void processGlossaryTerm(java.sql.Connection databaseConnection,
-                                     String              glossaryGUID,
-                                     GlossaryTermElement glossaryTerm)
+    private void processGlossaryTerm(java.sql.Connection     databaseConnection,
+                                     String                  glossaryGUID,
+                                     OpenMetadataRootElement glossaryTerm)
     {
         final String methodName = "processGlossaryTerm";
 
@@ -2155,11 +1972,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             int startFrom = 0;
-            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(glossaryTerm.getElementHeader().getGUID(),
-                                                                                                                 0,
-                                                                                                                 null,
-                                                                                                                 startFrom,
-                                                                                                                 openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(glossaryTerm.getElementHeader().getGUID(),
+                                                                                                              0,
+                                                                                                              null,
+                                                                                                              startFrom,
+                                                                                                              openMetadataStore.getMaxPagingSize());
 
             while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -2167,31 +1984,32 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 {
                     String relationshipName = relatedMetadataElement.getType().getTypeName();
 
-                    switch (relationshipName)
+                    if ((relationshipName.equals(OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName)) ||
+                            (relationshipName.equals(OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName)) ||
+                            (relationshipName.equals(OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName)) ||
+                            (relationshipName.equals(OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName)))
                     {
-                        case "AttachedTag", "AttachedComment", "AttachedRating", "AttachedLink" ->
+                        if ((lastFeedbackTime == null) || (relatedMetadataElement.getVersions().getCreateTime().after(lastFeedbackTime)))
                         {
-                            if ((lastFeedbackTime == null) || (relatedMetadataElement.getVersions().getCreateTime().after(lastFeedbackTime)))
-                            {
-                                lastFeedbackTime = relatedMetadataElement.getVersions().getCreateTime();
-                            }
+                            lastFeedbackTime = relatedMetadataElement.getVersions().getCreateTime();
                         }
-                        case "SemanticAssignment" ->
+                    }
+                    else if (relationshipName.equals(OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName))
+                    {
+                        numberOfLinkedElements = numberOfLinkedElements + 1;
+                        if ((lastLinkTime == null) || (relatedMetadataElement.getVersions().getCreateTime().after(lastLinkTime)))
                         {
-                            numberOfLinkedElements = numberOfLinkedElements + 1;
-                            if ((lastLinkTime == null) || (relatedMetadataElement.getVersions().getCreateTime().after(lastLinkTime)))
-                            {
-                                lastLinkTime = relatedMetadataElement.getVersions().getCreateTime();
-                            }
+                            lastLinkTime = relatedMetadataElement.getVersions().getCreateTime();
                         }
                     }
                 }
-                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(glossaryTerm.getElementHeader().getGUID(),
-                                                                                        0,
-                                                                                        null,
-                                                                                        startFrom,
-                                                                                        openMetadataAccess.getMaxPagingSize());
+
+                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
+                relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(glossaryTerm.getElementHeader().getGUID(),
+                                                                                       0,
+                                                                                       null,
+                                                                                       startFrom,
+                                                                                       openMetadataStore.getMaxPagingSize());
             }
         }
         catch (Exception error)
@@ -2218,12 +2036,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param tags colon separated list of tags
      * @param semanticAssignmentTermGUID unique identifier of term that is linked to element with a semantic assignment
      */
-    private void syncDataAsset(java.sql.Connection databaseConnection,
-                               DataAssetElement    dataAssetElement,
-                               String              associatedResourceLocationGUID,
-                               String              associatedLicenceGUID,
-                               String              tags,
-                               String              semanticAssignmentTermGUID)
+    private void syncDataAsset(java.sql.Connection     databaseConnection,
+                               OpenMetadataRootElement dataAssetElement,
+                               String                  associatedResourceLocationGUID,
+                               String                  associatedLicenceGUID,
+                               String                  tags,
+                               String                  semanticAssignmentTermGUID)
     {
         final String methodName = "syncDataAsset";
 
@@ -2272,139 +2090,145 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param semanticAssignmentTermGUID unique identifier of term that is linked to element with a semantic assignment
      * @return columns
      */
-    private Map<String, JDBCDataValue> getAssetDataValues(java.sql.Connection databaseConnection,
-                                                          DataAssetElement    dataAssetElement,
-                                                          String              associatedResourceLocationGUID,
-                                                          String              associatedLicenceGUID,
-                                                          String              tags,
-                                                          String              semanticAssignmentTermGUID)
+    private Map<String, JDBCDataValue> getAssetDataValues(java.sql.Connection     databaseConnection,
+                                                          OpenMetadataRootElement dataAssetElement,
+                                                          String                  associatedResourceLocationGUID,
+                                                          String                  associatedLicenceGUID,
+                                                          String                  tags,
+                                                          String                  semanticAssignmentTermGUID)
     {
         if (dataAssetElement != null)
         {
             Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
             ElementHeader       elementHeader       = dataAssetElement.getElementHeader();
-            DataAssetProperties dataAssetProperties = dataAssetElement.getDataAssetProperties();
 
-            if (elementHeader != null)
+            if (dataAssetElement.getProperties() instanceof DataAssetProperties dataAssetProperties)
             {
-                processUserIds(databaseConnection, elementHeader.getVersions(), elementHeader.getOrigin());
-
-                int confidentiality = 0;
-                int criticality     = 0;
-                int confidence      = 0;
-
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSET_GUID, elementHeader.getGUID());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, elementHeader.getType().getTypeName());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.METADATA_COLLECTION_ID, elementHeader.getOrigin().getHomeMetadataCollectionId());
-
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_BY, elementHeader.getVersions().getCreatedBy());
-                addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, elementHeader.getVersions().getCreateTime());
-
-                if (elementHeader.getVersions().getUpdateTime() != null)
+                /*
+                 * Extract classifications
+                 */
+                if (elementHeader != null)
                 {
-                    addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, elementHeader.getVersions().getUpdateTime());
-                }
-                else
-                {
-                    addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, elementHeader.getVersions().getCreateTime());
-                }
-                if (elementHeader.getVersions().getUpdatedBy() != null)
-                {
-                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getUpdatedBy());
-                }
-                else
-                {
+                    processUserIds(databaseConnection, elementHeader.getVersions(), elementHeader.getOrigin());
+
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSET_GUID, elementHeader.getGUID());
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, elementHeader.getType().getTypeName());
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.METADATA_COLLECTION_ID, elementHeader.getOrigin().getHomeMetadataCollectionId());
+
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_BY, elementHeader.getVersions().getCreatedBy());
+                    addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, elementHeader.getVersions().getCreateTime());
+
+                    if (elementHeader.getVersions().getUpdateTime() != null)
+                    {
+                        addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, elementHeader.getVersions().getUpdateTime());
+                    }
+                    else
+                    {
+                        addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, elementHeader.getVersions().getCreateTime());
+                    }
+                    if (elementHeader.getVersions().getUpdatedBy() != null)
+                    {
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getUpdatedBy());
+                    }
+                    else
+                    {
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getCreatedBy());
+                    }
+
+                    if ((elementHeader.getVersions().getMaintainedBy() != null) && (!elementHeader.getVersions().getMaintainedBy().isEmpty()))
+                    {
+                        StringBuilder userString = new StringBuilder(":");
+
+                        for (String user : elementHeader.getVersions().getMaintainedBy())
+                        {
+                            userString.append(user).append(":");
+                        }
+
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MAINTAINED_BY, userString.toString());
+                    }
+                    else
+                    {
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MAINTAINED_BY, ":" + elementHeader.getVersions().getCreatedBy() + ":");
+                    }
+
                     addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getCreatedBy());
-                }
 
-                if ((elementHeader.getVersions().getMaintainedBy() != null) && (!elementHeader.getVersions().getMaintainedBy().isEmpty()))
-                {
-                    StringBuilder userString = new StringBuilder(":");
-
-                    for (String user : elementHeader.getVersions().getMaintainedBy())
+                    if (elementHeader.getZoneMembership() != null)
                     {
-                        userString.append(user).append(":");
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ZONE_NAMES, this.getZoneNames(elementHeader.getZoneMembership().getClassificationProperties()));
                     }
-
-                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MAINTAINED_BY, userString.toString());
-                }
-                else
-                {
-                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MAINTAINED_BY, ":" + elementHeader.getVersions().getCreatedBy() + ":");
-                }
-
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getCreatedBy());
-
-                if (elementHeader.getClassifications() != null)
-                {
-                    for (ElementClassification classification : elementHeader.getClassifications())
+                    if (elementHeader.getOwnership() != null)
                     {
-                        if (OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                        {
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ZONE_NAMES, this.getZoneNames(classification.getClassificationProperties()));
-                        }
-                        else if (OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                        {
-                            // todo need to check this is a guid
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
-                        }
-                        else if (OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                        {
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_ORG_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.ORGANIZATION.name, 80));
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_BIZ_CAP_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), "businessCapability", 80));
-                        }
-                        else if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                        {
-                            addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ARCHIVED, classification.getVersions().getCreateTime());
-                        }
-                        else if (OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                        {
-                            this.getStatusIdentifier(classification.getClassificationProperties());
-                        }
-                        else if (OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                        {
-                            this.getStatusIdentifier(classification.getClassificationProperties());
-                        }
-                        else if (OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                        {
-                            this.getStatusIdentifier(classification.getClassificationProperties());
-                        }
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
+                    }
+                    if (elementHeader.getDigitalResourceOrigin() != null)
+                    {
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_ORG_GUID, this.getOpenMetadataStringProperty(elementHeader.getDigitalResourceOrigin().getClassificationProperties(), OpenMetadataProperty.ORGANIZATION.name, 80));
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_BIZ_CAP_GUID, this.getOpenMetadataStringProperty(elementHeader.getDigitalResourceOrigin().getClassificationProperties(), "businessCapability", 80));
+                    }
+                    if (elementHeader.getMemento() != null)
+                    {
+                        addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ARCHIVED, elementHeader.getMemento().getVersions().getCreateTime());
+                    }
+                    if (elementHeader.getConfidentiality() != null)
+                    {
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL, this.getStatusIdentifier(elementHeader.getConfidentiality().getClassificationProperties()));
+                    }
+                    if (elementHeader.getConfidence() != null)
+                    {
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENCE_LEVEL, this.getStatusIdentifier(elementHeader.getConfidence().getClassificationProperties()));
+                    }
+                    if (elementHeader.getCriticality() != null)
+                    {
+                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CRITICALITY_LEVEL, this.getStatusIdentifier(elementHeader.getCriticality().getClassificationProperties()));
                     }
                 }
 
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL, confidentiality);
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CRITICALITY_LEVEL, criticality);
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENCE_LEVEL, confidence);
-            }
-
-            if (dataAssetProperties != null)
-            {
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_NAME,        dataAssetProperties.getResourceName());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_DESCRIPTION, dataAssetProperties.getResourceDescription());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION_IDENTIFIER,   dataAssetProperties.getVersionIdentifier());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME,       dataAssetProperties.getQualifiedName());
+                /*
+                 * Extract properties
+                 */
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_NAME, dataAssetProperties.getResourceName());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_DESCRIPTION, dataAssetProperties.getDescription());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION_IDENTIFIER, dataAssetProperties.getVersionIdentifier());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, dataAssetProperties.getQualifiedName());
                 addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DEPLOYED_IMPLEMENTATION_TYPE, dataAssetProperties.getDeployedImplementationType());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME,         dataAssetProperties.getDisplayName());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_DESCRIPTION,  dataAssetProperties.getDisplayDescription());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_SUMMARY,      dataAssetProperties.getDisplaySummary());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ABBREVIATION,         dataAssetProperties.getAbbreviation());
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USAGE,                dataAssetProperties.getUsage());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, dataAssetProperties.getDisplayName());
+
                 if (dataAssetProperties.getAdditionalProperties() != null)
                 {
                     addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES, dataAssetProperties.getAdditionalProperties().toString());
                 }
+
+                /*
+                 * Extract supplementary properties
+                 */
+                if (dataAssetElement.getSupplementaryProperties() != null)
+                {
+                    for (RelatedMetadataElementSummary supplementaryProperties : dataAssetElement.getSupplementaryProperties())
+                    {
+                        if ((supplementaryProperties != null) && (supplementaryProperties.getRelatedElement().getProperties() != null))
+                        {
+                            Map<String,String> additionalDescriptiveProperties = supplementaryProperties.getRelatedElement().getProperties();
+
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_DESCRIPTION, additionalDescriptiveProperties.get(OpenMetadataProperty.DISPLAY_NAME.name));
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_SUMMARY, additionalDescriptiveProperties.get(OpenMetadataProperty.SUMMARY.name));
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ABBREVIATION, additionalDescriptiveProperties.get(OpenMetadataProperty.DESCRIPTION.name));
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USAGE, additionalDescriptiveProperties.get(OpenMetadataProperty.USAGE.name));
+                        }
+                    }
+                }
+
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LICENSE_TYPE_GUID, associatedLicenceGUID);
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_LOCATION_GUID, associatedResourceLocationGUID);
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TAGS, tags);
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SEMANTIC_TERM_GUID, semanticAssignmentTermGUID);
+
+                addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new Date());
+
+                return openMetadataRecord;
             }
-
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LICENSE_TYPE_GUID, associatedLicenceGUID);
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_LOCATION_GUID, associatedResourceLocationGUID);
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TAGS, tags);
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SEMANTIC_TERM_GUID, semanticAssignmentTermGUID);
-
-            addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new Date());
-
-            return openMetadataRecord;
         }
 
         return null;
@@ -2503,11 +2327,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      */
     private void syncCorrelationProperties(java.sql.Connection             databaseConnection,
                                            ElementHeader                   elementHeader,
-                                           List<MetadataCorrelationHeader> metadataCorrelationHeaders)
+                                           List<RelatedMetadataElementSummary> metadataCorrelationHeaders)
     {
         if (metadataCorrelationHeaders != null)
         {
-            for (MetadataCorrelationHeader metadataCorrelationHeader : metadataCorrelationHeaders)
+            for (RelatedMetadataElementSummary metadataCorrelationHeader : metadataCorrelationHeaders)
             {
                 syncCorrelationProperties(databaseConnection, elementHeader, metadataCorrelationHeader);
             }
@@ -2522,9 +2346,9 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param elementHeader unique identifier of the attached element and other related information
      * @param metadataCorrelationHeader correlation properties
      */
-    private void syncCorrelationProperties(java.sql.Connection       databaseConnection,
-                                           ElementHeader             elementHeader,
-                                           MetadataCorrelationHeader metadataCorrelationHeader)
+    private void syncCorrelationProperties(java.sql.Connection           databaseConnection,
+                                           ElementHeader                 elementHeader,
+                                           RelatedMetadataElementSummary metadataCorrelationHeader)
     {
         final String methodName = "syncCorrelationProperties";
 
@@ -2551,12 +2375,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      *
      * @param databaseConnection connection to the database
      * @param elementHeader unique identifier of the attached element and other related information
-     * @param metadataCorrelationHeader correlation properties
+     * @param relatedExternalId correlation properties
      * @return columns
      */
-    private Map<String, JDBCDataValue> getCorrelationPropertiesDataValues(java.sql.Connection       databaseConnection,
-                                                                          ElementHeader             elementHeader,
-                                                                          MetadataCorrelationHeader metadataCorrelationHeader)
+    private Map<String, JDBCDataValue> getCorrelationPropertiesDataValues(java.sql.Connection           databaseConnection,
+                                                                          ElementHeader                 elementHeader,
+                                                                          RelatedMetadataElementSummary relatedExternalId)
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
@@ -2568,31 +2392,38 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, elementHeader.getType().getTypeName());
         }
 
-        if (metadataCorrelationHeader != null)
+        if (relatedExternalId != null)
         {
-            if (metadataCorrelationHeader.getExternalInstanceCreatedBy() != null)
+            if (relatedExternalId.getRelatedElement().getProperties() instanceof ExternalIdProperties externalIdProperties)
             {
-                syncExternalUserId(databaseConnection,
-                                   metadataCorrelationHeader.getExternalInstanceCreatedBy(),
-                                   metadataCorrelationHeader.getExternalScopeGUID(),
-                                   this.getAssociatedUserIdentity(metadataCorrelationHeader.getExternalInstanceCreatedBy()));
+                if (externalIdProperties.getExternalInstanceCreatedBy() != null)
+                {
+                    syncExternalUserId(databaseConnection,
+                                       externalIdProperties.getExternalInstanceCreatedBy(),
+                                       relatedExternalId.getRelatedElement().getElementHeader().getOrigin().getHomeMetadataCollectionId(),
+                                       this.getAssociatedUserIdentity(externalIdProperties.getExternalInstanceCreatedBy()));
+                }
+                if (externalIdProperties.getExternalInstanceLastUpdatedBy() != null)
+                {
+                    syncExternalUserId(databaseConnection,
+                                       externalIdProperties.getExternalInstanceLastUpdatedBy(),
+                                       relatedExternalId.getRelatedElement().getElementHeader().getOrigin().getHomeMetadataCollectionId(),
+                                       this.getAssociatedUserIdentity(externalIdProperties.getExternalInstanceLastUpdatedBy()));
+                }
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_IDENTIFIER, externalIdProperties.getIdentifier());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, externalIdProperties.getExternalInstanceLastUpdatedBy());
+                addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, externalIdProperties.getExternalInstanceLastUpdateTime());
+                addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, externalIdProperties.getExternalInstanceCreationTime());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_BY, externalIdProperties.getExternalInstanceCreatedBy());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION, externalIdProperties.getExternalInstanceVersion());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_TYPE_NAME, externalIdProperties.getExternalInstanceTypeName());
+
+                if (relatedExternalId.getRelationshipProperties() != null)
+                {
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_CONFIRMED_SYNC_TIME, relatedExternalId.getRelationshipProperties().get(OpenMetadataProperty.LAST_SYNCHRONIZED.name));
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES, relatedExternalId.getRelationshipProperties().get(OpenMetadataProperty.MAPPING_PROPERTIES.name));
+                }
             }
-            if (metadataCorrelationHeader.getExternalInstanceLastUpdatedBy() != null)
-            {
-                syncExternalUserId(databaseConnection,
-                                   metadataCorrelationHeader.getExternalInstanceLastUpdatedBy(),
-                                   metadataCorrelationHeader.getExternalScopeGUID(),
-                                   this.getAssociatedUserIdentity(metadataCorrelationHeader.getExternalInstanceLastUpdatedBy()));
-            }
-            addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_CONFIRMED_SYNC_TIME, metadataCorrelationHeader.getLastSynchronized());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_IDENTIFIER, metadataCorrelationHeader.getExternalIdentifier());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, metadataCorrelationHeader.getExternalInstanceLastUpdatedBy());
-            addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, metadataCorrelationHeader.getExternalInstanceLastUpdateTime());
-            addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, metadataCorrelationHeader.getExternalInstanceCreationTime());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_BY, metadataCorrelationHeader.getExternalInstanceCreatedBy());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION, metadataCorrelationHeader.getExternalInstanceVersion());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_TYPE_NAME, metadataCorrelationHeader.getExternalInstanceTypeName());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES, metadataCorrelationHeader.getMappingProperties().toString());
         }
 
         return openMetadataRecord;
@@ -3004,16 +2835,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             searchProperties.setMatchCriteria(MatchCriteria.ALL);
             searchProperties.setConditions(propertyConditions);
 
-            List<OpenMetadataElement> userIdentities = openMetadataAccess.findMetadataElements("UserIdentity",
-                                                                                               null,
-                                                                                               searchProperties,
-                                                                                               null,
-                                                                                               null,
-                                                                                               null,
-                                                                                               null,
-                                                                                               null,
-                                                                                               0,
-                                                                                               openMetadataAccess.getMaxPagingSize());
+            List<OpenMetadataElement> userIdentities = openMetadataStore.findMetadataElements(searchProperties,
+                                                                                              null,
+                                                                                              this.openMetadataStore.getQueryOptions(OpenMetadataType.USER_IDENTITY.typeName,
+                                                                                                                                     null,
+                                                                                                                                     0,
+                                                                                                                                     openMetadataStore.getMaxPagingSize()));
 
             if (userIdentities != null)
             {
@@ -3337,12 +3164,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param hasProfile does this data filed have at least one SchemaAttributeDefinition (0615) relationship
      * @param schemaAttributeElement details of a specific schemaAttributeElement
      */
-    private void syncDataField(java.sql.Connection    databaseConnection,
-                               String                 assetGUID,
-                               String                 assetQualifiedName,
-                               String                 glossaryTermGUID,
-                               boolean                hasProfile,
-                               SchemaAttributeElement schemaAttributeElement)
+    private void syncDataField(java.sql.Connection     databaseConnection,
+                               String                  assetGUID,
+                               String                  assetQualifiedName,
+                               String                  glossaryTermGUID,
+                               boolean                 hasProfile,
+                               OpenMetadataRootElement schemaAttributeElement)
     {
         final String methodName = "syncDataField";
 
@@ -3393,33 +3220,38 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param schemaAttributeElement details of a specific schemaAttributeElement
      * @return columns
      */
-    private Map<String, JDBCDataValue> getDataFieldDataValues(java.sql.Connection    databaseConnection,
-                                                              String                 assetGUID,
-                                                              String                 assetQualifiedName,
-                                                              String                 glossaryTermGUID,
-                                                              boolean                hasProfile,
-                                                              SchemaAttributeElement schemaAttributeElement)
+    private Map<String, JDBCDataValue> getDataFieldDataValues(java.sql.Connection     databaseConnection,
+                                                              String                  assetGUID,
+                                                              String                  assetQualifiedName,
+                                                              String                  glossaryTermGUID,
+                                                              boolean                 hasProfile,
+                                                              OpenMetadataRootElement schemaAttributeElement)
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
         processUserIds(databaseConnection, schemaAttributeElement.getElementHeader().getVersions(), schemaAttributeElement.getElementHeader().getOrigin());
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_GUID, schemaAttributeElement.getElementHeader().getGUID());
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_NAME, schemaAttributeElement.getSchemaAttributeProperties().getDisplayName());
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_TYPE, schemaAttributeElement.getSchemaAttributeProperties().getDataType());
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION_IDENTIFIER, Long.toString(schemaAttributeElement.getElementHeader().getVersions().getVersion()));
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, schemaAttributeElement.getSchemaAttributeProperties().getDescription());
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.HAS_PROFILE, hasProfile);
-        if (schemaAttributeElement.getElementHeader().getClassifications() != null)
+
+        if (schemaAttributeElement.getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties)
         {
-            for (ElementClassification classification : schemaAttributeElement.getElementHeader().getClassifications())
-            {
-                if (OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                {
-                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL, this.getStatusIdentifier(classification.getClassificationProperties()));
-                }
-            }
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_NAME, schemaAttributeProperties.getDisplayName());
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, schemaAttributeProperties.getDescription());
         }
+
+        if ((schemaAttributeElement.getElementHeader().getSchemaType() != null) && (schemaAttributeElement.getElementHeader().getSchemaType().getClassificationProperties() != null))
+        {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_TYPE, schemaAttributeElement.getElementHeader().getSchemaType().getClassificationProperties().get(OpenMetadataProperty.DATA_TYPE.name));
+        }
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.HAS_PROFILE, hasProfile);
+
+        if (schemaAttributeElement.getElementHeader().getConfidentiality() != null)
+        {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL, this.getStatusIdentifier(schemaAttributeElement.getElementHeader().getConfidentiality().getClassificationProperties()));
+        }
+
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SEMANTIC_TERM_GUID, glossaryTermGUID);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSET_GUID, assetGUID);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, assetQualifiedName);
@@ -3495,7 +3327,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DEPARTMENT_GUID, department.getElementGUID());
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DEPARTMENT_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                                      OpenMetadataProperty.NAME.name,
+                                                                                                                      OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                                                       department.getElementProperties(),
                                                                                                                       methodName));
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DEPARTMENT_IDENTIFIER, propertyHelper.getStringProperty(connectorName,
@@ -3522,12 +3354,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param numberOfLinkedTerms number of terms categorized
      * @param license attached license (maybe null)
      */
-    private void syncGlossary(java.sql.Connection databaseConnection,
-                              GlossaryElement     glossaryElement,
-                              int                 numberOfTerms,
-                              int                 numberOfCategories,
-                              int                 numberOfLinkedTerms,
-                              OpenMetadataElement license)
+    private void syncGlossary(java.sql.Connection     databaseConnection,
+                              OpenMetadataRootElement glossaryElement,
+                              int                     numberOfTerms,
+                              int                     numberOfCategories,
+                              int                     numberOfLinkedTerms,
+                              OpenMetadataElement     license)
     {
         final String methodName = "syncGlossary";
 
@@ -3583,17 +3415,16 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param licenseGUID unique identifier of an attached license
      * @return columns
      */
-    private Map<String, JDBCDataValue> getGlossaryDataValues(java.sql.Connection databaseConnection,
-                                                             GlossaryElement     glossaryElement,
-                                                             int                 numberOfTerms,
-                                                             int                 numberOfCategories,
-                                                             int                 numberOfLinkedTerms,
-                                                             String              licenseGUID)
+    private Map<String, JDBCDataValue> getGlossaryDataValues(java.sql.Connection     databaseConnection,
+                                                             OpenMetadataRootElement glossaryElement,
+                                                             int                     numberOfTerms,
+                                                             int                     numberOfCategories,
+                                                             int                     numberOfLinkedTerms,
+                                                             String                  licenseGUID)
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
         ElementHeader      elementHeader      = glossaryElement.getElementHeader();
-        GlossaryProperties glossaryProperties = glossaryElement.getGlossaryProperties();
 
         if (elementHeader != null)
         {
@@ -3613,22 +3444,16 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, elementHeader.getVersions().getCreateTime());
             }
 
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CLASSIFICATIONS, this.getClassifications(elementHeader.getClassifications()));
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CLASSIFICATIONS, this.getClassifications(elementHeader.getOtherClassifications()));
 
-            if ((elementHeader.getClassifications() != null) && (! elementHeader.getClassifications().isEmpty()))
+            if (elementHeader.getOwnership() != null)
             {
-                for (ElementClassification classification : elementHeader.getClassifications())
-                {
-                    if (classification.getClassificationName().equals(OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName))
-                    {
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
-                    }
-                }
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
             }
         }
 
-        if (glossaryProperties != null)
+        if (glossaryElement.getProperties() instanceof GlossaryProperties glossaryProperties)
         {
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, glossaryProperties.getQualifiedName());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, glossaryProperties.getDisplayName());
@@ -3710,12 +3535,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param numberOfLinkedElements number of semantically linked elements
      * @param lastLinkTime last time a semantic assignment was attached to this term
      */
-    private void syncTermActivity(java.sql.Connection databaseConnection,
-                                  GlossaryTermElement glossaryTermElement,
-                                  String              glossaryGUID,
-                                  Date                lastFeedbackTime,
-                                  int                 numberOfLinkedElements,
-                                  Date                lastLinkTime)
+    private void syncTermActivity(java.sql.Connection     databaseConnection,
+                                  OpenMetadataRootElement glossaryTermElement,
+                                  String                  glossaryGUID,
+                                  Date                    lastFeedbackTime,
+                                  int                     numberOfLinkedElements,
+                                  Date                    lastLinkTime)
     {
         final String methodName = "syncTermActivity";
 
@@ -3764,21 +3589,16 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param lastLinkTime last time a semantic assignment was attached to this term
      * @return columns
      */
-    private Map<String, JDBCDataValue> getTermActivityDataValues(java.sql.Connection databaseConnection,
-                                                                 GlossaryTermElement glossaryTermElement,
-                                                                 String              glossaryGUID,
-                                                                 Date                lastFeedbackTime,
-                                                                 int                 numberOfLinkedElements,
-                                                                 Date                lastLinkTime)
+    private Map<String, JDBCDataValue> getTermActivityDataValues(java.sql.Connection     databaseConnection,
+                                                                 OpenMetadataRootElement glossaryTermElement,
+                                                                 String                  glossaryGUID,
+                                                                 Date                    lastFeedbackTime,
+                                                                 int                     numberOfLinkedElements,
+                                                                 Date                    lastLinkTime)
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        ElementHeader          elementHeader          = glossaryTermElement.getElementHeader();
-        GlossaryTermProperties glossaryTermProperties = glossaryTermElement.getGlossaryTermProperties();
-
-        int confidentiality = 0;
-        int criticality     = 0;
-        int confidence      = 0;
+        ElementHeader elementHeader = glossaryTermElement.getElementHeader();
 
         if (elementHeader != null)
         {
@@ -3787,42 +3607,31 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TERM_GUID, elementHeader.getGUID());
             addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, elementHeader.getVersions().getCreateTime());
 
-            if (elementHeader.getClassifications() != null)
+            if (elementHeader.getOwnership() != null)
             {
-
-                for (ElementClassification classification : elementHeader.getClassifications())
-                {
-                    switch (classification.getClassificationName())
-                    {
-                        // todo - add to OpenMetadataType enum
-                        case "Ownership" ->
-                        {
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID,
-                                                               this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER.name,
-                                                                                                  80));
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME,
-                                                               this.getOpenMetadataStringProperty(classification.getClassificationProperties(),
-                                                                                                  OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
-                        }
-                        case "Confidentiality" -> confidentiality = this.getStatusIdentifier(classification.getClassificationProperties());
-                        case "Confidence" -> confidence = this.getStatusIdentifier(classification.getClassificationProperties());
-                        case "Criticality" -> criticality = this.getStatusIdentifier(classification.getClassificationProperties());
-                    }
-                }
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
+            }
+            if (elementHeader.getConfidentiality() != null)
+            {
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL, this.getStatusIdentifier(elementHeader.getConfidentiality().getClassificationProperties()));
+            }
+            if (elementHeader.getConfidence() != null)
+            {
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENCE_LEVEL, this.getStatusIdentifier(elementHeader.getConfidence().getClassificationProperties()));
+            }
+            if (elementHeader.getCriticality() != null)
+            {
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CRITICALITY_LEVEL, this.getStatusIdentifier(elementHeader.getCriticality().getClassificationProperties()));
             }
         }
 
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL, confidentiality);
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CRITICALITY_LEVEL, criticality);
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENCE_LEVEL, confidence);
-
-
-        if (glossaryTermProperties != null)
+        if (glossaryTermElement.getProperties() instanceof GlossaryTermProperties glossaryTermProperties)
         {
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TERM_NAME, glossaryTermProperties.getDisplayName());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, glossaryTermProperties.getQualifiedName());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TERM_SUMMARY, glossaryTermProperties.getSummary());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION_IDENTIFIER, glossaryTermProperties.getPublishVersionIdentifier());
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION_IDENTIFIER, glossaryTermProperties.getVersionIdentifier());
         }
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.GLOSSARY_GUID, glossaryGUID);
@@ -3957,7 +3766,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ROLE_GUID, openMetadataElement.getElementGUID());
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ROLE_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                      OpenMetadataProperty.NAME.name,
+                                                                                                      OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                                       openMetadataElement.getElementProperties(),
                                                                                                       methodName));
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, openMetadataElement.getType().getTypeName());
@@ -4115,7 +3924,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                            methodName));
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                         OpenMetadataProperty.NAME.name,
+                                                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                                          toDoElement.getElementProperties(),
                                                                                                          methodName));
 
@@ -4125,14 +3934,14 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                    methodName));
 
         addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, propertyHelper.getDateProperty(connectorName,
-                                                                                                                      OpenMetadataProperty.CREATION_TIME.name,
+                                                                                                                      OpenMetadataProperty.REQUESTED_TIME.name,
                                                                                                                       toDoElement.getElementProperties(),
                                                                                                                       methodName));
 
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TO_DO_TYPE, propertyHelper.getStringProperty(connectorName,
-                                                                                                                 OpenMetadataProperty.TO_DO_TYPE.name,
-                                                                                                                 toDoElement.getElementProperties(),
-                                                                                                                 methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CATEGORY, propertyHelper.getStringProperty(connectorName,
+                                                                                                               OpenMetadataProperty.CATEGORY.name,
+                                                                                                               toDoElement.getElementProperties(),
+                                                                                                               methodName));
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PRIORITY, propertyHelper.getIntProperty(connectorName,
                                                                                                    OpenMetadataProperty.PRIORITY.name,
@@ -4154,10 +3963,10 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                         toDoElement.getElementProperties(),
                                                                                                                         methodName));
 
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TO_DO_STATUS, propertyHelper.getEnumPropertySymbolicName(connectorName,
-                                                                                                              OpenMetadataProperty.TO_DO_STATUS.name,
-                                                                                                              toDoElement.getElementProperties(),
-                                                                                                              methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ACTIVITY_STATUS, propertyHelper.getEnumPropertySymbolicName(connectorName,
+                                                                                                                                OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                                                                                                                toDoElement.getElementProperties(),
+                                                                                                                                methodName));
 
         if (toDoSourceElement != null)
         {
@@ -4249,7 +4058,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                          methodName));
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                                   OpenMetadataProperty.NAME.name,
+                                                                                                                   OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                                                    projectElement.getElementProperties(),
                                                                                                                    methodName));
 
@@ -4361,7 +4170,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                      methodName));
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                                   OpenMetadataProperty.NAME.name,
+                                                                                                                   OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                                                    communityElement.getElementProperties(),
                                                                                                                    methodName));
 
@@ -4550,7 +4359,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                      methodName));
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                                   OpenMetadataProperty.NAME.name,
+                                                                                                                   OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                                                    collectionElement.getElementProperties(),
                                                                                                                    methodName));
 
@@ -4648,7 +4457,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                    methodName));
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PRODUCT_TYPE, propertyHelper.getStringProperty(connectorName,
-                                                                                                                  OpenMetadataProperty.PRODUCT_TYPE.name,
+                                                                                                                  OpenMetadataProperty.CATEGORY.name,
                                                                                                                   digitalProductProperties,
                                                                                                                   methodName));
 
@@ -4835,7 +4644,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                           methodName));
 
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PREFERRED_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                                         OpenMetadataProperty.NAME.name,
+                                                                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                                                          personElement.getElement().getElementProperties(),
                                                                                                                          methodName));
 
@@ -4997,7 +4806,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                          methodName));
 
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                                       OpenMetadataProperty.NAME.name,
+                                                                                                                       OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                                                        personElement.getElement().getElementProperties(),
                                                                                                                        methodName));
 

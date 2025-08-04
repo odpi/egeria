@@ -48,14 +48,6 @@ public class ITProfileProperties extends ActorProfileProperties
     @Override
     public String toString()
     {
-        return "ITProfileProperties{" +
-                       "knownName='" + getKnownName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "ITProfileProperties{} " + super.toString();
     }
 }

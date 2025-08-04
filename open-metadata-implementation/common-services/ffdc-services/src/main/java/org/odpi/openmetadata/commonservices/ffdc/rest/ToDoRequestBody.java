@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.NewToDoActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.AnchorOptions;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ToDoRequestBody
+public class ToDoRequestBody extends AnchorOptions
 {
     private List<NewToDoActionTargetProperties> newActionTargetProperties = null;
     private ToDoProperties                      properties                = null;
@@ -44,6 +45,8 @@ public class ToDoRequestBody
      */
     public ToDoRequestBody(ToDoRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             this.newActionTargetProperties = template.getNewActionTargetProperties();

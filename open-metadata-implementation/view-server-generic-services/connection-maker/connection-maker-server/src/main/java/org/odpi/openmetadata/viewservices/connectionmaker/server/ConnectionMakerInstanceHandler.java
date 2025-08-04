@@ -8,10 +8,9 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ConnectionHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ConnectorTypeHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EndpointHandler;
-
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ConnectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ConnectorTypeHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.EndpointHandler;
 
 /**
  * ConnectionMakerInstanceHandler retrieves information from the instance map for the

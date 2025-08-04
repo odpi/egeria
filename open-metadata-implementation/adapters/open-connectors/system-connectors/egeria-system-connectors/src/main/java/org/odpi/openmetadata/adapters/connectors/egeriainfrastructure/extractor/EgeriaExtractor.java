@@ -25,7 +25,6 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.client.EngineH
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.client.IntegrationDaemon;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
-import org.odpi.openmetadata.integrationservices.lineage.client.LineageIntegrator;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.odpi.openmetadata.repositoryservices.clients.AuditLogServicesClient;
 import org.odpi.openmetadata.repositoryservices.clients.MetadataHighwayServicesClient;
@@ -54,7 +53,6 @@ public class EgeriaExtractor
     private final OMAGServerPlatformConfigurationClient platformConfigurationClient;
     private final ConfigurationManagementClient         configurationManagementClient;
     private final IntegrationDaemon                     integrationDaemonClient;
-    private final LineageIntegrator                     openLineageClient;
     private final EngineHostClient                      engineHostClient;
     private final AuditLogServicesClient                auditLogServicesClient;
     private final MetadataHighwayServicesClient         metadataHighwayServicesClient;
@@ -91,7 +89,6 @@ public class EgeriaExtractor
         if (serverOfInterest != null)
         {
             integrationDaemonClient = new IntegrationDaemon(serverOfInterest, platformURLRoot);
-            openLineageClient = new LineageIntegrator(serverOfInterest, platformURLRoot);
             engineHostClient = new EngineHostClient(platformURLRoot, serverOfInterest);
             metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverOfInterest, platformURLRoot);
             auditLogServicesClient = new AuditLogServicesClient(serverOfInterest, platformURLRoot);
@@ -99,7 +96,6 @@ public class EgeriaExtractor
         else
         {
             integrationDaemonClient = null;
-            openLineageClient = null;
             engineHostClient = null;
             metadataHighwayServicesClient = null;
             auditLogServicesClient = null;
@@ -1260,9 +1256,9 @@ public class EgeriaExtractor
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        assert openLineageClient != null;
+        assert integrationDaemonClient != null;
 
-        openLineageClient.publishOpenLineageEvent(clientUserId, event);
+        integrationDaemonClient.publishOpenLineageEvent(clientUserId, event);
     }
 
 

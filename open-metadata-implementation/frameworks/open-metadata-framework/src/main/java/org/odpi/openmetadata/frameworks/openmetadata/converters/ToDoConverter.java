@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * ToDoConverter generates a ToDoElement from a "To Do" entity
  */
-public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
+public class ToDoConverter<B> extends AttributedElementConverterBase<B>
 {
     /**
      * Constructor
@@ -83,15 +83,15 @@ public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
 
                     toDoProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
                     toDoProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-                    toDoProperties.setName(this.removeName(elementProperties));
-                    toDoProperties.setToDoType(this.removeToDoType(elementProperties));
+                    toDoProperties.setDisplayName(this.removeDisplayName(elementProperties));
+                    toDoProperties.setCategory(this.removeCategory(elementProperties));
                     toDoProperties.setDescription(this.removeDescription(elementProperties));
-                    toDoProperties.setCreationTime(this.removeCreationTime(elementProperties));
+                    toDoProperties.setRequestedTime(this.removeCreationTime(elementProperties));
                     toDoProperties.setPriority(this.removeIntPriority(elementProperties));
-                    toDoProperties.setToDoStatus(super.removeToDoStatus(elementProperties));
+                    toDoProperties.setActivityStatus(super.removeActivityStatus(elementProperties));
                     toDoProperties.setLastReviewTime(this.removeLastReviewTime(elementProperties));
                     toDoProperties.setDueTime(this.removeDueTime(elementProperties));
-                    toDoProperties.setCompletionTime(this.removeCompletionTime(elementProperties));
+                    toDoProperties.setLastPauseTime(this.removeCompletionTime(elementProperties));
                     toDoProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
                     toDoProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
 
@@ -116,7 +116,7 @@ public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
                         {
                             if (relatedMetadataElement != null)
                             {
-                                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName))
+                                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName))
                                 {
                                     bean.setToDoSource(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
                                 }
@@ -149,7 +149,7 @@ public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
                                     ElementProperties          relationshipProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
 
                                     actionTargetProperties.setActionTargetName(removeActionTargetName(relationshipProperties));
-                                    actionTargetProperties.setStatus(removeToDoStatus(relationshipProperties));
+                                    actionTargetProperties.setStatus(removeActivityStatus(relationshipProperties));
                                     actionTargetProperties.setStartDate(removeStartDate(relationshipProperties));
                                     actionTargetProperties.setCompletionDate(removeCompletionDate(relationshipProperties));
                                     actionTargetProperties.setCompletionMessage(removeCompletionMessage(relationshipProperties));

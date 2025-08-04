@@ -25,6 +25,29 @@ import java.util.regex.Pattern;
 public class PropertyHelper
 {
     /**
+     * Throw an exception if the supplied userId is null
+     *
+     * @param userId      user name to validate
+     * @param methodName  name of the method making the call.
+     *
+     * @throws InvalidParameterException the userId is null
+     */
+    public void validateUserId(String userId,
+                               String methodName) throws InvalidParameterException
+    {
+        if ((userId == null) || (userId.isEmpty()))
+        {
+            final String parameterName = "userId";
+
+            throw new InvalidParameterException(OMFErrorCode.NULL_USER_ID.getMessageDefinition(methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+        }
+    }
+
+
+    /**
      * Throw an exception if the supplied GUID is null
      *
      * @param guid          unique identifier to validate
@@ -63,6 +86,189 @@ public class PropertyHelper
         if ((name == null) || (name.isEmpty()))
         {
             throw new InvalidParameterException(OMFErrorCode.NULL_NAME.getMessageDefinition(nameParameter, methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                nameParameter);
+        }
+    }
+
+
+    /**
+     * Throw an exception if the supplied text field is null
+     *
+     * @param text  unique name to validate
+     * @param parameterName  name of the parameter that passed the name.
+     * @param methodName  name of the method making the call.
+     *
+     * @throws InvalidParameterException the text is null
+     */
+    public void validateText(String text,
+                             String parameterName,
+                             String methodName) throws InvalidParameterException
+    {
+        if (text == null)
+        {
+            throw new InvalidParameterException(OMFErrorCode.NULL_TEXT.getMessageDefinition(parameterName, methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+        }
+    }
+
+
+
+    /**
+     * Throw an exception if the supplied search string is null
+     *
+     * @param searchString   searchString to validate
+     * @param searchParameter  name of the parameter that passed the searchString.
+     * @param methodName     name of the method making the call.
+     *
+     * @throws InvalidParameterException the searchString is null
+     */
+    public void validateSearchString(String searchString,
+                                     String searchParameter,
+                                     String methodName) throws InvalidParameterException
+    {
+        if ((searchString == null) || (searchString.isEmpty()))
+        {
+            throw new InvalidParameterException(OMFErrorCode.NULL_SEARCH_STRING.getMessageDefinition(searchParameter,
+                                                                                                            methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                searchParameter);
+        }
+        else
+        {
+            /*
+             * This test just validated that the regular expression in the search parameter is valid.
+             */
+            final String testString = "abcdefghijklmnopqrstuvwxyz";
+
+            try
+            {
+                testString.matches(searchString);
+            }
+            catch (Exception error)
+            {
+                throw new InvalidParameterException(OMFErrorCode.INVALID_SEARCH_STRING.getMessageDefinition(searchParameter,
+                                                                                                                   methodName,
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   error.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    searchParameter);
+            }
+        }
+    }
+
+    /**
+     * Throw an exception if the supplied paging values don't make sense. If page size is zero it means return as much as there is.
+     * in which case this method sets the page size to the maximum value for this server.  If the server has its max page size set to zero
+     * then zero is used.
+     *
+     * @param queryOptions options to control the query
+     * @param maxPagingSize maximum page size allowed by the server
+     * @param methodName  name of the method making the call.
+     * @return validated page size.
+     * @throws InvalidParameterException the paging options are incorrect
+     */
+    public int  validatePaging(QueryOptions queryOptions,
+                               int          maxPagingSize,
+                               String       methodName) throws InvalidParameterException
+    {
+        int startFrom = 0;
+        int pageSize = 0;
+
+        if (queryOptions != null)
+        {
+            startFrom = queryOptions.getStartFrom();
+            pageSize = queryOptions.getPageSize();
+        }
+
+        return this.validatePaging(startFrom, pageSize, maxPagingSize, methodName);
+    }
+
+
+    /**
+     * Throw an exception if the supplied paging values don't make sense. If page size is zero it means return as much as there is.
+     * in which case this method sets the page size to the maximum value for this server.  If the server has its max page size set to zero
+     * then zero is used.
+     *
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param maxPagingSize maximum page size allowed by the server
+     * @param methodName  name of the method making the call.
+     * @return validated page size.
+     * @throws InvalidParameterException the paging options are incorrect
+     */
+    public int  validatePaging(int    startFrom,
+                               int    pageSize,
+                               int    maxPagingSize,
+                               String methodName) throws InvalidParameterException
+    {
+        final  String   startFromParameterName = "startFrom";
+        final  String   pageSizeParameterName  = "pageSize";
+
+        if (startFrom < 0)
+        {
+            throw new InvalidParameterException(OMFErrorCode.NEGATIVE_START_FROM.getMessageDefinition(Integer.toString(startFrom),
+                                                                                                             startFromParameterName,
+                                                                                                             methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                startFromParameterName);
+        }
+
+
+        if (pageSize < 0)
+        {
+            throw new InvalidParameterException(OMFErrorCode.NEGATIVE_PAGE_SIZE.getMessageDefinition(Integer.toString(pageSize),
+                                                                                                            pageSizeParameterName,
+                                                                                                            methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                pageSizeParameterName);
+        }
+
+        if ((maxPagingSize != 0) && (pageSize > maxPagingSize))
+        {
+            throw new InvalidParameterException(OMFErrorCode.MAX_PAGE_SIZE.getMessageDefinition(Integer.toString(pageSize),
+                                                                                                       pageSizeParameterName,
+                                                                                                       methodName,
+                                                                                                       Integer.toString(maxPagingSize)),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                pageSizeParameterName);
+        }
+
+        if (pageSize == 0)
+        {
+            return maxPagingSize;
+        }
+        else
+        {
+            return pageSize;
+        }
+    }
+
+
+    /**
+     * Throw an exception if the supplied object is null
+     *
+     * @param object         object to validate
+     * @param nameParameter  name of the parameter that passed the object.
+     * @param methodName     name of the method making the call.
+     *
+     * @throws InvalidParameterException the object is null
+     */
+    public void validateObject(Object object,
+                               String nameParameter,
+                               String methodName) throws InvalidParameterException
+    {
+        if (object == null)
+        {
+            throw new InvalidParameterException(OMFErrorCode.NULL_OBJECT.getMessageDefinition(nameParameter, methodName),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 nameParameter);
@@ -178,20 +384,273 @@ public class PropertyHelper
      */
     public String getAnchorGUID(ElementHeader elementHeader)
     {
-        List<ElementClassification> classifications = elementHeader.getClassifications();
+        ElementClassification classification = elementHeader.getAnchor();
+        if ((classification != null) && (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getClassificationName())))
+        {
+            if (classification.getClassificationProperties() != null)
+            {
+                return classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString();
+            }
+        }
 
+        return null;
+    }
+
+
+    /**
+     * Extract the classifications from the element.
+     *
+     * @param attachedClassifications classifications direct from the element
+     * @return list of bean classifications
+     */
+    public List<ElementClassification> getElementClassifications(List<AttachedClassification> attachedClassifications)
+    {
+        List<ElementClassification> beanClassifications = null;
+
+        if (attachedClassifications != null)
+        {
+            beanClassifications = new ArrayList<>();
+
+            for (AttachedClassification attachedClassification : attachedClassifications)
+            {
+                if (attachedClassification != null)
+                {
+                    beanClassifications.add(getElementClassification(attachedClassification));
+                }
+            }
+        }
+
+        return beanClassifications;
+    }
+
+
+    /**
+     * Return an element classification from an attached classification.  The difference is that the
+     * element classification converts the properties to a name-value pair map.
+     *
+     * @param attachedClassification attached classification from OMF OpenMetadataStore
+     * @return element classification for the beans
+     */
+    public ElementClassification getElementClassification(AttachedClassification attachedClassification)
+    {
+        if (attachedClassification != null)
+        {
+            ElementClassification beanClassification = new ElementClassification(attachedClassification);
+
+            beanClassification.setClassificationName(attachedClassification.getClassificationName());
+            beanClassification.setClassificationProperties(this.getElementPropertiesAsMap(attachedClassification.getClassificationProperties()));
+
+            return beanClassification;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the element.
+     *
+     * @param element element containing the properties
+     * @return filled out element header
+     */
+    public ElementHeader getElementHeader(OpenMetadataElement element)
+    {
+        if (element != null)
+        {
+            return getElementHeader(element,
+                                    element.getElementGUID(),
+                                    element.getClassifications());
+        }
+
+
+        return null;
+    }
+
+
+    /**
+     * Fill the classification properties in the header for an element.
+     *
+     * @param elementHeader header to fill in
+     * @param classifications classifications
+     */
+    public void addClassificationsToElementHeader(ElementHeader elementHeader,
+                                                  List<AttachedClassification> classifications)
+    {
         if (classifications != null)
         {
-            for (ElementClassification classification : classifications)
+            List<ElementClassification> executionPoints            = new ArrayList<>();
+            List<ElementClassification> duplicateClassifications   = new ArrayList<>();
+            List<ElementClassification> resourceManagersCategories = new ArrayList<>();
+            List<ElementClassification> serverPurposes             = new ArrayList<>();
+            List<ElementClassification> collectionCategories       = new ArrayList<>();
+            List<ElementClassification> projectCategories          = new ArrayList<>();
+            List<ElementClassification> otherClassifications       = new ArrayList<>();
+
+            for (AttachedClassification attachedClassification : classifications)
             {
-                if ((classification != null) && (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getClassificationName())))
+                if (attachedClassification != null)
                 {
-                    if (classification.getClassificationProperties() != null)
+                    if (this.isTypeOf(attachedClassification, OpenMetadataType.ANCHORS_CLASSIFICATION.typeName))
                     {
-                        return classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString();
+                        elementHeader.setAnchor(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setZoneMembership(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setSubjectArea(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.IMPACT_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setImpact(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setCriticality(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setConfidentiality(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setConfidence(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.RETENTION_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setRetention(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName))
+                    {
+                        duplicateClassifications.add(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.CONSOLIDATED_DUPLICATE_CLASSIFICATION.typeName))
+                    {
+                        duplicateClassifications.add(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.CONTROL_POINT_CLASSIFICATION.typeName))
+                    {
+                        executionPoints.add(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.VERIFICATION_POINT_CLASSIFICATION.typeName))
+                    {
+                        executionPoints.add(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.ENFORCEMENT_POINT_CLASSIFICATION.typeName))
+                    {
+                        executionPoints.add(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setDigitalResourceOrigin(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setOwnership(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setMemento(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setTemplate(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setSchemaType(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setCalculatedValue(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setPrimaryKey(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName))
+                    {
+                        resourceManagersCategories.add(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName))
+                    {
+                        serverPurposes.add(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName))
+                    {
+                        collectionCategories.add(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.PROJECT_CATEGORY_CLASSIFICATION.typeName))
+                    {
+                        projectCategories.add(this.getElementClassification(attachedClassification));
+                    }
+                    else
+                    {
+                        otherClassifications.add(this.getElementClassification(attachedClassification));
                     }
                 }
             }
+
+            if (! duplicateClassifications.isEmpty())
+            {
+                elementHeader.setDuplicateClassifications(duplicateClassifications);
+            }
+
+            if (! executionPoints.isEmpty())
+            {
+                elementHeader.setExecutionPoints(executionPoints);
+            }
+
+            if (! resourceManagersCategories.isEmpty())
+            {
+                elementHeader.setResourceManagerCategories(resourceManagersCategories);
+            }
+
+            if (! serverPurposes.isEmpty())
+            {
+                elementHeader.setServerPurposes(serverPurposes);
+            }
+
+            if (! collectionCategories.isEmpty())
+            {
+                elementHeader.setCollectionCategories(collectionCategories);
+            }
+
+            if (! projectCategories.isEmpty())
+            {
+                elementHeader.setProjectCategories(projectCategories);
+            }
+
+            if (! otherClassifications.isEmpty())
+            {
+                elementHeader.setOtherClassifications(otherClassifications);
+            }
+        }
+    }
+
+
+    /**
+     * Extract the properties from the element.
+     *
+     * @param header header from the element containing the properties
+     * @param elementGUID unique identifier of the element
+     * @param classifications classification if this is an element
+     * @return filled out element header
+     */
+    public ElementHeader getElementHeader(ElementControlHeader         header,
+                                          String                       elementGUID,
+                                          List<AttachedClassification> classifications)
+    {
+        if (header != null)
+        {
+            ElementHeader elementHeader = new ElementHeader(header);
+
+            elementHeader.setGUID(elementGUID);
+            this.addClassificationsToElementHeader(elementHeader, classifications);
+
+            return elementHeader;
         }
 
         return null;
@@ -224,11 +683,7 @@ public class PropertyHelper
                 relatedElementSummary.setRelationshipProperties(relatedElement.getRelationshipProperties().getPropertiesAsStrings());
             }
 
-            elementHeader = new ElementHeader(relatedElement.getElement());
-            elementHeader.setGUID(relatedElement.getElement().getElementGUID());
-            elementHeader.setClassifications(this.getElementClassifications(relatedElement.getElement().getClassifications()));
-
-            elementSummary.setElementHeader(elementHeader);
+            elementSummary.setElementHeader(this.getElementHeader(relatedElement.getElement()));
             if (relatedElement.getElement().getElementProperties() != null)
             {
                 elementSummary.setProperties(relatedElement.getElement().getElementProperties().getPropertiesAsStrings());
@@ -246,40 +701,126 @@ public class PropertyHelper
     }
 
 
-
     /**
-     * Extract the classifications from the element.
+     * Extract the properties from the list of elements.
      *
-     * @param attachedClassifications classifications direct from the element
-     * @return list of bean classifications
+     * @param startingElementGUID guid of starting element
+     * @param relatedElements from the repository
+     * @return filled out element header
      */
-    public List<ElementClassification> getElementClassifications(List<AttachedClassification> attachedClassifications)
+    public List<RelatedMetadataNodeSummary> getRelatedNodeSummaries(String                       startingElementGUID,
+                                                                    List<RelatedMetadataElement> relatedElements)
     {
-        List<ElementClassification> beanClassifications = null;
-
-        if (attachedClassifications != null)
+        if (relatedElements != null)
         {
-            beanClassifications = new ArrayList<>();
+            List<RelatedMetadataNodeSummary> nodeSummaries = new ArrayList<>();
 
-            for (AttachedClassification attachedClassification : attachedClassifications)
+            for (RelatedMetadataElement relatedMetadataElement : relatedElements)
             {
-                if (attachedClassification != null)
+                if (relatedMetadataElement != null)
                 {
-                    ElementClassification beanClassification = new ElementClassification(attachedClassification);
-
-                    beanClassification.setClassificationName(attachedClassification.getClassificationName());
-                    beanClassification.setClassificationProperties(this.getElementPropertiesAsMap(attachedClassification.getClassificationProperties()));
-
-                    beanClassifications.add(beanClassification);
+                    nodeSummaries.add(this.getRelatedNodeSummary(startingElementGUID, relatedMetadataElement));
                 }
             }
 
+            return nodeSummaries;
         }
 
-        return beanClassifications;
+        return null;
     }
 
 
+    /**
+     * Extract the properties from the element.
+     *
+     * @param startingElementGUID guid of starting element
+     * @param relatedElement from the repository
+     * @return filled out element header
+     */
+    public RelatedMetadataNodeSummary getRelatedNodeSummary(String                 startingElementGUID,
+                                                            RelatedMetadataElement relatedElement)
+    {
+        if ((relatedElement != null) && (relatedElement.getElement() != null))
+        {
+            RelatedMetadataNodeSummary    relatedMetadataNodeSummary = new RelatedMetadataNodeSummary();
+            MetadataElementSummary        elementSummary             = new MetadataElementSummary();
+
+            relatedMetadataNodeSummary.setStartingElementGUID(startingElementGUID);
+
+            relatedMetadataNodeSummary.setRelationshipHeader(this.getElementHeader(relatedElement, relatedElement.getRelationshipGUID(), null));
+            if (relatedElement.getRelationshipProperties() != null)
+            {
+                relatedMetadataNodeSummary.setRelationshipProperties(relatedElement.getRelationshipProperties().getPropertiesAsStrings());
+            }
+
+            elementSummary.setElementHeader(this.getElementHeader(relatedElement.getElement()));
+            if (relatedElement.getElement().getElementProperties() != null)
+            {
+                elementSummary.setProperties(relatedElement.getElement().getElementProperties().getPropertiesAsStrings());
+            }
+
+            relatedMetadataNodeSummary.setRelatedElement(elementSummary);
+            relatedMetadataNodeSummary.setEffectiveFromTime(relatedElement.getEffectiveFromTime());
+            relatedMetadataNodeSummary.setEffectiveToTime(relatedElement.getEffectiveToTime());
+            relatedMetadataNodeSummary.setRelatedElementAtEnd1(relatedElement.getElementAtEnd1());
+
+            return relatedMetadataNodeSummary;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert a list of open metadata elements from OMF into a summary object.
+     *
+     * @param openMetadataElements list
+     * @return list
+     */
+    public List<MetadataElementSummary> getMetadataElementSummaries(List<OpenMetadataElement> openMetadataElements)
+    {
+        if (openMetadataElements != null)
+        {
+            List<MetadataElementSummary> metadataElementSummaries = new ArrayList<>();
+
+            for (OpenMetadataElement openMetadataElement : openMetadataElements)
+            {
+                if (openMetadataElement != null)
+                {
+                    metadataElementSummaries.add(this.getMetadataElementSummary(openMetadataElement));
+                }
+            }
+
+            return metadataElementSummaries;
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract the properties from the element.
+     *
+     * @param openMetadataElement from the repository
+     * @return filled out element header
+     */
+    public MetadataElementSummary getMetadataElementSummary(OpenMetadataElement openMetadataElement)
+    {
+        if (openMetadataElement != null)
+        {
+            MetadataElementSummary elementSummary = new MetadataElementSummary();
+
+            elementSummary.setElementHeader(this.getElementHeader(openMetadataElement));
+
+            if (openMetadataElement.getElementProperties() != null)
+            {
+                elementSummary.setProperties(openMetadataElement.getElementProperties().getPropertiesAsStrings());
+            }
+
+            return elementSummary;
+        }
+
+        return null;
+    }
 
 
     /**
@@ -292,14 +833,11 @@ public class PropertyHelper
      */
     public SearchProperties getSearchPropertiesByName(List<String>               propertyNames,
                                                       String                     value,
-                                                      PropertyComparisonOperator propertyComparisonOperator,
-                                                      TemplateFilter             templateFilter)
+                                                      PropertyComparisonOperator propertyComparisonOperator)
     {
         if ((propertyNames != null) && (! propertyNames.isEmpty()))
         {
             SearchProperties searchProperties = new SearchProperties();
-
-            searchProperties.setTemplateFilter(templateFilter);
 
             PrimitiveTypePropertyValue propertyValue = new PrimitiveTypePropertyValue();
             propertyValue.setTypeName("string");
@@ -913,6 +1451,85 @@ public class PropertyHelper
 
                     return resultingProperties;
                 }
+            }
+        }
+
+        return properties;
+    }
+
+
+
+    /**
+     * Add the supplied map property to an element properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addStringArrayStringMap(ElementProperties         properties,
+                                                     String                    propertyName,
+                                                     Map<String, List<String>> mapValues)
+    {
+        if (mapValues != null)
+        {
+            if (! mapValues.isEmpty())
+            {
+                ElementProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new ElementProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+
+                /*
+                 * The values of a map property are stored as an embedded ElementProperties object.
+                 */
+                ElementProperties  mapElementProperties  = new ElementProperties();
+
+                for (String mapKey : mapValues.keySet())
+                {
+                    List<String> mapEntry = mapValues.get(mapKey);
+                    ArrayTypePropertyValue arrayPropertyValue = new ArrayTypePropertyValue();
+
+                    arrayPropertyValue.setTypeName("array<string>");
+                    arrayPropertyValue.setArrayCount(mapEntry.size());
+
+                    int index = 0;
+                    for (String arrayValue : mapEntry)
+                    {
+                        PrimitiveTypePropertyValue primitivePropertyValue = new PrimitiveTypePropertyValue();
+
+                        primitivePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+                        primitivePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                        primitivePropertyValue.setPrimitiveValue(arrayValue);
+
+                        arrayPropertyValue.setArrayValue(index, primitivePropertyValue);
+                        index++;
+                    }
+
+                    mapElementProperties.setProperty(mapKey, arrayPropertyValue);
+                }
+
+                /*
+                 * If there was content in the map then the resulting InstanceProperties are added as
+                 * a property to the resulting properties.
+                 */
+                MapTypePropertyValue mapPropertyValue = new MapTypePropertyValue();
+
+                mapPropertyValue.setMapValues(mapElementProperties);
+                mapPropertyValue.setTypeName("map<string,array<string>");
+                resultingProperties.setProperty(propertyName, mapPropertyValue);
+
+
+                return resultingProperties;
             }
         }
 
@@ -2779,7 +3396,7 @@ public class PropertyHelper
     public String replacePrimitiveStringWithPlaceholders(String              propertyValue,
                                                          Map<String, String> placeholderProperties)
     {
-        if ((propertyValue == null) || (! propertyValue.contains("{{")))
+        if ((propertyValue == null) || (! propertyValue.contains("~{")))
         {
             /*
              * No placeholders in property.
@@ -2791,7 +3408,7 @@ public class PropertyHelper
         {
             for (String placeholderName : placeholderProperties.keySet())
             {
-                String placeholderMatchString = "{{"+ placeholderName + "}}";
+                String placeholderMatchString = "~{"+ placeholderName + "}~";
 
                 if (propertyValue.equals(placeholderMatchString))
                 {
@@ -3307,6 +3924,153 @@ public class PropertyHelper
 
 
     /**
+     * Extract a particular classification from an open metadata element.
+     *
+     * @param elementHeader source element
+     * @param classificationName name of the classification to extract
+     * @return requested classification, or null
+     */
+    public ElementClassification getClassification(ElementHeader elementHeader,
+                                                   String        classificationName)
+    {
+        if ((elementHeader != null) && (classificationName != null))
+        {
+            if (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getAnchor();
+            }
+            if (OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getSchemaType();
+            }
+            if (OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getCalculatedValue();
+            }
+            if (OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getPrimaryKey();
+            }
+            if (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getZoneMembership();
+            }
+            if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getMemento();
+            }
+            if (OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getTemplate();
+            }
+            if (OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getSubjectArea();
+            }
+            if (OpenMetadataType.IMPACT_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getImpact();
+            }
+            if (OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getCriticality();
+            }
+            if (OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getConfidentiality();
+            }
+            if (OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getConfidence();
+            }
+            if (OpenMetadataType.RETENTION_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getRetention();
+            }
+            if (OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getDigitalResourceOrigin();
+            }
+            if (OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getOwnership();
+            }
+
+            ElementClassification classification = getClassification(elementHeader.getOtherClassifications(), classificationName);
+
+            if (classification != null)
+            {
+                return classification;
+            }
+
+            classification = getClassification(elementHeader.getProjectCategories(), classificationName);
+
+            if (classification != null)
+            {
+                return classification;
+            }
+
+            classification = getClassification(elementHeader.getCollectionCategories(), classificationName);
+
+            if (classification != null)
+            {
+                return classification;
+            }
+
+            classification = getClassification(elementHeader.getServerPurposes(), classificationName);
+
+            if (classification != null)
+            {
+                return classification;
+            }
+
+            classification = getClassification(elementHeader.getResourceManagerCategories(), classificationName);
+
+            if (classification != null)
+            {
+                return classification;
+            }
+
+            classification = getClassification(elementHeader.getDuplicateClassifications(), classificationName);
+
+            if (classification != null)
+            {
+                return classification;
+            }
+
+            return getClassification(elementHeader.getExecutionPoints(), classificationName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract a particular classification from a list of classifications.
+     *
+     * @param classifications list
+     * @param classificationName name of desired classification
+     * @return requested classification or null
+     */
+    public ElementClassification getClassification(List<ElementClassification> classifications,
+                                                   String                      classificationName)
+    {
+        if (classifications != null)
+        {
+            for (ElementClassification classification : classifications)
+            {
+                if (classificationName.equals(classification.getClassificationName()))
+                {
+                    return classification;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Test whether an element has a particular classification.
      *
      * @param elementHeader header
@@ -3316,20 +4080,7 @@ public class PropertyHelper
     public boolean isClassified(ElementHeader elementHeader,
                                 String        classificationName)
     {
-        if (elementHeader == null || elementHeader.getClassifications() == null)
-        {
-            return false;
-        }
-
-        for (ElementClassification classification : elementHeader.getClassifications())
-        {
-            if ((classification != null) && (classificationName.equals(classification.getClassificationName())))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return this.getClassification(elementHeader, classificationName) != null;
     }
 
 
@@ -3429,5 +4180,125 @@ public class PropertyHelper
                                       this.getClass().getName(),
                                       localMethodName,
                                       unexpectedException);
+    }
+
+
+
+
+    /**
+     * Set the provided search string to be interpreted as either case-insensitive or case-sensitive.
+     *
+     * @param searchString the string to set as case-insensitive
+     * @param insensitive if true, set the string to be case-insensitive, otherwise leave as case-sensitive
+     * @return string ensuring the provided searchString is case-(in)sensitive
+     */
+    private String setInsensitive(String searchString, boolean insensitive)
+    {
+        return insensitive ? "(?i)" + searchString : searchString;
+    }
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with a "starts with" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "starts with" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "starts with" semantic
+     * @param insensitive set to true to have a case-insensitive "starts with" regular expression
+     * @return string that is interpreted literally, wrapped for a "starts with" semantic
+     */
+    public String getMiddleRegex(String searchString, boolean insensitive)
+    {
+        return searchString == null ? null : setInsensitive(".*" + getExactMatchRegex(searchString, false) + ".*", insensitive);
+    }
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with a "starts with" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "starts with" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "starts with" semantic
+     * @param insensitive set to true to have a case-insensitive "starts with" regular expression
+     * @return string that is interpreted literally, wrapped for a "starts with" semantic
+     */
+    public String getStartsWithRegex(String searchString, boolean insensitive)
+    {
+        return searchString == null ? null : setInsensitive(getExactMatchRegex(searchString, false) + ".*", insensitive);
+    }
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with an "ends with" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both an "ends with" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "ends with" semantic
+     * @param insensitive set to true to have a case-insensitive "ends with" regular expression
+     * @return string that is interpreted literally, wrapped for an "ends with" semantic
+     */
+    public String getEndsWithRegex(String searchString, boolean insensitive)
+    {
+        return searchString == null ? null : setInsensitive(".*" + getExactMatchRegex(searchString, false), insensitive);
+    }
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
+     * used to find an exact match of the string, irrespective of whether it contains characters that may have special
+     * meanings to regular expressions).
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression
+     * @param insensitive set to true to have a case-insensitive exact match regular expression
+     * @return string that is interpreted literally rather than as a regular expression
+     */
+    String getExactMatchRegex(String searchString, boolean insensitive)
+    {
+        return searchString == null ? null : setInsensitive(Pattern.quote(searchString), insensitive);
+    }
+
+
+    /**
+     * Construct a regular expression from the string supplied by the caller.
+     * If their string includes regular expression characters then
+     * they will be ignored.
+     *
+     * @param requestedSearch the supplied string
+     * @param startsWith set to true if the requested string is at the front of the search
+     * @param endsWith set to true if the requested string is at the end of the search
+     * @param ignoreCase set to true to have a case-insensitive search
+     * @return string that is interpreted literally rather than as a regular expression
+     */
+    public String getSearchString(String requestedSearch, boolean startsWith, boolean endsWith, boolean ignoreCase)
+    {
+        if ((requestedSearch == null) || (requestedSearch.isBlank()) || "*".equals(requestedSearch) || ("'".equals(requestedSearch) || ("''".equals(requestedSearch)) || "%".equals(requestedSearch)))
+        {
+            // ignore the flags for an empty search criteria string or SQL special characters - assume we want everything
+            requestedSearch = ".*";
+        }
+        else
+        {
+            if (startsWith && endsWith)
+            {
+                requestedSearch = this.getExactMatchRegex(requestedSearch, ignoreCase);
+            }
+            else if (startsWith)
+            {
+                requestedSearch = this.getStartsWithRegex(requestedSearch, ignoreCase);
+            }
+            else if (endsWith)
+            {
+                requestedSearch = this.getEndsWithRegex(requestedSearch, ignoreCase);
+            }
+            else
+            {
+                requestedSearch = this.getMiddleRegex(requestedSearch, ignoreCase);
+            }
+        }
+
+        return requestedSearch;
     }
 }

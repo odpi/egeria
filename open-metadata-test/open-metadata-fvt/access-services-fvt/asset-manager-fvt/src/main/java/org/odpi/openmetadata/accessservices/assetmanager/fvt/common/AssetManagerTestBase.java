@@ -137,10 +137,10 @@ public class AssetManagerTestBase
                 AssetManagerProperties properties = new AssetManagerProperties();
 
                 properties.setQualifiedName(assetManagerName);
-                properties.setResourceName(assetManagerName + assetManagerDisplayName);
-                properties.setResourceDescription(assetManagerName + assetManagerDescription);
+                properties.setDisplayName(assetManagerName + assetManagerDisplayName);
+                properties.setDescription(assetManagerName + assetManagerDescription);
                 properties.setDeployedImplementationType(assetManagerName + assetManagerTypeDescription);
-                properties.setVersion(assetManagerName + assetManagerVersion);
+                properties.setVersionIdentifier(assetManagerName + assetManagerVersion);
 
                 assetManagerGUID = client.createExternalAssetManager(userId, properties);
             }

@@ -19,11 +19,11 @@ public class EncryptedFileBasedServerConfigStoreProvider extends OMAGServerConfi
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * configuration store implementation.
      */
-    public EncryptedFileBasedServerConfigStoreProvider() {
+    public EncryptedFileBasedServerConfigStoreProvider()
+    {
         Class<?> connectorClass = EncryptedFileBasedServerConfigStoreConnector.class;
         super.setConnectorClassName(connectorClass.getName());
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(CONNECTOR_TYPE_GUID);
         connectorType.setQualifiedName(CONNECTOR_TYPE_NAME);
         connectorType.setDisplayName(CONNECTOR_TYPE_NAME);

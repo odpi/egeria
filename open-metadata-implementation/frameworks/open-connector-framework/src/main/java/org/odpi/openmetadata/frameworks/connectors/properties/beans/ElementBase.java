@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 
 import java.util.*;
 
@@ -24,16 +23,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = Referenceable.class, name = "Referenceable"),
-                @JsonSubTypes.Type(value = InformalTag.class, name = "InformalTag"),
-                @JsonSubTypes.Type(value = Like.class, name = "Like"),
-                @JsonSubTypes.Type(value = Meaning.class, name = "Meaning"),
-                @JsonSubTypes.Type(value = Rating.class, name = "Rating")
         })
-public class ElementBase extends ElementHeader
+public class ElementBase extends PropertyBase
 {
     /*
      * Common header for first class elements from a metadata repository
      */
+    private String                guid               = null;
     protected Map<String, Object> extendedProperties = null;
 
     /**
@@ -53,11 +49,33 @@ public class ElementBase extends ElementHeader
     public ElementBase(ElementBase template)
     {
         super(template);
-
         if (template != null)
         {
+            guid = template.getGUID();
             extendedProperties = template.getExtendedProperties();
         }
+    }
+
+
+    /**
+     * Return the unique id for the properties object.  Null means no guid is assigned.
+     *
+     * @return String unique id
+     */
+    public String getGUID()
+    {
+        return guid;
+    }
+
+
+    /**
+     * Set up the guid for the element.
+     *
+     * @param guid String unique identifier
+     */
+    public void setGUID(String guid)
+    {
+        this.guid = guid;
     }
 
 
@@ -94,15 +112,9 @@ public class ElementBase extends ElementHeader
     public String toString()
     {
         return "ElementBase{" +
-                       "extendedProperties=" + extendedProperties +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       '}';
+                "guid='" + guid + '\'' +
+                ", extendedProperties=" + extendedProperties +
+                "} " + super.toString();
     }
 
 
@@ -127,7 +139,8 @@ public class ElementBase extends ElementHeader
         {
             return false;
         }
-        return Objects.equals(extendedProperties, that.extendedProperties);
+        return Objects.equals(guid, that.guid) &&
+                Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -139,6 +152,6 @@ public class ElementBase extends ElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), extendedProperties);
+        return Objects.hash(super.hashCode(), guid, extendedProperties);
     }
 }

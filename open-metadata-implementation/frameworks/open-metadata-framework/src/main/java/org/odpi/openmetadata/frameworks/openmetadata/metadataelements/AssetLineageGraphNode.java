@@ -13,9 +13,9 @@ import java.util.Objects;
  */
 public class AssetLineageGraphNode extends AssetElement
 {
-    private List<MetadataRelationship> upstreamRelationships   = null;
-    private List<MetadataRelationship> downstreamRelationships = null;
-    private List<MetadataRelationship> internalRelationships   = null;
+    private List<RelatedMetadataNodeSummary> upstreamRelationships   = null;
+    private List<RelatedMetadataNodeSummary> downstreamRelationships = null;
+    private List<RelatedMetadataNodeSummary> internalRelationships   = null;
 
     /**
      * Default constructor
@@ -60,7 +60,7 @@ public class AssetLineageGraphNode extends AssetElement
      *
      * @return relationships
      */
-    public List<MetadataRelationship> getUpstreamRelationships()
+    public List<RelatedMetadataNodeSummary> getUpstreamRelationships()
     {
         return upstreamRelationships;
     }
@@ -72,7 +72,7 @@ public class AssetLineageGraphNode extends AssetElement
      *
      * @param upstreamRelationships relationships
      */
-    public void setUpstreamRelationships(List<MetadataRelationship> upstreamRelationships)
+    public void setUpstreamRelationships(List<RelatedMetadataNodeSummary> upstreamRelationships)
     {
         this.upstreamRelationships = upstreamRelationships;
     }
@@ -84,7 +84,7 @@ public class AssetLineageGraphNode extends AssetElement
      *
      * @return relationships
      */
-    public List<MetadataRelationship> getDownstreamRelationships()
+    public List<RelatedMetadataNodeSummary> getDownstreamRelationships()
     {
         return downstreamRelationships;
     }
@@ -96,7 +96,7 @@ public class AssetLineageGraphNode extends AssetElement
      *
      * @param downstreamRelationships relationships
      */
-    public void setDownstreamRelationships(List<MetadataRelationship> downstreamRelationships)
+    public void setDownstreamRelationships(List<RelatedMetadataNodeSummary> downstreamRelationships)
     {
         this.downstreamRelationships = downstreamRelationships;
     }
@@ -108,7 +108,7 @@ public class AssetLineageGraphNode extends AssetElement
      *
      * @return relationships
      */
-    public List<MetadataRelationship> getInternalRelationships()
+    public List<RelatedMetadataNodeSummary> getInternalRelationships()
     {
         return internalRelationships;
     }
@@ -120,7 +120,7 @@ public class AssetLineageGraphNode extends AssetElement
      *
      * @param internalRelationships relationships
      */
-    public void setInternalRelationships(List<MetadataRelationship> internalRelationships)
+    public void setInternalRelationships(List<RelatedMetadataNodeSummary> internalRelationships)
     {
         this.internalRelationships = internalRelationships;
     }

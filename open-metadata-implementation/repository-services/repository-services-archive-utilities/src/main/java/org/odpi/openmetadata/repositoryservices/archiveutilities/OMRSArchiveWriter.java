@@ -82,11 +82,6 @@ public class OMRSArchiveWriter
                 {
                     connectorType = new ConnectorType();
 
-                    ElementOrigin elementOrigin = new ElementOrigin();
-                    elementOrigin.setOriginCategory(ElementOriginCategory.CONFIGURATION);
-                    connectorType.setOrigin(elementOrigin);
-
-                    connectorType.setType(ConnectorType.getConnectorTypeType());
                     connectorType.setGUID(UUID.randomUUID().toString());
                     connectorType.setQualifiedName(connectorProviderClassName);
                     connectorType.setDisplayName(connectorProviderClass.getSimpleName());

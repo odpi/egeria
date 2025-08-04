@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.InfrastructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
@@ -27,10 +28,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = HostProperties.class, name = "HostProperties"),
+                @JsonSubTypes.Type(value = NetworkProperties.class, name = "NetworkProperties"),
                 @JsonSubTypes.Type(value = SoftwareServerProperties.class, name = "SoftwareServerProperties"),
                 @JsonSubTypes.Type(value = SoftwareServerPlatformProperties.class, name = "SoftwareServerPlatformProperties"),
         })
-public class ITInfrastructureProperties extends AssetProperties
+public class ITInfrastructureProperties extends InfrastructureProperties
 {
     /**
      * Default constructor
@@ -52,7 +54,6 @@ public class ITInfrastructureProperties extends AssetProperties
         super(template);
     }
 
-
     /**
      * Copy/clone constructor.  Note, this is a deep copy
      *
@@ -62,20 +63,6 @@ public class ITInfrastructureProperties extends AssetProperties
     {
         super(template);
     }
-
-    /**
-     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
-     * into the extended properties.
-     *
-     * @param subTypeName subtype name
-     * @return asset properties
-     */
-    @Override
-    public AssetProperties cloneToAsset(String subTypeName)
-    {
-        return super.cloneToAsset(subTypeName);
-    }
-
 
     /**
      * Standard toString method.

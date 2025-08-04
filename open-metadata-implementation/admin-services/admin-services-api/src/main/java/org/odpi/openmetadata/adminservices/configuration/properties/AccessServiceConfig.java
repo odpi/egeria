@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 
-import java.io.Serial;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,12 +28,10 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     private ComponentDevelopmentStatus accessServiceDevelopmentStatus = null;
     private String                     accessServiceAdminClass        = null;
     private String                     accessServiceName              = null;
-    private String                     accessServiceFullName          = null;
     private String                     accessServiceURLMarker         = null;
     private String                     accessServiceDescription       = null;
     private String                     accessServiceWiki              = null;
     private ServiceOperationalStatus   accessServiceOperationalStatus = null;
-    private Connection                 accessServiceInTopic           = null;
     private Connection                 accessServiceOutTopic          = null;
     private Map<String, Object>        accessServiceOptions           = null;
 
@@ -63,12 +60,10 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
             accessServiceDevelopmentStatus = template.getAccessServiceDevelopmentStatus();
             accessServiceAdminClass = template.getAccessServiceAdminClass();
             accessServiceName = template.getAccessServiceName();
-            accessServiceFullName = template.getAccessServiceFullName();
             accessServiceDescription = template.getAccessServiceDescription();
             accessServiceURLMarker = template.getAccessServiceURLMarker();
             accessServiceWiki = template.getAccessServiceWiki();
             accessServiceOperationalStatus = template.getAccessServiceOperationalStatus();
-            accessServiceInTopic = template.getAccessServiceInTopic();
             accessServiceOutTopic = template.getAccessServiceOutTopic();
             accessServiceOptions = template.getAccessServiceOptions();
         }
@@ -86,7 +81,6 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
         this.accessServiceId = accessServiceRegistration.getAccessServiceCode();
         this.accessServiceDevelopmentStatus = accessServiceRegistration.getAccessServiceDevelopmentStatus();
         this.accessServiceName = accessServiceRegistration.getAccessServiceName();
-        this.accessServiceFullName = accessServiceRegistration.getAccessServiceFullName();
         this.accessServiceURLMarker = accessServiceRegistration.getAccessServiceURLMarker();
         this.accessServiceAdminClass = accessServiceRegistration.getAccessServiceAdminClassName();
         this.accessServiceDescription = accessServiceRegistration.getAccessServiceDescription();
@@ -176,17 +170,6 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the full name of the access service.
-     *
-     * @param accessServiceFullName String name
-     */
-    public void setAccessServiceFullName(String accessServiceFullName)
-    {
-        this.accessServiceFullName = accessServiceFullName;
-    }
-
-
-    /**
      * Set up the name of the access service.
      *
      * @param accessServiceName String name
@@ -194,29 +177,6 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     public void setAccessServiceName(String accessServiceName)
     {
         this.accessServiceName = accessServiceName;
-    }
-
-
-    /**
-     * Return the full name of the access service.
-     *
-     * @return String name
-     */
-    public String getAccessServiceFullName()
-    {
-        if (accessServiceFullName == null)
-        {
-            if (accessServiceName == null)
-            {
-                return null;
-            }
-
-            return accessServiceName + " OMAS";
-        }
-        else
-        {
-            return accessServiceFullName;
-        }
     }
 
 
@@ -311,32 +271,6 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the OCF Connection for the topic used to pass requests to this access service.
-     * The default values are constructed from the access service name.
-     * If this value is set to null then the access service ignores incoming events.
-     *
-     * @return Connection for InTopic
-     */
-    public Connection getAccessServiceInTopic()
-    {
-        return accessServiceInTopic;
-    }
-
-
-    /**
-     * Set up the OCF Connection for the topic used to pass requests to this access service.
-     * The default values are constructed from the access service name.
-     * If this value is set to null then the access service ignores incoming events.
-     *
-     * @param accessServiceInTopic Connection properties
-     */
-    public void setAccessServiceInTopic(Connection accessServiceInTopic)
-    {
-        this.accessServiceInTopic = accessServiceInTopic;
-    }
-
-
-    /**
      * Return the OCF Connection for the topic used by this access service to publish events.
      * The default values are constructed from the access service name.
      * If this value is set to null then events are not published by this OMAS.
@@ -408,12 +342,10 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
                        ", accessServiceDevelopmentStatus=" + accessServiceDevelopmentStatus +
                        ", accessServiceAdminClass='" + accessServiceAdminClass + '\'' +
                        ", accessServiceName='" + accessServiceName + '\'' +
-                       ", accessServiceFullName='" + accessServiceFullName + '\'' +
                        ", accessServiceURLMarker='" + accessServiceURLMarker + '\'' +
                        ", accessServiceDescription='" + accessServiceDescription + '\'' +
                        ", accessServiceWiki='" + accessServiceWiki + '\'' +
                        ", accessServiceOperationalStatus=" + accessServiceOperationalStatus +
-                       ", accessServiceInTopic=" + accessServiceInTopic +
                        ", accessServiceOutTopic=" + accessServiceOutTopic +
                        ", accessServiceOptions=" + accessServiceOptions +
                        '}';
@@ -442,12 +374,10 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
                        accessServiceDevelopmentStatus == that.accessServiceDevelopmentStatus &&
                        Objects.equals(accessServiceAdminClass, that.accessServiceAdminClass) &&
                        Objects.equals(accessServiceName, that.accessServiceName) &&
-                       Objects.equals(accessServiceFullName, that.accessServiceFullName) &&
                        Objects.equals(accessServiceURLMarker, that.accessServiceURLMarker) &&
                        Objects.equals(accessServiceDescription, that.accessServiceDescription) &&
                        Objects.equals(accessServiceWiki, that.accessServiceWiki) &&
                        accessServiceOperationalStatus == that.accessServiceOperationalStatus &&
-                       Objects.equals(accessServiceInTopic, that.accessServiceInTopic) &&
                        Objects.equals(accessServiceOutTopic, that.accessServiceOutTopic) &&
                        Objects.equals(accessServiceOptions, that.accessServiceOptions);
     }
@@ -461,8 +391,8 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(accessServiceId, accessServiceDevelopmentStatus, accessServiceAdminClass, accessServiceName, accessServiceFullName,
-                            accessServiceURLMarker, accessServiceDescription, accessServiceWiki, accessServiceOperationalStatus, accessServiceInTopic,
+        return Objects.hash(accessServiceId, accessServiceDevelopmentStatus, accessServiceAdminClass, accessServiceName,
+                            accessServiceURLMarker, accessServiceDescription, accessServiceWiki, accessServiceOperationalStatus,
                             accessServiceOutTopic, accessServiceOptions);
     }
 }

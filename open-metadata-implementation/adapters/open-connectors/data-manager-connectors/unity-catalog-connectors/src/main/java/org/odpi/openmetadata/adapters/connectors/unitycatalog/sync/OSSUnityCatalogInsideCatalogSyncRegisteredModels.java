@@ -10,10 +10,11 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.Registe
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaInfo;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
@@ -23,7 +24,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,9 +56,10 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
      * @param excludeNames list of catalogs to ignore (and include all others)
      * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     public OSSUnityCatalogInsideCatalogSyncRegisteredModels(String                           connectorName,
-                                                            CatalogIntegratorContext         context,
+                                                            IntegrationContext               context,
                                                             String                           catalogTargetName,
                                                             String                           catalogGUID,
                                                             String                           catalogName,
@@ -70,7 +71,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                                                             Map<String, Object>              configurationProperties,
                                                             List<String>                     excludeNames,
                                                             List<String>                     includeNames,
-                                                            AuditLog                         auditLog)
+                                                            AuditLog                         auditLog) throws UserNotAuthorizedException
     {
         super(connectorName,
               context,
@@ -117,7 +118,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                                                                                   catalogName,
                                                                                   connectorName,
                                                                                   entityTypeName,
-                                                                                  openMetadataAccess,
+                                                                                  openMetadataStore,
                                                                                   targetPermittedSynchronization,
                                                                                   context.getMaxPageSize(),
                                                                                   auditLog);
@@ -285,41 +286,43 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
 
         if (templateGUID != null)
         {
-            ucModelGUID = openMetadataAccess.getMetadataElementFromTemplate(catalogGUID,
-                                                                            catalogQualifiedName,
-                                                                            deployedImplementationType.getAssociatedTypeName(),
-                                                                            schemaGUID,
-                                                                            false,
-                                                                            schemaGUID,
-                                                                            null,
-                                                                            null,
-                                                                            templateGUID,
-                                                                            null,
-                                                                            this.getPlaceholderProperties(modelInfo),
-                                                                            schemaGUID,
-                                                                            parentLinkTypeName,
-                                                                            null,
-                                                                            parentAtEnd1);
+            TemplateOptions templateOptions = new TemplateOptions(super.getMetadataSourceOptions());
+
+            templateOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
+            templateOptions.setAnchorGUID(schemaGUID);
+            templateOptions.setIsOwnAnchor(false);
+            templateOptions.setAnchorScopeGUID(catalogGUID);
+
+            templateOptions.setParentGUID(schemaGUID);
+            templateOptions.setParentAtEnd1(parentAtEnd1);
+            templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
+
+            ucModelGUID = openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+                                                                              templateGUID,
+                                                                              null,
+                                                                              this.getPlaceholderProperties(modelInfo),
+                                                                              null);
         }
         else
         {
             String qualifiedName = super.getQualifiedName(modelInfo.getFull_name());
 
-            ucModelGUID = openMetadataAccess.createMetadataElementInStore(catalogGUID,
-                                                                          catalogQualifiedName,
-                                                                          deployedImplementationType.getAssociatedTypeName(),
-                                                                          ElementStatus.ACTIVE,
-                                                                          null,
-                                                                          schemaGUID,
-                                                                          false,
-                                                                          schemaGUID,
-                                                                          null,
-                                                                          null,
-                                                                          this.getElementProperties(qualifiedName, modelInfo),
-                                                                          schemaGUID,
-                                                                          parentLinkTypeName,
-                                                                          null,
-                                                                          parentAtEnd1);
+            NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
+
+            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+            newElementOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
+            newElementOptions.setAnchorGUID(schemaGUID);
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorScopeGUID(catalogGUID);
+
+            newElementOptions.setParentGUID(schemaGUID);
+            newElementOptions.setParentAtEnd1(parentAtEnd1);
+            newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
+
+            ucModelGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+                                                                         null,
+                                                                         new NewElementProperties(this.getElementProperties(qualifiedName, modelInfo)),
+                                                                         null);
 
             Map<String, String> facetProperties = new HashMap<>();
 
@@ -328,7 +331,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
             super.addPropertyFacet(ucModelGUID, qualifiedName, modelInfo, facetProperties);
         }
 
-        context.addExternalIdentifier(catalogGUID,
+        openMetadataStore.addExternalIdentifier(catalogGUID,
                                       catalogQualifiedName,
                                       catalogTypeName,
                                       ucModelGUID,
@@ -360,13 +363,15 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
     {
         String egeriaModelGUID = memberElement.getElement().getElementGUID();
 
-        openMetadataAccess.updateMetadataElementInStore(catalogGUID,
-                                                        catalogQualifiedName,
-                                                        egeriaModelGUID,
-                                                        false,
-                                                        this.getElementProperties(modelInfo));
+        UpdateOptions updateOptions = new UpdateOptions(super.getMetadataSourceOptions());
 
-        context.confirmSynchronization(catalogGUID,
+        updateOptions.setMergePropertyUpdate(true);
+
+        openMetadataStore.updateMetadataElementInStore(egeriaModelGUID,
+                                                       updateOptions,
+                                                       this.getElementProperties(modelInfo));
+
+        openMetadataStore.confirmSynchronization(catalogGUID,
                                        catalogQualifiedName,
                                        egeriaModelGUID,
                                        entityTypeName,
@@ -395,7 +400,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
 
         if (memberElement.getExternalIdentifier() == null)
         {
-            context.addExternalIdentifier(catalogGUID,
+            openMetadataStore.addExternalIdentifier(catalogGUID,
                                           catalogQualifiedName,
                                           catalogTypeName,
                                           memberElement.getElement().getElementGUID(),
@@ -409,7 +414,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
         }
         else
         {
-            context.confirmSynchronization(catalogGUID,
+            openMetadataStore.confirmSynchronization(catalogGUID,
                                            catalogQualifiedName,
                                            memberElement.getElement().getElementGUID(),
                                            deployedImplementationType.getAssociatedTypeName(),
@@ -439,7 +444,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                                                                            modelInfo.getFull_name(),
                                                                            ucServerEndpoint));
 
-        context.confirmSynchronization(catalogGUID,
+        openMetadataStore.confirmSynchronization(catalogGUID,
                                        catalogName,
                                        memberElement.getElement().getElementGUID(),
                                        deployedImplementationType.getAssociatedTypeName(),
@@ -499,7 +504,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
     private ElementProperties getElementProperties(RegisteredModelInfo info)
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                               OpenMetadataProperty.NAME.name,
+                                                                               OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                info.getName());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,

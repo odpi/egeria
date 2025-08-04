@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataClassElement extends DataDefinitionElement
 {
-    private DataClassProperties                 properties             = null;
     private List<RelatedMetadataElementSummary> nestedDataClasses      = null;
     private List<RelatedMetadataElementSummary> specializedDataClasses = null;
 
@@ -47,7 +46,6 @@ public class DataClassElement extends DataDefinitionElement
 
         if (template != null)
         {
-            properties = template.getProperties();
             nestedDataClasses = template.getNestedDataClasses();
             specializedDataClasses = template.getSpecializedDataClasses();
         }
@@ -55,24 +53,13 @@ public class DataClassElement extends DataDefinitionElement
 
 
     /**
-     * Return details of the data class
+     * Copy/clone constructor
      *
-     * @return data class properties
+     * @param template object to copy
      */
-    public DataClassProperties getProperties()
+    public DataClassElement(OpenMetadataRootElement template)
     {
-        return properties;
-    }
-
-
-    /**
-     * Set up data class properties
-     *
-     * @param properties data class properties
-     */
-    public void setProperties(DataClassProperties properties)
-    {
-        this.properties = properties;
+        super(template);
     }
 
 
@@ -129,7 +116,6 @@ public class DataClassElement extends DataDefinitionElement
     public String toString()
     {
         return "DataClassElement{" +
-                "properties=" + properties +
                 ", nestedDataClasses=" + nestedDataClasses +
                 ", specializedDataClasses=" + specializedDataClasses +
                 "} " + super.toString();
@@ -149,8 +135,7 @@ public class DataClassElement extends DataDefinitionElement
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataClassElement that = (DataClassElement) objectToCompare;
-        return Objects.equals(properties, that.properties) &&
-                Objects.equals(nestedDataClasses, that.nestedDataClasses) &&
+        return Objects.equals(nestedDataClasses, that.nestedDataClasses) &&
                 Objects.equals(specializedDataClasses, that.specializedDataClasses);
     }
 
@@ -163,6 +148,6 @@ public class DataClassElement extends DataDefinitionElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, nestedDataClasses, specializedDataClasses);
+        return Objects.hash(super.hashCode(), nestedDataClasses, specializedDataClasses);
     }
 }

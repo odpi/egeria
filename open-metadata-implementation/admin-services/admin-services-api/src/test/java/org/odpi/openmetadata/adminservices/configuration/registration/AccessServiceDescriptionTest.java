@@ -17,7 +17,7 @@ public class AccessServiceDescriptionTest {
         HashSet<Integer> set = new HashSet<>();
         boolean result = false;
         for( AccessServiceDescription desc: AccessServiceDescription.values()) {
-            result = set.add(desc.getAccessServiceCode());
+            result = set.add(desc.getServiceCode());
             assertTrue(result);
         }
 

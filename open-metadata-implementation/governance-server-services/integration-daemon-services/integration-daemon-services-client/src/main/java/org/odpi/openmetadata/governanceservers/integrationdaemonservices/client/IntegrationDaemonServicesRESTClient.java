@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationDaemonStatusResponse;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationGroupSummariesResponse;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationGroupSummaryResponse;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationServiceSummaryResponse;
 
 /**
  * IntegrationDaemonServicesRESTClient is responsible for issuing the REST API calls
@@ -114,35 +113,6 @@ class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
                                                                           IntegrationDaemonStatusResponse.class,
                                                                           urlTemplate,
                                                                           params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a IntegrationDaemonStatusResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return IntegrationDaemonStatusResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    IntegrationServiceSummaryResponse callIntegrationServiceStatusGetRESTCall(String    methodName,
-                                                                              String    urlTemplate,
-                                                                              Object... params) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                      PropertyServerException
-    {
-        IntegrationServiceSummaryResponse restResult = this.callGetRESTCall(methodName,
-                                                                            IntegrationServiceSummaryResponse.class,
-                                                                            urlTemplate,
-                                                                            params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

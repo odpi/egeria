@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.glossarymanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryTermActivityTypeListResponse extends AssetManagerOMASAPIResponse
+public class GlossaryTermActivityTypeListResponse extends FFDCResponseBase
 {
     private List<GlossaryTermActivityType> types = null;
 

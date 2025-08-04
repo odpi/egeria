@@ -2,19 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.samples.readavrofile;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
 import org.odpi.openmetadata.http.HttpHelper;
 
 import java.io.File;
-import java.util.List;
 
 
 /**
@@ -53,78 +52,13 @@ public class AvroFileReaderSample
      */
     void run()
     {
-        BasicFileStoreConnector connector = getConnectorUsingMetadata();
+        BasicFileStoreConnector connector = getConnectorUsingHardCodedConnection();
         if (connector == null)
         {
             connector = getConnectorUsingHardCodedConnection();
         }
 
         displayFile(connector);
-    }
-
-
-    /**
-     * This method uses Asset Consumer OMAS to locate and create an Open Connector Framework (OCF) connector
-     * instance.
-     *
-     * @return connector to requested file
-     */
-    private BasicFileStoreConnector getConnectorUsingMetadata()
-    {
-        try
-        {
-            /*
-             * The Asset Consumer OMAS supports a REST API to extract metadata from the open metadata repositories
-             * linked to the same open metadata cohort as the Asset Consumer OMAS.  It also has a Java client that
-             * provides an equivalent interface to the REST API plus connector factory methods supported by an
-             * embedded Connector Broker.  The Connector Broker is an Open Connector Framework (OCF) component
-             * that is able to create and configure instances of compliant connectors.  It is passed a Connection
-             * object which has all of the properties needed to create the connector.  The Asset Consumer OMAS
-             * extracts the Connection object from the open metadata repositories and then calls the Connector Broker.
-             */
-            AssetConsumer client = new AssetConsumer(serverName, serverURLRoot);
-
-            /*
-             * This call extracts the list of assets stored in the open metadata repositories that have a name
-             * that matches the requested filename.
-             */
-            List<String>   knownAssets = client.getAssetsByName(clientUserId, fileName, 0, 99);
-
-            if (knownAssets != null)
-            {
-                System.out.println("The open metadata repositories have returned " + knownAssets.size() + " asset definitions for the requested file name " + fileName);
-
-                for (String assetGUID : knownAssets)
-                {
-                    if (assetGUID != null)
-                    {
-                        try
-                        {
-                            /*
-                             * The aim is to return a connector for the first matching asset.  If an asset of a different
-                             * type is returned, on one where it is not possible to create a connector for, then an
-                             * exception is thrown and the code moves on to process the next asset.
-                             */
-                            return (BasicFileStoreConnector) client.getConnectorForAsset(clientUserId, assetGUID);
-                        }
-                        catch (Exception error)
-                        {
-                            System.out.println("Unable to create connector for asset: " + assetGUID);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                System.out.println("The open metadata repositories do not have an asset definition for the requested file name " + fileName);
-            }
-        }
-        catch (Exception error)
-        {
-            System.out.println("The connector can not be created from metadata.  Error message is: " + error.getMessage());
-        }
-
-        return null;
     }
 
 
@@ -141,7 +75,7 @@ public class AvroFileReaderSample
 
         try
         {
-            AssetConsumer client = new AssetConsumer(serverName, serverURLRoot);
+            ConnectedAssetClient client = new EgeriaConnectedAssetClient(serverName, serverURLRoot, 100, null);
 
             connector = (BasicFileStoreConnector)client.getConnectorByConnection(clientUserId, getHardCodedConnection(fileName));
         }
@@ -202,7 +136,6 @@ public class AvroFileReaderSample
 
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setType(Endpoint.getEndpointType());
         endpoint.setGUID(endpointGUID);
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
@@ -217,7 +150,6 @@ public class AvroFileReaderSample
 
         ConnectorType connectorType = new ConnectorType();
 
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeName);
         connectorType.setDisplayName(connectorTypeName);
@@ -231,7 +163,6 @@ public class AvroFileReaderSample
 
         Connection connection = new Connection();
 
-        connection.setType(Connection.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
@@ -262,17 +193,6 @@ public class AvroFileReaderSample
             System.out.println("Path: " + file.getPath());
 
             System.out.println("------------------------------------------------------------------------");
-
-            ConnectedAssetDetails assetProperties = connector.getConnectedAssetProperties(clientUserId);
-
-            if (assetProperties != null)
-            {
-                System.out.println(assetProperties.toString());
-            }
-            else
-            {
-                System.out.println("No asset properties  ...");
-            }
         }
         catch (FileException error)
         {

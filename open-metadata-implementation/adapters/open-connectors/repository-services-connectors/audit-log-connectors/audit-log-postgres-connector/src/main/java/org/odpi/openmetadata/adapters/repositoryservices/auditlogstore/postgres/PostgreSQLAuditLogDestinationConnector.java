@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
@@ -62,15 +63,16 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
      * Set up the database
      *
      * @throws ConnectorCheckedException something went wrong
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";
 
         super.start();
 
-        connectorName = connectionDetails.getConnectionName();
+        connectorName = connectionBean.getDisplayName();
 
         if ((embeddedConnectors != null) && (!embeddedConnectors.isEmpty()))
         {
@@ -86,7 +88,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                         }
 
                         this.databaseClient = jdbcResourceConnector;
-                        String schemaName = super.getStringConfigurationProperty(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), connectionDetails.getConfigurationProperties());
+                        String schemaName = super.getStringConfigurationProperty(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), connectionBean.getConfigurationProperties());
 
                         loadDDL(databaseClient, schemaName);
 

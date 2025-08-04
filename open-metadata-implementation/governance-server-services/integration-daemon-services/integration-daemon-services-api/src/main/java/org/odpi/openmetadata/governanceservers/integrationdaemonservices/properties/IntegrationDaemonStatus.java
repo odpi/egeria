@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationDaemonStatus
 {
-    private List<IntegrationServiceSummary>  integrationServiceSummaries = null;
     private List<IntegrationGroupSummary>    integrationGroupSummaries   = null;
     private List<IntegrationConnectorReport> integrationConnectorReports = null;
 
@@ -45,41 +42,9 @@ public class IntegrationDaemonStatus
     {
         if (template != null)
         {
-            integrationServiceSummaries = template.getIntegrationServiceSummaries();
             integrationGroupSummaries = template.getIntegrationGroupSummaries();
             integrationConnectorReports = template.getIntegrationConnectorReports();
         }
-    }
-
-
-    /**
-     * Return the summary of each integration service running in the integration daemon.
-     *
-     * @return list of summaries
-     */
-    public List<IntegrationServiceSummary> getIntegrationServiceSummaries()
-    {
-        if (integrationServiceSummaries == null)
-        {
-            return null;
-        }
-        else if (integrationServiceSummaries.isEmpty())
-        {
-            return null;
-        }
-
-        return integrationServiceSummaries;
-    }
-
-
-    /**
-     * Set up of each integration service running in the integration daemon.
-     *
-     * @param integrationServiceSummaries list of summaries
-     */
-    public void setIntegrationServiceSummaries(List<IntegrationServiceSummary> integrationServiceSummaries)
-    {
-        this.integrationServiceSummaries = integrationServiceSummaries;
     }
 
 
@@ -154,10 +119,11 @@ public class IntegrationDaemonStatus
     public String toString()
     {
         return "IntegrationDaemonStatus{" +
-                "integrationServiceSummaries=" + integrationServiceSummaries +
-                ", integrationGroupSummaries=" + integrationConnectorReports +
+                "integrationGroupSummaries=" + integrationGroupSummaries +
+                ", integrationConnectorReports=" + integrationConnectorReports +
                 '}';
     }
+
 
     /**
      * Compare objects
@@ -177,7 +143,7 @@ public class IntegrationDaemonStatus
             return false;
         }
         IntegrationDaemonStatus that = (IntegrationDaemonStatus) objectToCompare;
-        return Objects.equals(integrationServiceSummaries, that.integrationServiceSummaries) &&
+        return Objects.equals(integrationGroupSummaries, that.integrationGroupSummaries) &&
                 Objects.equals(integrationConnectorReports, that.integrationConnectorReports);
     }
 
@@ -190,6 +156,6 @@ public class IntegrationDaemonStatus
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), integrationServiceSummaries, getIntegrationGroupSummaries());
+        return Objects.hash(super.hashCode(), integrationConnectorReports, integrationGroupSummaries);
     }
 }

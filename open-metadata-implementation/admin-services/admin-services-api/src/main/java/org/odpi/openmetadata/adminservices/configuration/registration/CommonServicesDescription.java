@@ -35,18 +35,6 @@ public enum CommonServicesDescription
                                      "Administration Services",
                                      null),
 
-    /**
-     * Common metadata services for the Open Connector Framework (OCF).
-     */
-    OCF_METADATA_MANAGEMENT          (182,
-                                      ComponentDevelopmentStatus.STABLE,
-                                      "Connected Asset Services",
-                                      "connected-asset",
-                                      "Common metadata services for the Open Connector Framework (OCF).",
-                                      "https://egeria-project.org/services/ocf-metadata-management",
-                                      ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName(),
-                                      null,
-                                      null),
 
     /**
      * Authorization services for Open Metadata and Governance
@@ -61,18 +49,7 @@ public enum CommonServicesDescription
                                       null,
                                       null),
 
-    /**
-     * Support governance action services.
-     */
-    GAF_METADATA_MANAGEMENT          (184,
-                                      ComponentDevelopmentStatus.STABLE,
-                                      "Governance Action Framework Services",
-                                      "open-governance-service",
-                                      "Support governance action services.",
-                                      "https://egeria-project.org/services/gaf-metadata-management",
-                                      ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName(),
-                                      null,
-                                      null),
+
 
     /**
      * Provides information about the registered services and connectors available in an OMAG Server Platform along with services to control and query information about the OMAG Servers running on the platform.
@@ -87,18 +64,7 @@ public enum CommonServicesDescription
                                      null,
                                      null),
 
-    /**
-     * Provides operational support for the integration connectors.
-     */
-    OIF_METADATA_MANAGEMENT          (186,
-                                      ComponentDevelopmentStatus.STABLE,
-                                      "Open Integration Service",
-                                      "open-integration-service",
-                                      "Provides operational support for the integration connectors.",
-                                      "https://egeria-project.org/services/oif-metadata-management",
-                                      ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName(),
-                                      null,
-                                      null),
+
 
     /**
      * Supports the startup and shutdown of OMAG Servers.
@@ -113,19 +79,6 @@ public enum CommonServicesDescription
                                      null,
                                      null),
 
-
-    /**
-     * Provides generic open metadata retrieval and management services for the Open Frameworks and Open Metadata Access Services (OMASs).
-     */
-    OMF_METADATA_MANAGEMENT     (188,
-                                  ComponentDevelopmentStatus.STABLE,
-                                  "Open Metadata Store Services",
-                                  "open-metadata-store",
-                                  "Provides generic open metadata retrieval and management services for the Open Frameworks and Open Metadata Access Services (OMASs).",
-                                  "https://egeria-project.org/services/oms-metadata-management",
-                                  ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName(),
-                                  null,
-                                  null),
     ;
 
 
@@ -143,12 +96,12 @@ public enum CommonServicesDescription
     /**
      * Default Constructor
      *
-     * @param serviceCode ordinal for this access service
+     * @param serviceCode ordinal for this service
      * @param serviceDevelopmentStatus development status
-     * @param serviceName symbolic name for this access service
+     * @param serviceName symbolic name for this service
      * @param serviceURLMarker string used in URLs
-     * @param serviceDescription short description for this access service
-     * @param serviceWiki wiki page for the access service for this access service
+     * @param serviceDescription short description for this service
+     * @param serviceWiki wiki page for the access service for this service
      * @param serverType the server type where this service resides
      * @param partnerServiceName the name of a partner service called in a remote server
      * @param partnerServerType the type of server where the partner service resides

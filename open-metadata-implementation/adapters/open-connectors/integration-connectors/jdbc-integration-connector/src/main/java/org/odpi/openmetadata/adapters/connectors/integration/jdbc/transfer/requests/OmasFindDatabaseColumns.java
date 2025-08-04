@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +19,17 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Manages the findDatabaseColumns call to access service
  */
-class OmasFindDatabaseColumns implements Function<String, List<DatabaseColumnElement>> {
+class OmasFindDatabaseColumns implements Function<String, List<OpenMetadataRootElement>>
+{
 
-    private final DatabaseIntegratorContext databaseIntegratorContext;
-    private final AuditLog auditLog;
+    private final SchemaAttributeClient databaseColumnClient;
+    private final AuditLog              auditLog;
 
-    OmasFindDatabaseColumns(DatabaseIntegratorContext databaseIntegratorContext, AuditLog auditLog){
-        this.databaseIntegratorContext = databaseIntegratorContext;
-        this.auditLog = auditLog;
+    OmasFindDatabaseColumns(SchemaAttributeClient databaseColumnClient,
+                            AuditLog              auditLog)
+    {
+        this.databaseColumnClient = databaseColumnClient;
+        this.auditLog             = auditLog;
     }
 
     /**
@@ -37,16 +40,22 @@ class OmasFindDatabaseColumns implements Function<String, List<DatabaseColumnEle
      * @return columns
      */
     @Override
-    public List<DatabaseColumnElement> apply(String searchBy){
-        String methodName = "OmasFindDatabaseColumns";
-        try{
+    public List<OpenMetadataRootElement> apply(String searchBy)
+    {
+        final String methodName = "OmasFindDatabaseColumns";
+
+        try
+        {
             return Optional.ofNullable(
-                    databaseIntegratorContext.findDatabaseColumns(searchBy, 0, 0))
+                            databaseColumnClient.findSchemaAttributes(searchBy, databaseColumnClient.getSearchOptions()))
                     .orElseGet(ArrayList::new);
-        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+        }
+        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
+        {
             auditLog.logException("Reading columns with name " + searchBy,
                     EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
         }
+
         return new ArrayList<>();
     }
 

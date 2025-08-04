@@ -2,27 +2,26 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.server;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.OpenGovernanceClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
-import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
-import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
-import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
-import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataEventClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
+import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread;
-
+import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -127,17 +126,14 @@ public class EngineHostOperationalServices
              * Create a REST client to issue REST calls to the Governance Engine OMAS.  This client is then wrapped in the specific API
              * clients.
              */
-            GAFRESTClient restClient;
-            OpenGovernanceClient openGovernanceClient;
+            GAFRESTClient        restClient;
             if (localServerPassword == null)
             {
                 restClient = new GAFRESTClient(accessServiceServerName, accessServiceRootURL, auditLog);
-                openGovernanceClient = new OpenGovernanceClient(accessServiceServerName, accessServiceRootURL, maxPageSize);
             }
             else
             {
                 restClient = new GAFRESTClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId, auditLog);
-                openGovernanceClient = new OpenGovernanceClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId, maxPageSize);
             }
 
             /*
@@ -146,12 +142,13 @@ public class EngineHostOperationalServices
              * expected - one used by the engine host services to receive updates to the governance engine configuration and new GovernanceActions
              * - the other used by the Governance Action OMES to receive new Watchdog events for registered Open Watchdog Governance Action Services.
              */
-            GovernanceServerEventClient eventClient = new GovernanceServerEventClient(accessServiceServerName,
-                                                                                      accessServiceRootURL,
-                                                                                      restClient,
-                                                                                      maxPageSize,
-                                                                                      auditLog,
-                                                                                      localServerId + localServerName);
+            OpenMetadataEventClient eventClient = new EgeriaOpenMetadataEventClient(accessServiceServerName,
+                                                                                    accessServiceRootURL,
+                                                                                    localServerUserId,
+                                                                                    localServerPassword,
+                                                                                    maxPageSize,
+                                                                                    auditLog,
+                                                                                    localServerId + localServerName);
 
             /*
              * This is the client used to retrieve configuration and the client used to manage governance action entities
@@ -580,10 +577,10 @@ public class EngineHostOperationalServices
 
             auditLog.logMessage(actionDescription,
                                 EngineHostServicesAuditCode.NO_CONFIG_OMAS_SERVER_URL.getMessageDefinition(localServerName,
-                                                                                                    AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceName()));
+                                                                                                    AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName()));
 
             throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_CONFIG_OMAS_SERVER_URL.getMessageDefinition(localServerName,
-                                                                                                                          AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName()),
+                                                                                                                          AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName()),
                                                       this.getClass().getName(),
                                                       methodName);
         }
@@ -610,10 +607,10 @@ public class EngineHostOperationalServices
 
             auditLog.logMessage(actionDescription,
                                 EngineHostServicesAuditCode.NO_CONFIG_OMAS_SERVER_NAME.getMessageDefinition(localServerName,
-                                                                                                            AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceName()));
+                                                                                                            AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName()));
 
             throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_CONFIG_OMAS_SERVER_NAME.getMessageDefinition(localServerName,
-                                                                                                                                  AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName()),
+                                                                                                                                  AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName()),
                                                       this.getClass().getName(),
                                                       methodName);
         }

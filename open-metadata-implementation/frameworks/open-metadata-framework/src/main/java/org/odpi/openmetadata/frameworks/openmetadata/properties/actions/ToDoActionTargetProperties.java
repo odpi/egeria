@@ -3,16 +3,17 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.properties.actions;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class ToDoActionTargetProperties
+public class ToDoActionTargetProperties extends RelationshipBeanProperties
 {
-    private String     actionTargetName = null;
-    private ToDoStatus status           = null;
-    private Date       startDate        = null;
+    private String         actionTargetName = null;
+    private ActivityStatus status           = null;
+    private Date           startDate        = null;
     private Date       completionDate    = null;
     private String     completionMessage = null;
 
@@ -33,6 +34,8 @@ public class ToDoActionTargetProperties
      */
     public ToDoActionTargetProperties(ToDoActionTargetProperties template)
     {
+        super (template);
+
         if (template != null)
         {
             actionTargetName  = template.getActionTargetName();
@@ -73,7 +76,7 @@ public class ToDoActionTargetProperties
      *
      * @return status enum
      */
-    public ToDoStatus getStatus()
+    public ActivityStatus getStatus()
     {
         return status;
     }
@@ -86,7 +89,7 @@ public class ToDoActionTargetProperties
      *
      * @param status enum
      */
-    public void setStatus(ToDoStatus status)
+    public void setStatus(ActivityStatus status)
     {
         this.status = status;
     }
@@ -212,7 +215,6 @@ public class ToDoActionTargetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(actionTargetName, status, startDate, completionDate, completionMessage);
+        return Objects.hash(super.hashCode(), actionTargetName, status, startDate, completionDate, completionMessage);
     }
-
 }

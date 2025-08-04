@@ -8,15 +8,15 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.CertificationMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindDigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -47,14 +47,67 @@ public class ClassificationExplorerRESTServices extends TokenController
 
 
     /**
+     * Return information about the elements classified with the impact classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public MetadataElementSummariesResponse getImpactClassifiedElements(String                         serverName,
+                                                                        String                         urlMarker,
+                                                                        LevelIdentifierQueryProperties requestBody)
+    {
+        final String methodName = "getImpactClassifiedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getImpactClassifiedElements(userId,
+                                                                         requestBody.getReturnSpecificLevel(),
+                                                                         requestBody.getLevelIdentifier(),
+                                                                         requestBody));
+            }
+            else
+            {
+                response.setElements(handler.getImpactClassifiedElements(userId,
+                                                                         false,
+                                                                         0,
+                                                                         null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Return information about the elements classified with the confidence classification.
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -64,10 +117,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getConfidenceClassifiedElements(String                         serverName,
                                                                             String                         urlMarker,
-                                                                            int                            startFrom,
-                                                                            int                            pageSize,
-                                                                            boolean                        forLineage,
-                                                                            boolean                        forDuplicateProcessing,
                                                                             LevelIdentifierQueryProperties requestBody)
     {
         final String methodName = "getConfidenceClassifiedElements";
@@ -91,32 +140,14 @@ public class ClassificationExplorerRESTServices extends TokenController
                 response.setElements(handler.getConfidenceClassifiedElements(userId,
                                                                              requestBody.getReturnSpecificLevel(),
                                                                              requestBody.getLevelIdentifier(),
-                                                                             requestBody.getOpenMetadataTypeName(),
-                                                                             requestBody.getLimitResultsByStatus(),
-                                                                             requestBody.getAsOfTime(),
-                                                                             requestBody.getSequencingProperty(),
-                                                                             requestBody.getSequencingOrder(),
-                                                                             startFrom,
-                                                                             pageSize,
-                                                                             requestBody.getEffectiveTime(),
-                                                                             forLineage,
-                                                                             forDuplicateProcessing));
+                                                                             requestBody));
             }
             else
             {
                 response.setElements(handler.getConfidenceClassifiedElements(userId,
                                                                              false,
                                                                              0,
-                                                                             null,
-                                                                             null,
-                                                                             null,
-                                                                             null,
-                                                                             null,
-                                                                             startFrom,
-                                                                             pageSize,
-                                                                             new Date(),
-                                                                             forLineage,
-                                                                             forDuplicateProcessing));
+                                                                             null));
             }
         }
         catch (Throwable error)
@@ -134,10 +165,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -147,10 +174,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getCriticalityClassifiedElements(String                         serverName,
                                                                              String                         urlMarker,
-                                                                             int                            startFrom,
-                                                                             int                            pageSize,
-                                                                             boolean                        forLineage,
-                                                                             boolean                        forDuplicateProcessing,
                                                                              LevelIdentifierQueryProperties requestBody)
     {
         final String methodName = "getCriticalityClassifiedElements";
@@ -174,32 +197,14 @@ public class ClassificationExplorerRESTServices extends TokenController
                 response.setElements(handler.getCriticalityClassifiedElements(userId,
                                                                               requestBody.getReturnSpecificLevel(),
                                                                               requestBody.getLevelIdentifier(),
-                                                                              requestBody.getOpenMetadataTypeName(),
-                                                                              requestBody.getLimitResultsByStatus(),
-                                                                              requestBody.getAsOfTime(),
-                                                                              requestBody.getSequencingProperty(),
-                                                                              requestBody.getSequencingOrder(),
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              requestBody.getEffectiveTime(),
-                                                                              forLineage,
-                                                                              forDuplicateProcessing));
+                                                                              requestBody));
             }
             else
             {
                 response.setElements(handler.getCriticalityClassifiedElements(userId,
                                                                               false,
                                                                               0,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              new Date(),
-                                                                              forLineage,
-                                                                              forDuplicateProcessing));
+                                                                              null));
             }
         }
         catch (Throwable error)
@@ -217,10 +222,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -230,10 +231,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getConfidentialityClassifiedElements(String                         serverName,
                                                                                  String                         urlMarker,
-                                                                                 int                            startFrom,
-                                                                                 int                            pageSize,
-                                                                                 boolean                        forLineage,
-                                                                                 boolean                        forDuplicateProcessing,
                                                                                  LevelIdentifierQueryProperties requestBody)
     {
         final String methodName = "getConfidentialityClassifiedElements";
@@ -257,32 +254,14 @@ public class ClassificationExplorerRESTServices extends TokenController
                 response.setElements(handler.getConfidentialityClassifiedElements(userId,
                                                                                   requestBody.getReturnSpecificLevel(),
                                                                                   requestBody.getLevelIdentifier(),
-                                                                                  requestBody.getOpenMetadataTypeName(),
-                                                                                  requestBody.getLimitResultsByStatus(),
-                                                                                  requestBody.getAsOfTime(),
-                                                                                  requestBody.getSequencingProperty(),
-                                                                                  requestBody.getSequencingOrder(),
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  requestBody.getEffectiveTime(),
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing));
+                                                                                  requestBody));
             }
             else
             {
                 response.setElements(handler.getConfidentialityClassifiedElements(userId,
                                                                                   false,
                                                                                   0,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  new Date(),
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing));
+                                                                                  null));
             }
         }
         catch (Throwable error)
@@ -300,10 +279,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -313,10 +288,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getRetentionClassifiedElements(String                         serverName,
                                                                            String                         urlMarker,
-                                                                           int                            startFrom,
-                                                                           int                            pageSize,
-                                                                           boolean                        forLineage,
-                                                                           boolean                        forDuplicateProcessing,
                                                                            LevelIdentifierQueryProperties requestBody)
     {
         final String methodName = "getRetentionClassifiedElements";
@@ -340,32 +311,14 @@ public class ClassificationExplorerRESTServices extends TokenController
                 response.setElements(handler.getRetentionClassifiedElements(userId,
                                                                             requestBody.getReturnSpecificLevel(),
                                                                             requestBody.getLevelIdentifier(),
-                                                                            requestBody.getOpenMetadataTypeName(),
-                                                                            requestBody.getLimitResultsByStatus(),
-                                                                            requestBody.getAsOfTime(),
-                                                                            requestBody.getSequencingProperty(),
-                                                                            requestBody.getSequencingOrder(),
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getEffectiveTime(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing));
+                                                                            requestBody));
             }
             else
             {
                 response.setElements(handler.getRetentionClassifiedElements(userId,
                                                                             false,
                                                                             0,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            new Date(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing));
+                                                                            null));
             }
         }
         catch (Throwable error)
@@ -383,10 +336,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -396,10 +345,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getSecurityTaggedElements(String                     serverName,
                                                                       String                     urlMarker,
-                                                                      int                        startFrom,
-                                                                      int                        pageSize,
-                                                                      boolean                    forLineage,
-                                                                      boolean                    forDuplicateProcessing,
                                                                       SecurityTagQueryProperties requestBody)
     {
         final String methodName = "getSecurityTaggedElements";
@@ -424,16 +369,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                        requestBody.getSecurityLabels(),
                                                                        requestBody.getSecurityProperties(),
                                                                        requestBody.getAccessGroups(),
-                                                                       requestBody.getOpenMetadataTypeName(),
-                                                                       requestBody.getLimitResultsByStatus(),
-                                                                       requestBody.getAsOfTime(),
-                                                                       requestBody.getSequencingProperty(),
-                                                                       requestBody.getSequencingOrder(),
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       requestBody.getEffectiveTime(),
-                                                                       forLineage,
-                                                                       forDuplicateProcessing));
+                                                                       requestBody));
             }
             else
             {
@@ -441,16 +377,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                        null,
                                                                        null,
                                                                        null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       new Date(),
-                                                                       forLineage,
-                                                                       forDuplicateProcessing));
+                                                                       null));
             }
         }
         catch (Throwable error)
@@ -468,10 +395,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -481,10 +404,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getOwnersElements(String             serverName,
                                                               String             urlMarker,
-                                                              int                startFrom,
-                                                              int                pageSize,
-                                                              boolean            forLineage,
-                                                              boolean            forDuplicateProcessing,
                                                               FindNameProperties requestBody)
     {
         final String methodName = "getOwnersElements";
@@ -505,33 +424,11 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getOwnersElements(userId,
-                                                               requestBody.getName(),
-                                                               requestBody.getOpenMetadataTypeName(),
-                                                               requestBody.getLimitResultsByStatus(),
-                                                               requestBody.getAsOfTime(),
-                                                               requestBody.getSequencingProperty(),
-                                                               requestBody.getSequencingOrder(),
-                                                               startFrom,
-                                                               pageSize,
-                                                               requestBody.getEffectiveTime(),
-                                                               forLineage,
-                                                               forDuplicateProcessing));
+                response.setElements(handler.getOwnersElements(userId, requestBody.getName(), requestBody));
             }
             else
             {
-                response.setElements(handler.getOwnersElements(userId,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               startFrom,
-                                                               pageSize,
-                                                               new Date(),
-                                                               forLineage,
-                                                               forDuplicateProcessing));
+                response.setElements(handler.getOwnersElements(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -549,10 +446,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -562,10 +455,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getMembersOfSubjectArea(String             serverName,
                                                                     String             urlMarker,
-                                                                    int                startFrom,
-                                                                    int                pageSize,
-                                                                    boolean            forLineage,
-                                                                    boolean            forDuplicateProcessing,
                                                                     FindNameProperties requestBody)
     {
         final String methodName = "getMembersOfSubjectArea";
@@ -588,31 +477,11 @@ public class ClassificationExplorerRESTServices extends TokenController
             {
                 response.setElements(handler.getMembersOfSubjectArea(userId,
                                                                      requestBody.getName(),
-                                                                     requestBody.getOpenMetadataTypeName(),
-                                                                     requestBody.getLimitResultsByStatus(),
-                                                                     requestBody.getAsOfTime(),
-                                                                     requestBody.getSequencingProperty(),
-                                                                     requestBody.getSequencingOrder(),
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     requestBody.getEffectiveTime(),
-                                                                     forLineage,
-                                                                     forDuplicateProcessing));
+                                                                     requestBody));
             }
             else
             {
-                response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     new Date(),
-                                                                     forLineage,
-                                                                     forDuplicateProcessing));
+                response.setElements(handler.getMembersOfSubjectArea(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -626,14 +495,10 @@ public class ClassificationExplorerRESTServices extends TokenController
 
 
     /**
-     * Return information about the assets from a specific origin.
+     * Return information about the elements from a specific origin.
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
      *
      * @return void or
@@ -641,15 +506,11 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getAssetsByOrigin(String                    serverName,
-                                                              String                    urlMarker,
-                                                              int                       startFrom,
-                                                              int                       pageSize,
-                                                              boolean                   forLineage,
-                                                              boolean                   forDuplicateProcessing,
-                                                              FindAssetOriginProperties requestBody)
+    public MetadataElementSummariesResponse getElementsByOrigin(String                              serverName,
+                                                                String                              urlMarker,
+                                                                FindDigitalResourceOriginProperties requestBody)
     {
-        final String methodName = "getAssetsByOrigin";
+        final String methodName = "getElementsByOrigin";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -667,37 +528,13 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getAssetsByOrigin(userId,
-                                                               requestBody.getOrganizationGUID(),
-                                                               requestBody.getBusinessCapabilityGUID(),
-                                                               requestBody.getOtherOriginValues(),
-                                                               requestBody.getOpenMetadataTypeName(),
-                                                               requestBody.getLimitResultsByStatus(),
-                                                               requestBody.getAsOfTime(),
-                                                               requestBody.getSequencingProperty(),
-                                                               requestBody.getSequencingOrder(),
-                                                               startFrom,
-                                                               pageSize,
-                                                               requestBody.getEffectiveTime(),
-                                                               forLineage,
-                                                               forDuplicateProcessing));
+                response.setElements(handler.getElementsByOrigin(userId,
+                                                                 requestBody.getProperties(),
+                                                                 requestBody));
             }
             else
             {
-                response.setElements(handler.getAssetsByOrigin(userId,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               startFrom,
-                                                               pageSize,
-                                                               new Date(),
-                                                               forLineage,
-                                                               forDuplicateProcessing));
+                response.setElements(handler.getElementsByOrigin(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -716,10 +553,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -730,10 +563,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getMeanings(String                            serverName,
                                                                String                            urlMarker,
                                                                String                            elementGUID,
-                                                               int                               startFrom,
-                                                               int                               pageSize,
-                                                               boolean                           forLineage,
-                                                               boolean                           forDuplicateProcessing,
                                                                SemanticAssignmentQueryProperties requestBody)
     {
         final String methodName = "getMeanings";
@@ -764,16 +593,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                     requestBody.getCreatedBy(),
                                                                                     requestBody.getSteward(),
                                                                                     requestBody.getSource(),
-                                                                                    requestBody.getOpenMetadataTypeName(),
-                                                                                    requestBody.getLimitResultsByStatus(),
-                                                                                    requestBody.getAsOfTime(),
-                                                                                    requestBody.getSequencingProperty(),
-                                                                                    requestBody.getSequencingOrder(),
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    requestBody.getEffectiveTime(),
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing);
+                                                                                    requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -792,16 +612,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                     null,
                                                                                     null,
                                                                                     null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    new Date(),
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing);
+                                                                                    null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -825,10 +636,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param glossaryTermGUID unique identifier of the glossary term that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -839,10 +646,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getSemanticAssignees(String                            serverName,
                                                                         String                            urlMarker,
                                                                         String                            glossaryTermGUID,
-                                                                        int                               startFrom,
-                                                                        int                               pageSize,
-                                                                        boolean                           forLineage,
-                                                                        boolean                           forDuplicateProcessing,
                                                                         SemanticAssignmentQueryProperties requestBody)
     {
         final String methodName = "getSemanticAssignees";
@@ -873,16 +676,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                              requestBody.getCreatedBy(),
                                                                                              requestBody.getSteward(),
                                                                                              requestBody.getSource(),
-                                                                                             requestBody.getOpenMetadataTypeName(),
-                                                                                             requestBody.getLimitResultsByStatus(),
-                                                                                             requestBody.getAsOfTime(),
-                                                                                             requestBody.getSequencingProperty(),
-                                                                                             requestBody.getSequencingOrder(),
-                                                                                             startFrom,
-                                                                                             pageSize,
-                                                                                             requestBody.getEffectiveTime(),
-                                                                                             forLineage,
-                                                                                             forDuplicateProcessing);
+                                                                                             requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -901,16 +695,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                              null,
                                                                                              null,
                                                                                              null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             startFrom,
-                                                                                             pageSize,
-                                                                                             new Date(),
-                                                                                             forLineage,
-                                                                                             forDuplicateProcessing);
+                                                                                             null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -934,10 +719,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID unique identifier of the governance definition that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -948,10 +729,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getGovernedElements(String         serverName,
                                                                        String         urlMarker,
                                                                        String         governanceDefinitionGUID,
-                                                                       int            startFrom,
-                                                                       int            pageSize,
-                                                                       boolean        forLineage,
-                                                                       boolean        forDuplicateProcessing,
                                                                        FindProperties requestBody)
     {
         final String methodName = "getGovernedElements";
@@ -974,16 +751,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             {
                 RelatedMetadataElementSummaryList summaryList = handler.getGovernedElements(userId,
                                                                                             governanceDefinitionGUID,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            startFrom,
-                                                                                            pageSize,
-                                                                                            new Date(),
-                                                                                            forLineage,
-                                                                                            forDuplicateProcessing);
+                                                                                            null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -994,16 +762,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             {
                 RelatedMetadataElementSummaryList summaryList = handler.getGovernedElements(userId,
                                                                                             governanceDefinitionGUID,
-                                                                                            requestBody.getOpenMetadataTypeName(),
-                                                                                            requestBody.getLimitResultsByStatus(),
-                                                                                            requestBody.getAsOfTime(),
-                                                                                            requestBody.getSequencingProperty(),
-                                                                                            requestBody.getSequencingOrder(),
-                                                                                            startFrom,
-                                                                                            pageSize,
-                                                                                            requestBody.getEffectiveTime(),
-                                                                                            forLineage,
-                                                                                            forDuplicateProcessing);
+                                                                                            requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1027,10 +786,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -1041,10 +796,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getGovernedByDefinitions(String         serverName,
                                                                             String         urlMarker,
                                                                             String         elementGUID,
-                                                                            int            startFrom,
-                                                                            int            pageSize,
-                                                                            boolean        forLineage,
-                                                                            boolean        forDuplicateProcessing,
                                                                             FindProperties requestBody)
     {
         final String methodName = "getGovernedByDefinitions";
@@ -1067,16 +818,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             {
                 RelatedMetadataElementSummaryList summaryList = handler.getGovernedByDefinitions(userId,
                                                                                                  elementGUID,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 startFrom,
-                                                                                                 pageSize,
-                                                                                                 new Date(),
-                                                                                                 forLineage,
-                                                                                                 forDuplicateProcessing);
+                                                                                                 null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1087,16 +829,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             {
                 RelatedMetadataElementSummaryList summaryList = handler.getGovernedByDefinitions(userId,
                                                                                                  elementGUID,
-                                                                                                 requestBody.getOpenMetadataTypeName(),
-                                                                                                 requestBody.getLimitResultsByStatus(),
-                                                                                                 requestBody.getAsOfTime(),
-                                                                                                 requestBody.getSequencingProperty(),
-                                                                                                 requestBody.getSequencingOrder(),
-                                                                                                 startFrom,
-                                                                                                 pageSize,
-                                                                                                 requestBody.getEffectiveTime(),
-                                                                                                 forLineage,
-                                                                                                 forDuplicateProcessing);
+                                                                                                 requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1121,10 +854,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the governance definition that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -1135,10 +864,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getSourceElements(String         serverName,
                                                                      String         urlMarker,
                                                                      String         elementGUID,
-                                                                     int            startFrom,
-                                                                     int            pageSize,
-                                                                     boolean        forLineage,
-                                                                     boolean        forDuplicateProcessing,
                                                                      FindProperties requestBody)
     {
         final String methodName = "getSourceElements";
@@ -1159,18 +884,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getSourceElements(userId,
-                                                                                          elementGUID,
-                                                                                          null,
-                                                                                          null,
-                                                                                          null,
-                                                                                          null,
-                                                                                          null,
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          new Date(),
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getSourceElements(userId, elementGUID, null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1179,18 +893,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getSourceElements(userId,
-                                                                                          elementGUID,
-                                                                                          requestBody.getOpenMetadataTypeName(),
-                                                                                          requestBody.getLimitResultsByStatus(),
-                                                                                          requestBody.getAsOfTime(),
-                                                                                          requestBody.getSequencingProperty(),
-                                                                                          requestBody.getSequencingOrder(),
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getSourceElements(userId, elementGUID, requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1215,10 +918,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -1229,10 +928,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getElementsSourcedFrom(String         serverName,
                                                                           String         urlMarker,
                                                                           String         elementGUID,
-                                                                          int            startFrom,
-                                                                          int            pageSize,
-                                                                          boolean        forLineage,
-                                                                          boolean        forDuplicateProcessing,
                                                                           FindProperties requestBody)
     {
         final String methodName = "getElementsSourceFrom";
@@ -1253,18 +948,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getElementsSourcedFrom(userId,
-                                                                                               elementGUID,
-                                                                                               null,
-                                                                                               null,
-                                                                                               null,
-                                                                                               null,
-                                                                                               null,
-                                                                                               startFrom,
-                                                                                               pageSize,
-                                                                                               new Date(),
-                                                                                               forLineage,
-                                                                                               forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getElementsSourcedFrom(userId, elementGUID, null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1273,18 +957,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getElementsSourcedFrom(userId,
-                                                                                               elementGUID,
-                                                                                               requestBody.getOpenMetadataTypeName(),
-                                                                                               requestBody.getLimitResultsByStatus(),
-                                                                                               requestBody.getAsOfTime(),
-                                                                                               requestBody.getSequencingProperty(),
-                                                                                               requestBody.getSequencingOrder(),
-                                                                                               startFrom,
-                                                                                               pageSize,
-                                                                                               requestBody.getEffectiveTime(),
-                                                                                               forLineage,
-                                                                                               forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getElementsSourcedFrom(userId, elementGUID, requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1309,10 +982,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -1323,10 +992,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getStakeholders(String         serverName,
                                                                    String         urlMarker,
                                                                    String         elementGUID,
-                                                                   int            startFrom,
-                                                                   int            pageSize,
-                                                                   boolean        forLineage,
-                                                                   boolean        forDuplicateProcessing,
                                                                    FindProperties requestBody)
     {
         final String methodName = "getStakeholders";
@@ -1347,18 +1012,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getStakeholders(userId,
-                                                                                        elementGUID,
-                                                                                        null,
-                                                                                        null,
-                                                                                        null,
-                                                                                        null,
-                                                                                        null,
-                                                                                        startFrom,
-                                                                                        pageSize,
-                                                                                        new Date(),
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getStakeholders(userId, elementGUID, null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1367,18 +1021,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getStakeholders(userId,
-                                                                                        elementGUID,
-                                                                                        requestBody.getOpenMetadataTypeName(),
-                                                                                        requestBody.getLimitResultsByStatus(),
-                                                                                        requestBody.getAsOfTime(),
-                                                                                        requestBody.getSequencingProperty(),
-                                                                                        requestBody.getSequencingOrder(),
-                                                                                        startFrom,
-                                                                                        pageSize,
-                                                                                        requestBody.getEffectiveTime(),
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getStakeholders(userId, elementGUID, requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1404,10 +1047,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param stakeholderGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -1418,10 +1057,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getStakeholderElements(String         serverName,
                                                                           String         urlMarker,
                                                                           String         stakeholderGUID,
-                                                                          int            startFrom,
-                                                                          int            pageSize,
-                                                                          boolean        forLineage,
-                                                                          boolean        forDuplicateProcessing,
                                                                           FindProperties requestBody)
     {
         final String methodName = "getStakeholderElements";
@@ -1442,18 +1077,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getStakeholderElements(userId,
-                                                                                               stakeholderGUID,
-                                                                                               null,
-                                                                                               null,
-                                                                                               null,
-                                                                                               null,
-                                                                                               null,
-                                                                                               startFrom,
-                                                                                               pageSize,
-                                                                                               new Date(),
-                                                                                               forLineage,
-                                                                                               forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getStakeholderElements(userId, stakeholderGUID, null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1462,18 +1086,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getStakeholderElements(userId,
-                                                                                               stakeholderGUID,
-                                                                                               requestBody.getOpenMetadataTypeName(),
-                                                                                               requestBody.getLimitResultsByStatus(),
-                                                                                               requestBody.getAsOfTime(),
-                                                                                               requestBody.getSequencingProperty(),
-                                                                                               requestBody.getSequencingOrder(),
-                                                                                               startFrom,
-                                                                                               pageSize,
-                                                                                               requestBody.getEffectiveTime(),
-                                                                                               forLineage,
-                                                                                               forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getStakeholderElements(userId, stakeholderGUID, requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1499,10 +1112,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -1513,10 +1122,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getScopes(String         serverName,
                                                              String         urlMarker,
                                                              String         elementGUID,
-                                                             int            startFrom,
-                                                             int            pageSize,
-                                                             boolean        forLineage,
-                                                             boolean        forDuplicateProcessing,
                                                              FindProperties requestBody)
     {
         final String methodName = "getScopes";
@@ -1537,18 +1142,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getScopes(userId,
-                                                                                  elementGUID,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  new Date(),
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getScopes(userId, elementGUID, null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1557,18 +1151,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getScopes(userId,
-                                                                                  elementGUID,
-                                                                                  requestBody.getOpenMetadataTypeName(),
-                                                                                  requestBody.getLimitResultsByStatus(),
-                                                                                  requestBody.getAsOfTime(),
-                                                                                  requestBody.getSequencingProperty(),
-                                                                                  requestBody.getSequencingOrder(),
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  requestBody.getEffectiveTime(),
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getScopes(userId, elementGUID, requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1592,10 +1175,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param scopeGUID unique identifier of the element that the returned elements are linked to
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
      *
      * @return void or
@@ -1606,10 +1185,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getScopedElements(String         serverName,
                                                                      String         urlMarker,
                                                                      String         scopeGUID,
-                                                                     int            startFrom,
-                                                                     int            pageSize,
-                                                                     boolean        forLineage,
-                                                                     boolean        forDuplicateProcessing,
                                                                      FindProperties requestBody)
     {
         final String methodName = "getScopedElements";
@@ -1630,18 +1205,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getScopedElements(userId,
-                                                                                          scopeGUID,
-                                                                                          null,
-                                                                                          null,
-                                                                                          null,
-                                                                                          null,
-                                                                                          null,
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          new Date(),
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getScopedElements(userId, scopeGUID, null);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1650,18 +1214,136 @@ public class ClassificationExplorerRESTServices extends TokenController
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getScopedElements(userId,
-                                                                                          scopeGUID,
-                                                                                          requestBody.getOpenMetadataTypeName(),
-                                                                                          requestBody.getLimitResultsByStatus(),
-                                                                                          requestBody.getAsOfTime(),
-                                                                                          requestBody.getSequencingProperty(),
-                                                                                          requestBody.getSequencingOrder(),
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing);
+                RelatedMetadataElementSummaryList summaryList = handler.getScopedElements(userId, scopeGUID, requestBody);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+
+    /**
+     * Retrieve the list of resources assigned to an element via the "ResourceList" relationship between two referenceables.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedMetadataElementSummariesResponse getResourceList(String         serverName,
+                                                                   String         urlMarker,
+                                                                   String         elementGUID,
+                                                                   FindProperties requestBody)
+    {
+        final String methodName = "getResourceList";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getResourceList(userId, elementGUID, null);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+            else
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getResourceList(userId, elementGUID, requestBody);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of elements assigned to a resource via the "ResourceList" relationship between two referenceables.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param resourceGUID unique identifier of the element that the returned elements are linked to
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedMetadataElementSummariesResponse getSupportedByResource(String         serverName,
+                                                                          String         urlMarker,
+                                                                          String         resourceGUID,
+                                                                          FindProperties requestBody)
+    {
+        final String methodName = "getSupportedByResource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getSupportedByResource(userId, resourceGUID, null);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+            else
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getSupportedByResource(userId, resourceGUID, requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -1685,8 +1367,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param licenseTypeGUID unique identifier for the license
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody additional query parameters
      *
      * @return properties of the license or
@@ -1697,8 +1377,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getLicensedElements(String             serverName,
                                                                        String             urlMarker,
                                                                        String             licenseTypeGUID,
-                                                                       int                startFrom,
-                                                                       int                pageSize,
                                                                        ResultsRequestBody requestBody)
     {
         final String methodName = "getLicensedElements";
@@ -1717,43 +1395,11 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody == null)
+            RelatedMetadataElementSummaryList summaryList = handler.getLicensedElements(userId, licenseTypeGUID, requestBody);
+            if (summaryList != null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getLicensedElements(userId,
-                                                                                            licenseTypeGUID,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            startFrom,
-                                                                                            pageSize,
-                                                                                            new Date(),
-                                                                                            false,
-                                                                                            false);
-                if (summaryList != null)
-                {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
-                }
-            }
-            else
-            {
-                RelatedMetadataElementSummaryList summaryList = handler.getLicensedElements(userId,
-                                                                                            licenseTypeGUID,
-                                                                                            requestBody.getLimitResultsByStatus(),
-                                                                                            requestBody.getAsOfTime(),
-                                                                                            requestBody.getSequencingProperty(),
-                                                                                            requestBody.getSequencingOrder(),
-                                                                                            startFrom,
-                                                                                            pageSize,
-                                                                                            requestBody.getEffectiveTime(),
-                                                                                            requestBody.getForLineage(),
-                                                                                            requestBody.getForDuplicateProcessing());
-                if (summaryList != null)
-                {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
-                }
+                response.setElements(summaryList.getElementList());
+                response.setMermaidGraph(summaryList.getMermaidGraph());
             }
         }
         catch (Throwable error)
@@ -1772,8 +1418,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier for the license
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody additional query parameters
      *
      * @return properties of the license or
@@ -1784,8 +1428,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getLicenses(String             serverName,
                                                                String             urlMarker,
                                                                String             elementGUID,
-                                                               int                startFrom,
-                                                               int                pageSize,
                                                                ResultsRequestBody requestBody)
     {
         final String methodName = "getLicenses";
@@ -1804,43 +1446,11 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody == null)
+            RelatedMetadataElementSummaryList summaryList = handler.getLicenses(userId, elementGUID, requestBody);
+            if (summaryList != null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getLicenses(userId,
-                                                                                    elementGUID,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    new Date(),
-                                                                                    false,
-                                                                                    false);
-                if (summaryList != null)
-                {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
-                }
-            }
-            else
-            {
-                RelatedMetadataElementSummaryList summaryList = handler.getLicenses(userId,
-                                                                                    elementGUID,
-                                                                                    requestBody.getLimitResultsByStatus(),
-                                                                                    requestBody.getAsOfTime(),
-                                                                                    requestBody.getSequencingProperty(),
-                                                                                    requestBody.getSequencingOrder(),
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    requestBody.getEffectiveTime(),
-                                                                                    requestBody.getForLineage(),
-                                                                                    requestBody.getForDuplicateProcessing());
-                if (summaryList != null)
-                {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
-                }
+                response.setElements(summaryList.getElementList());
+                response.setMermaidGraph(summaryList.getMermaidGraph());
             }
         }
         catch (Throwable error)
@@ -1859,8 +1469,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param certificationTypeGUID unique identifier for the license
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody additional query parameters
      *
      * @return properties of the license or
@@ -1871,8 +1479,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public CertificationElementsResponse getCertifiedElements(String             serverName,
                                                               String             urlMarker,
                                                               String             certificationTypeGUID,
-                                                              int                startFrom,
-                                                              int                pageSize,
                                                               ResultsRequestBody requestBody)
     {
         final String methodName = "getCertifiedElements";
@@ -1894,25 +1500,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             /*
              * Check that the guid is valid and retrieve the associated element.
              */
-            MetadataElementSummary startingElement;
-            if (requestBody == null)
-            {
-                startingElement = handler.getMetadataElementByGUID(userId,
-                                                                   certificationTypeGUID,
-                                                                   null,
-                                                                   false,
-                                                                   false,
-                                                                   new Date());
-            }
-            else
-            {
-                startingElement = handler.getMetadataElementByGUID(userId,
-                                                                   certificationTypeGUID,
-                                                                   requestBody.getAsOfTime(),
-                                                                   requestBody.getForLineage(),
-                                                                   requestBody.getForDuplicateProcessing(),
-                                                                   requestBody.getEffectiveTime());
-            }
+            MetadataElementSummary startingElement = handler.getMetadataElementByGUID(userId, certificationTypeGUID, requestBody);;
 
             if (startingElement != null)
             {
@@ -1923,50 +1511,24 @@ public class ClassificationExplorerRESTServices extends TokenController
 
                 if (requestBody == null)
                 {
-                    summaryList = handler.getCertifiedElements(userId,
-                                                               certificationTypeGUID,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               startFrom,
-                                                               pageSize,
-                                                               new Date(),
-                                                               false,
-                                                               false);
+                    summaryList = handler.getCertifiedElements(userId, certificationTypeGUID, null);
 
                     getCertificationElements(userId,
                                              startingElement,
                                              summaryList,
                                              handler,
                                              null,
-                                             false,
-                                             false,
-                                             new Date(),
                                              response);
                 }
                 else
                 {
-                    summaryList = handler.getCertifiedElements(userId,
-                                                               certificationTypeGUID,
-                                                               requestBody.getLimitResultsByStatus(),
-                                                               requestBody.getAsOfTime(),
-                                                               requestBody.getSequencingProperty(),
-                                                               requestBody.getSequencingOrder(),
-                                                               startFrom,
-                                                               pageSize,
-                                                               requestBody.getEffectiveTime(),
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing());
+                    summaryList = handler.getCertifiedElements(userId, certificationTypeGUID, requestBody);
 
                     getCertificationElements(userId,
                                              startingElement,
                                              summaryList,
                                              handler,
-                                             requestBody.getAsOfTime(),
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime(),
+                                             requestBody,
                                              response);
                 }
             }
@@ -1989,19 +1551,14 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param startingElement requested starting element
      * @param summaryList list of related elements
      * @param handler handler for receiving more metadata
-     * @param asOfTime repository time
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param queryOptions               multiple options to control the query
      * @param response response object to populate
      */
     private void getCertificationElements(String                            userId,
                                           MetadataElementSummary            startingElement,
                                           RelatedMetadataElementSummaryList summaryList,
                                           StewardshipManagementHandler      handler,
-                                          Date                              asOfTime,
-                                          boolean                           forLineage,
-                                          boolean                           forDuplicateProcessing,
-                                          Date                              effectiveTime,
+                                          QueryOptions                      queryOptions,
                                           CertificationElementsResponse     response)
     {
         response.setStartingElement(startingElement);
@@ -2033,30 +1590,21 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                             relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME.name),
                                                                             actorMap,
                                                                             handler,
-                                                                            asOfTime,
-                                                                            forLineage,
-                                                                            forDuplicateProcessing,
-                                                                            effectiveTime));
+                                                                            queryOptions));
 
                         certificationElement.setCustodian(getActorSummary(userId,
                                                                           relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CUSTODIAN.name),
                                                                           relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name),
                                                                           actorMap,
                                                                           handler,
-                                                                          asOfTime,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime));
+                                                                          queryOptions));
 
                         certificationElement.setRecipient(getActorSummary(userId,
                                                                           relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.RECIPIENT.name),
                                                                           relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.RECIPIENT_PROPERTY_NAME.name),
                                                                           actorMap,
                                                                           handler,
-                                                                          asOfTime,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime));
+                                                                          queryOptions));
                     }
 
                     certificationElements.add(certificationElement);
@@ -2084,9 +1632,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param actorPropertyName property name it represents
      * @param actorMap map of other actors already received
      * @param handler handler for receiving more metadata
-     * @param asOfTime repository time
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param queryOptions               multiple options to control the query
      * @return actor element or null if nothing found
      */
     private MetadataElementSummary getActorSummary(String                              userId,
@@ -2094,10 +1640,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                    String                              actorPropertyName,
                                                    Map<String, MetadataElementSummary> actorMap,
                                                    StewardshipManagementHandler        handler,
-                                                   Date                                asOfTime,
-                                                   boolean                             forLineage,
-                                                   boolean                             forDuplicateProcessing,
-                                                   Date                                effectiveTime)
+                                                   QueryOptions                        queryOptions)
     {
         if (actorName != null)
         {
@@ -2113,12 +1656,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                 {
                     try
                     {
-                        actorSummary = handler.getMetadataElementByGUID(userId,
-                                                                        actorName,
-                                                                        asOfTime,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        effectiveTime);
+                        actorSummary = handler.getMetadataElementByGUID(userId, actorName, queryOptions);
                     }
                     catch (Exception exception)
                     {
@@ -2132,10 +1670,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                         actorSummary = handler.getMetadataElementByUniqueName(userId,
                                                                               actorName,
                                                                               actorPropertyName,
-                                                                              asOfTime,
-                                                                              forLineage,
-                                                                              forDuplicateProcessing,
-                                                                              effectiveTime);
+                                                                              queryOptions);
                     }
                     catch (Exception exception)
                     {
@@ -2161,8 +1696,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier for the license
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody additional query parameters
      *
      * @return properties of the license or
@@ -2173,8 +1706,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public CertificationElementsResponse getCertifications(String             serverName,
                                                            String             urlMarker,
                                                            String             elementGUID,
-                                                           int                startFrom,
-                                                           int                pageSize,
                                                            ResultsRequestBody requestBody)
     {
         final String methodName = "getCertifications";
@@ -2199,21 +1730,11 @@ public class ClassificationExplorerRESTServices extends TokenController
             MetadataElementSummary startingElement;
             if (requestBody == null)
             {
-                startingElement = handler.getMetadataElementByGUID(userId,
-                                                                   elementGUID,
-                                                                   null,
-                                                                   false,
-                                                                   false,
-                                                                   new Date());
+                startingElement = handler.getMetadataElementByGUID(userId, elementGUID, null);
             }
             else
             {
-                startingElement = handler.getMetadataElementByGUID(userId,
-                                                                   elementGUID,
-                                                                   requestBody.getAsOfTime(),
-                                                                   requestBody.getForLineage(),
-                                                                   requestBody.getForDuplicateProcessing(),
-                                                                   requestBody.getEffectiveTime());
+                startingElement = handler.getMetadataElementByGUID(userId, elementGUID, requestBody);
             }
 
             if (startingElement != null)
@@ -2225,48 +1746,22 @@ public class ClassificationExplorerRESTServices extends TokenController
 
                 if (requestBody == null)
                 {
-                    summaryList = handler.getCertifications(userId,
-                                                            elementGUID,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            startFrom,
-                                                            pageSize,
-                                                            new Date(),
-                                                            false,
-                                                            false);
+                    summaryList = handler.getCertifications(userId, elementGUID, null);
                     getCertificationElements(userId,
                                              startingElement,
                                              summaryList,
                                              handler,
                                              null,
-                                             false,
-                                             false,
-                                             new Date(),
                                              response);
                 }
                 else
                 {
-                    summaryList = handler.getCertifications(userId,
-                                                            elementGUID,
-                                                            requestBody.getLimitResultsByStatus(),
-                                                            requestBody.getAsOfTime(),
-                                                            requestBody.getSequencingProperty(),
-                                                            requestBody.getSequencingOrder(),
-                                                            startFrom,
-                                                            pageSize,
-                                                            requestBody.getEffectiveTime(),
-                                                            requestBody.getForLineage(),
-                                                            requestBody.getForDuplicateProcessing());
+                    summaryList = handler.getCertifications(userId, elementGUID, requestBody);
                     getCertificationElements(userId,
                                              startingElement,
                                              summaryList,
                                              handler,
-                                             requestBody.getAsOfTime(),
-                                             requestBody.getForLineage(),
-                                             requestBody.getForDuplicateProcessing(),
-                                             requestBody.getEffectiveTime(),
+                                             requestBody,
                                              response);
                 }
             }
@@ -2287,8 +1782,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier for the metadata element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -2299,8 +1792,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public MetadataElementSummaryResponse getMetadataElementByGUID(String      serverName,
                                                                    String      urlMarker,
                                                                    String      elementGUID,
-                                                                   boolean     forLineage,
-                                                                   boolean     forDuplicateProcessing,
                                                                    FindRequest requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
@@ -2319,24 +1810,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody == null)
-            {
-                response.setElement(handler.getMetadataElementByGUID(userId,
-                                                                     elementGUID,
-                                                                     null,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     new Date()));
-            }
-            else
-            {
-                response.setElement(handler.getMetadataElementByGUID(userId,
-                                                                     elementGUID,
-                                                                     requestBody.getAsOfTime(),
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     requestBody.getEffectiveTime()));
-            }
+            response.setElement(handler.getMetadataElementByGUID(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -2353,8 +1827,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element properties or
@@ -2364,8 +1836,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummaryResponse getMetadataElementByUniqueName(String                     serverName,
                                                                          String                     urlMarker,
-                                                                         boolean                    forLineage,
-                                                                         boolean                    forDuplicateProcessing,
                                                                          FindPropertyNameProperties requestBody)
     {
         final String methodName = "getMetadataElementByUniqueName";
@@ -2393,20 +1863,14 @@ public class ClassificationExplorerRESTServices extends TokenController
                 response.setElement(handler.getMetadataElementByUniqueName(userId,
                                                                            requestBody.getPropertyValue(),
                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                           requestBody.getAsOfTime(),
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
-                                                                           requestBody.getEffectiveTime()));
+                                                                           requestBody));
             }
             else
             {
                 response.setElement(handler.getMetadataElementByUniqueName(userId,
                                                                            requestBody.getPropertyValue(),
                                                                            requestBody.getPropertyName(),
-                                                                           requestBody.getAsOfTime(),
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
-                                                                           requestBody.getEffectiveTime()));
+                                                                           requestBody));
             }
         }
         catch (Throwable error)
@@ -2424,8 +1888,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element unique identifier (guid) or
@@ -2435,8 +1897,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public GUIDResponse getMetadataElementGUIDByUniqueName(String                     serverName,
                                                            String                     urlMarker,
-                                                           boolean                    forLineage,
-                                                           boolean                    forDuplicateProcessing,
                                                            FindPropertyNameProperties requestBody)
     {
         final String methodName = "getMetadataElementGUIDByUniqueName";
@@ -2464,20 +1924,14 @@ public class ClassificationExplorerRESTServices extends TokenController
                 response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
                                                                             requestBody.getPropertyValue(),
                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                            forLineage,
-                                                                            forDuplicateProcessing,
-                                                                            requestBody.getAsOfTime(),
-                                                                            requestBody.getEffectiveTime()));
+                                                                            requestBody));
             }
             else
             {
                 response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
                                                                             requestBody.getPropertyValue(),
                                                                             requestBody.getPropertyName(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing,
-                                                                            requestBody.getAsOfTime(),
-                                                                            requestBody.getEffectiveTime()));
+                                                                            requestBody));
             }
         }
         catch (Throwable error)
@@ -2496,10 +1950,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -2509,10 +1959,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getElements(String         serverName,
                                                         String         urlMarker,
-                                                        int            startFrom,
-                                                        int            pageSize,
-                                                        boolean        forLineage,
-                                                        boolean        forDuplicateProcessing,
                                                         FindProperties requestBody)
     {
         final String methodName = "getElements";
@@ -2533,31 +1979,11 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                response.setElements(handler.getElements(userId,
-                                                         null,
-                                                         null,
-                                                         null,
-                                                         null,
-                                                         null,
-                                                         startFrom,
-                                                         pageSize,
-                                                         new Date(),
-                                                         forLineage,
-                                                         forDuplicateProcessing));
+                response.setElements(handler.getElements(userId, null));
             }
             else
             {
-                response.setElements(handler.getElements(userId,
-                                                         requestBody.getOpenMetadataTypeName(),
-                                                         requestBody.getLimitResultsByStatus(),
-                                                         requestBody.getAsOfTime(),
-                                                         requestBody.getSequencingProperty(),
-                                                         requestBody.getSequencingOrder(),
-                                                         startFrom,
-                                                         pageSize,
-                                                         requestBody.getEffectiveTime(),
-                                                         forLineage,
-                                                         forDuplicateProcessing));
+                response.setElements(handler.getElements(userId, requestBody));
             }
         }
         catch (Throwable error)
@@ -2577,10 +2003,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -2589,10 +2011,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getElementsByPropertyValue(String                      serverName,
                                                                        String                      urlMarker,
-                                                                       int                         startFrom,
-                                                                       int                         pageSize,
-                                                                       boolean                     forLineage,
-                                                                       boolean                     forDuplicateProcessing,
                                                                        FindPropertyNamesProperties requestBody)
     {
         final String methodName = "getElementsByPropertyValue";
@@ -2620,16 +2038,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                 response.setElements(handler.getElementsByPropertyValue(userId,
                                                                         requestBody.getPropertyValue(),
                                                                         requestBody.getPropertyNames(),
-                                                                        requestBody.getOpenMetadataTypeName(),
-                                                                        requestBody.getLimitResultsByStatus(),
-                                                                        requestBody.getAsOfTime(),
-                                                                        requestBody.getSequencingProperty(),
-                                                                        requestBody.getSequencingOrder(),
-                                                                        startFrom,
-                                                                        pageSize,
-                                                                        requestBody.getEffectiveTime(),
-                                                                        forLineage,
-                                                                        forDuplicateProcessing));
+                                                                        requestBody));
             }
         }
         catch (Throwable error)
@@ -2650,22 +2059,14 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummariesResponse findElementsByPropertyValue(String                       serverName,
+    public MetadataElementSummariesResponse findElementsByPropertyValue(String                      serverName,
                                                                         String                      urlMarker,
-                                                                        int                          startFrom,
-                                                                        int                          pageSize,
-                                                                        boolean                      forLineage,
-                                                                        boolean                      forDuplicateProcessing,
                                                                         FindPropertyNamesProperties requestBody)
     {
         final String methodName = "findElementsByPropertyValue";
@@ -2693,16 +2094,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                 response.setElements(handler.findElementsByPropertyValue(userId,
                                                                          requestBody.getPropertyValue(),
                                                                          requestBody.getPropertyNames(),
-                                                                         requestBody.getOpenMetadataTypeName(),
-                                                                         requestBody.getLimitResultsByStatus(),
-                                                                         requestBody.getAsOfTime(),
-                                                                         requestBody.getSequencingProperty(),
-                                                                         requestBody.getSequencingOrder(),
-                                                                         startFrom,
-                                                                         pageSize,
-                                                                         requestBody.getEffectiveTime(),
-                                                                         forLineage,
-                                                                         forDuplicateProcessing));
+                                                                         requestBody));
             }
         }
         catch (Throwable error)
@@ -2723,10 +2115,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param classificationName name of classification
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -2737,10 +2125,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public MetadataElementSummariesResponse getElementsByClassification(String         serverName,
                                                                         String         urlMarker,
                                                                         String         classificationName,
-                                                                        int            startFrom,
-                                                                        int            pageSize,
-                                                                        boolean        forLineage,
-                                                                        boolean        forDuplicateProcessing,
                                                                         FindProperties requestBody)
     {
         final String methodName = "getElementsByClassification";
@@ -2759,36 +2143,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody == null)
-            {
-                response.setElements(handler.getElementsByClassification(userId,
-                                                                         classificationName,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         startFrom,
-                                                                         pageSize,
-                                                                         new Date(),
-                                                                         forLineage,
-                                                                         forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElements(handler.getElementsByClassification(userId,
-                                                                         classificationName,
-                                                                         requestBody.getOpenMetadataTypeName(),
-                                                                         requestBody.getLimitResultsByStatus(),
-                                                                         requestBody.getAsOfTime(),
-                                                                         requestBody.getSequencingProperty(),
-                                                                         requestBody.getSequencingOrder(),
-                                                                         startFrom,
-                                                                         pageSize,
-                                                                         requestBody.getEffectiveTime(),
-                                                                         forLineage,
-                                                                         forDuplicateProcessing));
-            }
+            response.setElements(handler.getElementsByClassification(userId, classificationName, requestBody));
         }
         catch (Throwable error)
         {
@@ -2809,10 +2164,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param urlMarker  view service URL marker
      * @param classificationName name of classification
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -2822,10 +2173,6 @@ public class ClassificationExplorerRESTServices extends TokenController
     public MetadataElementSummariesResponse getElementsByClassificationWithPropertyValue(String                      serverName,
                                                                                          String                      urlMarker,
                                                                                          String                      classificationName,
-                                                                                         int                         startFrom,
-                                                                                         int                         pageSize,
-                                                                                         boolean                     forLineage,
-                                                                                         boolean                     forDuplicateProcessing,
                                                                                          FindPropertyNamesProperties requestBody)
     {
         final String methodName = "getElementsByClassificationWithPropertyValue";
@@ -2854,16 +2201,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                          classificationName,
                                                                          requestBody.getPropertyValue(),
                                                                          requestBody.getPropertyNames(),
-                                                                         requestBody.getOpenMetadataTypeName(),
-                                                                         requestBody.getLimitResultsByStatus(),
-                                                                         requestBody.getAsOfTime(),
-                                                                         requestBody.getSequencingProperty(),
-                                                                         requestBody.getSequencingOrder(),
-                                                                         startFrom,
-                                                                         pageSize,
-                                                                         requestBody.getEffectiveTime(),
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
+                                                                         requestBody,
                                                                          methodName));
             }
         }
@@ -2887,23 +2225,15 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param urlMarker  view service URL marker
      * @param classificationName name of classification
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummariesResponse findElementsByClassificationWithPropertyValue(String                       serverName,
-                                                                                          String                       urlMarker,
-                                                                                          String                       classificationName,
-                                                                                          int                          startFrom,
-                                                                                          int                          pageSize,
-                                                                                          boolean                      forLineage,
-                                                                                          boolean                      forDuplicateProcessing,
+    public MetadataElementSummariesResponse findElementsByClassificationWithPropertyValue(String                      serverName,
+                                                                                          String                      urlMarker,
+                                                                                          String                      classificationName,
                                                                                           FindPropertyNamesProperties requestBody)
     {
         final String methodName = "findElementsByClassificationWithPropertyValue";
@@ -2930,18 +2260,9 @@ public class ClassificationExplorerRESTServices extends TokenController
             {
                 response.setElements(handler.findElementsByClassificationWithPropertyValue(userId,
                                                                                            classificationName,
-                                                                                           null,
-                                                                                           null,
-                                                                                           requestBody.getOpenMetadataTypeName(),
-                                                                                           requestBody.getLimitResultsByStatus(),
-                                                                                           requestBody.getAsOfTime(),
-                                                                                           requestBody.getSequencingProperty(),
-                                                                                           requestBody.getSequencingOrder(),
-                                                                                           startFrom,
-                                                                                           pageSize,
-                                                                                           requestBody.getEffectiveTime(),
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing));
+                                                                                           requestBody.getPropertyValue(),
+                                                                                           requestBody.getPropertyNames(),
+                                                                                           requestBody));
             }
         }
         catch (Throwable error)
@@ -2962,10 +2283,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param elementGUID unique identifier of the starting element
      * @param relationshipTypeName name of relationship
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -2978,10 +2295,6 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                       String         elementGUID,
                                                                       String         relationshipTypeName,
                                                                       int            startingAtEnd,
-                                                                      int            startFrom,
-                                                                      int            pageSize,
-                                                                      boolean        forLineage,
-                                                                      boolean        forDuplicateProcessing,
                                                                       FindProperties requestBody)
     {
         final String methodName = "getRelatedElements";
@@ -3009,15 +2322,6 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                            null,
                                                                                            null,
                                                                                            null,
-                                                                                           null,
-                                                                                           null,
-                                                                                           null,
-                                                                                           null,
-                                                                                           startFrom,
-                                                                                           pageSize,
-                                                                                           new Date(),
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing,
                                                                                            methodName);
                 if (summaryList != null)
                 {
@@ -3033,16 +2337,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                            startingAtEnd,
                                                                                            null,
                                                                                            null,
-                                                                                           requestBody.getOpenMetadataTypeName(),
-                                                                                           requestBody.getLimitResultsByStatus(),
-                                                                                           requestBody.getAsOfTime(),
-                                                                                           requestBody.getSequencingProperty(),
-                                                                                           requestBody.getSequencingOrder(),
-                                                                                           startFrom,
-                                                                                           pageSize,
-                                                                                           requestBody.getEffectiveTime(),
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing,
+                                                                                           requestBody,
                                                                                            methodName);
                 if (summaryList != null)
                 {
@@ -3072,25 +2367,17 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param relationshipTypeName name of relationship
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummariesResponse getRelatedElementsWithPropertyValue(String                       serverName,
-                                                                                       String                       urlMarker,
-                                                                                       String                       elementGUID,
-                                                                                       String                       relationshipTypeName,
-                                                                                       int                          startingAtEnd,
-                                                                                       int                          startFrom,
-                                                                                       int                          pageSize,
-                                                                                       boolean                      forLineage,
-                                                                                       boolean                      forDuplicateProcessing,
+    public RelatedMetadataElementSummariesResponse getRelatedElementsWithPropertyValue(String                      serverName,
+                                                                                       String                      urlMarker,
+                                                                                       String                      elementGUID,
+                                                                                       String                      relationshipTypeName,
+                                                                                       int                         startingAtEnd,
                                                                                        FindPropertyNamesProperties requestBody)
     {
         final String methodName = "getRelatedElementsWithPropertyValue";
@@ -3121,16 +2408,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                            startingAtEnd,
                                                                                            requestBody.getPropertyValue(),
                                                                                            requestBody.getPropertyNames(),
-                                                                                           requestBody.getOpenMetadataTypeName(),
-                                                                                           requestBody.getLimitResultsByStatus(),
-                                                                                           requestBody.getAsOfTime(),
-                                                                                           requestBody.getSequencingProperty(),
-                                                                                           requestBody.getSequencingOrder(),
-                                                                                           startFrom,
-                                                                                           pageSize,
-                                                                                           requestBody.getEffectiveTime(),
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing,
+                                                                                           requestBody,
                                                                                            methodName);
                 if (summaryList != null)
                 {
@@ -3160,25 +2438,17 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param relationshipTypeName name of relationship
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummariesResponse findRelatedElementsWithPropertyValue(String                       serverName,
-                                                                                        String                       urlMarker,
-                                                                                        String                       elementGUID,
-                                                                                        String                       relationshipTypeName,
-                                                                                        int                          startingAtEnd,
-                                                                                        int                          startFrom,
-                                                                                        int                          pageSize,
-                                                                                        boolean                      forLineage,
-                                                                                        boolean                      forDuplicateProcessing,
+    public RelatedMetadataElementSummariesResponse findRelatedElementsWithPropertyValue(String                      serverName,
+                                                                                        String                      urlMarker,
+                                                                                        String                      elementGUID,
+                                                                                        String                      relationshipTypeName,
+                                                                                        int                         startingAtEnd,
                                                                                         FindPropertyNamesProperties requestBody)
     {
         final String methodName = "findRelatedElementsWithPropertyValue";
@@ -3209,16 +2479,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                                              startingAtEnd,
                                                                                                              requestBody.getPropertyValue(),
                                                                                                              requestBody.getPropertyNames(),
-                                                                                                             requestBody.getOpenMetadataTypeName(),
-                                                                                                             requestBody.getLimitResultsByStatus(),
-                                                                                                             requestBody.getAsOfTime(),
-                                                                                                             requestBody.getSequencingProperty(),
-                                                                                                             requestBody.getSequencingOrder(),
-                                                                                                             startFrom,
-                                                                                                             pageSize,
-                                                                                                             requestBody.getEffectiveTime(),
-                                                                                                             forLineage,
-                                                                                                             forDuplicateProcessing);
+                                                                                                             requestBody);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList.getElementList());
@@ -3241,10 +2502,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -3254,10 +2511,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataRelationshipSummariesResponse getRelationships(String         serverName,
                                                                   String         urlMarker,
-                                                                  int            startFrom,
-                                                                  int            pageSize,
-                                                                  boolean        forLineage,
-                                                                  boolean        forDuplicateProcessing,
                                                                   FindProperties requestBody)
     {
         final String methodName = "getRelationships";
@@ -3283,14 +2536,6 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                        null,
                                                                                        null,
                                                                                        null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       startFrom,
-                                                                                       pageSize,
-                                                                                       new Date(),
-                                                                                       forLineage,
-                                                                                       forDuplicateProcessing,
                                                                                        methodName);
                 if (summaryList != null)
                 {
@@ -3304,15 +2549,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                        requestBody.getOpenMetadataTypeName(),
                                                                                        null,
                                                                                        null,
-                                                                                       requestBody.getLimitResultsByStatus(),
-                                                                                       requestBody.getAsOfTime(),
-                                                                                       requestBody.getSequencingProperty(),
-                                                                                       requestBody.getSequencingOrder(),
-                                                                                       startFrom,
-                                                                                       pageSize,
-                                                                                       requestBody.getEffectiveTime(),
-                                                                                       forLineage,
-                                                                                       forDuplicateProcessing,
+                                                                                       requestBody,
                                                                                        methodName);
                 if (summaryList != null)
                 {
@@ -3338,22 +2575,14 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(String                       serverName,
-                                                                                   String                       urlMarker,
-                                                                                   int                          startFrom,
-                                                                                   int                          pageSize,
-                                                                                   boolean                      forLineage,
-                                                                                   boolean                      forDuplicateProcessing,
+    public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(String                      serverName,
+                                                                                   String                      urlMarker,
                                                                                    FindPropertyNamesProperties requestBody)
     {
         final String methodName = "getRelationshipsWithPropertyValue";
@@ -3382,15 +2611,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                        requestBody.getOpenMetadataTypeName(),
                                                                                        requestBody.getPropertyValue(),
                                                                                        requestBody.getPropertyNames(),
-                                                                                       requestBody.getLimitResultsByStatus(),
-                                                                                       requestBody.getAsOfTime(),
-                                                                                       requestBody.getSequencingProperty(),
-                                                                                       requestBody.getSequencingOrder(),
-                                                                                       startFrom,
-                                                                                       pageSize,
-                                                                                       requestBody.getEffectiveTime(),
-                                                                                       forLineage,
-                                                                                       forDuplicateProcessing,
+                                                                                       requestBody,
                                                                                        methodName);
 
                 if (summaryList != null)
@@ -3418,22 +2639,14 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(String                       serverName,
-                                                                                    String                   urlMarker,
-                                                                                    int                          startFrom,
-                                                                                    int                          pageSize,
-                                                                                    boolean                      forLineage,
-                                                                                    boolean                      forDuplicateProcessing,
+    public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(String                      serverName,
+                                                                                    String                      urlMarker,
                                                                                     FindPropertyNamesProperties requestBody)
     {
         final String methodName = "findRelationshipsWithPropertyValue";
@@ -3462,15 +2675,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                                          requestBody.getOpenMetadataTypeName(),
                                                                                                          requestBody.getPropertyValue(),
                                                                                                          requestBody.getPropertyNames(),
-                                                                                                         requestBody.getLimitResultsByStatus(),
-                                                                                                         requestBody.getAsOfTime(),
-                                                                                                         requestBody.getSequencingProperty(),
-                                                                                                         requestBody.getSequencingOrder(),
-                                                                                                         startFrom,
-                                                                                                         pageSize,
-                                                                                                         requestBody.getEffectiveTime(),
-                                                                                                         forLineage,
-                                                                                                         forDuplicateProcessing);
+                                                                                                         requestBody);
 
                 if (summaryList != null)
                 {
@@ -3496,8 +2701,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param guid identifier to use in the lookup
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+
      * @param requestBody effective time
      *
      * @return list of matching elements or
@@ -3508,9 +2712,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public ElementHeaderResponse retrieveInstanceForGUID(String             serverName,
                                                          String             urlMarker,
                                                          String             guid,
-                                                         boolean            forLineage,
-                                                         boolean            forDuplicateProcessing,
-                                                         ResultsRequestBody requestBody)
+                                                         GetRequestBody requestBody)
     {
         final String methodName = "retrieveInstanceForGUID";
 
@@ -3532,17 +2734,11 @@ public class ClassificationExplorerRESTServices extends TokenController
             {
                 response.setElement(handler.retrieveInstanceForGUID(userId,
                                                                     guid,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing,
                                                                     null));
             }
             else
             {
-                response.setElement(handler.retrieveInstanceForGUID(userId,
-                                                                    guid,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing,
-                                                                    requestBody.getEffectiveTime()));
+                response.setElement(handler.retrieveInstanceForGUID(userId, guid, requestBody));
             }
         }
         catch (Throwable error)

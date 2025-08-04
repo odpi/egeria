@@ -28,7 +28,7 @@ public class OpenLineageCataloguerIntegrationProvider extends IntegrationConnect
      */
     private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Lineage:OpenLineageCataloguer";
     private static final String connectorDisplayName   = "Open Lineage Cataloguer Integration Connector";
-    private static final String connectorDescription   = "Connector to register an OpenLineage listener with the Lineage Integrator OMIS and " +
+    private static final String connectorDescription   = "Connector to register an OpenLineage listener with the integration daemon and " +
                                                                  "to catalog any processes that are not already known to the open metadata ecosystem.";
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/open-lineage-cataloguer-integration-connector/";
 
@@ -54,7 +54,6 @@ public class OpenLineageCataloguerIntegrationProvider extends IntegrationConnect
          * Set up the connector type that should be included in a connection used to configure this connector.
          */
         ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorDisplayName);

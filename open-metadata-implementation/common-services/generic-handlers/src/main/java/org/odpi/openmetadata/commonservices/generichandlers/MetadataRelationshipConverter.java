@@ -58,7 +58,7 @@ public class MetadataRelationshipConverter<B> extends OMFConverter<B>
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, relationship, null, methodName);
+                this.setUpElementHeader(bean, relationship, methodName);
 
                 /*
                  * Save the properties as a map.

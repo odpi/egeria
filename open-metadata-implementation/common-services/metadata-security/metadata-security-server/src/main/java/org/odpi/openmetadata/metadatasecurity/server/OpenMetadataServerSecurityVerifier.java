@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.server;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -9,6 +10,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataElementSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
@@ -46,6 +49,8 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     private OpenMetadataServiceSecurity    serviceSecurityConnector    = null;
     private OpenMetadataElementSecurity    elementSecurityConnector    = null;
     private OpenMetadataUserSecurity       userSecurityConnector       = null;
+
+    private final InvalidParameterHandler       invalidParameterHandler      = new InvalidParameterHandler();
 
 
 
@@ -169,39 +174,35 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Return the list of supported zones for this asset.  This originates from the configuration of the access
-     * services, but may be changed by the security verifier.
+     * Return the list of visible zones for this user.
      *
      * @param userId calling user
-     * @param suppliedSupportedZones supported zones from caller
      * @return list of zone names
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException problem from the verifier
      * @throws UserNotAuthorizedException user not recognized
      */
-    public List<String> getSupportedZones(String       userId,
-                                          List<String> suppliedSupportedZones) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+    public List<String> getVisibleZones(String userId) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
     {
+        /*
+         * The userId is always one of the visible zones
+         */
+        Set<String> updatedZones = new HashSet<>(Collections.singletonList(userId));
+
         if (userSecurityConnector != null)
         {
             OpenMetadataUserAccount userAccount = userSecurityConnector.getUserAccount(userId);
 
             if ((userAccount != null) && (userAccount.getZoneAccess() != null) && (! userAccount.getZoneAccess().isEmpty()))
             {
-                Set<String> updatedZones = new HashSet<>(userAccount.getZoneAccess().keySet());
+                updatedZones.addAll(userAccount.getZoneAccess().keySet());
 
-                if (suppliedSupportedZones != null)
-                {
-                    updatedZones.addAll(suppliedSupportedZones);
-                }
-
-                return new ArrayList<>(updatedZones);
             }
         }
 
-        return suppliedSupportedZones;
+        return new ArrayList<>(updatedZones);
     }
 
 
@@ -397,14 +398,64 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                              InstanceStatus                 instanceStatus,
                                              OMRSRepositoryHelper           repositoryHelper,
                                              String                         serviceName,
-                                             String                         methodName) throws UserNotAuthorizedException
+                                             String                         methodName) throws UserNotAuthorizedException,
+                                                                                               InvalidParameterException,
+                                                                                               PropertyServerException
     {
+        this.elementVisibleToUser(userId, "<new>", classifications, repositoryHelper, serviceName, methodName);
+
         if (elementSecurityConnector != null)
         {
             elementSecurityConnector.validateUserForElementCreate(userId, entityTypeGUID, entityTypeName, newProperties, classifications, instanceStatus, repositoryHelper, serviceName, methodName);
         }
     }
 
+
+    /**
+     * Validate that the user has visibility to the zones associated with the element.
+     *
+     * @param userId calling user
+     * @param classifications element's classification where the ZoneMembership lies
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private void elementVisibleToUser(String               userId,
+                                      String               elementGUID,
+                                      List<Classification> classifications,
+                                      OMRSRepositoryHelper repositoryHelper,
+                                      String               serviceName,
+                                      String               methodName) throws UserNotAuthorizedException,
+                                                                              InvalidParameterException,
+                                                                              PropertyServerException
+    {
+        if (classifications != null)
+        {
+            List<String> elementZoneMembership = null;
+
+            for (Classification classification : classifications)
+            {
+                if ((classification != null) && (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classification.getName())))
+                {
+                    elementZoneMembership = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                    OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                                    classification.getProperties(),
+                                                                                    methodName);
+                    break;
+                }
+            }
+
+            if ((elementZoneMembership != null) && (! elementZoneMembership.isEmpty()))
+            {
+                invalidParameterHandler.validateElementInSupportedZone(elementGUID,
+                                                                       OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                       elementZoneMembership,
+                                                                       this.getVisibleZones(userId),
+                                                                       serviceName,
+                                                                       methodName);
+            }
+        }
+    }
 
     /**
      * Tests for whether a specific user should have read access to a specific element and its contents.
@@ -414,15 +465,26 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
-     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
     public void validateUserForElementRead(String               userId,
                                            EntityDetail         requestedEntity,
                                            OMRSRepositoryHelper repositoryHelper,
                                            String               serviceName,
-                                           String               methodName) throws UserNotAuthorizedException
+                                           String               methodName) throws UserNotAuthorizedException,
+                                                                                   InvalidParameterException,
+                                                                                   PropertyServerException
     {
+        this.elementVisibleToUser(userId,
+                                  requestedEntity.getGUID(),
+                                  requestedEntity.getClassifications(),
+                                  repositoryHelper,
+                                  serviceName,
+                                  methodName);
+
         if (elementSecurityConnector != null)
         {
             elementSecurityConnector.validateUserForElementRead(userId, requestedEntity, repositoryHelper, serviceName, methodName);

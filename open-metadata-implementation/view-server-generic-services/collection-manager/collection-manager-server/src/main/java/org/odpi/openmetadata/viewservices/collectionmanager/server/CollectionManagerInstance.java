@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class CollectionManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.COLLECTION_MANAGER;
 
-    private final ViewServiceClientMap<CollectionHandler>    viewServiceClientMap;
+    private final ViewServiceClientMap<CollectionHandler> viewServiceClientMap;
 
 
     /**
@@ -56,8 +56,8 @@ public class CollectionManagerInstance extends OMVSServiceInstance
 
         this.viewServiceClientMap = new ViewServiceClientMap<>(CollectionHandler.class,
                                                                serverName,
-                                                               remoteServerName,
-                                                               remoteServerURL,
+                                                               localServerUserId,
+                                                               localServerUserPassword,
                                                                auditLog,
                                                                activeViewServices,
                                                                myDescription.getViewServiceFullName(),
@@ -71,9 +71,12 @@ public class CollectionManagerInstance extends OMVSServiceInstance
      * @param viewServiceURLMarker calling view service
      * @param methodName calling operation
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
     public CollectionHandler getCollectionHandler(String viewServiceURLMarker,
-                                                  String methodName) throws InvalidParameterException, PropertyServerException
+                                                  String methodName) throws InvalidParameterException,
+                                                                            PropertyServerException
     {
         return viewServiceClientMap.getClient(viewServiceURLMarker, methodName);
     }

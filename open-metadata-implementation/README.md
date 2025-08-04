@@ -27,8 +27,8 @@ platform and clients.
 
 The packages are as follows:
 
-* **[access-services](access-services)** - the access services provide domain-specific services for data tools, engines
-and platforms that for maintaining and retrieving metadata.  The access services run in either the metadata access
+* **[access-services](access-services)** - the access services provide REST APIs to support the interfaces
+  defined in the frameworks.  The access services run in either the metadata access
 point server or metadata server on the OMAG Server Platform.  They call the repository services
 and the common services.
 
@@ -52,15 +52,8 @@ as connectors, discovery services and governance actions.  These
 components provide much of the customization offered by the open metadata and governance
 implementation.
 
-* **[framework-services](framework-services)** - the framework services provide REST APIs to support the interfaces
-defined in the frameworks.  they are incorporated into the [access services](access-services).
-
 * **[governance-server-services](governance-server-services)** - the governance server services provide the 
 specialist services that support the different types of governance servers that can run in the OMAG Server Platform.
-
-* **[integration-services](integration-services)** - the integration services support the hosting of
-integration connectors to drive the exchange of metadata with third party technologies.
-These services run in the integration daemon governance server on top of the OMAG Server Platform.
 
 * **[platform-services](platform-services)** - the platform services provides the APIs for configuring the 
 [Open Metadata and Governance (OMAG) Server Platform](https://egeria-project.org/concepts/omag-server-runtime/)
@@ -85,8 +78,8 @@ metadata and governance capabilities.
 * **[user-security](user-security)** - modules to enable token-based authentication/authorization for the 
 OMAG Server Platform and OMAG Server Runtime.
 
-* **[view-services](view-services)** - the view services support the REST API interfaces
-called by the user interfaces.  These services run in a view server on the OMAG Server Platform.
+* **[view-services](view-services)** - the view services provide domain-specific services for data tools, engines
+  and platforms that are maintaining and retrieving metadata.  These services run in a view server on the OMAG Server Platform.
  
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

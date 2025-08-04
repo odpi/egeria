@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -64,17 +63,15 @@ public class AssetCatalogResource
      *
      * @param serverName name of the server instances for this request.
      * @param assetGUID  uniqueId for the connection.
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
+     * @param requestBody options used to retrieve metadata
      *
      * @return graph of elements or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException there is a problem retrieving the connected asset properties from the property server or
      * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server or
-     * NoConnectedAssetException there is no asset associated with this connection or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @GetMapping(path = "/assets/{assetGUID}/as-graph")
+    @PostMapping(path = "/assets/{assetGUID}/as-graph")
 
     @Operation(summary="getAssetGraph",
             description="Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.",
@@ -83,12 +80,10 @@ public class AssetCatalogResource
 
     public AssetGraphResponse getAssetGraph(@PathVariable String serverName,
                                             @PathVariable String assetGUID,
-                                            @RequestParam(required = false, defaultValue = "0")
-                                            int   startFrom,
-                                            @RequestParam(required = false, defaultValue = "0")
-                                            int   pageSize)
+                                            @RequestBody(required = false)
+                                            ResultsRequestBody requestBody)
     {
-        return restAPI.getAssetGraph(serverName, assetGUID, startFrom, pageSize);
+        return restAPI.getAssetGraph(serverName, assetGUID, requestBody);
     }
 
 
@@ -99,8 +94,6 @@ public class AssetCatalogResource
      * @param serverName name of the server instances for this request
      * @param assetGUID  unique identifier for the asset
      * @param requestBody list of relationship type names to use in the search plus information supply chain details
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
      *
      * @return graph of elements or
      * InvalidParameterException - one of the parameters is null or invalid or
@@ -117,14 +110,10 @@ public class AssetCatalogResource
 
     public AssetLineageGraphResponse getAssetLineageGraph(@PathVariable String serverName,
                                                           @PathVariable String assetGUID,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                              int   startFrom,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                              int   pageSize,
                                                           @RequestBody(required = false)
                                                               AssetLineageGraphRequestBody requestBody)
     {
-        return restAPI.getAssetLineageGraph(serverName, assetGUID, requestBody, startFrom, pageSize);
+        return restAPI.getAssetLineageGraph(serverName, assetGUID, requestBody);
     }
 
 
@@ -133,11 +122,6 @@ public class AssetCatalogResource
      *
      * @param serverName name of the server instances for this request
      * @param requestBody string to search for in text
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
@@ -152,19 +136,9 @@ public class AssetCatalogResource
                     url="https://egeria-project.org/concepts/asset/"))
 
     public AssetSearchMatchesListResponse findInAssetDomain(@PathVariable String            serverName,
-                                                            @RequestParam (required = false, defaultValue = "true")
-                                                                           boolean           startsWith,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean           endsWith,
-                                                             @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean           ignoreCase,
-                                                             @RequestParam(required = false, defaultValue = "0")
-                                                                           int               startFrom,
-                                                             @RequestParam(required = false, defaultValue = "0")
-                                                                           int               pageSize,
-                                                             @RequestBody(required = false) FilterRequestBody requestBody)
+                                                             @RequestBody(required = false) SearchStringRequestBody requestBody)
     {
-        return restAPI.findInAssetDomain(serverName, requestBody, startsWith, endsWith, ignoreCase, startFrom, pageSize);
+        return restAPI.findInAssetDomain(serverName, requestBody);
     }
 
 
@@ -173,8 +147,6 @@ public class AssetCatalogResource
      *
      * @param serverName name of the server instances for this request
      * @param metadataCollectionId guid to search for
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
      * @param requestBody optional type name to restrict search by
      *
      * @return list of unique identifiers for Assets with the requested name or
@@ -189,15 +161,11 @@ public class AssetCatalogResource
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 
-    public AssetsResponse getAssetsByMetadataCollectionId(@PathVariable String          serverName,
+    public OpenMetadataRootElementsResponse getAssetsByMetadataCollectionId(@PathVariable String          serverName,
                                                           @PathVariable String          metadataCollectionId,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                              int                     startFrom,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                              int                     pageSize,
                                                           @RequestBody(required = false) FilterRequestBody requestBody)
     {
-        return restAPI.getAssetsByMetadataCollectionId(serverName, metadataCollectionId, startFrom, pageSize, requestBody);
+        return restAPI.getAssetsByMetadataCollectionId(serverName, metadataCollectionId, requestBody);
     }
 }
 

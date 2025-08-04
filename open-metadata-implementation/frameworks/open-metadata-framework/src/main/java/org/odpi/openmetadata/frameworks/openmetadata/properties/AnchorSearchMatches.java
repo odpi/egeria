@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetSearchMatches;
 
 import java.util.List;
 import java.util.Objects;

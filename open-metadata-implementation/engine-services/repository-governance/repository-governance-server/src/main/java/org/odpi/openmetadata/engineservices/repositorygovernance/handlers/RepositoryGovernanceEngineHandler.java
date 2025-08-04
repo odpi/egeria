@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.repositorygovernance.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -12,6 +10,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourc
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
 import org.odpi.openmetadata.repositoryservices.clients.EnterpriseRepositoryServicesClient;
@@ -44,7 +44,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
     public RepositoryGovernanceEngineHandler(EngineConfig                        engineConfig,
                                              String                              serverName,
                                              String                              serverUserId,
-                                             GovernanceConfigurationClient configurationClient,
+                                             GovernanceConfigurationClient       configurationClient,
                                              GovernanceContextClient             engineActionClient,
                                              EnterpriseRepositoryServicesClient  repositoryGovernanceEngineClient,
                                              AuditLog                            auditLog,

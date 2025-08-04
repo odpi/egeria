@@ -5,11 +5,13 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 
@@ -18,7 +20,7 @@ import java.util.*;
 /**
  * GenericWatchdogGovernanceActionConnector provides a base class for generic watchdog functions.
  */
-public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogGovernanceActionService
+public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGovernanceActionService
 {
     List<String> instancesToListenTo = new ArrayList<>();
 
@@ -43,9 +45,10 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      * @throws ConnectorCheckedException there is a problem within the governance action service.
      */
-    void start(String defaultTypeName) throws ConnectorCheckedException
+    void start(String defaultTypeName) throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
@@ -96,44 +99,44 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
             /*
              * Setting up the listener
              */
-            List<WatchdogEventType> interestingEventTypes = new ArrayList<>();
+            List<OpenMetadataEventType> interestingEventTypes = new ArrayList<>();
 
             if (newElementProcessName != null)
             {
-                interestingEventTypes.add(WatchdogEventType.NEW_ELEMENT);
-                interestingEventTypes.add(WatchdogEventType.REFRESHED_ELEMENT);
+                interestingEventTypes.add(OpenMetadataEventType.NEW_ELEMENT_CREATED);
+                interestingEventTypes.add(OpenMetadataEventType.REFRESH_ELEMENT_EVENT);
             }
             if (updatedElementProcessName != null)
             {
-                interestingEventTypes.add(WatchdogEventType.UPDATED_ELEMENT_PROPERTIES);
+                interestingEventTypes.add(OpenMetadataEventType.ELEMENT_UPDATED);
             }
             if (deletedElementProcessName != null)
             {
-                interestingEventTypes.add(WatchdogEventType.DELETED_ELEMENT);
+                interestingEventTypes.add(OpenMetadataEventType.ELEMENT_DELETED);
             }
             if (classifiedElementProcessName != null)
             {
-                interestingEventTypes.add(WatchdogEventType.NEW_CLASSIFICATION);
+                interestingEventTypes.add(OpenMetadataEventType.ELEMENT_CLASSIFIED);
             }
             if (reclassifiedElementProcessName != null)
             {
-                interestingEventTypes.add(WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES);
+                interestingEventTypes.add(OpenMetadataEventType.ELEMENT_RECLASSIFIED);
             }
             if (declassifiedElementProcessName != null)
             {
-                interestingEventTypes.add(WatchdogEventType.DELETED_CLASSIFICATION);
+                interestingEventTypes.add(OpenMetadataEventType.ELEMENT_DECLASSIFIED);
             }
             if (newRelationshipProcessName != null)
             {
-                interestingEventTypes.add(WatchdogEventType.NEW_RELATIONSHIP);
+                interestingEventTypes.add(OpenMetadataEventType.NEW_ELEMENT_CREATED);
             }
             if (updatedRelationshipProcessName != null)
             {
-                interestingEventTypes.add(WatchdogEventType.UPDATED_RELATIONSHIP_PROPERTIES);
+                interestingEventTypes.add(OpenMetadataEventType.ELEMENT_UPDATED);
             }
             if (deletedRelationshipProcessName != null)
             {
-                interestingEventTypes.add(WatchdogEventType.DELETED_RELATIONSHIP);
+                interestingEventTypes.add(OpenMetadataEventType.ELEMENT_DELETED);
             }
 
             List<String> interestingMetadataTypes = new ArrayList<>();
@@ -220,7 +223,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
      *                                    called until the watchdog governance action service declares it is complete
      *                                    or administrator action shuts down the service.
      */
-    abstract void processEvent(WatchdogGovernanceEvent event) throws GovernanceServiceException;
+    abstract void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException;
 
 
     /**

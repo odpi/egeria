@@ -193,7 +193,7 @@ public class OpenMetadataTypesArchive2_11
     private EntityDef addAPIManagerEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.API_MANAGER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
 
     }
 
@@ -206,7 +206,7 @@ public class OpenMetadataTypesArchive2_11
     private EntityDef addEventBrokerEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.EVENT_BROKER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
 
     }
 

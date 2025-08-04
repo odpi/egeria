@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.client.CommunityMan
 import org.odpi.openmetadata.accessservices.communityprofile.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 
-import org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -77,7 +76,6 @@ public class ClientConstructorTest
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceWiki());
 
         thisTest.testMetadataSourceClient(serverName, serverPlatformRootURL, auditLog);
-        thisTest.testUserIdentityManagement(serverName, serverPlatformRootURL, auditLog);
         thisTest.testOrganizationManagement(serverName, serverPlatformRootURL, auditLog);
         thisTest.testCommunityManagement(serverName, serverPlatformRootURL, auditLog);
     }
@@ -105,24 +103,6 @@ public class ClientConstructorTest
         CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
 
         new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
-    }
-
-
-    /**
-     * Create a client using each of its constructors.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
-     * @param auditLog logging destination
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    private void testUserIdentityManagement(String   serverName,
-                                            String   serverPlatformRootURL,
-                                            AuditLog auditLog) throws InvalidParameterException
-    {
-        new UserIdentityManagement(this.getClass().getName(), serverName, serverPlatformRootURL, auditLog, 100);
-        new UserIdentityManagement(this.getClass().getName(), serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog, 100);
     }
 
 

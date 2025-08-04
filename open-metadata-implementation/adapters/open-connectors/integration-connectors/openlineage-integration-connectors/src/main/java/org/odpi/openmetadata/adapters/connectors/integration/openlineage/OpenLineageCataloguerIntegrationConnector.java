@@ -2,34 +2,30 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessElement;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.openlineage.*;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
-import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
-import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;
-import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageDocumentationJobFacet;
-import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageJob;
-import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageParentRunFacetJob;
-import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageParentRunFacetRun;
-import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRun;
-import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
 import java.util.List;
 
 
 /**
- * OpenLineageCataloguerIntegrationConnector is an integration connector to register an OpenLineage listener with the Lineage Integrator OMIS
+ * OpenLineageCataloguerIntegrationConnector is an integration connector to register an OpenLineage listener with the integration daemon
  * and to catalog any processes that are not already known to the open metadata ecosystem.
  */
-public class OpenLineageCataloguerIntegrationConnector extends LineageIntegratorConnector implements OpenLineageEventListener
+public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnectorBase implements OpenLineageEventListener
 {
-    protected String                   destinationName = "Unknown";
-    protected LineageIntegratorContext myContext       = null;
+    protected String             destinationName = "Unknown";
+    protected IntegrationContext myContext       = null;
 
 
     /**
@@ -44,21 +40,22 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
      * Indicates that the connector is completely configured and can begin processing.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public synchronized void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 
-        if (connectionDetails != null)
+        if (connectionBean != null)
         {
-            if (connectionDetails.getDisplayName() != null)
+            if (connectionBean.getDisplayName() != null)
             {
-                destinationName = connectionDetails.getDisplayName();
+                destinationName = connectionBean.getDisplayName();
             }
-            else if (connectionDetails.getConnectorType() != null)
+            else if (connectionBean.getConnectorType() != null)
             {
-                ConnectorTypeDetails connectorType = connectionDetails.getConnectorType();
+                ConnectorType connectorType = connectionBean.getConnectorType();
 
                 if (connectorType.getDisplayName() != null)
                 {
@@ -67,7 +64,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
             }
         }
 
-        myContext = super.getContext();
+        myContext = integrationContext;
 
         if (myContext != null)
         {
@@ -90,7 +87,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
 
 
     /**
-     * Called each time an open lineage run event is published to the Lineage Integrator OMIS.  The integration connector is able to
+     * Called each time an open lineage run event is published to the integration daemon.  The integration connector is able to
      * work with the formatted event using the Egeria beans or reformat the open lineage run event using the supplied open lineage backend beans
      * or another set of beans.
      *
@@ -111,6 +108,8 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                 String         parentProcessName = null;
                 String         parentProcessInstanceGUID = null;
 
+                AssetClient processClient = myContext.getAssetClient(OpenMetadataType.PROCESS.typeName);
+
                 OpenLineageJob job = event.getJob();
 
                 if (job != null)
@@ -119,7 +118,8 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                     {
                         String qualifiedName = "OpenLineageJob:" + job.getName();
 
-                        List<ProcessElement> existingProcesses = myContext.getProcessesByName(qualifiedName, 0, 0, null);
+                        List<OpenMetadataRootElement> existingProcesses = processClient.getAssetsByName(qualifiedName,
+                                                                                             myContext.getOpenMetadataStore().getQueryOptions());
 
                         if ((existingProcesses == null) || (existingProcesses.isEmpty()))
                         {
@@ -131,23 +131,28 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
 
                                 if (documentation != null)
                                 {
-                                    processProperties.setResourceDescription(documentation.getDescription());
+                                    processProperties.setDescription(documentation.getDescription());
                                 }
                             }
 
                             processProperties.setTypeName(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName);
                             processProperties.setQualifiedName(qualifiedName);
 
-                            processGUID = myContext.createProcess(false, ProcessStatus.ACTIVE, processProperties);
-                            myContext.publishProcess(processGUID, null);
+                            NewElementOptions newElementOptions = new NewElementOptions(processClient.getMetadataSourceOptions());
+
+                            processGUID = processClient.createAsset(newElementOptions,
+                                                                    null,
+                                                                    processProperties,
+                                                                    null);
+                            processClient.publishElement(processGUID);
                         }
                         else if (existingProcesses.size() == 1)
                         {
-                            ProcessElement existingProcess = existingProcesses.get(0);
+                            OpenMetadataRootElement existingProcess = existingProcesses.get(0);
 
                             processGUID = existingProcess.getElementHeader().getGUID();
 
-                            if (existingProcess.getProcessProperties().getResourceDescription() == null)
+                            if ((existingProcess.getProperties() instanceof  ProcessProperties properties ) && (properties).getDescription() == null)
                             {
                                 if (job.getFacets() != null)
                                 {
@@ -157,9 +162,11 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                                     {
                                         ProcessProperties processProperties = new ProcessProperties();
 
-                                        processProperties.setResourceDescription(documentation.getDescription());
+                                        processProperties.setDescription(documentation.getDescription());
 
-                                        myContext.updateProcess(processGUID, true, processProperties, null);
+                                        processClient.updateAsset(processGUID,
+                                                                  processClient.getUpdateOptions(true),
+                                                                  processProperties);
                                     }
                                 }
                             }
@@ -185,7 +192,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                             {
                                 parentProcessName = parentJob.getName();
 
-                                List<ProcessElement> existingProcesses = myContext.getProcessesByName(parentProcessName, 0 , 0, null);
+                                List<OpenMetadataRootElement> existingProcesses = processClient.getAssetsByName(parentProcessName, processClient.getQueryOptions());
 
 
                             }

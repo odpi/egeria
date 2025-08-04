@@ -70,29 +70,6 @@ are protected properties that can only be retrieved by privileged connector code
 * **[endpoint](endpoint.md)** - Properties that describe the server endpoint where the connector will retrieve the assets.
 
 
-## Using Connections from open metadata repositories
-
-Each connection stored in a metadata repository has a unique identifier.
-An application can request a connector instance through selected Egeria OMAS interfaces, such
-as the [Asset Consumer OMAS](../../../../access-services/asset-consumer), with just the unique identifier or name of a connection.  
-
-The OMAS retrieves the connection object from the open metadata repositories and passes it to the [Connector Broker](connector-broker.md)
-factory object.  The Connector Broker (and underlying [Connector Provider](connector-provider.md)) uses the information from the Connection object
-to create an instance of the connector.
-
-The advantage of retrieving the connection information from a metadata repository is that the connection properties
-do not need to be hard-coded in the consuming applications and the metadata associated with the linked Asset
-can be retrieved via the connectors [Connected Asset Properties](connected-asset-properties.md) interface.
-
-Connections can be created in the open metadata repositories through the following interfaces:
-* [Asset Owner OMAS](../../../../access-services/asset-owner)
-* [Asset Manager OMAS](../../../../access-services/asset-manager)
-* [Data Manager OMAS](../../../../access-services/data-manager)
-* [Database Integrator OMIS](../../../../integration-services/database-integrator)
-* [Files Integrator OMIS](../../../../integration-services/files-integrator)
-* [Governance Action OMES](../../../../engine-services/governance-action)
- 
-
 ## Configuring Egeria Connections
 
 The [Administration Guide](https://egeria-project.org/guides/admin/servers) describes how to configure Egeria's

@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectGraph extends ProjectHierarchy
 {
-    private String  mermaidTimeline= null;
+    private String  mermaidTimeline = null;
 
 
     /**
