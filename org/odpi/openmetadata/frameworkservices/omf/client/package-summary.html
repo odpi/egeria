@@ -61,9 +61,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.frameworkservices.omf.client</span></div>
 <section class="package-description" id="package-description">
-<div class="block">This package contains the clients for configuring and managing governance engines, managing the governance actions, governance action
- processes and incident reports as well as supporting the metadata needs of the governance action services when they are running
- in the Engine Host OMAG Server.</div>
+<div class="block">This package contains the clients for the open metadata interfaces:
+ one for events and one for REST services.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -74,9 +73,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="handlers/package-summary.html">org.odpi.openmetadata.frameworkservices.omf.client.handlers</a></div>
-<div class="col-last even-row-color">
-<div class="block">Provides specialised handlers that use the Open Metadata Store Services client.</div>
-</div>
+<div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><a href="rest/package-summary.html">org.odpi.openmetadata.frameworkservices.omf.client.rest</a></div>
 <div class="col-last odd-row-color">
 <div class="block">This package contains the internal class for issuing REST calls.</div>
@@ -90,6 +87,15 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EgeriaOpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client">EgeriaOpenMetadataEventClient</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">EgeriaOpenMetadataEventClient provides the implementation to manage the interaction with the server to
+ set up a listener to support the receipt of inbound events from the Open Metadata Store Out Topic.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EgeriaOpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client">EgeriaOpenMetadataStoreClient</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">EgeriaOpenMetadataStoreClient provides an interface to the open metadata store.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client">OpenMetadataClientBase</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">OpenMetadataClientBase provides an interface to the open metadata store.</div>

@@ -129,21 +129,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Name of the activity that revealed the need for action.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ACTION_STATUS" class="member-name-link">ACTION_STATUS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ACTION_TARGET_FILTER" class="member-name-link">ACTION_TARGET_FILTER</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Defines the current execution status of an engine action.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#ACTION_TARGET_FILTER" class="member-name-link">ACTION_TARGET_FILTER</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Lists the names of the action targets to remove from the supplied action targets.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ACTION_TARGET_MAP" class="member-name-link">ACTION_TARGET_MAP</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#ACTION_TARGET_MAP" class="member-name-link">ACTION_TARGET_MAP</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Provides a translation map between the supplied name of an action target and the name supported by the implementation of the governance service.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ACTION_TARGET_NAME" class="member-name-link">ACTION_TARGET_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ACTION_TARGET_NAME" class="member-name-link">ACTION_TARGET_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The name to identify the action target to the actor that processes it.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ACTIVITY_STATUS" class="member-name-link">ACTIVITY_STATUS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Defines the current execution status of an engine action.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#ACTIVITY_TYPE" class="member-name-link">ACTIVITY_TYPE</a></code></div>
 <div class="col-last even-row-color">
@@ -369,14 +369,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Value to replace the actual mount point with when storing/retrieving metadata about a file within the file system.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CAPABILITY_TYPE" class="member-name-link">CAPABILITY_TYPE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Type of the software capability.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#CAPABILITY_VERSION" class="member-name-link">CAPABILITY_VERSION</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Version number of the software capability.</div>
-</div>
 <div class="col-first even-row-color"><code><a href="#CATALOG_TARGET_NAME" class="member-name-link">CATALOG_TARGET_NAME</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Symbolic name of the catalog target to describe the remote system/service being connected to.</div>
@@ -429,14 +421,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Name of the topic(s) used to exchange registration, type definitions and metadata instances between the members of the open metadata repository cohort.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#COLLECTION_ORDER" class="member-name-link">COLLECTION_ORDER</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Defines the sequencing for a collection.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#COLLECTION_TYPE" class="member-name-link">COLLECTION_TYPE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Descriptive name of the concept that this collection represents.</div>
-</div>
 <div class="col-first odd-row-color"><code><a href="#COMMAND" class="member-name-link">COMMAND</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">The url path segments that identify this API operation.</div>
@@ -449,49 +433,49 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Descriptor for a comment that indicated its intent.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#COMPLETION_DATE" class="member-name-link">COMPLETION_DATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#COMPLETION_GUARDS" class="member-name-link">COMPLETION_GUARDS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Date/time that work stopped on this element.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#COMPLETION_GUARDS" class="member-name-link">COMPLETION_GUARDS</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">List of guards returned by the governance service.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#COMPLETION_MESSAGE" class="member-name-link">COMPLETION_MESSAGE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#COMPLETION_MESSAGE" class="member-name-link">COMPLETION_MESSAGE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#COMPLETION_TIME" class="member-name-link">COMPLETION_TIME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">When the requested action was completed.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#CONDITIONS" class="member-name-link">CONDITIONS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#COMPLETION_TIME" class="member-name-link">COMPLETION_TIME</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">When the requested activity was completed.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CONDITIONS" class="member-name-link">CONDITIONS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Any special conditions or endorsements over the basic certification type.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CONFIDENCE" class="member-name-link">CONFIDENCE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CONFIDENCE" class="member-name-link">CONFIDENCE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Level of confidence in the correctness of the element.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CONFIDENCE_LEVEL" class="member-name-link">CONFIDENCE_LEVEL</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CONFIDENCE_LEVEL" class="member-name-link">CONFIDENCE_LEVEL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Level of certainty in the accuracy of the results.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CONFIDENCE_LEVEL_IDENTIFIER" class="member-name-link">CONFIDENCE_LEVEL_IDENTIFIER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CONFIDENCE_LEVEL_IDENTIFIER" class="member-name-link">CONFIDENCE_LEVEL_IDENTIFIER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Defines the level of confidence to place in the accuracy of a data item.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CONFIDENTIALITY_LEVEL_IDENTIFIER" class="member-name-link">CONFIDENTIALITY_LEVEL_IDENTIFIER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CONFIDENTIALITY_LEVEL_IDENTIFIER" class="member-name-link">CONFIDENTIALITY_LEVEL_IDENTIFIER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Defines how confidential a data item is.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CONFIGURATION_PROPERTIES" class="member-name-link">CONFIGURATION_PROPERTIES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CONFIGURATION_PROPERTIES" class="member-name-link">CONFIGURATION_PROPERTIES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Specific configuration properties used to configure the behaviour of the connector.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CONNECTION_NAME" class="member-name-link">CONNECTION_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CONNECTION_NAME" class="member-name-link">CONNECTION_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Name of connection to use to access the associated resource.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CONNECTOR_DISCONNECT_DATE" class="member-name-link">CONNECTOR_DISCONNECT_DATE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Date/time when the connector's disconnect() was called.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#CONNECTOR_FRAMEWORK_NAME" class="member-name-link">CONNECTOR_FRAMEWORK_NAME</a></code></div>
 <div class="col-last odd-row-color">
@@ -516,6 +500,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_PROVIDER_CLASS_NAME" class="member-name-link">CONNECTOR_PROVIDER_CLASS_NAME</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Name of the Java class that implements this connector type's open connector framework (OCF) connector provider.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CONNECTOR_SHUTDOWN_DATE" class="member-name-link">CONNECTOR_SHUTDOWN_DATE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Latest time that the connector can run.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CONNECTOR_START_DATE" class="member-name-link">CONNECTOR_START_DATE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Date/time when the connector's start() was called.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#CONNECTOR_USER_ID" class="member-name-link">CONNECTOR_USER_ID</a></code></div>
 <div class="col-last odd-row-color">
@@ -585,6 +577,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Type of role that the attribute plays as part of the concept bead.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#COVERAGE_END" class="member-name-link">COVERAGE_END</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">End date for the certification.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#COVERAGE_START" class="member-name-link">COVERAGE_START</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Start date for the certification/license.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CREATE_TIME" class="member-name-link">CREATE_TIME</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Time when this instance was created.</div>
@@ -601,61 +601,61 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Report create time.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CREATION_TIME" class="member-name-link">CREATION_TIME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CRITERIA" class="member-name-link">CRITERIA</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">When the requested action was identified.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#CRITERIA" class="member-name-link">CRITERIA</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Definition of the types of assets that belong in this zone.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CRITICALITY_LEVEL_IDENTIFIER" class="member-name-link">CRITICALITY_LEVEL_IDENTIFIER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CRITICALITY_LEVEL_IDENTIFIER" class="member-name-link">CRITICALITY_LEVEL_IDENTIFIER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Defines how important a data item is to the organization.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CURRENT_STATUS" class="member-name-link">CURRENT_STATUS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CURRENT_STATUS" class="member-name-link">CURRENT_STATUS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Status of this instance.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CURRENT_VERSION" class="member-name-link">CURRENT_VERSION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CURRENT_VERSION" class="member-name-link">CURRENT_VERSION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Which is the current supported version that is recommended for consumers.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CUSTODIAN" class="member-name-link">CUSTODIAN</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CUSTODIAN" class="member-name-link">CUSTODIAN</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The person, engine or organization that will ensure the certification/license is honored.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CUSTODIAN_PROPERTY_NAME" class="member-name-link">CUSTODIAN_PROPERTY_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CUSTODIAN_PROPERTY_NAME" class="member-name-link">CUSTODIAN_PROPERTY_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Name of the property from the element used to identify the custodian property.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CUSTODIAN_TYPE_NAME" class="member-name-link">CUSTODIAN_TYPE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CUSTODIAN_TYPE_NAME" class="member-name-link">CUSTODIAN_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Type of element referenced in the custodian property.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DATA_CLASS_ASSIGNMENT_STATUS" class="member-name-link">DATA_CLASS_ASSIGNMENT_STATUS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DATA_CLASS_ASSIGNMENT_STATUS" class="member-name-link">DATA_CLASS_ASSIGNMENT_STATUS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Defines the provenance and confidence of a data class assignment.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DATA_COLLECTION_END_TIME" class="member-name-link">DATA_COLLECTION_END_TIME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DATA_COLLECTION_END_TIME" class="member-name-link">DATA_COLLECTION_END_TIME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">If the data is bound by time, this is the end time.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DATA_COLLECTION_START_TIME" class="member-name-link">DATA_COLLECTION_START_TIME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DATA_COLLECTION_START_TIME" class="member-name-link">DATA_COLLECTION_START_TIME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">If the data is bound by time, this is the start time.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DATA_PATTERNS" class="member-name-link">DATA_PATTERNS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DATA_PATTERNS" class="member-name-link">DATA_PATTERNS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A regular expression that characterizes the values in the data field.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DATA_TYPE" class="member-name-link">DATA_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DATA_TYPE" class="member-name-link">DATA_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The name of a primitive data type.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DATABASE_VERSION" class="member-name-link">DATABASE_VERSION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DATABASE_VERSION" class="member-name-link">DATABASE_VERSION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Version of the database.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DECISIONS" class="member-name-link">DECISIONS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Decisions made during the meeting.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#DECORATION" class="member-name-link">DECORATION</a></code></div>
 <div class="col-last even-row-color">
@@ -751,7 +751,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="#DUE_TIME" class="member-name-link">DUE_TIME</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">When the requested action needs to be completed.</div>
+<div class="block">When the requested activity needs to be completed.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#EDITION" class="member-name-link">EDITION</a></code></div>
 <div class="col-last even-row-color">
@@ -769,17 +769,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Metadata properties embedded in the media file.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EMPLOYEE_NUMBER" class="member-name-link">EMPLOYEE_NUMBER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EMOJI" class="member-name-link">EMOJI</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">A symbol, such as a pictogram, logogram, ideogram, or smiley embedded in text and used in electronic messages and web pages.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EMPLOYEE_NUMBER" class="member-name-link">EMPLOYEE_NUMBER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The unique identifier of a person used by their employer.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EMPLOYEE_TYPE" class="member-name-link">EMPLOYEE_TYPE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Code used by employer typically to describe the type of employment contract</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#ENCODING" class="member-name-link">ENCODING</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EMPLOYEE_TYPE" class="member-name-link">EMPLOYEE_TYPE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Encoding scheme used on the data.</div>
+<div class="block">Code used by employer typically to describe the type of employment contract</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ENCODING_DESCRIPTION" class="member-name-link">ENCODING_DESCRIPTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -797,351 +797,335 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Format of the schema.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ENCRYPTED_PASSWORD" class="member-name-link">ENCRYPTED_PASSWORD</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ENCODING_TYPE" class="member-name-link">ENCODING_TYPE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Encoding scheme used on the data.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ENCRYPTED_PASSWORD" class="member-name-link">ENCRYPTED_PASSWORD</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Encrypted password that the connector needs to decrypt before use.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ENCRYPTION" class="member-name-link">ENCRYPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#ENCRYPTION" class="member-name-link">ENCRYPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Level of encryption used on the filesystem (if any).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ENCRYPTION_METHOD" class="member-name-link">ENCRYPTION_METHOD</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ENCRYPTION_METHOD" class="member-name-link">ENCRYPTION_METHOD</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Type of encryption used at the endpoint (if any).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#END" class="member-name-link">END</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">End date for the certification.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#END_TIME" class="member-name-link">END_TIME</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ENGINE_ACTION_GUID" class="member-name-link">ENGINE_ACTION_GUID</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">End time of the meeting.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_ACTION_GUID" class="member-name-link">ENGINE_ACTION_GUID</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">The unique identifier of the engine action that initiated the governance service that created this element.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ENTERPRISE_METADATA_COLLECTION_ID" class="member-name-link">ENTERPRISE_METADATA_COLLECTION_ID</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ENTERPRISE_METADATA_COLLECTION_ID" class="member-name-link">ENTERPRISE_METADATA_COLLECTION_ID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Unique identifier for the metadata collection accessed through this enterprise access layer.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ENTITLEMENTS" class="member-name-link">ENTITLEMENTS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#ENTITLEMENTS" class="member-name-link">ENTITLEMENTS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The list of rights and permissions granted.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ESTIMATED_VOLUMETRICS" class="member-name-link">ESTIMATED_VOLUMETRICS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ESTIMATED_VOLUMETRICS" class="member-name-link">ESTIMATED_VOLUMETRICS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Properties that describe the expected volumes of data flowing through this segment.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EVENT_EFFECT" class="member-name-link">EVENT_EFFECT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EVENT_EFFECT" class="member-name-link">EVENT_EFFECT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Describes the expected effects of the event on the organization.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXAMPLE" class="member-name-link">EXAMPLE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">An example of the described concept, element or value.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#EXAMPLES" class="member-name-link">EXAMPLES</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EXAMPLE" class="member-name-link">EXAMPLE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">An example of the described concept, element or value.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXECUTOR_ENGINE_GUID" class="member-name-link">EXECUTOR_ENGINE_GUID</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#EXAMPLES" class="member-name-link">EXAMPLES</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">An example of the described concept, element or value.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#EXECUTOR_ENGINE_GUID" class="member-name-link">EXECUTOR_ENGINE_GUID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Unique identifier of the governance engine nominated to run the request.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EXECUTOR_ENGINE_NAME" class="member-name-link">EXECUTOR_ENGINE_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EXECUTOR_ENGINE_NAME" class="member-name-link">EXECUTOR_ENGINE_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Unique name of the governance engine nominated to run the request.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXPECTED_DATA_FORMAT" class="member-name-link">EXPECTED_DATA_FORMAT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#EXPECTED_DATA_FORMAT" class="member-name-link">EXPECTED_DATA_FORMAT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Description of the format of the data expected by the connector implementation.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EXPECTED_TIME_ALLOCATION_PERCENT" class="member-name-link">EXPECTED_TIME_ALLOCATION_PERCENT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EXPECTED_TIME_ALLOCATION_PERCENT" class="member-name-link">EXPECTED_TIME_ALLOCATION_PERCENT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">What percentage of time is the appointee expected to devote to this role.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXPLANATION" class="member-name-link">EXPLANATION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#EXPLANATION" class="member-name-link">EXPLANATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Explanation of the analysis.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EXPRESSION" class="member-name-link">EXPRESSION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EXPRESSION" class="member-name-link">EXPRESSION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Expression used to create the annotation.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXT_INSTANCE_CREATED_BY" class="member-name-link">EXT_INSTANCE_CREATED_BY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#EXT_INSTANCE_CREATED_BY" class="member-name-link">EXT_INSTANCE_CREATED_BY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The username of the person or process that created the instance in the external system.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EXT_INSTANCE_CREATION_TIME" class="member-name-link">EXT_INSTANCE_CREATION_TIME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EXT_INSTANCE_CREATION_TIME" class="member-name-link">EXT_INSTANCE_CREATION_TIME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The date/time when the instance in the external system was created.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXT_INSTANCE_LAST_UPDATE_TIME" class="member-name-link">EXT_INSTANCE_LAST_UPDATE_TIME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#EXT_INSTANCE_LAST_UPDATE_TIME" class="member-name-link">EXT_INSTANCE_LAST_UPDATE_TIME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The date/time when the instance in the external system was last updated.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EXT_INSTANCE_LAST_UPDATED_BY" class="member-name-link">EXT_INSTANCE_LAST_UPDATED_BY</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EXT_INSTANCE_LAST_UPDATED_BY" class="member-name-link">EXT_INSTANCE_LAST_UPDATED_BY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The username of the person or process that last updated the instance in the external system.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXT_INSTANCE_TYPE_NAME" class="member-name-link">EXT_INSTANCE_TYPE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#EXT_INSTANCE_TYPE_NAME" class="member-name-link">EXT_INSTANCE_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The type name of the instance in the external system.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EXT_INSTANCE_VERSION" class="member-name-link">EXT_INSTANCE_VERSION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EXT_INSTANCE_VERSION" class="member-name-link">EXT_INSTANCE_VERSION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The latest version of the element in the external system.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXTERNAL_ENDPOINT_ADDRESS" class="member-name-link">EXTERNAL_ENDPOINT_ADDRESS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#EXTERNAL_ENDPOINT_ADDRESS" class="member-name-link">EXTERNAL_ENDPOINT_ADDRESS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Network address used by callers to the network gateway.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FILE_EXTENSION" class="member-name-link">FILE_EXTENSION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FILE_EXTENSION" class="member-name-link">FILE_EXTENSION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The file extension used at the end of the file's name.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FILE_NAME" class="member-name-link">FILE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#FILE_NAME" class="member-name-link">FILE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The name of the file with extension.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FILE_TYPE" class="member-name-link">FILE_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FILE_TYPE" class="member-name-link">FILE_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">File type descriptor (or logical file type) typically extracted from the file name.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FILTER_EXPRESSION" class="member-name-link">FILTER_EXPRESSION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#FILTER_EXPRESSION" class="member-name-link">FILTER_EXPRESSION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Expression used to filter data values passing through port.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FINGERPRINT" class="member-name-link">FINGERPRINT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FINGERPRINT" class="member-name-link">FINGERPRINT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A string value that represents the content of the digital resource.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FINGERPRINT_ALGORITHM" class="member-name-link">FINGERPRINT_ALGORITHM</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#FINGERPRINT_ALGORITHM" class="member-name-link">FINGERPRINT_ALGORITHM</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The algorithm use to generate the fingerprint.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FIRST_PUB_DATE" class="member-name-link">FIRST_PUB_DATE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FIRST_PUB_DATE" class="member-name-link">FIRST_PUB_DATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Date of the first published version/edition of this external source.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FIXED_VALUE" class="member-name-link">FIXED_VALUE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#FIXED_VALUE" class="member-name-link">FIXED_VALUE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The value of a literal data type.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FLAGS" class="member-name-link">FLAGS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FLAGS" class="member-name-link">FLAGS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A set of metric name to boolean value pairs.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FORCES" class="member-name-link">FORCES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#FORCES" class="member-name-link">FORCES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Description of the aspects of the situation that make the problem hard to solve.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FORMAT" class="member-name-link">FORMAT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FORMAT" class="member-name-link">FORMAT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Format of the file system.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FORMULA" class="member-name-link">FORMULA</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#FORMULA" class="member-name-link">FORMULA</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Formula that describes the behaviour of the element.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FORMULA_TYPE" class="member-name-link">FORMULA_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FORMULA_TYPE" class="member-name-link">FORMULA_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Format of the expression provided in the formula attribute.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FULL_NAME" class="member-name-link">FULL_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#FULL_NAME" class="member-name-link">FULL_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Full or official/legal name of the individual (if different from known name).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#GENERATE_INTEGRATION_REPORT" class="member-name-link">GENERATE_INTEGRATION_REPORT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Should the integration daemon create integration reports based on the integration connector's activity? (Default is true.)</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#GIVEN_NAMES" class="member-name-link">GIVEN_NAMES</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#GENERATE_INTEGRATION_REPORT" class="member-name-link">GENERATE_INTEGRATION_REPORT</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Should the service/connector create integration reports based on its activity? (Default is true.)</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#GIVEN_NAMES" class="member-name-link">GIVEN_NAMES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The name strings that are the part of a person's name that is not their surname.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_TYPE_GUID" class="member-name-link">GOVERNANCE_ACTION_TYPE_GUID</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ACTION_TYPE_GUID" class="member-name-link">GOVERNANCE_ACTION_TYPE_GUID</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Unique identifier of the governance action type that initiated this request (if applicable).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ACTION_TYPE_NAME" class="member-name-link">GOVERNANCE_ACTION_TYPE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_TYPE_NAME" class="member-name-link">GOVERNANCE_ACTION_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Unique name of the governance action type that initiated this request (if applicable).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#GROUPS" class="member-name-link">GROUPS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#GROUPS" class="member-name-link">GROUPS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">List of security group distinguished names.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#GUARD" class="member-name-link">GUARD</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#GUARD" class="member-name-link">GUARD</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Function that must be true to travel down this control flow.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#GUID" class="member-name-link">GUID</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#GUID" class="member-name-link">GUID</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Unique identifier of an open metadata entity or relationship.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#HASH" class="member-name-link">HASH</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#HASH" class="member-name-link">HASH</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">An integer value that represents the content of the digital resource.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#HASH_ALGORITHM" class="member-name-link">HASH_ALGORITHM</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#HASH_ALGORITHM" class="member-name-link">HASH_ALGORITHM</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The algorithm use to generate the hash.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#HEAD_COUNT" class="member-name-link">HEAD_COUNT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#HEAD_COUNT" class="member-name-link">HEAD_COUNT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Number of people that can be appointed to the role.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#HOPS" class="member-name-link">HOPS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#HOPS" class="member-name-link">HOPS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The number of hops along the lineage graph to the ultimate source organized by type of element.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ID" class="member-name-link">ID</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ID" class="member-name-link">ID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Id of report.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IDENTIFIER" class="member-name-link">IDENTIFIER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#IDENTIFIER" class="member-name-link">IDENTIFIER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Identifier used in an external system.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#IGNORE_MULTIPLE_TRIGGERS" class="member-name-link">IGNORE_MULTIPLE_TRIGGERS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#IGNORE_MULTIPLE_TRIGGERS" class="member-name-link">IGNORE_MULTIPLE_TRIGGERS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Trigger one or many engine action instances within a process instance?</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IMPLEMENTATION_DESCRIPTION" class="member-name-link">IMPLEMENTATION_DESCRIPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#IMPLEMENTATION_DESCRIPTION" class="member-name-link">IMPLEMENTATION_DESCRIPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Description of how this governance control should be implemented.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#IMPLEMENTATION_LANGUAGE" class="member-name-link">IMPLEMENTATION_LANGUAGE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#IMPLEMENTATION_LANGUAGE" class="member-name-link">IMPLEMENTATION_LANGUAGE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Name of the language used to implement this component.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IMPLEMENTATION_VALUE" class="member-name-link">IMPLEMENTATION_VALUE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#IMPLEMENTATION_VALUE" class="member-name-link">IMPLEMENTATION_VALUE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Value in the asset that maps to this valid value if different from the preferred value.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#IMPLICATIONS" class="member-name-link">IMPLICATIONS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#IMPLICATIONS" class="member-name-link">IMPLICATIONS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Impact on the organization, people and services when adopting the recommendation in this governance definition.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IMPORTANCE" class="member-name-link">IMPORTANCE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#IMPORTANCE" class="member-name-link">IMPORTANCE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Relative importance of this governance definition compared to its peers.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#IMPORTED_FROM" class="member-name-link">IMPORTED_FROM</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#IMPORTED_FROM" class="member-name-link">IMPORTED_FROM</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">importedFrom</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INCIDENT_CLASSIFIERS" class="member-name-link">INCIDENT_CLASSIFIERS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INCIDENT_CLASSIFIERS" class="member-name-link">INCIDENT_CLASSIFIERS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Map of label to level indicator to provide customizable grouping of incidents.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INCIDENT_STATUS" class="member-name-link">INCIDENT_STATUS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INCIDENT_STATUS" class="member-name-link">INCIDENT_STATUS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Defines the current status of an incident report.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INFERRED_DATA_TYPE" class="member-name-link">INFERRED_DATA_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INFERRED_DATA_TYPE" class="member-name-link">INFERRED_DATA_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Inferred data type based on the data values.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INFERRED_FORMAT" class="member-name-link">INFERRED_FORMAT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INFERRED_FORMAT" class="member-name-link">INFERRED_FORMAT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Inferred data format based on the data values.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INFERRED_LENGTH" class="member-name-link">INFERRED_LENGTH</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INFERRED_LENGTH" class="member-name-link">INFERRED_LENGTH</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Inferred data field length based on the data values.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INFERRED_PRECISION" class="member-name-link">INFERRED_PRECISION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INFERRED_PRECISION" class="member-name-link">INFERRED_PRECISION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Inferred precision of the data based on the data values.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INFERRED_SCALE" class="member-name-link">INFERRED_SCALE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INFERRED_SCALE" class="member-name-link">INFERRED_SCALE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Inferred scale applied to the data based on the data values.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INFORMAL_CATEGORY" class="member-name-link">INFORMAL_CATEGORY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INFORMAL_CATEGORY" class="member-name-link">INFORMAL_CATEGORY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Suggested category based on the analysis.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INFORMAL_TERM" class="member-name-link">INFORMAL_TERM</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INFORMAL_TERM" class="member-name-link">INFORMAL_TERM</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Suggested term based on the analysis.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INITIALS" class="member-name-link">INITIALS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INITIALS" class="member-name-link">INITIALS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">First letter of each of the person's given names.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INPUT_FIELD" class="member-name-link">INPUT_FIELD</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INPUT_FIELD" class="member-name-link">INPUT_FIELD</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Is this data field accepting new  data from the end user or not.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INSTALL_TIME" class="member-name-link">INSTALL_TIME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#INSTANCE" class="member-name-link">INSTANCE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><code><a href="#INSTALL_TIME" class="member-name-link">INSTALL_TIME</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#INSTANCE" class="member-name-link">INSTANCE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Instance of the database.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INSTANCE_METADATA_TYPE_NAME" class="member-name-link">INSTANCE_METADATA_TYPE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INSTANCE_METADATA_TYPE_NAME" class="member-name-link">INSTANCE_METADATA_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Unique identifier of an open metadata entity, classification or relationship.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INSTANCE_PROVENANCE_TYPE" class="member-name-link">INSTANCE_PROVENANCE_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INSTANCE_PROVENANCE_TYPE" class="member-name-link">INSTANCE_PROVENANCE_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Category of metadata collection.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INTEGRATION_STYLE" class="member-name-link">INTEGRATION_STYLE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INTEGRATION_STYLE" class="member-name-link">INTEGRATION_STYLE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Mechanism to flow data and control along the segment.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INTERNAL_ENDPOINT_ADDRESS" class="member-name-link">INTERNAL_ENDPOINT_ADDRESS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INTERNAL_ENDPOINT_ADDRESS" class="member-name-link">INTERNAL_ENDPOINT_ADDRESS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Network address that the network gateway maps the request to.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INTRODUCTION_DATE" class="member-name-link">INTRODUCTION_DATE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INTRODUCTION_DATE" class="member-name-link">INTRODUCTION_DATE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Date that the product was made available.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IS_CASE_SENSITIVE" class="member-name-link">IS_CASE_SENSITIVE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#IS_CASE_SENSITIVE" class="member-name-link">IS_CASE_SENSITIVE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Is this valid value case-sensitive, or should the values match irrespective of case?</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#IS_DEFAULT_VALUE" class="member-name-link">IS_DEFAULT_VALUE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Is the member the default value in the set?</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#IS_DEPRECATED" class="member-name-link">IS_DEPRECATED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#IS_DEFAULT_VALUE" class="member-name-link">IS_DEFAULT_VALUE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">This element may still be used but is flagged that it will be removed at some point in the future.</div>
+<div class="block">Is the member the default value in the set?</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#IS_NULLABLE" class="member-name-link">IS_NULLABLE</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">Accepts null values or not.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IS_PUBLIC" class="member-name-link">IS_PUBLIC</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ISC_QUALIFIED_NAME" class="member-name-link">ISC_QUALIFIED_NAME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Is this element visible to all, or only the author?</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#ISC_QUALIFIED_NAME" class="member-name-link">ISC_QUALIFIED_NAME</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Unique name for the element.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ISC_QUALIFIED_NAMES" class="member-name-link">ISC_QUALIFIED_NAMES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#ISC_QUALIFIED_NAMES" class="member-name-link">ISC_QUALIFIED_NAMES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">List of unique names of the information supply chains that this wire belongs to.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#JOB_TITLE" class="member-name-link">JOB_TITLE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#JOB_TITLE" class="member-name-link">JOB_TITLE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Principle role or level in the organization.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#JSON_PROPERTIES" class="member-name-link">JSON_PROPERTIES</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Additional properties used in the request.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#JURISDICTION" class="member-name-link">JURISDICTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#JSON_PROPERTIES" class="member-name-link">JSON_PROPERTIES</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Issuing authority for the regulation.</div>
+<div class="block">Additional properties used in the request.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#KARMA_POINTS" class="member-name-link">KARMA_POINTS</a></code></div>
 <div class="col-last even-row-color">
@@ -1175,9 +1159,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">UserId of the report last modifier.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#LAST_PAUSE_TIME" class="member-name-link">LAST_PAUSE_TIME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The Date/time that this activity was last paused.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LAST_RESUME_TIME" class="member-name-link">LAST_RESUME_TIME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The Date/time that this activity was last resumed.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#LAST_REVIEW_TIME" class="member-name-link">LAST_REVIEW_TIME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The Date/time that this action was reviewed.</div>
+<div class="block">The Date/time that this activity was reviewed.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#LAST_SYNCHRONIZED" class="member-name-link">LAST_SYNCHRONIZED</a></code></div>
 <div class="col-last odd-row-color">
@@ -1415,181 +1407,165 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The high-level goal of the activity.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NAME" class="member-name-link">NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NAME_PATTERNS" class="member-name-link">NAME_PATTERNS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Name that the element is known as - not necessarily unique.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NAME_PATTERNS" class="member-name-link">NAME_PATTERNS</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">A regular expression that characterizes the name of the data field.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NAMESPACE" class="member-name-link">NAMESPACE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NAMESPACE" class="member-name-link">NAMESPACE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Prefix for element names to ensure uniqueness.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NATIVE_CLASS" class="member-name-link">NATIVE_CLASS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NATIVE_CLASS" class="member-name-link">NATIVE_CLASS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Native class used by the client to represent this element.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NAVIGABLE" class="member-name-link">NAVIGABLE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NAVIGABLE" class="member-name-link">NAVIGABLE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Is it possible to follow the link in this direction.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NETWORK_ADDRESS" class="member-name-link">NETWORK_ADDRESS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NETWORK_ADDRESS" class="member-name-link">NETWORK_ADDRESS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Network address used to connect to the endpoint.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEXT_VERSION_DATE" class="member-name-link">NEXT_VERSION_DATE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEXT_VERSION_DATE" class="member-name-link">NEXT_VERSION_DATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Date when is the next version is expected to be released.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NON_MATCHING_VALUES" class="member-name-link">NON_MATCHING_VALUES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NON_MATCHING_VALUES" class="member-name-link">NON_MATCHING_VALUES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Number of values that do not match the data class specification.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NOTES" class="member-name-link">NOTES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NOTES" class="member-name-link">NOTES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Notes on why decision were made relating to this element, and other useful information.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NUMBER_OF_PAGES" class="member-name-link">NUMBER_OF_PAGES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NUMBER_OF_PAGES" class="member-name-link">NUMBER_OF_PAGES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Number of pages that this external source has.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OBJECTIVE" class="member-name-link">OBJECTIVE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OBJECTIVE" class="member-name-link">OBJECTIVE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">"Reason for the meeting and intended outcome.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OBLIGATIONS" class="member-name-link">OBLIGATIONS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OBLIGATIONS" class="member-name-link">OBLIGATIONS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The list of actions, duties or commitments required.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OFFERING_NAME" class="member-name-link">OFFERING_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OFFERING_NAME" class="member-name-link">OFFERING_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Commercial name of the service.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OPEN_METADATA_TYPE_NAME" class="member-name-link">OPEN_METADATA_TYPE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OPEN_METADATA_TYPE_NAME" class="member-name-link">OPEN_METADATA_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Name of an open metadata type.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OPERATING_SYSTEM" class="member-name-link">OPERATING_SYSTEM</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OPERATING_SYSTEM" class="member-name-link">OPERATING_SYSTEM</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Name of the operating system running on this operating platform.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OPERATING_SYSTEM_PATCH_LEVEL" class="member-name-link">OPERATING_SYSTEM_PATCH_LEVEL</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OPERATING_SYSTEM_PATCH_LEVEL" class="member-name-link">OPERATING_SYSTEM_PATCH_LEVEL</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Level of patches applied to the operating system.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OPERATION_NAME" class="member-name-link">OPERATION_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OPERATION_NAME" class="member-name-link">OPERATION_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Name of the operation to that is controlled by the linked security group.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OPERATIONAL_STATUS" class="member-name-link">OPERATIONAL_STATUS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OPERATIONAL_STATUS" class="member-name-link">OPERATIONAL_STATUS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The operational status of the software server capability on this software server.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ORDER_BY_PROPERTY_NAME" class="member-name-link">ORDER_BY_PROPERTY_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#ORDER_BY_PROPERTY_NAME" class="member-name-link">ORDER_BY_PROPERTY_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Name of property to use for ordering.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ORDERED_VALUES" class="member-name-link">ORDERED_VALUES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ORDERED_VALUES" class="member-name-link">ORDERED_VALUES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">When multiple occurrences are allowed, indicates whether the values are ordered or not.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ORGANIZATION" class="member-name-link">ORGANIZATION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#ORGANIZATION" class="member-name-link">ORGANIZATION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Identifier of the organization that this resource is from.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ORGANIZATION_PROPERTY_NAME" class="member-name-link">ORGANIZATION_PROPERTY_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ORGANIZATION_PROPERTY_NAME" class="member-name-link">ORGANIZATION_PROPERTY_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Name of the property from the element used to identify the organization property.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ORGANIZING_PRINCIPLE" class="member-name-link">ORGANIZING_PRINCIPLE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#ORGANIZING_PRINCIPLE" class="member-name-link">ORGANIZING_PRINCIPLE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Characteristics that influence the organization of the taxonomy.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ORIGIN_GOVERNANCE_ENGINE" class="member-name-link">ORIGIN_GOVERNANCE_ENGINE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">The qualifiedName of the governance engine that caused the engine action to be created.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#ORIGIN_GOVERNANCE_SERVICE" class="member-name-link">ORIGIN_GOVERNANCE_SERVICE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#OTHER_ORIGIN_VALUES" class="member-name-link">OTHER_ORIGIN_VALUES</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The qualifiedName of the governance service that caused the engine action to be created.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#OTHER_ORIGIN_VALUES" class="member-name-link">OTHER_ORIGIN_VALUES</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Descriptive labels describing origin of the resource.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OUTCOMES" class="member-name-link">OUTCOMES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OUTCOMES" class="member-name-link">OUTCOMES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Expected outcomes.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OWNER" class="member-name-link">OWNER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OWNER" class="member-name-link">OWNER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Identifier of the person or process who is accountable for the proper management of the element or related resource.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OWNER_PROPERTY_NAME" class="member-name-link">OWNER_PROPERTY_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OWNER_PROPERTY_NAME" class="member-name-link">OWNER_PROPERTY_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Name of the property from the element used to identify the owner.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OWNER_TYPE_NAME" class="member-name-link">OWNER_TYPE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OWNER_TYPE_NAME" class="member-name-link">OWNER_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Type of element that describes the owner.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PAGE_RANGE" class="member-name-link">PAGE_RANGE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PAGE_RANGE" class="member-name-link">PAGE_RANGE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Range of pages that this reference covers.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PAGES" class="member-name-link">PAGES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PAGES" class="member-name-link">PAGES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Range of pages in the external reference that this link refers.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PARAMETER_TYPE" class="member-name-link">PARAMETER_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PARAMETER_TYPE" class="member-name-link">PARAMETER_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">What type of parameter is it.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PARTITIONS" class="member-name-link">PARTITIONS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PARTITIONS" class="member-name-link">PARTITIONS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Number of Kafka partitions.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PATCH_LEVEL" class="member-name-link">PATCH_LEVEL</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PATCH_LEVEL" class="member-name-link">PATCH_LEVEL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Patch level of the software server capability.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PATH" class="member-name-link">PATH</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PATH" class="member-name-link">PATH</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The url path segments that identify this API operation.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PATH_NAME" class="member-name-link">PATH_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PATH_NAME" class="member-name-link">PATH_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The fully qualified physical location of the data store.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PERMITTED_SYNCHRONIZATION" class="member-name-link">PERMITTED_SYNCHRONIZATION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PERMITTED_SYNCHRONIZATION" class="member-name-link">PERMITTED_SYNCHRONIZATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Defines the permitted directions of flow of metadata updates between open metadata and a third party technology.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PLANNED_COMPLETION_DATE" class="member-name-link">PLANNED_COMPLETION_DATE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PLANNED_COMPLETION_DATE" class="member-name-link">PLANNED_COMPLETION_DATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Provides an expected date/time when the event is complete.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PLANNED_DEPLOYED_IMPLEMENTATION_TYPE" class="member-name-link">PLANNED_DEPLOYED_IMPLEMENTATION_TYPE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PLANNED_DEPLOYED_IMPLEMENTATION_TYPE" class="member-name-link">PLANNED_DEPLOYED_IMPLEMENTATION_TYPE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The type of software component that is likely to serve as an implementation for this solution component.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PLANNED_DURATION" class="member-name-link">PLANNED_DURATION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PLANNED_DURATION" class="member-name-link">PLANNED_DURATION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Defines, in milliseconds, the length of time that the event is expected to last.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PLANNED_END_DATE" class="member-name-link">PLANNED_END_DATE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PLANNED_END_DATE" class="member-name-link">PLANNED_END_DATE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Date/time that work is expected to be complete for this element.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PLANNED_START_DATE" class="member-name-link">PLANNED_START_DATE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Provides a planned date/time when the event should start.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#PLATFORM_VERSION" class="member-name-link">PLATFORM_VERSION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#PLANNED_START_DATE" class="member-name-link">PLANNED_START_DATE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Deployed version number for this platform.</div>
+<div class="block">Provides a planned date/time when the event should start.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#POINT_TYPE" class="member-name-link">POINT_TYPE</a></code></div>
 <div class="col-last even-row-color">
@@ -1639,17 +1615,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Unique identifier of the automated process that processes this exception backlog.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PROCESS_END_TIME" class="member-name-link">PROCESS_END_TIME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#PROCESS_NAME" class="member-name-link">PROCESS_NAME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Time that a transient process ended.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#PROCESS_NAME" class="member-name-link">PROCESS_NAME</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Unique name of the process that initiated this request (if applicable).</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#PROCESS_START_TIME" class="member-name-link">PROCESS_START_TIME</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Time that a transient process started.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#PROCESS_STEP_GUID" class="member-name-link">PROCESS_STEP_GUID</a></code></div>
 <div class="col-last odd-row-color">
@@ -1671,57 +1639,49 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Display name of the product.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PRODUCT_TYPE" class="member-name-link">PRODUCT_TYPE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#PROFILE_COUNTS" class="member-name-link">PROFILE_COUNTS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Type or category of the product.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#PROFILE_COUNTS" class="member-name-link">PROFILE_COUNTS</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Additional counts discovered during the analysis.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PROFILE_DATES" class="member-name-link">PROFILE_DATES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PROFILE_DATES" class="member-name-link">PROFILE_DATES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Relevant dates discovered during the analysis.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PROFILE_DOUBLES" class="member-name-link">PROFILE_DOUBLES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PROFILE_DOUBLES" class="member-name-link">PROFILE_DOUBLES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Additional large counts discovered during the analysis.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PROFILE_END_DATE" class="member-name-link">PROFILE_END_DATE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PROFILE_END_DATE" class="member-name-link">PROFILE_END_DATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Time at which the profiling stopped collecting data.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PROFILE_FLAGS" class="member-name-link">PROFILE_FLAGS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PROFILE_FLAGS" class="member-name-link">PROFILE_FLAGS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Additional flags (booleans) discovered during the analysis.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PROFILE_PROPERTIES" class="member-name-link">PROFILE_PROPERTIES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PROFILE_PROPERTIES" class="member-name-link">PROFILE_PROPERTIES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Additional profile properties discovered during the analysis.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PROFILE_PROPERTY_NAMES" class="member-name-link">PROFILE_PROPERTY_NAMES</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Time at which the profiling started collecting data.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#PROFILE_START_DATE" class="member-name-link">PROFILE_START_DATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#PROFILE_PROPERTY_NAMES" class="member-name-link">PROFILE_PROPERTY_NAMES</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Time at which the profiling started collecting data.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PROJECT_HEALTH" class="member-name-link">PROJECT_HEALTH</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#PROFILE_START_DATE" class="member-name-link">PROFILE_START_DATE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Time at which the profiling started collecting data.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PROJECT_HEALTH" class="member-name-link">PROJECT_HEALTH</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Indicator on how well the project is tracking to plan.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PROJECT_PHASE" class="member-name-link">PROJECT_PHASE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PROJECT_PHASE" class="member-name-link">PROJECT_PHASE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The phase in the lifecycle of the project.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PROJECT_STATUS" class="member-name-link">PROJECT_STATUS</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Short description on current status of the project.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#PROJECT_TYPE" class="member-name-link">PROJECT_TYPE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#PROJECT_STATUS" class="member-name-link">PROJECT_STATUS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Short description of type of the project.</div>
+<div class="block">Short description on current status of the project.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#PRONOUNS" class="member-name-link">PRONOUNS</a></code></div>
 <div class="col-last odd-row-color">
@@ -1873,7 +1833,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color"><code><a href="#REFRESH_COMPLETION_DATE" class="member-name-link">REFRESH_COMPLETION_DATE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Date/time when the integration connector returned from the refresh() call.</div>
+<div class="block">Date/time when the connector returned from the refresh() call.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#REFRESH_START_DATE" class="member-name-link">REFRESH_START_DATE</a></code></div>
 <div class="col-last odd-row-color">
@@ -1886,6 +1846,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code><a href="#REGISTRATION_DATE" class="member-name-link">REGISTRATION_DATE</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">Date first registered with the cohort.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#REGULATION_SOURCE" class="member-name-link">REGULATION_SOURCE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Source of the regulation.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#REGULATORS" class="member-name-link">REGULATORS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Enforcers of the regulation.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#RELATED_ENTITY_GUID" class="member-name-link">RELATED_ENTITY_GUID</a></code></div>
 <div class="col-last even-row-color">
@@ -1931,17 +1899,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Properties that configure the governance service for this type of request.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REQUEST_SOURCE_NAME" class="member-name-link">REQUEST_SOURCE_NAME</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#REQUEST_TYPE" class="member-name-link">REQUEST_TYPE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The name to identify the request source to the governance service that processes it.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#REQUEST_TYPE" class="member-name-link">REQUEST_TYPE</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">The request type used to call the service.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REQUESTED_START_DATE" class="member-name-link">REQUESTED_START_DATE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#REQUESTED_START_TIME" class="member-name-link">REQUESTED_START_TIME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Time that the ending action should start.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#REQUESTED_TIME" class="member-name-link">REQUESTED_TIME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">When the requested activity was documented.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#REQUESTER_USER_ID" class="member-name-link">REQUESTER_USER_ID</a></code></div>
 <div class="col-last even-row-color">
@@ -2067,89 +2035,81 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Name of the integration daemon where the integration connector is/was running.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_VERSION" class="member-name-link">SERVER_VERSION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SERVICE_LEVELS" class="member-name-link">SERVICE_LEVELS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Deployed version number for this server.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_LEVELS" class="member-name-link">SERVICE_LEVELS</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">Levels of service agreed with the subscriber.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_LIFE" class="member-name-link">SERVICE_LIFE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVICE_LIFE" class="member-name-link">SERVICE_LIFE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Length of time that the product is expected to be in service.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_REQUEST_TYPE" class="member-name-link">SERVICE_REQUEST_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVICE_REQUEST_TYPE" class="member-name-link">SERVICE_REQUEST_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Request type supported by the governance service (overrides requestType on call to governance service if specified)</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_TYPE" class="member-name-link">SERVICE_TYPE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVICE_TYPE" class="member-name-link">SERVICE_TYPE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Description of the type of the service.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SEVERITY_IDENTIFIER" class="member-name-link">SEVERITY_IDENTIFIER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SEVERITY_IDENTIFIER" class="member-name-link">SEVERITY_IDENTIFIER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Defines the severity of the impact that a situation has.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SEVERITY_LEVEL_IDENTIFIER" class="member-name-link">SEVERITY_LEVEL_IDENTIFIER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SEVERITY_LEVEL_IDENTIFIER" class="member-name-link">SEVERITY_LEVEL_IDENTIFIER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">How severe is the impact on the resource?</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SIZE" class="member-name-link">SIZE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SIZE" class="member-name-link">SIZE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Size of the data source.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SNIPPET" class="member-name-link">SNIPPET</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SNIPPET" class="member-name-link">SNIPPET</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Concrete implementation of the definition of a schema type or data field.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SOFTWARE_VERSION" class="member-name-link">SOFTWARE_VERSION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SOFTWARE_VERSION" class="member-name-link">SOFTWARE_VERSION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Deployed version number for this software.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SOLUTION_COMPONENT_TYPE" class="member-name-link">SOLUTION_COMPONENT_TYPE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SOLUTION_COMPONENT_TYPE" class="member-name-link">SOLUTION_COMPONENT_TYPE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The type of solution component - for example, is it a process, of file or database.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SOLUTION_DESCRIPTION" class="member-name-link">SOLUTION_DESCRIPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SOLUTION_DESCRIPTION" class="member-name-link">SOLUTION_DESCRIPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Description of how the solution works.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SOLUTION_EXAMPLE" class="member-name-link">SOLUTION_EXAMPLE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SOLUTION_EXAMPLE" class="member-name-link">SOLUTION_EXAMPLE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Illustrations of how the solution resolves the problem examples.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SORT_ORDER" class="member-name-link">SORT_ORDER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SORT_ORDER" class="member-name-link">SORT_ORDER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Defines the suggested order that data values in this data item should be sorted by.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SOURCE" class="member-name-link">SOURCE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SOURCE" class="member-name-link">SOURCE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Details of where the element was sourced from.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SOURCE_VERSION_NUMBER" class="member-name-link">SOURCE_VERSION_NUMBER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SOURCE_VERSION_NUMBER" class="member-name-link">SOURCE_VERSION_NUMBER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The version number of the template element when the copy was created.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SPECIFICATION" class="member-name-link">SPECIFICATION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SPECIFICATION" class="member-name-link">SPECIFICATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Name or explicit definition of rule used to identify values of this data class.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SPECIFICATION_DETAILS" class="member-name-link">SPECIFICATION_DETAILS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SPECIFICATION_DETAILS" class="member-name-link">SPECIFICATION_DETAILS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">used to configure the rule outlined in the specification</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#STAKEHOLDER_ROLE" class="member-name-link">STAKEHOLDER_ROLE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#STAKEHOLDER_ROLE" class="member-name-link">STAKEHOLDER_ROLE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Identifier that describes the role that the stakeholders will play in the operation of the Referenceable.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#STARS" class="member-name-link">STARS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Rating level provided.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#START" class="member-name-link">START</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#STARS" class="member-name-link">STARS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Start date for the certification.</div>
+<div class="block">Rating level provided.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#START_DATE" class="member-name-link">START_DATE</a></code></div>
 <div class="col-last even-row-color">
@@ -2157,7 +2117,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="#START_TIME" class="member-name-link">START_TIME</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Start time of the meeting.</div>
+<div class="block">Time that an action was started.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#STATUS" class="member-name-link">STATUS</a></code></div>
 <div class="col-last even-row-color">
@@ -2179,121 +2139,105 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Type name of the Actor entity identifying the steward.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#STOP_DATE" class="member-name-link">STOP_DATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#STORE_CREATE_TIME" class="member-name-link">STORE_CREATE_TIME</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Latest time that the connector can run.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#STORE_CREATE_TIME" class="member-name-link">STORE_CREATE_TIME</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">Creation time of the data store.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#STORE_UPDATE_TIME" class="member-name-link">STORE_UPDATE_TIME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#STORE_UPDATE_TIME" class="member-name-link">STORE_UPDATE_TIME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Last known modification time.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#STRICT_REQUIREMENT" class="member-name-link">STRICT_REQUIREMENT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#STRICT_REQUIREMENT" class="member-name-link">STRICT_REQUIREMENT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Only values from the ValidValues set/definition are allowed.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SUBJECT_AREA_NAME" class="member-name-link">SUBJECT_AREA_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SUBJECT_AREA_NAME" class="member-name-link">SUBJECT_AREA_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Identifier of the subject area - if null use qualifiedName.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SUBSCRIBER_ID" class="member-name-link">SUBSCRIBER_ID</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SUBSCRIBER_ID" class="member-name-link">SUBSCRIBER_ID</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Unique identifier for the subscriber.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SUMMARY" class="member-name-link">SUMMARY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SUMMARY" class="member-name-link">SUMMARY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Short description for summary tables.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SUPPORT_LEVEL" class="member-name-link">SUPPORT_LEVEL</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SUPPORT_LEVEL" class="member-name-link">SUPPORT_LEVEL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Level of support agreed for the subscriber.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SUPPORTED_ASSET_TYPE_NAME" class="member-name-link">SUPPORTED_ASSET_TYPE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SUPPORTED_ASSET_TYPE_NAME" class="member-name-link">SUPPORTED_ASSET_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Type of asset supported by the connector implementation.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE" class="member-name-link">SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE" class="member-name-link">SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Name of a particular type of technology.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SURNAME" class="member-name-link">SURNAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SURNAME" class="member-name-link">SURNAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The family name of the person.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SYMBOLIC_NAME" class="member-name-link">SYMBOLIC_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SYMBOLIC_NAME" class="member-name-link">SYMBOLIC_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Name of the valid value used in code.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SYNC_DATES_BY_KEY" class="member-name-link">SYNC_DATES_BY_KEY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SYNC_DATES_BY_KEY" class="member-name-link">SYNC_DATES_BY_KEY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Collection of synchronization dates identified by a key.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TAG_DESCRIPTION" class="member-name-link">TAG_DESCRIPTION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">More detail on the meaning of the tag.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#TAG_NAME" class="member-name-link">TAG_NAME</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#TARGET" class="member-name-link">TARGET</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Descriptive name of the tag.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#TARGET" class="member-name-link">TARGET</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">Definition of the measurement values that the governance definitions are trying to achieve.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TARGET_TECHNOLOGY_INTERFACES" class="member-name-link">TARGET_TECHNOLOGY_INTERFACES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#TARGET_TECHNOLOGY_INTERFACES" class="member-name-link">TARGET_TECHNOLOGY_INTERFACES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Names of the technology's interfaces that the connectors use.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TARGET_TECHNOLOGY_NAME" class="member-name-link">TARGET_TECHNOLOGY_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#TARGET_TECHNOLOGY_NAME" class="member-name-link">TARGET_TECHNOLOGY_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Name of the technology that the connectors access.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TARGET_TECHNOLOGY_SOURCE" class="member-name-link">TARGET_TECHNOLOGY_SOURCE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#TARGET_TECHNOLOGY_SOURCE" class="member-name-link">TARGET_TECHNOLOGY_SOURCE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Name of the organization providing the technology that the connectors access.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TARGET_TECHNOLOGY_VERSIONS" class="member-name-link">TARGET_TECHNOLOGY_VERSIONS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#TARGET_TECHNOLOGY_VERSIONS" class="member-name-link">TARGET_TECHNOLOGY_VERSIONS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">List of versions of the technology that the connector implementation supports.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TEAM_ROLE" class="member-name-link">TEAM_ROLE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#TEAM_ROLE" class="member-name-link">TEAM_ROLE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Description of the role of the team in the project.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TEAM_TYPE" class="member-name-link">TEAM_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#TEAM_TYPE" class="member-name-link">TEAM_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Type of team, such as department.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TECHNICAL_NAME" class="member-name-link">TECHNICAL_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#TECHNICAL_NAME" class="member-name-link">TECHNICAL_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Technical name (no spaces) that can be used in artifact generation.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TEMPLATES" class="member-name-link">TEMPLATES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#TEMPLATES" class="member-name-link">TEMPLATES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Map of template name to qualified name of parent element in associated catalog template.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TENANT_NAME" class="member-name-link">TENANT_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#TENANT_NAME" class="member-name-link">TENANT_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Identifier of the tenant.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TENANT_TYPE" class="member-name-link">TENANT_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#TENANT_TYPE" class="member-name-link">TENANT_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Description of the type of tenant.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TERM_ASSIGNMENT_STATUS" class="member-name-link">TERM_ASSIGNMENT_STATUS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#TERM_ASSIGNMENT_STATUS" class="member-name-link">TERM_ASSIGNMENT_STATUS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Defines the provenance and confidence of a semantic assignment.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TERM_RELATIONSHIP_STATUS" class="member-name-link">TERM_RELATIONSHIP_STATUS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Defines the confidence in the assigned relationship.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#TEXT" class="member-name-link">TEXT</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#TERM_RELATIONSHIP_STATUS" class="member-name-link">TERM_RELATIONSHIP_STATUS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Feedback comments or additional information.</div>
+<div class="block">Defines the confidence in the assigned relationship.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#THRESHOLD" class="member-name-link">THRESHOLD</a></code></div>
 <div class="col-last even-row-color">
@@ -2311,37 +2255,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Describes the entry in the timeline.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TITLE" class="member-name-link">TITLE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#TOPIC_NAME" class="member-name-link">TOPIC_NAME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Short summary or purpose of the element.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#TO_DO_STATUS" class="member-name-link">TO_DO_STATUS</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">The status of the work on this element.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#TO_DO_TYPE" class="member-name-link">TO_DO_TYPE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Type of to do - typically managed in a valid value set and used in stewardship automation.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#TOPIC_NAME" class="member-name-link">TOPIC_NAME</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Full name of the topic as used by programs to access its contents</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TOPIC_ROOT" class="member-name-link">TOPIC_ROOT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Root of topic names used by the Open Metadata access Services (OMASs).</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#TOPIC_TYPE" class="member-name-link">TOPIC_TYPE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#TOPIC_ROOT" class="member-name-link">TOPIC_ROOT</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Root of topic names used by the Open Metadata Store.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TOPIC_TYPE" class="member-name-link">TOPIC_TYPE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Type of topic.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TRANSFORMATION" class="member-name-link">TRANSFORMATION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Transformation process used to create the refinement.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#TYPE" class="member-name-link">TYPE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#TRANSFORMATION" class="member-name-link">TRANSFORMATION</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Type of comment.</div>
+<div class="block">Transformation process used to create the refinement.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#UNIQUE_VALUES" class="member-name-link">UNIQUE_VALUES</a></code></div>
 <div class="col-last even-row-color">
@@ -2367,21 +2295,29 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Network address where this external source can be accessed from.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#USAGE" class="member-name-link">USAGE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#URLS" class="member-name-link">URLS</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Names of external sources and their specific network address where this external information can be accessed from.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#USAGE" class="member-name-link">USAGE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Guidance on how the element should be used.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#USAGE_MEASUREMENTS" class="member-name-link">USAGE_MEASUREMENTS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#USAGE_MEASUREMENTS" class="member-name-link">USAGE_MEASUREMENTS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Measurements of the actual use of this item under the agreement.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#USE_TYPE" class="member-name-link">USE_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#USE_TYPE" class="member-name-link">USE_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Describes how the software capability uses the asset.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#USER" class="member-name-link">USER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#USER" class="member-name-link">USER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The user identifier for the person/system executing the request.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#USER_DEFINED_ACTIVITY_STATUS" class="member-name-link">USER_DEFINED_ACTIVITY_STATUS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#USER_DEFINED_STATUS" class="member-name-link">USER_DEFINED_STATUS</a></code></div>
 <div class="col-last even-row-color">
@@ -2708,13 +2644,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NAME">
-<h3>NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">NAME</span></div>
-<div class="block">Name that the element is known as - not necessarily unique.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="RESOURCE_NAME">
 <h3>RESOURCE_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">RESOURCE_NAME</span></div>
@@ -2806,24 +2735,59 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="PROCESS_START_TIME">
-<h3>PROCESS_START_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">PROCESS_START_TIME</span></div>
-<div class="block">Time that a transient process started.</div>
+<section class="detail" id="REQUESTED_START_TIME">
+<h3>REQUESTED_START_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">REQUESTED_START_TIME</span></div>
+<div class="block">Time that the ending action should start.  This is the request time plus any requested wait time.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="PROCESS_END_TIME">
-<h3>PROCESS_END_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">PROCESS_END_TIME</span></div>
-<div class="block">Time that a transient process ended.</div>
+<section class="detail" id="START_TIME">
+<h3>START_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">START_TIME</span></div>
+<div class="block">Time that an action was started.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="IS_PUBLIC">
-<h3>IS_PUBLIC</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">IS_PUBLIC</span></div>
-<div class="block">Is this element visible to all, or only the author?</div>
+<section class="detail" id="DUE_TIME">
+<h3>DUE_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">DUE_TIME</span></div>
+<div class="block">When the requested activity needs to be completed.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LAST_REVIEW_TIME">
+<h3>LAST_REVIEW_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">LAST_REVIEW_TIME</span></div>
+<div class="block">The Date/time that this activity was reviewed.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LAST_PAUSE_TIME">
+<h3>LAST_PAUSE_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">LAST_PAUSE_TIME</span></div>
+<div class="block">The Date/time that this activity was last paused.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LAST_RESUME_TIME">
+<h3>LAST_RESUME_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">LAST_RESUME_TIME</span></div>
+<div class="block">The Date/time that this activity was last resumed.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="COMPLETION_TIME">
+<h3>COMPLETION_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">COMPLETION_TIME</span></div>
+<div class="block">When the requested activity was completed.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EMOJI">
+<h3>EMOJI</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">EMOJI</span></div>
+<div class="block">A symbol, such as a pictogram, logogram, ideogram, or smiley embedded in text and used in electronic messages and web pages.</div>
 </section>
 </li>
 <li>
@@ -2841,20 +2805,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="TEXT">
-<h3>TEXT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TEXT</span></div>
-<div class="block">Feedback comments or additional information.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="TYPE">
-<h3>TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TYPE</span></div>
-<div class="block">Type of comment.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="ROLE_TYPE">
 <h3>ROLE_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ROLE_TYPE</span></div>
@@ -2866,20 +2816,6 @@ the order they are declared.</div>
 <h3>COURTESY_TITLE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">COURTESY_TITLE</span></div>
 <div class="block">The courtesy title for the person.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="TAG_NAME">
-<h3>TAG_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TAG_NAME</span></div>
-<div class="block">Descriptive name of the tag.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="TAG_DESCRIPTION">
-<h3>TAG_DESCRIPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TAG_DESCRIPTION</span></div>
-<div class="block">More detail on the meaning of the tag.</div>
 </section>
 </li>
 <li>
@@ -3027,13 +2963,6 @@ the order they are declared.</div>
 <h3>REQUESTER_USER_ID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">REQUESTER_USER_ID</span></div>
 <div class="block">The request type used to call the service.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="REQUESTED_START_DATE">
-<h3>REQUESTED_START_DATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">REQUESTED_START_DATE</span></div>
-<div class="block">Time that the ending action should start.  This is the request time plus any requested wait time.</div>
 </section>
 </li>
 <li>
@@ -3387,10 +3316,24 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="JURISDICTION">
-<h3>JURISDICTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">JURISDICTION</span></div>
-<div class="block">Issuing authority for the regulation.</div>
+<section class="detail" id="USER_DEFINED_ACTIVITY_STATUS">
+<h3>USER_DEFINED_ACTIVITY_STATUS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">USER_DEFINED_ACTIVITY_STATUS</span></div>
+<div class="block">Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REGULATION_SOURCE">
+<h3>REGULATION_SOURCE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">REGULATION_SOURCE</span></div>
+<div class="block">Source of the regulation.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REGULATORS">
+<h3>REGULATORS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">REGULATORS</span></div>
+<div class="block">Enforcers of the regulation.</div>
 </section>
 </li>
 <li>
@@ -3464,13 +3407,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="TO_DO_STATUS">
-<h3>TO_DO_STATUS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TO_DO_STATUS</span></div>
-<div class="block">The status of the work on this element.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="START_DATE">
 <h3>START_DATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">START_DATE</span></div>
@@ -3482,20 +3418,6 @@ the order they are declared.</div>
 <h3>PLANNED_END_DATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">PLANNED_END_DATE</span></div>
 <div class="block">Date/time that work is expected to be complete for this element.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="COMPLETION_DATE">
-<h3>COMPLETION_DATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">COMPLETION_DATE</span></div>
-<div class="block">Date/time that work stopped on this element.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ACTION_TARGET_NAME">
-<h3>ACTION_TARGET_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ACTION_TARGET_NAME</span></div>
-<div class="block">The name to identify the action target to the actor that processes it.</div>
 </section>
 </li>
 <li>
@@ -3898,9 +3820,9 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ENCODING">
-<h3>ENCODING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ENCODING</span></div>
+<section class="detail" id="ENCODING_TYPE">
+<h3>ENCODING_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ENCODING_TYPE</span></div>
 <div class="block">Encoding scheme used on the data.</div>
 </section>
 </li>
@@ -3992,20 +3914,6 @@ the order they are declared.</div>
 <h3>OPERATIONAL_STATUS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">OPERATIONAL_STATUS</span></div>
 <div class="block">The operational status of the software server capability on this software server.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="CAPABILITY_TYPE">
-<h3>CAPABILITY_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">CAPABILITY_TYPE</span></div>
-<div class="block">Type of the software capability.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="CAPABILITY_VERSION">
-<h3>CAPABILITY_VERSION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">CAPABILITY_VERSION</span></div>
-<div class="block">Version number of the software capability.</div>
 </section>
 </li>
 <li>
@@ -4149,20 +4057,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="PLATFORM_VERSION">
-<h3>PLATFORM_VERSION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">PLATFORM_VERSION</span></div>
-<div class="block">Deployed version number for this platform.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_VERSION">
-<h3>SERVER_VERSION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">SERVER_VERSION</span></div>
-<div class="block">Deployed version number for this server.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="SOFTWARE_VERSION">
 <h3>SOFTWARE_VERSION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">SOFTWARE_VERSION</span></div>
@@ -4205,13 +4099,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="PROJECT_TYPE">
-<h3>PROJECT_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">PROJECT_TYPE</span></div>
-<div class="block">Short description of type of the project.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="PROJECT_PHASE">
 <h3>PROJECT_PHASE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">PROJECT_PHASE</span></div>
@@ -4233,24 +4120,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="COLLECTION_TYPE">
-<h3>COLLECTION_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">COLLECTION_TYPE</span></div>
-<div class="block">Descriptive name of the concept that this collection represents.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="PRODUCT_NAME">
 <h3>PRODUCT_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">PRODUCT_NAME</span></div>
 <div class="block">Display name of the product.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="PRODUCT_TYPE">
-<h3>PRODUCT_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">PRODUCT_TYPE</span></div>
-<div class="block">Type or category of the product.</div>
 </section>
 </li>
 <li>
@@ -4307,13 +4180,6 @@ the order they are declared.</div>
 <h3>MEMBERSHIP_RATIONALE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">MEMBERSHIP_RATIONALE</span></div>
 <div class="block">Description of how the member is used, or why it is useful in this collection.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="COLLECTION_ORDER">
-<h3>COLLECTION_ORDER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">COLLECTION_ORDER</span></div>
-<div class="block">Defines the sequencing for a collection.</div>
 </section>
 </li>
 <li>
@@ -4422,10 +4288,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ACTION_STATUS">
-<h3>ACTION_STATUS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ACTION_STATUS</span></div>
+<section class="detail" id="ACTIVITY_STATUS">
+<h3>ACTIVITY_STATUS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ACTIVITY_STATUS</span></div>
 <div class="block">Defines the current execution status of an engine action.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ACTION_TARGET_NAME">
+<h3>ACTION_TARGET_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ACTION_TARGET_NAME</span></div>
+<div class="block">The name to identify the action target to the actor that processes it.</div>
 </section>
 </li>
 <li>
@@ -4538,6 +4411,13 @@ the order they are declared.</div>
 <h3>URL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">URL</span></div>
 <div class="block">Network address where this external source can be accessed from.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="URLS">
+<h3>URLS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">URLS</span></div>
+<div class="block">Names of external sources and their specific network address where this external information can be accessed from.</div>
 </section>
 </li>
 <li>
@@ -4762,13 +4642,6 @@ the order they are declared.</div>
 <h3>IMPLEMENTATION_LANGUAGE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">IMPLEMENTATION_LANGUAGE</span></div>
 <div class="block">Name of the language used to implement this component.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="LAST_REVIEW_TIME">
-<h3>LAST_REVIEW_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">LAST_REVIEW_TIME</span></div>
-<div class="block">The Date/time that this action was reviewed.</div>
 </section>
 </li>
 <li>
@@ -5059,13 +4932,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="TITLE">
-<h3>TITLE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TITLE</span></div>
-<div class="block">Short summary or purpose of the element.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="SCOPE">
 <h3>SCOPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">SCOPE</span></div>
@@ -5094,13 +4960,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="IS_DEPRECATED">
-<h3>IS_DEPRECATED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">IS_DEPRECATED</span></div>
-<div class="block">This element may still be used but is flagged that it will be removed at some point in the future.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="OBJECTIVE">
 <h3>OBJECTIVE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">OBJECTIVE</span></div>
@@ -5115,31 +4974,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="START_TIME">
-<h3>START_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">START_TIME</span></div>
-<div class="block">Start time of the meeting.</div>
+<section class="detail" id="DECISIONS">
+<h3>DECISIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">DECISIONS</span></div>
+<div class="block">Decisions made during the meeting.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="END_TIME">
-<h3>END_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">END_TIME</span></div>
-<div class="block">End time of the meeting.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="CREATION_TIME">
-<h3>CREATION_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">CREATION_TIME</span></div>
-<div class="block">When the requested action was identified.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="TO_DO_TYPE">
-<h3>TO_DO_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TO_DO_TYPE</span></div>
-<div class="block">Type of to do - typically managed in a valid value set and used in stewardship automation.</div>
+<section class="detail" id="REQUESTED_TIME">
+<h3>REQUESTED_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">REQUESTED_TIME</span></div>
+<div class="block">When the requested activity was documented.</div>
 </section>
 </li>
 <li>
@@ -5168,20 +5013,6 @@ the order they are declared.</div>
 <h3>RESULTS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">RESULTS</span></div>
 <div class="block">Actual results.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="DUE_TIME">
-<h3>DUE_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">DUE_TIME</span></div>
-<div class="block">When the requested action needs to be completed.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="COMPLETION_TIME">
-<h3>COMPLETION_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">COMPLETION_TIME</span></div>
-<div class="block">When the requested action was completed.</div>
 </section>
 </li>
 <li>
@@ -5391,7 +5222,7 @@ the order they are declared.</div>
 <section class="detail" id="TOPIC_ROOT">
 <h3>TOPIC_ROOT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TOPIC_ROOT</span></div>
-<div class="block">Root of topic names used by the Open Metadata access Services (OMASs).</div>
+<div class="block">Root of topic names used by the Open Metadata Store.</div>
 </section>
 </li>
 <li>
@@ -5752,6 +5583,13 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="CONNECTOR_START_DATE">
+<h3>CONNECTOR_START_DATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">CONNECTOR_START_DATE</span></div>
+<div class="block">Date/time when the connector's start() was called.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="REFRESH_START_DATE">
 <h3>REFRESH_START_DATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">REFRESH_START_DATE</span></div>
@@ -5762,7 +5600,14 @@ the order they are declared.</div>
 <section class="detail" id="REFRESH_COMPLETION_DATE">
 <h3>REFRESH_COMPLETION_DATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">REFRESH_COMPLETION_DATE</span></div>
-<div class="block">Date/time when the integration connector returned from the refresh() call.</div>
+<div class="block">Date/time when the connector returned from the refresh() call.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONNECTOR_DISCONNECT_DATE">
+<h3>CONNECTOR_DISCONNECT_DATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">CONNECTOR_DISCONNECT_DATE</span></div>
+<div class="block">Date/time when the connector's disconnect() was called.</div>
 </section>
 </li>
 <li>
@@ -5808,9 +5653,9 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="STOP_DATE">
-<h3>STOP_DATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">STOP_DATE</span></div>
+<section class="detail" id="CONNECTOR_SHUTDOWN_DATE">
+<h3>CONNECTOR_SHUTDOWN_DATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">CONNECTOR_SHUTDOWN_DATE</span></div>
 <div class="block">Latest time that the connector can run.</div>
 </section>
 </li>
@@ -5818,7 +5663,7 @@ the order they are declared.</div>
 <section class="detail" id="GENERATE_INTEGRATION_REPORT">
 <h3>GENERATE_INTEGRATION_REPORT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">GENERATE_INTEGRATION_REPORT</span></div>
-<div class="block">Should the integration daemon create integration reports based on the integration connector's activity? (Default is true.)</div>
+<div class="block">Should the service/connector create integration reports based on its activity? (Default is true.)</div>
 </section>
 </li>
 <li>
@@ -6025,27 +5870,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ORIGIN_GOVERNANCE_SERVICE">
-<h3>ORIGIN_GOVERNANCE_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ORIGIN_GOVERNANCE_SERVICE</span></div>
-<div class="block">The qualifiedName of the governance service that caused the engine action to be created.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ORIGIN_GOVERNANCE_ENGINE">
-<h3>ORIGIN_GOVERNANCE_ENGINE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ORIGIN_GOVERNANCE_ENGINE</span></div>
-<div class="block">The qualifiedName of the governance engine that caused the engine action to be created.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="REQUEST_SOURCE_NAME">
-<h3>REQUEST_SOURCE_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">REQUEST_SOURCE_NAME</span></div>
-<div class="block">The name to identify the request source to the governance service that processes it.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="BUSINESS_IMPERATIVES">
 <h3>BUSINESS_IMPERATIVES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">BUSINESS_IMPERATIVES</span></div>
@@ -6151,16 +5975,16 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="START">
-<h3>START</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">START</span></div>
-<div class="block">Start date for the certification.</div>
+<section class="detail" id="COVERAGE_START">
+<h3>COVERAGE_START</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">COVERAGE_START</span></div>
+<div class="block">Start date for the certification/license.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="END">
-<h3>END</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">END</span></div>
+<section class="detail" id="COVERAGE_END">
+<h3>COVERAGE_END</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">COVERAGE_END</span></div>
 <div class="block">End date for the certification.</div>
 </section>
 </li>

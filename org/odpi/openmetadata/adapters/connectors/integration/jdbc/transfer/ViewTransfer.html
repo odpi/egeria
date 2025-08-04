@@ -77,12 +77,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcTable.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcTable</a>,<wbr><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseViewElement</a>&gt;</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcTable.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcTable</a>,<wbr><a href="../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ViewTransfer</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcTable.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcTable</a>,<wbr><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseViewElement</a>&gt;</span></div>
+implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcTable.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcTable</a>,<wbr><a href="../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span></div>
 <div class="block">Transfers metadata of a view. Its parent can be a schema or directly a database, even though it is not explicitly enforced</div>
 </section>
 <section class="summary">
@@ -95,9 +95,10 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.lang.String,java.lang.String)" class="member-name-link">ViewTransfer</a><wbr>(<a href="requests/Omas.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests">Omas</a>&nbsp;omas,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.lang.String,java.lang.String)" class="member-name-link">ViewTransfer</a><wbr>(<a href="requests/Omas.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests">Omas</a>&nbsp;omas,
+ <a href="../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;anchorAsset,
  <a href="../../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseViewElement</a>&gt;&nbsp;omasViews,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;&nbsp;omasViews,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGuid)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -115,7 +116,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseViewElement</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#apply(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcTable)" class="member-name-link">apply</a><wbr>(<a href="model/JdbcTable.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcTable</a>&nbsp;jdbcTable)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Triggers view metadata transfer</div>
@@ -141,11 +142,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.lang.String,java.lang.String)">
 <h3>ViewTransfer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ViewTransfer</span><wbr><span class="parameters">(<a href="requests/Omas.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests">Omas</a>&nbsp;omas,
+ <a href="../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;anchorAsset,
  <a href="../../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseViewElement</a>&gt;&nbsp;omasViews,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;&nbsp;omasViews,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGuid)</span></div>
 </section>
@@ -161,11 +163,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <li>
 <section class="detail" id="apply(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcTable)">
 <h3>apply</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseViewElement</a></span>&nbsp;<span class="element-name">apply</span><wbr><span class="parameters">(<a href="model/JdbcTable.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcTable</a>&nbsp;jdbcTable)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></span>&nbsp;<span class="element-name">apply</span><wbr><span class="parameters">(<a href="model/JdbcTable.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcTable</a>&nbsp;jdbcTable)</span></div>
 <div class="block">Triggers view metadata transfer</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html#apply(T)" title="class or interface in java.util.function" class="external-link">apply</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcTable.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcTable</a>,<wbr><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseViewElement</a>&gt;</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html#apply(T)" title="class or interface in java.util.function" class="external-link">apply</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcTable.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcTable</a>,<wbr><a href="../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></dd>
 <dt>Parameters:</dt>
 <dd><code>jdbcTable</code> - view</dd>
 <dt>Returns:</dt>

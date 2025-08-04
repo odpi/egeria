@@ -72,16 +72,26 @@ loadScripts(document, 'script');</script>
 <h1 title="Class IntegrationConnectorProperties" class="title">Class IntegrationConnectorProperties</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../openmetadata/properties/EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
 <div class="inheritance"><a href="../../openmetadata/properties/OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
 <div class="inheritance"><a href="../../openmetadata/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
+<div class="inheritance"><a href="../../openmetadata/properties/assets/AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties</a>
+<div class="inheritance"><a href="../../openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties</a>
+<div class="inheritance"><a href="../../openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties</a>
+<div class="inheritance"><a href="../../openmetadata/properties/assets/processes/DeployedConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedConnectorProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationConnectorProperties</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">IntegrationConnectorProperties</span>
-<span class="extends-implements">extends <a href="../../openmetadata/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></span></div>
+<span class="extends-implements">extends <a href="../../openmetadata/properties/assets/processes/DeployedConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">DeployedConnectorProperties</a></span></div>
 <div class="block">IntegrationConnectorProperties contains the definition of an integration connector.
  This definition can be associated with multiple integration groups.</div>
 </section>
@@ -127,30 +137,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connection used to create an instance of this integration connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsesBlockingCalls()" class="member-name-link">getUsesBlockingCalls</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the name of the technology used for this data asset.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the stored description property for the asset.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of the resource that this asset represents.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsesBlockingCalls()" class="member-name-link">getUsesBlockingCalls</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether the connector issues blocking calls and needs its own thread to run in.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionIdentifier()" class="member-name-link">getVersionIdentifier</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the version identifier of the resource.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -163,29 +153,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the connection used to create an instance of this integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDeployedImplementationType(java.lang.String)" class="member-name-link">setDeployedImplementationType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsesBlockingCalls(boolean)" class="member-name-link">setUsesBlockingCalls</a><wbr>(boolean&nbsp;usesBlockingCalls)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the technology used for this data asset.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDescription(java.lang.String)" class="member-name-link">setDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the stored description property associated with the asset.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setName(java.lang.String)" class="member-name-link">setName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the resource that this asset represents.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsesBlockingCalls(boolean)" class="member-name-link">setUsesBlockingCalls</a><wbr>(boolean&nbsp;usesBlockingCalls)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up whether the connector issues blocking calls and needs its own thread to run in.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVersionIdentifier(java.lang.String)" class="member-name-link">setVersionIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the version identifier of the resource.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -196,11 +166,23 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.<a href="../../openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">DeployedSoftwareComponentProperties</a></h3>
+<code><a href="../../openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html#getImplementationLanguage()">getImplementationLanguage</a>, <a href="../../openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html#setImplementationLanguage(java.lang.String)">setImplementationLanguage</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.<a href="../../openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a></h3>
+<code><a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getActivityStatus()">getActivityStatus</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getCompletionTime()">getCompletionTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getDueTime()">getDueTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getFormula()">getFormula</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getFormulaType()">getFormulaType</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getLastPauseTime()">getLastPauseTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getLastResumeTime()">getLastResumeTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getLastReviewTime()">getLastReviewTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getPriority()">getPriority</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getRequestedStartTime()">getRequestedStartTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getRequestedTime()">getRequestedTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getStartTime()">getStartTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#getUserDefinedActivityStatus()">getUserDefinedActivityStatus</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setActivityStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">setActivityStatus</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setCompletionTime(java.util.Date)">setCompletionTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setDueTime(java.util.Date)">setDueTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setFormula(java.lang.String)">setFormula</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setFormulaType(java.lang.String)">setFormulaType</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setLastPauseTime(java.util.Date)">setLastPauseTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setLastResumeTime(java.util.Date)">setLastResumeTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setLastReviewTime(java.util.Date)">setLastReviewTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setPriority(int)">setPriority</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setRequestedStartTime(java.util.Date)">setRequestedStartTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setRequestedTime(java.util.Date)">setRequestedTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setStartTime(java.util.Date)">setStartTime</a>, <a href="../../openmetadata/properties/assets/processes/ProcessProperties.html#setUserDefinedActivityStatus(java.lang.String)">setUserDefinedActivityStatus</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="../../openmetadata/properties/assets/AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></h3>
+<code><a href="../../openmetadata/properties/assets/AssetProperties.html#getDeployedImplementationType()">getDeployedImplementationType</a>, <a href="../../openmetadata/properties/assets/AssetProperties.html#getNamespace()">getNamespace</a>, <a href="../../openmetadata/properties/assets/AssetProperties.html#getResourceName()">getResourceName</a>, <a href="../../openmetadata/properties/assets/AssetProperties.html#getSource()">getSource</a>, <a href="../../openmetadata/properties/assets/AssetProperties.html#getUserDefinedStatus()">getUserDefinedStatus</a>, <a href="../../openmetadata/properties/assets/AssetProperties.html#setDeployedImplementationType(java.lang.String)">setDeployedImplementationType</a>, <a href="../../openmetadata/properties/assets/AssetProperties.html#setNamespace(java.lang.String)">setNamespace</a>, <a href="../../openmetadata/properties/assets/AssetProperties.html#setResourceName(java.lang.String)">setResourceName</a>, <a href="../../openmetadata/properties/assets/AssetProperties.html#setSource(java.lang.String)">setSource</a>, <a href="../../openmetadata/properties/assets/AssetProperties.html#setUserDefinedStatus(java.lang.String)">setUserDefinedStatus</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../openmetadata/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
-<code><a href="../../openmetadata/properties/ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#getVendorProperties()">getVendorProperties</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#setVendorProperties(java.util.Map)">setVendorProperties</a></code></div>
+<code><a href="../../openmetadata/properties/ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../../openmetadata/properties/ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../openmetadata/properties/OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></h3>
-<code><a href="../../openmetadata/properties/OpenMetadataRootProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
+<code><a href="../../openmetadata/properties/OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../../openmetadata/properties/OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../openmetadata/properties/EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">EntityProperties</a></h3>
+<code><a href="../../openmetadata/properties/EntityProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../../openmetadata/properties/EntityProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../../openmetadata/properties/EntityProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../../openmetadata/properties/EntityProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -241,95 +223,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getName()">
-<h3>getName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
-<div class="block">Return the name of the resource that this asset represents.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string resource name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setName(java.lang.String)">
-<h3>setName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
-<div class="block">Set up the name of the resource that this asset represents.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>name</code> - string resource name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getVersionIdentifier()">
-<h3>getVersionIdentifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getVersionIdentifier</span>()</div>
-<div class="block">Set up the version identifier of the resource.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string version name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setVersionIdentifier(java.lang.String)">
-<h3>setVersionIdentifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setVersionIdentifier</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier)</span></div>
-<div class="block">Set up the version identifier of the resource.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>versionIdentifier</code> - string version name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDescription()">
-<h3>getDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="block">Returns the stored description property for the asset.
- If no description is provided then null is returned.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>description String text</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setDescription(java.lang.String)">
-<h3>setDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</span></div>
-<div class="block">Set up the stored description property associated with the asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>description</code> - String text</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDeployedImplementationType()">
-<h3>getDeployedImplementationType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDeployedImplementationType</span>()</div>
-<div class="block">Retrieve the name of the technology used for this data asset.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setDeployedImplementationType(java.lang.String)">
-<h3>setDeployedImplementationType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDeployedImplementationType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType)</span></div>
-<div class="block">Set up the name of the technology used for this data asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>deployedImplementationType</code> - string name</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getUsesBlockingCalls()">
 <h3>getUsesBlockingCalls</h3>
@@ -381,7 +274,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../../openmetadata/properties/ReferenceableProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../openmetadata/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="../../openmetadata/properties/assets/processes/DeployedConnectorProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../openmetadata/properties/assets/processes/DeployedConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">DeployedConnectorProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -394,7 +287,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../../openmetadata/properties/ReferenceableProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../openmetadata/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="../../openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">DeployedSoftwareComponentProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -409,7 +302,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a hash code for this element type.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../../openmetadata/properties/ReferenceableProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../openmetadata/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="../../openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">DeployedSoftwareComponentProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

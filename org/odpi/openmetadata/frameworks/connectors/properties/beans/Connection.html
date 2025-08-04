@@ -72,8 +72,7 @@ loadScripts(document, 'script');</script>
 <h1 title="Class Connection" class="title">Class Connection</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="../../../openmetadata/metadataelements/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader</a>
-<div class="inheritance"><a href="../../../openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader</a>
+<div class="inheritance"><a href="PropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</a>
 <div class="inheritance"><a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</a>
 <div class="inheritance"><a href="Referenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection</div>
@@ -81,11 +80,10 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
-</div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="VirtualConnection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">VirtualConnection</a></code></dd>
+<dd><code><a href="../../ConnectorBase.ProtectedConnection.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase.ProtectedConnection</a></code>, <code><a href="../../../../repositoryservices/enterprise/repositoryconnector/EnterpriseOMRSConnection.html" title="class in org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector">EnterpriseOMRSConnection</a></code>, <code><a href="VirtualConnection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">VirtualConnection</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Connection</span>
@@ -160,14 +158,11 @@ loadScripts(document, 'script');</script>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="Referenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Referenceable</a></h3>
-<code><a href="Referenceable.html#additionalProperties">additionalProperties</a>, <a href="Referenceable.html#qualifiedName">qualifiedName</a></code></div>
-<div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></h3>
 <code><a href="ElementBase.html#extendedProperties">extendedProperties</a></code></div>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="../../../openmetadata/metadataelements/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementControlHeader</a></h3>
-<code><a href="../../../openmetadata/metadataelements/ElementControlHeader.html#CURRENT_AUDIT_HEADER_VERSION">CURRENT_AUDIT_HEADER_VERSION</a></code></div>
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="PropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">PropertyBase</a></h3>
+<code><a href="PropertyBase.html#CURRENT_AUDIT_HEADER_VERSION">CURRENT_AUDIT_HEADER_VERSION</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -226,16 +221,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns a copy of the properties for this connection's connector type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the stored description property for the connection.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the stored display name property for the connection.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEncryptedPassword()" class="member-name-link">getEncryptedPassword</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return an encrypted password.</div>
@@ -276,16 +261,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the connector type properties for this Connection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDescription(java.lang.String)" class="member-name-link">setDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up description of the element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisplayName(java.lang.String)" class="member-name-link">setDisplayName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the display name for UIs and reports.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEncryptedPassword(java.lang.String)" class="member-name-link">setEncryptedPassword</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encryptedPassword)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up an encrypted password.</div>
@@ -315,16 +290,13 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="Referenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Referenceable</a></h3>
-<code><a href="Referenceable.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="Referenceable.html#getQualifiedName()">getQualifiedName</a>, <a href="Referenceable.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="Referenceable.html#setQualifiedName(java.lang.String)">setQualifiedName</a></code></div>
+<code><a href="Referenceable.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="Referenceable.html#getDescription()">getDescription</a>, <a href="Referenceable.html#getDisplayName()">getDisplayName</a>, <a href="Referenceable.html#getQualifiedName()">getQualifiedName</a>, <a href="Referenceable.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="Referenceable.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="Referenceable.html#setDescription(java.lang.String)">setDescription</a>, <a href="Referenceable.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="Referenceable.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="Referenceable.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></h3>
-<code><a href="ElementBase.html#getExtendedProperties()">getExtendedProperties</a>, <a href="ElementBase.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a></code></div>
+<code><a href="ElementBase.html#getExtendedProperties()">getExtendedProperties</a>, <a href="ElementBase.html#getGUID()">getGUID</a>, <a href="ElementBase.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="ElementBase.html#setGUID(java.lang.String)">setGUID</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="../../../openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></h3>
-<code><a href="../../../openmetadata/metadataelements/ElementHeader.html#getClassifications()">getClassifications</a>, <a href="../../../openmetadata/metadataelements/ElementHeader.html#getGUID()">getGUID</a>, <a href="../../../openmetadata/metadataelements/ElementHeader.html#setClassifications(java.util.List)">setClassifications</a>, <a href="../../../openmetadata/metadataelements/ElementHeader.html#setGUID(java.lang.String)">setGUID</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="../../../openmetadata/metadataelements/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementControlHeader</a></h3>
-<code><a href="../../../openmetadata/metadataelements/ElementControlHeader.html#getHeaderVersion()">getHeaderVersion</a>, <a href="../../../openmetadata/metadataelements/ElementControlHeader.html#getOrigin()">getOrigin</a>, <a href="../../../openmetadata/metadataelements/ElementControlHeader.html#getStatus()">getStatus</a>, <a href="../../../openmetadata/metadataelements/ElementControlHeader.html#getType()">getType</a>, <a href="../../../openmetadata/metadataelements/ElementControlHeader.html#getVersions()">getVersions</a>, <a href="../../../openmetadata/metadataelements/ElementControlHeader.html#setHeaderVersion(long)">setHeaderVersion</a>, <a href="../../../openmetadata/metadataelements/ElementControlHeader.html#setOrigin(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin)">setOrigin</a>, <a href="../../../openmetadata/metadataelements/ElementControlHeader.html#setStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)">setStatus</a>, <a href="../../../openmetadata/metadataelements/ElementControlHeader.html#setType(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType)">setType</a>, <a href="../../../openmetadata/metadataelements/ElementControlHeader.html#setVersions(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementVersions)">setVersions</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="PropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">PropertyBase</a></h3>
+<code><a href="PropertyBase.html#getHeaderVersion()">getHeaderVersion</a>, <a href="PropertyBase.html#setHeaderVersion(long)">setHeaderVersion</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -373,52 +345,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>ElementType object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDisplayName()">
-<h3>getDisplayName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDisplayName</span>()</div>
-<div class="block">Returns the stored display name property for the connection.
- Null means that no displayName is available.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>displayName</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setDisplayName(java.lang.String)">
-<h3>setDisplayName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDisplayName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</span></div>
-<div class="block">Set up the display name for UIs and reports.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>displayName</code> - String name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setDescription(java.lang.String)">
-<h3>setDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</span></div>
-<div class="block">Set up description of the element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>description</code> - String</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDescription()">
-<h3>getDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="block">Returns the stored description property for the connection.
- If no description is provided then null is returned.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>description</dd>
 </dl>
 </section>
 </li>

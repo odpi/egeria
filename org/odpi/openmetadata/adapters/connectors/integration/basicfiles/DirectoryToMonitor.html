@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../../frameworks/integration/filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a></code>, <code><a href="../../../../frameworks/integration/filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a></code></dd>
+<dd><code><a href="../../../../frameworks/openmetadata/filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a></code>, <code><a href="../../../../frameworks/openmetadata/filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileListenerInterface</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -86,7 +86,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">DirectoryToMonitor</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="../../../../frameworks/integration/filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a></span></div>
+implements <a href="../../../../frameworks/openmetadata/filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a></span></div>
 <div class="block">Directory to monitor caches information about a specific directory that is at the root of the monitoring.</div>
 </section>
 <section class="summary">
@@ -124,7 +124,7 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="../../../../frameworks/openmetadata/metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FileFolderElement</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
 <div class="col-second even-row-color"><code><a href="#dataFolderElement" class="member-name-link">dataFolderElement</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">This is the folder element describing this directory from the open metadata ecosystem.</div>
@@ -138,22 +138,6 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
 <div class="col-second even-row-color"><code><a href="#directoryName" class="member-name-link">directoryName</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">What is the short name for this directory?</div>
-</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#directoryTemplateGUID" class="member-name-link">directoryTemplateGUID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#directoryTemplateQualifiedName" class="member-name-link">directoryTemplateQualifiedName</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Template for cataloguing directories</div>
-</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#fileTemplateGUID" class="member-name-link">fileTemplateGUID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#fileTemplateQualifiedName" class="member-name-link">fileTemplateQualifiedName</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Template for cataloguing files</div>
 </div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#incidentReportTemplateGUID" class="member-name-link">incidentReportTemplateGUID</a></code></div>
@@ -188,17 +172,22 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
 <div class="col-last odd-row-color">
 <div class="block">Where did information about this directory come from?</div>
 </div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#toDoTemplateGUID" class="member-name-link">toDoTemplateGUID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#templates" class="member-name-link">templates</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Templates for cataloguing files and folders</div>
+</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#toDoTemplateQualifiedName" class="member-name-link">toDoTemplateQualifiedName</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-second odd-row-color"><code><a href="#toDoTemplateGUID" class="member-name-link">toDoTemplateGUID</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#toDoTemplateQualifiedName" class="member-name-link">toDoTemplateQualifiedName</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Template for creating todos</div>
 </div>
-<div class="col-first even-row-color"><code>protected boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#waitForDirectory" class="member-name-link">waitForDirectory</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>protected boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#waitForDirectory" class="member-name-link">waitForDirectory</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Does the physical directory have to exist or will it wait?</div>
 </div>
 </div>
@@ -212,7 +201,7 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,java.util.Map,org.odpi.openmetadata.adapters.connectors.integration.basicfiles.BasicFilesMonitorIntegrationConnectorBase,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">DirectoryToMonitor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,java.util.Map,org.odpi.openmetadata.adapters.connectors.integration.basicfiles.BasicFilesMonitorIntegrationConnectorBase,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">DirectoryToMonitor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogTargetGUID,
@@ -220,7 +209,7 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;templates,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
  <a href="BasicFilesMonitorIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">BasicFilesMonitorIntegrationConnectorBase</a>&nbsp;integrationConnector,
- <a href="../../../../frameworks/openmetadata/metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FileFolderElement</a>&nbsp;dataFolderElement,
+ <a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;dataFolderElement,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Construct the monitor for a specific catalog target.</div>
@@ -251,11 +240,11 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.integration.filelistener.<a href="../../../../frameworks/integration/filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a></h3>
-<code><a href="../../../../frameworks/integration/filelistener/FileDirectoryListenerInterface.html#onDirectoryChange(java.io.File)">onDirectoryChange</a>, <a href="../../../../frameworks/integration/filelistener/FileDirectoryListenerInterface.html#onDirectoryCreate(java.io.File)">onDirectoryCreate</a>, <a href="../../../../frameworks/integration/filelistener/FileDirectoryListenerInterface.html#onDirectoryDelete(java.io.File)">onDirectoryDelete</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.filelistener.<a href="../../../../frameworks/openmetadata/filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a></h3>
+<code><a href="../../../../frameworks/openmetadata/filelistener/FileDirectoryListenerInterface.html#onDirectoryChange(java.io.File)">onDirectoryChange</a>, <a href="../../../../frameworks/openmetadata/filelistener/FileDirectoryListenerInterface.html#onDirectoryCreate(java.io.File)">onDirectoryCreate</a>, <a href="../../../../frameworks/openmetadata/filelistener/FileDirectoryListenerInterface.html#onDirectoryDelete(java.io.File)">onDirectoryDelete</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.integration.filelistener.<a href="../../../../frameworks/integration/filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a></h3>
-<code><a href="../../../../frameworks/integration/filelistener/FileListenerInterface.html#onFileChange(java.io.File)">onFileChange</a>, <a href="../../../../frameworks/integration/filelistener/FileListenerInterface.html#onFileCreate(java.io.File)">onFileCreate</a>, <a href="../../../../frameworks/integration/filelistener/FileListenerInterface.html#onFileDelete(java.io.File)">onFileDelete</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.filelistener.<a href="../../../../frameworks/openmetadata/filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileListenerInterface</a></h3>
+<code><a href="../../../../frameworks/openmetadata/filelistener/FileListenerInterface.html#onFileChange(java.io.File)">onFileChange</a>, <a href="../../../../frameworks/openmetadata/filelistener/FileListenerInterface.html#onFileCreate(java.io.File)">onFileCreate</a>, <a href="../../../../frameworks/openmetadata/filelistener/FileListenerInterface.html#onFileDelete(java.io.File)">onFileDelete</a></code></div>
 </section>
 </li>
 </ul>
@@ -308,7 +297,7 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
 <li>
 <section class="detail" id="dataFolderElement">
 <h3>dataFolderElement</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/openmetadata/metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FileFolderElement</a></span>&nbsp;<span class="element-name">dataFolderElement</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></span>&nbsp;<span class="element-name">dataFolderElement</span></div>
 <div class="block">This is the folder element describing this directory from the open metadata ecosystem.</div>
 </section>
 </li>
@@ -335,29 +324,10 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
 </section>
 </li>
 <li>
-<section class="detail" id="fileTemplateQualifiedName">
-<h3>fileTemplateQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">fileTemplateQualifiedName</span></div>
-<div class="block">Template for cataloguing files</div>
-</section>
-</li>
-<li>
-<section class="detail" id="fileTemplateGUID">
-<h3>fileTemplateGUID</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">fileTemplateGUID</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="directoryTemplateQualifiedName">
-<h3>directoryTemplateQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">directoryTemplateQualifiedName</span></div>
-<div class="block">Template for cataloguing directories</div>
-</section>
-</li>
-<li>
-<section class="detail" id="directoryTemplateGUID">
-<h3>directoryTemplateGUID</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">directoryTemplateGUID</span></div>
+<section class="detail" id="templates">
+<h3>templates</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">templates</span></div>
+<div class="block">Templates for cataloguing files and folders</div>
 </section>
 </li>
 <li>
@@ -440,7 +410,7 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,java.util.Map,org.odpi.openmetadata.adapters.connectors.integration.basicfiles.BasicFilesMonitorIntegrationConnectorBase,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,java.util.Map,org.odpi.openmetadata.adapters.connectors.integration.basicfiles.BasicFilesMonitorIntegrationConnectorBase,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>DirectoryToMonitor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DirectoryToMonitor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
@@ -450,7 +420,7 @@ implements <a href="../../../../frameworks/integration/filelistener/FileDirector
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;templates,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
  <a href="BasicFilesMonitorIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">BasicFilesMonitorIntegrationConnectorBase</a>&nbsp;integrationConnector,
- <a href="../../../../frameworks/openmetadata/metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FileFolderElement</a>&nbsp;dataFolderElement,
+ <a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;dataFolderElement,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
 <div class="block">Construct the monitor for a specific catalog target.</div>
 <dl class="notes">

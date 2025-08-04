@@ -72,7 +72,9 @@ loadScripts(document, 'script');</script>
 <h1 title="Class OpenGovernanceClientBase" class="title">Class OpenGovernanceClientBase</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../../frameworks/governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient</a>
 <div class="inheritance">org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBase</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
@@ -81,12 +83,11 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code>, <code><a href="../../../accessservices/assetmanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/assetowner/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/communityprofile/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/datamanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/datascience/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.datascience.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/digitalarchitecture/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/governanceprogram/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/governanceserver/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/itinfrastructure/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/securitymanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/stewardshipaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/assetconsumer/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenGovernanceServiceClient</a></code>, <code><a href="../../../accessservices/digitalservice/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">OpenGovernanceServiceClient</a></code></dd>
+<dd><code><a href="EgeriaOpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">EgeriaOpenGovernanceClient</a></code>, <code><a href="GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenGovernanceClientBase</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a>, <a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionTypeInterface</a>, <a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a>, <a href="../../../frameworks/governanceaction/client/DuplicateManagementInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">DuplicateManagementInterface</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></span></div>
 <div class="block">OpenGovernanceClientBase provides common governance services that originate in the Governance Action Framework (GAF).
  This includes the ability to define and execute governance action processes as well as manage duplicates.</div>
 </section>
@@ -107,16 +108,10 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="col-first odd-row-color"><code>protected final <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#nullRequestBody" class="member-name-link">nullRequestBody</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#serverName" class="member-name-link">serverName</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#serverPlatformURLRoot" class="member-name-link">serverPlatformURLRoot</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#serviceURLMarker" class="member-name-link">serviceURLMarker</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.client.<a href="../../../frameworks/governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></h3>
+<code><a href="../../../frameworks/governanceaction/client/OpenGovernanceClient.html#propertyHelper">propertyHelper</a>, <a href="../../../frameworks/governanceaction/client/OpenGovernanceClient.html#serverName">serverName</a>, <a href="../../../frameworks/governanceaction/client/OpenGovernanceClient.html#serverPlatformURLRoot">serverPlatformURLRoot</a>, <a href="../../../frameworks/governanceaction/client/OpenGovernanceClient.html#serviceURLMarker">serviceURLMarker</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -143,14 +138,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="col-last odd-row-color">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient,int)" class="member-name-link">OpenGovernanceClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="rest/GAFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client.rest">GAFRESTClient</a>&nbsp;restClient,
- int&nbsp;maxPageSize)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Create a new client that passes userId and password in each HTTP request.</div>
-</div>
 </div>
 </section>
 </li>
@@ -172,9 +159,9 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Request that execution of an engine action is stopped.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus)" class="member-name-link">createGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)" class="member-name-link">createGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties,
- <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;initialStatus)</code></div>
+ <a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a governance action process.</div>
 </div>
@@ -191,37 +178,30 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Create a new metadata element to represent a governance action type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findEngineActions(java.lang.String,java.lang.String,int,int)" class="member-name-link">findEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findEngineActions(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of engine action metadata elements that contain the search string.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionProcesses(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">findGovernanceActionProcesses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionProcesses(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findGovernanceActionProcesses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of governance action process metadata elements that contain the search string.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionProcessSteps(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">findGovernanceActionProcessSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionProcessSteps(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findGovernanceActionProcessSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of governance action process step metadata elements that contain the search string.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionTypes(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">findGovernanceActionTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionTypes(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findGovernanceActionTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of governance action type metadata elements that contain the search string.</div>
 </div>
@@ -246,10 +226,9 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Retrieve the engine actions known to the server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineActionsByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getEngineActionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineActionsByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getEngineActionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of engine action metadata elements with a matching qualified or display name.</div>
 </div>
@@ -266,11 +245,9 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Retrieve the governance action process metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessesByName(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">getGovernanceActionProcessesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessesByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getGovernanceActionProcessesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
+ <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of governance action process metadata elements with a matching qualified or display name.</div>
 </div>
@@ -289,11 +266,9 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Retrieve the governance action process step metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessStepsByName(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">getGovernanceActionProcessStepsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessStepsByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getGovernanceActionProcessStepsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
+ <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of governance action process step metadata elements with a matching qualified or display name.</div>
 </div>
@@ -304,11 +279,9 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Retrieve the governance action type metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionTypesByName(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">getGovernanceActionTypesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionTypesByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getGovernanceActionTypesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
+ <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of governance action type metadata elements with a matching qualified or display name.</div>
 </div>
@@ -447,10 +420,10 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
  is executing.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)" class="member-name-link">updateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)" class="member-name-link">updateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;processStatus,
  <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a governance action process.</div>
@@ -490,8 +463,11 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.client.<a href="../../../frameworks/governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></h3>
+<code><a href="../../../frameworks/governanceaction/client/OpenGovernanceClient.html#toString()">toString</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
 </li>
 </ul>
@@ -503,24 +479,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="serverName">
-<h3>serverName</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">serverName</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="serviceURLMarker">
-<h3>serviceURLMarker</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">serviceURLMarker</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="serverPlatformURLRoot">
-<h3>serverPlatformURLRoot</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">serverPlatformURLRoot</span></div>
-</section>
-</li>
 <li>
 <section class="detail" id="invalidParameterHandler">
 <h3>invalidParameterHandler</h3>
@@ -588,29 +546,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </dl>
 </section>
 </li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient,int)">
-<h3>OpenGovernanceClientBase</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenGovernanceClientBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="rest/GAFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client.rest">GAFRESTClient</a>&nbsp;restClient,
- int&nbsp;maxPageSize)</span>
-                         throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
- userId/password of the calling server.  The end user's userId is sent on each request.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
-<dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
-<dd><code>restClient</code> - pre-initialized REST client</dd>
-<dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem with the information about the remote OMAS</dd>
-</dl>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -645,8 +580,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
  associated with the supplied request type.  The engine action remains to act as a record
  of the actions taken for auditing.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#initiateEngineAction(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">initiateEngineAction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>qualifiedName</code> - unique identifier to give this engine action</dd>
@@ -689,8 +622,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Using the named governance action type as a template, initiate an engine action.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#initiateGovernanceActionType(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>governanceActionTypeQualifiedName</code> - unique name of the governance action type to use</dd>
@@ -725,8 +656,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Using the named governance action process as a template, initiate a chain of engine actions.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>processQualifiedName</code> - unique name of the governance action process to use</dd>
@@ -755,8 +684,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Request the status of an executing engine action request.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#getEngineAction(java.lang.String,java.lang.String)">getEngineAction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>engineActionGUID</code> - identifier of the engine action request.</dd>
@@ -779,8 +706,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Request that execution of an engine action is stopped.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#cancelEngineAction(java.lang.String,java.lang.String)">cancelEngineAction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>engineActionGUID</code> - identifier of the engine action request.</dd>
@@ -802,8 +727,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the engine actions known to the server.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#getEngineActions(java.lang.String,int,int)">getEngineActions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of caller</dd>
 <dd><code>startFrom</code> - starting from element</dd>
@@ -828,8 +751,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the engine actions that are still in process.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#getActiveEngineActions(java.lang.String,int,int)">getActiveEngineActions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of caller</dd>
 <dd><code>startFrom</code> - starting from element</dd>
@@ -844,25 +765,21 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="findEngineActions(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="findEngineActions(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
 <h3>findEngineActions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</span>&nbsp;<span class="element-name">findEngineActions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</span>
                                             throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of engine action metadata elements that contain the search string.
  The search string is treated as a regular expression.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#findEngineActions(java.lang.String,java.lang.String,int,int)">findEngineActions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>searchString</code> - string to find in the properties</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>searchOptions</code> - additional options for the search</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -873,25 +790,21 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="getEngineActionsByName(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getEngineActionsByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getEngineActionsByName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</span>&nbsp;<span class="element-name">getEngineActionsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
                                                  throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of engine action metadata elements with a matching qualified or display name.
  There are no wildcards supported on this request.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#getEngineActionsByName(java.lang.String,java.lang.String,int,int)">getEngineActionsByName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>name</code> - name to search for</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>queryOptions</code> - additional options to control the results of the query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -920,8 +833,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Link elements as peer duplicates. Create a simple relationship between two elements.
  If the relationship already exists, the properties are updated.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/DuplicateManagementInterface.html#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">linkElementsAsPeerDuplicates</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/DuplicateManagementInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">DuplicateManagementInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>metadataElement1GUID</code> - unique identifier of the metadata element at end 1 of the relationship</dd>
@@ -959,8 +870,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Identify an element that acts as a consolidated version for a set of duplicate elements.
  (The consolidated element is created using createMetadataElement.)</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/DuplicateManagementInterface.html#linkConsolidatedDuplicate(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)">linkConsolidatedDuplicate</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/DuplicateManagementInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">DuplicateManagementInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>consolidatedElementGUID</code> - unique identifier of the metadata element</dd>
@@ -990,8 +899,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create a new metadata element to represent a governance action type.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html#createGovernanceActionType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties)">createGovernanceActionType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionTypeInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>properties</code> - properties about the governance action type to store</dd>
@@ -1016,8 +923,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update the metadata element representing a governance action type.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html#updateGovernanceActionType(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties)">updateGovernanceActionType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionTypeInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>governanceActionTypeGUID</code> - unique identifier of the metadata element to update</dd>
@@ -1040,8 +945,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Remove the metadata element representing a governance action type.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html#removeGovernanceActionType(java.lang.String,java.lang.String)">removeGovernanceActionType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionTypeInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>governanceActionTypeGUID</code> - unique identifier of the metadata element to remove</dd>
@@ -1053,27 +956,21 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="findGovernanceActionTypes(java.lang.String,java.lang.String,int,int,java.util.Date)">
+<section class="detail" id="findGovernanceActionTypes(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
 <h3>findGovernanceActionTypes</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</span>&nbsp;<span class="element-name">findGovernanceActionTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</span>
                                                             throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of governance action type metadata elements that contain the search string.
  The search string is treated as a regular expression.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html#findGovernanceActionTypes(java.lang.String,java.lang.String,int,int,java.util.Date)">findGovernanceActionTypes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionTypeInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>searchString</code> - string to find in the properties</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>effectiveTime</code> - effective date/time for query</dd>
+<dd><code>searchOptions</code> - additional options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -1084,27 +981,21 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="getGovernanceActionTypesByName(java.lang.String,java.lang.String,int,int,java.util.Date)">
+<section class="detail" id="getGovernanceActionTypesByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getGovernanceActionTypesByName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</span>&nbsp;<span class="element-name">getGovernanceActionTypesByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
+ <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
                                                                  throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of governance action type metadata elements with a matching qualified or display name.
  There are no wildcards supported on this request.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html#getGovernanceActionTypesByName(java.lang.String,java.lang.String,int,int,java.util.Date)">getGovernanceActionTypesByName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionTypeInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>name</code> - name to search for</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>effectiveTime</code> - effective date/time for query</dd>
+<dd><code>queryOptions</code> - additional options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -1124,8 +1015,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the governance action type metadata element with the supplied unique identifier.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html#getGovernanceActionTypeByGUID(java.lang.String,java.lang.String)">getGovernanceActionTypeByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionTypeInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionTypeInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>governanceActionTypeGUID</code> - unique identifier of the governance action type</dd>
@@ -1139,18 +1028,16 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus)">
+<section class="detail" id="createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)">
 <h3>createGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties,
- <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;initialStatus)</span>
+ <a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus)</span>
                                      throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create a new metadata element to represent a governance action process.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus)">createGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processProperties</code> - properties about the process to store</dd>
@@ -1165,20 +1052,18 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)">
+<section class="detail" id="updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)">
 <h3>updateGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;processStatus,
  <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties)</span>
                                    throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update the metadata element representing a governance action process.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)">updateGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the metadata element to update</dd>
@@ -1204,8 +1089,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
  (The zones are set to the list of zones in the publishedZones option configured for each
  instance of the Governance Engine OMAS).</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#publishGovernanceActionProcess(java.lang.String,java.lang.String)">publishGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the metadata element to publish</dd>
@@ -1228,8 +1111,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
  (The zones are set to the list of zones in the defaultZones option configured for each
  instance of the Governance Engine OMAS.  This is the setting when the process is first created).</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#withdrawGovernanceActionProcess(java.lang.String,java.lang.String)">withdrawGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the metadata element to withdraw</dd>
@@ -1250,8 +1131,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Remove the metadata element representing a governance action process.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#removeGovernanceActionProcess(java.lang.String,java.lang.String)">removeGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the metadata element to remove</dd>
@@ -1263,27 +1142,21 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="findGovernanceActionProcesses(java.lang.String,java.lang.String,int,int,java.util.Date)">
+<section class="detail" id="findGovernanceActionProcesses(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
 <h3>findGovernanceActionProcesses</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessElement</a>&gt;</span>&nbsp;<span class="element-name">findGovernanceActionProcesses</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</span>
                                                                    throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of governance action process metadata elements that contain the search string.
  The search string is treated as a regular expression.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#findGovernanceActionProcesses(java.lang.String,java.lang.String,int,int,java.util.Date)">findGovernanceActionProcesses</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>searchString</code> - string to find in the properties</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>effectiveTime</code> - effective date/time for query</dd>
+<dd><code>searchOptions</code> - additional options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -1294,27 +1167,21 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="getGovernanceActionProcessesByName(java.lang.String,java.lang.String,int,int,java.util.Date)">
+<section class="detail" id="getGovernanceActionProcessesByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getGovernanceActionProcessesByName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessElement</a>&gt;</span>&nbsp;<span class="element-name">getGovernanceActionProcessesByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
+ <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
                                                                         throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of governance action process metadata elements with a matching qualified or display name.
  There are no wildcards supported on this request.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#getGovernanceActionProcessesByName(java.lang.String,java.lang.String,int,int,java.util.Date)">getGovernanceActionProcessesByName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>name</code> - name to search for</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>effectiveTime</code> - effective date/time for query</dd>
+<dd><code>queryOptions</code> - options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -1334,8 +1201,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the governance action process metadata element with the supplied unique identifier.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#getGovernanceActionProcessByGUID(java.lang.String,java.lang.String)">getGovernanceActionProcessByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the requested metadata element</dd>
@@ -1361,8 +1226,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
  along with its process flow implementation.  This includes the process steps and the links
  between them</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,java.util.Date)">getGovernanceActionProcessGraph</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the requested metadata element</dd>
@@ -1386,8 +1249,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create a new metadata element to represent a governance action process step.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#createGovernanceActionProcessStep(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties)">createGovernanceActionProcessStep</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processStepProperties</code> - properties about the process step to store</dd>
@@ -1412,8 +1273,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update the metadata element representing a governance action process step.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#updateGovernanceActionProcessStep(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties)">updateGovernanceActionProcessStep</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processStepGUID</code> - unique identifier of the metadata element to update</dd>
@@ -1436,8 +1295,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Remove the metadata element representing a governance action process step.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#removeGovernanceActionProcessStep(java.lang.String,java.lang.String)">removeGovernanceActionProcessStep</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processStepGUID</code> - unique identifier of the metadata element to remove</dd>
@@ -1449,27 +1306,21 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="findGovernanceActionProcessSteps(java.lang.String,java.lang.String,int,int,java.util.Date)">
+<section class="detail" id="findGovernanceActionProcessSteps(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
 <h3>findGovernanceActionProcessSteps</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a>&gt;</span>&nbsp;<span class="element-name">findGovernanceActionProcessSteps</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</span>
                                                                           throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of governance action process step metadata elements that contain the search string.
  The search string is treated as a regular expression.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#findGovernanceActionProcessSteps(java.lang.String,java.lang.String,int,int,java.util.Date)">findGovernanceActionProcessSteps</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>searchString</code> - string to find in the properties</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>effectiveTime</code> - effective date/time for query</dd>
+<dd><code>searchOptions</code> - additional options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -1480,27 +1331,21 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="getGovernanceActionProcessStepsByName(java.lang.String,java.lang.String,int,int,java.util.Date)">
+<section class="detail" id="getGovernanceActionProcessStepsByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getGovernanceActionProcessStepsByName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a>&gt;</span>&nbsp;<span class="element-name">getGovernanceActionProcessStepsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
+ <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
                                                                                throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of governance action process step metadata elements with a matching qualified or display name.
  There are no wildcards supported on this request.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#getGovernanceActionProcessStepsByName(java.lang.String,java.lang.String,int,int,java.util.Date)">getGovernanceActionProcessStepsByName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>name</code> - name to search for</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>effectiveTime</code> - effective date/time for query</dd>
+<dd><code>queryOptions</code> - additional options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -1520,8 +1365,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the governance action process step metadata element with the supplied unique identifier.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#getGovernanceActionProcessStepByGUID(java.lang.String,java.lang.String)">getGovernanceActionProcessStepByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processStepGUID</code> - unique identifier of the governance action process step</dd>
@@ -1547,8 +1390,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Set up a link between a governance action process and a governance action process step.  This defines the first
  step in the process.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#setupFirstActionProcessStep(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setupFirstActionProcessStep</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the governance action process</dd>
@@ -1571,8 +1412,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the governance action process step that is the first step in a governance action process.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#getFirstActionProcessStep(java.lang.String,java.lang.String)">getFirstActionProcessStep</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the governance action process</dd>
@@ -1595,8 +1434,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Remove the link between a governance process and that governance action process step that defines its first step.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#removeFirstActionProcessStep(java.lang.String,java.lang.String)">removeFirstActionProcessStep</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the governance action process</dd>
@@ -1621,8 +1458,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Add a link between two governance action process steps to show that one follows on from the other when a governance action process
  is executing.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#setupNextActionProcessStep(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">setupNextActionProcessStep</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>currentActionProcessStepGUID</code> - unique identifier of the governance action process step that defines the previous step in the governance action process</dd>
@@ -1651,8 +1486,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Update the properties of the link between two governance action process steps that shows that one follows on from the other when a governance
  action process is executing.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#updateNextActionProcessStep(java.lang.String,java.lang.String,java.lang.String,boolean)">updateNextActionProcessStep</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>nextProcessStepLinkGUID</code> - unique identifier of the relationship between the governance action process steps</dd>
@@ -1677,8 +1510,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the list of next action process step defined for the governance action process.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#getNextGovernanceActionProcessSteps(java.lang.String,java.lang.String,int,int)">getNextGovernanceActionProcessSteps</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processStepGUID</code> - unique identifier of the current governance action process step</dd>
@@ -1703,8 +1534,6 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Remove a follow-on step from a governance action process.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#removeNextActionProcessStep(java.lang.String,java.lang.String)">removeNextActionProcessStep</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processStepLinkGUID</code> - unique identifier of the relationship between the governance action process steps</dd>

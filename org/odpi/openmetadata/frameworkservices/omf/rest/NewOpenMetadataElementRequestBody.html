@@ -72,14 +72,22 @@ loadScripts(document, 'script');</script>
 <h1 title="Class NewOpenMetadataElementRequestBody" class="title">Class NewOpenMetadataElementRequestBody</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">org.odpi.openmetadata.frameworkservices.omf.rest.MetadataSourceRequestBody</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/AnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.AnchorOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.NewLinkedElementOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions</a>
 <div class="inheritance">org.odpi.openmetadata.frameworkservices.omf.rest.NewOpenMetadataElementRequestBody</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">NewOpenMetadataElementRequestBody</span>
-<span class="extends-implements">extends <a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">MetadataSourceRequestBody</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a></span></div>
 <div class="block">NewOpenMetadataElementRequestBody provides a structure for passing the properties for a new metadata element.</div>
 </section>
 <section class="summary">
@@ -96,8 +104,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworkservices.omf.rest.NewOpenMetadataElementRequestBody)" class="member-name-link">NewOpenMetadataElementRequestBody</a><wbr>(<a href="NewOpenMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">NewOpenMetadataElementRequestBody</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions)" class="member-name-link">NewOpenMetadataElementRequestBody</a><wbr>(<a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
+<div class="block">Copy/clone constructor</div>
+</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworkservices.omf.rest.NewOpenMetadataElementRequestBody)" class="member-name-link">NewOpenMetadataElementRequestBody</a><wbr>(<a href="NewOpenMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">NewOpenMetadataElementRequestBody</a>&nbsp;template)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
 </div>
@@ -119,67 +131,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Equals method that returns true if containing properties are the same.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID()" class="member-name-link">getAnchorGUID</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInitialClassifications()" class="member-name-link">getInitialClassifications</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier of the element that should be the anchor for the new element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorScopeGUID()" class="member-name-link">getAnchorScopeGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier of the anchor's scope.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEffectiveFrom()" class="member-name-link">getEffectiveFrom</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the date/time that this new element becomes effective in the governance program (null means immediately).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEffectiveTime()" class="member-name-link">getEffectiveTime</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the effective time use on any queries for related elements.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEffectiveTo()" class="member-name-link">getEffectiveTo</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the date/time when the new element is no longer effective in the  governance program (null means until deleted).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInitialClassifications()" class="member-name-link">getInitialClassifications</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the map of classification name to properties describing the initial classification for the new metadata element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInitialStatus()" class="member-name-link">getInitialStatus</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the initial status of the metadata element (typically ACTIVE).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsOwnAnchor()" class="member-name-link">getIsOwnAnchor</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentRelationshipProperties()" class="member-name-link">getParentRelationshipProperties</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether this element should be classified as its own anchor or not.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentAtEnd1()" class="member-name-link">getParentAtEnd1</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return which end any parent entity sits on the relationship.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentGUID()" class="member-name-link">getParentGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the optional unique identifier for an element that should be connected to the newly created element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentRelationshipProperties()" class="member-name-link">getParentRelationshipProperties</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return any properties that should be included in the parent relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentRelationshipTypeName()" class="member-name-link">getParentRelationshipTypeName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of the relationship, if any, that should be established between the new element and the parent element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties for the new metadata element.</div>
@@ -195,67 +157,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAnchorGUID(java.lang.String)" class="member-name-link">setAnchorGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInitialClassifications(java.util.Map)" class="member-name-link">setInitialClassifications</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&gt;&nbsp;initialClassifications)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the unique identifier of the element that should be the anchor for the new element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAnchorScopeGUID(java.lang.String)" class="member-name-link">setAnchorScopeGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorScopeGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the unique identifier of the anchor's scope.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEffectiveFrom(java.util.Date)" class="member-name-link">setEffectiveFrom</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the date/time that this new element becomes effective in the governance program (null means immediately).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEffectiveTime(java.util.Date)" class="member-name-link">setEffectiveTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the effective time use on any queries for related elements.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEffectiveTo(java.util.Date)" class="member-name-link">setEffectiveTo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the date/time when the new element is no longer effective in the  governance program (null means until deleted).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInitialClassifications(java.util.Map)" class="member-name-link">setInitialClassifications</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&gt;&nbsp;initialClassifications)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the map of classification name to properties describing the initial classification for the new metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInitialStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)" class="member-name-link">setInitialStatus</a><wbr>(<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the initial status of the metadata element (typically ACTIVE).</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIsOwnAnchor(boolean)" class="member-name-link">setIsOwnAnchor</a><wbr>(boolean&nbsp;ownAnchor)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParentRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)" class="member-name-link">setParentRelationshipProperties</a><wbr>(<a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&nbsp;parentRelationshipProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up whether this element should be classified as its own anchor or not.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParentAtEnd1(boolean)" class="member-name-link">setParentAtEnd1</a><wbr>(boolean&nbsp;parentAtEnd1)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up  which end any parent entity sits on the relationship.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParentGUID(java.lang.String)" class="member-name-link">setParentGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the optional unique identifier for an element that should be connected to the newly created element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParentRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">setParentRelationshipProperties</a><wbr>(<a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&nbsp;parentRelationshipProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up any properties that should be included in the parent relationship.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParentRelationshipTypeName(java.lang.String)" class="member-name-link">setParentRelationshipTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the optional relationship from the newly created element to a parent element.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">setProperties</a><wbr>(<a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&nbsp;properties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)" class="member-name-link">setProperties</a><wbr>(<a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the properties for the new metadata element.</div>
 </div>
@@ -273,8 +185,20 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworkservices.omf.rest.MetadataSourceRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.omf.rest.<a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">MetadataSourceRequestBody</a></h3>
-<code><a href="MetadataSourceRequestBody.html#getExternalSourceGUID()">getExternalSourceGUID</a>, <a href="MetadataSourceRequestBody.html#getExternalSourceName()">getExternalSourceName</a>, <a href="MetadataSourceRequestBody.html#getForDuplicateProcessing()">getForDuplicateProcessing</a>, <a href="MetadataSourceRequestBody.html#getForLineage()">getForLineage</a>, <a href="MetadataSourceRequestBody.html#setExternalSourceGUID(java.lang.String)">setExternalSourceGUID</a>, <a href="MetadataSourceRequestBody.html#setExternalSourceName(java.lang.String)">setExternalSourceName</a>, <a href="MetadataSourceRequestBody.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="MetadataSourceRequestBody.html#setForLineage(boolean)">setForLineage</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/NewElementOptions.html#getInitialStatus()">getInitialStatus</a>, <a href="../../../frameworks/openmetadata/search/NewElementOptions.html#setInitialStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)">setInitialStatus</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.NewLinkedElementOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewLinkedElementOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#getOpenMetadataTypeName()">getOpenMetadataTypeName</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#getParentAtEnd1()">getParentAtEnd1</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#getParentGUID()">getParentGUID</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#getParentRelationshipTypeName()">getParentRelationshipTypeName</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#setOpenMetadataTypeName(java.lang.String)">setOpenMetadataTypeName</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#setParentAtEnd1(boolean)">setParentAtEnd1</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#setParentGUID(java.lang.String)">setParentGUID</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#setParentRelationshipTypeName(java.lang.String)">setParentRelationshipTypeName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.AnchorOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/AnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">AnchorOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/AnchorOptions.html#getAnchorGUID()">getAnchorGUID</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#getAnchorScopeGUID()">getAnchorScopeGUID</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#getIsOwnAnchor()">getIsOwnAnchor</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#setAnchorGUID(java.lang.String)">setAnchorGUID</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#setAnchorScopeGUID(java.lang.String)">setAnchorScopeGUID</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#setIsOwnAnchor(boolean)">setIsOwnAnchor</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html#getExternalSourceGUID()">getExternalSourceGUID</a>, <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html#getExternalSourceName()">getExternalSourceName</a>, <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html#setExternalSourceGUID(java.lang.String)">setExternalSourceGUID</a>, <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html#setExternalSourceName(java.lang.String)">setExternalSourceName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">BasicOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/BasicOptions.html#getEffectiveTime()">getEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForDuplicateProcessing()">getForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForLineage()">getForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getGovernanceZoneFilter()">getGovernanceZoneFilter</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForLineage(boolean)">setForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setGovernanceZoneFilter(java.util.List)">setGovernanceZoneFilter</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -300,6 +224,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworkservices.omf.rest.NewOpenMetadataElementRequestBody)">
 <h3>NewOpenMetadataElementRequestBody</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">NewOpenMetadataElementRequestBody</span><wbr><span class="parameters">(<a href="NewOpenMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">NewOpenMetadataElementRequestBody</a>&nbsp;template)</span></div>
+<div class="block">Copy/clone constructor</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>template</code> - object to copy</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions)">
+<h3>NewOpenMetadataElementRequestBody</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">NewOpenMetadataElementRequestBody</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a>&nbsp;template)</span></div>
 <div class="block">Copy/clone constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -338,20 +273,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getInitialStatus()">
-<h3>getInitialStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a></span>&nbsp;<span class="element-name">getInitialStatus</span>()</div>
-<div class="block">Return the initial status of the metadata element (typically ACTIVE).</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>element status enum value</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getInitialClassifications()">
 <h3>getInitialClassifications</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&gt;</span>&nbsp;<span class="element-name">getInitialClassifications</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&gt;</span>&nbsp;<span class="element-name">getInitialClassifications</span>()</div>
 <div class="block">Return the map of classification name to properties describing the initial classification for the new metadata element.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -362,7 +286,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setInitialClassifications(java.util.Map)">
 <h3>setInitialClassifications</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setInitialClassifications</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&gt;&nbsp;initialClassifications)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setInitialClassifications</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&gt;&nbsp;initialClassifications)</span></div>
 <div class="block">Set up the map of classification name to properties describing the initial classification for the new metadata element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -371,134 +295,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAnchorGUID()">
-<h3>getAnchorGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAnchorGUID</span>()</div>
-<div class="block">Return the unique identifier of the element that should be the anchor for the new element. It is set to null if no anchor,
- or the Anchors classification is included in the initial classifications.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string guid</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setAnchorGUID(java.lang.String)">
-<h3>setAnchorGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAnchorGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID)</span></div>
-<div class="block">Set up the unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
- or the Anchors classification is included in the initial classifications.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>anchorGUID</code> - string guid</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getIsOwnAnchor()">
-<h3>getIsOwnAnchor</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getIsOwnAnchor</span>()</div>
-<div class="block">Return whether this element should be classified as its own anchor or not.  The default is false.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>boolean</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setIsOwnAnchor(boolean)">
-<h3>setIsOwnAnchor</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIsOwnAnchor</span><wbr><span class="parameters">(boolean&nbsp;ownAnchor)</span></div>
-<div class="block">Set up whether this element should be classified as its own anchor or not.  The default is false.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>ownAnchor</code> - boolean</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAnchorScopeGUID()">
-<h3>getAnchorScopeGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAnchorScopeGUID</span>()</div>
-<div class="block">Return the unique identifier of the anchor's scope.
- If this is not supplied, the value set in the anchor entity's Anchors classification is used.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string guid</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setAnchorScopeGUID(java.lang.String)">
-<h3>setAnchorScopeGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAnchorScopeGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorScopeGUID)</span></div>
-<div class="block">Set up the unique identifier of the anchor's scope.
- If this is not supplied, the value set in the anchor entity's Anchors classification is used.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>anchorScopeGUID</code> - string guid</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setInitialStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)">
-<h3>setInitialStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setInitialStatus</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus)</span></div>
-<div class="block">Set up the initial status of the metadata element (typically ACTIVE).</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>initialStatus</code> - element status enum value</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEffectiveFrom()">
-<h3>getEffectiveFrom</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getEffectiveFrom</span>()</div>
-<div class="block">Return the date/time that this new element becomes effective in the governance program (null means immediately).</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEffectiveFrom(java.util.Date)">
-<h3>setEffectiveFrom</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEffectiveFrom</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom)</span></div>
-<div class="block">Set up the date/time that this new element becomes effective in the governance program (null means immediately).</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>effectiveFrom</code> - date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEffectiveTo()">
-<h3>getEffectiveTo</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getEffectiveTo</span>()</div>
-<div class="block">Return the date/time when the new element is no longer effective in the  governance program (null means until deleted).</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEffectiveTo(java.util.Date)">
-<h3>setEffectiveTo</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEffectiveTo</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</span></div>
-<div class="block">Set up the date/time when the new element is no longer effective in the  governance program (null means until deleted).</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>effectiveTo</code> - date object</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getProperties()">
 <h3>getProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a></span>&nbsp;<span class="element-name">getProperties</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a></span>&nbsp;<span class="element-name">getProperties</span>()</div>
 <div class="block">Return the properties for the new metadata element.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -507,9 +306,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setProperties(org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)">
+<section class="detail" id="setProperties(org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)">
 <h3>setProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProperties</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&nbsp;properties)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProperties</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&nbsp;properties)</span></div>
 <div class="block">Set up the properties for the new metadata element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -518,55 +317,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getParentGUID()">
-<h3>getParentGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getParentGUID</span>()</div>
-<div class="block">Return the optional unique identifier for an element that should be connected to the newly created element.
- If this property is specified, parentRelationshipTypeName must also be specified.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string guid</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setParentGUID(java.lang.String)">
-<h3>setParentGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setParentGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID)</span></div>
-<div class="block">Set up the optional unique identifier for an element that should be connected to the newly created element.
- If this property is specified, parentRelationshipTypeName must also be specified.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>parentGUID</code> - string guid</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getParentRelationshipTypeName()">
-<h3>getParentRelationshipTypeName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getParentRelationshipTypeName</span>()</div>
-<div class="block">Return the name of the relationship, if any, that should be established between the new element and the parent element.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string type name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setParentRelationshipTypeName(java.lang.String)">
-<h3>setParentRelationshipTypeName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setParentRelationshipTypeName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName)</span></div>
-<div class="block">Set up the name of the optional relationship from the newly created element to a parent element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>parentRelationshipTypeName</code> - string type name</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getParentRelationshipProperties()">
 <h3>getParentRelationshipProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a></span>&nbsp;<span class="element-name">getParentRelationshipProperties</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a></span>&nbsp;<span class="element-name">getParentRelationshipProperties</span>()</div>
 <div class="block">Return any properties that should be included in the parent relationship.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -575,61 +328,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setParentRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)">
+<section class="detail" id="setParentRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)">
 <h3>setParentRelationshipProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setParentRelationshipProperties</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&nbsp;parentRelationshipProperties)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setParentRelationshipProperties</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&nbsp;parentRelationshipProperties)</span></div>
 <div class="block">Set up any properties that should be included in the parent relationship.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>parentRelationshipProperties</code> - element properties</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getParentAtEnd1()">
-<h3>getParentAtEnd1</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getParentAtEnd1</span>()</div>
-<div class="block">Return which end any parent entity sits on the relationship.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>boolean</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setParentAtEnd1(boolean)">
-<h3>setParentAtEnd1</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setParentAtEnd1</span><wbr><span class="parameters">(boolean&nbsp;parentAtEnd1)</span></div>
-<div class="block">Set up  which end any parent entity sits on the relationship.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>parentAtEnd1</code> - boolean</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEffectiveTime()">
-<h3>getEffectiveTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getEffectiveTime</span>()</div>
-<div class="block">Return the effective time use on any queries for related elements.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="MetadataSourceRequestBody.html#getEffectiveTime()">getEffectiveTime</a></code>&nbsp;in class&nbsp;<code><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">MetadataSourceRequestBody</a></code></dd>
-<dt>Returns:</dt>
-<dd>date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEffectiveTime(java.util.Date)">
-<h3>setEffectiveTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEffectiveTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span></div>
-<div class="block">Set up the effective time use on any queries for related elements.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="MetadataSourceRequestBody.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a></code>&nbsp;in class&nbsp;<code><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">MetadataSourceRequestBody</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>effectiveTime</code> - date object</dd>
 </dl>
 </section>
 </li>
@@ -640,7 +345,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="MetadataSourceRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">MetadataSourceRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/NewElementOptions.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a></code></dd>
 <dt>Returns:</dt>
 <dd>list of properties and their values.</dd>
 </dl>
@@ -653,7 +358,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Equals method that returns true if containing properties are the same.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="MetadataSourceRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">MetadataSourceRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/NewElementOptions.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - object to compare</dd>
 <dt>Returns:</dt>
@@ -668,7 +373,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="MetadataSourceRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">MetadataSourceRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/NewElementOptions.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

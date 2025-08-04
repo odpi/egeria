@@ -72,10 +72,6 @@ loadScripts(document, 'script');</script>
 <h1 title="Interface RegisteredIntegrationModule" class="title">Interface RegisteredIntegrationModule</h1>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Known Implementing Classes:</dt>
-<dd><code><a href="ApacheHiveIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">ApacheHiveIntegrationModule</a></code>, <code><a href="ApacheKafkaIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">ApacheKafkaIntegrationModule</a></code>, <code><a href="AtlasGlossaryIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasGlossaryIntegrationModule</a></code>, <code><a href="AtlasRegisteredIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasRegisteredIntegrationModuleBase</a></code>, <code><a href="DatabaseIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">DatabaseIntegrationModuleBase</a></code>, <code><a href="RDBMSIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">RDBMSIntegrationModule</a></code></dd>
-</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">RegisteredIntegrationModule</span></div>
 <div class="block">RegisteredIntegrationModule defines the interface for an integration module that wants to be called to synchronize assets.</div>
@@ -109,7 +105,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of entity types that this module is maintaining.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#processEvent(org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../../../../../accessservices/assetmanager/events/AssetManagerOutTopicEvent.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.events">AssetManagerOutTopicEvent</a>&nbsp;event)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Process an event that was published by the Asset Manager OMAS.</div>
 </div>
@@ -180,9 +176,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="processEvent(org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent)">
+<section class="detail" id="processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">
 <h3>processEvent</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../../../../../accessservices/assetmanager/events/AssetManagerOutTopicEvent.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.events">AssetManagerOutTopicEvent</a>&nbsp;event)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</span></div>
 <div class="block">Process an event that was published by the Asset Manager OMAS.  The listener is only registered if metadata is flowing
  from the open metadata ecosystem to Apache Atlas.</div>
 <dl class="notes">

@@ -111,7 +111,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processEvent(org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../../../../frameworks/governanceaction/events/WatchdogGovernanceEvent.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.events">WatchdogGovernanceEvent</a>&nbsp;event)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method is called each time a requested event is received from the open metadata repositories.</div>
 </div>
@@ -152,9 +152,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="processEvent(org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent)">
+<section class="detail" id="processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">
 <h3>processEvent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/events/WatchdogGovernanceEvent.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.events">WatchdogGovernanceEvent</a>&nbsp;event)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</span>
                   throws <span class="exceptions"><a href="../../../../frameworks/governanceaction/ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GovernanceServiceException</a></span></div>
 <div class="block">This method is called each time a requested event is received from the open metadata repositories.
  It is called for events received after this listener is registered until the watchdog governance
@@ -162,7 +162,7 @@ loadScripts(document, 'script');</script>
  the hosting server or this service explicitly.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/governanceaction/WatchdogGovernanceListener.html#processEvent(org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent)">processEvent</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/governanceaction/WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceListener</a></code></dd>
+<dd><code><a href="../../../../frameworks/governanceaction/WatchdogGovernanceListener.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">processEvent</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/governanceaction/WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceListener</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>event</code> - event containing details of a change to an open metadata element.</dd>
 <dt>Throws:</dt>

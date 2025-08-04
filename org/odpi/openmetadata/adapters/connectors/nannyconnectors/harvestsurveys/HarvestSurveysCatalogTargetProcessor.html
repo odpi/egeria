@@ -85,12 +85,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../../accessservices/assetmanager/api/AssetManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerEventListener</a></code></dd>
+<dd><code><a href="../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">HarvestSurveysCatalogTargetProcessor</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a>
-implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerEventListener</a></span></div>
+implements <a href="../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a></span></div>
 <div class="block">HarvestSurveysConnector extracts survey results from the open metadata ecosystem.</div>
 </section>
 <section class="summary">
@@ -102,6 +102,9 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></h3>
 <code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#auditLog">auditLog</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#connectorName">connectorName</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#propertyHelper">propertyHelper</a></code></div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.properties.<a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></h3>
+<code><a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#connectorToTarget">connectorToTarget</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#integrationContext">integrationContext</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -112,12 +115,11 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess,org.odpi.openmetadata.integrationservices.catalog.connector.ConnectorFactoryService)" class="member-name-link">HarvestSurveysCatalogTargetProcessor</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;catalogTarget,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">HarvestSurveysCatalogTargetProcessor</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;catalogTarget,
+ <a href="../../../../frameworks/integration/context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a>&nbsp;integrationContext,
  <a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
- <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="../../../../frameworks/integration/context/OpenMetadataAccess.html" title="class in org.odpi.openmetadata.frameworks.integration.context">OpenMetadataAccess</a>&nbsp;openMetadataAccess,
- <a href="../../../../integrationservices/catalog/connector/ConnectorFactoryService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ConnectorFactoryService</a>&nbsp;connectorFactoryService)</code></div>
+ <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor</div>
 </div>
@@ -136,7 +138,7 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processEvent(org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../../../../accessservices/assetmanager/events/AssetManagerOutTopicEvent.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.events">AssetManagerOutTopicEvent</a>&nbsp;event)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Process an event that was published by the Asset Manager OMAS.</div>
 </div>
@@ -153,7 +155,7 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 <code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getDateConfigurationProperty(java.lang.String,java.util.Map)">getDateConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.properties.<a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></h3>
-<code><a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#getCatalogTargetConnector()">getCatalogTargetConnector</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#setCatalogTargetConnector(org.odpi.openmetadata.frameworks.connectors.Connector)">setCatalogTargetConnector</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#toString()">toString</a></code></div>
+<code><a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#getConnectorToTarget()">getConnectorToTarget</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#getIntegrationContext()">getIntegrationContext</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.properties.<a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a></h3>
 <code><a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html#getCatalogTargetElement()">getCatalogTargetElement</a>, <a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html#getRelationshipGUID()">getRelationshipGUID</a>, <a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html#getRelationshipVersions()">getRelationshipVersions</a>, <a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html#setCatalogTargetElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub)">setCatalogTargetElement</a>, <a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html#setRelationshipGUID(java.lang.String)">setRelationshipGUID</a>, <a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html#setRelationshipVersions(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementVersions)">setRelationshipVersions</a></code></div>
@@ -175,15 +177,15 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess,org.odpi.openmetadata.integrationservices.catalog.connector.ConnectorFactoryService)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>HarvestSurveysCatalogTargetProcessor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">HarvestSurveysCatalogTargetProcessor</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;catalogTarget,
+ <a href="../../../../frameworks/integration/context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a>&nbsp;integrationContext,
  <a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
- <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="../../../../frameworks/integration/context/OpenMetadataAccess.html" title="class in org.odpi.openmetadata.frameworks.integration.context">OpenMetadataAccess</a>&nbsp;openMetadataAccess,
- <a href="../../../../integrationservices/catalog/connector/ConnectorFactoryService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ConnectorFactoryService</a>&nbsp;connectorFactoryService)</span>
-                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+ <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
+                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -191,10 +193,9 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 <dd><code>connectorToTarget</code> - connector to access the target resource</dd>
 <dd><code>connectorName</code> - name of this integration connector</dd>
 <dd><code>auditLog</code> - logging destination</dd>
-<dd><code>openMetadataAccess</code> - access to open metadata</dd>
-<dd><code>connectorFactoryService</code> - client for creating open connectors</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - error</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - connector disconnected</dd>
 </dl>
 </section>
 </li>
@@ -223,13 +224,13 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 </section>
 </li>
 <li>
-<section class="detail" id="processEvent(org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent)">
+<section class="detail" id="processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">
 <h3>processEvent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../../../../accessservices/assetmanager/events/AssetManagerOutTopicEvent.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.events">AssetManagerOutTopicEvent</a>&nbsp;event)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</span></div>
 <div class="block">Process an event that was published by the Asset Manager OMAS.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../accessservices/assetmanager/api/AssetManagerEventListener.html#processEvent(org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent)">processEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../accessservices/assetmanager/api/AssetManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerEventListener</a></code></dd>
+<dd><code><a href="../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">processEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>event</code> - event object - call getEventType to find out what type of event.</dd>
 </dl>

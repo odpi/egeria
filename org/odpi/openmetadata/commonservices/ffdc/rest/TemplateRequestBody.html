@@ -72,16 +72,28 @@ loadScripts(document, 'script');</script>
 <h1 title="Class TemplateRequestBody" class="title">Class TemplateRequestBody</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody</a>
-<div class="inheritance"><a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.NewElementOptionsRequestBody</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/AnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.AnchorOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.NewLinkedElementOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions</a>
 <div class="inheritance">org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody</div>
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="GlossaryTemplateRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GlossaryTemplateRequestBody</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">TemplateRequestBody</span>
-<span class="extends-implements">extends <a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a></span></div>
 <div class="block">TemplateRequestBody provides a structure for passing the properties for a new metadata element
  that is to be created via a template.</div>
 </section>
@@ -103,6 +115,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions)" class="member-name-link">TemplateRequestBody</a><wbr>(<a href="../../../frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a>&nbsp;template)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Copy/clone constructor</div>
+</div>
 </div>
 </section>
 </li>
@@ -122,25 +138,35 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Equals method that returns true if containing properties are the same.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholderPropertyValues()" class="member-name-link">getPlaceholderPropertyValues</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentRelationshipProperties()" class="member-name-link">getParentRelationshipProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return any properties that should be included in the parent relationship.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholderPropertyValues()" class="member-name-link">getPlaceholderPropertyValues</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the property values to replace placeholders in the template.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReplacementProperties()" class="member-name-link">getReplacementProperties</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReplacementProperties()" class="member-name-link">getReplacementProperties</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties for the new metadata element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateGUID()" class="member-name-link">getTemplateGUID</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateGUID()" class="member-name-link">getTemplateGUID</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the unique identifier of the element to use as a template (optional).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParentRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)" class="member-name-link">setParentRelationshipProperties</a><wbr>(<a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;parentRelationshipProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up any properties that should be included in the parent relationship.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPlaceholderPropertyValues(java.util.Map)" class="member-name-link">setPlaceholderPropertyValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderPropertyValues)</code></div>
@@ -166,11 +192,23 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.NewElementOptionsRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></h3>
-<code><a href="NewElementOptionsRequestBody.html#getAnchorGUID()">getAnchorGUID</a>, <a href="NewElementOptionsRequestBody.html#getAnchorScopeGUID()">getAnchorScopeGUID</a>, <a href="NewElementOptionsRequestBody.html#getIsOwnAnchor()">getIsOwnAnchor</a>, <a href="NewElementOptionsRequestBody.html#getParentAtEnd1()">getParentAtEnd1</a>, <a href="NewElementOptionsRequestBody.html#getParentGUID()">getParentGUID</a>, <a href="NewElementOptionsRequestBody.html#getParentRelationshipProperties()">getParentRelationshipProperties</a>, <a href="NewElementOptionsRequestBody.html#getParentRelationshipTypeName()">getParentRelationshipTypeName</a>, <a href="NewElementOptionsRequestBody.html#setAnchorGUID(java.lang.String)">setAnchorGUID</a>, <a href="NewElementOptionsRequestBody.html#setAnchorScopeGUID(java.lang.String)">setAnchorScopeGUID</a>, <a href="NewElementOptionsRequestBody.html#setIsOwnAnchor(boolean)">setIsOwnAnchor</a>, <a href="NewElementOptionsRequestBody.html#setParentAtEnd1(boolean)">setParentAtEnd1</a>, <a href="NewElementOptionsRequestBody.html#setParentGUID(java.lang.String)">setParentGUID</a>, <a href="NewElementOptionsRequestBody.html#setParentRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)">setParentRelationshipProperties</a>, <a href="NewElementOptionsRequestBody.html#setParentRelationshipTypeName(java.lang.String)">setParentRelationshipTypeName</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/TemplateOptions.html#getAllowRetrieve()">getAllowRetrieve</a>, <a href="../../../frameworks/openmetadata/search/TemplateOptions.html#getDeepCopy()">getDeepCopy</a>, <a href="../../../frameworks/openmetadata/search/TemplateOptions.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../../../frameworks/openmetadata/search/TemplateOptions.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../../../frameworks/openmetadata/search/TemplateOptions.html#getIsTemplateSubstitute()">getIsTemplateSubstitute</a>, <a href="../../../frameworks/openmetadata/search/TemplateOptions.html#setAllowRetrieve(boolean)">setAllowRetrieve</a>, <a href="../../../frameworks/openmetadata/search/TemplateOptions.html#setDeepCopy(boolean)">setDeepCopy</a>, <a href="../../../frameworks/openmetadata/search/TemplateOptions.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../../../frameworks/openmetadata/search/TemplateOptions.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="../../../frameworks/openmetadata/search/TemplateOptions.html#setIsTemplateSubstitute(boolean)">setIsTemplateSubstitute</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a></h3>
-<code><a href="MetadataSourceRequestBody.html#getEffectiveTime()">getEffectiveTime</a>, <a href="MetadataSourceRequestBody.html#getExternalSourceGUID()">getExternalSourceGUID</a>, <a href="MetadataSourceRequestBody.html#getExternalSourceName()">getExternalSourceName</a>, <a href="MetadataSourceRequestBody.html#getForDuplicateProcessing()">getForDuplicateProcessing</a>, <a href="MetadataSourceRequestBody.html#getForLineage()">getForLineage</a>, <a href="MetadataSourceRequestBody.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a>, <a href="MetadataSourceRequestBody.html#setExternalSourceGUID(java.lang.String)">setExternalSourceGUID</a>, <a href="MetadataSourceRequestBody.html#setExternalSourceName(java.lang.String)">setExternalSourceName</a>, <a href="MetadataSourceRequestBody.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="MetadataSourceRequestBody.html#setForLineage(boolean)">setForLineage</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/NewElementOptions.html#getInitialStatus()">getInitialStatus</a>, <a href="../../../frameworks/openmetadata/search/NewElementOptions.html#setInitialStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)">setInitialStatus</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.NewLinkedElementOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewLinkedElementOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#getOpenMetadataTypeName()">getOpenMetadataTypeName</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#getParentAtEnd1()">getParentAtEnd1</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#getParentGUID()">getParentGUID</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#getParentRelationshipTypeName()">getParentRelationshipTypeName</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#setOpenMetadataTypeName(java.lang.String)">setOpenMetadataTypeName</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#setParentAtEnd1(boolean)">setParentAtEnd1</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#setParentGUID(java.lang.String)">setParentGUID</a>, <a href="../../../frameworks/openmetadata/search/NewLinkedElementOptions.html#setParentRelationshipTypeName(java.lang.String)">setParentRelationshipTypeName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.AnchorOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/AnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">AnchorOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/AnchorOptions.html#getAnchorGUID()">getAnchorGUID</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#getAnchorScopeGUID()">getAnchorScopeGUID</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#getIsOwnAnchor()">getIsOwnAnchor</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#setAnchorGUID(java.lang.String)">setAnchorGUID</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#setAnchorScopeGUID(java.lang.String)">setAnchorScopeGUID</a>, <a href="../../../frameworks/openmetadata/search/AnchorOptions.html#setIsOwnAnchor(boolean)">setIsOwnAnchor</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html#getExternalSourceGUID()">getExternalSourceGUID</a>, <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html#getExternalSourceName()">getExternalSourceName</a>, <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html#setExternalSourceGUID(java.lang.String)">setExternalSourceGUID</a>, <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html#setExternalSourceName(java.lang.String)">setExternalSourceName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">BasicOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/BasicOptions.html#getEffectiveTime()">getEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForDuplicateProcessing()">getForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForLineage()">getForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getGovernanceZoneFilter()">getGovernanceZoneFilter</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForLineage(boolean)">setForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setGovernanceZoneFilter(java.util.List)">setGovernanceZoneFilter</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -196,6 +234,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody)">
 <h3>TemplateRequestBody</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TemplateRequestBody</span><wbr><span class="parameters">(<a href="TemplateRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">TemplateRequestBody</a>&nbsp;template)</span></div>
+<div class="block">Copy/clone constructor</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>template</code> - object to copy</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions)">
+<h3>TemplateRequestBody</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TemplateRequestBody</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a>&nbsp;template)</span></div>
 <div class="block">Copy/clone constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -278,13 +327,35 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getParentRelationshipProperties()">
+<h3>getParentRelationshipProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a></span>&nbsp;<span class="element-name">getParentRelationshipProperties</span>()</div>
+<div class="block">Return any properties that should be included in the parent relationship.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>element properties</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setParentRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)">
+<h3>setParentRelationshipProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setParentRelationshipProperties</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;parentRelationshipProperties)</span></div>
+<div class="block">Set up any properties that should be included in the parent relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>parentRelationshipProperties</code> - element properties</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
 <div class="block">JSON-style toString.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="NewElementOptionsRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/TemplateOptions.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a></code></dd>
 <dt>Returns:</dt>
 <dd>list of properties and their values.</dd>
 </dl>
@@ -297,7 +368,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Equals method that returns true if containing properties are the same.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="NewElementOptionsRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/TemplateOptions.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - object to compare</dd>
 <dt>Returns:</dt>
@@ -312,7 +383,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="NewElementOptionsRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="NewElementOptionsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementOptionsRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/TemplateOptions.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

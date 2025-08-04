@@ -72,6 +72,7 @@ loadScripts(document, 'script');</script>
 <h1 title="Class SchemaAttributeProperties" class="title">Class SchemaAttributeProperties</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
 <div class="inheritance"><a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
 <div class="inheritance"><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
 <div class="inheritance"><a href="SchemaElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties</a>
@@ -80,10 +81,11 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+</div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="apis/APIParameterProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis">APIParameterProperties</a></code>, <code><a href="databases/DatabaseTableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases">DatabaseTableProperties</a></code>, <code><a href="display/DataContainerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">DataContainerProperties</a></code>, <code><a href="events/EventSchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events">EventSchemaAttributeProperties</a></code>, <code><a href="display/QueryDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">QueryDataFieldProperties</a></code>, <code><a href="../../../../commonservices/ffdc/rest/SchemaAttributeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SchemaAttributeRequestBody</a></code>, <code><a href="tabular/TabularColumnProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular">TabularColumnProperties</a></code></dd>
+<dd><code><a href="apis/APIParameterProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis">APIParameterProperties</a></code>, <code><a href="display/DataContainerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">DataContainerProperties</a></code>, <code><a href="events/EventSchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events">EventSchemaAttributeProperties</a></code>, <code><a href="display/QueryDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">QueryDataFieldProperties</a></code>, <code><a href="databases/RelationalTableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases">RelationalTableProperties</a></code>, <code><a href="tabular/TabularColumnProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular">TabularColumnProperties</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SchemaAttributeProperties</span>
@@ -138,136 +140,66 @@ loadScripts(document, 'script');</script>
 <div class="block">Return whether the same value can be used by more than one instance of this attribute.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataType()" class="member-name-link">getDataType</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the data type for this element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefaultValue()" class="member-name-link">getDefaultValue</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the default value for the element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefaultValueOverride()" class="member-name-link">getDefaultValueOverride</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return any default value for this attribute that would override the default defined in the
  schema element for this attribute's type (note only used is type is primitive).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementPosition()" class="member-name-link">getElementPosition</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsNullable()" class="member-name-link">getIsNullable</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the position of this schema attribute in its parent schema.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalTypeGUID()" class="member-name-link">getExternalTypeGUID</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier of this column's type.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFixedValue()" class="member-name-link">getFixedValue</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a fixed literal value - an alternative to default value.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsNullable()" class="member-name-link">getIsNullable</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether the field is nullable or not.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLength()" class="member-name-link">getLength</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLength()" class="member-name-link">getLength</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the length of the data field.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxCardinality()" class="member-name-link">getMaxCardinality</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the maximum number of instances allowed for this attribute.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinCardinality()" class="member-name-link">getMinCardinality</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinimumLength()" class="member-name-link">getMinimumLength</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return this minimum number of instances allowed for this attribute.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinimumLength()" class="member-name-link">getMinimumLength</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the minimum length of the data.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNativeJavaClass()" class="member-name-link">getNativeJavaClass</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNativeClass()" class="member-name-link">getNativeClass</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the Java class to use to represent this type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrderedValues()" class="member-name-link">getOrderedValues</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrderedValues()" class="member-name-link">getOrderedValues</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether the attribute instances are arranged in an order.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPrecision()" class="member-name-link">getPrecision</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the number of significant digits to the right of decimal point.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaType()" class="member-name-link">getSchemaType</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPrecision()" class="member-name-link">getPrecision</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Description fo the schema Type.</div>
+<div class="block">Return the number of significant digits to the right of decimal point.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../enums/DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DataItemSortOrder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSortOrder()" class="member-name-link">getSortOrder</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the order that the attribute instances are arranged in - if any.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidValuesSetGUID()" class="member-name-link">getValidValuesSetGUID</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the set of valid values for this column.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a number that represents the contents of this object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAliases(java.util.List)" class="member-name-link">setAliases</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;aliases)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAliases(java.util.List)" class="member-name-link">setAliases</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;aliases)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up a list of alternative names for the attribute.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAllowsDuplicateValues(boolean)" class="member-name-link">setAllowsDuplicateValues</a><wbr>(boolean&nbsp;allowsDuplicateValues)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAllowsDuplicateValues(boolean)" class="member-name-link">setAllowsDuplicateValues</a><wbr>(boolean&nbsp;allowsDuplicateValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up whether the same value can be used by more than one instance of this attribute.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDataType(java.lang.String)" class="member-name-link">setDataType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataType)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the data type for this element.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDefaultValue(java.lang.String)" class="member-name-link">setDefaultValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;defaultValue)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDefaultValueOverride(java.lang.String)" class="member-name-link">setDefaultValueOverride</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;defaultValueOverride)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the default value for the element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDefaultValueOverride(java.lang.String)" class="member-name-link">setDefaultValueOverride</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;defaultValueOverride)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up any default value for this attribute that would override the default defined in the
  schema element for this attribute's type (note only used is type is primitive).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementPosition(int)" class="member-name-link">setElementPosition</a><wbr>(int&nbsp;elementPosition)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the position of this schema attribute in its parent schema.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExternalTypeGUID(java.lang.String)" class="member-name-link">setExternalTypeGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalTypeGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">If the type of this column is represented by an external (standard type) put its value here.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFixedValue(java.lang.String)" class="member-name-link">setFixedValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fixedValue)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">If the column contains a fixed literal value, set this value here - an alternative to default value.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIsNullable(boolean)" class="member-name-link">setIsNullable</a><wbr>(boolean&nbsp;nullable)</code></div>
@@ -280,22 +212,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the length of the data field.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxCardinality(int)" class="member-name-link">setMaxCardinality</a><wbr>(int&nbsp;maxCardinality)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the maximum number of instances allowed for this attribute.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMinCardinality(int)" class="member-name-link">setMinCardinality</a><wbr>(int&nbsp;minCardinality)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the minimum number of instances allowed for this attribute.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMinimumLength(int)" class="member-name-link">setMinimumLength</a><wbr>(int&nbsp;minimumLength)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the minimum length of the data.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNativeJavaClass(java.lang.String)" class="member-name-link">setNativeJavaClass</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nativeJavaClass)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNativeClass(java.lang.String)" class="member-name-link">setNativeClass</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nativeClass)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the name of the Java class to use to represent this type.</div>
 </div>
@@ -310,20 +232,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the number of significant digits to the right of decimal point.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSchemaType(org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties)" class="member-name-link">setSchemaType</a><wbr>(<a href="SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaType)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSortOrder(org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder)" class="member-name-link">setSortOrder</a><wbr>(<a href="../../enums/DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DataItemSortOrder</a>&nbsp;sortOrder)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the description of the schemaType.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSortOrder(org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder)" class="member-name-link">setSortOrder</a><wbr>(<a href="../../enums/DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DataItemSortOrder</a>&nbsp;sortOrder)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the order that the attribute instances are arranged in - if any.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValidValuesSetGUID(java.lang.String)" class="member-name-link">setValidValuesSetGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValuesSetGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">If the type is controlled by a fixed set of values, set up the unique identifier of the valid values set
- that lists the valid values.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -335,13 +246,16 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.schema.<a href="SchemaElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaElementProperties</a></h3>
-<code><a href="SchemaElementProperties.html#getDescription()">getDescription</a>, <a href="SchemaElementProperties.html#getDisplayName()">getDisplayName</a>, <a href="SchemaElementProperties.html#getIsDeprecated()">getIsDeprecated</a>, <a href="SchemaElementProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="SchemaElementProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="SchemaElementProperties.html#setIsDeprecated(boolean)">setIsDeprecated</a></code></div>
+<code><a href="SchemaElementProperties.html#getUserDefinedStatus()">getUserDefinedStatus</a>, <a href="SchemaElementProperties.html#setUserDefinedStatus(java.lang.String)">setUserDefinedStatus</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
-<code><a href="../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../ReferenceableProperties.html#getVendorProperties()">getVendorProperties</a>, <a href="../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../ReferenceableProperties.html#setVendorProperties(java.util.Map)">setVendorProperties</a></code></div>
+<code><a href="../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></h3>
-<code><a href="../OpenMetadataRootProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../OpenMetadataRootProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../OpenMetadataRootProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../OpenMetadataRootProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="../OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
+<code><a href="../OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">EntityProperties</a></h3>
+<code><a href="../EntityProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../EntityProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../EntityProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../EntityProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -382,72 +296,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getElementPosition()">
-<h3>getElementPosition</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getElementPosition</span>()</div>
-<div class="block">Return the position of this schema attribute in its parent schema.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>int position in schema - 0 means first</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setElementPosition(int)">
-<h3>setElementPosition</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElementPosition</span><wbr><span class="parameters">(int&nbsp;elementPosition)</span></div>
-<div class="block">Set up the position of this schema attribute in its parent schema.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>elementPosition</code> - int position in schema - 0 means first</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getMinCardinality()">
-<h3>getMinCardinality</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMinCardinality</span>()</div>
-<div class="block">Return this minimum number of instances allowed for this attribute.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>int</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setMinCardinality(int)">
-<h3>setMinCardinality</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMinCardinality</span><wbr><span class="parameters">(int&nbsp;minCardinality)</span></div>
-<div class="block">Set up the minimum number of instances allowed for this attribute.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>minCardinality</code> - int</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getMaxCardinality()">
-<h3>getMaxCardinality</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMaxCardinality</span>()</div>
-<div class="block">Return the maximum number of instances allowed for this attribute.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>int (-1 means infinite)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setMaxCardinality(int)">
-<h3>setMaxCardinality</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMaxCardinality</span><wbr><span class="parameters">(int&nbsp;maxCardinality)</span></div>
-<div class="block">Set up the maximum number of instances allowed for this attribute.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>maxCardinality</code> - int (-1 means infinite)</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getAllowsDuplicateValues()">
 <h3>getAllowsDuplicateValues</h3>
@@ -627,9 +475,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getNativeJavaClass()">
-<h3>getNativeJavaClass</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNativeJavaClass</span>()</div>
+<section class="detail" id="getNativeClass()">
+<h3>getNativeClass</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNativeClass</span>()</div>
 <div class="block">Return the name of the Java class to use to represent this type.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -638,13 +486,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setNativeJavaClass(java.lang.String)">
-<h3>setNativeJavaClass</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNativeJavaClass</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nativeJavaClass)</span></div>
+<section class="detail" id="setNativeClass(java.lang.String)">
+<h3>setNativeClass</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNativeClass</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nativeClass)</span></div>
 <div class="block">Set up the name of the Java class to use to represent this type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>nativeJavaClass</code> - fully qualified Java class name</dd>
+<dd><code>nativeClass</code> - fully qualified Java class name</dd>
 </dl>
 </section>
 </li>
@@ -667,140 +515,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>aliases</code> - list of names</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDataType()">
-<h3>getDataType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDataType</span>()</div>
-<div class="block">Return the data type for this element.  Null means unknown data type.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string data type name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setDataType(java.lang.String)">
-<h3>setDataType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDataType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataType)</span></div>
-<div class="block">Set up the data type for this element.  Null means unknown data type.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>dataType</code> - data type name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDefaultValue()">
-<h3>getDefaultValue</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDefaultValue</span>()</div>
-<div class="block">Return the default value for the element.  Null means no default value set up.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string containing default value</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setDefaultValue(java.lang.String)">
-<h3>setDefaultValue</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDefaultValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;defaultValue)</span></div>
-<div class="block">Set up the default value for the element.  Null means no default value set up.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>defaultValue</code> - String containing default value</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getFixedValue()">
-<h3>getFixedValue</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFixedValue</span>()</div>
-<div class="block">Return a fixed literal value - an alternative to default value.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string value</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setFixedValue(java.lang.String)">
-<h3>setFixedValue</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFixedValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fixedValue)</span></div>
-<div class="block">If the column contains a fixed literal value, set this value here - an alternative to default value.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>fixedValue</code> - string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getExternalTypeGUID()">
-<h3>getExternalTypeGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getExternalTypeGUID</span>()</div>
-<div class="block">Return the unique identifier of this column's type.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>unique identifier (guid) of the external schema type</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setExternalTypeGUID(java.lang.String)">
-<h3>setExternalTypeGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setExternalTypeGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalTypeGUID)</span></div>
-<div class="block">If the type of this column is represented by an external (standard type) put its value here.  No need to set
- dataType, FixedType or defaultType</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>externalTypeGUID</code> - unique identifier (guid) of the external schema type</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getValidValuesSetGUID()">
-<h3>getValidValuesSetGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getValidValuesSetGUID</span>()</div>
-<div class="block">Return the set of valid values for this column.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>unique identifier (guid) of the valid values set</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setValidValuesSetGUID(java.lang.String)">
-<h3>setValidValuesSetGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValidValuesSetGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValuesSetGUID)</span></div>
-<div class="block">If the type is controlled by a fixed set of values, set up the unique identifier of the valid values set
- that lists the valid values.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>validValuesSetGUID</code> - unique identifier (guid) of the valid values set</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSchemaType()">
-<h3>getSchemaType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a></span>&nbsp;<span class="element-name">getSchemaType</span>()</div>
-<div class="block">Description fo the schema Type.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>schema type properties</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setSchemaType(org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties)">
-<h3>setSchemaType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSchemaType</span><wbr><span class="parameters">(<a href="SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaType)</span></div>
-<div class="block">Set up the description of the schemaType.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>schemaType</code> - schema type</dd>
 </dl>
 </section>
 </li>

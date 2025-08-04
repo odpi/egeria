@@ -111,38 +111,28 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetSearchMatchesListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findInAssetDomain(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">findInAssetDomain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- boolean&nbsp;startsWith,
- boolean&nbsp;endsWith,
- boolean&nbsp;ignoreCase,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findInAssetDomain(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findInAssetDomain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Locate string value in elements that are anchored to assets.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetGraphResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetGraph(java.lang.String,java.lang.String,int,int)" class="member-name-link">getAssetGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAssetGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AssetLineageGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetLineageGraph(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody)" class="member-name-link">getAssetLineageGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetLineageGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody)" class="member-name-link">getAssetLineageGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/AssetLineageGraphRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return all the elements that are linked to an asset using lineage relationships.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/ocf/metadatamanagement/rest/AssetsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest">AssetsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getAssetsByMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getAssetsByMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of assets that come from the requested metadata collection.</div>
@@ -203,46 +193,38 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetGraph(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getAssetGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getAssetGraph</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/assets/{assetGUID}/as-graph")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/assets/{assetGUID}/as-graph")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetGraphResponse</a></span>&nbsp;<span class="element-name">getAssetGraph</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;startFrom,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;pageSize)</span></div>
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>assetGUID</code> - uniqueId for the connection.</dd>
-<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
-<dd><code>pageSize</code> - maximum number of results to return</dd>
+<dd><code>requestBody</code> - options used to retrieve metadata</dd>
 <dt>Returns:</dt>
 <dd>graph of elements or
  InvalidParameterException one of the parameters is null or invalid or
  PropertyServerException there is a problem retrieving the connected asset properties from the property server or
  UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server or
- NoConnectedAssetException there is no asset associated with this connection or
  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetLineageGraph(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody)">
+<section class="detail" id="getAssetLineageGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody)">
 <h3>getAssetLineageGraph</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assets/{assetGUID}/as-lineage-graph")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AssetLineageGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphResponse</a></span>&nbsp;<span class="element-name">getAssetLineageGraph</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;startFrom,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;pageSize,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/AssetLineageGraphRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return all the elements that are linked to an asset using lineage relationships.  The relationships are
@@ -252,8 +234,6 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>assetGUID</code> - unique identifier for the asset</dd>
 <dd><code>requestBody</code> - list of relationship type names to use in the search plus information supply chain details</dd>
-<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
-<dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt>Returns:</dt>
 <dd>graph of elements or
  InvalidParameterException - one of the parameters is null or invalid or
@@ -263,33 +243,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findInAssetDomain(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
+<section class="detail" id="findInAssetDomain(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <h3>findInAssetDomain</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assets/in-domain/by-search-string")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetSearchMatchesListResponse</a></span>&nbsp;<span class="element-name">findInAssetDomain</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam(required=false,defaultValue="true")
- boolean&nbsp;startsWith,
- @RequestParam(required=false,defaultValue="false")
- boolean&nbsp;endsWith,
- @RequestParam(required=false,defaultValue="false")
- boolean&nbsp;ignoreCase,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;startFrom,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;pageSize,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Locate string value in elements that are anchored to assets.  The search string may be a regEx.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>requestBody</code> - string to search for in text</dd>
-<dd><code>startsWith</code> - does the value start with the supplied string?</dd>
-<dd><code>endsWith</code> - does the value end with the supplied string?</dd>
-<dd><code>ignoreCase</code> - should the search ignore case?</dd>
-<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
-<dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt>Returns:</dt>
 <dd>list of results for assets that match the search string or
  InvalidParameterException the searchString is invalid or
@@ -299,17 +264,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
+<section class="detail" id="getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getAssetsByMetadataCollectionId</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assets/by-metadata-collection-id/{metadataCollectionId}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/ocf/metadatamanagement/rest/AssetsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest">AssetsResponse</a></span>&nbsp;<span class="element-name">getAssetsByMetadataCollectionId</span><wbr><span class="parameters">(@PathVariable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getAssetsByMetadataCollectionId</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;startFrom,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;pageSize,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a list of assets that come from the requested metadata collection.</div>
@@ -317,8 +278,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>metadataCollectionId</code> - guid to search for</dd>
-<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
-<dd><code>pageSize</code> - maximum number of results to return</dd>
 <dd><code>requestBody</code> - optional type name to restrict search by</dd>
 <dt>Returns:</dt>
 <dd>list of unique identifiers for Assets with the requested name or

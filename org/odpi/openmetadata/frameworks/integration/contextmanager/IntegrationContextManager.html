@@ -76,12 +76,17 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
+<dt>All Implemented Interfaces:</dt>
+<dd><code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
+</dl>
+<dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../integrationservices/analytics/contextmanager/AnalyticsIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.analytics.contextmanager">AnalyticsIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/api/contextmanager/APIIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.api.contextmanager">APIIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/catalog/contextmanager/CatalogIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.catalog.contextmanager">CatalogIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/database/contextmanager/DatabaseIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.database.contextmanager">DatabaseIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/display/contextmanager/DisplayIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.display.contextmanager">DisplayIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/files/contextmanager/FilesIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.files.contextmanager">FilesIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/infrastructure/contextmanager/InfrastructureIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.infrastructure.contextmanager">InfrastructureIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/lineage/contextmanager/LineageIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.lineage.contextmanager">LineageIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/organization/contextmanager/OrganizationIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.organization.contextmanager">OrganizationIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/security/contextmanager/SecurityIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.security.contextmanager">SecurityIntegratorContextManager</a></code>, <code><a href="../../../integrationservices/topic/contextmanager/TopicIntegratorContextManager.html" title="class in org.odpi.openmetadata.integrationservices.topic.contextmanager">TopicIntegratorContextManager</a></code></dd>
+<dd><code><a href="../../../frameworkservices/oif/client/contextmanager/OIFContextManager.html" title="class in org.odpi.openmetadata.frameworkservices.oif.client.contextmanager">OIFContextManager</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">IntegrationContextManager</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">IntegrationContextManager</span>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+implements <a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></span></div>
 <div class="block">IntegrationContextManager is the base class for the context manager that is implemented by each integration service.</div>
 </section>
 <section class="summary">
@@ -95,35 +100,41 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="../../governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></div>
-<div class="col-second even-row-color"><code><a href="#actionControlInterface" class="member-name-link">actionControlInterface</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></code></div>
+<div class="col-second even-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="../../connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#connectedAssetClient" class="member-name-link">connectedAssetClient</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="../context/ConnectedAssetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ConnectedAssetContext</a></code></div>
-<div class="col-second even-row-color"><code><a href="#connectedAssetContext" class="member-name-link">connectedAssetContext</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="../../governanceaction/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceConfiguration</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#governanceConfiguration" class="member-name-link">governanceConfiguration</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#localServerName" class="member-name-link">localServerName</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="../../governanceaction/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceConfiguration</a></code></div>
+<div class="col-second even-row-color"><code><a href="#governanceConfiguration" class="member-name-link">governanceConfiguration</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#localServerPassword" class="member-name-link">localServerPassword</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#localServerName" class="member-name-link">localServerName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#localServerUserId" class="member-name-link">localServerUserId</a></code></div>
+<div class="col-second even-row-color"><code><a href="#localServerPassword" class="member-name-link">localServerPassword</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#localServerUserId" class="member-name-link">localServerUserId</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#localServiceName" class="member-name-link">localServiceName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected int</code></div>
 <div class="col-second odd-row-color"><code><a href="#maxPageSize" class="member-name-link">maxPageSize</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a></code></div>
-<div class="col-second even-row-color"><code><a href="#openIntegrationClient" class="member-name-link">openIntegrationClient</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="../../governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></code></div>
+<div class="col-second even-row-color"><code><a href="#openGovernanceClient" class="member-name-link">openGovernanceClient</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#openMetadataStoreClient" class="member-name-link">openMetadataStoreClient</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#openIntegrationClient" class="member-name-link">openIntegrationClient</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></div>
+<div class="col-second even-row-color"><code><a href="#openMetadataClient" class="member-name-link">openMetadataClient</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="../../openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#openMetadataEventClient" class="member-name-link">openMetadataEventClient</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#partnerOMASPlatformRootURL" class="member-name-link">partnerOMASPlatformRootURL</a></code></div>
@@ -131,9 +142,6 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#partnerOMASServerName" class="member-name-link">partnerOMASServerName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#serviceOptions" class="member-name-link">serviceOptions</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -159,38 +167,59 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createClients(int)" class="member-name-link">createClients</a><wbr>(int&nbsp;maxPageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createClients()" class="member-name-link">createClients</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Suggestion for subclass to create client(s) to partner OMAS.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeContextManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">initializeContextManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../../openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createEventClient(java.lang.String)" class="member-name-link">createEventClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Suggestion for subclass to create client(s) to partner OMAS.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeContextManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">initializeContextManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASPlatformRootURL,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;serviceOptions,
  int&nbsp;maxPageSize,
  <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Initialize server properties for the context manager.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(java.lang.String)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called each time an open lineage run event is published to the integration daemon.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="../openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called each time an open lineage run event is published to the integration demon.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a>&nbsp;listener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The listener is implemented by the integration connector.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,boolean,java.lang.String)" class="member-name-link">setContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod)" class="member-name-link">setContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
  <a href="../connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a>&nbsp;integrationConnector,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
  <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
  boolean&nbsp;generateIntegrationReport,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName,
+ <a href="../../openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a>&nbsp;deleteMethod)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the context in the supplied connector.</div>
 </div>
@@ -245,27 +274,39 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="actionControlInterface">
-<h3>actionControlInterface</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></span>&nbsp;<span class="element-name">actionControlInterface</span></div>
+<section class="detail" id="connectedAssetClient">
+<h3>connectedAssetClient</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></span>&nbsp;<span class="element-name">connectedAssetClient</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="connectedAssetContext">
-<h3>connectedAssetContext</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../context/ConnectedAssetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ConnectedAssetContext</a></span>&nbsp;<span class="element-name">connectedAssetContext</span></div>
+<section class="detail" id="openMetadataClient">
+<h3>openMetadataClient</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></span>&nbsp;<span class="element-name">openMetadataClient</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="openMetadataStoreClient">
-<h3>openMetadataStoreClient</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></span>&nbsp;<span class="element-name">openMetadataStoreClient</span></div>
+<section class="detail" id="openMetadataEventClient">
+<h3>openMetadataEventClient</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a></span>&nbsp;<span class="element-name">openMetadataEventClient</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="openGovernanceClient">
+<h3>openGovernanceClient</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></span>&nbsp;<span class="element-name">openGovernanceClient</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="localServerName">
 <h3>localServerName</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">localServerName</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="localServiceName">
+<h3>localServiceName</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">localServiceName</span></div>
 </section>
 </li>
 <li>
@@ -278,12 +319,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="localServerPassword">
 <h3>localServerPassword</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">localServerPassword</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="serviceOptions">
-<h3>serviceOptions</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">serviceOptions</span></div>
 </section>
 </li>
 <li>
@@ -322,39 +357,51 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="initializeContextManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="initializeContextManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>initializeContextManager</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeContextManager</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASPlatformRootURL,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;serviceOptions,
  int&nbsp;maxPageSize,
  <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
 <div class="block">Initialize server properties for the context manager.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>localServerName</code> - name of this integration daemon</dd>
+<dd><code>localServiceName</code> - name of calling service</dd>
 <dd><code>partnerOMASServerName</code> - name of the server to connect to</dd>
 <dd><code>partnerOMASPlatformRootURL</code> - the network address of the server running the OMAS REST services</dd>
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
-<dd><code>serviceOptions</code> - options from the integration service's configuration</dd>
 <dd><code>maxPageSize</code> - maximum number of results that can be returned on a single REST call</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="createClients(int)">
+<section class="detail" id="createClients()">
 <h3>createClients</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createClients</span><wbr><span class="parameters">(int&nbsp;maxPageSize)</span>
-                   throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createClients</span>()
+                            throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
+<div class="block">Suggestion for subclass to create client(s) to partner OMAS.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the subclass is not able to create one of its clients</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createEventClient(java.lang.String)">
+<h3>createEventClient</h3>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../../openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a></span>&nbsp;<span class="element-name">createEventClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId)</span>
+                                                   throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Suggestion for subclass to create client(s) to partner OMAS.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>maxPageSize</code> - maximum value allowed for page size</dd>
+<dd><code>connectorId</code> - used as the caller Id</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the subclass is not able to create one of its clients</dd>
 </dl>
@@ -387,7 +434,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,boolean,java.lang.String)">
+<section class="detail" id="setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod)">
 <h3>setContext</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></span>&nbsp;<span class="element-name">setContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
@@ -396,7 +443,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
  <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
  boolean&nbsp;generateIntegrationReport,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName,
+ <a href="../../openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a>&nbsp;deleteMethod)</span>
                               throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -417,6 +465,50 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the connector is not of the correct type</dd>
 <dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
 <dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="registerListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)">
+<h3>registerListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerListener</span><wbr><span class="parameters">(<a href="../openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a>&nbsp;listener)</span></div>
+<div class="block">The listener is implemented by the integration connector.  Once it is registered with the context, its processOpenLineageRunEvent()
+ method is called each time an open lineage event is published to the integration daemon.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../openlineage/OpenLineageListenerManager.html#registerListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)">registerListener</a></code>&nbsp;in interface&nbsp;<code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to call</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishOpenLineageRunEvent(java.lang.String)">
+<h3>publishOpenLineageRunEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageRunEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</span></div>
+<div class="block">Called each time an open lineage run event is published to the integration daemon.  The integration connector is able to
+ work with the formatted event using the Egeria beans or reformat the open lineage run event using the supplied open lineage backend beans
+ or another set of beans.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../openlineage/OpenLineageListenerManager.html#publishOpenLineageRunEvent(java.lang.String)">publishOpenLineageRunEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>rawEvent</code> - json payload received for the event</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)">
+<h3>publishOpenLineageRunEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageRunEvent</span><wbr><span class="parameters">(<a href="../openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event)</span></div>
+<div class="block">Called each time an open lineage run event is published to the integration demon.  The integration connector is able to
+ work with the formatted event using the Egeria beans or reformat the open lineage run event using the supplied open lineage backend beans
+ or another set of beans.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../openlineage/OpenLineageListenerManager.html#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)">publishOpenLineageRunEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>event</code> - bean for the event</dd>
 </dl>
 </section>
 </li>

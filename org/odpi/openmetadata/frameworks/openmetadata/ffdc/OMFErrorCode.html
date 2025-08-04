@@ -85,8 +85,8 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">OMFErrorCode</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a>&gt;
 implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
-<div class="block">The GAF error code is used to define first failure data capture (FFDC) for errors that occur when working with
- GAF Components.  It is used in conjunction with the GAFCheckedException and GAFRuntimeException.
+<div class="block">The OMF error code is used to define first failure data capture (FFDC) for errors that occur when working with
+ OMF Components.  It is used in conjunction with the OMFCheckedException and OMFRuntimeException.
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -123,93 +123,137 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ARRAY_OUT_OF_BOUNDS" class="member-name-link">ARRAY_OUT_OF_BOUNDS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GAF-PROPERTIES-400-009 - {0} is unable to add a new element to location {1} of an array of size {2} value</div>
+<div class="block">OPEN-METADATA-400-009 - {0} is unable to add a new element to location {1} of an array of size {2} value</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#BAD_ENTITY" class="member-name-link">BAD_ENTITY</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">GAF-CONVERTER-500-011 - An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
+<div class="block">OPEN-METADATA-500-011 - An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#BAD_INSTANCE_TYPE" class="member-name-link">BAD_INSTANCE_TYPE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GAF-CONVERTER-500-005 - One of the converters for the {0} service is not able to populate a bean of type {1}
+<div class="block">OPEN-METADATA-500-010 - One of the converters for the {0} service is not able to populate a bean of type {1}
  because a metadata instance of type {2} was passed to method {3} instead of the expected type of {4}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#BAD_RELATIONSHIP" class="member-name-link">BAD_RELATIONSHIP</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">GAF-CONVERTER-500-013 - A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
+<div class="block">OPEN-METADATA-500-013 - A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DUPLICATE_ELEMENT" class="member-name-link">DUPLICATE_ELEMENT</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DISCONNECT_DETECTED" class="member-name-link">DISCONNECT_DETECTED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GAF-PROPERTIES-400-007 - The unique name {0} passed on the {1} parameter of the {2} operation matches multiple elements: {3}</div>
+<div class="block">OPEN-METADATA-400-001 - The {0} survey action service has been disconnected - either due to its own actions or a cancel request</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#HELPER_LOGIC_ERROR" class="member-name-link">HELPER_LOGIC_ERROR</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#DUPLICATE_ELEMENT" class="member-name-link">DUPLICATE_ELEMENT</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">GAF-PROPERTIES-HELPER-503-001 - A caller {0} has passed an invalid parameter to the propertiesHelper {1} operation as part of the {2} request</div>
+<div class="block">OPEN-METADATA-400-007 - The unique name {0} passed on the {1} parameter of the {2} operation matches multiple elements: {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#HELPER_LOGIC_EXCEPTION" class="member-name-link">HELPER_LOGIC_EXCEPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#HELPER_LOGIC_ERROR" class="member-name-link">HELPER_LOGIC_ERROR</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GAF-PROPERTIES-HELPER-503-002 - A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2}
+<div class="block">OPEN-METADATA-503-001 - A caller {0} has passed an invalid parameter to the propertiesHelper {1} operation as part of the {2} request</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#HELPER_LOGIC_EXCEPTION" class="member-name-link">HELPER_LOGIC_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-503-002 - A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2}
  request resulting in an unexpected exception {3} with message {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INVALID_BEAN_CLASS" class="member-name-link">INVALID_BEAN_CLASS</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">GAF-CONVERTER-500-001 - An unsupported bean class named {0} was passed to the repository services by the {1} request for
+<div class="col-first even-row-color"><code><a href="#INVALID_BEAN_CLASS" class="member-name-link">INVALID_BEAN_CLASS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-METADATA-500-006 - An unsupported bean class named {0} was passed to the repository services by the {1} request for
  open metadata access service {2} on server {3}; error message was: {4}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INVALID_PRIMITIVE_CATEGORY" class="member-name-link">INVALID_PRIMITIVE_CATEGORY</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">GAF-PROPERTIES-500-003 - There is a problem in the definition of primitive type {0}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#INVALID_PRIMITIVE_CLASS_NAME" class="member-name-link">INVALID_PRIMITIVE_CLASS_NAME</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#INVALID_PRIMITIVE_CATEGORY" class="member-name-link">INVALID_PRIMITIVE_CATEGORY</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">GAF-PROPERTIES-500-001 - The Java class {0} for PrimitiveTypeCategory {1} is not known</div>
+<div class="block">OPEN-METADATA-500-004 - There is a problem in the definition of primitive type {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INVALID_PRIMITIVE_TYPE" class="member-name-link">INVALID_PRIMITIVE_TYPE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#INVALID_PRIMITIVE_CLASS_NAME" class="member-name-link">INVALID_PRIMITIVE_CLASS_NAME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GAF-PROPERTIES-500-004 - The value supplied for an attribute of PrimitiveTypeCategory {0} is expected as Java class {1} but was supplied as Java class {2}</div>
+<div class="block">OPEN-METADATA-500-002 - The Java class {0} for PrimitiveTypeCategory {1} is not known</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INVALID_PRIMITIVE_VALUE" class="member-name-link">INVALID_PRIMITIVE_VALUE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#INVALID_PRIMITIVE_TYPE" class="member-name-link">INVALID_PRIMITIVE_TYPE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">GAF-PROPERTIES-500-002 - The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveTypeCategory {2}</div>
+<div class="block">OPEN-METADATA-500-005 - The value supplied for an attribute of PrimitiveTypeCategory {0} is expected as Java class {1} but was supplied as Java class {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#MISSING_CONVERTER_METHOD" class="member-name-link">MISSING_CONVERTER_METHOD</a></code></div>
+<div class="col-first even-row-color"><code><a href="#INVALID_PRIMITIVE_VALUE" class="member-name-link">INVALID_PRIMITIVE_VALUE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GAF-CONVERTER-500-002 - The {0} service has not implemented the {1} method in a subclass of the {2} converter class for
+<div class="block">OPEN-METADATA-500-003 - The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveTypeCategory {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INVALID_SEARCH_STRING" class="member-name-link">INVALID_SEARCH_STRING</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-400-028 - The search string passed on the {0} parameter of the {1} operation is invalid and results in a {2} exception when executed.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#MAX_PAGE_SIZE" class="member-name-link">MAX_PAGE_SIZE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-METADATA-400-025 - The number of records to return, {0}, passed on the {1} parameter of the {2} operation, is greater than the allowable maximum of {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MISSING_CONVERTER_METHOD" class="member-name-link">MISSING_CONVERTER_METHOD</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-500-007 - The {0} service has not implemented the {1} method in a subclass of the {2} converter class for
  bean class {3} and so is unable to create the bean for method {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MISSING_METADATA_INSTANCE" class="member-name-link">MISSING_METADATA_INSTANCE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">GAF-CONVERTER-500-004 - One of the converters for the {0} service is not able to populate a bean of type {1}
+<div class="col-first even-row-color"><code><a href="#MISSING_METADATA_INSTANCE" class="member-name-link">MISSING_METADATA_INSTANCE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-METADATA-500-009 - One of the converters for the {0} service is not able to populate a bean of type {1}
  because a metadata instance of type {2} has not passed to method {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_METADATA_ELEMENT" class="member-name-link">NO_METADATA_ELEMENT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">GAF-PROPERTIES-400-010 - The {0} method has been called without an open metadata element to work with</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_GUID" class="member-name-link">NULL_GUID</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NEGATIVE_PAGE_SIZE" class="member-name-link">NEGATIVE_PAGE_SIZE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">GAF-PROPERTIES-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
+<div class="block">OPEN-METADATA-400-024 - The page size {0} for the results, passed on the {1} parameter of the {2} operation, is negative</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_NAME" class="member-name-link">NULL_NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NEGATIVE_START_FROM" class="member-name-link">NEGATIVE_START_FROM</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GAF-PROPERTIES-400-004 - The name passed on the {0} parameter of the {1} operation is null</div>
+<div class="block">OPEN-METADATA-400-023 - The starting point for the results {0}, passed on the {1} parameter of the {2} operation, is negative</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NO_METADATA_ELEMENT" class="member-name-link">NO_METADATA_ELEMENT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-400-010 - The {0} method has been called without an open metadata element to work with</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_GUID" class="member-name-link">NULL_GUID</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-METADATA-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_NAME" class="member-name-link">NULL_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-400-004 - The name passed on the {0} parameter of the {1} operation is null</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_OBJECT" class="member-name-link">NULL_OBJECT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-METADATA-400-002 - The object passed on the {0} parameter of the {1} operation is null</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#NULL_PROPERTY_NAME" class="member-name-link">NULL_PROPERTY_NAME</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">GAF-PROPERTIES-400-008 - Null property name passed to properties object</div>
+<div class="block">OPEN-METADATA-400-008 - Null property name passed to properties object</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_BEAN_CLASS" class="member-name-link">UNEXPECTED_BEAN_CLASS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NULL_SEARCH_STRING" class="member-name-link">NULL_SEARCH_STRING</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GAF-CONVERTER-500-003 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
+<div class="block">OPEN-METADATA-400-022 - The search string passed on the {0} parameter of the {1} operation is null</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_TEXT" class="member-name-link">NULL_TEXT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-400-021 - The text field value passed on the {0} parameter of the {1} operation is null</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_USER_ID" class="member-name-link">NULL_USER_ID</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-METADATA-400-020 - The user identifier (user id) passed on the {0} operation is null</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_BEAN_CLASS" class="member-name-link">UNEXPECTED_BEAN_CLASS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-500-008 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
  open metadata access service {2} on server {3}; the expected class name is: {4}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_CONVERTER_EXCEPTION" class="member-name-link">UNEXPECTED_CONVERTER_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-METADATA-500-025 - The Design Model OMAS has received an unexpected {0} exception while formatting a response during method {1}.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">GAF-GOVERNANCE-SERVICE-500-001 - Unexpected {0} exception in governance action service {1} of type {2} detected by method {3}.</div>
+<div class="block">OPEN-METADATA-500-001 - Unexpected {0} exception in service {1} of type {2} detected by method {3}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_IO_EXCEPTION" class="member-name-link">UNEXPECTED_IO_EXCEPTION</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GAF-PROPERTIES-400-006 - The unique name {0} passed on the {1} parameter of the {2} operation is not known to the metadata store</div>
+<div class="block">OPEN-METADATA-400-003 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-400-006 - The unique name {0} passed on the {1} parameter of the {2} operation is not known to the metadata store</div>
 </div>
 </div>
 </section>
@@ -272,109 +316,164 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="DISCONNECT_DETECTED">
+<h3>DISCONNECT_DETECTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">DISCONNECT_DETECTED</span></div>
+<div class="block">OPEN-METADATA-400-001 - The {0} survey action service has been disconnected - either due to its own actions or a cancel request</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_OBJECT">
+<h3>NULL_OBJECT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NULL_OBJECT</span></div>
+<div class="block">OPEN-METADATA-400-002 - The object passed on the {0} parameter of the {1} operation is null</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNEXPECTED_IO_EXCEPTION">
+<h3>UNEXPECTED_IO_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_IO_EXCEPTION</span></div>
+<div class="block">OPEN-METADATA-400-003 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}</div>
+</section>
+</li>
+<li>
 <section class="detail" id="NULL_NAME">
 <h3>NULL_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NULL_NAME</span></div>
-<div class="block">GAF-PROPERTIES-400-004 - The name passed on the {0} parameter of the {1} operation is null</div>
+<div class="block">OPEN-METADATA-400-004 - The name passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_GUID">
 <h3>NULL_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NULL_GUID</span></div>
-<div class="block">GAF-PROPERTIES-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
+<div class="block">OPEN-METADATA-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_ELEMENT">
 <h3>UNKNOWN_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ELEMENT</span></div>
-<div class="block">GAF-PROPERTIES-400-006 - The unique name {0} passed on the {1} parameter of the {2} operation is not known to the metadata store</div>
+<div class="block">OPEN-METADATA-400-006 - The unique name {0} passed on the {1} parameter of the {2} operation is not known to the metadata store</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DUPLICATE_ELEMENT">
 <h3>DUPLICATE_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">DUPLICATE_ELEMENT</span></div>
-<div class="block">GAF-PROPERTIES-400-007 - The unique name {0} passed on the {1} parameter of the {2} operation matches multiple elements: {3}</div>
+<div class="block">OPEN-METADATA-400-007 - The unique name {0} passed on the {1} parameter of the {2} operation matches multiple elements: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_PROPERTY_NAME">
 <h3>NULL_PROPERTY_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NULL_PROPERTY_NAME</span></div>
-<div class="block">GAF-PROPERTIES-400-008 - Null property name passed to properties object</div>
+<div class="block">OPEN-METADATA-400-008 - Null property name passed to properties object</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ARRAY_OUT_OF_BOUNDS">
 <h3>ARRAY_OUT_OF_BOUNDS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">ARRAY_OUT_OF_BOUNDS</span></div>
-<div class="block">GAF-PROPERTIES-400-009 - {0} is unable to add a new element to location {1} of an array of size {2} value</div>
+<div class="block">OPEN-METADATA-400-009 - {0} is unable to add a new element to location {1} of an array of size {2} value</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_METADATA_ELEMENT">
 <h3>NO_METADATA_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NO_METADATA_ELEMENT</span></div>
-<div class="block">GAF-PROPERTIES-400-010 - The {0} method has been called without an open metadata element to work with</div>
+<div class="block">OPEN-METADATA-400-010 - The {0} method has been called without an open metadata element to work with</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_USER_ID">
+<h3>NULL_USER_ID</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NULL_USER_ID</span></div>
+<div class="block">OPEN-METADATA-400-020 - The user identifier (user id) passed on the {0} operation is null</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_TEXT">
+<h3>NULL_TEXT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NULL_TEXT</span></div>
+<div class="block">OPEN-METADATA-400-021 - The text field value passed on the {0} parameter of the {1} operation is null</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_SEARCH_STRING">
+<h3>NULL_SEARCH_STRING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NULL_SEARCH_STRING</span></div>
+<div class="block">OPEN-METADATA-400-022 - The search string passed on the {0} parameter of the {1} operation is null</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NEGATIVE_START_FROM">
+<h3>NEGATIVE_START_FROM</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NEGATIVE_START_FROM</span></div>
+<div class="block">OPEN-METADATA-400-023 - The starting point for the results {0}, passed on the {1} parameter of the {2} operation, is negative</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NEGATIVE_PAGE_SIZE">
+<h3>NEGATIVE_PAGE_SIZE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NEGATIVE_PAGE_SIZE</span></div>
+<div class="block">OPEN-METADATA-400-024 - The page size {0} for the results, passed on the {1} parameter of the {2} operation, is negative</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MAX_PAGE_SIZE">
+<h3>MAX_PAGE_SIZE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">MAX_PAGE_SIZE</span></div>
+<div class="block">OPEN-METADATA-400-025 - The number of records to return, {0}, passed on the {1} parameter of the {2} operation, is greater than the allowable maximum of {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INVALID_SEARCH_STRING">
+<h3>INVALID_SEARCH_STRING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_SEARCH_STRING</span></div>
+<div class="block">OPEN-METADATA-400-028 - The search string passed on the {0} parameter of the {1} operation is invalid and results in a {2} exception when executed.  The error message is {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-<div class="block">GAF-GOVERNANCE-SERVICE-500-001 - Unexpected {0} exception in governance action service {1} of type {2} detected by method {3}.  The error message was {4}</div>
+<div class="block">OPEN-METADATA-500-001 - Unexpected {0} exception in service {1} of type {2} detected by method {3}.  The error message was {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PRIMITIVE_CLASS_NAME">
 <h3>INVALID_PRIMITIVE_CLASS_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PRIMITIVE_CLASS_NAME</span></div>
-<div class="block">GAF-PROPERTIES-500-001 - The Java class {0} for PrimitiveTypeCategory {1} is not known</div>
+<div class="block">OPEN-METADATA-500-002 - The Java class {0} for PrimitiveTypeCategory {1} is not known</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PRIMITIVE_VALUE">
 <h3>INVALID_PRIMITIVE_VALUE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PRIMITIVE_VALUE</span></div>
-<div class="block">GAF-PROPERTIES-500-002 - The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveTypeCategory {2}</div>
+<div class="block">OPEN-METADATA-500-003 - The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveTypeCategory {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PRIMITIVE_CATEGORY">
 <h3>INVALID_PRIMITIVE_CATEGORY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PRIMITIVE_CATEGORY</span></div>
-<div class="block">GAF-PROPERTIES-500-003 - There is a problem in the definition of primitive type {0}</div>
+<div class="block">OPEN-METADATA-500-004 - There is a problem in the definition of primitive type {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PRIMITIVE_TYPE">
 <h3>INVALID_PRIMITIVE_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PRIMITIVE_TYPE</span></div>
-<div class="block">GAF-PROPERTIES-500-004 - The value supplied for an attribute of PrimitiveTypeCategory {0} is expected as Java class {1} but was supplied as Java class {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="HELPER_LOGIC_ERROR">
-<h3>HELPER_LOGIC_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">HELPER_LOGIC_ERROR</span></div>
-<div class="block">GAF-PROPERTIES-HELPER-503-001 - A caller {0} has passed an invalid parameter to the propertiesHelper {1} operation as part of the {2} request</div>
-</section>
-</li>
-<li>
-<section class="detail" id="HELPER_LOGIC_EXCEPTION">
-<h3>HELPER_LOGIC_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">HELPER_LOGIC_EXCEPTION</span></div>
-<div class="block">GAF-PROPERTIES-HELPER-503-002 - A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2}
- request resulting in an unexpected exception {3} with message {4}</div>
+<div class="block">OPEN-METADATA-500-005 - The value supplied for an attribute of PrimitiveTypeCategory {0} is expected as Java class {1} but was supplied as Java class {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_BEAN_CLASS">
 <h3>INVALID_BEAN_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_BEAN_CLASS</span></div>
-<div class="block">GAF-CONVERTER-500-001 - An unsupported bean class named {0} was passed to the repository services by the {1} request for
+<div class="block">OPEN-METADATA-500-006 - An unsupported bean class named {0} was passed to the repository services by the {1} request for
  open metadata access service {2} on server {3}; error message was: {4}</div>
 </section>
 </li>
@@ -382,7 +481,7 @@ the order they are declared.</div>
 <section class="detail" id="MISSING_CONVERTER_METHOD">
 <h3>MISSING_CONVERTER_METHOD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">MISSING_CONVERTER_METHOD</span></div>
-<div class="block">GAF-CONVERTER-500-002 - The {0} service has not implemented the {1} method in a subclass of the {2} converter class for
+<div class="block">OPEN-METADATA-500-007 - The {0} service has not implemented the {1} method in a subclass of the {2} converter class for
  bean class {3} and so is unable to create the bean for method {4}</div>
 </section>
 </li>
@@ -390,7 +489,7 @@ the order they are declared.</div>
 <section class="detail" id="UNEXPECTED_BEAN_CLASS">
 <h3>UNEXPECTED_BEAN_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_BEAN_CLASS</span></div>
-<div class="block">GAF-CONVERTER-500-003 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
+<div class="block">OPEN-METADATA-500-008 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
  open metadata access service {2} on server {3}; the expected class name is: {4}</div>
 </section>
 </li>
@@ -398,7 +497,7 @@ the order they are declared.</div>
 <section class="detail" id="MISSING_METADATA_INSTANCE">
 <h3>MISSING_METADATA_INSTANCE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">MISSING_METADATA_INSTANCE</span></div>
-<div class="block">GAF-CONVERTER-500-004 - One of the converters for the {0} service is not able to populate a bean of type {1}
+<div class="block">OPEN-METADATA-500-009 - One of the converters for the {0} service is not able to populate a bean of type {1}
  because a metadata instance of type {2} has not passed to method {3}</div>
 </section>
 </li>
@@ -406,7 +505,7 @@ the order they are declared.</div>
 <section class="detail" id="BAD_INSTANCE_TYPE">
 <h3>BAD_INSTANCE_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">BAD_INSTANCE_TYPE</span></div>
-<div class="block">GAF-CONVERTER-500-005 - One of the converters for the {0} service is not able to populate a bean of type {1}
+<div class="block">OPEN-METADATA-500-010 - One of the converters for the {0} service is not able to populate a bean of type {1}
  because a metadata instance of type {2} was passed to method {3} instead of the expected type of {4}</div>
 </section>
 </li>
@@ -414,14 +513,36 @@ the order they are declared.</div>
 <section class="detail" id="BAD_ENTITY">
 <h3>BAD_ENTITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">BAD_ENTITY</span></div>
-<div class="block">GAF-CONVERTER-500-011 - An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
+<div class="block">OPEN-METADATA-500-011 - An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_RELATIONSHIP">
 <h3>BAD_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">BAD_RELATIONSHIP</span></div>
-<div class="block">GAF-CONVERTER-500-013 - A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
+<div class="block">OPEN-METADATA-500-013 - A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNEXPECTED_CONVERTER_EXCEPTION">
+<h3>UNEXPECTED_CONVERTER_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_CONVERTER_EXCEPTION</span></div>
+<div class="block">OPEN-METADATA-500-025 - The Design Model OMAS has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HELPER_LOGIC_ERROR">
+<h3>HELPER_LOGIC_ERROR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">HELPER_LOGIC_ERROR</span></div>
+<div class="block">OPEN-METADATA-503-001 - A caller {0} has passed an invalid parameter to the propertiesHelper {1} operation as part of the {2} request</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HELPER_LOGIC_EXCEPTION">
+<h3>HELPER_LOGIC_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">HELPER_LOGIC_EXCEPTION</span></div>
+<div class="block">OPEN-METADATA-503-002 - A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2}
+ request resulting in an unexpected exception {3} with message {4}</div>
 </section>
 </li>
 </ul>

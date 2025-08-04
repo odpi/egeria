@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/servers/{serverName}/open-metadata/framework-services/{serviceURLMarker}/open-metadata-store/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/{serviceURLMarker}/open-metadata-store/users/{userId}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ExternalIdentifierResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Server-side REST API support for managing external identifiers.</div>
@@ -94,7 +94,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">ExternalIdentifierResource</a>()</code></div>
 <div class="col-last even-row-color">
-<div class="block">Instantiates a new Asset Manager OMAS resource.</div>
+<div class="block">Instantiates a new Open Metadata Store resource.</div>
 </div>
 </div>
 </section>
@@ -145,7 +145,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the metadata element associated with a particular external identifier.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/MetadataCorrelationHeadersResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">MetadataCorrelationHeadersResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifiers(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getExternalIdentifiers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifiers(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.ExternalIdEffectiveTimeQueryRequestBody)" class="member-name-link">getExternalIdentifiers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
@@ -154,7 +154,7 @@ loadScripts(document, 'script');</script>
  int&nbsp;pageSize,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../rest/ExternalIdEffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">ExternalIdEffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the external identifiers attached to the supplied element guid.</div>
 </div>
@@ -226,7 +226,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>ExternalIdentifierResource</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ExternalIdentifierResource</span>()</div>
-<div class="block">Instantiates a new Asset Manager OMAS resource.</div>
+<div class="block">Instantiates a new Open Metadata Store resource.</div>
 </section>
 </li>
 </ul>
@@ -498,7 +498,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getExternalIdentifiers(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.EffectiveTimeQueryRequestBody)">
+<section class="detail" id="getExternalIdentifiers(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.ExternalIdEffectiveTimeQueryRequestBody)">
 <h3>getExternalIdentifiers</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/MetadataCorrelationHeadersResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">MetadataCorrelationHeadersResponse</a></span>&nbsp;<span class="element-name">getExternalIdentifiers</span><wbr><span class="parameters">(@PathVariable
@@ -520,7 +520,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
  @RequestBody(required=false)
- <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../rest/ExternalIdEffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">ExternalIdEffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the external identifiers attached to the supplied element guid.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

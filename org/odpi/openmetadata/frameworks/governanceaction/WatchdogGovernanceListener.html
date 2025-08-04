@@ -82,7 +82,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">WatchdogGovernanceListener</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">WatchdogGovernanceListener defines the listener interface implemented by a WatchdogGovernanceActionService.</div>
+<div class="block">WatchdogGovernanceListener defines the listener interface implemented by a GovernanceActionService.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -111,7 +111,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#processEvent(org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent)" class="member-name-link">processEvent</a><wbr>(<a href="events/WatchdogGovernanceEvent.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.events">WatchdogGovernanceEvent</a>&nbsp;event)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">This method is called each time a requested event is received from the open metadata repositories.</div>
 </div>
@@ -147,9 +147,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="processEvent(org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent)">
+<section class="detail" id="processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">
 <h3>processEvent</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="events/WatchdogGovernanceEvent.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.events">WatchdogGovernanceEvent</a>&nbsp;event)</span>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</span>
                            throws <span class="exceptions"><a href="ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GovernanceServiceException</a></span></div>
 <div class="block">This method is called each time a requested event is received from the open metadata repositories.
  It is called for events received after this listener is registered until the watchdog governance

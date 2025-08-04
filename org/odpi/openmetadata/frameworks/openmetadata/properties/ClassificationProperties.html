@@ -77,13 +77,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="glossaries/ActivityDescriptionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">ActivityDescriptionProperties</a></code>, <code><a href="assets/AssetOriginProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetOriginProperties</a></code>, <code><a href="glossaries/CanonicalVocabularyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">CanonicalVocabularyProperties</a></code>, <code><a href="locations/CyberLocationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.locations">CyberLocationProperties</a></code>, <code><a href="schema/databases/DatabasePrimaryKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases">DatabasePrimaryKeyProperties</a></code>, <code><a href="glossaries/EditingGlossaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">EditingGlossaryProperties</a></code>, <code><a href="locations/FixedLocationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.locations">FixedLocationProperties</a></code>, <code><a href="glossaries/GlossaryTermContextDefinition.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">GlossaryTermContextDefinition</a></code>, <code><a href="governance/GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationBase</a></code>, <code><a href="governance/GovernanceExpectationsProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceExpectationsProperties</a></code>, <code><a href="governance/GovernanceMeasurementsDataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceMeasurementsDataSetProperties</a></code>, <code><a href="governance/GovernanceMeasurementsProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceMeasurementsProperties</a></code>, <code><a href="governance/OwnershipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">OwnershipProperties</a></code>, <code><a href="schema/PrimaryKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">PrimaryKeyProperties</a></code>, <code><a href="locations/SecureLocationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.locations">SecureLocationProperties</a></code>, <code><a href="security/SecurityGroupMembershipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.security">SecurityGroupMembershipProperties</a></code>, <code><a href="security/SecurityTagsProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.security">SecurityTagsProperties</a></code>, <code><a href="glossaries/StagingGlossaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">StagingGlossaryProperties</a></code>, <code><a href="governance/SubjectAreaClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">SubjectAreaClassificationProperties</a></code>, <code><a href="glossaries/TaxonomyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">TaxonomyProperties</a></code></dd>
+<dd><code><a href="ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationBeanProperties</a></code>, <code><a href="ClassificationElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationElementProperties</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ClassificationProperties</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">RelationshipProperties provides the base class for relationships items.  This provides extended properties with the ability to
- set effectivity dates.</div>
+<div class="block">ClassificationProperties provides the base class for classification attributes.  The implementation
+ may either be an element properties object or a bean.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -132,17 +132,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the date/time that element is effective to (null means that it is effective indefinitely into the future).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExtendedProperties()" class="member-name-link">getExtendedProperties</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the properties that have been defined for a subtype of this object that are not supported explicitly
- by this bean.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of the open metadata type for this classification.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -157,17 +146,6 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEffectiveTo(java.util.Date)" class="member-name-link">setEffectiveTo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set the date/time that element is effective to (null means that it is effective indefinitely into the future).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExtendedProperties(java.util.Map)" class="member-name-link">setExtendedProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;extendedProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the properties that have been defined for a subtype of this object that are not supported explicitly
- by this bean.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTypeName(java.lang.String)" class="member-name-link">setTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the open metadata type for this classification.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -258,52 +236,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>effectiveTo</code> - date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getTypeName()">
-<h3>getTypeName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTypeName</span>()</div>
-<div class="block">Return the name of the open metadata type for this classification.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setTypeName(java.lang.String)">
-<h3>setTypeName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTypeName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
-<div class="block">Set up the name of the open metadata type for this classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>typeName</code> - string name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getExtendedProperties()">
-<h3>getExtendedProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getExtendedProperties</span>()</div>
-<div class="block">Return the properties that have been defined for a subtype of this object that are not supported explicitly
- by this bean.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>property map</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setExtendedProperties(java.util.Map)">
-<h3>setExtendedProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setExtendedProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;extendedProperties)</span></div>
-<div class="block">Set up the properties that have been defined for a subtype of this object that are not supported explicitly
- by this bean.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>extendedProperties</code> - property map</dd>
 </dl>
 </section>
 </li>

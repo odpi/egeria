@@ -72,14 +72,20 @@ loadScripts(document, 'script');</script>
 <h1 title="Class HistoryRequestBody" class="title">Class HistoryRequestBody</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/PagingOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.PagingOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.HistoricalQueryOptions</a>
 <div class="inheritance">org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">HistoryRequestBody</span>
-<span class="extends-implements">extends <a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">HistoricalQueryOptions</a></span></div>
 <div class="block">HistoryRequestBody describes the start and stop time of the historical query.</div>
 </section>
 <section class="summary">
@@ -96,7 +102,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)" class="member-name-link">HistoryRequestBody</a><wbr>(<a href="HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">HistoryRequestBody</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.search.HistoricalQueryOptions)" class="member-name-link">HistoryRequestBody</a><wbr>(<a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">HistoricalQueryOptions</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
@@ -114,56 +120,6 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return comparison result based on the content of the properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getForDuplicateProcessing()" class="member-name-link">getForDuplicateProcessing</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether this request is updating an element as part of a deduplication exercise.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getForLineage()" class="member-name-link">getForLineage</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether this request is to update lineage memento elements.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFromTime()" class="member-name-link">getFromTime</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the starting date/time to use for the query.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToTime()" class="member-name-link">getToTime</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the ending date/time to use for the query.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return hash code for this object</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setForDuplicateProcessing(boolean)" class="member-name-link">setForDuplicateProcessing</a><wbr>(boolean&nbsp;forDuplicateProcessing)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up whether this request is updating an element as part of a deduplication exercise.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setForLineage(boolean)" class="member-name-link">setForLineage</a><wbr>(boolean&nbsp;forLineage)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up whether this request is to update lineage memento elements.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFromTime(java.util.Date)" class="member-name-link">setFromTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;fromTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the starting date/time to use for the query.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setToTime(java.util.Date)" class="member-name-link">setToTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;toTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the engine date/time to use for the query.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -173,8 +129,17 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></h3>
-<code><a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html#getEffectiveTime()">getEffectiveTime</a>, <a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.HistoricalQueryOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">HistoricalQueryOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html#equals(java.lang.Object)">equals</a>, <a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html#getFromTime()">getFromTime</a>, <a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html#getOldestFirst()">getOldestFirst</a>, <a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html#getToTime()">getToTime</a>, <a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html#hashCode()">hashCode</a>, <a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html#setFromTime(java.util.Date)">setFromTime</a>, <a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html#setOldestFirst(boolean)">setOldestFirst</a>, <a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html#setToTime(java.util.Date)">setToTime</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.PagingOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/PagingOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PagingOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/PagingOptions.html#getPageSize()">getPageSize</a>, <a href="../../../frameworks/openmetadata/search/PagingOptions.html#getStartFrom()">getStartFrom</a>, <a href="../../../frameworks/openmetadata/search/PagingOptions.html#setPageSize(int)">setPageSize</a>, <a href="../../../frameworks/openmetadata/search/PagingOptions.html#setStartFrom(int)">setStartFrom</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/GetOptions.html#getAsOfTime()">getAsOfTime</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getGraphQueryDepth()">getGraphQueryDepth</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getIncludeOnlyClassifiedElements()">getIncludeOnlyClassifiedElements</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getIncludeOnlyRelationships()">getIncludeOnlyRelationships</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getMetadataElementSubtypeNames()">getMetadataElementSubtypeNames</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getMetadataElementTypeName()">getMetadataElementTypeName</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getSkipClassifiedElements()">getSkipClassifiedElements</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getSkipRelationships()">getSkipRelationships</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setAsOfTime(java.util.Date)">setAsOfTime</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setGraphQueryDepth(int)">setGraphQueryDepth</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setIncludeOnlyClassifiedElements(java.util.List)">setIncludeOnlyClassifiedElements</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setIncludeOnlyRelationships(java.util.List)">setIncludeOnlyRelationships</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setMetadataElementSubtypeNames(java.util.List)">setMetadataElementSubtypeNames</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setMetadataElementTypeName(java.lang.String)">setMetadataElementTypeName</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setSkipClassifiedElements(java.util.List)">setSkipClassifiedElements</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setSkipRelationships(java.util.List)">setSkipRelationships</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">BasicOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/BasicOptions.html#getEffectiveTime()">getEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForDuplicateProcessing()">getForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForLineage()">getForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getGovernanceZoneFilter()">getGovernanceZoneFilter</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForLineage(boolean)">setForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setGovernanceZoneFilter(java.util.List)">setGovernanceZoneFilter</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -197,9 +162,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.search.HistoricalQueryOptions)">
 <h3>HistoryRequestBody</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">HistoryRequestBody</span><wbr><span class="parameters">(<a href="HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">HistoryRequestBody</a>&nbsp;template)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">HistoryRequestBody</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">HistoricalQueryOptions</a>&nbsp;template)</span></div>
 <div class="block">Copy/clone constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -216,131 +181,15 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getFromTime()">
-<h3>getFromTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getFromTime</span>()</div>
-<div class="block">Return the starting date/time to use for the query.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setFromTime(java.util.Date)">
-<h3>setFromTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFromTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;fromTime)</span></div>
-<div class="block">Set up the starting date/time to use for the query.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>fromTime</code> - date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getToTime()">
-<h3>getToTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getToTime</span>()</div>
-<div class="block">Return the ending date/time to use for the query.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setToTime(java.util.Date)">
-<h3>setToTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setToTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;toTime)</span></div>
-<div class="block">Set up the engine date/time to use for the query.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>toTime</code> - date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getForLineage()">
-<h3>getForLineage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getForLineage</span>()</div>
-<div class="block">Return whether this request is to update lineage memento elements.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>flag</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setForLineage(boolean)">
-<h3>setForLineage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setForLineage</span><wbr><span class="parameters">(boolean&nbsp;forLineage)</span></div>
-<div class="block">Set up whether this request is to update lineage memento elements.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>forLineage</code> - flag</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getForDuplicateProcessing()">
-<h3>getForDuplicateProcessing</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getForDuplicateProcessing</span>()</div>
-<div class="block">Return whether this request is updating an element as part of a deduplication exercise.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>flag</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setForDuplicateProcessing(boolean)">
-<h3>setForDuplicateProcessing</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setForDuplicateProcessing</span><wbr><span class="parameters">(boolean&nbsp;forDuplicateProcessing)</span></div>
-<div class="block">Set up whether this request is updating an element as part of a deduplication exercise.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>forDuplicateProcessing</code> - flag</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
 <div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/HistoricalQueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">HistoricalQueryOptions</a></code></dd>
 <dt>Returns:</dt>
 <dd>return string containing the property names and values</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="equals(java.lang.Object)">
-<h3>equals</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
-<div class="block">Return comparison result based on the content of the properties.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>objectToCompare</code> - test object</dd>
-<dt>Returns:</dt>
-<dd>result of comparison</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="hashCode()">
-<h3>hashCode</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<div class="block">Return hash code for this object</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></code></dd>
-<dt>Returns:</dt>
-<dd>int hash code</dd>
 </dl>
 </section>
 </li>

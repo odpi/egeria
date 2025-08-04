@@ -81,27 +81,25 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="client/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.client</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="controls/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.controls</a></div>
+<div class="col-first odd-row-color"><a href="connectorcontext/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.connectorcontext</a></div>
 <div class="col-last odd-row-color">
+<div class="block">Provides the interface used by connectors to access Open Metadata.</div>
+</div>
+<div class="col-first even-row-color"><a href="controls/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.controls</a></div>
+<div class="col-last even-row-color">
 <div class="block">Provides common names and structures for describing request parameters, action target names and types, and guards.</div>
 </div>
-<div class="col-first even-row-color"><a href="events/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.events</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><a href="ffdc/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.ffdc</a></div>
 <div class="col-last odd-row-color">
 <div class="block">This package provides the first failure data capture
  support for the Governance Action Framework (GAF) module.</div>
 </div>
-<div class="col-first even-row-color"><a href="fileclassifier/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.fileclassifier</a></div>
+<div class="col-first even-row-color"><a href="mermaid/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.mermaid</a></div>
 <div class="col-last even-row-color">
-<div class="block">File classifier utility.</div>
-</div>
-<div class="col-first odd-row-color"><a href="mermaid/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.mermaid</a></div>
-<div class="col-last odd-row-color">
 <div class="block">The Mermaid Services provide common routines for building Mermaid Markdown visualizations.</div>
 </div>
-<div class="col-first even-row-color"><a href="properties/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.properties</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="properties/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.properties</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </div>
 </li>
@@ -114,7 +112,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="GeneralGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GeneralGovernanceActionService</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GeneralGovernanceActionService describes the base class for a specific type of connector that is responsible for preforming
+<div class="block">GovernanceActionService describes the base class for a governance action service connector that is responsible for preforming
  specific governance actions on demand.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceActionContext.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionContext</a></div>
@@ -128,7 +126,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionServiceConnector</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceActionServiceConnector describes the base class for a specific type of connector that is responsible for preforming
+<div class="block">GovernanceActionService describes the base class for a governance action service connector that is responsible for preforming
  specific governance actions on demand.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceActionServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionServiceProviderBase</a></div>
@@ -144,53 +142,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">GovernanceServiceProviderBase implements the base class for the connector provider for a governance service.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">OpenMetadataStore provides access to metadata elements stored in the metadata repositories.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProvisioningGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceActionService</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">The provisioning governance action service is responsible for provisioning real-world resources in the digital
- landscape and maintaining the Assets and lineage associated with them.</div>
-</div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">ProvisioningGovernanceContext provides access to the details of the provisioning request along with basic access to the
  metadata store.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RemediationGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">RemediationGovernanceActionService</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">The remediation governance action service is responsible for correct omissions and errors in
- open metadata and the associated digital landscape.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="RemediationGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">RemediationGovernanceContext</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="RemediationGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">RemediationGovernanceContext</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
 <div class="block">RemediationGovernanceContext provides access to the remediation request along with access to the
  metadata store and APIs to enable changes to a wide range of metadata elements.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TriageGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">TriageGovernanceActionService</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">The triage governance action service is responsible for determining which of the possible courses of action to take for a specific situation.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="TriageGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">TriageGovernanceContext</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">TriageGovernanceContext provides access to details of the triage request and associated governance action plus with access to the
  metadata store.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="VerificationGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">VerificationGovernanceActionService</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">The verification governance action service is responsible for testing the values in the metadata elements and
- relationships and setting up guards to guide the next step of processing.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="VerificationGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">VerificationGovernanceContext</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="VerificationGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">VerificationGovernanceContext</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
 <div class="block">VerificationGovernanceContext provides access to details of the verification request along with access to the
  metadata store.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="WatchdogGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceActionService</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">The watchdog governance action service is responsible for monitoring changes to the metadata elements and then initiating
- further governance activity.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="WatchdogGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceContext</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
@@ -200,7 +170,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceListener</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">WatchdogGovernanceListener defines the listener interface implemented by a WatchdogGovernanceActionService.</div>
+<div class="block">WatchdogGovernanceListener defines the listener interface implemented by a GovernanceActionService.</div>
 </div>
 </div>
 </div>

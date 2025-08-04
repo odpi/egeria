@@ -112,11 +112,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/AnchorSearchMatchesResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnchorSearchMatchesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findElementsForAnchor(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findElementsForAnchor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findElementsForAnchor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findElementsForAnchor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of elements with the requested search string in their (display, resource)name, qualified name,
@@ -154,10 +152,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of metadata elements that match the supplied criteria.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the metadata elements that contain the requested string.</div>
@@ -194,44 +190,41 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the metadata elements connected to the supplied element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/OpenMetadataGraphResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataGraphResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchoredElementsGraph(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getAnchoredElementsGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchoredElementsGraph(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAnchoredElementsGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return all the elements that are anchored to an element plus relationships between these elements and to other elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataElementResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getMetadataElementByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)" class="member-name-link">getMetadataElementByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="../../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/GetRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GetRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the metadata element using its unique identifier.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getMetadataElementByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.UniqueNameRequestBody)" class="member-name-link">getMetadataElementByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../frameworkservices/omf/rest/UniqueNameRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">UniqueNameRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getMetadataElementGUIDByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.UniqueNameRequestBody)" class="member-name-link">getMetadataElementGUIDByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../frameworkservices/omf/rest/UniqueNameRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">UniqueNameRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementHistory(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)" class="member-name-link">getMetadataElementHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementHistory(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)" class="member-name-link">getMetadataElementHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;oldestFirst,
  <a href="../../../../frameworkservices/omf/rest/HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">HistoryRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve all the versions of an element.</div>
@@ -261,20 +254,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the metadata elements connected to the supplied element via a specific relationship type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/OpenMetadataRelationshipResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataRelationshipResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipByGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getRelationshipByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipByGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)" class="member-name-link">getRelationshipByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="../../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/GetRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GetRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the relationship using its unique identifier.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataRelationshipListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipHistory(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)" class="member-name-link">getRelationshipHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipHistory(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)" class="member-name-link">getRelationshipHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- boolean&nbsp;oldestFirst,
  <a href="../../../../frameworkservices/omf/rest/HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">HistoryRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve all the versions of a relationship.</div>
@@ -312,7 +304,7 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)">
+<section class="detail" id="getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)">
 <h3>getMetadataElementByGUID</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{elementGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataElementResponse</a></span>&nbsp;<span class="element-name">getMetadataElementByGUID</span><wbr><span class="parameters">(@PathVariable
@@ -322,7 +314,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @RequestBody(required=false)
- <a href="../../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/GetRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GetRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the metadata element using its unique identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -339,7 +331,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMetadataElementByUniqueName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<section class="detail" id="getMetadataElementByUniqueName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.UniqueNameRequestBody)">
 <h3>getMetadataElementByUniqueName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-unique-name")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataElementResponse</a></span>&nbsp;<span class="element-name">getMetadataElementByUniqueName</span><wbr><span class="parameters">(@PathVariable
@@ -347,7 +339,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../frameworkservices/omf/rest/UniqueNameRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">UniqueNameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -363,7 +355,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<section class="detail" id="getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.UniqueNameRequestBody)">
 <h3>getMetadataElementGUIDByUniqueName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/guid-by-unique-name")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">getMetadataElementGUIDByUniqueName</span><wbr><span class="parameters">(@PathVariable
@@ -371,7 +363,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../frameworkservices/omf/rest/UniqueNameRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">UniqueNameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -387,7 +379,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMetadataElementHistory(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)">
+<section class="detail" id="getMetadataElementHistory(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)">
 <h3>getMetadataElementHistory</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{elementGUID}/history")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataElementsResponse</a></span>&nbsp;<span class="element-name">getMetadataElementHistory</span><wbr><span class="parameters">(@PathVariable
@@ -396,12 +388,6 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;startFrom,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;pageSize,
- @RequestParam(required=false,defaultValue="false")
- boolean&nbsp;oldestFirst,
  @RequestBody(required=false)
  <a href="../../../../frameworkservices/omf/rest/HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">HistoryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve all the versions of an element.</div>
@@ -410,11 +396,6 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the server to route the request to</dd>
 <dd><code>elementGUID</code> - unique identifier of object to retrieve</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
-<dd><code>startFrom</code> - the starting element number of the historical versions to return. This is used when retrieving
-                         versions beyond the first page of results. Zero means start from the first element.</dd>
-<dd><code>pageSize</code> - the maximum number of result versions that can be returned on this request. Zero means unrestricted
-                 return results size.</dd>
-<dd><code>oldestFirst</code> - defining how the results should be ordered.</dd>
 <dd><code>requestBody</code> - the time window required</dd>
 <dt>Returns:</dt>
 <dd>list of beans or
@@ -425,17 +406,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findMetadataElementsWithString(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
+<section class="detail" id="findMetadataElementsWithString(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <h3>findMetadataElementsWithString</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-search-string")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataElementsResponse</a></span>&nbsp;<span class="element-name">findMetadataElementsWithString</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;startFrom,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;pageSize,
  @RequestBody
  <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the metadata elements that contain the requested string.</div>
@@ -443,8 +420,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>requestBody</code> - searchString  to retrieve</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements (or null if no elements match the name) or
@@ -455,7 +430,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findElementsForAnchor(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
+<section class="detail" id="findElementsForAnchor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <h3>findElementsForAnchor</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-search-string/for-anchor/{anchorGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/AnchorSearchMatchesResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnchorSearchMatchesResponse</a></span>&nbsp;<span class="element-name">findElementsForAnchor</span><wbr><span class="parameters">(@PathVariable
@@ -464,10 +439,6 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;startFrom,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;pageSize,
  @RequestBody
  <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a list of elements with the requested search string in their (display, resource)name, qualified name,
@@ -479,8 +450,6 @@ loadScripts(document, 'script');</script>
 <dd><code>urlMarker</code> - view service URL marker</dd>
 <dd><code>anchorGUID</code> - unique identifier of anchor</dd>
 <dd><code>requestBody</code> - string to search for in text</dd>
-<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
-<dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt>Returns:</dt>
 <dd>list of results for assets that match the search string or
  InvalidParameterException the searchString is invalid or
@@ -671,7 +640,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAnchoredElementsGraph(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)">
+<section class="detail" id="getAnchoredElementsGraph(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getAnchoredElementsGraph</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{elementGUID}/with-anchored-elements")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/OpenMetadataGraphResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataGraphResponse</a></span>&nbsp;<span class="element-name">getAnchoredElementsGraph</span><wbr><span class="parameters">(@PathVariable
@@ -685,7 +654,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize,
  @RequestBody(required=false)
- <a href="../../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return all the elements that are anchored to an element plus relationships between these elements and to other elements.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -803,7 +772,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelationshipByGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)">
+<section class="detail" id="getRelationshipByGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)">
 <h3>getRelationshipByGUID</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/relationships/by-guid/{relationshipGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/OpenMetadataRelationshipResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataRelationshipResponse</a></span>&nbsp;<span class="element-name">getRelationshipByGUID</span><wbr><span class="parameters">(@PathVariable
@@ -813,7 +782,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @RequestBody(required=false)
- <a href="../../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/GetRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GetRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the relationship using its unique identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -830,7 +799,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelationshipHistory(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)">
+<section class="detail" id="getRelationshipHistory(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryRequestBody)">
 <h3>getRelationshipHistory</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/relationships/{relationshipGUID}/history")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataRelationshipListResponse</a></span>&nbsp;<span class="element-name">getRelationshipHistory</span><wbr><span class="parameters">(@PathVariable
@@ -843,8 +812,6 @@ loadScripts(document, 'script');</script>
  int&nbsp;startFrom,
  @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize,
- @RequestParam(required=false,defaultValue="false")
- boolean&nbsp;oldestFirst,
  @RequestBody(required=false)
  <a href="../../../../frameworkservices/omf/rest/HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">HistoryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve all the versions of a relationship.</div>
@@ -857,7 +824,6 @@ loadScripts(document, 'script');</script>
                          versions beyond the first page of results. Zero means start from the first element.</dd>
 <dd><code>pageSize</code> - the maximum number of result versions that can be returned on this request. Zero means unrestricted
                  return results size.</dd>
-<dd><code>oldestFirst</code> - defining how the results should be ordered.</dd>
 <dd><code>requestBody</code> - the time window required</dd>
 <dt>Returns:</dt>
 <dd>list of beans or

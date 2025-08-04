@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../../accessservices/governanceserver/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">GovernanceContextClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code>, <code><a href="../../../accessservices/assetmanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/assetowner/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/communityprofile/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/datamanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/datascience/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.datascience.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/digitalarchitecture/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/governanceprogram/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/governanceserver/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/itinfrastructure/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/securitymanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/stewardshipaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.client">OpenGovernanceClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></code>, <code><a href="../../../accessservices/assetconsumer/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenGovernanceServiceClient</a></code>, <code><a href="../../../accessservices/digitalservice/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">OpenGovernanceServiceClient</a></code></dd>
+<dd><code><a href="../../../frameworkservices/gaf/client/EgeriaOpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">EgeriaOpenGovernanceClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code>, <code><a href="OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">ActionControlInterface</span></div>
@@ -100,10 +100,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Request that execution of an engine action is stopped.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findEngineActions(java.lang.String,java.lang.String,int,int)" class="member-name-link">findEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findEngineActions(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ <a href="../../openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the list of engine action metadata elements that contain the search string.</div>
 </div>
@@ -128,10 +127,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the engine actions that are known to the server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getEngineActionsByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getEngineActionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getEngineActionsByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getEngineActionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ <a href="../../openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the list of engine action metadata elements with a matching qualified or display name.</div>
 </div>
@@ -405,12 +403,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findEngineActions(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="findEngineActions(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
 <h3>findEngineActions</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</span>&nbsp;<span class="element-name">findEngineActions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ <a href="../../openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</span>
                                      throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -420,8 +417,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>searchString</code> - string to find in the properties</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>searchOptions</code> - additional options for the search</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -432,12 +428,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getEngineActionsByName(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getEngineActionsByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getEngineActionsByName</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</span>&nbsp;<span class="element-name">getEngineActionsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ <a href="../../openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
                                           throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -447,8 +442,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>name</code> - name to search for</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>queryOptions</code> - additional options to control the results of the query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>

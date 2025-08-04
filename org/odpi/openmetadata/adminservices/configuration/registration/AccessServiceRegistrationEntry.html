@@ -96,14 +96,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)" class="member-name-link">AccessServiceRegistrationEntry</a><wbr>(int&nbsp;accessServiceCode,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)" class="member-name-link">AccessServiceRegistrationEntry</a><wbr>(int&nbsp;accessServiceCode,
  <a href="../../../frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a>&nbsp;accessServiceDevelopmentStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceFullName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceWiki,
- <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;accessServiceInTopicStatus,
  <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;accessServiceOutTopicStatus,
  <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;accessServiceOperationalStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceAdminClassName)</code></div>
@@ -152,16 +150,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the development status of the service.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAccessServiceFullName()" class="member-name-link">getAccessServiceFullName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the full name for this access service.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAccessServiceInTopic()" class="member-name-link">getAccessServiceInTopic</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the InTopic name for the access service.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAccessServiceName()" class="member-name-link">getAccessServiceName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the default name for this access service.</div>
@@ -208,28 +196,23 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the development status of the service.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessServiceFullName(java.lang.String)" class="member-name-link">setAccessServiceFullName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceFullName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessServiceName(java.lang.String)" class="member-name-link">setAccessServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the full name for this access service.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessServiceName(java.lang.String)" class="member-name-link">setAccessServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the default name for this access service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessServiceOperationalStatus(org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus)" class="member-name-link">setAccessServiceOperationalStatus</a><wbr>(<a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;accessServiceOperationalStatus)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessServiceOperationalStatus(org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus)" class="member-name-link">setAccessServiceOperationalStatus</a><wbr>(<a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;accessServiceOperationalStatus)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the initial operational status for this access service.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessServiceWiki(java.lang.String)" class="member-name-link">setAccessServiceWiki</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceWiki)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessServiceWiki(java.lang.String)" class="member-name-link">setAccessServiceWiki</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceWiki)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the URL for the wiki page describing this access service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServiceURLMarker(java.lang.String)" class="member-name-link">setServiceURLMarker</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServiceURLMarker(java.lang.String)" class="member-name-link">setServiceURLMarker</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the string that appears in the REST API URL that identifies the owning service.</div>
 </div>
 </div>
@@ -250,16 +233,14 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)">
 <h3>AccessServiceRegistrationEntry</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AccessServiceRegistrationEntry</span><wbr><span class="parameters">(int&nbsp;accessServiceCode,
  <a href="../../../frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a>&nbsp;accessServiceDevelopmentStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceFullName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceWiki,
- <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;accessServiceInTopicStatus,
  <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;accessServiceOutTopicStatus,
  <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;accessServiceOperationalStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceAdminClassName)</span></div>
@@ -269,11 +250,9 @@ loadScripts(document, 'script');</script>
 <dd><code>accessServiceCode</code> - ordinal for this access service</dd>
 <dd><code>accessServiceDevelopmentStatus</code> - development status</dd>
 <dd><code>accessServiceName</code> - symbolic name for this access service</dd>
-<dd><code>accessServiceFullName</code> - full name for this access service</dd>
 <dd><code>accessServiceURLMarker</code> - name of the part of the URL that is the name of the access service</dd>
 <dd><code>accessServiceDescription</code> - short description for this access service</dd>
 <dd><code>accessServiceWiki</code> - wiki page for the access service for this access service</dd>
-<dd><code>accessServiceInTopicStatus</code> - is the access service inTopic implemented, operational or disabled?</dd>
 <dd><code>accessServiceOutTopicStatus</code> - is the access service outTopic implemented, operational or disabled?</dd>
 <dd><code>accessServiceOperationalStatus</code> - default initial operational status for the access service</dd>
 <dd><code>accessServiceAdminClassName</code> - name of AccessServiceAdmin implementation class for the access service</dd>
@@ -373,28 +352,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>accessServiceName</code> - String default name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAccessServiceFullName()">
-<h3>getAccessServiceFullName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAccessServiceFullName</span>()</div>
-<div class="block">Return the full name for this access service.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>String default name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setAccessServiceFullName(java.lang.String)">
-<h3>setAccessServiceFullName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAccessServiceFullName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceFullName)</span></div>
-<div class="block">Set up the full name for this access service.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>accessServiceFullName</code> - String default name</dd>
 </dl>
 </section>
 </li>
@@ -509,18 +466,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>accessServiceAdminClassName</code> - class name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAccessServiceInTopic()">
-<h3>getAccessServiceInTopic</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAccessServiceInTopic</span>()</div>
-<div class="block">Return the InTopic name for the access service.  Null means that the topic is either not implemented
- or not enabled.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>String topic name</dd>
 </dl>
 </section>
 </li>

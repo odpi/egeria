@@ -65,29 +65,11 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.commonservices.generichandlers</span></div>
 <section class="package-description" id="package-description">
-<div class="block">The generic handlers provide services to translate OMAS requests
+<div class="block">The generic handlers provide services to translate Open Metadata Store requests
  built around that service's private beans into calls to the repository
  services (through the repository handler).
- The aim is to reduce the coding needed in the specific handlers used by the Open Metadata Access Services (OMASs) and
+ The aim is to reduce the coding needed in the specific handlers used by the Open Metadata Store whilst
  ensuring security and visibility of assets and other sensitive objects are managed correctly.
-
- The OMAS is responsible for providing the bean implementation and
- a converter object that can convert the content of entities and
- relationships retrieved through the repository services into the
- OMAS's beans.
-
- The generic handlers take simple properties on create and update methods.
- They pack these properties into InstanceProperties objects and then pass them
- to the repository services to update the relevant entities/relationships/classifications
- in the repository.
-
- When instances are retrieved through the repository services,
- the generic handlers use the OMAS's converters to return the appropriate
- beans to return on the API.
-
- The generic handlers also support the linking and unlinking of entities
- in the repositories through the maintenance of relationships as well as managing
- classifications.
 
  A key part of the capability of the generic handlers is to manage the authorization
  calls to Open Metadata Security verifier and to ensure assets (and any linked
@@ -117,483 +99,114 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ActorProfileBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ActorProfileBuilder</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AnnotationBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationBuilder</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ActorProfileBuilder creates the parts for an entity that represents an actor profile.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ActorProfileConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ActorProfileConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ActorProfileConverter generates a ActorProfileElement bean from a ActorProfile entity.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ActorProfileHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ActorProfileHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ActorProfileHandler provides the exchange of metadata about actor profiles between the repository and the OMAS.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AnnotationBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">AnnotationBuilder supports the creation of the entities and
  relationships that describe an Open Discovery Framework (ODF) Annotation.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AnnotationConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AnnotationConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationConverter</a>&lt;B&gt;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">AnnotationConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
  EntityDetail object into an Annotation bean.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AnnotationHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AnnotationHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationHandler</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">AnnotationHandler manages the storage and retrieval of metadata relating to annotations
  as defined in the Survey Action Framework (ODF).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AnnotationReviewBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationReviewBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AnnotationReviewBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationReviewBuilder</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">AnnotationReviewBuilder supports the creation of the entities and
  relationships that describe an Governance Action Framework (GAF) AnnotationReview and the link to the
  annotation.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="APIConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">APIConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">APIConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a API bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="APIOperationConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">APIOperationConverter</a>&lt;B&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AssetBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetBuilder</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">EventTypeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from EventTypeElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="APIOperationHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">APIOperationHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">APIOperationHandler provides the exchange of metadata about APIOperation schema types between the repository and the OMAS.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="APIParameterConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">APIParameterConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">APIParameterConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a APIParameterElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="APIParameterListConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">APIParameterListConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">EventTypeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from EventTypeElement.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="APIParameterListHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">APIParameterListHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">APIParameterListHandler provides the exchange of metadata about APIParameterList schema types between the repository and the OMAS.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AssetBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">AssetBuilder creates the parts of a root repository entity for an asset.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AssetConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">AssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from AssetProperties.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">AssetHandler manages B objects and optionally connections in the property server.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CertificationHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CertificationHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">CertificationHandler manages Certification objects.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CertificationTypeConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CertificationTypeConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CertificationTypeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from CertificationTypeElement.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CollectionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CollectionBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">CollectionBuilder creates the parts for an entity that represents a collection.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CollectionConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CollectionConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CollectionConverter generates a CollectionElement from a Collection entity</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CollectionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CollectionHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">CollectionHandler provides the exchange of metadata about collections between the repository and the OMAS.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CollectionMembershipConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CollectionMembershipConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CollectionMembershipConverter generates a CollectionBean from a CollectionMembership relationship and Collection entity</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CommentBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CommentBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">CommentBuilder is able to build the properties for a Comment entity.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CommentConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CommentConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CommentConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into an CommentElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CommentHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CommentHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">CommentHandler manages Comment objects.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CommunityBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CommunityBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CommunityBuilder creates the parts for an entity that represents a community.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CommunityConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CommunityConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">CommunityConverter generates an CommunityElement bean from an CommunityProperties entity.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CommunityHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">CommunityHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CommunityHandler provides the exchange of metadata about communities between the repository and the OMAS.</div>
-</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ConnectionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ConnectionBuilder</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ConnectionBuilder is able to build the properties for both a Connection entity and a VirtualConnection entity.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConnectionConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ConnectionConverter</a>&lt;B&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConnectionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ConnectionHandler</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">OCFConnectionConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
- EntityDetail and Relationship objects into a Connection bean (or a VirtualConnection bean).</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ConnectionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ConnectionHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ConnectionHandler manages Connection objects.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConnectorTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ConnectorTypeBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ConnectorTypeBuilder is able to build the properties for an ConnectorType entity from an ConnectorType bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ConnectorTypeConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ConnectorTypeConverter</a>&lt;B&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ConnectorTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ConnectorTypeBuilder</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ConnectorTypeConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a ConnectorTypeElement bean.</div>
+<div class="block">ConnectorTypeBuilder is able to build the properties for an ConnectorType entity from an ConnectorType bean.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConnectorTypeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ConnectorTypeHandler</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ConnectorTypeHandler manages ConnectorType objects.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ContributionRecordBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ContributionRecordBuilder</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ControlFlowConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ControlFlowConverter</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ContributionRecordBuilder is able to build the properties for a ContributionRecord entity.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ContributionRecordConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ContributionRecordConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ContributionRecordConverter generates a ContributionRecordProperties bean from a ContributionRecord entity.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ContributionRecordHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ContributionRecordHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ContributionRecordHandler manages the ContributionRecord entity that records the karma points for an individual.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ControlFlowConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ControlFlowConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ControlFlowConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
  Relationship object into a ControlFlowElement bean.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DatabaseColumnConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DatabaseColumnConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">DatabaseColumnConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a DatabaseColumnElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DatabaseConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DatabaseConverter</a>&lt;B&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFlowConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DataFlowConverter</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">DatabaseConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a DatabaseElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DatabaseManagerConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DatabaseManagerConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">DatabaseManagerConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a SoftwareCapabilityElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DatabaseSchemaConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DatabaseSchemaConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">DatabaseSchemaConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a DatabaseSchemaElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DatabaseTableConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DatabaseTableConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">DatabaseTableConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
- EntityDetail object into an DatabaseTable bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DatabaseViewConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DatabaseViewConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">TabularColumnConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a TabularColumnElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataContainerConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DataContainerConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">DataContainerConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a DataContainerElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFileConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DataFileConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">DataFileConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a DataFileElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFlowConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DataFlowConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataFlowConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
  Relationship object into a DataFlowElement bean.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataManagerOMASConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DataManagerOMASConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">DataManagerOMASConverter provides the generic methods for the Data Manager beans converters.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DisplayDataContainerHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">DisplayDataContainerHandler</a>&lt;SCHEMA_ATTRIBUTE,<wbr>SCHEMA_TYPE&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ElementHeaderConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ElementHeaderConverter</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">DisplayDataContainerHandler manages the schemas for display data containers.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ElementHeaderConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ElementHeaderConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ElementHeaderConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  EntityDetail object into a ElementHeader bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ElementStubConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ElementStubConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ElementStubConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityProxy object into an ElementStub bean.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EmbeddedConnectionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EmbeddedConnectionBuilder</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">EmbeddedConnectionBuilder is able to build the properties for the relationship between
  a connection and its embedded connections.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EndpointConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EndpointConverter</a>&lt;B&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EndpointHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EndpointHandler</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">EndpointConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a EndpointElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EndpointHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EndpointHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">EndpointHandler manages Endpoint objects.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EngineActionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EngineActionBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EngineActionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EngineActionBuilder</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">EngineActionBuilder creates the parts for an entity that represents an engine action.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EngineActionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EngineActionHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EngineActionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EngineActionHandler</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">EngineActionHandler manages EngineAction objects from the Governance Action Framework (GAF).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EventTypeConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EventTypeConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">EventTypeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from EventTypeElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EventTypeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EventTypeHandler</a>&lt;B&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ExternalIdentifierHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ExternalIdentifierHandler</a>&lt;EXTERNAL_ID,<wbr>OPEN_METADATA_ELEMENT_HEADER&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">EventTypeHandler provides the exchange of metadata about EventType schema types between the repository and the OMAS.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ExternalIdentifierHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ExternalIdentifierHandler</a>&lt;EXTERNAL_ID,<wbr>OPEN_METADATA_ELEMENT_HEADER&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ExternalIdentifierHandler manages ExternalIdentifier objects.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ExternalReferenceBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ExternalReferenceBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ExternalReferenceBuilder creates the parts for an entity that represents an external reference.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ExternalReferenceConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ExternalReferenceConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ExternalReferenceConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from ExternalReferenceElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ExternalReferenceHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ExternalReferenceHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ExternalReferenceHandler manages ExternalReference objects.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ExternalReferenceLinkHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ExternalReferenceLinkHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ExternalReferenceLinkHandler manages retrieval of ExternalReference objects attached to a specific element.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="FileFolderConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">FileFolderConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">FileFolderConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a FileFolderElement bean.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="FilesAndFoldersHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">FilesAndFoldersHandler</a>&lt;FILESYSTEM,<wbr>FOLDER,<wbr>FILE&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">FilesAndFoldersHandler provides the support for managing catalog entries about files and folders.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="FileSystemConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">FileSystemConverter</a>&lt;B&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceActionProcessStepBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionProcessStepBuilder</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">FileSystemConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a FileSystemElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="FormConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">FormConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">FormConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a Form bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GlossaryBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GlossaryBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryBuilder creates the parts for an entity that represents a glossary.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GlossaryCategoryBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GlossaryCategoryBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryCategoryBuilder creates the parts for an entity that represents a glossary category.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GlossaryCategoryConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GlossaryCategoryConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryCategoryConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a GlossaryCategoryElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GlossaryCategoryHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GlossaryCategoryHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryCategoryHandler provides the exchange of metadata about glossary categories between the repository and the OMAS.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GlossaryConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GlossaryConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a GlossaryElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GlossaryHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GlossaryHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryHandler provides the exchange of metadata about glossaries between the repository and the OMAS.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GlossaryTermBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GlossaryTermBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryTermBuilder is able to build the properties for a GlossaryTerm entity from a GlossaryTerm bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GlossaryTermConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GlossaryTermConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryTermConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a GlossaryTermElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GlossaryTermHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GlossaryTermHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryTermHandler retrieves Glossary Term objects from the property server.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceActionProcessStepBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionProcessStepBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">GovernanceActionProcessStepBuilder creates the parts for an entity that represents a governance action process step.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceActionProcessStepHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionProcessStepHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceActionProcessStepHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionProcessStepHandler</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">GovernanceActionProcessStepHandler manages GovernanceActionProcessStep entities and their relationships.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceActionTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionTypeBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceActionTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionTypeBuilder</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">GovernanceActionTypeBuilder creates the parts for an entity that represents a governance action type.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceActionTypeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionTypeHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceActionTypeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionTypeHandler</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">GovernanceActionTypeHandler manages GovernanceActionType entities and their relationships.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceDefinitionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceDefinitionBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceDefinitionBuilder creates the parts for an entity that represents a governance definition.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceDefinitionConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceDefinitionConverter</a>&lt;B&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceDefinitionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceDefinitionBuilder</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceDefinitionConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from GovernanceDefinitionElement.</div>
+<div class="block">GovernanceDefinitionBuilder creates the parts for an entity that represents a governance definition.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceDefinitionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceDefinitionHandler</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">GovernanceDefinitionHandler provides the exchange of metadata about definition definitions between the repository and the OMAS.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceMetricBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceMetricBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceMetricBuilder creates the parts for an entity that represents a governance metric.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceMetricConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceMetricConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceMetricConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from GovernanceMetricElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceMetricHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceMetricHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceMetricHandler provides the exchange of metadata about governanceMetrics between the repository and the OMAS.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceMetricImplementationConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceMetricImplementationConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceMetricConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from GovernanceMetricImplementation.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceRoleConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceRoleConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceRoleConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into an GovernanceRoleElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceZoneBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceZoneBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceZoneBuilder creates the parts for an entity that represents a governance zone definition.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceZoneConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceZoneConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceZoneConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from GovernanceZoneElement.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GovernanceZoneHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceZoneHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceZoneHandler provides the exchange of metadata about governance zones between the repository and
- the OMAS.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="InformalTagBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">InformalTagBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">InformalTagBuilder is able to build the properties for an InformalTag entity.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="InformalTagConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">InformalTagConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">InformalTagConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into an InformalTagElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="InformalTagHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">InformalTagHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">InformalTagHandler manages InformalTag objects.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ITInfrastructureBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ITInfrastructureBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ITInfrastructureBuilder provides the builder functions for classifications and relationships.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ITInfrastructureHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ITInfrastructureHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">OperatingPlatformHandler provides the exchange of metadata about hosts, software server platforms and software servers between the repository and
- the OMAS.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ITProfileConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ITProfileConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ActorProfileConverter generates a ActorProfileElement bean from a ActorProfile entity.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LicenseHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LicenseHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">LicenseHandler manages License objects.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="LicenseTypeConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LicenseTypeConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">LicenseTypeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from LicenseTypeElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LikeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LikeBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">LikeBuilder is able to build the properties for a Like entity.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="LikeConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LikeConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">LikeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into an LikeElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LikeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LikeHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">LikeHandler provides access and maintenance for Like objects and their attachment
- to Referenceables.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="LineageMappingConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LineageMappingConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">LineageMappingConverter provides common methods for transferring relevant header from an Open Metadata Repository Services (OMRS)
- Relationship object into a LineageMappingElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LocationBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LocationBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">LocationBuilder creates the parts for an entity that represents a location.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="LocationConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LocationConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">LocationConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from LocationElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LocationHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LocationHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">LocationHandler manages Location objects.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeaningConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">MeaningConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">MeaningConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a MeaningElement bean.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MetadataElementConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">MetadataElementConverter</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
@@ -609,22 +222,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">MetadataSourceConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  EntityDetail object into a MetadataSourceElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="NoteBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">NoteBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">NoteBuilder is able to build the properties for a Note entity.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="NoteHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">NoteHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">NoteLogHandler manages NoteLog objects.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="NoteLogBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">NoteLogBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">NoteLogBuilder is able to build the properties for a NoteLog entity.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="NoteLogHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">NoteLogHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">NoteLogHandler manages NoteLog objects.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="OCFConnectionConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OCFConnectionConverter</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
@@ -675,41 +272,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">OpenMetadataAPITemplateHandler provides the methods for managing the creation of elements using templates.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OperatingPlatformBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OperatingPlatformBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">OperatingPlatformBuilder creates the parts for an entity that represents an operating platform (model 0030).</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OperatingPlatformHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OperatingPlatformHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">OperatingPlatformHandler provides the exchange of metadata about operating platforms between the repository and
- the OMAS.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PersonRoleBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">PersonRoleBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">PersonRoleBuilder creates the parts for an entity that represents a person role plus manages the properties for the
- relationships.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="PersonRoleConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">PersonRoleConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">PersonRoleConverter generates a PersonRoleProperties bean from an PersonRoleProperties entity and the relationships connected to it.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PersonRoleHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">PersonRoleHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">PersonRoleHandler provides the exchange of metadata about roles between the repository and the OMAS.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="PortBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">PortBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">PortBuilder is able to build the properties for a Port entity.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PortConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">PortConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">PortConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that includes the PortProperties.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="PortHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">PortHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">Manages the maintenance of port entities.</div>
-</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ProcessBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ProcessBuilder</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ProcessBuilder creates the parts of a root repository entity for a process.</div>
@@ -719,53 +281,9 @@ loadScripts(document, 'script');</script>
 <div class="block">ProcessCallConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
  Relationship object into a bean that includes the ProcessCallProperties.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ProcessConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ProcessConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ProcessConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that includes the ProcessProperties.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProcessHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ProcessHandler</a>&lt;PROCESS,<wbr>PORT,<wbr>DATA_FLOW,<wbr>CONTROL_FLOW,<wbr>PROCESS_CALL,<wbr>LINEAGE_MAPPING&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ProcessHandler provides the methods to create and maintain processes and their contents.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ProfileConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ProfileConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ProfileConverter generates a ProfileElement bean from a ActorProfileProperties entity.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProjectBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ProjectBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ProjectBuilder creates the parts for an entity that represents a Project.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ProjectConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ProjectConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ProjectConverter generates an ProjectCollectionMember bean from an Project entity
- and a ResourceList relationship to it.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProjectHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ProjectHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ProjectHandler provides the exchange of metadata about projects between the repository and the OMAS.</div>
-</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PropertyFacetBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">PropertyFacetBuilder</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">PropertyFacetBuilder is able to build the properties for a SearchKeyword entity.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="QueryConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">QueryConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">QueryConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a Query bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RatingBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RatingBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">RatingBuilder is able to build the properties for a Rating entity.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RatingConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RatingConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">RatingConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into an RatingElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RatingHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RatingHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">RatingHandler manages the Rating entity.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableBuilder</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
@@ -781,63 +299,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ReferenceableHandler manages methods on generic referenceables.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ReferenceDataHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceDataHandler</a>&lt;VALID_VALUE,<wbr>VALID_VALUE_ASSIGNMENT,<wbr>VALID_VALUE_ASSIGNMENT_DEF,<wbr>VALID_VALUE_IMPLEMENTATION,<wbr>VALID_VALUE_IMPLEMENTATION_DEF,<wbr>VALID_VALUE_MAPPING,<wbr>REFERENCE_VALUE_ASSIGNMENT,<wbr>REFERENCE_VALUE_ASSIGNED_ITEM&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RelatedElementConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RelatedElementConverter</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ReferenceDataHandler provides the methods to create and maintain lists of valid
- value definitions grouped into a valid value set.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ReferenceValueAssignmentDefinitionConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceValueAssignmentDefinitionConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ReferenceValueAssignmentDefinitionConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services
- (OMRS) Relationship and linked EntityDetail object into a bean that inherits from ReferenceValueAssignmentDefinitionElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ReferenceValueAssignmentItemConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceValueAssignmentItemConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ReferenceValueAssignmentItemConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- Relationship and linked EntityDetail object into a bean that inherits from ReferenceValueAssignmentItemElement.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RelatedAssetConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RelatedAssetConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">RelatedAssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- Relationship and EntityDetail object into a bean that inherits from RelatedAssetElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RelatedAssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RelatedAssetHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">RelatedAssetHandler manages B objects and optionally connections in the property server.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RelatedElementConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RelatedElementConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">RelatedElementConverter generates a RelatedBy from a relationship and attached entity</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="RelatedEntity.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RelatedEntity</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="RelatedEntity.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RelatedEntity</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">Defines a relationship and the entity at the other end of the relationship to a starting entity.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RelatedMediaHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RelatedMediaHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">RelatedMediaHandler manages RelatedMedia objects.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RelationalDataHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RelationalDataHandler</a>&lt;DATABASE,<wbr>DATABASE_SCHEMA,<wbr>DATABASE_TABLE,<wbr>DATABASE_VIEW,<wbr>DATABASE_COLUMN,<wbr>SCHEMA_TYPE&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">RelationalDataHandler manages the assets and schemas for relational data.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ReportConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReportConverter</a>&lt;B&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SAFConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SAFConverter</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ReportConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a Report bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SAFConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SAFConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ODFConverter provides the generic methods for the Data Manager beans converters.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaAttributeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaAttributeBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">SchemaAttributeBuilder creates instance properties for a schema attribute.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SchemaAttributeConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaAttributeConverter</a>&lt;B&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SchemaAttributeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaAttributeBuilder</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">SchemaAttributeConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a SchemaAttributeElement bean.</div>
+<div class="block">SchemaAttributeBuilder creates instance properties for a schema attribute.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaAttributeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaAttributeHandler</a>&lt;SCHEMA_ATTRIBUTE,<wbr>SCHEMA_TYPE&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
@@ -847,133 +327,34 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SchemaTypeBuilder manages the properties for a schema type.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaTypeConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaTypeConverter</a>&lt;B&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaTypeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaTypeHandler</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">SchemaTypeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a SchemaTypeElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SchemaTypeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaTypeHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SchemaTypeHandler manages SchemaType objects.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SearchKeywordBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SearchKeywordBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">SearchKeywordBuilder is able to build the properties for a SearchKeyword entity.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SearchKeywordHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SearchKeywordHandler</a>&lt;B&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SoftwareCapabilityBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SoftwareCapabilityBuilder</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">SearchKeywordHandler manages SearchKeyword objects.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SecurityGroupConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SecurityGroupConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceDefinitionConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from GovernanceDefinition.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SecurityManagerConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SecurityManagerConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">SecurityManagerConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a SecurityManagerElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SoftwareCapabilityBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SoftwareCapabilityBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SoftwareCapabilityBuilder creates the parts for an entity that represents a software capability.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SoftwareCapabilityConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SoftwareCapabilityConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">SoftwareCapabilityConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a SoftwareCapabilityElement bean.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="SoftwareCapabilityHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SoftwareCapabilityHandler</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SoftwareCapabilityHandler provides the support for managing software capabilities.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SubjectAreaBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SubjectAreaBuilder</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurveyReportConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SurveyReportConverter</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">SubjectAreaBuilder creates the parts for an entity that represents a subject area definition.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SubjectAreaConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SubjectAreaConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">SubjectAreaConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from SubjectAreaElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SubjectAreaHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SubjectAreaHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">SubjectAreaHandler provides the exchange of metadata about subject areas between the repository and
- the OMAS.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurveyReportConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SurveyReportConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SurveyReportConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
  EntityDetail object into an SurveyReport bean.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurveyReportHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SurveyReportHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurveyReportHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SurveyReportHandler</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SurveyReportHandler manages the storage and retrieval of metadata relating to survey
  reports as defined in the Survey Analysis Framework (SAF).</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TabularColumnConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">TabularColumnConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">TabularColumnConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a TabularColumnElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TopicConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">TopicConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">TopicConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a TopicElement bean.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="UserIdentityBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">UserIdentityBuilder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">UserIdentityBuilder creates the parts for an entity that represents a user identity.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="UserIdentityConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">UserIdentityConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">UserIdentityConverter generates an UserIdentityElement bean from an UserIdentity entity.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="UserIdentityHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">UserIdentityHandler</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">UserIdentityHandler provides the exchange of metadata about users between the repository and the OMAS.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ValidValueAssignmentConsumerConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValueAssignmentConsumerConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ValidValueAssignmentConsumerConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- Relationship and linked EntityDetail object into a bean that inherits from ValidValueAssignmentConsumerElement.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ValidValueAssignmentDefinitionConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValueAssignmentDefinitionConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ValidValueAssignmentDefinitionConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- Relationship and linked EntityDetail object into a bean that inherits from ValidValueAssignmentDefinitionElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ValidValueConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValueConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ValidValueConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a bean that inherits from ValidValueElement.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ValidValueImplAssetConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValueImplAssetConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ValidValueImplAssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- Relationship and linked EntityDetail object into a bean that inherits from ValidValueImplAssetElement.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ValidValueImplDefinitionConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValueImplDefinitionConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ValidValueImplDefinitionConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- Relationship and linked EntityDetail object into a bean that inherits from ValidValueImplDefinitionElement.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ValidValueMappingConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValueMappingConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ReferenceValueAssignmentDefinitionConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services
- (OMRS) Relationship and linked EntityDetail object into a bean that inherits from ReferenceValueAssignmentDefinitionElement.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ValidValuesBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValuesBuilder</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ValidValuesBuilder is used to manage the properties of a valid values set and definition.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ValidValueSetConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValueSetConverter</a>&lt;B&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ValidValuesHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValuesHandler</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ValidValueConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a ValidValueElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ValidValuesHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ValidValuesHandler</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ValidValuesHandler provides the methods to create and maintain lists of valid
  value definitions grouped into a valid value set.</div>
 </div>

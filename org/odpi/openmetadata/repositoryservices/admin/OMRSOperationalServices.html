@@ -258,7 +258,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the Enterprise OMRS Topic Connector.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>OMRSTopicConnector for use by the Conformance Test Services or Access Services.</dd>
+<dd>OMRSTopicConnector for use by the Conformance Test Services or Open Metadata Services.</dd>
 </dl>
 </section>
 </li>
@@ -377,7 +377,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setSecurityVerifier(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier)">
 <h3>setSecurityVerifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecurityVerifier</span><wbr><span class="parameters">(<a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecurityVerifier</span><wbr><span class="parameters">(<a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</span>
+                         throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Set up a new security verifier (the handler runs with a default verifier until this
  method is called).
  The security verifier provides authorization checks for access and maintenance
@@ -386,6 +387,8 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>securityVerifier</code> - new security verifier</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
 </dl>
 </section>
 </li>

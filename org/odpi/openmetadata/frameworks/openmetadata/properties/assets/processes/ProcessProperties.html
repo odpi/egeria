@@ -45,7 +45,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -72,9 +72,9 @@ loadScripts(document, 'script');</script>
 <h1 title="Class ProcessProperties" class="title">Class ProcessProperties</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
 <div class="inheritance"><a href="../../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
 <div class="inheritance"><a href="../../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
-<div class="inheritance"><a href="../../SupplementaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties</a>
 <div class="inheritance"><a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties</div>
 </div>
@@ -83,24 +83,18 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="../../actions/ActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actions">ActionProperties</a></code>, <code><a href="DeployedSoftwareComponentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">DeployedSoftwareComponentProperties</a></code>, <code><a href="EmbeddedProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">EmbeddedProcessProperties</a></code>, <code><a href="../../../../governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ProcessProperties</span>
 <span class="extends-implements">extends <a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></span></div>
 <div class="block">Process properties defines the properties of a process.  A process is a series of steps and decisions in operation
- in the organization.  It is typically an automated process but may be performed by a person.
- Only set the implementationLanguage if the process is automated.</div>
+ in the organization.  It is implemented by one or more digital resources.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- =========== FIELD SUMMARY =========== -->
-<li>
-<section class="field-summary" id="field-summary">
-<h2>Field Summary</h2>
-<div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../SupplementaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">SupplementaryProperties</a></h3>
-<code><a href="../../SupplementaryProperties.html#displayDescription">displayDescription</a>, <a href="../../SupplementaryProperties.html#displayName">displayName</a></code></div>
-</section>
-</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -115,7 +109,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties)" class="member-name-link">ProcessProperties</a><wbr>(<a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Copy/clone constructor</div>
+<div class="block">Copy/clone Constructor</div>
 </div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties)" class="member-name-link">ProcessProperties</a><wbr>(<a href="ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a>&nbsp;template)</code></div>
 <div class="col-last even-row-color">
@@ -135,15 +129,25 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cloneToAsset()" class="member-name-link">cloneToAsset</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Convert this object into an AssetProperties object.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActivityStatus()" class="member-name-link">getActivityStatus</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the status of the action/to do.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCompletionTime()" class="member-name-link">getCompletionTime</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the date/time that this process ended (instance only).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDueTime()" class="member-name-link">getDueTime</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return when this needs to be completed by.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFormula()" class="member-name-link">getFormula</a>()</code></div>
@@ -155,15 +159,65 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the specification language for the formula.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getImplementationLanguage()" class="member-name-link">getImplementationLanguage</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastPauseTime()" class="member-name-link">getLastPauseTime</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of the programming language that this process is implemented in.</div>
+<div class="block">Return when this was completed - or null if still outstanding.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastResumeTime()" class="member-name-link">getLastResumeTime</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the last time the process was resumed.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastReviewTime()" class="member-name-link">getLastReviewTime</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the last time the action was reviewed for priority, ownership etc.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPriority()" class="member-name-link">getPriority</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return how important this is.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestedStartTime()" class="member-name-link">getRequestedStartTime</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the time that the process should start.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestedTime()" class="member-name-link">getRequestedTime</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the time that this action was created.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStartTime()" class="member-name-link">getStartTime</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the date/time that this process started (instance only).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUserDefinedActivityStatus()" class="member-name-link">getUserDefinedActivityStatus</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return additionally defined activity statuses.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setActivityStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)" class="member-name-link">setActivityStatus</a><wbr>(<a href="../../../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the status of the action/to do.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCompletionTime(java.util.Date)" class="member-name-link">setCompletionTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;completionTime)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the date/time that this process ended (instance only).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDueTime(java.util.Date)" class="member-name-link">setDueTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;dueTime)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up when this needs to be completed by.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFormula(java.lang.String)" class="member-name-link">setFormula</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formula)</code></div>
@@ -176,13 +230,48 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up  the specification language for the formula.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setImplementationLanguage(java.lang.String)" class="member-name-link">setImplementationLanguage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;implementationLanguage)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLastPauseTime(java.util.Date)" class="member-name-link">setLastPauseTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastPauseTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the programming language that this process is implemented in.</div>
+<div class="block">Set up when this was completed - or null if still outstanding.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLastResumeTime(java.util.Date)" class="member-name-link">setLastResumeTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastResumeTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the last time the process was resumed.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLastReviewTime(java.util.Date)" class="member-name-link">setLastReviewTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastReviewTime)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the last time the action was reviewed for priority, ownership etc.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPriority(int)" class="member-name-link">setPriority</a><wbr>(int&nbsp;priority)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up how important this is.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRequestedStartTime(java.util.Date)" class="member-name-link">setRequestedStartTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;requestedStartTime)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the time that the process should start.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRequestedTime(java.util.Date)" class="member-name-link">setRequestedTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;requestedTime)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the time that the action was created.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStartTime(java.util.Date)" class="member-name-link">setStartTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startTime)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the the date/time that this process started (instance only).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUserDefinedActivityStatus(java.lang.String)" class="member-name-link">setUserDefinedActivityStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userDefinedActivityStatus)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up additionally defined activity statuses.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Standard toString method.</div>
 </div>
 </div>
@@ -190,16 +279,16 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></h3>
-<code><a href="../AssetProperties.html#cloneToAsset(java.lang.String)">cloneToAsset</a>, <a href="../AssetProperties.html#getDeployedImplementationType()">getDeployedImplementationType</a>, <a href="../AssetProperties.html#getDisplayDescription()">getDisplayDescription</a>, <a href="../AssetProperties.html#getName()">getName</a>, <a href="../AssetProperties.html#getResourceDescription()">getResourceDescription</a>, <a href="../AssetProperties.html#getResourceName()">getResourceName</a>, <a href="../AssetProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../AssetProperties.html#setDeployedImplementationType(java.lang.String)">setDeployedImplementationType</a>, <a href="../AssetProperties.html#setName(java.lang.String)">setName</a>, <a href="../AssetProperties.html#setResourceDescription(java.lang.String)">setResourceDescription</a>, <a href="../AssetProperties.html#setResourceName(java.lang.String)">setResourceName</a>, <a href="../AssetProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../SupplementaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">SupplementaryProperties</a></h3>
-<code><a href="../../SupplementaryProperties.html#getAbbreviation()">getAbbreviation</a>, <a href="../../SupplementaryProperties.html#getDisplayName()">getDisplayName</a>, <a href="../../SupplementaryProperties.html#getDisplaySummary()">getDisplaySummary</a>, <a href="../../SupplementaryProperties.html#getUsage()">getUsage</a>, <a href="../../SupplementaryProperties.html#setAbbreviation(java.lang.String)">setAbbreviation</a>, <a href="../../SupplementaryProperties.html#setDisplayDescription(java.lang.String)">setDisplayDescription</a>, <a href="../../SupplementaryProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../../SupplementaryProperties.html#setDisplaySummary(java.lang.String)">setDisplaySummary</a>, <a href="../../SupplementaryProperties.html#setUsage(java.lang.String)">setUsage</a></code></div>
+<code><a href="../AssetProperties.html#getDeployedImplementationType()">getDeployedImplementationType</a>, <a href="../AssetProperties.html#getNamespace()">getNamespace</a>, <a href="../AssetProperties.html#getResourceName()">getResourceName</a>, <a href="../AssetProperties.html#getSource()">getSource</a>, <a href="../AssetProperties.html#getUserDefinedStatus()">getUserDefinedStatus</a>, <a href="../AssetProperties.html#setDeployedImplementationType(java.lang.String)">setDeployedImplementationType</a>, <a href="../AssetProperties.html#setNamespace(java.lang.String)">setNamespace</a>, <a href="../AssetProperties.html#setResourceName(java.lang.String)">setResourceName</a>, <a href="../AssetProperties.html#setSource(java.lang.String)">setSource</a>, <a href="../AssetProperties.html#setUserDefinedStatus(java.lang.String)">setUserDefinedStatus</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
-<code><a href="../../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../../ReferenceableProperties.html#getVendorProperties()">getVendorProperties</a>, <a href="../../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../../ReferenceableProperties.html#setVendorProperties(java.util.Map)">setVendorProperties</a></code></div>
+<code><a href="../../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../../ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../../ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../../ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../../ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../../ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../../ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../../ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../../ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></h3>
-<code><a href="../../OpenMetadataRootProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../../OpenMetadataRootProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../../OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../../OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../../OpenMetadataRootProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../../OpenMetadataRootProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="../../OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../../OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
+<code><a href="../../OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../../OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../../OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../../OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">EntityProperties</a></h3>
+<code><a href="../../EntityProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../../EntityProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../../EntityProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../../EntityProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -236,10 +325,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties)">
 <h3>ProcessProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProcessProperties</span><wbr><span class="parameters">(<a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a>&nbsp;template)</span></div>
-<div class="block">Copy/clone constructor</div>
+<div class="block">Copy/clone Constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>template</code> - object to copy</dd>
+<dd><code>template</code> - template object to copy.</dd>
 </dl>
 </section>
 </li>
@@ -251,18 +340,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="cloneToAsset()">
-<h3>cloneToAsset</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></span>&nbsp;<span class="element-name">cloneToAsset</span>()</div>
-<div class="block">Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
- into the extended properties.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>asset properties</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getFormula()">
 <h3>getFormula</h3>
@@ -308,24 +385,244 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getImplementationLanguage()">
-<h3>getImplementationLanguage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getImplementationLanguage</span>()</div>
-<div class="block">Return the name of the programming language that this process is implemented in.</div>
+<section class="detail" id="getRequestedTime()">
+<h3>getRequestedTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getRequestedTime</span>()</div>
+<div class="block">Return the time that this action was created.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>string name</dd>
+<dd>date</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setImplementationLanguage(java.lang.String)">
-<h3>setImplementationLanguage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setImplementationLanguage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;implementationLanguage)</span></div>
-<div class="block">Set up the name of the programming language that this process is implemented in.</div>
+<section class="detail" id="setRequestedTime(java.util.Date)">
+<h3>setRequestedTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRequestedTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;requestedTime)</span></div>
+<div class="block">Set up the time that the action was created.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>implementationLanguage</code> - string name</dd>
+<dd><code>requestedTime</code> - data</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRequestedStartTime()">
+<h3>getRequestedStartTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getRequestedStartTime</span>()</div>
+<div class="block">Return the time that the process should start.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date/time</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setRequestedStartTime(java.util.Date)">
+<h3>setRequestedStartTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRequestedStartTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;requestedStartTime)</span></div>
+<div class="block">Set up the time that the process should start.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>requestedStartTime</code> - date/time</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStartTime()">
+<h3>getStartTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getStartTime</span>()</div>
+<div class="block">Return the date/time that this process started (instance only).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setStartTime(java.util.Date)">
+<h3>setStartTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStartTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startTime)</span></div>
+<div class="block">Set up the the date/time that this process started (instance only).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>startTime</code> - date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDueTime()">
+<h3>getDueTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getDueTime</span>()</div>
+<div class="block">Return when this needs to be completed by.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setDueTime(java.util.Date)">
+<h3>setDueTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDueTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;dueTime)</span></div>
+<div class="block">Set up when this needs to be completed by.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dueTime</code> - date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLastReviewTime()">
+<h3>getLastReviewTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getLastReviewTime</span>()</div>
+<div class="block">Return the last time the action was reviewed for priority, ownership etc.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setLastReviewTime(java.util.Date)">
+<h3>setLastReviewTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLastReviewTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastReviewTime)</span></div>
+<div class="block">Set up the last time the action was reviewed for priority, ownership etc.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lastReviewTime</code> - data</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLastPauseTime()">
+<h3>getLastPauseTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getLastPauseTime</span>()</div>
+<div class="block">Return when this was completed - or null if still outstanding.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setLastPauseTime(java.util.Date)">
+<h3>setLastPauseTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLastPauseTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastPauseTime)</span></div>
+<div class="block">Set up when this was completed - or null if still outstanding.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lastPauseTime</code> - date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLastResumeTime()">
+<h3>getLastResumeTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getLastResumeTime</span>()</div>
+<div class="block">Return the last time the process was resumed.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setLastResumeTime(java.util.Date)">
+<h3>setLastResumeTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLastResumeTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastResumeTime)</span></div>
+<div class="block">Set up the last time the process was resumed.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lastResumeTime</code> - date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getCompletionTime()">
+<h3>getCompletionTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getCompletionTime</span>()</div>
+<div class="block">Return the date/time that this process ended (instance only).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setCompletionTime(java.util.Date)">
+<h3>setCompletionTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCompletionTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;completionTime)</span></div>
+<div class="block">Set up the date/time that this process ended (instance only).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>completionTime</code> - date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getPriority()">
+<h3>getPriority</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getPriority</span>()</div>
+<div class="block">Return how important this is.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>int</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setPriority(int)">
+<h3>setPriority</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPriority</span><wbr><span class="parameters">(int&nbsp;priority)</span></div>
+<div class="block">Set up how important this is.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>priority</code> - integer</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getActivityStatus()">
+<h3>getActivityStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a></span>&nbsp;<span class="element-name">getActivityStatus</span>()</div>
+<div class="block">Return the status of the action/to do.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>status enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setActivityStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">
+<h3>setActivityStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setActivityStatus</span><wbr><span class="parameters">(<a href="../../../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus)</span></div>
+<div class="block">Set up the status of the action/to do.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>activityStatus</code> - status enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUserDefinedActivityStatus()">
+<h3>getUserDefinedActivityStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUserDefinedActivityStatus</span>()</div>
+<div class="block">Return additionally defined activity statuses.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUserDefinedActivityStatus(java.lang.String)">
+<h3>setUserDefinedActivityStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUserDefinedActivityStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userDefinedActivityStatus)</span></div>
+<div class="block">Set up additionally defined activity statuses.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userDefinedActivityStatus</code> - string</dd>
 </dl>
 </section>
 </li>

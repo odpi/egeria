@@ -108,25 +108,29 @@ implements <a href="../../../resource/jdbc/ddl/postgres/PostgreSQLColumn.html" t
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ABBREVIATION" class="member-name-link">ABBREVIATION</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ACTUAL_COMPLETION_DATE" class="member-name-link">ACTUAL_COMPLETION_DATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ACTIVITY_STATUS" class="member-name-link">ACTIVITY_STATUS</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ACTUAL_DURATION" class="member-name-link">ACTUAL_DURATION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ACTUAL_COMPLETION_DATE" class="member-name-link">ACTUAL_COMPLETION_DATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ADDITIONAL_PROPERTIES" class="member-name-link">ADDITIONAL_PROPERTIES</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ACTUAL_DURATION" class="member-name-link">ACTUAL_DURATION</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ARCHIVED" class="member-name-link">ARCHIVED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ADDITIONAL_PROPERTIES" class="member-name-link">ADDITIONAL_PROPERTIES</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ASSET_GUID" class="member-name-link">ASSET_GUID</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ARCHIVED" class="member-name-link">ARCHIVED</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ASSIGNED_ACTOR_GUID" class="member-name-link">ASSIGNED_ACTOR_GUID</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ASSET_GUID" class="member-name-link">ASSET_GUID</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ASSIGNED_ACTOR_TYPE" class="member-name-link">ASSIGNED_ACTOR_TYPE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ASSIGNED_ACTOR_GUID" class="member-name-link">ASSIGNED_ACTOR_GUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ASSIGNED_WORK_GUID" class="member-name-link">ASSIGNED_WORK_GUID</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ASSIGNED_ACTOR_TYPE" class="member-name-link">ASSIGNED_ACTOR_TYPE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ASSIGNED_WORK_TYPE" class="member-name-link">ASSIGNED_WORK_TYPE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ASSIGNED_WORK_GUID" class="member-name-link">ASSIGNED_WORK_GUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#AVG_RATING" class="member-name-link">AVG_RATING</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ASSIGNED_WORK_TYPE" class="member-name-link">ASSIGNED_WORK_TYPE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#AVG_RATING" class="member-name-link">AVG_RATING</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#CATEGORY" class="member-name-link">CATEGORY</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#CERTIFICATION_GUID" class="member-name-link">CERTIFICATION_GUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -383,10 +387,6 @@ implements <a href="../../../resource/jdbc/ddl/postgres/PostgreSQLColumn.html" t
 <div class="col-first odd-row-color"><code><a href="#TO_DO_SOURCE_GUID" class="member-name-link">TO_DO_SOURCE_GUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#TO_DO_SOURCE_TYPE" class="member-name-link">TO_DO_SOURCE_TYPE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#TO_DO_STATUS" class="member-name-link">TO_DO_STATUS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#TO_DO_TYPE" class="member-name-link">TO_DO_TYPE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#TYPE_DESCRIPTION" class="member-name-link">TYPE_DESCRIPTION</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -1117,15 +1117,15 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="TO_DO_STATUS">
-<h3>TO_DO_STATUS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HarvestOpenMetadataColumn.html" title="enum class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.schema">HarvestOpenMetadataColumn</a></span>&nbsp;<span class="element-name">TO_DO_STATUS</span></div>
+<section class="detail" id="ACTIVITY_STATUS">
+<h3>ACTIVITY_STATUS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HarvestOpenMetadataColumn.html" title="enum class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.schema">HarvestOpenMetadataColumn</a></span>&nbsp;<span class="element-name">ACTIVITY_STATUS</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="TO_DO_TYPE">
-<h3>TO_DO_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HarvestOpenMetadataColumn.html" title="enum class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.schema">HarvestOpenMetadataColumn</a></span>&nbsp;<span class="element-name">TO_DO_TYPE</span></div>
+<section class="detail" id="CATEGORY">
+<h3>CATEGORY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HarvestOpenMetadataColumn.html" title="enum class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.schema">HarvestOpenMetadataColumn</a></span>&nbsp;<span class="element-name">CATEGORY</span></div>
 </section>
 </li>
 <li>

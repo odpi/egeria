@@ -153,19 +153,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Creates a new instance of a connector using the information from the connection and the properties
  from the subclass(es).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)" class="member-name-link">getConnector</a><wbr>(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Creates a new instance of a connector using the information from the connection and the properties
- from the subclass(es).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorType()" class="member-name-link">getConnectorType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Returns the properties about the type of connector that this ConnectorTypeManager supports.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="properties/ConnectorTypeDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeDetails</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorTypeProperties()" class="member-name-link">getConnectorTypeProperties</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorType()" class="member-name-link">getConnectorType</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns the properties about the type of connector that this ConnectorTypeManager supports.</div>
 </div>
@@ -249,18 +238,6 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getConnectorTypeProperties()">
-<h3>getConnectorTypeProperties</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="properties/ConnectorTypeDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeDetails</a></span>&nbsp;<span class="element-name">getConnectorTypeProperties</span>()</div>
-<div class="block">Returns the properties about the type of connector that this ConnectorTypeManager supports.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>properties including the name of the connector type, the connector provider class
- and any specific connection properties that are recognized by this connector.</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getConnectorType()">
 <h3>getConnectorType</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a></span>&nbsp;<span class="element-name">getConnectorType</span>()</div>
@@ -312,7 +289,8 @@ loadScripts(document, 'script');</script>
 <h3>getConnector</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnector</span><wbr><span class="parameters">(<a href="properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span>
                                 throws <span class="exceptions"><a href="ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
-<a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Creates a new instance of a connector using the information from the connection and the properties
  from the subclass(es).</div>
 <dl class="notes">
@@ -324,26 +302,7 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - an error with the connection.</dd>
 <dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - an error initializing the connector.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)">
-<h3>getConnector</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnector</span><wbr><span class="parameters">(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</span>
-                                throws <span class="exceptions"><a href="ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
-<a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Creates a new instance of a connector using the information from the connection and the properties
- from the subclass(es).</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>connection</code> - connection that should have all the properties needed by the Connector Provider
-                   to create a connector instance.</dd>
-<dt>Returns:</dt>
-<dd>Connector   instance of the connector.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - if there are missing or invalid properties in the connection</dd>
-<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - if there are issues instantiating or initializing the connector</dd>
+<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code></dd>
 </dl>
 </section>
 </li>

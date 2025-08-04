@@ -45,13 +45,13 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -90,6 +90,24 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected final <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
+<div class="col-second even-row-color"><code><a href="#connectorToTarget" class="member-name-link">connectorToTarget</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="../context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#integrationContext" class="member-name-link">integrationContext</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -98,17 +116,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">RequestedCatalogTarget</a>()</code></div>
-<div class="col-last even-row-color">
-<div class="block">Default constructor</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector)" class="member-name-link">RequestedCatalogTarget</a><wbr>(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector)" class="member-name-link">RequestedCatalogTarget</a><wbr>(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+ <a href="../context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a>&nbsp;catalogTargetContext,
  <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">Copy/clone constructor</div>
-</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">RequestedCatalogTarget</a><wbr>(<a href="RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;template)</code></div>
 <div class="col-last even-row-color">
+<div class="block">Constructor for new catalog target processor</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">RequestedCatalogTarget</a><wbr>(<a href="RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;template)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
 </div>
@@ -131,16 +146,20 @@ loadScripts(document, 'script');</script>
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargetConnector()" class="member-name-link">getCatalogTargetConnector</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorToTarget()" class="member-name-link">getConnectorToTarget</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the connector to access the catalog target.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationContext()" class="member-name-link">getIntegrationContext</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the integration context for this catalog target.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCatalogTargetConnector(org.odpi.openmetadata.frameworks.connectors.Connector)" class="member-name-link">setCatalogTargetConnector</a><wbr>(<a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;catalogTargetConnector)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -164,24 +183,38 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="connectorToTarget">
+<h3>connectorToTarget</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">connectorToTarget</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="integrationContext">
+<h3>integrationContext</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a></span>&nbsp;<span class="element-name">integrationContext</span></div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;()">
-<h3>RequestedCatalogTarget</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RequestedCatalogTarget</span>()</div>
-<div class="block">Default constructor</div>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector)">
 <h3>RequestedCatalogTarget</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RequestedCatalogTarget</span><wbr><span class="parameters">(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+ <a href="../context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a>&nbsp;catalogTargetContext,
  <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</span></div>
-<div class="block">Copy/clone constructor</div>
+<div class="block">Constructor for new catalog target processor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>template</code> - object to copy</dd>
@@ -209,15 +242,25 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getCatalogTargetConnector()">
-<h3>getCatalogTargetConnector</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getCatalogTargetConnector</span>()</div>
+<section class="detail" id="getConnectorToTarget()">
+<h3>getConnectorToTarget</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorToTarget</span>()</div>
+<div class="block">Return the connector to access the catalog target.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>connector</dd>
+</dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setCatalogTargetConnector(org.odpi.openmetadata.frameworks.connectors.Connector)">
-<h3>setCatalogTargetConnector</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCatalogTargetConnector</span><wbr><span class="parameters">(<a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;catalogTargetConnector)</span></div>
+<section class="detail" id="getIntegrationContext()">
+<h3>getIntegrationContext</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a></span>&nbsp;<span class="element-name">getIntegrationContext</span>()</div>
+<div class="block">Return the integration context for this catalog target.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>specialized context for this connector</dd>
+</dl>
 </section>
 </li>
 <li>

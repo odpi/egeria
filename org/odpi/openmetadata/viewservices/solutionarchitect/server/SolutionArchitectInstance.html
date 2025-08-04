@@ -136,13 +136,23 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/omf/client/handlers/SolutionHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">SolutionHandler</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionManagerClient()" class="member-name-link">getSolutionManagerClient</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/InformationSupplyChainHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">InformationSupplyChainHandler</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInformationSupplyChainHandler()" class="member-name-link">getInformationSupplyChainHandler</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the solution manager client.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/omf/client/handlers/ActorRoleHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">ActorRoleHandler</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionRoleClient()" class="member-name-link">getSolutionRoleClient</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/SolutionBlueprintHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SolutionBlueprintHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionBlueprintHandler()" class="member-name-link">getSolutionBlueprintHandler</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the solution manager client.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/SolutionComponentHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SolutionComponentHandler</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentHandler()" class="member-name-link">getSolutionComponentHandler</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the solution manager client.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/ActorRoleHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ActorRoleHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionRoleHandler()" class="member-name-link">getSolutionRoleHandler</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the solution manager client.</div>
 </div>
@@ -207,11 +217,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getSolutionManagerClient()">
-<h3>getSolutionManagerClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworkservices/omf/client/handlers/SolutionHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">SolutionHandler</a></span>&nbsp;<span class="element-name">getSolutionManagerClient</span>()</div>
-<div class="block">Return the solution manager client.  This client is from the Digital Architecture OMAS and is for maintaining
- information supply chains and solutions.</div>
+<section class="detail" id="getSolutionComponentHandler()">
+<h3>getSolutionComponentHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/SolutionComponentHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SolutionComponentHandler</a></span>&nbsp;<span class="element-name">getSolutionComponentHandler</span>()</div>
+<div class="block">Return the solution manager client.  This client is from the OMF services and is for maintaining
+ solution components.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>client</dd>
@@ -219,9 +229,33 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getSolutionRoleClient()">
-<h3>getSolutionRoleClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworkservices/omf/client/handlers/ActorRoleHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">ActorRoleHandler</a></span>&nbsp;<span class="element-name">getSolutionRoleClient</span>()</div>
+<section class="detail" id="getSolutionBlueprintHandler()">
+<h3>getSolutionBlueprintHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/SolutionBlueprintHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SolutionBlueprintHandler</a></span>&nbsp;<span class="element-name">getSolutionBlueprintHandler</span>()</div>
+<div class="block">Return the solution manager client.  This client is from the OMF services and is for maintaining
+ solution blueprints.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>client</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getInformationSupplyChainHandler()">
+<h3>getInformationSupplyChainHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/InformationSupplyChainHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">InformationSupplyChainHandler</a></span>&nbsp;<span class="element-name">getInformationSupplyChainHandler</span>()</div>
+<div class="block">Return the solution manager client.  This client is from the OMF services and is for maintaining
+ information supply chains.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>client</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSolutionRoleHandler()">
+<h3>getSolutionRoleHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/ActorRoleHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ActorRoleHandler</a></span>&nbsp;<span class="element-name">getSolutionRoleHandler</span>()</div>
 <div class="block">Return the solution manager client.  This client is from the Digital Architecture OMAS and is for maintaining
  information supply chains and solutions.</div>
 <dl class="notes">

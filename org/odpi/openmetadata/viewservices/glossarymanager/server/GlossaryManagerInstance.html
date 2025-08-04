@@ -136,20 +136,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/client/exchange/CollaborationExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">CollaborationExchangeClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollaborationExchangeClient()" class="member-name-link">getCollaborationExchangeClient</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/GlossaryHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">GlossaryHandler</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryHandler()" class="member-name-link">getGlossaryHandler</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the collaboration client.</div>
+<div class="block">Return the glossary handler.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/client/exchange/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">GlossaryExchangeClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryExchangeClient()" class="member-name-link">getGlossaryExchangeClient</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/GlossaryTermHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">GlossaryTermHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermHandler()" class="member-name-link">getGlossaryTermHandler</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the glossary client.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/client/exchange/StewardshipExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">StewardshipExchangeClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStewardshipExchangeClient()" class="member-name-link">getStewardshipExchangeClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the stewardship client.</div>
+<div class="block">Return the glossary term handler.</div>
 </div>
 </div>
 </div>
@@ -212,10 +207,10 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getCollaborationExchangeClient()">
-<h3>getCollaborationExchangeClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/client/exchange/CollaborationExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">CollaborationExchangeClient</a></span>&nbsp;<span class="element-name">getCollaborationExchangeClient</span>()</div>
-<div class="block">Return the collaboration client.  This client is from Asset Manager OMAS and is for maintaining note logs.</div>
+<section class="detail" id="getGlossaryHandler()">
+<h3>getGlossaryHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/GlossaryHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">GlossaryHandler</a></span>&nbsp;<span class="element-name">getGlossaryHandler</span>()</div>
+<div class="block">Return the glossary handler.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>client</dd>
@@ -223,22 +218,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getGlossaryExchangeClient()">
-<h3>getGlossaryExchangeClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/client/exchange/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">GlossaryExchangeClient</a></span>&nbsp;<span class="element-name">getGlossaryExchangeClient</span>()</div>
-<div class="block">Return the glossary client.  This client is from Asset Manager OMAS and is for maintaining glossaries and their content.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>client</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getStewardshipExchangeClient()">
-<h3>getStewardshipExchangeClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/client/exchange/StewardshipExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">StewardshipExchangeClient</a></span>&nbsp;<span class="element-name">getStewardshipExchangeClient</span>()</div>
-<div class="block">Return the stewardship client.  This client is from Asset Manager OMAS and is for setting up classifications and relationships for
- a glossary term.</div>
+<section class="detail" id="getGlossaryTermHandler()">
+<h3>getGlossaryTermHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/GlossaryTermHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">GlossaryTermHandler</a></span>&nbsp;<span class="element-name">getGlossaryTermHandler</span>()</div>
+<div class="block">Return the glossary term handler.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>client</dd>

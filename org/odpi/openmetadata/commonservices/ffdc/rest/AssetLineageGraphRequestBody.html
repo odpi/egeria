@@ -72,16 +72,20 @@ loadScripts(document, 'script');</script>
 <h1 title="Class AssetLineageGraphRequestBody" class="title">Class AssetLineageGraphRequestBody</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody</a>
-<div class="inheritance"><a href="EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeQueryRequestBody</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/PagingOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.PagingOptions</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions</a>
 <div class="inheritance">org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AssetLineageGraphRequestBody</span>
-<span class="extends-implements">extends <a href="EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeQueryRequestBody</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></span></div>
 <div class="block">AssetLineageGraphRequestBody provides the request body payload for an asset lineage graph.</div>
 </section>
 <section class="summary">
@@ -126,25 +130,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether all anchors should be added - or just those to known nodes? Default is false.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAsOfTime()" class="member-name-link">getAsOfTime</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHighlightISCQualifiedName()" class="member-name-link">getHighlightISCQualifiedName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the repository time that should be used when retrieving metadata.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHighlightISCQualifiedName()" class="member-name-link">getHighlightISCQualifiedName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether a particular information supply chain should be highlighted.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLimitToISCQualifiedName()" class="member-name-link">getLimitToISCQualifiedName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether the returned results should just show a particular information supply chain.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipTypes()" class="member-name-link">getRelationshipTypes</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLimitToISCQualifiedName()" class="member-name-link">getLimitToISCQualifiedName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the types of relationships that should be queried.</div>
+<div class="block">Return whether the returned results should just show a particular information supply chain.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -157,24 +151,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up whether all anchors should be added - or just those to known nodes? Default is false.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAsOfTime(java.util.Date)" class="member-name-link">setAsOfTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHighlightISCQualifiedName(java.lang.String)" class="member-name-link">setHighlightISCQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;highlightISCQualifiedName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the repository time that should be used when retrieving metadata.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHighlightISCQualifiedName(java.lang.String)" class="member-name-link">setHighlightISCQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;highlightISCQualifiedName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up whether a particular information supply chain should be highlighted.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLimitToISCQualifiedName(java.lang.String)" class="member-name-link">setLimitToISCQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;limitToISCQualifiedName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up whether the returned results should just show a particular information supply chain.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipTypes(java.util.List)" class="member-name-link">setRelationshipTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipTypes)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLimitToISCQualifiedName(java.lang.String)" class="member-name-link">setLimitToISCQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;limitToISCQualifiedName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up he types of relationships that should be queried.</div>
+<div class="block">Set up whether the returned results should just show a particular information supply chain.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -185,11 +169,17 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeQueryRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeQueryRequestBody</a></h3>
-<code><a href="EffectiveTimeQueryRequestBody.html#getEffectiveTime()">getEffectiveTime</a>, <a href="EffectiveTimeQueryRequestBody.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/QueryOptions.html#getAnchorGUID()">getAnchorGUID</a>, <a href="../../../frameworks/openmetadata/search/QueryOptions.html#getLimitResultsByStatus()">getLimitResultsByStatus</a>, <a href="../../../frameworks/openmetadata/search/QueryOptions.html#getSequencingOrder()">getSequencingOrder</a>, <a href="../../../frameworks/openmetadata/search/QueryOptions.html#getSequencingProperty()">getSequencingProperty</a>, <a href="../../../frameworks/openmetadata/search/QueryOptions.html#setAnchorGUID(java.lang.String)">setAnchorGUID</a>, <a href="../../../frameworks/openmetadata/search/QueryOptions.html#setLimitResultsByStatus(java.util.List)">setLimitResultsByStatus</a>, <a href="../../../frameworks/openmetadata/search/QueryOptions.html#setSequencingOrder(org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder)">setSequencingOrder</a>, <a href="../../../frameworks/openmetadata/search/QueryOptions.html#setSequencingProperty(java.lang.String)">setSequencingProperty</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a></h3>
-<code><a href="ExternalSourceRequestBody.html#getExternalSourceGUID()">getExternalSourceGUID</a>, <a href="ExternalSourceRequestBody.html#getExternalSourceName()">getExternalSourceName</a>, <a href="ExternalSourceRequestBody.html#setExternalSourceGUID(java.lang.String)">setExternalSourceGUID</a>, <a href="ExternalSourceRequestBody.html#setExternalSourceName(java.lang.String)">setExternalSourceName</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.PagingOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/PagingOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PagingOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/PagingOptions.html#getPageSize()">getPageSize</a>, <a href="../../../frameworks/openmetadata/search/PagingOptions.html#getStartFrom()">getStartFrom</a>, <a href="../../../frameworks/openmetadata/search/PagingOptions.html#setPageSize(int)">setPageSize</a>, <a href="../../../frameworks/openmetadata/search/PagingOptions.html#setStartFrom(int)">setStartFrom</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/GetOptions.html#getAsOfTime()">getAsOfTime</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getGraphQueryDepth()">getGraphQueryDepth</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getIncludeOnlyClassifiedElements()">getIncludeOnlyClassifiedElements</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getIncludeOnlyRelationships()">getIncludeOnlyRelationships</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getMetadataElementSubtypeNames()">getMetadataElementSubtypeNames</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getMetadataElementTypeName()">getMetadataElementTypeName</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getSkipClassifiedElements()">getSkipClassifiedElements</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getSkipRelationships()">getSkipRelationships</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setAsOfTime(java.util.Date)">setAsOfTime</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setGraphQueryDepth(int)">setGraphQueryDepth</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setIncludeOnlyClassifiedElements(java.util.List)">setIncludeOnlyClassifiedElements</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setIncludeOnlyRelationships(java.util.List)">setIncludeOnlyRelationships</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setMetadataElementSubtypeNames(java.util.List)">setMetadataElementSubtypeNames</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setMetadataElementTypeName(java.lang.String)">setMetadataElementTypeName</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setSkipClassifiedElements(java.util.List)">setSkipClassifiedElements</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setSkipRelationships(java.util.List)">setSkipRelationships</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">BasicOptions</a></h3>
+<code><a href="../../../frameworks/openmetadata/search/BasicOptions.html#getEffectiveTime()">getEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForDuplicateProcessing()">getForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForLineage()">getForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getGovernanceZoneFilter()">getGovernanceZoneFilter</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForLineage(boolean)">setForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setGovernanceZoneFilter(java.util.List)">setGovernanceZoneFilter</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -230,50 +220,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getAsOfTime()">
-<h3>getAsOfTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getAsOfTime</span>()</div>
-<div class="block">Return the repository time that should be used when retrieving metadata.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>date/time (default null which means now)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setAsOfTime(java.util.Date)">
-<h3>setAsOfTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAsOfTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span></div>
-<div class="block">Set up the repository time that should be used when retrieving metadata.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>asOfTime</code> - date/time (default null which means now)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getRelationshipTypes()">
-<h3>getRelationshipTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getRelationshipTypes</span>()</div>
-<div class="block">Return the types of relationships that should be queried.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setRelationshipTypes(java.util.List)">
-<h3>setRelationshipTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelationshipTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipTypes)</span></div>
-<div class="block">Set up he types of relationships that should be queried.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>relationshipTypes</code> - list</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getLimitToISCQualifiedName()">
 <h3>getLimitToISCQualifiedName</h3>
@@ -349,7 +295,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="EffectiveTimeQueryRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeQueryRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/QueryOptions.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></code></dd>
 <dt>Returns:</dt>
 <dd>list of properties and their values.</dd>
 </dl>
@@ -362,7 +308,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Equals method that returns true if containing properties are the same.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="EffectiveTimeQueryRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeQueryRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/QueryOptions.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - object to compare</dd>
 <dt>Returns:</dt>
@@ -377,7 +323,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="EffectiveTimeQueryRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeQueryRequestBody</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/search/QueryOptions.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

@@ -40,7 +40,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
+<li>Description&nbsp;|&nbsp;</li>
 <li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -60,9 +60,6 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.frameworkservices.omf.client.handlers</span></div>
-<section class="package-description" id="package-description">
-<div class="block">Provides specialised handlers that use the Open Metadata Store Services client.</div>
-</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -73,9 +70,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="../package-summary.html">org.odpi.openmetadata.frameworkservices.omf.client</a></div>
 <div class="col-last even-row-color">
-<div class="block">This package contains the clients for configuring and managing governance engines, managing the governance actions, governance action
- processes and incident reports as well as supporting the metadata needs of the governance action services when they are running
- in the Engine Host OMAG Server.</div>
+<div class="block">This package contains the clients for the open metadata interfaces:
+ one for events and one for REST services.</div>
 </div>
 <div class="col-first odd-row-color"><a href="../rest/package-summary.html">org.odpi.openmetadata.frameworkservices.omf.client.rest</a></div>
 <div class="col-last odd-row-color">
@@ -90,131 +86,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ActorProfileHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">ActorProfileHandler</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EgeriaOpenMetadataStoreHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">EgeriaOpenMetadataStoreHandler</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ActorProfileHandler provides methods to define actor profiles
- The interface supports the following types of objects
- 
-     ActorProfile
-     Person
-     Team
-     ITProfile
- </div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ActorRoleHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">ActorRoleHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ActorRoleHandler provides methods to define actor roles
- The interface supports the following types of objects
- 
-     ActorRole
-     PersonRole
-     TeamRole
-     ITProfileRole
-     GovernanceRole
-     SolutionRole
- </div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CollaborationManagerHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">CollaborationManagerHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">CollaborationManagerHandler is the handler for managing comments, ratings, likes and tags.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CollectionHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">CollectionHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">The CollectionsClient supports requests related to collections.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ConnectionHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">ConnectionHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ConnectionHandler provides methods to define connections
- The interface supports the following types of objects
- 
-     Connection
-     Person
-     Team
-     ITProfile
- </div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConnectorTypeHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">ConnectorTypeHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ConnectorTypeHandler provides methods to define connector types
- The interface supports the following types of objects
- 
-     ConnectorType
-     PersonRole
-     TeamRole
-     ITProfileRole
-     GovernanceRole
-     SolutionRole
- </div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ContactDetailsHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">ContactDetailsHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ContactDetailsHandler provides methods to maintain an actor's contact details.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataDesignHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">DataDesignHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">Data design manager describes how to maintain and query data classes, data fields and data structures.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EndpointHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">EndpointHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">EndpointHandler describes how to maintain and query endpoints.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceDefinitionHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">GovernanceDefinitionHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceDefinitionHandler is the handler for managing governance definitions.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataStoreHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">OpenMetadataStoreHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">OpenMetadataStoreHandler provides an interface to the open metadata store.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SchemaAttributeHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">SchemaAttributeHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">SchemaAttributeHandler provides methods to define schema attributes
- The interface supports the following types of objects
- 
-     SchemaAttribute
-     Person
-     Team
-     ITProfile
- </div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaTypeHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">SchemaTypeHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">SchemaTypeHandler provides methods to define schema types
- The interface supports the following types of objects
- 
-     SchemaType
-     Person
-     Team
-     ITProfile
- </div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SolutionHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">SolutionHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">SolutionHandler provides methods to define information supply chains, solution components and their supporting objects
- The interface supports the following types of objects
-
- 
-     InformationSupplyChains
-     InformationSupplyChainSegments
-     SolutionBlueprints
-     SolutionComponents
-     SolutionPorts
- </div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="StewardshipManagementHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">StewardshipManagementHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">StewardshipExchangeClient is the client for assigning relationships and classifications that help govern both metadata and its associated
- resources.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SubjectAreaHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">SubjectAreaHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">Subject area manager describes how to maintain and query subject area definitions.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ToDoActionHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">ToDoActionHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="UserIdentityHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">UserIdentityHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">UserIdentityHandler describes how to maintain and query  user identities.</div>
+<div class="block">OpenMetadataClient provides an interface to the open metadata store.</div>
 </div>
 </div>
 </div>

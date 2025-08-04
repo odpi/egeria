@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="ContributionRecordHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ContributionRecordHandler</a></code>, <code><a href="EngineActionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EngineActionHandler</a></code>, <code><a href="GovernanceActionProcessStepHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionProcessStepHandler</a></code>, <code><a href="GovernanceActionTypeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionTypeHandler</a></code>, <code><a href="GovernanceZoneHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceZoneHandler</a></code>, <code><a href="InformalTagHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">InformalTagHandler</a></code>, <code><a href="LikeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LikeHandler</a></code>, <code><a href="OpenMetadataAPITemplateHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPITemplateHandler</a></code>, <code><a href="OperatingPlatformHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OperatingPlatformHandler</a></code>, <code><a href="PortHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">PortHandler</a></code>, <code><a href="RatingHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RatingHandler</a></code>, <code><a href="RelatedAssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RelatedAssetHandler</a></code>, <code><a href="SearchKeywordHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SearchKeywordHandler</a></code>, <code><a href="SubjectAreaHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SubjectAreaHandler</a></code>, <code><a href="SurveyReportHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SurveyReportHandler</a></code></dd>
+<dd><code><a href="EngineActionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EngineActionHandler</a></code>, <code><a href="GovernanceActionProcessStepHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionProcessStepHandler</a></code>, <code><a href="GovernanceActionTypeHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionTypeHandler</a></code>, <code><a href="OpenMetadataAPITemplateHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPITemplateHandler</a></code>, <code><a href="SurveyReportHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SurveyReportHandler</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenMetadataAPIGenericHandler&lt;B&gt;</span>
@@ -2460,13 +2460,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Verify that the integrator identities are either null or refer to a valid software capability.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#visibleToUserThroughRelationship(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,java.lang.String)" class="member-name-link">visibleToUserThroughRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Work out whether the relationship permits the requesting user to traverse along the relationship.</div>
-</div>
 </div>
 </div>
 </div>
@@ -2564,24 +2557,6 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - asset or element not known, null userId or guid</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="visibleToUserThroughRelationship(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,java.lang.String)">
-<h3>visibleToUserThroughRelationship</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">visibleToUserThroughRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span></div>
-<div class="block">Work out whether the relationship permits the requesting user to traverse along the relationship.  This is determined by the
- isPublic property on relationships that represent feedback on another object.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>relationship</code> - relationship to the feedback content</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Returns:</dt>
-<dd>boolean - true if allowed</dd>
 </dl>
 </section>
 </li>

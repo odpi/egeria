@@ -124,25 +124,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional list of dynamic integration groups.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationServicesConfig()" class="member-name-link">getIntegrationServicesConfig</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the configuration for the registered Open Metadata Integration Services (OMISs).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a hash code based on the values of this object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDynamicIntegrationGroupsConfig(java.util.List)" class="member-name-link">setDynamicIntegrationGroupsConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a>&gt;&nbsp;dynamicIntegrationGroupsConfig)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the optional list of dynamic integration groups.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIntegrationServicesConfig(java.util.List)" class="member-name-link">setIntegrationServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;&nbsp;integrationServicesConfig)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDynamicIntegrationGroupsConfig(java.util.List)" class="member-name-link">setDynamicIntegrationGroupsConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a>&gt;&nbsp;dynamicIntegrationGroupsConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the configuration for the registered Open Metadata Integration Services (OMISs).</div>
+<div class="block">Set up the optional list of dynamic integration groups.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -192,28 +182,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getIntegrationServicesConfig()">
-<h3>getIntegrationServicesConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;</span>&nbsp;<span class="element-name">getIntegrationServicesConfig</span>()</div>
-<div class="block">Return the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of configuration properties, one for each OMIS</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setIntegrationServicesConfig(java.util.List)">
-<h3>setIntegrationServicesConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIntegrationServicesConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;&nbsp;integrationServicesConfig)</span></div>
-<div class="block">Set up the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>integrationServicesConfig</code> - list of configuration properties, one for each OMIS</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getDynamicIntegrationGroupsConfig()">
 <h3>getDynamicIntegrationGroupsConfig</h3>

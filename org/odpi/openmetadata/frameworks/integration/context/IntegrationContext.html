@@ -72,16 +72,18 @@ loadScripts(document, 'script');</script>
 <h1 title="Class IntegrationContext" class="title">Class IntegrationContext</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.integration.context.IntegrationContext</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../integrationservices/analytics/connector/AnalyticsIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.analytics.connector">AnalyticsIntegratorContext</a></code>, <code><a href="../../../integrationservices/api/connector/APIIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.api.connector">APIIntegratorContext</a></code>, <code><a href="../../../integrationservices/catalog/connector/CatalogIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">CatalogIntegratorContext</a></code>, <code><a href="../../../integrationservices/database/connector/DatabaseIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.database.connector">DatabaseIntegratorContext</a></code>, <code><a href="../../../integrationservices/display/connector/DisplayIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.display.connector">DisplayIntegratorContext</a></code>, <code><a href="../../../integrationservices/files/connector/FilesIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.files.connector">FilesIntegratorContext</a></code>, <code><a href="../../../integrationservices/infrastructure/connector/InfrastructureIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.infrastructure.connector">InfrastructureIntegratorContext</a></code>, <code><a href="../../../integrationservices/lineage/connector/LineageIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.lineage.connector">LineageIntegratorContext</a></code>, <code><a href="../../../integrationservices/organization/connector/OrganizationIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.organization.connector">OrganizationIntegratorContext</a></code>, <code><a href="../../../integrationservices/security/connector/SecurityIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.security.connector">SecurityIntegratorContext</a></code>, <code><a href="../../../integrationservices/topic/connector/TopicIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.topic.connector">TopicIntegratorContext</a></code></dd>
+<dd><code><a href="CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">IntegrationContext</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a></span></div>
 <div class="block">IntegrationContext is the base class for the integration context provided to the integration connector to provide access to open metadata
  services.  Each integration service specializes this class to provide the method appropriate for the particular type of technology it
  is supporting.
@@ -98,52 +100,31 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected final <a href="../../governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></div>
-<div class="col-second even-row-color"><code><a href="#actionControlInterface" class="member-name-link">actionControlInterface</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></code></div>
+<div class="col-second even-row-color"><code><a href="#connectedAssetClient" class="member-name-link">connectedAssetClient</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../../governanceaction/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceConfiguration</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#governanceConfiguration" class="member-name-link">governanceConfiguration</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#externalSourceGUID" class="member-name-link">externalSourceGUID</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></code></div>
+<div class="col-second even-row-color"><code><a href="#openGovernanceClient" class="member-name-link">openGovernanceClient</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#externalSourceIsHome" class="member-name-link">externalSourceIsHome</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#openIntegrationClient" class="member-name-link">openIntegrationClient</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#externalSourceName" class="member-name-link">externalSourceName</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a></code></div>
+<div class="col-second even-row-color"><code><a href="#openMetadataEventClient" class="member-name-link">openMetadataEventClient</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../governanceaction/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassifier</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#fileClassifier" class="member-name-link">fileClassifier</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#permittedSynchronization" class="member-name-link">permittedSynchronization</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../../governanceaction/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceConfiguration</a></code></div>
-<div class="col-second even-row-color"><code><a href="#governanceConfiguration" class="member-name-link">governanceConfiguration</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#integrationConnectorGUID" class="member-name-link">integrationConnectorGUID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../reports/IntegrationReportWriter.html" title="class in org.odpi.openmetadata.frameworks.integration.reports">IntegrationReportWriter</a></code></div>
-<div class="col-second even-row-color"><code><a href="#integrationReportWriter" class="member-name-link">integrationReportWriter</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#maxPageSize" class="member-name-link">maxPageSize</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a></code></div>
-<div class="col-second even-row-color"><code><a href="#openIntegrationClient" class="member-name-link">openIntegrationClient</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#openMetadataStoreClient" class="member-name-link">openMetadataStoreClient</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></code></div>
-<div class="col-second even-row-color"><code><a href="#permittedSynchronization" class="member-name-link">permittedSynchronization</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#userId" class="member-name-link">userId</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../governanceaction/connectorcontext/StewardshipAction.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.connectorcontext">StewardshipAction</a></code></div>
+<div class="col-second even-row-color"><code><a href="#stewardshipAction" class="member-name-link">stewardshipAction</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.<a href="../../openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a></h3>
+<code><a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#auditLog">auditLog</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#connectorGUID">connectorGUID</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#connectorId">connectorId</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#connectorName">connectorName</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#connectorUserId">connectorUserId</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#defaultDeleteMethod">defaultDeleteMethod</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#externalSourceGUID">externalSourceGUID</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#externalSourceName">externalSourceName</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#fileClassifier">fileClassifier</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#generateIntegrationReport">generateIntegrationReport</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#integrationReportWriter">integrationReportWriter</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#localServerName">localServerName</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#localServiceName">localServiceName</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#maxPageSize">maxPageSize</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#openMetadataClient">openMetadataClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#openMetadataStore">openMetadataStore</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#propertyHelper">propertyHelper</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -154,21 +135,26 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">IntegrationContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
- <a href="../../governanceaction/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceConfiguration</a>&nbsp;governanceConfiguration,
- <a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
- <a href="../../governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a>&nbsp;actionControlInterface,
- boolean&nbsp;generateIntegrationReport,
- <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager,org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration,org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod)" class="member-name-link">IntegrationContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorGUID,
+ boolean&nbsp;generateIntegrationReport,
+ <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
+ <a href="../../openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a>&nbsp;openMetadataEventClient,
+ <a href="../../connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a>&nbsp;connectedAssetClient,
+ <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
+ <a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
+ <a href="../../governanceaction/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceConfiguration</a>&nbsp;governanceConfiguration,
+ <a href="../../governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a>&nbsp;openGovernanceClient,
  <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- int&nbsp;maxPageSize)</code></div>
+ int&nbsp;maxPageSize,
+ <a href="../../openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a>&nbsp;deleteMethod)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor handles standard values for all integration contexts.</div>
 </div>
@@ -186,212 +172,107 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCatalogTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)" class="member-name-link">addCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
- <a href="../../governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;properties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add a catalog target to another integration connector.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCatalogTarget(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)" class="member-name-link">addCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
- <a href="../../governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;properties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add a catalog target to this integration connector.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Disconnect the file listener.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#elementShouldBeCatalogued(java.lang.String,java.util.List,java.util.List)" class="member-name-link">elementShouldBeCatalogued</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#elementShouldBeCatalogued(java.lang.String,java.util.List,java.util.List)" class="member-name-link">elementShouldBeCatalogued</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;excludedNames,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;includedNames)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Determine whether a particular element should be catalogued.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">getAnchorGUID</a><wbr>(<a href="../../openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement)" class="member-name-link">getAnchorGUID</a><wbr>(<a href="../../openmetadata/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataElement</a>&nbsp;openMetadataElement)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargetContext(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget)" class="member-name-link">getCatalogTargetContext</a><wbr>(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;requestedCatalogTarget)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
+<div class="block">Return a new context for a configured catalog target.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTarget(java.lang.String)" class="member-name-link">getCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectedAssetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ConnectedAssetContext</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedAssetContext()" class="member-name-link">getConnectedAssetContext</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve a specific catalog target associated with an integration connector.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargets(int,int)" class="member-name-link">getCatalogTargets</a><wbr>(int&nbsp;startingFrom,
- int&nbsp;maximumResults)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargets(java.lang.String,int,int)" class="member-name-link">getCatalogTargets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
- int&nbsp;startingFrom,
- int&nbsp;maximumResults)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the identifiers of the metadata elements identified as catalog targets with another integration connector.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectedAssetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ConnectedAssetContext</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedAssetContext()" class="member-name-link">getConnectedAssetContext</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connected asset context that support an integration connector working with assets and their connectors.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalSourceIsHome()" class="member-name-link">getExternalSourceIsHome</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the flag indicating whether the external source name is to be used as the new element's
- metadata collection, or they belong to the local cohort.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassifier</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileClassifier()" class="member-name-link">getFileClassifier</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/connectorcontext/ConnectorConfigClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.connectorcontext">ConnectorConfigClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorConfigClient()" class="member-name-link">getConnectorConfigClient</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the file classifier that uses reference data to describe a file.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGovernanceContext()" class="member-name-link">getIntegrationGovernanceContext</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the integration governance context that provides access to various Governance Action Framework (GAF) function.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxPageSize()" class="member-name-link">getMaxPageSize</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the server configuration for the maximum number of elements that can be returned on a request.</div>
+<div class="block">Return the client for managing the metadata associated with running connectors, governance engines and governance services.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceGUID()" class="member-name-link">getMetadataSourceGUID</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationConnectorGUID()" class="member-name-link">getIntegrationConnectorGUID</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier of the element that represents this integration connector in open metadata.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceGUID()" class="member-name-link">getMetadataSourceGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the guid  of the software capability that represents an external source of metadata.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceGUID(java.lang.String)" class="member-name-link">getMetadataSourceGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier of metadata collection that corresponds to the qualified name
+ of a software capability,  This qualified name is supplied through open metadata values and may be incorrect
+ which is why any exceptions from retrieving the software capability are passed through to the caller.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceQualifiedName()" class="member-name-link">getMetadataSourceQualifiedName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the qualified name of the software capability that represents an external source of metadata.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyUserId()" class="member-name-link">getMyUserId</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenGovernanceClient()" class="member-name-link">getOpenGovernanceClient</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the userId for this connector.</div>
+<div class="block">Return the open governance client.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPermittedSynchronization()" class="member-name-link">getPermittedSynchronization</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the permitted synchronization direction.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/connectorcontext/StewardshipAction.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.connectorcontext">StewardshipAction</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStewardshipAction()" class="member-name-link">getStewardshipAction</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the connected asset context that support an integration connector working with assets and their connectors.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#noListenerRegistered()" class="member-name-link">noListenerRegistered</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a flag indicating whether a listener has been registered or not.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isRefreshInProgress()" class="member-name-link">isRefreshInProgress</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#noRefreshInProgress()" class="member-name-link">noRefreshInProgress</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether there is a refresh in progress.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,java.lang.String)" class="member-name-link">isTypeOf</a><wbr>(<a href="../../openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Understand the type of element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType,java.lang.String)" class="member-name-link">isTypeOf</a><wbr>(<a href="../../openmetadata/metadataelements/ElementType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementType</a>&nbsp;elementType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Understand the type of element.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(java.lang.String)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.</div>
+<div class="block">Called each time an integration connector wishes to publish an open lineage run event.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryTreeListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="../openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
- and any of its subdirectories.</div>
+<div class="block">Called each time an open lineage run event is published to the integration daemon.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)" class="member-name-link">registerFileListener</a><wbr>(<a href="../filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a>&nbsp;listener)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Register a listener object that will be called each time a specific file is created, changed or deleted.</div>
+<div class="block">The listener is implemented by the integration connector.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeCatalogTarget(java.lang.String)" class="member-name-link">removeCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../../openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a>&nbsp;listener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unregister a catalog target from the integration connector.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reportElementCreation(java.lang.String)" class="member-name-link">reportElementCreation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Save information about a newly created element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reportElementDelete(java.lang.String)" class="member-name-link">reportElementDelete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Save information about a newly archived or deleted element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reportElementUpdate(java.lang.String)" class="member-name-link">reportElementUpdate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Save information about a newly updated element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setActiveReportPublishing(boolean)" class="member-name-link">setActiveReportPublishing</a><wbr>(boolean&nbsp;flag)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set whether an integration report should be assembled and published.</div>
+<div class="block">Register a listener object that will be passed each of the events published by
+ the Open Metadata Server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExternalSourceIsHome(boolean)" class="member-name-link">setExternalSourceIsHome</a><wbr>(boolean&nbsp;newValue)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRefreshInProgress(boolean)" class="member-name-link">setRefreshInProgress</a><wbr>(boolean&nbsp;refreshInProgress)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set the flag indicating whether the external source name is to be used as the new element's
- metadata collection, or they belong to the local cohort.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMetadataSourceQualifiedName(java.lang.String)" class="member-name-link">setMetadataSourceQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Change the metadata collection that is in use when working with open metadata.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMetadataSourceQualifiedName(java.lang.String,java.lang.String)" class="member-name-link">setMetadataSourceQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Change the metadata collection that is in use when working with open metadata.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unregister a listener object for the directory.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryTreeListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unregister a listener object for the directory.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)" class="member-name-link">unregisterFileListener</a><wbr>(<a href="../filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unregister a listener object that will be called each time a specific file is created, changed or deleted.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCatalogTarget(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)" class="member-name-link">updateCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
- <a href="../../governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;properties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update a catalog target relationship for an integration connector.</div>
+<div class="block">Set up whether the refresh is in progress or not.</div>
 </div>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.<a href="../../openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a></h3>
+<code><a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#createIncidentReport(java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map)">createIncidentReport</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#disconnect()">disconnect</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getActorProfileClient()">getActorProfileClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getActorRoleClient()">getActorRoleClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">getAnchorGUID</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement)">getAnchorGUID</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getAssetClient()">getAssetClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getAssetClient(java.lang.String)">getAssetClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getConnectionClient()">getConnectionClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getConnectorId()">getConnectorId</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getConnectorName()">getConnectorName</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getConnectorTypeClient()">getConnectorTypeClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getEndpointClient()">getEndpointClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getFileClassifier()">getFileClassifier</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getGlossaryClient()">getGlossaryClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getGlossaryTermClient()">getGlossaryTermClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getLocalServerName()">getLocalServerName</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getLocalServiceName()">getLocalServiceName</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getMaxPageSize()">getMaxPageSize</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getMultiLanguageClient()">getMultiLanguageClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getMyUserId()">getMyUserId</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getOpenMetadataStore()">getOpenMetadataStore</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getSchemaAttributeClient()">getSchemaAttributeClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getSchemaAttributeClient(java.lang.String)">getSchemaAttributeClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getSchemaTypeClient()">getSchemaTypeClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getSchemaTypeClient(java.lang.String)">getSchemaTypeClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getSoftwareCapabilityClient()">getSoftwareCapabilityClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getSoftwareCapabilityClient(java.lang.String)">getSoftwareCapabilityClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getValidMetadataValuesClient()">getValidMetadataValuesClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#getValidValueDefinitionClient()">getValidValueDefinitionClient</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,java.lang.String)">isTypeOf</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType,java.lang.String)">isTypeOf</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.lang.String,java.lang.String,java.lang.String)">openToDo</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.util.List)">openToDo</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#publishReport()">publishReport</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#registerContextEvent(java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties)">registerContextEvent</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#registerDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">registerDirectoryListener</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#registerDirectoryTreeListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">registerDirectoryTreeListener</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#registerFileListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface,java.io.File)">registerFileListener</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#reportElementCreation(java.lang.String)">reportElementCreation</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#reportElementDelete(java.lang.String)">reportElementDelete</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#reportElementUpdate(java.lang.String)">reportElementUpdate</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#setActiveReportPublishing(boolean)">setActiveReportPublishing</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#startRecording()">startRecording</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)">unregisterDirectoryListener</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)">unregisterDirectoryTreeListener</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#unregisterFileListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface,java.io.File)">unregisterFileListener</a>, <a href="../../openmetadata/connectorcontext/ConnectorContextBase.html#validateIsActive(java.lang.String)">validateIsActive</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -407,9 +288,9 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="propertyHelper">
-<h3>propertyHelper</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></span>&nbsp;<span class="element-name">propertyHelper</span></div>
+<section class="detail" id="openMetadataEventClient">
+<h3>openMetadataEventClient</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a></span>&nbsp;<span class="element-name">openMetadataEventClient</span></div>
 </section>
 </li>
 <li>
@@ -419,9 +300,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="actionControlInterface">
-<h3>actionControlInterface</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></span>&nbsp;<span class="element-name">actionControlInterface</span></div>
+<section class="detail" id="openGovernanceClient">
+<h3>openGovernanceClient</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></span>&nbsp;<span class="element-name">openGovernanceClient</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="connectedAssetClient">
+<h3>connectedAssetClient</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></span>&nbsp;<span class="element-name">connectedAssetClient</span></div>
 </section>
 </li>
 <li>
@@ -431,69 +318,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="openMetadataStoreClient">
-<h3>openMetadataStoreClient</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></span>&nbsp;<span class="element-name">openMetadataStoreClient</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="userId">
-<h3>userId</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">userId</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="connectorName">
-<h3>connectorName</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">connectorName</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="integrationConnectorGUID">
-<h3>integrationConnectorGUID</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">integrationConnectorGUID</span></div>
+<section class="detail" id="stewardshipAction">
+<h3>stewardshipAction</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../governanceaction/connectorcontext/StewardshipAction.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.connectorcontext">StewardshipAction</a></span>&nbsp;<span class="element-name">stewardshipAction</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="permittedSynchronization">
 <h3>permittedSynchronization</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></span>&nbsp;<span class="element-name">permittedSynchronization</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="externalSourceGUID">
-<h3>externalSourceGUID</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">externalSourceGUID</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="externalSourceName">
-<h3>externalSourceName</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">externalSourceName</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="externalSourceIsHome">
-<h3>externalSourceIsHome</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">externalSourceIsHome</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="fileClassifier">
-<h3>fileClassifier</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../governanceaction/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassifier</a></span>&nbsp;<span class="element-name">fileClassifier</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="integrationReportWriter">
-<h3>integrationReportWriter</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../reports/IntegrationReportWriter.html" title="class in org.odpi.openmetadata.frameworks.integration.reports">IntegrationReportWriter</a></span>&nbsp;<span class="element-name">integrationReportWriter</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="maxPageSize">
-<h3>maxPageSize</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">maxPageSize</span></div>
 </section>
 </li>
 </ul>
@@ -505,41 +338,50 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager,org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration,org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod)">
 <h3>IntegrationContext</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IntegrationContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
- <a href="../../governanceaction/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceConfiguration</a>&nbsp;governanceConfiguration,
- <a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
- <a href="../../governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a>&nbsp;actionControlInterface,
- boolean&nbsp;generateIntegrationReport,
- <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IntegrationContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorGUID,
+ boolean&nbsp;generateIntegrationReport,
+ <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="../../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
+ <a href="../../openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a>&nbsp;openMetadataEventClient,
+ <a href="../../connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a>&nbsp;connectedAssetClient,
+ <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
+ <a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
+ <a href="../../governanceaction/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceConfiguration</a>&nbsp;governanceConfiguration,
+ <a href="../../governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a>&nbsp;openGovernanceClient,
  <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- int&nbsp;maxPageSize)</span></div>
+ int&nbsp;maxPageSize,
+ <a href="../../openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a>&nbsp;deleteMethod)</span></div>
 <div class="block">Constructor handles standard values for all integration contexts.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>localServerName</code> - name of local server</dd>
+<dd><code>localServiceName</code> - name of the service to call</dd>
+<dd><code>externalSourceGUID</code> - metadata collection unique id</dd>
+<dd><code>externalSourceName</code> - metadata collection unique name</dd>
 <dd><code>connectorId</code> - unique identifier of the connector (used to configure the event listener)</dd>
 <dd><code>connectorName</code> - name of connector from config</dd>
 <dd><code>connectorUserId</code> - userId for the connector</dd>
-<dd><code>serverName</code> - name of the integration daemon</dd>
-<dd><code>openIntegrationClient</code> - client for calling the metadata server</dd>
-<dd><code>governanceConfiguration</code> - client for managing catalog targets</dd>
-<dd><code>openMetadataStoreClient</code> - client for calling the metadata server</dd>
-<dd><code>actionControlInterface</code> - client for initiating governance actions</dd>
+<dd><code>connectorGUID</code> - unique identifier of the integration connector entity (maybe null)</dd>
 <dd><code>generateIntegrationReport</code> - should the connector generate an integration reports?</dd>
 <dd><code>permittedSynchronization</code> - enum</dd>
-<dd><code>externalSourceGUID</code> - unique identifier of the software server capability for the source of metadata</dd>
-<dd><code>externalSourceName</code> - unique name of the software server capability for the source of metadata</dd>
-<dd><code>integrationConnectorGUID</code> - unique identifier of the integration connector entity (maybe null)</dd>
+<dd><code>openMetadataClient</code> - client to access open metadata store</dd>
+<dd><code>openMetadataEventClient</code> - client to access open metadata events</dd>
+<dd><code>connectedAssetClient</code> - client for working with connectors</dd>
+<dd><code>openIntegrationClient</code> - client for calling the metadata server</dd>
+<dd><code>governanceConfiguration</code> - client for managing catalog targets</dd>
+<dd><code>openGovernanceClient</code> - client for initiating governance actions</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>maxPageSize</code> - max number of elements that can be returned on a query</dd>
+<dd><code>deleteMethod</code> - default delete method</dd>
 </dl>
 </section>
 </li>
@@ -552,25 +394,71 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getMyUserId()">
-<h3>getMyUserId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMyUserId</span>()</div>
-<div class="block">Return the userId for this connector.  It is used to determine if changes where made by this connector.
- It should not be needed to issue calls to open metadata.</div>
+<section class="detail" id="getCatalogTargetContext(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget)">
+<h3>getCatalogTargetContext</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a></span>&nbsp;<span class="element-name">getCatalogTargetContext</span><wbr><span class="parameters">(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;requestedCatalogTarget)</span>
+                                             throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Return a new context for a configured catalog target.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>requestedCatalogTarget</code> - details of the catalog target configuration</dd>
 <dt>Returns:</dt>
-<dd>string</dd>
+<dd>new context with the correct external source</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getFileClassifier()">
-<h3>getFileClassifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../governanceaction/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassifier</a></span>&nbsp;<span class="element-name">getFileClassifier</span>()</div>
-<div class="block">Return the file classifier that uses reference data to describe a file.</div>
+<section class="detail" id="registerListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)">
+<h3>registerListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerListener</span><wbr><span class="parameters">(<a href="../openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a>&nbsp;listener)</span></div>
+<div class="block">The listener is implemented by the integration connector.  Once it is registered with the context, its processOpenLineageRunEvent()
+ method is called each time an open lineage event is published to the integration daemon.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to call</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishOpenLineageRunEvent(java.lang.String)">
+<h3>publishOpenLineageRunEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageRunEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</span></div>
+<div class="block">Called each time an integration connector wishes to publish an open lineage run event.  The event is formatted and passed to each of the
+ registered open lineage event listeners.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>rawEvent</code> - json payload to send for the event</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)">
+<h3>publishOpenLineageRunEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageRunEvent</span><wbr><span class="parameters">(<a href="../openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event)</span></div>
+<div class="block">Called each time an open lineage run event is published to the integration daemon.  The integration connector is able to
+ work with the formatted event using the Egeria beans or reformat the open lineage run event using the supplied open lineage backend beans
+ or another set of beans.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>event</code> - bean for the event</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getPermittedSynchronization()">
+<h3>getPermittedSynchronization</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></span>&nbsp;<span class="element-name">getPermittedSynchronization</span>()</div>
+<div class="block">Return the permitted synchronization direction.  This setting may affect which method in the context are available to the integration
+ connector.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>file classifier utility</dd>
+<dd>permittedSynchronization enum</dd>
 </dl>
 </section>
 </li>
@@ -593,154 +481,88 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addCatalogTarget(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">
-<h3>addCatalogTarget</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addCatalogTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
- <a href="../../governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;properties)</span>
-                        throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Add a catalog target to this integration connector.</div>
+<section class="detail" id="noListenerRegistered()">
+<h3>noListenerRegistered</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">noListenerRegistered</span>()</div>
+<div class="block">Return a flag indicating whether a listener has been registered or not.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true means the listener has been successfully registered</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="registerListener(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener)">
+<h3>registerListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerListener</span><wbr><span class="parameters">(<a href="../../openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a>&nbsp;listener)</span>
+                      throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Register a listener object that will be passed each of the events published by
+ the Open Metadata Server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element that is a catalog target.</dd>
-<dd><code>properties</code> - properties for the relationship.</dd>
-<dt>Returns:</dt>
-<dd>catalog target GUID</dd>
+<dd><code>listener</code> - listener object</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem storing the catalog target definition.</dd>
+<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addCatalogTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">
-<h3>addCatalogTarget</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addCatalogTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
- <a href="../../governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;properties)</span>
-                        throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Add a catalog target to another integration connector.</div>
+<section class="detail" id="getConnectedAssetContext()">
+<h3>getConnectedAssetContext</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ConnectedAssetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ConnectedAssetContext</a></span>&nbsp;<span class="element-name">getConnectedAssetContext</span>()</div>
+<div class="block">Return the connected asset context that support an integration connector working with assets and their connectors.</div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>integrationConnectorGUID</code> - unique identifier of the integration service.</dd>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element that is a catalog target.</dd>
-<dd><code>properties</code> - properties for the relationship.</dd>
 <dt>Returns:</dt>
-<dd>catalog target GUID</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem storing the catalog target definition.</dd>
+<dd>connected asset context</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="updateCatalogTarget(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">
-<h3>updateCatalogTarget</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateCatalogTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
- <a href="../../governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;properties)</span>
-                         throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Update a catalog target relationship for an integration connector.</div>
+<section class="detail" id="getStewardshipAction()">
+<h3>getStewardshipAction</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../governanceaction/connectorcontext/StewardshipAction.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.connectorcontext">StewardshipAction</a></span>&nbsp;<span class="element-name">getStewardshipAction</span>()</div>
+<div class="block">Return the connected asset context that support an integration connector working with assets and their connectors.</div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>relationshipGUID</code> - unique identifier of the relationship.</dd>
-<dd><code>properties</code> - properties for the relationship.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem storing the catalog target definition.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCatalogTarget(java.lang.String)">
-<h3>getCatalogTarget</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a></span>&nbsp;<span class="element-name">getCatalogTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID)</span>
-                               throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Retrieve a specific catalog target associated with an integration connector.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>relationshipGUID</code> - unique identifier of the relationship.</dd>
 <dt>Returns:</dt>
-<dd>details of the integration connector and the elements it is to catalog</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem retrieving the integration connector definition.</dd>
+<dd>connected asset context</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getCatalogTargets(java.lang.String,int,int)">
-<h3>getCatalogTargets</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&gt;</span>&nbsp;<span class="element-name">getCatalogTargets</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
- int&nbsp;startingFrom,
- int&nbsp;maximumResults)</span>
-                                      throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Retrieve the identifiers of the metadata elements identified as catalog targets with another integration connector.</div>
+<section class="detail" id="getOpenGovernanceClient()">
+<h3>getOpenGovernanceClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../governanceaction/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenGovernanceClient</a></span>&nbsp;<span class="element-name">getOpenGovernanceClient</span>()</div>
+<div class="block">Return the open governance client.  This supports defining and initiating governance actions,
+ and managing duplicates.</div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>integrationConnectorGUID</code> - unique identifier of the integration connector.</dd>
-<dd><code>startingFrom</code> - initial position in the stored list.</dd>
-<dd><code>maximumResults</code> - maximum number of definitions to return on this call.</dd>
 <dt>Returns:</dt>
-<dd>list of named elements</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid,</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem retrieving the integration connector definition.</dd>
+<dd>client</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getCatalogTargets(int,int)">
-<h3>getCatalogTargets</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&gt;</span>&nbsp;<span class="element-name">getCatalogTargets</span><wbr><span class="parameters">(int&nbsp;startingFrom,
- int&nbsp;maximumResults)</span>
-                                      throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.
- Each catalog target may be configured with an optional symbolic name to guide the integration connector on how to use
- the catalog targets.</div>
+<section class="detail" id="getConnectorConfigClient()">
+<h3>getConnectorConfigClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../governanceaction/connectorcontext/ConnectorConfigClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.connectorcontext">ConnectorConfigClient</a></span>&nbsp;<span class="element-name">getConnectorConfigClient</span>()</div>
+<div class="block">Return the client for managing the metadata associated with running connectors, governance engines and governance services.</div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>startingFrom</code> - initial position in the stored list.</dd>
-<dd><code>maximumResults</code> - maximum number of definitions to return on this call.</dd>
 <dt>Returns:</dt>
-<dd>list of named element headers</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid,</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem retrieving the integration connector definition.</dd>
+<dd>connector context client</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="removeCatalogTarget(java.lang.String)">
-<h3>removeCatalogTarget</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeCatalogTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID)</span>
-                         throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Unregister a catalog target from the integration connector.</div>
+<section class="detail" id="getIntegrationConnectorGUID()">
+<h3>getIntegrationConnectorGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getIntegrationConnectorGUID</span>()</div>
+<div class="block">Return the unique identifier of the element that represents this integration connector in open metadata.</div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>relationshipGUID</code> - unique identifier of the integration connector.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing/updating the integration connector definition.</dd>
+<dt>Returns:</dt>
+<dd>string guid</dd>
 </dl>
 </section>
 </li>
@@ -771,18 +593,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setMetadataSourceQualifiedName(java.lang.String)">
-<h3>setMetadataSourceQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMetadataSourceQualifiedName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</span>
-                                    throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<section class="detail" id="getMetadataSourceGUID(java.lang.String)">
+<h3>getMetadataSourceGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMetadataSourceGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</span>
+                             throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Change the metadata collection that is in use when working with open metadata.  It should be the qualified name
- of a software capability,  The qualified name is supplied through open metadata values and may be incorrect
+<div class="block">Return the unique identifier of metadata collection that corresponds to the qualified name
+ of a software capability,  This qualified name is supplied through open metadata values and may be incorrect
  which is why any exceptions from retrieving the software capability are passed through to the caller.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>metadataSourceQualifiedName</code> - supplied qualified name for the metadata collection</dd>
+<dt>Returns:</dt>
+<dd>null or unique identifier of the associated software capability</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique name is null or not known.</dd>
 <dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the caller's userId is not able to access the element</dd>
@@ -791,135 +615,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setMetadataSourceQualifiedName(java.lang.String,java.lang.String)">
-<h3>setMetadataSourceQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMetadataSourceQualifiedName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</span>
-                                    throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Change the metadata collection that is in use when working with open metadata.  It should be the qualified name
- of a software capability,  The qualified name is supplied through open metadata values and may be incorrect
- which is why any exceptions from retrieving the software capability are passed through to the caller.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>metadataSourceGUID</code> - unique identifier of the metadata source (if known)</dd>
-<dd><code>metadataSourceQualifiedName</code> - supplied qualified name for the metadata collection</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique name is null or not known.</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the caller's userId is not able to access the element</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getExternalSourceIsHome()">
-<h3>getExternalSourceIsHome</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getExternalSourceIsHome</span>()</div>
-<div class="block">Return the flag indicating whether the external source name is to be used as the new element's
- metadata collection, or they belong to the local cohort.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>flag</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setExternalSourceIsHome(boolean)">
-<h3>setExternalSourceIsHome</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setExternalSourceIsHome</span><wbr><span class="parameters">(boolean&nbsp;newValue)</span></div>
-<div class="block">Set the flag indicating whether the external source name is to be used as the new element's
- metadata collection, or they belong to the local cohort.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>newValue</code> - flag</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getPermittedSynchronization()">
-<h3>getPermittedSynchronization</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></span>&nbsp;<span class="element-name">getPermittedSynchronization</span>()</div>
-<div class="block">Return the permitted synchronization direction.  This setting may affect which method in the context are available to the integration
- connector.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>permittedSynchronization enum</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getIntegrationGovernanceContext()">
-<h3>getIntegrationGovernanceContext</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a></span>&nbsp;<span class="element-name">getIntegrationGovernanceContext</span>()</div>
-<div class="block">Return the integration governance context that provides access to various Governance Action Framework (GAF) function.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>IntegrationGovernanceContext context object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConnectedAssetContext()">
-<h3>getConnectedAssetContext</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ConnectedAssetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ConnectedAssetContext</a></span>&nbsp;<span class="element-name">getConnectedAssetContext</span>()</div>
-<div class="block">Return the connected asset context that support an integration connector working with assets and their connectors.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>connected asset context</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setActiveReportPublishing(boolean)">
-<h3>setActiveReportPublishing</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setActiveReportPublishing</span><wbr><span class="parameters">(boolean&nbsp;flag)</span></div>
-<div class="block">Set whether an integration report should be assembled and published.
- This allows the integration connector to turn off/on integration report writing.
- It only has an effect if the connector is configured to allow report writing</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>flag</code> - required behaviour</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="reportElementCreation(java.lang.String)">
-<h3>reportElementCreation</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reportElementCreation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</span></div>
-<div class="block">Save information about a newly created element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>elementGUID</code> - unique identifier of the element</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="reportElementUpdate(java.lang.String)">
-<h3>reportElementUpdate</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reportElementUpdate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</span></div>
-<div class="block">Save information about a newly updated element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>elementGUID</code> - unique identifier of the element</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="reportElementDelete(java.lang.String)">
-<h3>reportElementDelete</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reportElementDelete</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</span></div>
-<div class="block">Save information about a newly archived or deleted element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>elementGUID</code> - unique identifier of the element</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="isRefreshInProgress()">
-<h3>isRefreshInProgress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isRefreshInProgress</span>()</div>
+<section class="detail" id="noRefreshInProgress()">
+<h3>noRefreshInProgress</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">noRefreshInProgress</span>()</div>
 <div class="block">Return whether there is a refresh in progress.  This method is used in processEvent() to enable to connector to ignore
  events while it is running refresh() since many of the events are caused by the refresh process.  Using this flag
  prevents the connector from processing the same elements multiple times.</div>
@@ -930,184 +628,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">
-<h3>getAnchorGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAnchorGUID</span><wbr><span class="parameters">(<a href="../../openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</span></div>
-<div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
+<section class="detail" id="setRefreshInProgress(boolean)">
+<h3>setRefreshInProgress</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRefreshInProgress</span><wbr><span class="parameters">(boolean&nbsp;refreshInProgress)</span></div>
+<div class="block">Set up whether the refresh is in progress or not.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>elementHeader</code> - element header where the classifications reside</dd>
-<dt>Returns:</dt>
-<dd>anchorGUID or null</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement)">
-<h3>getAnchorGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAnchorGUID</span><wbr><span class="parameters">(<a href="../../openmetadata/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataElement</a>&nbsp;openMetadataElement)</span></div>
-<div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>openMetadataElement</code> - element header where the classifications reside</dd>
-<dt>Returns:</dt>
-<dd>anchorGUID or null</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="registerFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)">
-<h3>registerFileListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerFileListener</span><wbr><span class="parameters">(<a href="../filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</span>
-                          throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Register a listener object that will be called each time a specific file is created, changed or deleted.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>fileToMonitor</code> - name of the file to monitor</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="unregisterFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)">
-<h3>unregisterFileListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">unregisterFileListener</span><wbr><span class="parameters">(<a href="../filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</span>
-                            throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Unregister a listener object that will be called each time a specific file is created, changed or deleted.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>fileToMonitor</code> - name of the file to unregister</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="registerDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">
-<h3>registerDirectoryListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerDirectoryListener</span><wbr><span class="parameters">(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</span>
-                               throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.
- The file filter lets you request that only certain types of files are returned.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>directoryToMonitor</code> - details of the file directory to monitor</dd>
-<dd><code>fileFilter</code> - a file filter implementation that restricts the files/directories that will be returned to the listener</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="unregisterDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)">
-<h3>unregisterDirectoryListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">unregisterDirectoryListener</span><wbr><span class="parameters">(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</span>
-                                 throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Unregister a listener object for the directory.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>directoryToMonitor</code> - details of the file directory unregister</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="registerDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">
-<h3>registerDirectoryTreeListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerDirectoryTreeListener</span><wbr><span class="parameters">(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</span>
-                                   throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
- and any of its subdirectories.  The file filter lets you request that only certain types of files and/or directories are returned.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>directoryToMonitor</code> - details of the root file directory to monitor from</dd>
-<dd><code>fileFilter</code> - a file filter implementation that restricts the files/directories that will be returned to the listener</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)">
-<h3>unregisterDirectoryTreeListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">unregisterDirectoryTreeListener</span><wbr><span class="parameters">(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</span>
-                                     throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Unregister a listener object for the directory.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>directoryToMonitor</code> - details of the root file directory to unregister</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getMaxPageSize()">
-<h3>getMaxPageSize</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMaxPageSize</span>()</div>
-<div class="block">Returns the server configuration for the maximum number of elements that can be returned on a request.  It is used to control
- paging.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>integer</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,java.lang.String)">
-<h3>isTypeOf</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isTypeOf</span><wbr><span class="parameters">(<a href="../../openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
-<div class="block">Understand the type of element.  It checks the type and super types.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>elementHeader</code> - element to validate</dd>
-<dd><code>typeName</code> - type to test</dd>
-<dt>Returns:</dt>
-<dd>boolean flag</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType,java.lang.String)">
-<h3>isTypeOf</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isTypeOf</span><wbr><span class="parameters">(<a href="../../openmetadata/metadataelements/ElementType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementType</a>&nbsp;elementType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
-<div class="block">Understand the type of element.  It checks the type and super types.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>elementType</code> - element to validate</dd>
-<dd><code>typeName</code> - type to test</dd>
-<dt>Returns:</dt>
-<dd>boolean flag</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="disconnect()">
-<h3>disconnect</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnect</span>()
-                throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Disconnect the file listener.</div>
-<dl class="notes">
-<dt>Throws:</dt>
-<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - exception disconnecting</dd>
+<dd><code>refreshInProgress</code> - boolean flag</dd>
 </dl>
 </section>
 </li>

@@ -136,30 +136,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/governanceprogram/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">ConnectedAssetClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedAssetClient()" class="member-name-link">getConnectedAssetClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the connected asset client.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/governanceprogram/client/ExternalReferenceManager.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">ExternalReferenceManager</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalReferenceManager()" class="member-name-link">getExternalReferenceManager</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the client.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/governanceprogram/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">OpenGovernanceClient</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/gaf/client/EgeriaOpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">EgeriaOpenGovernanceClient</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenGovernanceClient()" class="member-name-link">getOpenGovernanceClient</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the open governance client.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/governanceprogram/client/OpenIntegrationServiceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">OpenIntegrationServiceClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenIntegrationServiceClient()" class="member-name-link">getOpenIntegrationServiceClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the open governance client.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/governanceprogram/client/OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">OpenMetadataStoreClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataStoreClient()" class="member-name-link">getOpenMetadataStoreClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the open metadata store client.</div>
 </div>
 </div>
 </div>
@@ -222,56 +202,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getExternalReferenceManager()">
-<h3>getExternalReferenceManager</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/governanceprogram/client/ExternalReferenceManager.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">ExternalReferenceManager</a></span>&nbsp;<span class="element-name">getExternalReferenceManager</span>()</div>
-<div class="block">Return the client.  This client is from Asset Owner OMAS and is for maintaining external references for assets.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>client</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConnectedAssetClient()">
-<h3>getConnectedAssetClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/governanceprogram/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">ConnectedAssetClient</a></span>&nbsp;<span class="element-name">getConnectedAssetClient</span>()</div>
-<div class="block">Return the connected asset client.  This client is from Open Connector Framework (OCF) and is for retrieving information about
- assets and creating connectors.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>client</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOpenMetadataStoreClient()">
-<h3>getOpenMetadataStoreClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/governanceprogram/client/OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">OpenMetadataStoreClient</a></span>&nbsp;<span class="element-name">getOpenMetadataStoreClient</span>()</div>
-<div class="block">Return the open metadata store client.  This client is from the Governance Action Framework (GAF) and is for accessing and
- maintaining all types of metadata.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>client</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getOpenGovernanceClient()">
 <h3>getOpenGovernanceClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/governanceprogram/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">OpenGovernanceClient</a></span>&nbsp;<span class="element-name">getOpenGovernanceClient</span>()</div>
-<div class="block">Return the open governance client.  This client is from the Governance Action Framework (GAF) and is for
- working with automation services.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>client</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOpenIntegrationServiceClient()">
-<h3>getOpenIntegrationServiceClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/governanceprogram/client/OpenIntegrationServiceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">OpenIntegrationServiceClient</a></span>&nbsp;<span class="element-name">getOpenIntegrationServiceClient</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworkservices/gaf/client/EgeriaOpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">EgeriaOpenGovernanceClient</a></span>&nbsp;<span class="element-name">getOpenGovernanceClient</span>()</div>
 <div class="block">Return the open governance client.  This client is from the Governance Action Framework (GAF) and is for
  working with automation services.</div>
 <dl class="notes">

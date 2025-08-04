@@ -136,23 +136,23 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/itinfrastructure/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">ConnectedAssetClient</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedAssetClient()" class="member-name-link">getConnectedAssetClient</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connected asset client.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/itinfrastructure/client/OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">OpenMetadataStoreClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataStoreClient()" class="member-name-link">getOpenMetadataStoreClient</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataClient()" class="member-name-link">getOpenMetadataClient</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the open metadata store client.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/itinfrastructure/client/PlatformManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">PlatformManagerClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformManagerClient()" class="member-name-link">getPlatformManagerClient</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwarePlatformHandler()" class="member-name-link">getSoftwarePlatformHandler</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the platform manager client.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/itinfrastructure/client/ServerManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">ServerManagerClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerManagerClient()" class="member-name-link">getServerManagerClient</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwareServerHandler()" class="member-name-link">getSoftwareServerHandler</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the server manager client.</div>
 </div>
@@ -217,9 +217,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getPlatformManagerClient()">
-<h3>getPlatformManagerClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/itinfrastructure/client/PlatformManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">PlatformManagerClient</a></span>&nbsp;<span class="element-name">getPlatformManagerClient</span>()</div>
+<section class="detail" id="getSoftwarePlatformHandler()">
+<h3>getSoftwarePlatformHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></span>&nbsp;<span class="element-name">getSoftwarePlatformHandler</span>()</div>
 <div class="block">Return the platform manager client.  This client is from IT Infrastructure OMAS and is for maintaining server platforms.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -228,9 +228,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getServerManagerClient()">
-<h3>getServerManagerClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/itinfrastructure/client/ServerManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">ServerManagerClient</a></span>&nbsp;<span class="element-name">getServerManagerClient</span>()</div>
+<section class="detail" id="getSoftwareServerHandler()">
+<h3>getSoftwareServerHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></span>&nbsp;<span class="element-name">getSoftwareServerHandler</span>()</div>
 <div class="block">Return the server manager client.  This client is from IT Infrastructure OMAS and is for maintaining servers.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -241,7 +241,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getConnectedAssetClient()">
 <h3>getConnectedAssetClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/itinfrastructure/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">ConnectedAssetClient</a></span>&nbsp;<span class="element-name">getConnectedAssetClient</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></span>&nbsp;<span class="element-name">getConnectedAssetClient</span>()</div>
 <div class="block">Return the connected asset client.  This client is from Open Connector Framework (OCF) and is for retrieving information about
  assets and creating connectors.</div>
 <dl class="notes">
@@ -251,9 +251,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getOpenMetadataStoreClient()">
-<h3>getOpenMetadataStoreClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/itinfrastructure/client/OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">OpenMetadataStoreClient</a></span>&nbsp;<span class="element-name">getOpenMetadataStoreClient</span>()</div>
+<section class="detail" id="getOpenMetadataClient()">
+<h3>getOpenMetadataClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></span>&nbsp;<span class="element-name">getOpenMetadataClient</span>()</div>
 <div class="block">Return the open metadata store client.  This client is from the Governance Action Framework (GAF) and is for accessing and
  maintaining all types of metadata.</div>
 <dl class="notes">

@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="GlossaryNameRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryNameRequestBody</a></code>, <code><a href="GlossarySearchStringRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossarySearchStringRequestBody</a></code></dd>
+<dd><code><a href="GlossaryNameRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryNameRequestBody</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">GlossaryResultsRequestBody</span>
@@ -131,7 +131,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the date/time to use for the query.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/GlossaryTermStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermStatus</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLimitResultsByStatus()" class="member-name-link">getLimitResultsByStatus</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional list of statuses that should be used to restrict the elements returned by their status.</div>
@@ -162,7 +162,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the date/time to use for the query.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLimitResultsByStatus(java.util.List)" class="member-name-link">setLimitResultsByStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/GlossaryTermStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermStatus</a>&gt;&nbsp;limitResultsByStatus)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLimitResultsByStatus(java.util.List)" class="member-name-link">setLimitResultsByStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the optional list of statuses that should be used to restrict the elements returned by their status.</div>
 </div>
@@ -249,7 +249,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getLimitResultsByStatus()">
 <h3>getLimitResultsByStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/GlossaryTermStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermStatus</a>&gt;</span>&nbsp;<span class="element-name">getLimitResultsByStatus</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;</span>&nbsp;<span class="element-name">getLimitResultsByStatus</span>()</div>
 <div class="block">Return the optional list of statuses that should be used to restrict the elements returned by their status.
  By default, the elements in all non-DELETED statuses are returned.  However, it is possible
  to specify a list of statuses (eg ACTIVE, DELETED) to restrict the results to.  Null means all
@@ -263,7 +263,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setLimitResultsByStatus(java.util.List)">
 <h3>setLimitResultsByStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLimitResultsByStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/GlossaryTermStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermStatus</a>&gt;&nbsp;limitResultsByStatus)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLimitResultsByStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus)</span></div>
 <div class="block">Set up the optional list of statuses that should be used to restrict the elements returned by their status.
  By default, the elements in all non-DELETED statuses are returned.  However, it is possible
  to specify a list of statuses (eg ACTIVE, DELETED) to restrict the results to.  Null means all
