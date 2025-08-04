@@ -184,9 +184,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns details about the running platform.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformsByDeployedImplType(java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">getPlatformsByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformsByDeployedImplType(java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getPlatformsByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  boolean&nbsp;getTemplates,
- <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of platforms with a particular deployed implementation type.</div>
 </div>
@@ -369,7 +369,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getPlatformsByDeployedImplType(java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
+<section class="detail" id="getPlatformsByDeployedImplType(java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getPlatformsByDeployedImplType</h3>
 <div class="member-signature"><span class="annotations">@PostMapping("/platforms/by-deployed-implementation-type")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getPlatformsByDeployedImplType</span><wbr><span class="parameters">(@PathVariable
@@ -377,7 +377,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;getTemplates,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of platforms with a particular deployed implementation type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

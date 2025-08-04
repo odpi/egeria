@@ -106,52 +106,56 @@ implements <a href="OpenMetadataEnum.html" title="interface in org.odpi.openmeta
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ACTIVATING" class="member-name-link">ACTIVATING</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ABANDONED" class="member-name-link">ABANDONED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The activity was abandoned because it is no longer relevant.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ACTIVATING" class="member-name-link">ACTIVATING</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The process that will perform the activity is being activated.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#APPROVED" class="member-name-link">APPROVED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#APPROVED" class="member-name-link">APPROVED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The activity is approved to run.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CANCELLED" class="member-name-link">CANCELLED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CANCELLED" class="member-name-link">CANCELLED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The activity was cancelled by an external caller.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#COMPLETED" class="member-name-link">COMPLETED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#COMPLETED" class="member-name-link">COMPLETED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The work for the activity has successfully completed.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FAILED" class="member-name-link">FAILED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FAILED" class="member-name-link">FAILED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The process that is performing the work (normally an automated process) failed during start up or execution.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#IGNORED" class="member-name-link">IGNORED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#IGNORED" class="member-name-link">IGNORED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The activity has not been actioned because it is not important, or another activity has superseded it.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IN_PROGRESS" class="member-name-link">IN_PROGRESS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#IN_PROGRESS" class="member-name-link">IN_PROGRESS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The work for the activity is in progress.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INVALID" class="member-name-link">INVALID</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INVALID" class="member-name-link">INVALID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The activity has not happened because it is not appropriate (for example, created by an automated process as a result of a false positive).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Undefined or user-defined status.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PAUSED" class="member-name-link">PAUSED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PAUSED" class="member-name-link">PAUSED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The work for the activity has been paused.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REQUESTED" class="member-name-link">REQUESTED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#REQUESTED" class="member-name-link">REQUESTED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The description of the activity has been created and is pending.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#WAITING" class="member-name-link">WAITING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#WAITING" class="member-name-link">WAITING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The activity is waiting for its start time or an actor to claim it.</div>
 </div>
 </div>
@@ -339,6 +343,13 @@ the order they are declared.</div>
 <h3>CANCELLED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a></span>&nbsp;<span class="element-name">CANCELLED</span></div>
 <div class="block">The activity was cancelled by an external caller.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ABANDONED">
+<h3>ABANDONED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a></span>&nbsp;<span class="element-name">ABANDONED</span></div>
+<div class="block">The activity was abandoned because it is no longer relevant.</div>
 </section>
 </li>
 <li>

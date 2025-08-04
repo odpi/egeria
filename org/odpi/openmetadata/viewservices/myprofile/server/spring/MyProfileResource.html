@@ -112,92 +112,83 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createToDo(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ToDoRequestBody)" class="member-name-link">createToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../../commonservices/ffdc/rest/ToDoRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDoRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAction(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActionRequestBody)" class="member-name-link">createAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../../commonservices/ffdc/rest/ActionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActionRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new to do action and link it to the supplied actor and targets (if applicable).</div>
+<div class="block">Create a new action and link it to the supplied actor and targets (if applicable).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteToDo(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)" class="member-name-link">deleteToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAction(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)" class="member-name-link">deleteAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionGUID,
  <a href="../../../../commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Delete an existing to do.</div>
+<div class="block">Delete an existing action.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findToDos(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusSearchString)" class="member-name-link">findToDos</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findActions(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusSearchString)" class="member-name-link">findActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusSearchString.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusSearchString</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the "To Dos" that match the search string.</div>
+<div class="block">Retrieve the "Actions" that match the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForActionTarget(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)" class="member-name-link">getActionsForActionTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionByGUID(java.lang.String,java.lang.String)" class="member-name-link">getActionByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve a "Action" by unique identifier.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsByCategory(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusFilterRequestBody)" class="member-name-link">getActionsByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../../commonservices/ffdc/rest/ActivityStatusFilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusFilterRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the actions that match the category name and status.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForActionTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)" class="member-name-link">getActionsForActionTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the "To Dos" that are chained off of an action target element.</div>
+<div class="block">Retrieve the "Actions" that are chained off of an action target element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForSponsor(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)" class="member-name-link">getActionsForSponsor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForSponsor(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)" class="member-name-link">getActionsForSponsor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the "To Dos" that are chained off of a sponsor's element.</div>
+<div class="block">Retrieve the "Actions" that are chained off of a sponsor's element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssignedActions(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)" class="member-name-link">getAssignedActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssignedActions(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)" class="member-name-link">getAssignedActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the "To Dos" for a particular actor.</div>
+<div class="block">Retrieve the "Actions" for a particular actor.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyProfile(java.lang.String)" class="member-name-link">getMyProfile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the profile for this user.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ToDoResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDoResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToDo(java.lang.String,java.lang.String)" class="member-name-link">getToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve a "To Do" by unique identifier.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToDosByCategory(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)" class="member-name-link">getToDosByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the "To Dos" that match the type name and status.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reassignToDo(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)" class="member-name-link">reassignToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reassignAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)" class="member-name-link">reassignAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
  <a href="../../../../commonservices/ffdc/rest/UpdateRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Assign a "To Do" to a new actor.</div>
+<div class="block">Assign a "Action" to a new actor.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateActionTargetProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)" class="member-name-link">updateActionTargetProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
- <a href="../../../../commonservices/ffdc/rest/UpdateRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAction(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)" class="member-name-link">updateAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionGUID,
+ <a href="../../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the properties associated with an Action Target for a "To Do".</div>
+<div class="block">Update the properties associated with an action.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateToDo(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)" class="member-name-link">updateToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoGUID,
- <a href="../../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateActionTargetProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)" class="member-name-link">updateActionTargetProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
+ <a href="../../../../commonservices/ffdc/rest/UpdateRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the properties associated with a "To Do".</div>
+<div class="block">Update the properties associated with an Action Target for a "Action".</div>
 </div>
 </div>
 </div>
@@ -250,20 +241,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createToDo(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ToDoRequestBody)">
-<h3>createToDo</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/to-dos")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createToDo</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="createAction(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActionRequestBody)">
+<h3>createAction</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/actions")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createAction</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/ToDoRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDoRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Create a new to do action and link it to the supplied actor and targets (if applicable).</div>
+ <a href="../../../../commonservices/ffdc/rest/ActionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActionRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Create a new action and link it to the supplied actor and targets (if applicable).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>requestBody</code> - properties of the to do action</dd>
+<dd><code>requestBody</code> - properties of the action action</dd>
 <dt>Returns:</dt>
-<dd>unique identifier of the to do or
+<dd>unique identifier of the action or
  InvalidParameterException a parameter is invalid
  PropertyServerException the server is not available
  UserNotAuthorizedException the calling user is not authorized to issue the call</dd>
@@ -271,20 +262,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateToDo(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)">
-<h3>updateToDo</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/to-dos/{toDoGUID}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateToDo</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="updateAction(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)">
+<h3>updateAction</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/actions/{actionGUID}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateAction</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionGUID,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Update the properties associated with a "To Do".</div>
+<div class="block">Update the properties associated with an action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>toDoGUID</code> - unique identifier of the to do</dd>
+<dd><code>actionGUID</code> - unique identifier of the action</dd>
 <dd><code>requestBody</code> - properties to change</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -297,14 +288,14 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="updateActionTargetProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)">
 <h3>updateActionTargetProperties</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/to-dos/action-targets/{actionTargetGUID}")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/actions/action-targets/{actionTargetGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateActionTargetProperties</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/UpdateRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Update the properties associated with an Action Target for a "To Do".</div>
+<div class="block">Update the properties associated with an Action Target for a "Action".</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
@@ -319,22 +310,22 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="reassignToDo(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)">
-<h3>reassignToDo</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/to-dos/{toDoGUID}/reassign/{actorGUID}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">reassignToDo</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="reassignAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)">
+<h3>reassignAction</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/actions/{actionGUID}/reassign/{actorGUID}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">reassignAction</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionGUID,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/UpdateRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Assign a "To Do" to a new actor.  This will unassign all other actors previously assigned to the to do.</div>
+<div class="block">Assign a "Action" to a new actor.  This will unassign all other actors previously assigned to the action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>toDoGUID</code> - unique identifier of the to do</dd>
+<dd><code>actionGUID</code> - unique identifier of the action</dd>
 <dd><code>actorGUID</code> - actor to assign the action to</dd>
 <dd><code>requestBody</code> - null request body</dd>
 <dt>Returns:</dt>
@@ -346,20 +337,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteToDo(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)">
-<h3>deleteToDo</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/to-dos/{toDoGUID}/delete")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteToDo</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="deleteAction(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)">
+<h3>deleteAction</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/actions/{actionGUID}/delete")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteAction</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionGUID,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Delete an existing to do.</div>
+<div class="block">Delete an existing action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>toDoGUID</code> - unique identifier of the to do</dd>
+<dd><code>actionGUID</code> - unique identifier of the action</dd>
 <dd><code>requestBody</code> - null request body</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -370,20 +361,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getToDo(java.lang.String,java.lang.String)">
-<h3>getToDo</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/to-dos/{toDoGUID}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ToDoResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDoResponse</a></span>&nbsp;<span class="element-name">getToDo</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="getActionByGUID(java.lang.String,java.lang.String)">
+<h3>getActionByGUID</h3>
+<div class="member-signature"><span class="annotations">@GetMapping(path="/actions/{actionGUID}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></span>&nbsp;<span class="element-name">getActionByGUID</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoGUID)</span></div>
-<div class="block">Retrieve a "To Do" by unique identifier.</div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionGUID)</span></div>
+<div class="block">Retrieve a "Action" by unique identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>toDoGUID</code> - unique identifier of the to do</dd>
+<dd><code>actionGUID</code> - unique identifier of the action</dd>
 <dt>Returns:</dt>
-<dd>to do bean or
+<dd>action bean or
  InvalidParameterException a parameter is invalid
  PropertyServerException the server is not available
  UserNotAuthorizedException the calling user is not authorized to issue the call</dd>
@@ -391,29 +382,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getActionsForActionTarget(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)">
+<section class="detail" id="getActionsForActionTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)">
 <h3>getActionsForActionTarget</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/action-targets/to-dos")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></span>&nbsp;<span class="element-name">getActionsForActionTarget</span><wbr><span class="parameters">(@PathVariable
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/action-targets/actions")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getActionsForActionTarget</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- @RequestParam
- int&nbsp;startFrom,
- @RequestParam
- int&nbsp;pageSize,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the "To Dos" that are chained off of an action target element.</div>
+<div class="block">Retrieve the "Actions" that are chained off of an action target element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>elementGUID</code> - unique identifier of the element to start with</dd>
-<dd><code>startFrom</code> - initial position of the results to return</dd>
-<dd><code>pageSize</code> - maximum number of results to return</dd>
-<dd><code>requestBody</code> - status of the to do (null means current active)</dd>
+<dd><code>requestBody</code> - status of the action (null means current active)</dd>
 <dt>Returns:</dt>
-<dd>list of to do beans or
+<dd>list of action beans or
  InvalidParameterException a parameter is invalid
  PropertyServerException the server is not available
  UserNotAuthorizedException the calling user is not authorized to issue the call</dd>
@@ -421,29 +406,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getActionsForSponsor(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)">
+<section class="detail" id="getActionsForSponsor(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)">
 <h3>getActionsForSponsor</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/sponsored/to-dos")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></span>&nbsp;<span class="element-name">getActionsForSponsor</span><wbr><span class="parameters">(@PathVariable
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/sponsored/actions")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getActionsForSponsor</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- @RequestParam
- int&nbsp;startFrom,
- @RequestParam
- int&nbsp;pageSize,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the "To Dos" that are chained off of a sponsor's element.</div>
+<div class="block">Retrieve the "Actions" that are chained off of a sponsor's element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>elementGUID</code> - unique identifier of the element to start with</dd>
-<dd><code>startFrom</code> - initial position of the results to return</dd>
-<dd><code>pageSize</code> - maximum number of results to return</dd>
-<dd><code>requestBody</code> - status of the to do (null means current active)</dd>
+<dd><code>requestBody</code> - status of the action (null means current active)</dd>
 <dt>Returns:</dt>
-<dd>list of to do beans or
+<dd>list of action beans or
  InvalidParameterException a parameter is invalid
  PropertyServerException the server is not available
  UserNotAuthorizedException the calling user is not authorized to issue the call</dd>
@@ -451,29 +430,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssignedActions(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)">
+<section class="detail" id="getAssignedActions(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)">
 <h3>getAssignedActions</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/actors/{actorGUID}/assigned/to-dos")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></span>&nbsp;<span class="element-name">getAssignedActions</span><wbr><span class="parameters">(@PathVariable
+<div class="member-signature"><span class="annotations">@PostMapping(path="/actors/{actorGUID}/assigned/actions")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getAssignedActions</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
- @RequestParam
- int&nbsp;startFrom,
- @RequestParam
- int&nbsp;pageSize,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the "To Dos" for a particular actor.</div>
+<div class="block">Retrieve the "Actions" for a particular actor.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>actorGUID</code> - unique identifier of the role</dd>
-<dd><code>startFrom</code> - initial position of the results to return</dd>
-<dd><code>pageSize</code> - maximum number of results to return</dd>
-<dd><code>requestBody</code> - status of the to do (null means current active)</dd>
+<dd><code>requestBody</code> - status of the action (null means current active)</dd>
 <dt>Returns:</dt>
-<dd>list of to do beans or
+<dd>list of action beans or
  InvalidParameterException a parameter is invalid
  PropertyServerException the server is not available
  UserNotAuthorizedException the calling user is not authorized to issue the call</dd>
@@ -481,50 +454,41 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findToDos(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusSearchString)">
-<h3>findToDos</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/to-dos/find-by-search-string")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></span>&nbsp;<span class="element-name">findToDos</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="findActions(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusSearchString)">
+<h3>findActions</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/actions/find-by-search-string")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">findActions</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
- <a href="../../../../commonservices/ffdc/rest/ActivityStatusSearchString.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusSearchString</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the "To Dos" that match the search string.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>requestBody</code> - status of the to do (null means current active)</dd>
-<dt>Returns:</dt>
-<dd>list of to do beans or
- InvalidParameterException a parameter is invalid
- PropertyServerException the server is not available
- UserNotAuthorizedException the calling user is not authorized to issue the call</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getToDosByCategory(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)">
-<h3>getToDosByCategory</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/to-dos/categories/{category}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ToDosResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ToDosResponse</a></span>&nbsp;<span class="element-name">getToDosByCategory</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- @RequestParam
- int&nbsp;startFrom,
- @RequestParam
- int&nbsp;pageSize,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the "To Dos" that match the type name and status.</div>
+ <a href="../../../../commonservices/ffdc/rest/ActivityStatusSearchString.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusSearchString</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the "Actions" that match the search string.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>category</code> - type to search for</dd>
-<dd><code>startFrom</code> - initial position of the results to return</dd>
-<dd><code>pageSize</code> - maximum number of results to return</dd>
-<dd><code>requestBody</code> - status of the to do (null means current active)</dd>
+<dd><code>requestBody</code> - status of the action (null means current active)</dd>
 <dt>Returns:</dt>
-<dd>list of to do beans or
+<dd>list of action beans or
+ InvalidParameterException a parameter is invalid
+ PropertyServerException the server is not available
+ UserNotAuthorizedException the calling user is not authorized to issue the call</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getActionsByCategory(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusFilterRequestBody)">
+<h3>getActionsByCategory</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/actions/by-category")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getActionsByCategory</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/ActivityStatusFilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusFilterRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the actions that match the category name and status.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server instances for this request</dd>
+<dd><code>requestBody</code> - status of the action (null means current active)</dd>
+<dt>Returns:</dt>
+<dd>list of action beans or
  InvalidParameterException a parameter is invalid
  PropertyServerException the server is not available
  UserNotAuthorizedException the calling user is not authorized to issue the call</dd>
