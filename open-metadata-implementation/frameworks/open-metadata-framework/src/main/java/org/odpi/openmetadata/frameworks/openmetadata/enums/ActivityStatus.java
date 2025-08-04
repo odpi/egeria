@@ -77,6 +77,11 @@ public enum ActivityStatus implements OpenMetadataEnum
     CANCELLED       ("80ee5577-a0eb-4c18-8b12-0d4f5606851a",  14, "Cancelled",     "The activity was cancelled by an external caller.", false),
 
     /**
+     * The activity was abandoned because it is no longer relevant.
+     */
+    ABANDONED       ("2911bd8f-4993-4968-b12b-1eade7987093",  15, "Cancelled",     "The activity was abandoned because it is no longer relevant.  Some work may have occurred but is what stopped, probabbly in an inclomple state..", false),
+
+    /**
      * Undefined or user-defined status.
      */
     OTHER           ("1e67023c-4ae4-4f69-b16e-b5e0290641dc", 99, "Other",      "Undefined or user-defined status.", false);

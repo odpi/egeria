@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
@@ -829,19 +829,19 @@ public class OpenMetadataRelationshipBuilder
                                                                       OpenMetadataProperty.DELEGATION_ESCALATION.name,
                                                                       teamStructureProperties.getDelegationEscalationAuthority());
             }
-            else if (properties instanceof ToDoActionTargetProperties actionTargetProperties)
+            else if (properties instanceof ActionTargetProperties actionTargetProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                      actionTargetProperties.getActionTargetName());
 
                 elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                                   OpenMetadataProperty.START_DATE.name,
-                                                                   actionTargetProperties.getStartDate());
+                                                                   OpenMetadataProperty.START_TIME.name,
+                                                                   actionTargetProperties.getStartTime());
 
                 elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                    OpenMetadataProperty.COMPLETION_TIME.name,
-                                                                   actionTargetProperties.getCompletionDate());
+                                                                   actionTargetProperties.getCompletionTime());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.COMPLETION_MESSAGE.name,

@@ -221,7 +221,6 @@ public class OpenMetadataTypesArchive3_13
         this.archiveBuilder.addTypeDefPatch(updateUserIdentity());
         this.archiveBuilder.addTypeDefPatch(updatePersonRole());
         this.archiveBuilder.addTypeDefPatch(updateProjectTeam());
-        this.archiveBuilder.addTypeDefPatch(updateActionAssignment());
         this.archiveBuilder.addTypeDefPatch(updateCrowdSourcingContribution());
     }
 
@@ -303,35 +302,6 @@ public class OpenMetadataTypesArchive3_13
 
 
         typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateActionAssignment()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "assignedActor";
-        final String                     end1AttributeDescription     = "The person/people assigned to perform the action(s) requested in the to do.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName),
-                                                                                    end1AttributeName,
-                                                                                    end1AttributeDescription,
-                                                                                    end1AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-
-
-        typeDefPatch.setEndDef1(relationshipEndDef);
 
         return typeDefPatch;
     }

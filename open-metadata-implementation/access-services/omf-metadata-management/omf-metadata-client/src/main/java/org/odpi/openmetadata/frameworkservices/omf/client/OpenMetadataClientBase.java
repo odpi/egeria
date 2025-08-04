@@ -2250,7 +2250,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         newElementOptions.setIsOwnAnchor(true);
         newElementOptions.setParentAtEnd1(true);
         newElementOptions.setParentGUID(assignToGUID);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
 
         String toDoGUID = this.createMetadataElementInStore(userId,
                                                             newElementOptions,

@@ -662,24 +662,18 @@ public class OpenMetadataConverterBase<B>
     /**
      * Extract the properties from the element.
      *
-     * @param beanClass name of the class to create
      * @param relatedElement from the repository
      * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    public RelatedMetadataElementSummary getRelatedElementSummary(Class<B>               beanClass,
-                                                                  RelatedMetadataElement relatedElement,
+    public RelatedMetadataElementSummary getRelatedElementSummary(RelatedMetadataElement relatedElement,
                                                                   String                 methodName) throws PropertyServerException
     {
         if ((relatedElement != null) && (relatedElement.getElement() != null))
         {
             return propertyHelper.getRelatedElementSummary(relatedElement, methodName);
-        }
-        else
-        {
-            this.handleMissingMetadataInstance(beanClass.getName(), RelatedMetadataElement.class.getName(), methodName);
         }
 
         return null;
@@ -690,29 +684,25 @@ public class OpenMetadataConverterBase<B>
     /**
      * Summarize the related external references.
      *
-     * @param beanClass bean class
      * @param relatedMetadataElements elements to summarize
      * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected List<RelatedMetadataElementSummary> getExternalReferences(Class<B>                     beanClass,
-                                                                        List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    protected List<RelatedMetadataElementSummary> getExternalReferences(List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        return getRelatedElements(beanClass,  OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, relatedMetadataElements);
+        return getRelatedElements(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, relatedMetadataElements);
     }
 
 
     /**
      * Summarize the related elements of the requested type
      *
-     * @param beanClass bean class
      * @param requestedRelationshipType relationship type to extract
      * @param relatedMetadataElements elements to summarize
      * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected List<RelatedMetadataElementSummary> getRelatedElements(Class<B>                     beanClass,
-                                                                     String                       requestedRelationshipType,
+    protected List<RelatedMetadataElementSummary> getRelatedElements(String                       requestedRelationshipType,
                                                                      List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
         final String methodName = "getRelatedElements";
@@ -725,11 +715,14 @@ public class OpenMetadataConverterBase<B>
             {
                 if ((relatedMetadataElement != null) && (propertyHelper.isTypeOf(relatedMetadataElement, requestedRelationshipType)))
                 {
-                    matchingElements.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
                 }
             }
 
-            return matchingElements;
+            if (! matchingElements.isEmpty())
+            {
+                return matchingElements;
+            }
         }
 
         return null;
@@ -739,15 +732,13 @@ public class OpenMetadataConverterBase<B>
     /**
      * Summarize the related elements of the requested type
      *
-     * @param beanClass bean class
      * @param requestedRelationshipType relationship type to extract
      * @param relatedMetadataElements elements to summarize
      * @param relatedElementAtEnd1 which end is it connected to
      * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected List<RelatedMetadataElementSummary> getRelatedElements(Class<B>                     beanClass,
-                                                                     String                       requestedRelationshipType,
+    protected List<RelatedMetadataElementSummary> getRelatedElements(String                       requestedRelationshipType,
                                                                      List<RelatedMetadataElement> relatedMetadataElements,
                                                                      boolean                      relatedElementAtEnd1) throws PropertyServerException
     {
@@ -763,12 +754,15 @@ public class OpenMetadataConverterBase<B>
                 {
                     if (relatedElementAtEnd1 == relatedMetadataElement.getElementAtEnd1())
                     {
-                        matchingElements.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                        matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
                     }
                 }
             }
 
-            return matchingElements;
+            if (! matchingElements.isEmpty())
+            {
+                return matchingElements;
+            }
         }
 
         return null;
@@ -778,15 +772,13 @@ public class OpenMetadataConverterBase<B>
     /**
      * Summarize the related elements of the requested type
      *
-     * @param beanClass bean class
      * @param requestedRelationshipType relationship type to extract
      * @param relatedMetadataElements elements to summarize
      * @param relatedElementAtEnd1 which end is it connected to
      * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected RelatedMetadataElementSummary getRelatedElement(Class<B>                     beanClass,
-                                                              String                       requestedRelationshipType,
+    protected RelatedMetadataElementSummary getRelatedElement(String                       requestedRelationshipType,
                                                               List<RelatedMetadataElement> relatedMetadataElements,
                                                               boolean                      relatedElementAtEnd1) throws PropertyServerException
     {
@@ -800,7 +792,7 @@ public class OpenMetadataConverterBase<B>
                 {
                     if (relatedElementAtEnd1 == relatedMetadataElement.getElementAtEnd1())
                     {
-                        return this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName);
+                        return this.getRelatedElementSummary(relatedMetadataElement, methodName);
                     }
                 }
             }
@@ -813,15 +805,13 @@ public class OpenMetadataConverterBase<B>
     /**
      * Summarize the related elements of the requested type
      *
-     * @param beanClass bean class
      * @param requestedRelationshipTypes relationship types to extract
      * @param relatedMetadataElements elements to summarize
      * @param relatedElementAtEnd1 which end is it connected to
      * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected List<RelatedMetadataElementSummary> getRelatedElements(Class<B>                     beanClass,
-                                                                     List<String>                 requestedRelationshipTypes,
+    protected List<RelatedMetadataElementSummary> getRelatedElements(List<String>                 requestedRelationshipTypes,
                                                                      List<RelatedMetadataElement> relatedMetadataElements,
                                                                      boolean                      relatedElementAtEnd1) throws PropertyServerException
     {
@@ -839,7 +829,7 @@ public class OpenMetadataConverterBase<B>
                     {
                         if (relatedElementAtEnd1 == relatedMetadataElement.getElementAtEnd1())
                         {
-                            matchingElements.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                            matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
                         }
                     }
                 }
@@ -855,14 +845,12 @@ public class OpenMetadataConverterBase<B>
     /**
      * Summarize the list of collections that the element is a member of (linked via the CollectionMembership) relationship.
      *
-     * @param beanClass bean class
      * @param relatedMetadataElements elements to summarize
      * @param processedRelationshipTypes list of relationships that have already been processed
      * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected List<RelatedMetadataElementSummary> getOtherRelatedElements(Class<B>                     beanClass,
-                                                                          List<RelatedMetadataElement> relatedMetadataElements,
+    protected List<RelatedMetadataElementSummary> getOtherRelatedElements(List<RelatedMetadataElement> relatedMetadataElements,
                                                                           List<String>                 processedRelationshipTypes) throws PropertyServerException
     {
         final String methodName = "getOtherRelatedElements";
@@ -877,12 +865,15 @@ public class OpenMetadataConverterBase<B>
                 {
                     if (! propertyHelper.isTypeOf(relatedMetadataElement, processedRelationshipTypes))
                     {
-                        others.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                        others.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
                     }
                 }
             }
 
-            return others;
+            if (! others.isEmpty())
+            {
+                return others;
+            }
         }
 
         return null;

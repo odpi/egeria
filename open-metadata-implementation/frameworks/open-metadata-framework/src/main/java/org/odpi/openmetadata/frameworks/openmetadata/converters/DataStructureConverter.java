@@ -151,7 +151,7 @@ public class DataStructureConverter<B> extends DataDefinitionConverterBase<B>
                 {
                     if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SCHEMA_TYPE_DEFINITION.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
                     {
-                        dataStructureElement.setEquivalentSchemaType(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                        dataStructureElement.setEquivalentSchemaType(this.getRelatedElementSummary(relatedMetadataElement, methodName));
                     }
                     else
                     {

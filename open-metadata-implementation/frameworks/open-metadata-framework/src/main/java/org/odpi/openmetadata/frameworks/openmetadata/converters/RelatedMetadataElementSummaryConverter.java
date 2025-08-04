@@ -16,7 +16,7 @@ import java.util.List;
 
 
 /**
- * ToDoConverter generates a ToDoElement from a "To Do" entity
+ * Create a summary of a related element and the linking relationship
  */
 public class RelatedMetadataElementSummaryConverter<B> extends OpenMetadataConverterBase<B>
 {

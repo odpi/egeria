@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.ToDoActionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 
 
 /**
@@ -59,7 +59,7 @@ public class MyProfileInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns a Community Profile OMAS client.
+     * This method returns a handler for ToDos.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -69,17 +69,17 @@ public class MyProfileInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public ToDoActionHandler getToDoActionManagementClient(String userId,
-                                                           String serverName,
-                                                           String serviceOperationName) throws InvalidParameterException,
-                                                                                                      PropertyServerException,
-                                                                                                      UserNotAuthorizedException
+    public AssetHandler getAssetHandler(String userId,
+                                        String serverName,
+                                        String serviceOperationName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         MyProfileInstance instance = (MyProfileInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getToDoActionManagement();
+            return instance.getAssetHandler();
         }
 
         return null;

@@ -199,7 +199,7 @@ public class DataFieldConverter<B> extends DataDefinitionConverterBase<B>
                 {
                     if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
                     {
-                        dataClassDefinitions.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                        dataClassDefinitions.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
                     }
                     else
                     {

@@ -130,15 +130,11 @@ public class CollectionManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.findCollections(userId,
-                                                             requestBody.getSearchString(),
-                                                             requestBody));
+                response.setElements(handler.findCollections(userId, requestBody.getSearchString(), requestBody));
             }
             else
             {
-                response.setElements(handler.findCollections(userId,
-                                                             null,
-                                                             null));
+                response.setElements(handler.findCollections(userId, null, null));
             }
         }
         catch (Throwable error)

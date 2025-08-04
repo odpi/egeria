@@ -5,18 +5,23 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetLineageGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FolderHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.NestedFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -147,6 +152,193 @@ public class AssetHandler extends OpenMetadataHandlerBase
         return null;
     }
 
+
+    /**
+     * Create a new  action and link it to the supplied role and targets (if applicable).
+     *
+     * @param userId                    calling user
+     * @param originatorGUID            optional originator element (such as a person or Governance Service)
+     * @param actionSponsorGUID         optional element that maintains the action on their list
+     * @param assignToActorGUID         optional actor to assign the action to
+     * @param newActionTargets optional list of elements that the action is to target
+     * @param properties                properties of the  action
+     * @return unique identifier of the action
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public String createAction(String                            userId,
+                               String                            originatorGUID,
+                               String                            actionSponsorGUID,
+                               String                            assignToActorGUID,
+                               AnchorOptions                     anchorOptions,
+                               Map<String, NewElementProperties> initialClassifications,
+                               List<NewActionTarget>             newActionTargets,
+                               ActionProperties                  properties) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName                 = "createAction";
+        final String toDoPropertiesName         = "properties";
+        final String qualifiedNameParameterName = "properties.qualifiedName";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateObject(properties, toDoPropertiesName, methodName);
+        propertyHelper.validateMandatoryName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        NewElementOptions newElementOptions = new NewElementOptions(anchorOptions);
+
+        if (properties.getRequestedTime() == null)
+        {
+            properties.setRequestedTime(new Date());
+        }
+
+        NewElementProperties parentRelationshipProperties = null;
+
+        if (originatorGUID != null)
+        {
+            parentRelationshipProperties = relationshipBuilder.getNewElementProperties(new ActionRequesterProperties());
+
+            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+            newElementOptions.setOpenMetadataTypeName(metadataElementTypeName);
+            newElementOptions.setParentGUID(originatorGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
+        }
+        String toDoGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                          newElementOptions,
+                                                                          initialClassifications,
+                                                                          elementBuilder.getNewElementProperties(properties),
+                                                                          parentRelationshipProperties);
+
+        if (toDoGUID != null)
+        {
+            if (assignToActorGUID != null)
+            {
+                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                assignToActorGUID,
+                                                                toDoGUID,
+                                                                anchorOptions,
+                                                                relationshipBuilder.getNewElementProperties(new AssignmentScopeProperties()));
+            }
+
+            if (actionSponsorGUID != null)
+            {
+                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                                                actionSponsorGUID,
+                                                                toDoGUID,
+                                                                anchorOptions,
+                                                                relationshipBuilder.getNewElementProperties(new ActionSponsorProperties()));
+            }
+
+            if (newActionTargets != null)
+            {
+                for (NewActionTarget newActionTarget : newActionTargets)
+                {
+                    if (newActionTarget != null)
+                    {
+                        ActionTargetProperties actionTargetProperties = new ActionTargetProperties();
+
+                        actionTargetProperties.setActionTargetName(newActionTarget.getActionTargetName());
+
+                        openMetadataClient.createRelatedElementsInStore(userId,
+                                                                        OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                        toDoGUID,
+                                                                        newActionTarget.getActionTargetGUID(),
+                                                                        anchorOptions,
+                                                                        relationshipBuilder.getNewElementProperties(actionTargetProperties));
+                    }
+                }
+            }
+        }
+
+        return toDoGUID;
+    }
+
+    
+    /**
+     * Assign an action to a new actor.
+     *
+     * @param userId    calling user
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param updateOptions  options to control access to open metadata
+     * @param relationshipProperties the properties of the relationship
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void reassignAction(String                    userId,
+                               String                    actionGUID,
+                               String                    actorGUID,
+                               UpdateOptions             updateOptions,
+                               AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName              = "reassignAction";
+        final String toDoGUIDParameterName   = "actionGUID";
+        final String parentGUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(actionGUID, toDoGUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
+
+        RelatedMetadataElementList assignedActors = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                  actionGUID,
+                                                                                                  2,
+                                                                                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                                                  new QueryOptions(updateOptions));
+
+        if ((assignedActors != null) && (assignedActors.getElementList() != null))
+        {
+            for (RelatedMetadataElement assignedActor : assignedActors.getElementList())
+            {
+                openMetadataClient.deleteRelationshipInStore(userId,
+                                                             assignedActor.getRelationshipGUID(),
+                                                             new DeleteOptions(updateOptions));
+            }
+        }
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        actionGUID,
+                                                        updateOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Update the properties associated with an Action Target.
+     *
+     * @param userId                 calling user
+     * @param actionTargetGUID       unique identifier of the action target relationship
+     * @param updateOptions provides a structure for the additional options when updating an element.
+     * @param actionTargetProperties properties to change
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void updateActionTargetProperties(String                 userId,
+                                             String                 actionTargetGUID,
+                                             UpdateOptions          updateOptions,
+                                             ActionTargetProperties actionTargetProperties) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName     = "updateActionTargetProperties";
+        final String propertiesName = "actionTargetProperties";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateObject(actionTargetProperties, propertiesName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     actionTargetGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getNewElementProperties(actionTargetProperties));
+    }
 
 
     /**
@@ -833,6 +1025,248 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Retrieve the actions that are chained off of an action target element.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the element to start with
+     * @param activityStatus  optional activity status
+     * @param queryOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getActionsForActionTarget(String         userId,
+                                                                   String         elementGUID,
+                                                                   ActivityStatus activityStatus,
+                                                                   QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        final String methodName        = "getActionsForActionTarget";
+        final String guidParameterName = "elementGUID";
+
+        return getFilteredActions(userId,
+                                  elementGUID,
+                                  guidParameterName,
+                                  activityStatus,
+                                  OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                  2,
+                                  queryOptions,
+                                  methodName);
+    }
+
+
+
+
+    /**
+     * Retrieve the actions that are chained off of a sponsor's element.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the element to start with
+     * @param activityStatus  optional activity status
+     * @param queryOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getActionsForSponsor(String         userId,
+                                                              String         elementGUID,
+                                                              ActivityStatus activityStatus,
+                                                              QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName        = "getActionsForSponsor";
+        final String guidParameterName = "elementGUID";
+
+        return getFilteredActions(userId,
+                                  elementGUID,
+                                  guidParameterName,
+                                  activityStatus,
+                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                  1,
+                                  queryOptions,
+                                  methodName);
+    }
+
+
+    /**
+     * Retrieve the actions for a particular actor.
+     *
+     * @param userId     calling user
+     * @param actorGUID  unique identifier of the role
+     * @param activityStatus optional activity status
+     * @param requestedQueryOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getAssignedActions(String         userId,
+                                                            String         actorGUID,
+                                                            ActivityStatus activityStatus,
+                                                            QueryOptions   requestedQueryOptions) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        final String methodName        = "getAssignedActions";
+        final String guidParameterName = "actorGUID";
+
+        return getFilteredActions(userId,
+                                  actorGUID,
+                                  guidParameterName,
+                                  activityStatus,
+                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                  1,
+                                  requestedQueryOptions,
+                                  methodName);
+    }
+
+
+    /**
+     * Retrieve the actions for a particular actor.
+     *
+     * @param userId     calling user
+     * @param elementGUID  unique identifier of the role
+     * @param guidParameterName name of the guid
+     * @param relationshipTypeName relationship to query
+     * @param startingAtEnd retrieval end
+     * @param activityStatus optional activity status
+     * @param requestedQueryOptions           multiple options to control the query
+     * @param methodName calling method
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    private List<OpenMetadataRootElement> getFilteredActions(String         userId,
+                                                             String         elementGUID,
+                                                             String         guidParameterName,
+                                                             ActivityStatus activityStatus,
+                                                             String         relationshipTypeName,
+                                                             int            startingAtEnd,
+                                                             QueryOptions   requestedQueryOptions,
+                                                             String         methodName) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        QueryOptions queryOptions = new QueryOptions(requestedQueryOptions);
+
+        if (queryOptions.getMetadataElementTypeName() == null)
+        {
+            queryOptions.setMetadataElementTypeName(OpenMetadataType.ACTION.typeName);
+        }
+
+        List<OpenMetadataRootElement> relatedMetadataElements = super.getRelatedRootElements(userId,
+                                                                                             elementGUID,
+                                                                                             guidParameterName,
+                                                                                             startingAtEnd,
+                                                                                             relationshipTypeName,
+                                                                                             requestedQueryOptions,
+                                                                                             methodName);
+
+        return this.filterProcesses(relatedMetadataElements, activityStatus);
+    }
+
+
+    /**
+     * Retrieve the Processes that match the search string.
+     *
+     * @param userId       calling user
+     * @param searchString string to search for (may include RegExs)
+     * @param activityStatus   optional activity status
+     * @param searchOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> findProcesses(String         userId,
+                                                       String         searchString,
+                                                       ActivityStatus activityStatus,
+                                                       SearchOptions  searchOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "findProcesses";
+
+        List<OpenMetadataRootElement> openMetadataElements = this.findRootElements(userId,
+                                                                                   searchString,
+                                                                                   searchOptions,
+                                                                                   methodName);
+
+        return filterProcesses(openMetadataElements, activityStatus);
+    }
+
+
+    /**
+     * Retrieve the actions that match the type name and status.
+     *
+     * @param userId     calling user
+     * @param category   type to search for
+     * @param activityStatus optional activity status
+     * @param queryOptions multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getProcessesByCategory(String         userId, 
+                                                                String         category, 
+                                                                ActivityStatus activityStatus, 
+                                                                QueryOptions   queryOptions) throws InvalidParameterException, 
+                                                                                                    PropertyServerException, 
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName = "getProcessesByCategory";
+        
+        List<OpenMetadataRootElement> openMetadataElements = super.getRootElementsByName(userId,
+                                                                                         category,
+                                                                                         List.of(OpenMetadataProperty.CATEGORY.name),
+                                                                                         queryOptions,
+                                                                                         methodName);
+
+        return filterProcesses(openMetadataElements, activityStatus);
+    }
+
+
+    /**
+     * Filter process objects by activity status.
+     *
+     * @param openMetadataRootElements retrieved elements
+     * @param activityStatus           optional activity status
+     * @return list of process elements
+     */
+    private List<OpenMetadataRootElement> filterProcesses(List<OpenMetadataRootElement> openMetadataRootElements,
+                                                          ActivityStatus                activityStatus)
+    {
+        if (openMetadataRootElements != null)
+        {
+            List<OpenMetadataRootElement> processes = new ArrayList<>();
+
+            for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
+            {
+                if ((openMetadataRootElement != null) && 
+                        (openMetadataRootElement.getProperties() instanceof ProcessProperties processProperties))
+                {
+                    if ((activityStatus == null) || (activityStatus == processProperties.getActivityStatus()))
+                    {
+                        processes.add(openMetadataRootElement);
+                    }
+                }
+            }
+
+            return processes;
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Returns the list of assets with a particular assetGUID.
      *
      * @param userId                 userId of user making request
@@ -1218,7 +1652,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
              * Pick up requests for actions and ToDos
              */
             lineageRelationshipTypeNames.add(OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName);
-            lineageRelationshipTypeNames.add(OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
         }
 

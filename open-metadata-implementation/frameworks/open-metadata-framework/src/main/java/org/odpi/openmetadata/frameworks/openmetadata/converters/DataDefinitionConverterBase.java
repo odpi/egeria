@@ -65,7 +65,7 @@ public class DataDefinitionConverterBase<B> extends AttributedElementConverterBa
                 {
                     if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
                     {
-                        semanticDefinitions.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                        semanticDefinitions.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
                     }
                     else
                     {
@@ -79,7 +79,7 @@ public class DataDefinitionConverterBase<B> extends AttributedElementConverterBa
                 dataDefinitionElement.setAssignedMeanings(semanticDefinitions);
             }
 
-            super.addRelationshipsToBean(beanClass, others, dataDefinitionElement);
+            super.addRelationshipsToBean(others, dataDefinitionElement);
         }
     }
 }

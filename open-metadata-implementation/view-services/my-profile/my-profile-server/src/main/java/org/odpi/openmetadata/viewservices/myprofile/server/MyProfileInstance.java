@@ -2,15 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.myprofile.server;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.ToDoActionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
@@ -23,7 +21,7 @@ public class MyProfileInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.MY_PROFILE;
 
     private final ActorProfileHandler actorProfileHandler;
-    private final ToDoActionHandler   toDoActionHandler;
+    private final AssetHandler   assetHandler;
 
 
     /**
@@ -77,10 +75,10 @@ public class MyProfileInstance extends OMVSServiceInstance
                                                       myDescription.getViewServiceFullName(),
                                                       openMetadataClient);
 
-        toDoActionHandler   = new ToDoActionHandler(serverName,
-                                                       auditLog,
-                                                       myDescription.getViewServiceFullName(),
-                                                       openMetadataClient);
+        assetHandler = new AssetHandler(serverName,
+                                        auditLog,
+                                        myDescription.getViewServiceFullName(),
+                                        openMetadataClient);
     }
 
 
@@ -100,8 +98,8 @@ public class MyProfileInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public ToDoActionHandler getToDoActionManagement()
+    public AssetHandler getAssetHandler()
     {
-        return toDoActionHandler;
+        return assetHandler;
     }
 }

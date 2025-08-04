@@ -115,9 +115,9 @@ public class RuntimeManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public OpenMetadataRootElementsResponse getPlatformsByDeployedImplType(String                  serverName,
-                                                                           boolean                 getTemplates,
-                                                                           SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getPlatformsByDeployedImplType(String            serverName,
+                                                                           boolean           getTemplates,
+                                                                           FilterRequestBody requestBody)
     {
         final String methodName = "getPlatformsByDeployedImplType";
 
@@ -136,7 +136,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             AssetHandler handler = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
 
-            List<OpenMetadataRootElement> platforms = handler.getAssetsByDeployedImplementationType(userId, requestBody.getSearchString(), requestBody);
+            List<OpenMetadataRootElement> platforms = handler.getAssetsByDeployedImplementationType(userId, requestBody.getFilter(), requestBody);
 
             if (platforms != null)
             {

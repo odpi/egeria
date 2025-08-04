@@ -598,7 +598,7 @@ public class MermaidGraphBuilderBase
 
         if (elementHeader.getServerPurposes() != null)
         {
-            for (ElementClassification classification : elementHeader.getCollectionCategories())
+            for (ElementClassification classification : elementHeader.getServerPurposes())
             {
                 if (classification != null)
                 {

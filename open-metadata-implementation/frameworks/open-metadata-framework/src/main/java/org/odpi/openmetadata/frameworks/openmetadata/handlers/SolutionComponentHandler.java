@@ -649,7 +649,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
                 {
                     if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
                     {
-                        portSummaries.add(portConverter.getRelatedElementSummary(RelatedMetadataElementSummary.class, relatedMetadataElement, methodName));
+                        portSummaries.add(portConverter.getRelatedElementSummary(relatedMetadataElement, methodName));
                     }
                 }
 

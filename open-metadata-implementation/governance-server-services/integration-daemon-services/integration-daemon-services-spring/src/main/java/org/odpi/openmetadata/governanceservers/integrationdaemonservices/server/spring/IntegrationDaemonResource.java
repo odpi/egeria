@@ -34,7 +34,7 @@ public class IntegrationDaemonResource
 
 
     /**
-     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * Pass an open lineage event to the integration daemon.  It will pass it on to the integration connectors that have registered a
      * listener for open lineage events.
      *
      * @param serverName integration daemon server name

@@ -56,36 +56,36 @@ public class MyProfileResource
 
 
     /**
-     * Create a new to do action and link it to the supplied actor and targets (if applicable).
+     * Create a new action and link it to the supplied actor and targets (if applicable).
      *
      * @param serverName name of the server instances for this request
-     * @param requestBody properties of the to do action
+     * @param requestBody properties of the action action
      *
-     * @return unique identifier of the to do or
+     * @return unique identifier of the action or
      * InvalidParameterException a parameter is invalid
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/to-dos")
+    @PostMapping(path = "/actions")
 
-    @Operation(summary="createToDo",
-            description="Create a new to do action and link it to the supplied actor and targets (if applicable).",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+    @Operation(summary="createAction",
+            description="Create a new action and link it to the supplied actor and targets (if applicable).",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public GUIDResponse createToDo(@PathVariable String          serverName,
-                                   @RequestBody(required = false)  ToDoRequestBody requestBody)
+    public GUIDResponse createAction(@PathVariable String          serverName,
+                                   @RequestBody(required = false) ActionRequestBody requestBody)
     {
-        return restAPI.createToDo(serverName, requestBody);
+        return restAPI.createAction(serverName, requestBody);
     }
 
 
 
     /**
-     * Update the properties associated with a "To Do".
+     * Update the properties associated with an action.
      *
      * @param serverName name of the server instances for this request
-     * @param toDoGUID unique identifier of the to do
+     * @param actionGUID unique identifier of the action
      * @param requestBody properties to change
      *
      * @return void or
@@ -93,23 +93,23 @@ public class MyProfileResource
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/to-dos/{toDoGUID}")
+    @PostMapping(path = "/actions/{actionGUID}")
 
-    @Operation(summary="updateToDo",
-            description="Update the properties associated with a to do.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+    @Operation(summary="updateAction",
+            description="Update the properties associated with a action.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public VoidResponse updateToDo(@PathVariable String                   serverName,
-                                   @PathVariable String                   toDoGUID,
+    public VoidResponse updateAction(@PathVariable String                   serverName,
+                                   @PathVariable String                   actionGUID,
                                    @RequestBody (required = false)  UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateToDo(serverName, toDoGUID, requestBody);
+        return restAPI.updateAction(serverName, actionGUID, requestBody);
     }
 
 
     /**
-     * Update the properties associated with an Action Target for a "To Do".
+     * Update the properties associated with an Action Target for a "Action".
      *
      * @param serverName name of the server instances for this request
      * @param actionTargetGUID               unique identifier of the action target relationship
@@ -120,12 +120,12 @@ public class MyProfileResource
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/to-dos/action-targets/{actionTargetGUID}")
+    @PostMapping(path = "/actions/action-targets/{actionTargetGUID}")
 
     @Operation(summary="updateActionTargetProperties",
-            description="Update the properties associated with an Action Target for a to do.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+            description="Update the properties associated with an Action Target for a action.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
     public VoidResponse updateActionTargetProperties(@PathVariable String                 serverName,
                                                      @PathVariable String                        actionTargetGUID,
@@ -136,10 +136,10 @@ public class MyProfileResource
 
 
     /**
-     * Assign a "To Do" to a new actor.  This will unassign all other actors previously assigned to the to do.
+     * Assign a "Action" to a new actor.  This will unassign all other actors previously assigned to the action.
      *
      * @param serverName name of the server instances for this request
-     * @param toDoGUID unique identifier of the to do
+     * @param actionGUID unique identifier of the action
      * @param actorGUID  actor to assign the action to
      * @param requestBody null request body
      *
@@ -148,28 +148,28 @@ public class MyProfileResource
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/to-dos/{toDoGUID}/reassign/{actorGUID}")
+    @PostMapping(path = "/actions/{actionGUID}/reassign/{actorGUID}")
 
-    @Operation(summary="reassignToDo",
-            description="Assign a to do to a new actor.  This will unassign all other actors previously assigned to the to do.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+    @Operation(summary="reassignAction",
+            description="Assign a action to a new actor.  This will unassign all other actors previously assigned to the action.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public VoidResponse reassignToDo(@PathVariable String         serverName,
-                                     @PathVariable String         toDoGUID,
+    public VoidResponse reassignAction(@PathVariable String         serverName,
+                                     @PathVariable String         actionGUID,
                                      @PathVariable String         actorGUID,
                                      @RequestBody (required = false)
                                                    UpdateRelationshipRequestBody requestBody)
     {
-        return restAPI.reassignToDo(serverName, toDoGUID, actorGUID, requestBody);
+        return restAPI.reassignAction(serverName, actionGUID, actorGUID, requestBody);
     }
 
 
     /**
-     * Delete an existing to do.
+     * Delete an existing action.
      *
      * @param serverName name of the server instances for this request
-     * @param toDoGUID unique identifier of the to do
+     * @param actionGUID unique identifier of the action
      * @param requestBody null request body
      *
      * @return void or
@@ -177,196 +177,179 @@ public class MyProfileResource
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/to-dos/{toDoGUID}/delete")
+    @PostMapping(path = "/actions/{actionGUID}/delete")
 
-    @Operation(summary="deleteToDo",
-            description="Delete an existing to do.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+    @Operation(summary="deleteAction",
+            description="Delete an existing action.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public VoidResponse deleteToDo(@PathVariable String          serverName,
-                                   @PathVariable String          toDoGUID,
+    public VoidResponse deleteAction(@PathVariable String          serverName,
+                                   @PathVariable String          actionGUID,
                                    @RequestBody (required = false)
                                        DeleteRequestBody requestBody)
     {
-        return restAPI.deleteToDo(serverName, toDoGUID, requestBody);
+        return restAPI.deleteAction(serverName, actionGUID, requestBody);
     }
 
 
     /**
-     * Retrieve a "To Do" by unique identifier.
+     * Retrieve a "Action" by unique identifier.
      *
      * @param serverName name of the server instances for this request
-     * @param toDoGUID unique identifier of the to do
+     * @param actionGUID unique identifier of the action
      *
-     * @return to do bean or
+     * @return action bean or
      * InvalidParameterException a parameter is invalid
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @GetMapping(path = "/to-dos/{toDoGUID}")
+    @GetMapping(path = "/actions/{actionGUID}")
 
-    @Operation(summary="getToDo",
-            description="Retrieve a to do.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+    @Operation(summary="getActionByGUID",
+            description="Retrieve an action by unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public ToDoResponse getToDo(@PathVariable String serverName,
-                                @PathVariable String toDoGUID)
+    public OpenMetadataRootElementResponse getActionByGUID(@PathVariable String serverName,
+                                @PathVariable String actionGUID)
     {
-        return restAPI.getToDo(serverName, toDoGUID);
+        return restAPI.getActionByGUID(serverName, actionGUID);
     }
 
 
     /**
-     * Retrieve the "To Dos" that are chained off of an action target element.
+     * Retrieve the "Actions" that are chained off of an action target element.
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID unique identifier of the element to start with
-     * @param startFrom initial position of the results to return
-     * @param pageSize maximum number of results to return
-     * @param requestBody     status of the to do (null means current active)
+     * @param requestBody     status of the action (null means current active)
      *
-     * @return list of to do beans or
+     * @return list of action beans or
      * InvalidParameterException a parameter is invalid
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/elements/{elementGUID}/action-targets/to-dos")
+    @PostMapping(path = "/elements/{elementGUID}/action-targets/actions")
 
     @Operation(summary="getActionsForActionTarget",
-            description="Retrieve the to dos that are chained off of an action target element.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+            description="Retrieve the actions that are chained off of an action target element.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public ToDosResponse getActionsForActionTarget(@PathVariable String                serverName,
+    public OpenMetadataRootElementsResponse getActionsForActionTarget(@PathVariable String                serverName,
                                                    @PathVariable String                elementGUID,
-                                                   @RequestParam int                   startFrom,
-                                                   @RequestParam int                   pageSize,
                                                    @RequestBody  (required = false)
                                                        ActivityStatusRequestBody requestBody)
     {
-        return restAPI.getActionsForActionTarget(serverName, elementGUID, startFrom, pageSize, requestBody);
+        return restAPI.getActionsForActionTarget(serverName, elementGUID, requestBody);
     }
 
 
     /**
-     * Retrieve the "To Dos" that are chained off of a sponsor's element.
+     * Retrieve the "Actions" that are chained off of a sponsor's element.
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID unique identifier of the element to start with
-     * @param startFrom initial position of the results to return
-     * @param pageSize maximum number of results to return
-     * @param requestBody     status of the to do (null means current active)
+     * @param requestBody     status of the action (null means current active)
      *
-     * @return list of to do beans or
+     * @return list of action beans or
      * InvalidParameterException a parameter is invalid
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/elements/{elementGUID}/sponsored/to-dos")
+    @PostMapping(path = "/elements/{elementGUID}/sponsored/actions")
 
     @Operation(summary="getActionsForSponsor",
-            description="Retrieve the to dos that are chained off of a sponsor's element.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+            description="Retrieve the actions that are chained off of a sponsor's element.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public ToDosResponse getActionsForSponsor(@PathVariable String                serverName,
+    public OpenMetadataRootElementsResponse getActionsForSponsor(@PathVariable String                serverName,
                                               @PathVariable String                elementGUID,
-                                              @RequestParam int                   startFrom,
-                                              @RequestParam int                   pageSize,
                                               @RequestBody  (required = false)
                                                   ActivityStatusRequestBody requestBody)
     {
-        return restAPI.getActionsForSponsor(serverName, elementGUID, startFrom, pageSize, requestBody);
+        return restAPI.getActionsForSponsor(serverName, elementGUID, requestBody);
     }
 
 
     /**
-     * Retrieve the "To Dos" for a particular actor.
+     * Retrieve the "Actions" for a particular actor.
      *
      * @param serverName name of the server instances for this request
      * @param actorGUID unique identifier of the role
-     * @param startFrom initial position of the results to return
-     * @param pageSize maximum number of results to return
-     * @param requestBody     status of the to do (null means current active)
+     * @param requestBody     status of the action (null means current active)
      *
-     * @return list of to do beans or
+     * @return list of action beans or
      * InvalidParameterException a parameter is invalid
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/actors/{actorGUID}/assigned/to-dos")
+    @PostMapping(path = "/actors/{actorGUID}/assigned/actions")
 
     @Operation(summary="getAssignedActions",
-            description="Retrieve the to dos that are assigned to a particular actor.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+            description="Retrieve the actions that are assigned to a particular actor.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public ToDosResponse getAssignedActions(@PathVariable String                serverName,
-                                            @PathVariable String                actorGUID,
-                                            @RequestParam int                   startFrom,
-                                            @RequestParam int                   pageSize,
-                                            @RequestBody  (required = false)
-                                                ActivityStatusRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getAssignedActions(@PathVariable String                serverName,
+                                                               @PathVariable String                actorGUID,
+                                                               @RequestBody  (required = false)
+                                                                   ActivityStatusRequestBody requestBody)
     {
-        return restAPI.getAssignedActions(serverName, actorGUID, startFrom, pageSize, requestBody);
+        return restAPI.getAssignedActions(serverName, actorGUID, requestBody);
     }
 
 
     /**
-     * Retrieve the "To Dos" that match the search string.
+     * Retrieve the "Actions" that match the search string.
      *
      * @param serverName name of the server instances for this request
-     * @param requestBody     status of the to do (null means current active)
+     * @param requestBody     status of the action (null means current active)
      *
-     * @return list of to do beans or
+     * @return list of action beans or
      * InvalidParameterException a parameter is invalid
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/to-dos/find-by-search-string")
+    @PostMapping(path = "/actions/find-by-search-string")
 
-    @Operation(summary="findToDos",
-            description="Retrieve the to dos that match the search string.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+    @Operation(summary="findActions",
+            description="Retrieve the actions that match the search string and optional status.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public ToDosResponse findToDos(@PathVariable String                          serverName,
-                                   @RequestBody ActivityStatusSearchString requestBody)
+    public OpenMetadataRootElementsResponse findActions(@PathVariable String                          serverName,
+                                     @RequestBody (required = false) 
+                                     ActivityStatusSearchString requestBody)
     {
-        return restAPI.findToDos(serverName,  requestBody);
+        return restAPI.findActions(serverName, requestBody);
     }
 
 
     /**
-     * Retrieve the "To Dos" that match the type name and status.
+     * Retrieve the actions that match the category name and status.
      *
      * @param serverName name of the server instances for this request
-     * @param category   type to search for
-     * @param startFrom initial position of the results to return
-     * @param pageSize maximum number of results to return
-     * @param requestBody     status of the to do (null means current active)
+     * @param requestBody     status of the action (null means current active)
      *
-     * @return list of to do beans or
+     * @return list of action beans or
      * InvalidParameterException a parameter is invalid
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/to-dos/categories/{category}")
+    @PostMapping(path = "/actions/by-category")
 
-    @Operation(summary="getToDosByType",
-            description="Retrieve the to dos that match the supplied toDoType.",
-            externalDocs=@ExternalDocumentation(description="To Dos",
-                    url="https://egeria-project.org/concepts/to-do"))
+    @Operation(summary="getActionsByCategory",
+            description="Retrieve the actions that match the supplied category.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
 
-    public ToDosResponse getToDosByCategory(@PathVariable String                serverName,
-                                            @PathVariable String                category,
-                                            @RequestParam int                   startFrom,
-                                            @RequestParam int                   pageSize,
-                                            @RequestBody  (required = false)
-                                                ActivityStatusRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getActionsByCategory(@PathVariable String                serverName,
+                                              @RequestBody  (required = false)
+                                              ActivityStatusFilterRequestBody requestBody)
     {
-        return restAPI.getToDosByCategory(serverName, category, startFrom, pageSize, requestBody);
+        return restAPI.getActionsByCategory(serverName, requestBody);
     }
 }

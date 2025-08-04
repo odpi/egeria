@@ -1,27 +1,37 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.frameworks.openmetadata.properties.actions;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class ToDoActionTargetProperties extends RelationshipBeanProperties
-{
-    private String         actionTargetName = null;
-    private ActivityStatus status           = null;
-    private Date           startDate        = null;
-    private Date       completionDate    = null;
-    private String     completionMessage = null;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * ActionTargetProperties identifies the properties of an ActionTarget relationship.
+ */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class ActionTargetProperties extends RelationshipBeanProperties
+{
+    private String         actionTargetName  = null;
+    private ActivityStatus status            = null;
+    private Date           startTime         = null;
+    private Date           completionTime    = null;
+    private String         completionMessage = null;
 
     /**
      * Typical Constructor
      */
-    public ToDoActionTargetProperties()
+    public ActionTargetProperties()
     {
     }
 
@@ -32,23 +42,21 @@ public class ToDoActionTargetProperties extends RelationshipBeanProperties
      *
      * @param template object being copied
      */
-    public ToDoActionTargetProperties(ToDoActionTargetProperties template)
+    public ActionTargetProperties(ActionTargetProperties template)
     {
-        super (template);
-
         if (template != null)
         {
             actionTargetName  = template.getActionTargetName();
             status            = template.getStatus();
-            startDate         = template.getStartDate();
-            completionDate    = template.getCompletionDate();
+            startTime         = template.getStartTime();
+            completionTime    = template.getCompletionTime();
             completionMessage = template.getCompletionMessage();
         }
     }
 
 
     /**
-     * Return the name assigned to this action target.  This name helps to guide the governance service in its processing of this action target.
+     * Return the name assigned to this action target.  This name helps to guide the actor in its processing of this action target.
      *
      * @return string name
      */
@@ -59,7 +67,7 @@ public class ToDoActionTargetProperties extends RelationshipBeanProperties
 
 
     /**
-     * Set up the name assigned to this action target.  This name helps to guide the governance service in its processing of this action target.
+     * Set up the name assigned to this action target.  This name helps to guide the actor in its processing of this action target.
      *
      * @param actionTargetName string name
      */
@@ -69,9 +77,10 @@ public class ToDoActionTargetProperties extends RelationshipBeanProperties
     }
 
 
+
     /**
      * Return the current status of the action target.  The default value is the status is derived from
-     * the engine action.  However, if it has to process many target elements, then these values can
+     * the  action.  However, if the actor has to process many target elements, then these values can
      * be used to show progress.
      *
      * @return status enum
@@ -84,7 +93,7 @@ public class ToDoActionTargetProperties extends RelationshipBeanProperties
 
     /**
      * Set up current status of the action target.  The default value is the status is derived from
-     * the "To Do".  However, if the assigned person has to process many target elements, then these values can
+     * the action.  However, if the actor has to process many target elements, then these values can
      * be used to show progress.
      *
      * @param status enum
@@ -96,41 +105,41 @@ public class ToDoActionTargetProperties extends RelationshipBeanProperties
 
 
     /**
-     * Return the date/time when the governance action service started processing this target element. By default,
-     * this value is derived from the startDate for the governance action service.  However, if it has to process many target elements, then these values can
+     * Return the date/time when the actor started processing this target element. By default,
+     * this value is derived from the startDate for the action.  However, if the actor has to process many target elements, then these values can
      * be used to show progress.
      *
      * @return date object
      */
-    public Date getStartDate()
+    public Date getStartTime()
     {
-        return startDate;
+        return startTime;
     }
 
 
     /**
-     * Set up the date/time when the governance action service started processing this target element. By default,
-     * this value is derived from the startDate for the governance action service.  However, if it has to process many target
+     * Set up the date/time when the actor started processing this target element. By default,
+     * this value is derived from the startDate for the action.  However, if the actor has to process many target
      * elements, then these values can be used to show progress.
      *
-     * @param startDate date object
+     * @param startTime date object
      */
-    public void setStartDate(Date startDate)
+    public void setStartTime(Date startTime)
     {
-        this.startDate = startDate;
+        this.startTime = startTime;
     }
 
 
     /**
-     * Return the date/time when the governance action service stopped processing this target element. By default,
-     * this value is derived from the completionDate for the governance action service.  However, if it has to process
+     * Return the date/time when the actor stopped processing this target element. By default,
+     * this value is derived from the completionDate for the action.  However, if it has to process
      * many target elements, then these values can be used to show progress.
      *
      * @return date object
      */
-    public Date getCompletionDate()
+    public Date getCompletionTime()
     {
-        return completionDate;
+        return completionTime;
     }
 
 
@@ -139,11 +148,11 @@ public class ToDoActionTargetProperties extends RelationshipBeanProperties
      * this value is derived from the completionDate for the governance action service.  However, if it has to process
      * many target elements, then these values can be used to show progress.
      *
-     * @param completionDate date object
+     * @param completionTime date object
      */
-    public void setCompletionDate(Date completionDate)
+    public void setCompletionTime(Date completionTime)
     {
-        this.completionDate = completionDate;
+        this.completionTime = completionTime;
     }
 
 
@@ -178,14 +187,15 @@ public class ToDoActionTargetProperties extends RelationshipBeanProperties
     @Override
     public String toString()
     {
-        return "ToDoActionTargetProperties{" +
+        return "ActionTargetProperties{" +
                 "actionTargetName='" + actionTargetName + '\'' +
                 ", status=" + status +
-                ", startDate=" + startDate +
-                ", completionDate=" + completionDate +
+                ", startTime=" + startTime +
+                ", completionTime=" + completionTime +
                 ", completionMessage='" + completionMessage + '\'' +
                 "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -199,12 +209,8 @@ public class ToDoActionTargetProperties extends RelationshipBeanProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
-        ToDoActionTargetProperties that = (ToDoActionTargetProperties) objectToCompare;
-        return status == that.status &&
-                Objects.equals(actionTargetName, that.actionTargetName) &&
-                Objects.equals(startDate, that.startDate) &&
-                Objects.equals(completionDate, that.completionDate) &&
-                Objects.equals(completionMessage, that.completionMessage);
+        ActionTargetProperties that = (ActionTargetProperties) objectToCompare;
+        return Objects.equals(actionTargetName, that.actionTargetName) && status == that.status && Objects.equals(startTime, that.startTime) && Objects.equals(completionTime, that.completionTime) && Objects.equals(completionMessage, that.completionMessage);
     }
 
     /**
@@ -215,6 +221,6 @@ public class ToDoActionTargetProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), actionTargetName, status, startDate, completionDate, completionMessage);
+        return Objects.hash(super.hashCode(), actionTargetName, status, startTime, completionTime, completionMessage);
     }
 }

@@ -3135,7 +3135,6 @@ public class OpenMetadataTypesArchive1_2
     {
         this.archiveBuilder.addEntityDef(getMeetingEntity());
         this.archiveBuilder.addEntityDef(getToDoEntity());
-        this.archiveBuilder.addRelationshipDef(getActionAssignment());
     }
 
 
@@ -3159,53 +3158,12 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-
     private EntityDef getToDoEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.TO_DO,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ACTION.typeName));
     }
 
-
-    private RelationshipDef getActionAssignment()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "assignedResources";
-        final String                     end1AttributeDescription     = "One or more people assigned to complete the action (to do).";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "toDoList";
-        final String                     end2AttributeDescription     = "List of toDos assigned to this person's role.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TO_DO.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

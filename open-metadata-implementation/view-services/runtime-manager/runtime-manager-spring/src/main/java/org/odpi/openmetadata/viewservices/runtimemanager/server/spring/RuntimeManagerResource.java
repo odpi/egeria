@@ -84,7 +84,7 @@ public class RuntimeManagerResource
     public OpenMetadataRootElementsResponse getPlatformsByDeployedImplType(@PathVariable String serverName,
                                                                           @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
                                                                           @RequestBody (required = false)
-                                                                                 SearchStringRequestBody requestBody)
+                                                                                 FilterRequestBody requestBody)
     {
         return restAPI.getPlatformsByDeployedImplType(serverName, getTemplates, requestBody);
     }

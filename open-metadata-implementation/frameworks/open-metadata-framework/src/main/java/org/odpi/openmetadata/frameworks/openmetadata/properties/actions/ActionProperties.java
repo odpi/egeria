@@ -25,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ToDoProperties.class, name = "ToDoProperties"),
         @JsonSubTypes.Type(value = MeetingProperties.class, name = "MeetingProperties"),
+        @JsonSubTypes.Type(value = EngineActionProperties.class, name = "EngineActionProperties"),
 })
 public class ActionProperties extends ProcessProperties
 {
