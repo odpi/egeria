@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ToDoRequestBody provides a structure for passing the properties for a new to do.
+ * ActionRequestBody provides a structure for passing the properties for a new to do.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -306,7 +306,7 @@ public class ToDoRequestBody
     @Override
     public String toString()
     {
-        return "ToDoRequestBody{" +
+        return "ActionRequestBody{" +
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", title='" + title + '\'' +
                        ", instructions='" + instructions + '\'' +

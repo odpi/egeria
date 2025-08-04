@@ -1741,16 +1741,6 @@ public enum OpenMetadataType
 
 
     /**
-     * A person who has been assigned to complete the to do (action).
-     */
-    ACTION_ASSIGNMENT_RELATIONSHIP("af2b5fab-8f83-4a2b-b749-1e6219f61f79",
-                                   "ActionAssignment",
-                                   OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
-                                   "5d77cc38-d0fa-410b-85fd-e077a6f9efb1",
-                                   "A person who has been assigned to complete the to do (action)."),
-
-
-    /**
      * A group of people with a common interest or skill.
      */
     COMMUNITY("fbd42379-f6c3-4f08-b6f7-378565cda993",

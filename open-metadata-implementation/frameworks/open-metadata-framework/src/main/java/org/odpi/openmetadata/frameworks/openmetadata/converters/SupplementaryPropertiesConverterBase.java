@@ -116,7 +116,7 @@ public class SupplementaryPropertiesConverterBase<B> extends AttributedElementCo
 
         if (returnBean instanceof AttributedMetadataElement bean)
         {
-            this.addRelationshipsToBean(beanClass, relationships, bean);
+            this.addRelationshipsToBean(relationships, bean);
         }
 
         return returnBean;
@@ -135,7 +135,6 @@ public class SupplementaryPropertiesConverterBase<B> extends AttributedElementCo
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unused")
     public B getNewComplexBean(Class<B>                     beanClass,
                                RelatedMetadataElement       primaryElement,
                                List<RelatedMetadataElement> relationships,
@@ -145,7 +144,7 @@ public class SupplementaryPropertiesConverterBase<B> extends AttributedElementCo
 
         if (returnBean instanceof AttributedMetadataElement bean)
         {
-            this.addRelationshipsToBean(beanClass, relationships, bean);
+            this.addRelationshipsToBean(relationships, bean);
         }
 
         return returnBean;

@@ -9,9 +9,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.ToDoActionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -88,10 +91,10 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public GUIDResponse createToDo(String          serverName,
-                                   ToDoRequestBody requestBody)
+    public GUIDResponse createAction(String            serverName,
+                                     ActionRequestBody requestBody)
     {
-        final String methodName = "createToDo";
+        final String methodName = "createAction";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -105,18 +108,18 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setGUID(handler.createToDo(userId,
-                                                    requestBody.getOriginatorGUID(),
-                                                    requestBody.getActionSponsorGUID(),
-                                                    requestBody.getAssignToActorGUID(),
-                                                    requestBody,
-                                                    null,
-                                                    requestBody.getNewActionTargetProperties(),
-                                                    requestBody.getProperties()));
+                response.setGUID(handler.createAction(userId,
+                                                      requestBody.getOriginatorGUID(),
+                                                      requestBody.getActionSponsorGUID(),
+                                                      requestBody.getAssignToActorGUID(),
+                                                      requestBody,
+                                                      null,
+                                                      requestBody.getNewActionTargets(),
+                                                      requestBody.getProperties()));
             }
             else
             {
@@ -138,7 +141,7 @@ public class MyProfileRESTServices extends TokenController
      * Update the properties associated with a "To Do".
      *
      * @param serverName name of the server instances for this request
-     * @param toDoGUID unique identifier of the to do
+     * @param actionGUID unique identifier of the to do
      * @param requestBody properties to change
      *
      * @return void or
@@ -146,11 +149,11 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public VoidResponse updateToDo(String                   serverName,
-                                   String                   toDoGUID,
-                                   UpdateElementRequestBody requestBody)
+    public VoidResponse updateAction(String                   serverName,
+                                     String                   actionGUID,
+                                     UpdateElementRequestBody requestBody)
     {
-        final String methodName = "updateToDo";
+        final String methodName = "updateAction";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -164,13 +167,13 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ToDoProperties toDoProperties)
+                if (requestBody.getProperties() instanceof ActionProperties actionProperties)
                 {
-                    handler.updateToDo(userId, toDoGUID, requestBody, toDoProperties);
+                    handler.updateAsset(userId, actionGUID, requestBody, actionProperties);
                 }
                 else
                 {
@@ -223,17 +226,17 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ToDoActionTargetProperties toDoActionTargetProperties)
+                if (requestBody.getProperties() instanceof ActionTargetProperties toDoActionTargetProperties)
                 {
                     handler.updateActionTargetProperties(userId, actionTargetGUID, requestBody, toDoActionTargetProperties);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ToDoActionTargetProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ActionTargetProperties.class.getName(), methodName);
                 }
             }
         }
@@ -249,10 +252,10 @@ public class MyProfileRESTServices extends TokenController
 
 
     /**
-     * Assign a "To Do" to a new actor.
+     * Assign an action to a new actor.
      *
      * @param serverName name of the server instances for this request
-     * @param toDoGUID unique identifier of the to do
+     * @param actionGUID unique identifier of the to do
      * @param actorGUID  actor to assign the action to
      * @param requestBody null request body
      *
@@ -261,12 +264,12 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public VoidResponse reassignToDo(String                        serverName,
-                                     String                        toDoGUID,
-                                     String                        actorGUID,
-                                     UpdateRelationshipRequestBody requestBody)
+    public VoidResponse reassignAction(String                        serverName,
+                                       String                        actionGUID,
+                                       String                        actorGUID,
+                                       UpdateRelationshipRequestBody requestBody)
     {
-        final String methodName = "reassignToDo";
+        final String methodName = "reassignAction";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -280,9 +283,9 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.reassignToDo(userId, toDoGUID, actorGUID, requestBody, null);
+            handler.reassignAction(userId, actionGUID, actorGUID, requestBody, null);
         }
         catch (Throwable error)
         {
@@ -296,10 +299,10 @@ public class MyProfileRESTServices extends TokenController
 
 
     /**
-     * Delete an existing to do.
+     * Delete an existing action.
      *
      * @param serverName name of the server instances for this request
-     * @param toDoGUID unique identifier of the to do
+     * @param actionGUID unique identifier of the to do
      * @param requestBody null request body
      *
      * @return void or
@@ -307,12 +310,11 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse deleteToDo(String                   serverName,
-                                   String                   toDoGUID,
-                                   DeleteRequestBody requestBody)
+    public VoidResponse deleteAction(String            serverName,
+                                     String            actionGUID,
+                                     DeleteRequestBody requestBody)
     {
-        final String methodName = "deleteToDo";
+        final String methodName = "deleteAction";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -326,9 +328,9 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.deleteToDo(userId, toDoGUID, requestBody);
+            handler.deleteAsset(userId, actionGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -342,25 +344,25 @@ public class MyProfileRESTServices extends TokenController
 
 
     /**
-     * Retrieve a "To Do" by unique identifier.
+     * Retrieve a action by unique identifier.
      *
      * @param serverName name of the server instances for this request
-     * @param toDoGUID unique identifier of the to do
+     * @param actionGUID unique identifier of the to do
      *
      * @return to do bean or
      * InvalidParameterException a parameter is invalid
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDoResponse getToDo(String serverName,
-                                String toDoGUID)
+    public OpenMetadataRootElementResponse getActionByGUID(String serverName,
+                                                           String actionGUID)
     {
-        final String methodName = "getToDo";
+        final String methodName = "getActionByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDoResponse response = new ToDoResponse();
-        AuditLog     auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -369,9 +371,13 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getToDo(userId, toDoGUID, null));
+            GetOptions getOptions = new GetOptions();
+
+            getOptions.setMetadataElementTypeName(OpenMetadataType.ACTION.typeName);
+
+            response.setElement(handler.getAssetByGUID(userId, actionGUID, null));
         }
         catch (Throwable error)
         {
@@ -389,8 +395,6 @@ public class MyProfileRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID unique identifier of the element to start with
-     * @param startFrom initial position of the results to return
-     * @param pageSize maximum number of results to return
      * @param requestBody     status of the to do (null means current active)
      *
      * @return list of to do beans or
@@ -398,17 +402,15 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDosResponse getActionsForActionTarget(String                serverName,
-                                                   String                elementGUID,
-                                                   int                   startFrom,
-                                                   int                   pageSize,
+    public OpenMetadataRootElementsResponse getActionsForActionTarget(String                    serverName,
+                                                   String                    elementGUID,
                                                    ActivityStatusRequestBody requestBody)
     {
         final String methodName = "getActionsForActionTarget";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDosResponse response = new ToDosResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog      auditLog = null;
 
         try
@@ -418,7 +420,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -451,8 +453,6 @@ public class MyProfileRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID unique identifier of the element to start with
-     * @param startFrom initial position of the results to return
-     * @param pageSize maximum number of results to return
      * @param requestBody     status of the to do (null means current active)
      *
      * @return list of to do beans or
@@ -460,17 +460,15 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDosResponse getActionsForSponsor(String                serverName,
-                                              String                elementGUID,
-                                              int                   startFrom,
-                                              int                   pageSize,
+    public OpenMetadataRootElementsResponse getActionsForSponsor(String                    serverName,
+                                              String                    elementGUID,
                                               ActivityStatusRequestBody requestBody)
     {
         final String methodName = "getActionsForSponsor";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDosResponse response = new ToDosResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog      auditLog = null;
 
         try
@@ -480,7 +478,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -513,8 +511,6 @@ public class MyProfileRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param actorGUID unique identifier of the role
-     * @param startFrom initial position of the results to return
-     * @param pageSize maximum number of results to return
      * @param requestBody     status of the to do (null means current active)
      *
      * @return list of to do beans or
@@ -522,17 +518,15 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDosResponse getAssignedActions(String                serverName,
-                                            String                actorGUID,
-                                            int                   startFrom,
-                                            int                   pageSize,
-                                            ActivityStatusRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getAssignedActions(String                serverName,
+                                                               String                actorGUID,
+                                                               ActivityStatusRequestBody requestBody)
     {
         final String methodName = "getAssignedActions";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDosResponse response = new ToDosResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog      auditLog = null;
 
         try
@@ -542,7 +536,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -581,14 +575,14 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDosResponse findToDos(String                 serverName,
-                                   ActivityStatusSearchString requestBody)
+    public OpenMetadataRootElementsResponse findActions(String                    serverName,
+                                                        ActivityStatusSearchString requestBody)
     {
         final String methodName = "findToDos";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDosResponse response = new ToDosResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog      auditLog = null;
 
         try
@@ -598,14 +592,14 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.findToDos(userId,
-                                                       requestBody.getSearchString(),
-                                                       requestBody.getActivityStatus(),
-                                                       requestBody));
+                response.setElements(handler.findProcesses(userId,
+                                                           requestBody.getSearchString(),
+                                                           requestBody.getActivityStatus(),
+                                                           requestBody));
             }
             else
             {
@@ -627,9 +621,6 @@ public class MyProfileRESTServices extends TokenController
      * Retrieve the "To Dos" that match the category name and status.
      *
      * @param serverName name of the server instances for this request
-     * @param toDoType   type to search for
-     * @param startFrom initial position of the results to return
-     * @param pageSize maximum number of results to return
      * @param requestBody     status of the to do (null means current active)
      *
      * @return list of to do beans or
@@ -637,17 +628,14 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDosResponse getToDosByCategory(String                serverName,
-                                            String                toDoType,
-                                            int                   startFrom,
-                                            int                   pageSize,
-                                            ActivityStatusRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getActionsByCategory(String                          serverName,
+                                                                 ActivityStatusFilterRequestBody requestBody)
     {
-        final String methodName = "getToDosByCategory";
+        final String methodName = "getActionsByCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDosResponse response = new ToDosResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog      auditLog = null;
 
         try
@@ -657,25 +645,18 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getToDosByCategory(userId,
-                                                                toDoType,
-                                                                requestBody.getActivityStatus(),
-                                                                requestBody,
-                                                                startFrom,
-                                                                pageSize));
+                response.setElements(handler.getProcessesByCategory(userId,
+                                                                  requestBody.getFilter(),
+                                                                  requestBody.getActivityStatus(),
+                                                                  requestBody));
             }
             else
             {
-                response.setElements(handler.getToDosByCategory(userId,
-                                                                toDoType,
-                                                                null,
-                                                                requestBody,
-                                                                startFrom,
-                                                                pageSize));
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Throwable error)

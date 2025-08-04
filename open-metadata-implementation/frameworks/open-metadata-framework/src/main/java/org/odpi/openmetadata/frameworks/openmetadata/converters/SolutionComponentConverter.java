@@ -122,15 +122,15 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
                             {
                                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName))
                                 {
-                                    actors.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                                    actors.add(super.getRelatedElementSummary(relatedMetadataElement, methodName));
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName))
                                 {
-                                    blueprints.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                                    blueprints.add(super.getRelatedElementSummary(relatedMetadataElement, methodName));
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
                                 {
-                                    implementations.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                                    implementations.add(super.getRelatedElementSummary(relatedMetadataElement, methodName));
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName))
                                 {
@@ -167,7 +167,7 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
                                 }
                                 else
                                 {
-                                    otherElements.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                                    otherElements.add(super.getRelatedElementSummary(relatedMetadataElement, methodName));
                                 }
                             }
                         }

@@ -72,12 +72,11 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
                 else
                 {
                     bean.setProperties(this.getProjectProperties(primaryElement));
-                    bean.setResourceList(this.getResourceList(beanClass, relationships));
-                    bean.setProjectManagers(this.getProjectManagers(beanClass, relationships));
-                    bean.setProjectTeam(this.getProjectTeam(beanClass, relationships));
-                    bean.setExternalReferences(super.getExternalReferences(beanClass, relationships));
-                    bean.setOtherRelatedElements(super.getOtherRelatedElements(beanClass,
-                                                                               relationships,
+                    bean.setResourceList(this.getResourceList(relationships));
+                    bean.setProjectManagers(this.getProjectManagers(relationships));
+                    bean.setProjectTeam(this.getProjectTeam(relationships));
+                    bean.setExternalReferences(super.getExternalReferences(relationships));
+                    bean.setOtherRelatedElements(super.getOtherRelatedElements(relationships,
                                                                                Arrays.asList(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
                                                                                              OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                                                              OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
@@ -138,45 +137,39 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
     /**
      * Summarize the elements linked off of the project in the resource list.
      *
-     * @param beanClass bean class
      * @param relatedMetadataElements elements to summarize
      * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected List<RelatedMetadataElementSummary> getResourceList(Class<B>                   beanClass,
-                                                                List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    protected List<RelatedMetadataElementSummary> getResourceList(List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        return super.getRelatedElements(beanClass, OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName, relatedMetadataElements);
+        return super.getRelatedElements(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName, relatedMetadataElements);
     }
 
 
     /**
      * Summarize the elements linked off of the project in the project management list.
      *
-     * @param beanClass bean class
      * @param relatedMetadataElements elements to summarize
      * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected List<RelatedMetadataElementSummary> getProjectManagers(Class<B>                     beanClass,
-                                                                     List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    protected List<RelatedMetadataElementSummary> getProjectManagers(List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        return super.getRelatedElements(beanClass, OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName, relatedMetadataElements);
+        return super.getRelatedElements(OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName, relatedMetadataElements);
     }
 
 
     /**
      * Summarize the elements linked off of the project in the project team list.
      *
-     * @param beanClass bean class
      * @param relatedMetadataElements elements to summarize
      * @return list or null
      * @throws PropertyServerException problem in converter
      */
-    protected List<RelatedMetadataElementSummary> getProjectTeam(Class<B>                     beanClass,
-                                                                 List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    protected List<RelatedMetadataElementSummary> getProjectTeam(List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        return super.getRelatedElements(beanClass, OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName, relatedMetadataElements);
+        return super.getRelatedElements(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName, relatedMetadataElements);
     }
 
 
@@ -249,9 +242,9 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
 
                 if (relationships != null)
                 {
-                    bean.setResourceList(this.getResourceList(beanClass, relationships));
-                    bean.setProjectManagers(this.getProjectManagers(beanClass, relationships));
-                    bean.setProjectTeam(this.getProjectTeam(beanClass, relationships));
+                    bean.setResourceList(this.getResourceList(relationships));
+                    bean.setProjectManagers(this.getProjectManagers(relationships));
+                    bean.setProjectTeam(this.getProjectTeam(relationships));
                 }
 
                 bean.setProperties(projectProperties);

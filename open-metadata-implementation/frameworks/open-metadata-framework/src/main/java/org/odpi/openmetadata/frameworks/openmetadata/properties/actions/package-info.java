@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * These beans cover todos (actions for people), governance actions (automated governance action types and processes)
+ * These beans cover todos/meetings (actions for people), engine actions
  * and incident reporting.
  */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.actions;

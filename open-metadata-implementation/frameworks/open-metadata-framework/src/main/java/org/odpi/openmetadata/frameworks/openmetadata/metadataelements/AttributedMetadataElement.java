@@ -27,21 +27,32 @@ public class AttributedMetadataElement implements MetadataElement
     /*
      * Area 0
      */
+    private List<RelatedMetadataElementSummary> sampleData                    = null; // SampleData (0010)
+    private List<RelatedMetadataElementSummary> sourcesOfSampleData           = null; // SampleData (0010)
+    private RelatedMetadataElementSummary       actionSource                  = null; // ActionRequester (0013)
+    private List<RelatedMetadataElementSummary> requestedActions              = null; // ActionRequester (0013)
+    private List<RelatedMetadataElementSummary> actionSponsors                = null; // ActionSponsor (0013)
+    private List<RelatedMetadataElementSummary> trackedActions                = null; // ActionSponsor (0013)
+    private List<RelatedMetadataElementSummary> actionCause                   = null; // Actions (0013)
+    private List<RelatedMetadataElementSummary> relatedActions                = null; // Actions (0013)
+    private List<RelatedMetadataElementSummary> actionTargets    = null; // ActionTarget (0013)
+    private List<RelatedMetadataElementSummary> actionsForTarget = null; // ActionTarget (0013)
     private List<RelatedMetadataElementSummary> searchKeywords   = null; // SearchKeywordLink (0012)
-    private List<RelatedMetadataElementSummary> keywordElements   = null; // SearchKeywordLink (0012)
-    private List<RelatedMetadataElementSummary> externalReferences  = null; // ExternalReferenceLink (0014)
-    private List<RelatedMetadataElementSummary> referencingElements = null; // ExternalReferenceLink (0014)
-    private List<RelatedMetadataElementSummary> alsoKnownAs         = null; // ExternalIdLink (0017)
-    private List<RelatedMetadataElementSummary> equivalentElements         = null; // ExternalIdLink (0017)
-    private List<RelatedMetadataElementSummary> recognizedExternalIdentifiers         = null; // ExternalIdScope (0017)
-    private List<RelatedMetadataElementSummary> identifierScopedTo         = null; // ExternalIdScope (0017)
-    private List<RelatedMetadataElementSummary> resourceList              = null; // ResourceList (0019)
-    private List<RelatedMetadataElementSummary> resourceListUsers              = null; // ResourceList (0019)
-    private List<RelatedMetadataElementSummary> memberOfCollections       = null; // CollectionMembership (0021)
-    private List<RelatedMetadataElementSummary> collectionMembers       = null; // CollectionMembership (0021)
+    private List<RelatedMetadataElementSummary> keywordElements               = null; // SearchKeywordLink (0012)
+    private List<RelatedMetadataElementSummary> externalReferences            = null; // ExternalReferenceLink (0014)
+    private List<RelatedMetadataElementSummary> referencingElements           = null; // ExternalReferenceLink (0014)
+    private List<RelatedMetadataElementSummary> alsoKnownAs                   = null; // ExternalIdLink (0017)
+    private List<RelatedMetadataElementSummary> equivalentElements            = null; // ExternalIdLink (0017)
+    private List<RelatedMetadataElementSummary> recognizedExternalIdentifiers = null; // ExternalIdScope (0017)
+    private List<RelatedMetadataElementSummary> identifierScopedTo            = null; // ExternalIdScope (0017)
+    private List<RelatedMetadataElementSummary> resourceList                  = null; // ResourceList (0019)
+    private List<RelatedMetadataElementSummary> resourceListUsers             = null; // ResourceList (0019)
+    private List<RelatedMetadataElementSummary> propertyFacets                = null; // ReferenceableFacet (0020)
+    private List<RelatedMetadataElementSummary> facetedElements               = null; // ReferenceableFacet (0020)
+    private List<RelatedMetadataElementSummary> memberOfCollections           = null; // CollectionMembership (0021)
+    private List<RelatedMetadataElementSummary> collectionMembers             = null; // CollectionMembership (0021)
 
-    private List<RelatedMetadataElementSummary> propertyFacets            = null; // ReferenceableFacet (0020)
-    private List<RelatedMetadataElementSummary> facetedElements           = null; // ReferenceableFacet (0020)
+
 
     /*
      * Area 1
@@ -117,13 +128,13 @@ public class AttributedMetadataElement implements MetadataElement
     /*
      * Area 5
      */
-    private List<RelatedMetadataElementSummary> parentSchemaElements       = null; // SchemaTypeOption (0501), AttributeForSchema, NestedSchemaAttribute (0505)
-    private List<RelatedMetadataElementSummary>       schemaOptions = null; // SchemaTypeOption (0501)
-    private List<RelatedMetadataElementSummary> schemaAttributes = null;  // AttributeForSchema, NestedSchemaAttribute (0505)
-    private RelatedMetadataElementSummary             externalSchemaType = null; // LinkedExternalSchemaType (0507)
-    private RelatedMetadataElementSummary             mapFromElement = null; // MapFromElementType (0511)
-    private RelatedMetadataElementSummary             mapToElement   = null; // MapToElementType (0511)
-    private List<RelatedMetadataElementSummary> queries     = null;  // DerivedSchemaTypeQueryTarget (0512)
+    private List<RelatedMetadataElementSummary> parentSchemaElements = null; // SchemaTypeOption (0501), AttributeForSchema, NestedSchemaAttribute (0505)
+    private List<RelatedMetadataElementSummary> schemaOptions        = null; // SchemaTypeOption (0501)
+    private List<RelatedMetadataElementSummary> schemaAttributes     = null;  // AttributeForSchema, NestedSchemaAttribute (0505)
+    private RelatedMetadataElementSummary       externalSchemaType   = null; // LinkedExternalSchemaType (0507)
+    private RelatedMetadataElementSummary       mapFromElement       = null; // MapFromElementType (0511)
+    private RelatedMetadataElementSummary       mapToElement         = null; // MapToElementType (0511)
+    private List<RelatedMetadataElementSummary> queries              = null;  // DerivedSchemaTypeQueryTarget (0512)
 
     private RelatedMetadataElementSummary       linkedToPrimaryKey     = null; // ForeignKey (0534)
     private List<RelatedMetadataElementSummary> foreignKeys            = null; // ForeignKey (0534)
@@ -191,8 +202,20 @@ public class AttributedMetadataElement implements MetadataElement
         {
             elementHeader             = template.getElementHeader();
 
+            sampleData = template.getSampleData();
+            sourcesOfSampleData = template.getSourcesOfSampleData();
+
             searchKeywords   = template.getSearchKeywords();
             keywordElements   = template.getKeywordElements();
+
+            actionSource                  = null;
+            requestedActions              = null;
+            actionSponsors                = null;
+            trackedActions                = null;
+            actionCause                   = null;
+            relatedActions                = null;
+            actionTargets    = null;
+            actionsForTarget = null;
 
             externalReferences  = template.getExternalReferences();
             referencingElements = template.getReferencingElements();
@@ -365,6 +388,37 @@ public class AttributedMetadataElement implements MetadataElement
         this.elementHeader = elementHeader;
     }
 
+
+    /**
+     * Return details of the asset(s) that provides the sample data.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getSampleData()
+    {
+        return sampleData;
+    }
+
+
+    /**
+     * Set up details of the asset(s) that provides the sample data.
+     *
+     * @param sampleData list
+     */
+    public void setSampleData(List<RelatedMetadataElementSummary> sampleData)
+    {
+        this.sampleData = sampleData;
+    }
+
+    public List<RelatedMetadataElementSummary> getSourcesOfSampleData()
+    {
+        return sourcesOfSampleData;
+    }
+
+    public void setSourcesOfSampleData(List<RelatedMetadataElementSummary> sourcesOfSampleData)
+    {
+        this.sourcesOfSampleData = sourcesOfSampleData;
+    }
 
     /**
      * Set up the list of external references for this element
@@ -632,6 +686,86 @@ public class AttributedMetadataElement implements MetadataElement
     public void setKeywordElements(List<RelatedMetadataElementSummary> keywordElements)
     {
         this.keywordElements = keywordElements;
+    }
+
+    public RelatedMetadataElementSummary getActionSource()
+    {
+        return actionSource;
+    }
+
+    public void setActionSource(RelatedMetadataElementSummary actionSource)
+    {
+        this.actionSource = actionSource;
+    }
+
+    public List<RelatedMetadataElementSummary> getRequestedActions()
+    {
+        return requestedActions;
+    }
+
+    public void setRequestedActions(List<RelatedMetadataElementSummary> requestedActions)
+    {
+        this.requestedActions = requestedActions;
+    }
+
+    public List<RelatedMetadataElementSummary> getActionSponsors()
+    {
+        return actionSponsors;
+    }
+
+    public void setActionSponsors(List<RelatedMetadataElementSummary> actionSponsors)
+    {
+        this.actionSponsors = actionSponsors;
+    }
+
+    public List<RelatedMetadataElementSummary> getTrackedActions()
+    {
+        return trackedActions;
+    }
+
+    public void setTrackedActions(List<RelatedMetadataElementSummary> trackedActions)
+    {
+        this.trackedActions = trackedActions;
+    }
+
+    public List<RelatedMetadataElementSummary> getActionCause()
+    {
+        return actionCause;
+    }
+
+    public void setActionCause(List<RelatedMetadataElementSummary> actionCause)
+    {
+        this.actionCause = actionCause;
+    }
+
+    public List<RelatedMetadataElementSummary> getRelatedActions()
+    {
+        return relatedActions;
+    }
+
+    public void setRelatedActions(List<RelatedMetadataElementSummary> relatedActions)
+    {
+        this.relatedActions = relatedActions;
+    }
+
+    public List<RelatedMetadataElementSummary> getActionTargets()
+    {
+        return actionTargets;
+    }
+
+    public void setActionTargets(List<RelatedMetadataElementSummary> actionTargets)
+    {
+        this.actionTargets = actionTargets;
+    }
+
+    public List<RelatedMetadataElementSummary> getActionsForTarget()
+    {
+        return actionsForTarget;
+    }
+
+    public void setActionsForTarget(List<RelatedMetadataElementSummary> actionsForTarget)
+    {
+        this.actionsForTarget = actionsForTarget;
     }
 
     /**

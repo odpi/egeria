@@ -1330,10 +1330,7 @@ public class OpenMetadataHandlerBase
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        final String searchStringParameterName = "searchString";
-
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateSearchString(searchString, searchStringParameterName, methodName);
 
         SearchOptions searchOptions = suppliedSearchOptions;
 

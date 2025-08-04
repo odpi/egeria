@@ -5,8 +5,8 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.NewToDoActionTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.AnchorOptions;
 
 import java.util.List;
@@ -16,23 +16,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ToDoRequestBody provides a structure for passing to do details over a REST API.
- * It is used for creating "to Do" elements.
+ * ActionRequestBody provides a structure for passing action details over a REST API.
+ * It is used for creating To Do, Meetings and engine action elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ToDoRequestBody extends AnchorOptions
+public class ActionRequestBody extends AnchorOptions
 {
-    private List<NewToDoActionTargetProperties> newActionTargetProperties = null;
-    private ToDoProperties                      properties                = null;
-    private String                              originatorGUID            = null;
-    private String                              actionSponsorGUID         = null;
-    private String                              assignToActorGUID         = null;
+    private List<NewActionTarget> newActionTargets = null;
+    private ActionProperties      properties       = null;
+    private String                originatorGUID   = null;
+    private String                actionSponsorGUID = null;
+    private String                assignToActorGUID = null;
+
+
     /**
      * Default constructor
      */
-    public ToDoRequestBody()
+    public ActionRequestBody()
     {
         super();
     }
@@ -43,67 +45,67 @@ public class ToDoRequestBody extends AnchorOptions
      *
      * @param template object to copy
      */
-    public ToDoRequestBody(ToDoRequestBody template)
+    public ActionRequestBody(ActionRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            this.newActionTargetProperties = template.getNewActionTargetProperties();
-            this.properties                = template.getProperties();
-            this.originatorGUID            = template.getOriginatorGUID();
-            this.actionSponsorGUID         = template.getActionSponsorGUID();
-            this.assignToActorGUID         = template.getAssignToActorGUID();
+            this.newActionTargets  = template.getNewActionTargets();
+            this.properties        = template.getProperties();
+            this.originatorGUID    = template.getOriginatorGUID();
+            this.actionSponsorGUID = template.getActionSponsorGUID();
+            this.assignToActorGUID = template.getAssignToActorGUID();
         }
     }
 
 
     /**
-     * Return any specific action targets for the to do.
+     * Return any specific action targets for the action.
      *
      * @return list
      */
-    public List<NewToDoActionTargetProperties> getNewActionTargetProperties()
+    public List<NewActionTarget> getNewActionTargets()
     {
-        return newActionTargetProperties;
+        return newActionTargets;
     }
 
 
     /**
-     * Set up any specific action targets for the to do.
+     * Set up any specific action targets for the action.
      *
-     * @param newActionTargetProperties list
+     * @param newActionTargets list
      */
-    public void setNewActionTargetProperties(List<NewToDoActionTargetProperties> newActionTargetProperties)
+    public void setNewActionTargets(List<NewActionTarget> newActionTargets)
     {
-        this.newActionTargetProperties = newActionTargetProperties;
+        this.newActionTargets = newActionTargets;
     }
 
 
     /**
-     * Return the properties of the to do.
+     * Return the properties of the action.
      *
      * @return properties
      */
-    public ToDoProperties getProperties()
+    public ActionProperties getProperties()
     {
         return properties;
     }
 
 
     /**
-     * Set up the properties of the to do.
+     * Set up the properties of the action.
      *
      * @param properties properties
      */
-    public void setProperties(ToDoProperties properties)
+    public void setProperties(ActionProperties properties)
     {
         this.properties = properties;
     }
 
 
     /**
-     * Return the unique identifier of the element that originated the to do.
+     * Return the unique identifier of the element that originated the action.
      *
      * @return guid
      */
@@ -114,7 +116,7 @@ public class ToDoRequestBody extends AnchorOptions
 
 
     /**
-     * Set up the unique identifier of the element that originated the to do.
+     * Set up the unique identifier of the element that originated the action.
      *
      * @param originatorGUID guid
      */
@@ -125,7 +127,7 @@ public class ToDoRequestBody extends AnchorOptions
 
 
     /**
-     * Return the unique identifier of the sponsor of the To Do.
+     * Return the unique identifier of the sponsor of the action.
      *
      * @return guid
      */
@@ -136,7 +138,7 @@ public class ToDoRequestBody extends AnchorOptions
 
 
     /**
-     * Set up the unique identifier of the sponsor of the To Do.
+     * Set up the unique identifier of the sponsor of the action.
      *
      * @param actionSponsorGUID guid
      */
@@ -176,8 +178,8 @@ public class ToDoRequestBody extends AnchorOptions
     @Override
     public String toString()
     {
-        return "ToDoRequestBody{" +
-                "newActionTargetProperties=" + newActionTargetProperties +
+        return "ActionRequestBody{" +
+                "newActionTargetProperties=" + newActionTargets +
                 ", properties=" + properties +
                 ", originatorGUID='" + originatorGUID + '\'' +
                 ", actionSponsorGUID='" + actionSponsorGUID + '\'' +
@@ -204,8 +206,8 @@ public class ToDoRequestBody extends AnchorOptions
         {
             return false;
         }
-        ToDoRequestBody that = (ToDoRequestBody) objectToCompare;
-        return Objects.equals(newActionTargetProperties, that.newActionTargetProperties) &&
+        ActionRequestBody that = (ActionRequestBody) objectToCompare;
+        return Objects.equals(newActionTargets, that.newActionTargets) &&
                        Objects.equals(properties, that.properties) &&
                 Objects.equals(originatorGUID, that.originatorGUID) &&
                 Objects.equals(actionSponsorGUID, that.actionSponsorGUID) &&
@@ -221,6 +223,6 @@ public class ToDoRequestBody extends AnchorOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(newActionTargetProperties, properties, originatorGUID, actionSponsorGUID, assignToActorGUID);
+        return Objects.hash(newActionTargets, properties, originatorGUID, actionSponsorGUID, assignToActorGUID);
     }
 }

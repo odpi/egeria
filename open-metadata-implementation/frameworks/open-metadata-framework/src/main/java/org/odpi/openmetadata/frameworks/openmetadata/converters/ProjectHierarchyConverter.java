@@ -83,15 +83,14 @@ public class ProjectHierarchyConverter<B> extends ProjectConverter<B>
                 else
                 {
                     bean.setProperties(this.getProjectProperties(primaryElement));
-                    bean.setResourceList(this.getResourceList(beanClass, relationships));
-                    bean.setProjectManagers(this.getProjectManagers(beanClass, relationships));
-                    bean.setProjectTeam(this.getProjectTeam(beanClass, relationships));
+                    bean.setResourceList(this.getResourceList(relationships));
+                    bean.setProjectManagers(this.getProjectManagers(relationships));
+                    bean.setProjectTeam(this.getProjectTeam(relationships));
                     bean.setChildren(children);
                     bean.setDependentProjects(this.getDependentProjects(beanClass, relationships));
                     bean.setDependsOnProjects(this.getDependsOnProjects(beanClass, relationships));
-                    bean.setExternalReferences(super.getExternalReferences(beanClass, relationships));
-                    bean.setOtherRelatedElements(super.getOtherRelatedElements(beanClass,
-                                                                               relationships,
+                    bean.setExternalReferences(super.getExternalReferences(relationships));
+                    bean.setOtherRelatedElements(super.getOtherRelatedElements(relationships,
                                                                                Arrays.asList(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
                                                                                              OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                                                              OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
@@ -181,9 +180,9 @@ public class ProjectHierarchyConverter<B> extends ProjectConverter<B>
 
                 if (relationships != null)
                 {
-                    bean.setResourceList(this.getResourceList(beanClass, relationships));
-                    bean.setProjectManagers(this.getProjectManagers(beanClass, relationships));
-                    bean.setProjectTeam(this.getProjectTeam(beanClass, relationships));
+                    bean.setResourceList(this.getResourceList(relationships));
+                    bean.setProjectManagers(this.getProjectManagers(relationships));
+                    bean.setProjectTeam(this.getProjectTeam(relationships));
                 }
 
                 bean.setProperties(projectProperties);
@@ -224,7 +223,7 @@ public class ProjectHierarchyConverter<B> extends ProjectConverter<B>
                         (propertyHelper.isTypeOf(projectElement, OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName)) &&
                         (projectElement.getElementAtEnd1()))
                 {
-                    dependentProject.add(super.getRelatedElementSummary(beanClass, projectElement, methodName));
+                    dependentProject.add(super.getRelatedElementSummary(projectElement, methodName));
                 }
             }
 
@@ -258,7 +257,7 @@ public class ProjectHierarchyConverter<B> extends ProjectConverter<B>
                         (propertyHelper.isTypeOf(projectElement, OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName)) &&
                         (! projectElement.getElementAtEnd1()))
                 {
-                    dependsOnProject.add(super.getRelatedElementSummary(beanClass, projectElement, methodName));
+                    dependsOnProject.add(super.getRelatedElementSummary(projectElement, methodName));
                 }
             }
 

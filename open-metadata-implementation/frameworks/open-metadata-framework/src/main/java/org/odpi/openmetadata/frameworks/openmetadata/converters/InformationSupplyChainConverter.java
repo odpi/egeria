@@ -168,11 +168,10 @@ public class InformationSupplyChainConverter<B> extends OpenMetadataConverterBas
                      * All segments should have already been removed - but if a mistake has been made, the segments will appear as parents rather than be ignored.
                      * Similarly, there should not be any ImplementedBy relationships.  If there are, they will appear in other related elements.
                      */
-                    bean.setParents(super.getRelatedElements(beanClass,  OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName, relationships));
-                    bean.setLinks(super.getRelatedElements(beanClass,  OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName, relationships));
-                    bean.setExternalReferences(super.getRelatedElements(beanClass,  OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, relationships));
-                    bean.setOtherRelatedElements(super.getOtherRelatedElements(beanClass,
-                                                                               relationships,
+                    bean.setParents(super.getRelatedElements(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName, relationships));
+                    bean.setLinks(super.getRelatedElements(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName, relationships));
+                    bean.setExternalReferences(super.getRelatedElements(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, relationships));
+                    bean.setOtherRelatedElements(super.getOtherRelatedElements(relationships,
                                                                                Arrays.asList(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
                                                                                              OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
                                                                                              OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName)));

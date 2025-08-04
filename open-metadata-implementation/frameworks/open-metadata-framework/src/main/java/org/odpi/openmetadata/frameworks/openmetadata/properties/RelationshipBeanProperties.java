@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionSponsorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionRequesterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
@@ -81,10 +81,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = AcceptedAnswerProperties.class, name = "AcceptedAnswerProperties"),
-                @JsonSubTypes.Type(value = ActionAssignmentProperties.class, name = "ActionAssignmentProperties"),
                 @JsonSubTypes.Type(value = ActionRequesterProperties.class, name = "ActionRequesterProperties"),
                 @JsonSubTypes.Type(value = ActionSponsorProperties.class, name = "ActionSponsorProperties"),
                 @JsonSubTypes.Type(value = ActionsProperties.class, name = "ActionsProperties"),
+                @JsonSubTypes.Type(value = ActionTargetProperties.class, name = "ActionTargetProperties"),
                 @JsonSubTypes.Type(value = AdjacentLocationProperties.class, name = "AdjacentLocationProperties"),
                 @JsonSubTypes.Type(value = AgreementActorProperties.class, name = "AgreementActorProperties"),
                 @JsonSubTypes.Type(value = AgreementItemProperties.class, name = "AgreementItemProperties"),

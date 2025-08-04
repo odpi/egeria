@@ -26,84 +26,86 @@ Authorization: Bearer {{token}}
 
 ###
 # @name create ToDo
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ToDoRequestBody",
+   "class" : "ActionRequestBody",
     "properties" : {
       "class" : "ToDoProperties",
       "qualifiedName" : "TodoQualifiedName2",
-      "name" : "MyTodo"
+      "displayName" : "MyTodo"
     }
 }
 
 
 ###
-# @name get ToDo
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/161b9c53-bf5c-43af-a76c-31a96453a59d
+# @name get action
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actions/161b9c53-bf5c-43af-a76c-31a96453a59d
 Authorization: Bearer {{token}}
 
 
 ###
-# @name find ToDos in a specific status
-# Retrieve the to dos that match the search string. The toDoStatus is optional.  If not specified than ToDos in any status are returned.
+# @name find actions in a specific status
+# Retrieve the to dos that match the search string. The activityStatus is optional.  If not specified than ToDos in any status are returned.
 #
-# Valid values for toDoStatus are:
-# * "OPEN" - The to do has been documented but no action taken.
-# * "IN_PROGRESS" - The assigned person is working on the action defined in the to do.
-# * "WAITING" - The assigned person is unable to proceed because another action needs to complete first, or a needed resource is unavailable.
-# * "COMPLETE" - The requested action is complete.
+# Valid values for activityStatus are:
+# * "REQUESTED" - The action has been documented but no activity has taken place.
+# * "APPROVED" - The action has been approved.
+# * "WAITING" - The action is waiting for resource.
+# * "ACTIVATING" - The action is starting up.
+# * "IN_PROGRESS" - The assigned person/resource is working on the action defined in the to do.
+# * "PAUSED" - The assigned person/resource is unable to proceed because another action needs to complete first, or a needed resource is unavailable.
+# * "COMPLETED" - The requested action is complete.
 # * "ABANDONED" - The requested action has been abandoned and will never complete.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string?startFrom=0&pageSize=0&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actions/find-by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ToDoStatusSearchString",
+  "class" : "ActivityStatusSearchString",
   "searchString" : "enter search value",
-  "toDoStatus" : "OPEN"
+  "activityStatus" : "REQUESTED"
  }
 
 
 ###
-# @name find ToDos in any status
+# @name find actions in any status
 # Retrieve the to dos that match the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string?startFrom=0&pageSize=0&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actions/find-by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ToDoStatusSearchString",
+  "class" : "ActivityStatusSearchString",
   "searchString" : "enter search value"
 }
 
 
 ###
-# @name find all ToDos by status
+# @name find all actions by status
 # Retrieve the to dos that match the specific status.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actions/find-by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ToDoStatusSearchString",
+  "class" : "ActivityStatusSearchString",
   "searchString" : "",
-  "toDoStatus" : "IN_PROGRESS"
+  "activityStatus" : "IN_PROGRESS"
 }
 
 
 ###
-# @name find all ToDos in any status
+# @name find all actions in any status
 # Retrieve all the to dos, irrespective of content or status
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actions/find-by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ToDoStatusSearchString",
-  "searchString" : ""
+  "class" : "ActivityStatusSearchString"
 }
 
