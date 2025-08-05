@@ -84,7 +84,6 @@ public class IntegrationReportClient
 
         NewElementOptions newElementOptions = new NewElementOptions();
 
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.INTEGRATION_REPORT.typeName);
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setAnchorGUID(elementGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -97,6 +96,7 @@ public class IntegrationReportClient
         newElementOptions.setForDuplicateProcessing(false);
 
         openMetadataClient.createMetadataElementInStore(userId,
+                                                        OpenMetadataType.INTEGRATION_REPORT.typeName,
                                                         newElementOptions,
                                                         null,
                                                         this.getElementProperties(properties),

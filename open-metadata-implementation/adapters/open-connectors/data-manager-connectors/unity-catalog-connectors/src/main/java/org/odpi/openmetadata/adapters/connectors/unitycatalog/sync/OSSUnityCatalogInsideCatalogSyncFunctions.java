@@ -288,7 +288,6 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         {
             TemplateOptions templateOptions = new TemplateOptions(super.getMetadataSourceOptions());
 
-            templateOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
             templateOptions.setAnchorGUID(schemaGUID);
             templateOptions.setIsOwnAnchor(false);
             templateOptions.setAnchorScopeGUID(catalogGUID);
@@ -297,7 +296,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
             templateOptions.setParentAtEnd1(parentAtEnd1);
             templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucFunctionGUID = openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+            ucFunctionGUID = openMetadataStore.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
+                                                                                 templateOptions,
                                                                                  templateGUID,
                                                                                  null,
                                                                                  this.getPlaceholderProperties(functionInfo),
@@ -310,7 +310,6 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
             NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
 
             newElementOptions.setAnchorGUID(schemaGUID);
             newElementOptions.setIsOwnAnchor(false);
@@ -320,7 +319,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
             newElementOptions.setParentAtEnd1(parentAtEnd1);
             newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucFunctionGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+            ucFunctionGUID = openMetadataStore.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+                                                                            newElementOptions,
                                                                             null,
                                                                             new NewElementProperties(this.getElementProperties(qualifiedName, functionInfo)),
                                                                             null);
@@ -583,7 +583,6 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.API_SCHEMA_TYPE.typeName);
 
         newElementOptions.setAnchorGUID(functionGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -593,7 +592,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         newElementOptions.setParentAtEnd1(true);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName);
 
-        openMetadataStore.createMetadataElementInStore(newElementOptions,
+        openMetadataStore.createMetadataElementInStore(OpenMetadataType.API_SCHEMA_TYPE.typeName,
+                                                       newElementOptions,
                                                        null,
                                                        new NewElementProperties(properties),
                                                        null);

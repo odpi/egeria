@@ -328,7 +328,6 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
         NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
 
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.PROPERTY_FACET.typeName);
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setAnchorGUID(parentGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -337,7 +336,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         newElementOptions.setParentAtEnd1(true);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName);
 
-        openMetadataStore.createMetadataElementInStore(newElementOptions,
+        openMetadataStore.createMetadataElementInStore(OpenMetadataType.PROPERTY_FACET.typeName,
+                                                       newElementOptions,
                                                        null,
                                                        new NewElementProperties(elementProperties),
                                                        new NewElementProperties(propertyHelper.addStringProperty(null,

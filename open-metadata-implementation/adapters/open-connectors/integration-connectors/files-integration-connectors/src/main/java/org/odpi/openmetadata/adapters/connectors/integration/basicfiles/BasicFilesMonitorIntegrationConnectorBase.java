@@ -19,7 +19,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropert
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
@@ -449,8 +448,6 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                     TemplateOptions templateOptions = new TemplateOptions(fileFolderClient.getMetadataSourceOptions());
 
                     templateOptions.setAllowRetrieve(true);
-                    templateOptions.setOpenMetadataTypeName(assetTypeName);
-
 
                     String folderGUID = fileFolderClient.createAssetFromTemplate(templateOptions,
                                                                                  defaultTemplates.get(deployedImplementationType),

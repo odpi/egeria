@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = Annotation.class, name = "Annotation"),
-                @JsonSubTypes.Type(value = SurveyReport.class, name = "DiscoveryAnalysisReport"),
+                @JsonSubTypes.Type(value = SurveyReport.class, name = "SurveyReport"),
         })
 public abstract class PropertyBase
 {

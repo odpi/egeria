@@ -600,10 +600,10 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         TemplateOptions templateOptions = new TemplateOptions();
 
-        templateOptions.setOpenMetadataTypeName(OpenMetadataType.ASSET.typeName);
         templateOptions.setIsOwnAnchor(true);
 
         return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    OpenMetadataType.ASSET.typeName,
                                                                     templateOptions,
                                                                     templateGUID,
                                                                     properties,
@@ -655,10 +655,10 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         TemplateOptions templateOptions = new TemplateOptions();
 
-        templateOptions.setOpenMetadataTypeName(metadataElementTypeName);
         templateOptions.setIsOwnAnchor(true);
 
         return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    metadataElementTypeName,
                                                                     templateOptions,
                                                                     templateGUID,
                                                                     properties,
@@ -776,10 +776,10 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         TemplateOptions templateOptions = new TemplateOptions();
 
-        templateOptions.setOpenMetadataTypeName(OpenMetadataType.PROCESS.typeName);
         templateOptions.setIsOwnAnchor(true);
 
         return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    OpenMetadataType.PROCESS.typeName,
                                                                     templateOptions,
                                                                     templateGUID,
                                                                     properties,
@@ -827,10 +827,10 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         TemplateOptions templateOptions = new TemplateOptions();
 
-        templateOptions.setOpenMetadataTypeName(OpenMetadataType.PROCESS.typeName);
         templateOptions.setIsOwnAnchor(true);
 
         return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    OpenMetadataType.PROCESS.typeName,
                                                                     templateOptions,
                                                                     templateGUID,
                                                                     properties,
@@ -877,7 +877,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
         newElementOptions.setInitialStatus(initialStatus);
-        newElementOptions.setOpenMetadataTypeName(processTypeName);
         newElementOptions.setForLineage(true);
         newElementOptions.setAnchorGUID(parentGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -887,6 +886,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName);
 
         return openMetadataClient.createMetadataElementInStore(userId,
+                                                               processTypeName,
                                                                newElementOptions,
                                                                null,
                                                                new NewElementProperties(properties),
@@ -941,7 +941,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
         newElementOptions.setInitialStatus(initialStatus);
-        newElementOptions.setOpenMetadataTypeName(processTypeName);
         newElementOptions.setForLineage(true);
         newElementOptions.setAnchorGUID(parentGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -951,6 +950,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName);
 
         return openMetadataClient.createMetadataElementInStore(userId,
+                                                               processTypeName,
                                                                newElementOptions,
                                                                null,
                                                                new NewElementProperties(properties),
@@ -996,7 +996,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.PORT_IMPLEMENTATION.typeName);
         newElementOptions.setForLineage(true);
         newElementOptions.setAnchorGUID(processGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -1006,6 +1005,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName);
 
         return openMetadataClient.createMetadataElementInStore(userId,
+                                                               OpenMetadataType.PORT_IMPLEMENTATION.typeName,
                                                                newElementOptions,
                                                                null,
                                                                new NewElementProperties(properties),

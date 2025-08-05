@@ -461,15 +461,13 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
      * @param properties basic properties to use
      * @param encodingProperties properties for DataAssetEncoding classification
      * @return unique identifier (guid)
-     * @throws ConnectorCheckedException connector has been shutdown
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException unable to communicate with the repository
      * @throws UserNotAuthorizedException access problem for userId
      */
     protected String addDataFileToCatalog(String                      typeName,
                                           DataFileProperties          properties,
-                                          DataAssetEncodingProperties encodingProperties) throws ConnectorCheckedException,
-                                                                                                 InvalidParameterException,
+                                          DataAssetEncodingProperties encodingProperties) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
@@ -488,7 +486,8 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
         NewElementOptions newElementOptions = new NewElementOptions(fileClient.getMetadataSourceOptions());
 
         newElementOptions.setIsOwnAnchor(true);
-        newElementOptions.setOpenMetadataTypeName(typeName);
+
+        properties.setTypeName(typeName);
 
         return fileClient.createAsset(newElementOptions,
                                       initialClassifications,

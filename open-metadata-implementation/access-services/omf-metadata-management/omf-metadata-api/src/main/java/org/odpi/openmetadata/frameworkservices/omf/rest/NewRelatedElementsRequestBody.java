@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 
 import java.util.Objects;
@@ -50,10 +49,10 @@ public class NewRelatedElementsRequestBody extends MakeAnchorOptions
 
         if (template != null)
         {
-            typeName = template.getTypeName();
+            typeName             = template.getTypeName();
             metadataElement1GUID = template.getMetadataElement1GUID();
             metadataElement2GUID = template.getMetadataElement2GUID();
-            properties = template.getProperties();
+            properties           = template.getProperties();
 
         }
     }
@@ -90,7 +89,6 @@ public class NewRelatedElementsRequestBody extends MakeAnchorOptions
     {
         this.typeName = typeName;
     }
-
 
 
     /**

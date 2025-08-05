@@ -95,8 +95,8 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> findCollections(String userId,
-                                                         String searchString,
+    public List<OpenMetadataRootElement> findCollections(String        userId,
+                                                         String        searchString,
                                                          SearchOptions searchOptions) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -118,8 +118,8 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getCollectionsByName(String userId,
-                                                              String name,
+    public List<OpenMetadataRootElement> getCollectionsByName(String       userId,
+                                                              String       name,
                                                               QueryOptions queryOptions) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
@@ -149,8 +149,8 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getCollectionsByCategory(String userId,
-                                                                  String category,
+    public List<OpenMetadataRootElement> getCollectionsByCategory(String       userId,
+                                                                  String       category,
                                                                   QueryOptions queryOptions) throws InvalidParameterException,
                                                                                                     PropertyServerException,
                                                                                                     UserNotAuthorizedException
@@ -182,8 +182,8 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public OpenMetadataRootElement getCollectionByGUID(String userId,
-                                                       String collectionGUID,
+    public OpenMetadataRootElement getCollectionByGUID(String     userId,
+                                                       String     collectionGUID,
                                                        GetOptions getOptions) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -207,13 +207,13 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String createCollection(String userId,
-                                   NewElementOptions newElementOptions,
+    public String createCollection(String                                userId,
+                                   NewElementOptions                     newElementOptions,
                                    Map<String, ClassificationProperties> initialClassifications,
-                                   CollectionProperties properties,
-                                   RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+                                   CollectionProperties                  properties,
+                                   RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                              PropertyServerException,
+                                                                                                              UserNotAuthorizedException
     {
         final String methodName = "createCollection";
 

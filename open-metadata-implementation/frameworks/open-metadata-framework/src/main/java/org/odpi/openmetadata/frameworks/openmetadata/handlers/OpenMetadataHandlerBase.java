@@ -223,7 +223,7 @@ public class OpenMetadataHandlerBase
      * Create a new element.
      *
      * @param userId                       userId of user making request.
-     * @param requestedNewElementOptions            details of the element to create
+     * @param newElementOptions            details of the element to create
      * @param initialClassifications       map of classification names to classification properties to include in the entity creation request
      * @param properties                   properties for the new element.
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -234,7 +234,7 @@ public class OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected String createNewElement(String                                userId,
-                                      NewElementOptions                     requestedNewElementOptions,
+                                      NewElementOptions                     newElementOptions,
                                       Map<String, ClassificationProperties> initialClassifications,
                                       OpenMetadataRootProperties            properties,
                                       RelationshipProperties                parentRelationshipProperties,
@@ -253,16 +253,16 @@ public class OpenMetadataHandlerBase
             propertyHelper.validateMandatoryName(referenceableProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
         }
 
-        NewElementOptions newElementOptions = new NewElementOptions(requestedNewElementOptions);
+        String typeName = metadataElementTypeName;
 
-        /*
-         * This is the default type.  The supplied type in the properties must be null, the same or a subtype of
-         * metadataElementTypeName.
-         */
-        newElementOptions.setOpenMetadataTypeName(metadataElementTypeName);
+        if ((properties != null) && (properties.getTypeName() != null))
+        {
+            typeName = properties.getTypeName();
+        }
 
         return openMetadataClient.createMetadataElementInStore(userId,
-                                                               requestedNewElementOptions,
+                                                               typeName,
+                                                               newElementOptions,
                                                                classificationBuilder.getInitialClassifications(initialClassifications),
                                                                elementBuilder.getNewElementProperties(properties),
                                                                relationshipBuilder.getNewElementProperties(parentRelationshipProperties));
@@ -296,6 +296,7 @@ public class OpenMetadataHandlerBase
                                                                                                            PropertyServerException
     {
         return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    metadataElementTypeName,
                                                                     templateOptions,
                                                                     templateGUID,
                                                                     replacementProperties,

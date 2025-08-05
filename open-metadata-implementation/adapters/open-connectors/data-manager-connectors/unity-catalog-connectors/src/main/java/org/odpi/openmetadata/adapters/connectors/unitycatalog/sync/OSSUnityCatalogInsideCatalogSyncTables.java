@@ -291,7 +291,6 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         {
             TemplateOptions templateOptions = new TemplateOptions(super.getMetadataSourceOptions());
 
-            templateOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
             templateOptions.setAnchorGUID(schemaGUID);
             templateOptions.setIsOwnAnchor(false);
             templateOptions.setAnchorScopeGUID(catalogGUID);
@@ -300,7 +299,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
             templateOptions.setParentAtEnd1(parentAtEnd1);
             templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucTableGUID = openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+            ucTableGUID = openMetadataStore.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
+                                                                              templateOptions,
                                                                               templateGUID,
                                                                               null,
                                                                               this.getPlaceholderProperties(tableInfo),
@@ -313,7 +313,6 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
             NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
 
             newElementOptions.setAnchorGUID(schemaGUID);
             newElementOptions.setIsOwnAnchor(false);
@@ -323,7 +322,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
             newElementOptions.setParentAtEnd1(true);
             newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucTableGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+            ucTableGUID = openMetadataStore.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+                                                                         newElementOptions,
                                                                          null,
                                                                          this.getElementProperties(qualifiedName, tableInfo),
                                                                          null);
@@ -682,7 +682,6 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         newElementOptions.setExternalSourceName(catalogQualifiedName);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName);
 
         newElementOptions.setAnchorGUID(tableGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -695,7 +694,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         /*
          * Create the root schema type.
          */
-        openMetadataStore.createMetadataElementInStore(newElementOptions,
+        openMetadataStore.createMetadataElementInStore(OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName,
+                                                       newElementOptions,
                                                        null,
                                                        new NewElementProperties(properties),
                                                        null);

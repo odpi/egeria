@@ -89,13 +89,13 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
             NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(feedbackTypeName);
             newElementOptions.setAnchorGUID(elementGUID);
             newElementOptions.setIsOwnAnchor(false);
             newElementOptions.setParentGUID(elementGUID);
             newElementOptions.setParentRelationshipTypeName(relationshipTypeName);
 
             openMetadataClient.createMetadataElementInStore(userId,
+                                                            feedbackTypeName,
                                                             newElementOptions,
                                                             null,
                                                             feedbackProperties,
@@ -449,7 +449,6 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.COMMENT.typeName);
         newElementOptions.setAnchorGUID(elementGUID);
         newElementOptions.setIsOwnAnchor(false);
         newElementOptions.setParentGUID(elementGUID);
@@ -457,6 +456,7 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
         newElementOptions.setParentAtEnd1(true);
 
         return openMetadataClient.createMetadataElementInStore(userId,
+                                                               OpenMetadataType.COMMENT.typeName,
                                                                newElementOptions,
                                                                classificationBuilder.getInitialClassifications(initialClassifications),
                                                                elementProperties,
@@ -519,7 +519,6 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.COMMENT.typeName);
         newElementOptions.setAnchorGUID(elementGUID);
         newElementOptions.setIsOwnAnchor(false);
         newElementOptions.setParentGUID(commentGUID);
@@ -527,6 +526,7 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
         newElementOptions.setParentAtEnd1(true);
 
         return openMetadataClient.createMetadataElementInStore(userId,
+                                                               OpenMetadataType.COMMENT.typeName,
                                                                newElementOptions,
                                                                classificationBuilder.getInitialClassifications(initialClassifications),
                                                                elementProperties,
@@ -843,10 +843,10 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
 
         NewElementOptions newElementOptions = new NewElementOptions(requestedNewElementOptions);
 
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.INFORMAL_TAG.typeName);
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
 
         return openMetadataClient.createMetadataElementInStore(userId,
+                                                               OpenMetadataType.INFORMAL_TAG.typeName,
                                                                requestedNewElementOptions,
                                                                classificationBuilder.getInitialClassifications(initialClassifications),
                                                                elementBuilder.getNewElementProperties(properties),
@@ -1293,7 +1293,6 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.NOTE_LOG.typeName);
 
         if (elementGUID != null)
         {
@@ -1308,8 +1307,8 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
             newElementOptions.setIsOwnAnchor(true);
         }
 
-
         return openMetadataClient.createMetadataElementInStore(userId,
+                                                               OpenMetadataType.NOTE_LOG.typeName,
                                                                newElementOptions,
                                                                classificationBuilder.getInitialClassifications(initialClassifications),
                                                                elementBuilder.getNewElementProperties(noteLogProperties),
@@ -1601,7 +1600,6 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.NOTE_ENTRY.typeName);
         newElementOptions.setIsOwnAnchor(false);
         newElementOptions.setAnchorGUID(noteLogGUID);
         newElementOptions.setParentGUID(noteLogGUID);
@@ -1609,6 +1607,7 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName);
 
         return openMetadataClient.createMetadataElementInStore(userId,
+                                                               OpenMetadataType.NOTE_ENTRY.typeName,
                                                                newElementOptions,
                                                                classificationBuilder.getInitialClassifications(initialClassifications),
                                                                elementBuilder.getNewElementProperties(noteProperties),

@@ -769,7 +769,6 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
                     NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
-                    newElementOptions.setOpenMetadataTypeName(OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName);
                     newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
                     newElementOptions.setAnchorGUID(assetGUID);
                     newElementOptions.setIsOwnAnchor(false);
@@ -777,7 +776,8 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                     newElementOptions.setParentAtEnd1(true);
                     newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName);
 
-                    openMetadataStore.createMetadataElementInStore(newElementOptions,
+                    openMetadataStore.createMetadataElementInStore(OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName,
+                                                                   newElementOptions,
                                                                    null,
                                                                    new NewElementProperties(properties),
                                                                    null);
@@ -1065,7 +1065,6 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
                     NewElementOptions newElementOptions = new NewElementOptions();
 
-                    newElementOptions.setOpenMetadataTypeName(openMetadataTypeName);
                     newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
                     newElementOptions.setAnchorGUID(assetUniverse.getElementHeader().getGUID());
                     newElementOptions.setIsOwnAnchor(false);
@@ -1074,7 +1073,8 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                     newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
                     newElementOptions.setParentAtEnd1(true);
 
-                    typeAttributeGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+                    typeAttributeGUID = openMetadataStore.createMetadataElementInStore(openMetadataTypeName,
+                                                                                       newElementOptions,
                                                                                        initialClassifications,
                                                                                        new NewElementProperties(elementProperties),
                                                                                        null);
@@ -1191,7 +1191,6 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
         NewElementOptions newElementOptions = new NewElementOptions();
 
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
 
         newElementOptions.setAnchorGUID(anchorGUID);
@@ -1201,7 +1200,8 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName);
         newElementOptions.setParentAtEnd1(true);
 
-        String schemaAttributeGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+        String schemaAttributeGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
+                                                                                    newElementOptions,
                                                                                     initialClassifications,
                                                                                     new NewElementProperties(elementProperties),
                                                                                     new NewElementProperties(relationshipProperties));

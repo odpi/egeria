@@ -325,7 +325,6 @@ public class KafkaTopicIntegrationConnector extends IntegrationConnectorBase imp
             NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(OpenMetadataType.EVENT_BROKER.typeName);
             newElementOptions.setAnchorGUID(server.getGUID());
             newElementOptions.setIsOwnAnchor(false);
             newElementOptions.setAnchorScopeGUID(null);
@@ -333,7 +332,8 @@ public class KafkaTopicIntegrationConnector extends IntegrationConnectorBase imp
             newElementOptions.setParentAtEnd1(true);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
 
-            openMetadataStore.createMetadataElementInStore(newElementOptions,
+            openMetadataStore.createMetadataElementInStore(OpenMetadataType.EVENT_BROKER.typeName,
+                                                           newElementOptions,
                                                            null,
                                                            new NewElementProperties(eventBrokerProperties),
                                                            new NewElementProperties(supportedCapabilityProperties));

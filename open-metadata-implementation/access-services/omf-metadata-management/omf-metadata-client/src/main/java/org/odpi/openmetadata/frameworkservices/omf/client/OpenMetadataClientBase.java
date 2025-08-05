@@ -1277,6 +1277,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * effectivity dates.
      *
      * @param userId caller's userId
+     * @param metadataElementTypeName typeName for the new element
      * @param newElementOptions details of the element to create
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param properties properties of the new metadata element
@@ -1290,6 +1291,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      */
     @Override
     public String createMetadataElementInStore(String                            userId,
+                                               String metadataElementTypeName,
                                                NewElementOptions                 newElementOptions,
                                                Map<String, NewElementProperties> initialClassifications,
                                                NewElementProperties              properties,
@@ -1311,6 +1313,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         NewOpenMetadataElementRequestBody requestBody = new NewOpenMetadataElementRequestBody(newElementOptions);
 
+        requestBody.setTypeName(metadataElementTypeName);
         requestBody.setInitialClassifications(initialClassifications);
         requestBody.setProperties(properties);
         requestBody.setParentRelationshipProperties(parentRelationshipProperties);
@@ -1325,6 +1328,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     }
 
 
+
     /**
      * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
      * The selected type also controls the names and types of the properties that are allowed.
@@ -1332,6 +1336,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * effectivity dates.
      *
      * @param userId caller's userId
+     * @param metadataElementTypeName expected type name for the new element
      * @param templateOptions details of the element to create
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
@@ -1347,6 +1352,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      */
     @Override
     public String createMetadataElementFromTemplate(String               userId,
+                                                    String metadataElementTypeName,
                                                     TemplateOptions      templateOptions,
                                                     String               templateGUID,
                                                     ElementProperties    replacementProperties,
@@ -1372,6 +1378,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         OpenMetadataTemplateRequestBody requestBody = new OpenMetadataTemplateRequestBody(templateOptions);
 
+        requestBody.setTypeName(metadataElementTypeName);
         requestBody.setTemplateGUID(templateGUID);
         requestBody.setReplacementProperties(replacementProperties);
         requestBody.setPlaceholderPropertyValues(placeholderProperties);
@@ -2246,13 +2253,13 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.TO_DO.typeName);
         newElementOptions.setIsOwnAnchor(true);
         newElementOptions.setParentAtEnd1(true);
         newElementOptions.setParentGUID(assignToGUID);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
 
         String toDoGUID = this.createMetadataElementInStore(userId,
+                                                            OpenMetadataType.TO_DO.typeName,
                                                             newElementOptions,
                                                             null,
                                                             new NewElementProperties(properties),
@@ -2388,7 +2395,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
             NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(OpenMetadataType.CONTEXT_EVENT.typeName);
             newElementOptions.setAnchorGUID(anchorGUID);
             newElementOptions.setIsOwnAnchor((anchorGUID == null));
 
@@ -2397,6 +2403,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
             newElementProperties.setEffectiveTo(contextEventProperties.getEffectiveTo());
 
             String contextEventGUID = this.createMetadataElementInStore(userId,
+                                                                        OpenMetadataType.CONTEXT_EVENT.typeName,
                                                                         newElementOptions,
                                                                         null,
                                                                         newElementProperties,

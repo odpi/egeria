@@ -940,9 +940,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
         NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
 
         newElementOptions.setInitialStatus(initialStatus);
-        newElementOptions.setOpenMetadataTypeName(metadataElementTypeName);
 
         return openMetadataClient.createMetadataElementInStore(connectorUserId,
+                                                               metadataElementTypeName,
                                                                newElementOptions,
                                                                null,
                                                                properties,
@@ -979,13 +979,13 @@ public class OpenMetadataStore extends ConnectorContextClientBase
         NewElementOptions    newElementOptions    = new NewElementOptions(getMetadataSourceOptions());
 
         newElementOptions.setInitialStatus(initialStatus);
-        newElementOptions.setOpenMetadataTypeName(metadataElementTypeName);
 
         NewElementProperties newElementProperties = new NewElementProperties(properties);
         newElementProperties.setEffectiveFrom(effectiveFrom);
         newElementProperties.setEffectiveTo(effectiveTo);
 
         return openMetadataClient.createMetadataElementInStore(connectorUserId,
+                                                               metadataElementTypeName,
                                                                newElementOptions,
                                                                null,
                                                                newElementProperties,
@@ -1037,7 +1037,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
         NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
 
         newElementOptions.setInitialStatus(initialStatus);
-        newElementOptions.setOpenMetadataTypeName(metadataElementTypeName);
         newElementOptions.setAnchorGUID(anchorGUID);
         newElementOptions.setIsOwnAnchor(isOwnAnchor);
         newElementOptions.setAnchorScopeGUID(anchorScopeGUID);
@@ -1045,7 +1044,8 @@ public class OpenMetadataStore extends ConnectorContextClientBase
         newElementOptions.setParentAtEnd1(parentAtEnd1);
         newElementOptions.setParentRelationshipTypeName(parentRelationshipTypeName);
 
-        return this.createMetadataElementInStore(newElementOptions,
+        return this.createMetadataElementInStore(metadataElementTypeName,
+                                                 newElementOptions,
                                                  initialClassifications,
                                                  properties,
                                                  parentRelationshipProperties);
@@ -1059,6 +1059,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * This version of the method allows access to advanced features such as multiple states and
      * effectivity dates.
      *
+     * @param metadataElementTypeName type name of new element
      * @param newElementOptions details of the element to create
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param properties properties of the new metadata element
@@ -1070,7 +1071,8 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createMetadataElementInStore(NewElementOptions                 newElementOptions,
+    public String createMetadataElementInStore(String                            metadataElementTypeName,
+                                               NewElementOptions                 newElementOptions,
                                                Map<String, NewElementProperties> initialClassifications,
                                                NewElementProperties              properties,
                                                NewElementProperties              parentRelationshipProperties) throws InvalidParameterException,
@@ -1078,6 +1080,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                                                                       PropertyServerException
     {
         String metadataElementGUID = openMetadataClient.createMetadataElementInStore(connectorUserId,
+                                                                                     metadataElementTypeName,
                                                                                      newElementOptions,
                                                                                      initialClassifications,
                                                                                      properties,
@@ -1142,7 +1145,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
     {
         TemplateOptions templateOptions = new TemplateOptions(this.getMetadataSourceOptions());
 
-        templateOptions.setOpenMetadataTypeName(metadataElementTypeName);
         templateOptions.setAnchorGUID(anchorGUID);
         templateOptions.setIsOwnAnchor(isOwnAnchor);
         templateOptions.setAnchorScopeGUID(anchorScopeGUID);
@@ -1151,7 +1153,8 @@ public class OpenMetadataStore extends ConnectorContextClientBase
         templateOptions.setParentAtEnd1(parentAtEnd1);
         templateOptions.setParentRelationshipTypeName(parentRelationshipTypeName);
 
-        return this.createMetadataElementFromTemplate(templateOptions,
+        return this.createMetadataElementFromTemplate(metadataElementTypeName,
+                                                      templateOptions,
                                                       templateGUID,
                                                       replacementProperties,
                                                       placeholderProperties,
@@ -1168,6 +1171,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * The template and any similar anchored objects are
      * copied in this process.
      *
+     * @param metadataElementTypeName expected type name of the new metadata element
      * @param templateOptions details of the element to create
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
@@ -1182,7 +1186,8 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createMetadataElementFromTemplate(TemplateOptions      templateOptions,
+    public String createMetadataElementFromTemplate(String               metadataElementTypeName,
+                                                    TemplateOptions      templateOptions,
                                                     String               templateGUID,
                                                     ElementProperties    replacementProperties,
                                                     Map<String, String>  placeholderProperties,
@@ -1191,6 +1196,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                                                               PropertyServerException
     {
         String metadataElementGUID = openMetadataClient.createMetadataElementFromTemplate(connectorUserId,
+                                                                                          metadataElementTypeName,
                                                                                           templateOptions,
                                                                                           templateGUID,
                                                                                           replacementProperties,
@@ -1256,7 +1262,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
     {
         TemplateOptions templateOptions = new TemplateOptions(this.getMetadataSourceOptions());
 
-        templateOptions.setOpenMetadataTypeName(metadataElementTypeName);
         templateOptions.setAnchorGUID(anchorGUID);
         templateOptions.setIsOwnAnchor(isOwnAnchor);
         templateOptions.setAnchorScopeGUID(anchorScopeGUID);
@@ -1265,7 +1270,8 @@ public class OpenMetadataStore extends ConnectorContextClientBase
         templateOptions.setParentAtEnd1(parentAtEnd1);
         templateOptions.setParentRelationshipTypeName(parentRelationshipTypeName);
 
-        return this.createMetadataElementFromTemplate(templateOptions,
+        return this.createMetadataElementFromTemplate(metadataElementTypeName,
+                                                      templateOptions,
                                                       templateGUID,
                                                       replacementProperties,
                                                       placeholderProperties,

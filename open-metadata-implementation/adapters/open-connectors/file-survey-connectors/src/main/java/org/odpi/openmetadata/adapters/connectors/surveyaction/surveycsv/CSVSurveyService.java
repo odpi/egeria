@@ -505,7 +505,6 @@ public class CSVSurveyService extends SurveyActionServiceConnector
 
             NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
-            newElementOptions.setOpenMetadataTypeName(OpenMetadataType.TABULAR_COLUMN.typeName);
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
             newElementOptions.setAnchorGUID(assetElement.getElementHeader().getGUID());
             newElementOptions.setIsOwnAnchor(false);
@@ -514,7 +513,8 @@ public class CSVSurveyService extends SurveyActionServiceConnector
             newElementOptions.setParentAtEnd1(true);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
 
-            return openMetadataStore.createMetadataElementInStore(newElementOptions,
+            return openMetadataStore.createMetadataElementInStore(OpenMetadataType.TABULAR_COLUMN.typeName,
+                                                                  newElementOptions,
                                                                   initialClassifications,
                                                                   new NewElementProperties(elementProperties),
                                                                   null);

@@ -1649,8 +1649,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                boolean                           forDuplicateProcessing,
                                                Date                              effectiveTime,
                                                String                            methodName) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String elementTypeParameterName = "metadataElementTypeName";
         final String anchorGUIDParameterName  = "anchorGUID";

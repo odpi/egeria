@@ -200,11 +200,11 @@ public class AssetHandler extends OpenMetadataHandlerBase
             parentRelationshipProperties = relationshipBuilder.getNewElementProperties(new ActionRequesterProperties());
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(metadataElementTypeName);
             newElementOptions.setParentGUID(originatorGUID);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
         }
         String toDoGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                          metadataElementTypeName,
                                                                           newElementOptions,
                                                                           initialClassifications,
                                                                           elementBuilder.getNewElementProperties(properties),

@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
@@ -395,6 +396,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 EgeriaOpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                 response.setGUID(openHandler.createMetadataElementFromTemplate(userId,
+                                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                requestBody,
                                                                                requestBody.getTemplateGUID(),
                                                                                requestBody.getReplacementProperties(),

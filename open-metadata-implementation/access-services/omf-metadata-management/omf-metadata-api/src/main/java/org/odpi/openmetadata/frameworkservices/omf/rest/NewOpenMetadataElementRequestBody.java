@@ -50,9 +50,9 @@ public class NewOpenMetadataElementRequestBody extends NewElementOptions
 
         if (template != null)
         {
-            typeName = template.getTypeName();
-            initialClassifications = template.getInitialClassifications();
-            properties = template.getProperties();
+            typeName                     = template.getTypeName();
+            initialClassifications       = template.getInitialClassifications();
+            properties                   = template.getProperties();
             parentRelationshipProperties = template.getParentRelationshipProperties();
         }
     }

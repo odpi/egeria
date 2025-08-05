@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.surveyaction.properties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
 
@@ -57,6 +58,7 @@ public class Annotation extends PropertyBase
     public Annotation()
     {
         super();
+        super.setOpenMetadataTypeName(OpenMetadataType.ANNOTATION.typeName);
     }
 
 
