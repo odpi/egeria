@@ -701,7 +701,7 @@ public class OpenMetadataTypesArchive1_7
         validInstanceStatusList.add(InstanceStatus.DELETED);
 
         entityDef.setValidInstanceStatusList(validInstanceStatusList);
-        entityDef.setInitialStatus(InstanceStatus.DRAFT);
+        entityDef.setInitialStatus(InstanceStatus.ACTIVE);
 
         return entityDef;
     }

@@ -142,12 +142,10 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
             /*
              * Ensure we have all the known OMAG Server Platforms
              */
-            int startFrom = 0;
-
-            SearchOptions searchOptions = assetClient.getSearchOptions();
+            SearchOptions searchOptions = assetClient.getSearchOptions(0, integrationContext.getMaxPageSize());
             searchOptions.setMetadataElementTypeName(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
 
-            List<OpenMetadataRootElement> softwarePlatforms = assetClient.findAssets(".*", searchOptions);
+            List<OpenMetadataRootElement> softwarePlatforms = assetClient.findAssets(null, searchOptions);
 
             while (softwarePlatforms != null)
             {
@@ -164,8 +162,8 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                     }
                 }
 
-                startFrom = startFrom + integrationContext.getMaxPageSize();
-                softwarePlatforms = assetClient.findAssets(".*", searchOptions);
+                searchOptions.setStartFrom(searchOptions.getStartFrom() + integrationContext.getMaxPageSize());
+                softwarePlatforms = assetClient.findAssets(null, searchOptions);
             }
 
 
@@ -465,14 +463,12 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
      * @param omagServerProperties details of the server
      * @param platformProperties details of the platform
      * @return unique identifier of the server
-     * @throws ConnectorCheckedException connector error
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException no repo
      * @throws UserNotAuthorizedException security problem
      */
     private String catalogServer(OMAGServerProperties         omagServerProperties,
-                                 OMAGServerPlatformProperties platformProperties) throws ConnectorCheckedException,
-                                                                                         InvalidParameterException,
+                                 OMAGServerPlatformProperties platformProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {

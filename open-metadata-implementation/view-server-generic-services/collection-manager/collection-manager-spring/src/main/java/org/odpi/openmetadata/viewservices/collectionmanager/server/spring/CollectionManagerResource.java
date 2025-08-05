@@ -169,7 +169,7 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public OpenMetadataRootElementResponse getCollectionByGUID(@PathVariable String serverName,
-                                                               @PathVariable String             urlMarker,
+                                                               @PathVariable String urlMarker,
                                                                @PathVariable String collectionGUID,
                                                                @RequestBody GetRequestBody requestBody)
     {

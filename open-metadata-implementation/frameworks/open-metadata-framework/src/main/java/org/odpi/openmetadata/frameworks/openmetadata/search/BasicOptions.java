@@ -21,10 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BasicOptions
 {
-    private List<String> governanceZoneFilter = null;
-    private       boolean      forLineage           = false;
-    private boolean forDuplicateProcessing = false;
-    private Date    effectiveTime          = null;
+    private List<String> governanceZoneFilter   = null;
+    private boolean      forLineage             = false;
+    private boolean      forDuplicateProcessing = false;
+    private Date         effectiveTime          = null;
 
     /**
      * Default constructor

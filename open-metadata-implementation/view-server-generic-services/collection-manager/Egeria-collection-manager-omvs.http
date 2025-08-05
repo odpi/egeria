@@ -173,15 +173,15 @@ Content-Type: application/json
 }
 
 ###
-# @name getCollectionsByType (restricted by classificationName and type name)
+# @name getCollectionsByCategory (restricted by classificationName and category name)
 # Returns the list of collections with a particular category.  This is an optional text field in the collection element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-collection-type
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-collection-category
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "filter" : "Add collection type here",
+  "filter" : "Add collection category here",
   "metadataElementTypeName": "DataSpec",
   "includeOnlyClassifiedElements" : ["ResultsSet"],
   "startFrom" : 0,
