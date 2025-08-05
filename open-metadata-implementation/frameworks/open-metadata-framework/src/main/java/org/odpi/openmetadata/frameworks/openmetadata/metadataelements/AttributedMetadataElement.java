@@ -29,15 +29,19 @@ public class AttributedMetadataElement implements MetadataElement
      */
     private List<RelatedMetadataElementSummary> sampleData                    = null; // SampleData (0010)
     private List<RelatedMetadataElementSummary> sourcesOfSampleData           = null; // SampleData (0010)
+    private List<RelatedMetadataElementSummary> templateCreatedElements       = null; // SourcedFrom (0011)
+    private RelatedMetadataElementSummary       sourcedFromTemplate           = null; // SourcedFrom (0011)
+    private List<RelatedMetadataElementSummary> templatesForCataloguing       = null; // CatalogTemplate (0011)
+    private List<RelatedMetadataElementSummary> supportedImplementationTypes  = null; // CatalogTemplate (0011)
     private RelatedMetadataElementSummary       actionSource                  = null; // ActionRequester (0013)
     private List<RelatedMetadataElementSummary> requestedActions              = null; // ActionRequester (0013)
     private List<RelatedMetadataElementSummary> actionSponsors                = null; // ActionSponsor (0013)
     private List<RelatedMetadataElementSummary> trackedActions                = null; // ActionSponsor (0013)
     private List<RelatedMetadataElementSummary> actionCause                   = null; // Actions (0013)
     private List<RelatedMetadataElementSummary> relatedActions                = null; // Actions (0013)
-    private List<RelatedMetadataElementSummary> actionTargets    = null; // ActionTarget (0013)
-    private List<RelatedMetadataElementSummary> actionsForTarget = null; // ActionTarget (0013)
-    private List<RelatedMetadataElementSummary> searchKeywords   = null; // SearchKeywordLink (0012)
+    private List<RelatedMetadataElementSummary> actionTargets                 = null; // ActionTarget (0013)
+    private List<RelatedMetadataElementSummary> actionsForTarget              = null; // ActionTarget (0013)
+    private List<RelatedMetadataElementSummary> searchKeywords                 = null; // SearchKeywordLink (0012)
     private List<RelatedMetadataElementSummary> keywordElements               = null; // SearchKeywordLink (0012)
     private List<RelatedMetadataElementSummary> externalReferences            = null; // ExternalReferenceLink (0014)
     private List<RelatedMetadataElementSummary> referencingElements           = null; // ExternalReferenceLink (0014)
@@ -53,10 +57,23 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> collectionMembers             = null; // CollectionMembership (0021)
 
 
+    private List<RelatedMetadataElementSummary> serverEndpoints               = null; // ServerEndpoint (0026)
+    private RelatedMetadataElementSummary       endpointForServer             = null; // ServerEndpoint (0026)
+    private List<RelatedMetadataElementSummary> hostedITAssets                = null; // DeployedOn (0035)
+    private List<RelatedMetadataElementSummary> deployedTo                    = null; // DeployedOn (0035)
+    private List<RelatedMetadataElementSummary> storageVolumes                = null; // AttachedStorage (0036)
+    private List<RelatedMetadataElementSummary> hostsUsingStorageVolume       = null; // AttachedStorage (0036)
+    private List<RelatedMetadataElementSummary> consumedByCapabilities        = null; // CapabilityAssetUse (0045)
+    private List<RelatedMetadataElementSummary> capabilityConsumedAssets      = null; // CapabilityAssetUse (0045)
+    private List<RelatedMetadataElementSummary> supportedSoftwareCapabilities = null; // SupportedSoftwareCapability (0042)
+    private List<RelatedMetadataElementSummary> hostedBy                      = null; // SupportedSoftwareCapability (0042)
+    private List<RelatedMetadataElementSummary> visibleEndpoints              = null; // VisibleEndpoint (0070)
+    private List<RelatedMetadataElementSummary> visibleInNetworks             = null; // VisibleEndpoint (0070)
 
     /*
      * Area 1
      */
+
     private List<RelatedMetadataElementSummary> contactDetails = null; // ContactThrough (0111)
     private List<RelatedMetadataElementSummary> contacts       = null; // ContactThrough (0111)
 
@@ -80,50 +97,85 @@ public class AttributedMetadataElement implements MetadataElement
      * Area 2
      */
 
+    private List<RelatedMetadataElementSummary> connections         = null;  // AssetConnection (0205), ConnectorConnectionType, ConnectToEndpoint (0201)
+    private RelatedMetadataElementSummary       connectorType       = null; // ConnectorConnectionType (0201)
+    private RelatedMetadataElementSummary       endpoint            = null; // ConnectToEndpoint (0201)
+    private List<RelatedMetadataElementSummary> connectedAssets     = null; // AssetConnection (0205)
+    private List<RelatedMetadataElementSummary> embeddedConnections = null; // EmbeddedConnection (0205)
+    private List<RelatedMetadataElementSummary> parentConnections   = null; // EmbeddedConnection (0205)
+
+
+    private List<RelatedMetadataElementSummary> supportedDataSets             = null; // DataSetContent (0210)
+    private List<RelatedMetadataElementSummary> dataSetContent                = null; // DataSetContent (0210)
+    private List<RelatedMetadataElementSummary> apiEndpoints                  = null; // APIEndpoint (0212)
+    private List<RelatedMetadataElementSummary> supportedAPIs                 = null; // APIEndpoint (0212)
+    private List<RelatedMetadataElementSummary> parentProcesses               = null; // ProcessHierarchy (0215)
+    private List<RelatedMetadataElementSummary> childProcesses                = null; // ProcessHierarchy (0215)
+    private List<RelatedMetadataElementSummary> ports                         = null; // ProcessPort (0217)
+    private List<RelatedMetadataElementSummary> portOwningProcesses           = null; // ProcessPort (0217)
+    private List<RelatedMetadataElementSummary> portDelegatingFrom            = null; // PortDelegation (0217)
+    private List<RelatedMetadataElementSummary> portDelegatingTo              = null; // PortDelegation (0217)
+    private RelatedMetadataElementSummary       homeFolder                    = null; // NestedFile (0220)
+    private List<RelatedMetadataElementSummary> nestedFiles                   = null; // NestedFile (0220)
+    private List<RelatedMetadataElementSummary> linkedFiles                   = null; // LinkedFile (0220)
+    private List<RelatedMetadataElementSummary> linkedFolders                 = null; // LinkedFile (0220)
+    private RelatedMetadataElementSummary       parentFolder                  = null; // FolderHierarchy (0220)
+    private List<RelatedMetadataElementSummary> nestedFolders                 = null; // FolderHierarchy (0220)
+    private List<RelatedMetadataElementSummary> linkedMediaFiles              = null; // LinkedMedia (0221)
+    private List<RelatedMetadataElementSummary> topicSubscribers              = null; // TopicSubscribers (0223)
+    private List<RelatedMetadataElementSummary> topicsForSubscribers          = null; // TopicSubscribers (0223)
+    private List<RelatedMetadataElementSummary> associatedLogs                = null; // AssociatedLog (0223)
+    private List<RelatedMetadataElementSummary> associatedLogSubjects         = null; // AssociatedLog (0223)
+    private RelatedMetadataElementSummary       cohortMember                  = null; // CohortMemberMetadataCollection (0225)
+    private RelatedMetadataElementSummary       localMetadataCollection       = null; // CohortMemberMetadataCollection (0225)
+    private RelatedMetadataElementSummary       archiveContents               = null; // ArchiveContents (0226)
+    private List<RelatedMetadataElementSummary> packagedInArchiveFiles        = null; // ArchiveContents (0226)
+
+
 
     /*
      * Area 3
      */
 
-    private List<RelatedMetadataElementSummary> associatedGlossaries = null; // CategoryHierarchy (0320)
-    private List<RelatedMetadataElementSummary> categories           = null; // CategoryHierarchy (0320)
-    private RelatedMetadataElementSummary       parentGlossary       = null; // ParentGlossary (0330)
-    private List<RelatedMetadataElementSummary> terms                = null; // ParentGlossary (0330)
-    private List<RelatedMetadataElementSummary> relatedTerms           = null; // various (0350)
-    private List<RelatedMetadataElementSummary> usedInContexts           = null; // UsedInContext (0360)
-    private List<RelatedMetadataElementSummary> contextRelevantTerms           = null; // UsedInContext (0360)
-    private List<RelatedMetadataElementSummary> meaningForDataElements = null;
-    private List<RelatedMetadataElementSummary> meanings               = null;
-    private List<RelatedMetadataElementSummary> semanticDefinitions    = null;
-    private List<RelatedMetadataElementSummary> semanticallyAssociatedDefinitions = null;
+    private List<RelatedMetadataElementSummary> associatedGlossaries              = null; // CategoryHierarchy (0320)
+    private List<RelatedMetadataElementSummary> glossaryCategories                = null; // CategoryHierarchy (0320)
+    private RelatedMetadataElementSummary       parentGlossary                    = null; // ParentGlossary (0330)
+    private List<RelatedMetadataElementSummary> terms                             = null; // ParentGlossary (0330)
+    private List<RelatedMetadataElementSummary> relatedTerms                      = null; // various (0350)
+    private List<RelatedMetadataElementSummary> usedInContexts                    = null; // UsedInContext (0360)
+    private List<RelatedMetadataElementSummary> contextRelevantTerms              = null; // UsedInContext (0360)
+    private List<RelatedMetadataElementSummary> meaningForDataElements            = null; // SemanticAssignment
+    private List<RelatedMetadataElementSummary> meanings                          = null; // SemanticAssignment
+    private List<RelatedMetadataElementSummary> semanticDefinitions               = null; // SemanticDefinition
+    private List<RelatedMetadataElementSummary> semanticallyAssociatedDefinitions = null; // SemanticDefinition
 
-    private List<RelatedMetadataElementSummary> supplementaryProperties   = null;
-    private RelatedMetadataElementSummary       supplementsElement   = null;
+    private List<RelatedMetadataElementSummary> supplementaryProperties = null;
+    private RelatedMetadataElementSummary       supplementsElement      = null;
 
     /*
      * Area 4
      */
-    private List<RelatedMetadataElementSummary> governedBy                = null; // GovernedBy (0401)
-    private List<RelatedMetadataElementSummary> governedElements           = null; // GovernedBy (0401)
+    private List<RelatedMetadataElementSummary> governedBy       = null; // GovernedBy (0401)
+    private List<RelatedMetadataElementSummary> governedElements = null; // GovernedBy (0401)
 
-    private List<RelatedMetadataElementSummary> peerGovernanceDefinitions      = null;
-    private List<RelatedMetadataElementSummary> supportedGovernanceDefinitions = null;
+    private List<RelatedMetadataElementSummary> peerGovernanceDefinitions       = null;
+    private List<RelatedMetadataElementSummary> supportedGovernanceDefinitions  = null;
     private List<RelatedMetadataElementSummary> supportingGovernanceDefinitions = null;
 
-    private List<RelatedMetadataElementSummary> metrics          = null;
-    private List<RelatedMetadataElementSummary> measuredDefinitions          = null;
+    private List<RelatedMetadataElementSummary> metrics             = null;
+    private List<RelatedMetadataElementSummary> measuredDefinitions = null;
 
-    private List<RelatedMetadataElementSummary> licenses                  = null; // License (0481)
-    private List<RelatedMetadataElementSummary> licensedElements           = null; // License (0481)
-    private List<RelatedMetadataElementSummary> certifications            = null; // Certification (0482)
-    private List<RelatedMetadataElementSummary> certifiedElements          = null; // Certification (0482)
+    private List<RelatedMetadataElementSummary> licenses          = null; // License (0481)
+    private List<RelatedMetadataElementSummary> licensedElements  = null; // License (0481)
+    private List<RelatedMetadataElementSummary> certifications    = null; // Certification (0482)
+    private List<RelatedMetadataElementSummary> certifiedElements = null; // Certification (0482)
 
     private List<RelatedMetadataElementSummary> agreementItems        = null; // AgreementItem (0484)
-    private List<RelatedMetadataElementSummary> agreementContents        = null; // AgreementItem (0484)
+    private List<RelatedMetadataElementSummary> agreementContents     = null; // AgreementItem (0484)
     private List<RelatedMetadataElementSummary> agreementActors       = null; // AgreementActor (0484)
-    private List<RelatedMetadataElementSummary> involvedInAgreements       = null; // AgreementActor (0484)
+    private List<RelatedMetadataElementSummary> involvedInAgreements  = null; // AgreementActor (0484)
     private List<RelatedMetadataElementSummary> contracts             = null; // ContractLink (0484)
-    private List<RelatedMetadataElementSummary> agreementsForContract             = null; // ContractLink (0484)
+    private List<RelatedMetadataElementSummary> agreementsForContract = null; // ContractLink (0484)
 
     /*
      * Area 5
@@ -138,8 +190,8 @@ public class AttributedMetadataElement implements MetadataElement
 
     private RelatedMetadataElementSummary       linkedToPrimaryKey     = null; // ForeignKey (0534)
     private List<RelatedMetadataElementSummary> foreignKeys            = null; // ForeignKey (0534)
-    private List<RelatedMetadataElementSummary> vertices            = null; // GraphEdgeLink (0533)
-    private List<RelatedMetadataElementSummary> edges            = null; // GraphEdgeLink (0533)
+    private List<RelatedMetadataElementSummary> vertices               = null; // GraphEdgeLink (0533)
+    private List<RelatedMetadataElementSummary> edges                  = null; // GraphEdgeLink (0533)
 
     private RelatedMetadataElementSummary       rootSchemaType                = null; // AssetSchemaType (0503)
     private RelatedMetadataElementSummary       describesStructureForAsset    = null; // AssetSchemaType (0503)
@@ -169,7 +221,7 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> digitalSubscriptions = null;
 
 
-    private List<RelatedMetadataElementSummary> lineageLinkage            = null;
+    private List<RelatedMetadataElementSummary> lineageLinkage            = null; // Many
 
     private List<RelatedMetadataElementSummary> derivedFrom               = null; // ImplementedBy (0737)
     private List<RelatedMetadataElementSummary> implementedBy             = null; // ImplementedBy (0737)
@@ -200,46 +252,70 @@ public class AttributedMetadataElement implements MetadataElement
     {
         if (template != null)
         {
-            elementHeader             = template.getElementHeader();
+            elementHeader = template.getElementHeader();
 
-            sampleData = template.getSampleData();
+            sampleData          = template.getSampleData();
             sourcesOfSampleData = template.getSourcesOfSampleData();
 
-            searchKeywords   = template.getSearchKeywords();
-            keywordElements   = template.getKeywordElements();
+            templateCreatedElements       = template.getTemplateCreatedElements();
+            sourcedFromTemplate           = template.getSourcedFromTemplate();
+            templatesForCataloguing       = template.getTemplatesForCataloguing();
+            supportedImplementationTypes  = template.getSupportedImplementationTypes();
 
-            actionSource                  = null;
-            requestedActions              = null;
-            actionSponsors                = null;
-            trackedActions                = null;
-            actionCause                   = null;
-            relatedActions                = null;
-            actionTargets    = null;
-            actionsForTarget = null;
+            searchKeywords   = template.getSearchKeywords();
+            keywordElements  = template.getKeywordElements();
+
+            actionSource     = template.getActionSource();
+            requestedActions = template.getRequestedActions();
+            actionSponsors   = template.getActionSponsors();
+            trackedActions   = template.getTrackedActions();
+            actionCause      = template.getActionCause();
+            relatedActions   = template.getRelatedActions();
+            actionTargets    = template.getActionTargets();
+            actionsForTarget = template.getActionsForTarget();
 
             externalReferences  = template.getExternalReferences();
             referencingElements = template.getReferencingElements();
 
-            alsoKnownAs         = template.getAlsoKnownAs();
-            equivalentElements        = template.getEquivalentElements();
-            identifierScopedTo  = template.getIdentifierScopedTo();
+            alsoKnownAs                   = template.getAlsoKnownAs();
+            equivalentElements            = template.getEquivalentElements();
+            identifierScopedTo            = template.getIdentifierScopedTo();
             recognizedExternalIdentifiers = template.getRecognizedExternalIdentifiers();
 
-            resourceList              = template.getResourceList();
-            resourceListUsers              = template.getResourceListUsers();
+            resourceList      = template.getResourceList();
+            resourceListUsers = template.getResourceListUsers();
 
-            propertyFacets            = template.getPropertyFacets();
-            facetedElements           = template.getFacetedElements();
+            propertyFacets  = template.getPropertyFacets();
+            facetedElements = template.getFacetedElements();
 
-            memberOfCollections       = template.getMemberOfCollections();
-            collectionMembers       = template.getCollectionMembers();
+            memberOfCollections = template.getMemberOfCollections();
+            collectionMembers   = template.getCollectionMembers();
+
+            serverEndpoints               = template.getServerEndpoints();
+            endpointForServer             = template.getEndpointForServer();
+
+            hostedITAssets = template.getHostedITAssets();
+            deployedTo     = template.getDeployedTo();
+
+            storageVolumes                = template.getStorageVolumes();
+            hostsUsingStorageVolume       = template.getHostsUsingStorageVolume();
+
+            consumedByCapabilities   = template.getConsumedByCapabilities();
+            capabilityConsumedAssets = template.getCapabilityConsumedAssets();
+
+            supportedSoftwareCapabilities = template.getSupportedSoftwareCapabilities();
+            hostedBy                      = template.getHostedBy();
+
+            visibleEndpoints              = template.getVisibleEndpoints();
+            visibleInNetworks             = template.getVisibleInNetworks();
+
 
             /*
              * Area 1
              */
 
-            contactDetails      = template.getContactDetails();
-            contacts      = template.getContacts();
+            contactDetails = template.getContactDetails();
+            contacts       = template.getContacts();
 
             relevantToScope           = template.getRelevantToScope();
             scopedElements            = template.getScopedElements();
@@ -248,31 +324,67 @@ public class AttributedMetadataElement implements MetadataElement
             commissionedElements      = template.getCommissionedElements();
             commissionedBy            = template.getCommissionedBy();
 
-            likes            = template.getLikes();
-            likedElement            = template.getLikedElement();
-            reviews  = template.getReviews();
-            reviewedElement = template.getReviewedElement();
-            informalTags    = template.getInformalTags();
-            taggedElements    = template.getTaggedElements();
-            comments = template.getComments();
+            likes              = template.getLikes();
+            likedElement       = template.getLikedElement();
+            reviews            = template.getReviews();
+            reviewedElement    = template.getReviewedElement();
+            informalTags       = template.getInformalTags();
+            taggedElements     = template.getTaggedElements();
+            comments           = template.getComments();
             commentedOnElement = template.getCommentedOnElement();
+
+            /*
+             * Area 2
+             */
+            connections         = template.getConnections();
+            connectorType       = template.getConnectorType();
+            endpoint            = template.getEndpoint();
+            connectedAssets     = template.getConnectedAssets();
+            parentConnections   = template.getParentConnections();
+            embeddedConnections = template.getEmbeddedConnections();
+
+            supportedDataSets       = template.getSupportedDataSets();
+            dataSetContent          = template.getDataSetContent();
+            apiEndpoints            = template.getAPIEndpoints();
+            supportedAPIs           = template.getSupportedAPIs();
+            parentProcesses         = template.getParentProcesses();
+            childProcesses          = template.getChildProcesses();
+            ports                   = template.getPorts();
+            portOwningProcesses     = template.getPortOwningProcesses();
+            portDelegatingFrom      = template.getPortDelegatingFrom();
+            portDelegatingTo        = template.getPortDelegatingTo();
+            homeFolder              = template.getHomeFolder();
+            nestedFiles             = template.getNestedFiles();
+            linkedFiles             = template.getLinkedFiles();
+            linkedFolders           = template.getLinkedFolders();
+            parentFolder            = template.getParentFolder();
+            nestedFolders           = template.getNestedFolders();
+            linkedMediaFiles        = template.getLinkedMediaFiles();
+            topicSubscribers        = template.getTopicSubscribers();
+            topicsForSubscribers    = template.getTopicsForSubscribers();
+            associatedLogs          = template.getAssociatedLogs();
+            associatedLogSubjects   = template.getAssociatedLogSubjects();
+            cohortMember            = template.getCohortMember();
+            localMetadataCollection = template.getLocalMetadataCollection();
+            archiveContents         = template.getArchiveContents();
+            packagedInArchiveFiles  = template.getPackagedInArchiveFiles();
 
             /*
              * Area 3
              */
-            categories             = template.getCategories();
-            associatedGlossaries   = template.getAssociatedGlossaries();
-            parentGlossary         = template.getParentGlossary();
-            terms                  = template.getTerms();
-            relatedTerms           = template.getRelatedTerms();
-            usedInContexts         = template.getUsedInContexts();
+            glossaryCategories                = template.getGlossaryCategories();
+            associatedGlossaries              = template.getAssociatedGlossaries();
+            parentGlossary                    = template.getParentGlossary();
+            terms                             = template.getTerms();
+            relatedTerms                      = template.getRelatedTerms();
+            usedInContexts                    = template.getUsedInContexts();
             contextRelevantTerms              = template.getContextRelevantTerms();
-            semanticDefinitions = template.getSemanticDefinitions();
+            semanticDefinitions               = template.getSemanticDefinitions();
             semanticallyAssociatedDefinitions = template.getSemanticallyAssociatedDefinitions();
-            meaningForDataElements  = template.getMeaningForDataElements();
-            meanings                = template.getMeanings();
-            supplementaryProperties = template.getSupplementaryProperties();
-            supplementsElement = template.getSupplementsElement();
+            meaningForDataElements            = template.getMeaningForDataElements();
+            meanings                          = template.getMeanings();
+            supplementaryProperties           = template.getSupplementaryProperties();
+            supplementsElement                = template.getSupplementsElement();
 
             /*
              * Area 4
@@ -286,8 +398,8 @@ public class AttributedMetadataElement implements MetadataElement
             supportedGovernanceDefinitions = template.getSupportedGovernanceDefinitions();
             supportingGovernanceDefinitions = template.getSupportingGovernanceDefinitions();
 
-            metrics          = template.getMetrics();
-            measuredDefinitions          = template.getMeasuredDefinitions();
+            metrics             = template.getMetrics();
+            measuredDefinitions = template.getMeasuredDefinitions();
 
             licenses                  = template.getLicenses();
             licensedElements          = template.getLicensedElements();
@@ -307,7 +419,7 @@ public class AttributedMetadataElement implements MetadataElement
              */
             rootSchemaType             = template.getRootSchemaType();
             describesStructureForAsset = template.getDescribesStructureForAsset();
-            schemaAttributes     = template.getSchemaAttributes();
+            schemaAttributes           = template.getSchemaAttributes();
             parentSchemaElements       = template.getParentSchemaElements();
 
             mapFromElement     = template.getMapFromElement();
@@ -320,7 +432,7 @@ public class AttributedMetadataElement implements MetadataElement
             foreignKeys = template.getForeignKeys();
 
             vertices = template.getVertices();
-            edges = template.getEdges();
+            edges    = template.getEdges();
 
             validValues               = template.getValidValues();
             validValueConsumers       = template.getValidValueConsumers();
@@ -346,7 +458,7 @@ public class AttributedMetadataElement implements MetadataElement
             usedByDigitalProducts = template.getUsedByDigitalProducts();
             usesDigitalProducts   = template.getUsesDigitalProducts();
 
-            digitalSubscribers = template.getDigitalSubscribers();
+            digitalSubscribers   = template.getDigitalSubscribers();
             digitalSubscriptions = template.getDigitalSubscriptions();
 
             lineageLinkage            = template.getLineageLinkage();
@@ -419,6 +531,48 @@ public class AttributedMetadataElement implements MetadataElement
     {
         this.sourcesOfSampleData = sourcesOfSampleData;
     }
+
+
+    public List<RelatedMetadataElementSummary> getTemplateCreatedElements()
+    {
+        return templateCreatedElements;
+    }
+
+    public void setTemplateCreatedElements(List<RelatedMetadataElementSummary> templateCreatedElements)
+    {
+        this.templateCreatedElements = templateCreatedElements;
+    }
+
+    public RelatedMetadataElementSummary getSourcedFromTemplate()
+    {
+        return sourcedFromTemplate;
+    }
+
+    public void setSourcedFromTemplate(RelatedMetadataElementSummary sourcedFromTemplate)
+    {
+        this.sourcedFromTemplate = sourcedFromTemplate;
+    }
+
+    public List<RelatedMetadataElementSummary> getTemplatesForCataloguing()
+    {
+        return templatesForCataloguing;
+    }
+
+    public void setTemplatesForCataloguing(List<RelatedMetadataElementSummary> templatesForCataloguing)
+    {
+        this.templatesForCataloguing = templatesForCataloguing;
+    }
+
+    public List<RelatedMetadataElementSummary> getSupportedImplementationTypes()
+    {
+        return supportedImplementationTypes;
+    }
+
+    public void setSupportedImplementationTypes(List<RelatedMetadataElementSummary> supportedImplementationTypes)
+    {
+        this.supportedImplementationTypes = supportedImplementationTypes;
+    }
+
 
     /**
      * Set up the list of external references for this element
@@ -538,6 +692,126 @@ public class AttributedMetadataElement implements MetadataElement
         this.collectionMembers = collectionMembers;
     }
 
+
+    public List<RelatedMetadataElementSummary> getServerEndpoints()
+    {
+        return serverEndpoints;
+    }
+
+    public void setServerEndpoints(List<RelatedMetadataElementSummary> serverEndpoints)
+    {
+        this.serverEndpoints = serverEndpoints;
+    }
+
+    public RelatedMetadataElementSummary getEndpointForServer()
+    {
+        return endpointForServer;
+    }
+
+    public void setEndpointForServer(RelatedMetadataElementSummary endpointForServer)
+    {
+        this.endpointForServer = endpointForServer;
+    }
+
+    public List<RelatedMetadataElementSummary> getHostedITAssets()
+    {
+        return hostedITAssets;
+    }
+
+    public void setHostedITAssets(List<RelatedMetadataElementSummary> hostedITAssets)
+    {
+        this.hostedITAssets = hostedITAssets;
+    }
+
+    public List<RelatedMetadataElementSummary> getDeployedTo()
+    {
+        return deployedTo;
+    }
+
+    public void setDeployedTo(List<RelatedMetadataElementSummary> deployedTo)
+    {
+        this.deployedTo = deployedTo;
+    }
+
+    public List<RelatedMetadataElementSummary> getStorageVolumes()
+    {
+        return storageVolumes;
+    }
+
+    public void setStorageVolumes(List<RelatedMetadataElementSummary> storageVolumes)
+    {
+        this.storageVolumes = storageVolumes;
+    }
+
+    public List<RelatedMetadataElementSummary> getHostsUsingStorageVolume()
+    {
+        return hostsUsingStorageVolume;
+    }
+
+    public void setHostsUsingStorageVolume(List<RelatedMetadataElementSummary> hostsUsingStorageVolume)
+    {
+        this.hostsUsingStorageVolume = hostsUsingStorageVolume;
+    }
+
+    public List<RelatedMetadataElementSummary> getConsumedByCapabilities()
+    {
+        return consumedByCapabilities;
+    }
+
+    public void setConsumedByCapabilities(List<RelatedMetadataElementSummary> consumedByCapabilities)
+    {
+        this.consumedByCapabilities = consumedByCapabilities;
+    }
+
+    public List<RelatedMetadataElementSummary> getCapabilityConsumedAssets()
+    {
+        return capabilityConsumedAssets;
+    }
+
+    public void setCapabilityConsumedAssets(List<RelatedMetadataElementSummary> capabilityConsumedAssets)
+    {
+        this.capabilityConsumedAssets = capabilityConsumedAssets;
+    }
+
+    public List<RelatedMetadataElementSummary> getSupportedSoftwareCapabilities()
+    {
+        return supportedSoftwareCapabilities;
+    }
+
+    public void setSupportedSoftwareCapabilities(List<RelatedMetadataElementSummary> supportedSoftwareCapabilities)
+    {
+        this.supportedSoftwareCapabilities = supportedSoftwareCapabilities;
+    }
+
+    public List<RelatedMetadataElementSummary> getHostedBy()
+    {
+        return hostedBy;
+    }
+
+    public void setHostedBy(List<RelatedMetadataElementSummary> hostedBy)
+    {
+        this.hostedBy = hostedBy;
+    }
+
+    public List<RelatedMetadataElementSummary> getVisibleEndpoints()
+    {
+        return visibleEndpoints;
+    }
+
+    public void setVisibleEndpoints(List<RelatedMetadataElementSummary> visibleEndpoints)
+    {
+        this.visibleEndpoints = visibleEndpoints;
+    }
+
+    public List<RelatedMetadataElementSummary> getVisibleInNetworks()
+    {
+        return visibleInNetworks;
+    }
+
+    public void setVisibleInNetworks(List<RelatedMetadataElementSummary> visibleInNetworks)
+    {
+        this.visibleInNetworks = visibleInNetworks;
+    }
 
     /**
      * Return the contact methods for this element.
@@ -864,6 +1138,376 @@ public class AttributedMetadataElement implements MetadataElement
         this.resourceListUsers = resourceListUsers;
     }
 
+    public List<RelatedMetadataElementSummary> getConnections()
+    {
+        return connections;
+    }
+
+    public void setConnections(List<RelatedMetadataElementSummary> connections)
+    {
+        this.connections = connections;
+    }
+
+    /**
+     * Set up the connector type properties for this Connection.
+     *
+     * @param connectorType ConnectorType properties object
+     */
+    public void setConnectorType(RelatedMetadataElementSummary connectorType)
+    {
+        this.connectorType = connectorType;
+    }
+
+
+    /**
+     * Returns a copy of the properties for this connection's connector type.
+     * A null means there is no connection type.
+     *
+     * @return connector type for the connection
+     */
+    public RelatedMetadataElementSummary getConnectorType()
+    {
+        return connectorType;
+    }
+
+
+    /**
+     * Set up the endpoint properties for this Connection.
+     *
+     * @param endpoint Endpoint properties object
+     */
+    public void setEndpoint(RelatedMetadataElementSummary endpoint)
+    {
+        this.endpoint = endpoint;
+    }
+
+
+    /**
+     * Returns a copy of the properties for this connection's endpoint.
+     * Null means no endpoint information available.
+     *
+     * @return endpoint for the connection
+     */
+    public RelatedMetadataElementSummary getEndpoint()
+    {
+        return endpoint;
+    }
+
+
+    /**
+     * Return the assets reached through this connection.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getConnectedAssets()
+    {
+        return connectedAssets;
+    }
+
+
+    /**
+     * Set up the assets reached through this connection.
+     *
+     * @param connectedAssets list
+     */
+    public void setConnectedAssets(List<RelatedMetadataElementSummary> connectedAssets)
+    {
+        this.connectedAssets = connectedAssets;
+    }
+
+
+    /**
+     * Return the list of embedded connections for this virtual connection.
+     *
+     * @return list of EmbeddedConnection objects
+     */
+    public List<RelatedMetadataElementSummary> getEmbeddedConnections()
+    {
+        return embeddedConnections;
+    }
+
+
+    /**
+     * Set up the list of embedded connections for this virtual connection.
+     *
+     * @param embeddedConnections list of EmbeddedConnection objects
+     */
+    public void setEmbeddedConnections(List<RelatedMetadataElementSummary> embeddedConnections)
+    {
+        this.embeddedConnections = embeddedConnections;
+    }
+
+
+    /**
+     * Return the list of connections that this connection is embedded in.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getParentConnections()
+    {
+        return parentConnections;
+    }
+
+
+    /**
+     * Set up the list of connections that this connection is embedded in.
+     *
+     * @param parentConnections list
+     */
+    public void setParentConnections(List<RelatedMetadataElementSummary> parentConnections)
+    {
+        this.parentConnections = parentConnections;
+    }
+
+    public List<RelatedMetadataElementSummary> getSupportedDataSets()
+    {
+        return supportedDataSets;
+    }
+
+    public void setSupportedDataSets(List<RelatedMetadataElementSummary> supportedDataSets)
+    {
+        this.supportedDataSets = supportedDataSets;
+    }
+
+    public List<RelatedMetadataElementSummary> getDataSetContent()
+    {
+        return dataSetContent;
+    }
+
+    public void setDataSetContent(List<RelatedMetadataElementSummary> dataSetContent)
+    {
+        this.dataSetContent = dataSetContent;
+    }
+
+    public List<RelatedMetadataElementSummary> getAPIEndpoints()
+    {
+        return apiEndpoints;
+    }
+
+    public void setAPIEndpoints(List<RelatedMetadataElementSummary> apiEndpoints)
+    {
+        this.apiEndpoints = apiEndpoints;
+    }
+
+    public List<RelatedMetadataElementSummary> getSupportedAPIs()
+    {
+        return supportedAPIs;
+    }
+
+    public void setSupportedAPIs(List<RelatedMetadataElementSummary> supportedAPIs)
+    {
+        this.supportedAPIs = supportedAPIs;
+    }
+
+    public List<RelatedMetadataElementSummary> getParentProcesses()
+    {
+        return parentProcesses;
+    }
+
+    public void setParentProcesses(List<RelatedMetadataElementSummary> parentProcesses)
+    {
+        this.parentProcesses = parentProcesses;
+    }
+
+    public List<RelatedMetadataElementSummary> getChildProcesses()
+    {
+        return childProcesses;
+    }
+
+    public void setChildProcesses(List<RelatedMetadataElementSummary> childProcesses)
+    {
+        this.childProcesses = childProcesses;
+    }
+
+    public List<RelatedMetadataElementSummary> getPorts()
+    {
+        return ports;
+    }
+
+    public void setPorts(List<RelatedMetadataElementSummary> ports)
+    {
+        this.ports = ports;
+    }
+
+    public List<RelatedMetadataElementSummary> getPortOwningProcesses()
+    {
+        return portOwningProcesses;
+    }
+
+    public void setPortOwningProcesses(List<RelatedMetadataElementSummary> portOwningProcesses)
+    {
+        this.portOwningProcesses = portOwningProcesses;
+    }
+
+    public List<RelatedMetadataElementSummary> getPortDelegatingFrom()
+    {
+        return portDelegatingFrom;
+    }
+
+    public void setPortDelegatingFrom(List<RelatedMetadataElementSummary> portDelegatingFrom)
+    {
+        this.portDelegatingFrom = portDelegatingFrom;
+    }
+
+    public List<RelatedMetadataElementSummary> getPortDelegatingTo()
+    {
+        return portDelegatingTo;
+    }
+
+    public void setPortDelegatingTo(List<RelatedMetadataElementSummary> portDelegatingTo)
+    {
+        this.portDelegatingTo = portDelegatingTo;
+    }
+
+    public RelatedMetadataElementSummary getHomeFolder()
+    {
+        return homeFolder;
+    }
+
+    public void setHomeFolder(RelatedMetadataElementSummary homeFolder)
+    {
+        this.homeFolder = homeFolder;
+    }
+
+    public List<RelatedMetadataElementSummary> getNestedFiles()
+    {
+        return nestedFiles;
+    }
+
+    public void setNestedFiles(List<RelatedMetadataElementSummary> nestedFiles)
+    {
+        this.nestedFiles = nestedFiles;
+    }
+
+    public List<RelatedMetadataElementSummary> getLinkedFiles()
+    {
+        return linkedFiles;
+    }
+
+    public void setLinkedFiles(List<RelatedMetadataElementSummary> linkedFiles)
+    {
+        this.linkedFiles = linkedFiles;
+    }
+
+    public List<RelatedMetadataElementSummary> getLinkedFolders()
+    {
+        return linkedFolders;
+    }
+
+    public void setLinkedFolders(List<RelatedMetadataElementSummary> linkedFolders)
+    {
+        this.linkedFolders = linkedFolders;
+    }
+
+    public RelatedMetadataElementSummary getParentFolder()
+    {
+        return parentFolder;
+    }
+
+    public void setParentFolder(RelatedMetadataElementSummary parentFolder)
+    {
+        this.parentFolder = parentFolder;
+    }
+
+    public List<RelatedMetadataElementSummary> getNestedFolders()
+    {
+        return nestedFolders;
+    }
+
+    public void setNestedFolders(List<RelatedMetadataElementSummary> nestedFolders)
+    {
+        this.nestedFolders = nestedFolders;
+    }
+
+    public List<RelatedMetadataElementSummary> getLinkedMediaFiles()
+    {
+        return linkedMediaFiles;
+    }
+
+    public void setLinkedMediaFiles(List<RelatedMetadataElementSummary> linkedMediaFiles)
+    {
+        this.linkedMediaFiles = linkedMediaFiles;
+    }
+
+    public List<RelatedMetadataElementSummary> getTopicSubscribers()
+    {
+        return topicSubscribers;
+    }
+
+    public void setTopicSubscribers(List<RelatedMetadataElementSummary> topicSubscribers)
+    {
+        this.topicSubscribers = topicSubscribers;
+    }
+
+    public List<RelatedMetadataElementSummary> getTopicsForSubscribers()
+    {
+        return topicsForSubscribers;
+    }
+
+    public void setTopicsForSubscribers(List<RelatedMetadataElementSummary> topicsForSubscribers)
+    {
+        this.topicsForSubscribers = topicsForSubscribers;
+    }
+
+    public List<RelatedMetadataElementSummary> getAssociatedLogs()
+    {
+        return associatedLogs;
+    }
+
+    public void setAssociatedLogs(List<RelatedMetadataElementSummary> associatedLogs)
+    {
+        this.associatedLogs = associatedLogs;
+    }
+
+    public List<RelatedMetadataElementSummary> getAssociatedLogSubjects()
+    {
+        return associatedLogSubjects;
+    }
+
+    public void setAssociatedLogSubjects(List<RelatedMetadataElementSummary> associatedLogSubjects)
+    {
+        this.associatedLogSubjects = associatedLogSubjects;
+    }
+
+    public RelatedMetadataElementSummary getCohortMember()
+    {
+        return cohortMember;
+    }
+
+    public void setCohortMember(RelatedMetadataElementSummary cohortMember)
+    {
+        this.cohortMember = cohortMember;
+    }
+
+    public RelatedMetadataElementSummary getLocalMetadataCollection()
+    {
+        return localMetadataCollection;
+    }
+
+    public void setLocalMetadataCollection(RelatedMetadataElementSummary localMetadataCollection)
+    {
+        this.localMetadataCollection = localMetadataCollection;
+    }
+
+    public RelatedMetadataElementSummary getArchiveContents()
+    {
+        return archiveContents;
+    }
+
+    public void setArchiveContents(RelatedMetadataElementSummary archiveContents)
+    {
+        this.archiveContents = archiveContents;
+    }
+
+    public List<RelatedMetadataElementSummary> getPackagedInArchiveFiles()
+    {
+        return packagedInArchiveFiles;
+    }
+
+    public void setPackagedInArchiveFiles(List<RelatedMetadataElementSummary> packagedInArchiveFiles)
+    {
+        this.packagedInArchiveFiles = packagedInArchiveFiles;
+    }
 
     /**
      * Return the parent glossary for this element.
@@ -875,6 +1519,7 @@ public class AttributedMetadataElement implements MetadataElement
         return parentGlossary;
     }
 
+
     public List<RelatedMetadataElementSummary> getAssociatedGlossaries()
     {
         return associatedGlossaries;
@@ -885,14 +1530,14 @@ public class AttributedMetadataElement implements MetadataElement
         this.associatedGlossaries = associatedGlossaries;
     }
 
-    public List<RelatedMetadataElementSummary> getCategories()
+    public List<RelatedMetadataElementSummary> getGlossaryCategories()
     {
-        return categories;
+        return glossaryCategories;
     }
 
-    public void setCategories(List<RelatedMetadataElementSummary> categories)
+    public void setGlossaryCategories(List<RelatedMetadataElementSummary> glossaryCategories)
     {
-        this.categories = categories;
+        this.glossaryCategories = glossaryCategories;
     }
 
     /**

@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetLineageGraphMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.*;
@@ -1496,10 +1495,10 @@ public class AssetHandler extends OpenMetadataHandlerBase
             {
                 if (anchorSearchMatches != null)
                 {
-                    AssetSearchMatches assetSearchMatches = new AssetSearchMatches((AssetElement) super.convertRootElement(userId,
-                                                                                                                           anchorSearchMatches,
-                                                                                                                           searchOptions,
-                                                                                                                           methodName));
+                    AssetSearchMatches assetSearchMatches = new AssetSearchMatches(super.convertRootElement(userId,
+                                                                                                            anchorSearchMatches,
+                                                                                                            searchOptions,
+                                                                                                            methodName));
 
                     if (anchorSearchMatches.getMatchingElements() != null)
                     {
@@ -1559,7 +1558,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
         OpenMetadataRootElement openMetadataRootElement = this.getAssetByGUID(userId, assetGUID, suppliedQueryOptions);
 
-        if (openMetadataRootElement instanceof AssetElement)
+        if (openMetadataRootElement != null)
         {
             List<AssetLineageGraphNode>         linkedAssets              = new ArrayList<>();
             List<AssetLineageGraphRelationship> lineageRelationships      = new ArrayList<>();
@@ -1839,7 +1838,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
-        AssetElement asset = (AssetElement) this.getAssetByGUID(userId, assetGUID, queryOptions);
+        OpenMetadataRootElement asset = this.getAssetByGUID(userId, assetGUID, queryOptions);
 
         if (asset != null)
         {
@@ -2183,9 +2182,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(assetGUID, guidParameter, methodName);
 
-        OpenMetadataRootElement openMetadataRootElement = this.getAssetByGUID(userId, assetGUID, queryOptions);
+        OpenMetadataRootElement asset = this.getAssetByGUID(userId, assetGUID, queryOptions);
 
-        if (openMetadataRootElement instanceof AssetElement asset)
+        if (asset != null)
         {
             /*
              * Save the asset details into the asset graph bean.
@@ -2385,286 +2384,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
             return assetGraph;
         }
 
-
-        return null;
-    }
-
-
-
-
-    /**
-     * Add relevant relationships and mermaid graph to the returned element.
-     *
-     * @param rootElement element extracted from the repository
-     * @return bean or null
-     */
-    protected OpenMetadataRootElement addMermaidToRootElement(OpenMetadataRootElement rootElement)
-    {
-        if (rootElement != null)
-        {
-            AssetElement assetElement = new AssetElement(rootElement);
-
-            if (rootElement.getOtherRelatedElements() != null)
-            {
-                List<RelatedMetadataElementSummary> connections                   = new ArrayList<>();
-                List<RelatedMetadataElementSummary> hostedITAssets                = new ArrayList<>();
-                List<RelatedMetadataElementSummary> deployedOn                    = new ArrayList<>();
-                List<RelatedMetadataElementSummary> supportedSoftwareCapabilities = new ArrayList<>();
-                List<RelatedMetadataElementSummary> supportedDataSets             = new ArrayList<>();
-                List<RelatedMetadataElementSummary> dataSetContent                = new ArrayList<>();
-                List<RelatedMetadataElementSummary> visibleEndpoint               = new ArrayList<>();
-                List<RelatedMetadataElementSummary> apiEndpoints                  = new ArrayList<>();
-                List<RelatedMetadataElementSummary> attachedStorage               = new ArrayList<>();
-                List<RelatedMetadataElementSummary> parentProcesses               = new ArrayList<>();
-                List<RelatedMetadataElementSummary> childProcesses                = new ArrayList<>();
-                List<RelatedMetadataElementSummary> ports                         = new ArrayList<>();
-                List<RelatedMetadataElementSummary> nestedFiles                   = new ArrayList<>();
-                List<RelatedMetadataElementSummary> linkedFiles                   = new ArrayList<>();
-                List<RelatedMetadataElementSummary> linkedFolders                 = new ArrayList<>();
-                List<RelatedMetadataElementSummary> linkedMediaFiles              = new ArrayList<>();
-                List<RelatedMetadataElementSummary> topicSubscribers              = new ArrayList<>();
-                List<RelatedMetadataElementSummary> associatedLogs                = new ArrayList<>();
-                List<RelatedMetadataElementSummary> associatedLogSubjects         = new ArrayList<>();
-                List<RelatedMetadataElementSummary> archiveContents               = new ArrayList<>();
-                List<RelatedMetadataElementSummary> other                         = new ArrayList<>();
-
-                for (RelatedMetadataElementSummary relatedMetadataElementSummary : rootElement.getOtherRelatedElements())
-                {
-                    if (relatedMetadataElementSummary != null)
-                    {
-                        if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName))
-                        {
-                            connections.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName))
-                        {
-                            assetElement.setRootSchemaType(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElementSummary.getRelatedElementAtEnd1())
-                            {
-                                deployedOn.add(relatedMetadataElementSummary);
-                            }
-                            else
-                            {
-                                hostedITAssets.add(relatedMetadataElementSummary);
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName))
-                        {
-                            supportedSoftwareCapabilities.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElementSummary.getRelatedElementAtEnd1())
-                            {
-                                supportedDataSets.add(relatedMetadataElementSummary);
-                            }
-                            else
-                            {
-                                dataSetContent.add(relatedMetadataElementSummary);
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.VISIBLE_ENDPOINT.typeName))
-                        {
-                            visibleEndpoint.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName))
-                        {
-                            apiEndpoints.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.ATTACHED_STORAGE_RELATIONSHIP.typeName))
-                        {
-                            attachedStorage.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElementSummary.getRelatedElementAtEnd1())
-                            {
-                                parentProcesses.add(relatedMetadataElementSummary);
-                            }
-                            else
-                            {
-                                childProcesses.add(relatedMetadataElementSummary);
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName))
-                        {
-                            ports.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElementSummary.getRelatedElementAtEnd1())
-                            {
-                                assetElement.setRootSchemaType(relatedMetadataElementSummary);
-                            }
-                            else
-                            {
-                                nestedFiles.add(relatedMetadataElementSummary);
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElementSummary.getRelatedElementAtEnd1())
-                            {
-                                linkedFolders.add(relatedMetadataElementSummary);
-                            }
-                            else
-                            {
-                                linkedFiles.add(relatedMetadataElementSummary);
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName))
-                        {
-                            linkedMediaFiles.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.TOPIC_SUBSCRIBERS_RELATIONSHIP.typeName))
-                        {
-                            topicSubscribers.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElementSummary.getRelatedElementAtEnd1())
-                            {
-                                associatedLogSubjects.add(relatedMetadataElementSummary);
-                            }
-                            else
-                            {
-                                associatedLogs.add(relatedMetadataElementSummary);
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.COHORT_MEMBER_METADATA_COLLECTION_RELATIONSHIP.typeName))
-                        {
-                            assetElement.setCohortMember(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeName))
-                        {
-                            archiveContents.add(relatedMetadataElementSummary);
-                        }
-                        else
-                        {
-                            other.add(relatedMetadataElementSummary);
-                        }
-                    }
-                }
-
-                if (! connections.isEmpty())
-                {
-                    assetElement.setConnections(connections);
-                }
-
-                if (! hostedITAssets.isEmpty())
-                {
-                    assetElement.setHostedITAssets(connections);
-                }
-
-                if (! deployedOn.isEmpty())
-                {
-                    assetElement.setDeployedOn(connections);
-                }
-
-                if (! supportedSoftwareCapabilities.isEmpty())
-                {
-                    assetElement.setSupportedSoftwareCapabilities(supportedSoftwareCapabilities);
-                }
-
-                if (! supportedDataSets.isEmpty())
-                {
-                    assetElement.setSupportedDataSets(supportedDataSets);
-                }
-
-                if (! dataSetContent.isEmpty())
-                {
-                    assetElement.setDataSetContent(dataSetContent);
-                }
-
-                if (! visibleEndpoint.isEmpty())
-                {
-                    assetElement.setVisibleEndpoint(visibleEndpoint);
-                }
-
-                if (! apiEndpoints.isEmpty())
-                {
-                    assetElement.setApiEndpoints(apiEndpoints);
-                }
-
-                if (! attachedStorage.isEmpty())
-                {
-                    assetElement.setAttachedStorage(attachedStorage);
-                }
-
-                if (! parentProcesses.isEmpty())
-                {
-                    assetElement.setParentProcesses(parentProcesses);
-                }
-
-                if (! childProcesses.isEmpty())
-                {
-                    assetElement.setChildProcesses(childProcesses);
-                }
-
-                if (! ports.isEmpty())
-                {
-                    assetElement.setPorts(ports);
-                }
-
-                if (! nestedFiles.isEmpty())
-                {
-                    assetElement.setNestedFiles(nestedFiles);
-                }
-
-                if (! linkedFiles.isEmpty())
-                {
-                    assetElement.setLinkedFiles(linkedFiles);
-                }
-
-                if (! linkedFolders.isEmpty())
-                {
-                    assetElement.setLinkedFolders(linkedFolders);
-                }
-
-                if (! linkedMediaFiles.isEmpty())
-                {
-                    assetElement.setLinkedMediaFiles(linkedMediaFiles);
-                }
-
-                if (! topicSubscribers.isEmpty())
-                {
-                    assetElement.setTopicSubscribers(topicSubscribers);
-                }
-
-                if (! associatedLogs.isEmpty())
-                {
-                    assetElement.setAssociatedLogs(associatedLogs);
-                }
-
-                if (! associatedLogSubjects.isEmpty())
-                {
-                    assetElement.setAssociatedLogSubjects(associatedLogSubjects);
-                }
-
-                if (! archiveContents.isEmpty())
-                {
-                    assetElement.setArchiveContents(archiveContents);
-                }
-
-                if (! other.isEmpty())
-                {
-                    assetElement.setOtherRelatedElements(other);
-                }
-                else
-                {
-                    assetElement.setOtherRelatedElements(null);
-                }
-            }
-
-            AssetMermaidGraphBuilder graphBuilder = new AssetMermaidGraphBuilder(assetElement);
-
-            assetElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-
-            return assetElement;
-        }
 
         return null;
     }

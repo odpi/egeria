@@ -289,7 +289,7 @@ public class AnnotationStore
 
         updateOptions.setExternalSourceGUID(externalSourceGUID);
         updateOptions.setExternalSourceName(externalSourceName);
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(userId,
                                                        surveyReportGUID,
@@ -331,7 +331,7 @@ public class AnnotationStore
 
         updateOptions.setExternalSourceGUID(externalSourceGUID);
         updateOptions.setExternalSourceName(externalSourceName);
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(userId,
                                                        surveyReportGUID,
@@ -373,7 +373,7 @@ public class AnnotationStore
 
         updateOptions.setExternalSourceGUID(externalSourceGUID);
         updateOptions.setExternalSourceName(externalSourceName);
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(userId,
                                                        surveyReportGUID,
@@ -415,7 +415,7 @@ public class AnnotationStore
 
         updateOptions.setExternalSourceGUID(externalSourceGUID);
         updateOptions.setExternalSourceName(externalSourceName);
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(userId,
                                                        surveyReportGUID,
@@ -456,7 +456,7 @@ public class AnnotationStore
 
         updateOptions.setExternalSourceGUID(externalSourceGUID);
         updateOptions.setExternalSourceName(externalSourceName);
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(userId,
                                                        surveyReportGUID,
@@ -488,7 +488,7 @@ public class AnnotationStore
 
         updateOptions.setExternalSourceGUID(externalSourceGUID);
         updateOptions.setExternalSourceName(externalSourceName);
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(userId,
                                                        surveyReportGUID,
@@ -765,7 +765,7 @@ public class AnnotationStore
         if (builder != null)
         {
             UpdateOptions updateOptions = new UpdateOptions(this.getMetadataSourceOptions());
-            updateOptions.setMergePropertyUpdate(true);
+            updateOptions.setMergeUpdate(true);
 
             openMetadataStore.updateMetadataElementInStore(userId,
                                                            guid,

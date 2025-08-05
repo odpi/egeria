@@ -882,7 +882,7 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.STATUS));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
 

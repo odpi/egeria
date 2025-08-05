@@ -44,10 +44,10 @@ public class BasicOptions
     {
         if (template != null)
         {
-            forLineage = template.getForLineage();
+            forLineage             = template.getForLineage();
             forDuplicateProcessing = template.getForDuplicateProcessing();
-            effectiveTime = template.getEffectiveTime();
-            governanceZoneFilter          = template.getGovernanceZoneFilter();
+            effectiveTime          = template.getEffectiveTime();
+            governanceZoneFilter   = template.getGovernanceZoneFilter();
         }
     }
 

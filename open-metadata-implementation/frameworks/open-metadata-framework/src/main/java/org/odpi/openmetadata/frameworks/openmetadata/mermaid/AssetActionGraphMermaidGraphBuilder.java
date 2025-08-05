@@ -96,7 +96,12 @@ public class AssetActionGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                 if (label != null)
                 {
-                    Object status = line.getRelationshipProperties().get(OpenMetadataProperty.STATUS.name);
+                    Object status = line.getRelationshipProperties().get(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name);
+
+                    if (status == null)
+                    {
+                        status = line.getRelationshipProperties().get(OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name);
+                    }
 
                     if (status == null)
                     {

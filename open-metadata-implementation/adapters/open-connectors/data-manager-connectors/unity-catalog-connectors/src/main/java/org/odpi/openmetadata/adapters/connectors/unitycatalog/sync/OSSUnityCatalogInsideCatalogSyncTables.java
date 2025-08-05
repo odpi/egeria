@@ -374,7 +374,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
         UpdateOptions updateOptions = new UpdateOptions(super.getMetadataSourceOptions());
 
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(egeriaTableGUID,
                                                        updateOptions,

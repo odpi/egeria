@@ -896,9 +896,9 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteConnection(String                   serverName,
-                                         String                   viewServiceURLMarker,
-                                         String                   connectionGUID,
+    public VoidResponse deleteConnection(String            serverName,
+                                         String            viewServiceURLMarker,
+                                         String            connectionGUID,
                                          DeleteRequestBody requestBody)
     {
         final String methodName = "deleteConnection";

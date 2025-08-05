@@ -6300,10 +6300,10 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryGUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termGUID));
 
-        EnumElementDef termStatus = archiveHelper.getEnumElement(GlossaryTermRelationshipStatus.getOpenTypeName(), status);
+        EnumElementDef termStatus = archiveHelper.getEnumElement(CollectionMemberStatus.getOpenTypeName(), status);
 
-        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, GlossaryTermRelationshipStatus.getOpenTypeGUID(), GlossaryTermRelationshipStatus.getOpenTypeName(), termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.MEMBERSHIP_STATUS.name, CollectionMemberStatus.getOpenTypeGUID(), CollectionMemberStatus.getOpenTypeName(), termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MEMBERSHIP_RATIONALE.name, description, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(categoryGUID + "_to_" + termGUID + "_term_categorization_collection_membership_relationship"),

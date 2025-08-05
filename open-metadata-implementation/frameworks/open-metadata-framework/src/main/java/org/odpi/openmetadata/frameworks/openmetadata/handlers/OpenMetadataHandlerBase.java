@@ -333,7 +333,7 @@ public class OpenMetadataHandlerBase
         propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
         propertyHelper.validateObject(properties, propertiesName, methodName);
 
-        if ((updateOptions == null) || (!updateOptions.getMergePropertyUpdate()))
+        if ((updateOptions == null) || (!updateOptions.getMergeUpdate()))
         {
             if (properties instanceof ReferenceableProperties referenceableProperties)
             {

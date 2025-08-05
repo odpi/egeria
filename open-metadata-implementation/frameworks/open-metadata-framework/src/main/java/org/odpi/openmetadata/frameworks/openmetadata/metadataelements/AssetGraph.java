@@ -11,7 +11,7 @@ import java.util.Objects;
  * AssetGraph is used to return an asset along with all of its anchored elements and the relationships
  * that they have between one another and to other elements.
  */
-public class AssetGraph extends AssetElement
+public class AssetGraph extends OpenMetadataRootElement
 {
     private List<MetadataElementSummary>     anchoredElements                   = null;
     private List<RelatedMetadataNodeSummary> relationships                      = null;
@@ -30,11 +30,11 @@ public class AssetGraph extends AssetElement
 
 
     /**
-     * Copy/clone constructor.  Note, this is a deep copy
+     * Copy/clone constructor.
      *
      * @param template template values for asset
      */
-    public AssetGraph(AssetElement template)
+    public AssetGraph(OpenMetadataRootElement template)
     {
         super(template);
     }

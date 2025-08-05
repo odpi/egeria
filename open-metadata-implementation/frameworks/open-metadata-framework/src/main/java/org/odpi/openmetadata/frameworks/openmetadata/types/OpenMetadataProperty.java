@@ -2098,11 +2098,6 @@ public enum OpenMetadataProperty
     LAST_VERIFIED("lastVerified", DataType.DATE.getName(), "Date when this reference was last checked.", null, "bc5280ed-bd1c-4874-870c-7bc4fefebad3"),
 
     /**
-     * Status of the relationship.
-     */
-    STATUS("status", GlossaryTermRelationshipStatus.getOpenTypeName(), "Status of the relationship.",  GlossaryTermRelationshipStatus.ACTIVE.getName(), "b46a1425-b307-4706-bc3d-c1c2d4adfbfd"),
-
-    /**
      * When does the entry refer to.
      */
     TIMELINE_ENTRY_DATE("timelineEntryDate", DataType.DATE.getName(), "When does the entry refer to.", null, "b04d9a3f-cdfe-44cf-91b3-504873af09f2"),

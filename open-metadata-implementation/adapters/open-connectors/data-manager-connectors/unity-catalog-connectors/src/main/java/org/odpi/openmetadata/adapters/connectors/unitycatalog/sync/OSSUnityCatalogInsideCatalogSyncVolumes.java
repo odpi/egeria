@@ -372,7 +372,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
         UpdateOptions updateOptions = new UpdateOptions(super.getMetadataSourceOptions());
 
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
         openMetadataStore.updateMetadataElementInStore(egeriaVolumeGUID,
                                                        updateOptions,
                                                        this.getElementProperties(volumeInfo));
