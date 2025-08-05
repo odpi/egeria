@@ -299,7 +299,6 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         {
             TemplateOptions templateOptions = new TemplateOptions();
 
-            templateOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
             templateOptions.setAnchorGUID(ucServerGUID);
             templateOptions.setIsOwnAnchor(false);
             templateOptions.setAnchorScopeGUID(null);
@@ -309,6 +308,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
             templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
             ucCatalogGUID = openMetadataStore.createMetadataElementFromTemplate(
+                    deployedImplementationType.getAssociatedTypeName(),
                     templateOptions,
                     templateGUID,
                     this.getElementProperties(qualifiedName, catalogInfo),
@@ -323,7 +323,6 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
             NewElementOptions newElementOptions = new NewElementOptions();
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
 
             newElementOptions.setAnchorGUID(ucServerGUID);
             newElementOptions.setIsOwnAnchor(false);
@@ -333,7 +332,8 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
             newElementOptions.setParentAtEnd1(parentAtEnd1);
             newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucCatalogGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+            ucCatalogGUID = openMetadataStore.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+                                                                           newElementOptions,
                                                                            null,
                                                                            new NewElementProperties(this.getElementProperties(qualifiedName, catalogInfo)),
                                                                            new NewElementProperties(propertyHelper.addEnumProperty(null,

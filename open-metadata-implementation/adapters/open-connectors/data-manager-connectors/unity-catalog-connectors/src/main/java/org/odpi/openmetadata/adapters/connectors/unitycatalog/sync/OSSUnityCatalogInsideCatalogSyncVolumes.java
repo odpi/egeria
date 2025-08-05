@@ -293,7 +293,6 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
             TemplateOptions templateOptions = new TemplateOptions(super.getMetadataSourceOptions());
 
-            templateOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
             templateOptions.setAnchorGUID(schemaGUID);
             templateOptions.setIsOwnAnchor(false);
             templateOptions.setAnchorScopeGUID(catalogGUID);
@@ -302,7 +301,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
             templateOptions.setParentAtEnd1(parentAtEnd1);
             templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucVolumeGUID = openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+            ucVolumeGUID = openMetadataStore.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
+                                                                               templateOptions,
                                                                                templateGUID,
                                                                                replacementProperties,
                                                                                this.getPlaceholderProperties(volumeInfo),
@@ -315,7 +315,6 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
             NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
 
             newElementOptions.setAnchorGUID(schemaGUID);
             newElementOptions.setIsOwnAnchor(false);
@@ -325,7 +324,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
             newElementOptions.setParentAtEnd1(parentAtEnd1);
             newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucVolumeGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+            ucVolumeGUID = openMetadataStore.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+                                                                          newElementOptions,
                                                                           null,
                                                                           new NewElementProperties(this.getElementProperties(qualifiedName, volumeInfo)),
                                                                           null);

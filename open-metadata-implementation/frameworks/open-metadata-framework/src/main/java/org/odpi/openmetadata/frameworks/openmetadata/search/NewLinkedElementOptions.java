@@ -20,10 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NewLinkedElementOptions extends AnchorOptions
 {
-    private String                 openMetadataTypeName         = null;
-    private String                 parentGUID                   = null;
-    private String                 parentRelationshipTypeName   = null;
-    private boolean                parentAtEnd1                 = true;
+    private String  parentGUID                 = null;
+    private String  parentRelationshipTypeName = null;
+    private boolean parentAtEnd1               = true;
 
 
     /**
@@ -46,8 +45,7 @@ public class NewLinkedElementOptions extends AnchorOptions
 
         if (template != null)
         {
-            openMetadataTypeName = template.getOpenMetadataTypeName();
-            parentGUID = template.getParentGUID();
+            parentGUID              = template.getParentGUID();
             parentRelationshipTypeName = template.getParentRelationshipTypeName();
             parentAtEnd1 = template.getParentAtEnd1();
         }
@@ -73,29 +71,6 @@ public class NewLinkedElementOptions extends AnchorOptions
     public NewLinkedElementOptions(MetadataSourceOptions template)
     {
         super(template);
-    }
-
-
-
-    /**
-     * Return the open metadata type name for the element to create.
-     *
-     * @return string name
-     */
-    public String getOpenMetadataTypeName()
-    {
-        return openMetadataTypeName;
-    }
-
-
-    /**
-     * Set up the open metadata type name for the element to create.
-     *
-     * @param openMetadataTypeName string name
-     */
-    public void setOpenMetadataTypeName(String openMetadataTypeName)
-    {
-        this.openMetadataTypeName = openMetadataTypeName;
     }
 
 
@@ -176,8 +151,7 @@ public class NewLinkedElementOptions extends AnchorOptions
     public String toString()
     {
         return "NewLinkedElementOptions{" +
-                "openMetadataTypeName='" + openMetadataTypeName + '\'' +
-                ", parentGUID='" + parentGUID + '\'' +
+                "parentGUID='" + parentGUID + '\'' +
                 ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
                 ", parentAtEnd1=" + parentAtEnd1 +
                 "} " + super.toString();
@@ -206,7 +180,6 @@ public class NewLinkedElementOptions extends AnchorOptions
             return false;
         }
         return parentAtEnd1 == that.parentAtEnd1 &&
-                Objects.equals(openMetadataTypeName, that.openMetadataTypeName) &&
                 Objects.equals(parentGUID, that.parentGUID) &&
                 Objects.equals(parentRelationshipTypeName, that.parentRelationshipTypeName);
     }
@@ -220,6 +193,6 @@ public class NewLinkedElementOptions extends AnchorOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), openMetadataTypeName, parentGUID, parentRelationshipTypeName, parentAtEnd1);
+        return Objects.hash(super.hashCode(), parentGUID, parentRelationshipTypeName, parentAtEnd1);
     }
 }

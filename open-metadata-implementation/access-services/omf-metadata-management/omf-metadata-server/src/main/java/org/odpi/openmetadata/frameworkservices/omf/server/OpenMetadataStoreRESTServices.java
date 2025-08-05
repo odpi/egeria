@@ -2350,7 +2350,7 @@ public class OpenMetadataStoreRESTServices
                 response.setGUID(handler.createMetadataElementFromTemplate(userId,
                                                                            requestBody.getExternalSourceGUID(),
                                                                            requestBody.getExternalSourceName(),
-                                                                           requestBody.getOpenMetadataTypeName(),
+                                                                           requestBody.getTypeName(),
                                                                            requestBody.getAnchorGUID(),
                                                                            requestBody.getIsOwnAnchor(),
                                                                            requestBody.getAnchorScopeGUID(),

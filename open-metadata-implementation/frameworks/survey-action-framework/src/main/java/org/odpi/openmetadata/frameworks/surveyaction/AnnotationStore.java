@@ -115,7 +115,6 @@ public class AnnotationStore
         newElementOptions.setExternalSourceGUID(externalSourceGUID);
         newElementOptions.setExternalSourceName(externalSourceName);
 
-        newElementOptions.setOpenMetadataTypeName(OpenMetadataType.SURVEY_REPORT.typeName);
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setAnchorGUID(assetGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -126,6 +125,7 @@ public class AnnotationStore
 
 
         this.surveyReportGUID = openMetadataStore.createMetadataElementInStore(userId,
+                                                                               OpenMetadataType.SURVEY_REPORT.typeName,
                                                                                newElementOptions,
                                                                                null,
                                                                                new NewElementProperties(properties),
@@ -636,7 +636,6 @@ public class AnnotationStore
             NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(OpenMetadataType.ANNOTATION.typeName);
             newElementOptions.setAnchorGUID(assetGUID);
             newElementOptions.setIsOwnAnchor(false);
 
@@ -644,8 +643,15 @@ public class AnnotationStore
             newElementOptions.setParentAtEnd1(true);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName);
 
+            String typeName = OpenMetadataType.ANNOTATION.typeName;
+
+            if (annotation.getOpenMetadataTypeName() != null)
+            {
+                typeName = annotation.getOpenMetadataTypeName();
+            }
 
             String annotationGUID = openMetadataStore.createMetadataElementInStore(userId,
+                                                                                   typeName,
                                                                                    newElementOptions,
                                                                                    null,
                                                                                    new NewElementProperties(builder.getElementProperties()),

@@ -1181,9 +1181,9 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
         NewElementOptions newElementOptions = new NewElementOptions();
 
         newElementOptions.setInitialStatus(initialStatus);
-        newElementOptions.setOpenMetadataTypeName(metadataElementTypeName);
 
         return this.createMetadataElementInStore(userId,
+                                                 metadataElementTypeName,
                                                  newElementOptions,
                                                  null,
                                                  properties,
@@ -1225,9 +1225,9 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
         newElementOptions.setExternalSourceGUID(externalSourceGUID);
         newElementOptions.setExternalSourceName(externalSourceName);
         newElementOptions.setInitialStatus(initialStatus);
-        newElementOptions.setOpenMetadataTypeName(metadataElementTypeName);
 
         return this.createMetadataElementInStore(userId,
+                                                 metadataElementTypeName,
                                                  newElementOptions,
                                                  null,
                                                  properties,
@@ -1242,6 +1242,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * effectivity dates.
      *
      * @param userId caller's userId
+     * @param metadataElementTypeName metadataElementTypeName
      * @param newElementOptions details of the element to create
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param properties properties of the new metadata element
@@ -1255,6 +1256,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      */
     @Override
     public abstract String createMetadataElementInStore(String                            userId,
+                                                        String                            metadataElementTypeName,
                                                         NewElementOptions                 newElementOptions,
                                                         Map<String, NewElementProperties> initialClassifications,
                                                         NewElementProperties              properties,
@@ -1270,6 +1272,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * copied in this process.
      *
      * @param userId caller's userId
+     * @param metadataElementTypeName expected type name for the new element
      * @param templateOptions details of the element to create
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
@@ -1286,6 +1289,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      */
     @Override
     public abstract String createMetadataElementFromTemplate(String               userId,
+                                                             String               metadataElementTypeName,
                                                              TemplateOptions      templateOptions,
                                                              String               templateGUID,
                                                              ElementProperties    replacementProperties,

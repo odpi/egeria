@@ -288,7 +288,6 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
         {
             TemplateOptions templateOptions = new TemplateOptions(super.getMetadataSourceOptions());
 
-            templateOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
             templateOptions.setAnchorGUID(schemaGUID);
             templateOptions.setIsOwnAnchor(false);
             templateOptions.setAnchorScopeGUID(catalogGUID);
@@ -297,7 +296,8 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
             templateOptions.setParentAtEnd1(parentAtEnd1);
             templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucModelGUID = openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+            ucModelGUID = openMetadataStore.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
+                                                                              templateOptions,
                                                                               templateGUID,
                                                                               null,
                                                                               this.getPlaceholderProperties(modelInfo),
@@ -310,7 +310,6 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
             NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
             newElementOptions.setAnchorGUID(schemaGUID);
             newElementOptions.setIsOwnAnchor(false);
             newElementOptions.setAnchorScopeGUID(catalogGUID);
@@ -319,7 +318,8 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
             newElementOptions.setParentAtEnd1(parentAtEnd1);
             newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucModelGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+            ucModelGUID = openMetadataStore.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+                                                                         newElementOptions,
                                                                          null,
                                                                          new NewElementProperties(this.getElementProperties(qualifiedName, modelInfo)),
                                                                          null);

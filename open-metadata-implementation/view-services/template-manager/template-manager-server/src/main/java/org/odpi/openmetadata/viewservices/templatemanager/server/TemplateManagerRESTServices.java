@@ -75,6 +75,7 @@ public class TemplateManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setGUID(handler.createMetadataElementInStore(userId,
+                                                                      requestBody.getTypeName(),
                                                                       requestBody,
                                                                       requestBody.getInitialClassifications(),
                                                                       requestBody.getProperties(),
@@ -129,6 +130,7 @@ public class TemplateManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setGUID(handler.createMetadataElementFromTemplate(userId,
+                                                                           requestBody.getTypeName(),
                                                                            requestBody,
                                                                            requestBody.getTemplateGUID(),
                                                                            requestBody.getReplacementProperties(),

@@ -242,7 +242,6 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
             {
                 NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
-                newElementOptions.setOpenMetadataTypeName(OpenMetadataType.DATABASE_MANAGER.typeName);
                 newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
                 newElementOptions.setAnchorGUID(databaseServerGUID);
                 newElementOptions.setIsOwnAnchor(false);
@@ -251,7 +250,8 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
                 newElementOptions.setParentAtEnd1(true);
                 newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
 
-                databaseManagerGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+                databaseManagerGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.DATABASE_MANAGER.typeName,
+                                                                                     newElementOptions,
                                                                                      null,
                                                                                      new NewElementProperties(propertyHelper.addStringProperty(null,
                                                                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,

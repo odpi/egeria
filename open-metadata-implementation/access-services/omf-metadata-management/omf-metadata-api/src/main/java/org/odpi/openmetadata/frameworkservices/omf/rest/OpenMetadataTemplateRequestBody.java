@@ -25,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataTemplateRequestBody extends TemplateOptions
 {
+    private String                 typeName                     = null;
     private String                 templateGUID                 = null;
     private ElementProperties      replacementProperties        = null;
     private Map<String, String>    placeholderPropertyValues    = null;
@@ -51,6 +52,7 @@ public class OpenMetadataTemplateRequestBody extends TemplateOptions
 
         if (template != null)
         {
+            typeName                     = template.getTypeName();
             replacementProperties        = template.getReplacementProperties();
             templateGUID                 = template.getTemplateGUID();
             placeholderPropertyValues    = template.getPlaceholderPropertyValues();
@@ -67,6 +69,28 @@ public class OpenMetadataTemplateRequestBody extends TemplateOptions
     public OpenMetadataTemplateRequestBody(TemplateOptions template)
     {
         super(template);
+    }
+
+
+    /**
+     * Return the open metadata type name for the new metadata element.
+     *
+     * @return string name
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Set up the open metadata type name for the new metadata element.
+     *
+     * @param typeName string name
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
     }
 
 
@@ -167,7 +191,8 @@ public class OpenMetadataTemplateRequestBody extends TemplateOptions
     public String toString()
     {
         return "OpenMetadataTemplateRequestBody{" +
-                "templateGUID='" + templateGUID + '\'' +
+                "typeName='" + typeName + '\'' +
+                ", templateGUID='" + templateGUID + '\'' +
                 ", replacementProperties=" + replacementProperties +
                 ", placeholderPropertyValues=" + placeholderPropertyValues +
                 ", parentRelationshipProperties=" + parentRelationshipProperties +
@@ -196,9 +221,10 @@ public class OpenMetadataTemplateRequestBody extends TemplateOptions
         {
             return false;
         }
-        return Objects.equals(replacementProperties, that.replacementProperties) &&
-                       Objects.equals(placeholderPropertyValues, that.placeholderPropertyValues) &&
-                       Objects.equals(templateGUID, that.templateGUID)&&
+        return Objects.equals(typeName, that.typeName) &&
+                Objects.equals(replacementProperties, that.replacementProperties) &&
+                Objects.equals(placeholderPropertyValues, that.placeholderPropertyValues) &&
+                Objects.equals(templateGUID, that.templateGUID)&&
                 Objects.equals(parentRelationshipProperties, that.parentRelationshipProperties);
     }
 
@@ -211,7 +237,7 @@ public class OpenMetadataTemplateRequestBody extends TemplateOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), replacementProperties, templateGUID,
+        return Objects.hash(super.hashCode(), typeName, replacementProperties, templateGUID,
                             placeholderPropertyValues, parentRelationshipProperties);
     }
 }

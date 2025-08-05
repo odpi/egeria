@@ -451,6 +451,7 @@ public interface MetadataElementInterface
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createMetadataElementInStore(String                            userId,
+                                        String                            metadataElementTypeName,
                                         NewElementOptions                 newElementOptions,
                                         Map<String, NewElementProperties> initialClassifications,
                                         NewElementProperties              properties,
@@ -482,6 +483,7 @@ public interface MetadataElementInterface
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createMetadataElementFromTemplate(String               userId,
+                                             String               metadataElementTypeName,
                                              TemplateOptions      templateOptions,
                                              String               templateGUID,
                                              ElementProperties    replacementProperties,

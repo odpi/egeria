@@ -497,7 +497,6 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
         templateOptions.setExternalSourceGUID(externalSourceGUID);
         templateOptions.setExternalSourceName(externalSourceName);
-        templateOptions.setOpenMetadataTypeName(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName());
         templateOptions.setIsOwnAnchor(false);
         templateOptions.setAnchorGUID(catalogGUID);
         templateOptions.setAnchorScopeGUID(topLevelProjectGUID);
@@ -506,7 +505,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         templateOptions.setParentAtEnd1(true);
         templateOptions.setParentRelationshipTypeName(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
 
-        return openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+        return openMetadataStore.createMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
+                                                                   templateOptions,
                                                                    templateGUID,
                                                                    null,
                                                                    placeholderProperties,
@@ -567,7 +567,6 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
         templateOptions.setExternalSourceGUID(externalSourceGUID);
         templateOptions.setExternalSourceName(externalSourceName);
-        templateOptions.setOpenMetadataTypeName(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName());
         templateOptions.setIsOwnAnchor(false);
         templateOptions.setAnchorGUID(schemaGUID);
         templateOptions.setAnchorScopeGUID(null);
@@ -576,7 +575,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         templateOptions.setParentAtEnd1(true);
         templateOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
 
-        String volumeGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(templateOptions,
+        String volumeGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
+                                                                                                        templateOptions,
                                                                                                         templateGUID,
                                                                                                         null,
                                                                                                         placeholderProperties,

@@ -258,7 +258,6 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         {
             TemplateOptions templateOptions = new TemplateOptions(super.getMetadataSourceOptions());
 
-            templateOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
             templateOptions.setAnchorGUID(catalogGUID);
             templateOptions.setIsOwnAnchor(false);
             templateOptions.setAnchorScopeGUID(catalogGUID);
@@ -267,7 +266,8 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
             templateOptions.setParentAtEnd1(parentAtEnd1);
             templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucSchemaGUID = openMetadataStore.createMetadataElementFromTemplate(templateOptions,
+            ucSchemaGUID = openMetadataStore.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
+                                                                               templateOptions,
                                                                                templateGUID,
                                                                                null,
                                                                                this.getPlaceholderProperties(schemaInfo),
@@ -281,7 +281,6 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
             NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
 
             newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-            newElementOptions.setOpenMetadataTypeName(deployedImplementationType.getAssociatedTypeName());
 
             newElementOptions.setAnchorGUID(catalogGUID);
             newElementOptions.setIsOwnAnchor(false);
@@ -291,7 +290,8 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
             newElementOptions.setParentAtEnd1(parentAtEnd1);
             newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            ucSchemaGUID = openMetadataStore.createMetadataElementInStore(newElementOptions,
+            ucSchemaGUID = openMetadataStore.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+                                                                          newElementOptions,
                                                                           null,
                                                                           new NewElementProperties(this.getElementProperties(qualifiedName, schemaInfo)),
                                                                           new NewElementProperties(propertyHelper.addEnumProperty(null,

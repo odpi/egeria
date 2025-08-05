@@ -285,7 +285,6 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
 
         TemplateOptions templateOptions = new TemplateOptions(metadataSourceOptions);
 
-        templateOptions.setOpenMetadataTypeName(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName());
         templateOptions.setAnchorGUID(catalogGUID);
         templateOptions.setIsOwnAnchor(false);
         templateOptions.setAnchorScopeGUID(catalogGUID);
@@ -293,7 +292,8 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
         templateOptions.setParentAtEnd1(true);
         templateOptions.setParentRelationshipTypeName(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
 
-        return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(templateOptions,
+        return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
+                                                                                          templateOptions,
                                                                                           templateGUID,
                                                                                           null,
                                                                                           governanceContext.getRequestParameters(),
@@ -335,7 +335,6 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
 
         TemplateOptions templateOptions = new TemplateOptions(metadataSourceOptions);
 
-        templateOptions.setOpenMetadataTypeName(openMetadataTypeName);
         templateOptions.setAllowRetrieve(true);
         templateOptions.setAnchorGUID(schemaGUID);
         templateOptions.setIsOwnAnchor(false);
@@ -344,7 +343,8 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
         templateOptions.setParentAtEnd1(true);
         templateOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
 
-        String elementGUID = governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(templateOptions,
+        String elementGUID = governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(openMetadataTypeName,
+                                                                                                        templateOptions,
                                                                                                         templateGUID,
                                                                                                         null,
                                                                                                         governanceContext.getRequestParameters(),
