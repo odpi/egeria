@@ -194,7 +194,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                     /*
                      * Exchange all glossaries found in the open metadata ecosystem.
                      */
-                    List<GlossaryElement> glossaries = glossaryClient.findGlossaries(".*", null);
+                    List<GlossaryElement> glossaries = glossaryClient.findGlossaries(null, null);
 
                     if (glossaries != null)
                     {
