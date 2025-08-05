@@ -16,7 +16,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
@@ -110,7 +109,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                             OpenMetadataType.SOFTWARE_SERVER.typeName);
 
             ApacheAtlasRESTConnector atlasConnector = (ApacheAtlasRESTConnector)connector;
-            AssetElement             assetUniverse  = assetStore.getAssetProperties();
+            OpenMetadataRootElement  assetUniverse  = assetStore.getAssetProperties();
 
 
             AnnotationStore   annotationStore   = surveyContext.getAnnotationStore();
@@ -703,12 +702,12 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws UserNotAuthorizedException not authorized to access the open metadata store
      * @throws ConnectorCheckedException the connector is not able to process because the existing asset information is invalid
      */
-    private void upsertRootSchemaType(String            assetGUID,
-                                      AssetElement      assetUniverse,
-                                      OpenMetadataStore openMetadataStore) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  ConnectorCheckedException
+    private void upsertRootSchemaType(String                  assetGUID,
+                                      OpenMetadataRootElement assetUniverse,
+                                      OpenMetadataStore       openMetadataStore) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        ConnectorCheckedException
     {
         final String methodName = "addRootSchemaType";
 
@@ -811,9 +810,9 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem  adding the data field to the Annotation store.
      */
-    private void getSchemaAttributeForAtlasEntityDef(AtlasEntityDef    atlasEntityDef,
-                                                     AssetElement      assetUniverse,
-                                                     OpenMetadataStore openMetadataStore) throws InvalidParameterException,
+    private void getSchemaAttributeForAtlasEntityDef(AtlasEntityDef          atlasEntityDef,
+                                                     OpenMetadataRootElement assetUniverse,
+                                                     OpenMetadataStore       openMetadataStore) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
@@ -836,9 +835,9 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem  adding the schema attribute to the open metadata repository.
      */
-    private void getSchemaAttributeForAtlasClassificationDef(AtlasClassificationDef atlasClassificationDef,
-                                                             AssetElement           assetUniverse,
-                                                             OpenMetadataStore      openMetadataStore) throws InvalidParameterException,
+    private void getSchemaAttributeForAtlasClassificationDef(AtlasClassificationDef  atlasClassificationDef,
+                                                             OpenMetadataRootElement assetUniverse,
+                                                             OpenMetadataStore       openMetadataStore) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException
     {
@@ -878,7 +877,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws PropertyServerException there was a problem  adding the schema attribute to the open metadata repository.
      */
     private void getSchemaAttributeForAtlasBusinessMetadataDef(AtlasBusinessMetadataDef atlasBusinessMetadataDef,
-                                                               AssetElement             assetUniverse,
+                                                               OpenMetadataRootElement  assetUniverse,
                                                                OpenMetadataStore        openMetadataStore) throws InvalidParameterException,
                                                                                                                 PropertyServerException,
                                                                                                                 UserNotAuthorizedException
@@ -903,7 +902,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws PropertyServerException there was a problem  adding the schema attribute to the open metadata repository.
      */
     private void getSchemaAttributeForAtlasRelationshipDef(AtlasRelationshipDef     atlasRelationshipDef,
-                                                           AssetElement             assetUniverse,
+                                                           OpenMetadataRootElement  assetUniverse,
                                                            OpenMetadataStore        openMetadataStore) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException
@@ -997,7 +996,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws PropertyServerException there was a problem  adding the data field to the Annotation store.
      */
     private String getSchemaAttributeForTypeDef(String                   openMetadataTypeName,
-                                                AssetElement            assetUniverse,
+                                                OpenMetadataRootElement  assetUniverse,
                                                 AtlasStructDef           atlasTypeDef,
                                                 String                   atlasCategoryName,
                                                 Set<String>              atlasSuperTypes,

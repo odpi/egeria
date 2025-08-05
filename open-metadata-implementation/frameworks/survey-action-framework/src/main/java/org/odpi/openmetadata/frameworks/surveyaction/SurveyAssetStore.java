@@ -5,16 +5,13 @@ package org.odpi.openmetadata.frameworks.surveyaction;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 
@@ -95,18 +92,11 @@ public class SurveyAssetStore
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public AssetElement getAssetProperties() throws InvalidParameterException,
-                                                    PropertyServerException,
-                                                    UserNotAuthorizedException
+    public OpenMetadataRootElement getAssetProperties() throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
-        OpenMetadataRootElement openMetadataRootElement = assetHandler.getAssetByGUID(userId, assetGUID, null);
-
-        if (openMetadataRootElement instanceof AssetElement assetElement)
-        {
-            return assetElement;
-        }
-
-        return null;
+        return assetHandler.getAssetByGUID(userId, assetGUID, null);
     }
 
 
@@ -123,7 +113,7 @@ public class SurveyAssetStore
                                             PropertyServerException,
                                             UserNotAuthorizedException
     {
-        AssetElement assetElement = this.getAssetProperties();
+        OpenMetadataRootElement assetElement = this.getAssetProperties();
 
         if (assetElement.getProperties() instanceof AssetProperties assetProperties)
         {

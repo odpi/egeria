@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworkservices.omf.listener;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;

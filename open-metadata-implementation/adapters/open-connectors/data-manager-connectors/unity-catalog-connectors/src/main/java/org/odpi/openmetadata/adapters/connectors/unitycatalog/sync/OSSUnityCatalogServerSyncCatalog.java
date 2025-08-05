@@ -381,7 +381,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
         UpdateOptions updateOptions = new UpdateOptions(super.getMetadataSourceOptions());
 
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(egeriaCatalogGUID,
                                                        updateOptions,

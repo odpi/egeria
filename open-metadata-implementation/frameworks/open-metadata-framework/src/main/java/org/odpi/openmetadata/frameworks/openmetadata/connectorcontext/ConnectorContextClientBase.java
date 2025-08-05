@@ -472,7 +472,7 @@ public class ConnectorContextClientBase
     {
         UpdateOptions updateOptions = new UpdateOptions(this.getMetadataSourceOptions());
 
-        updateOptions.setMergePropertyUpdate(mergeUpdate);
+        updateOptions.setMergeUpdate(mergeUpdate);
 
         return updateOptions;
     }

@@ -11,7 +11,7 @@ import java.util.Objects;
  * AssetSearchMatches is used to return an asset whose has anchored elements returned from a search.
  * The matching element are the OCF beans for the matching elements.
  */
-public class AssetSearchMatches extends AssetElement
+public class AssetSearchMatches extends OpenMetadataRootElement
 {
     List<MetadataElementSummary> matchingElements = null;
 
@@ -24,11 +24,11 @@ public class AssetSearchMatches extends AssetElement
 
 
     /**
-     * Copy/clone constructor.  Note, this is a deep copy
+     * Copy/clone constructor.
      *
      * @param template template values for asset summary
      */
-    public AssetSearchMatches(AssetElement template)
+    public AssetSearchMatches(OpenMetadataRootElement template)
     {
         super(template);
     }

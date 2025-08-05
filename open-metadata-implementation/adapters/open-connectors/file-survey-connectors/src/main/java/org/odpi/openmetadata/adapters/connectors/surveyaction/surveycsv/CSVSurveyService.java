@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
@@ -183,7 +182,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
             connector = super.performCheckAssetAnalysisStep(CSVFileStoreConnector.class,
                                                             OpenMetadataType.CSV_FILE.typeName);
 
-            AssetElement          assetElement   = assetStore.getAssetProperties();
+            OpenMetadataRootElement          assetElement   = assetStore.getAssetProperties();
             CSVFileStoreConnector assetConnector = (CSVFileStoreConnector)connector;
             long                  recordCount    = assetConnector.getRecordCount();
 

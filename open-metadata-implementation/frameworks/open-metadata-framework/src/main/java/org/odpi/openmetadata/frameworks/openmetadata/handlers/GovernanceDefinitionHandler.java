@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.GovernanceDefinitionGraphMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.GovernanceDefinitionMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
@@ -672,106 +671,5 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         designGUID,
                                                         implementationResourceGUID,
                                                         deleteOptions);
-    }
-
-
-
-
-    /**
-     * Add relevant relationships and mermaid graph to the returned element.
-     *
-     * @param rootElement new root element
-     * @return root element with graph
-     */
-    protected OpenMetadataRootElement addMermaidToRootElement(OpenMetadataRootElement rootElement)
-    {
-        if (rootElement != null)
-        {
-            GovernanceDefinitionElement governanceDefinitionElement = new GovernanceDefinitionElement(rootElement);
-
-            if (governanceDefinitionElement.getOtherRelatedElements() != null)
-            {
-                List<RelatedMetadataElementSummary> metrics                         = new ArrayList<>();
-                List<RelatedMetadataElementSummary> governs                         = new ArrayList<>();
-                List<RelatedMetadataElementSummary> peers                           = new ArrayList<>();
-                List<RelatedMetadataElementSummary> supportedGovernanceDefinitions  = new ArrayList<>();
-                List<RelatedMetadataElementSummary> supportingGovernanceDefinitions = new ArrayList<>();
-                List<RelatedMetadataElementSummary> others                          = new ArrayList<>();
-
-                for (RelatedMetadataElementSummary relatedMetadataElement : governanceDefinitionElement.getOtherRelatedElements())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        if ((propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeName) && (relatedMetadataElement.getRelatedElementAtEnd1())))
-                        {
-                            metrics.add(relatedMetadataElement);
-                        }
-                        else if ((propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName)) ||
-                                 (propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName)) ||
-                                 (propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP.typeName)))
-                        {
-                            peers.add(relatedMetadataElement);
-                        }
-                        else if ((propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName)) ||
-                                 (propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName)))
-                        {
-                            if (relatedMetadataElement.getRelatedElementAtEnd1())
-                            {
-                                supportedGovernanceDefinitions.add(relatedMetadataElement);
-                            }
-                            else
-                            {
-                                supportingGovernanceDefinitions.add(relatedMetadataElement);
-                            }
-                        }
-                        else if ((propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName)) && (relatedMetadataElement.getRelatedElementAtEnd1()))
-                        {
-                            governs.add(relatedMetadataElement);
-                        }
-                        else
-                        {
-                            others.add(relatedMetadataElement);
-                        }
-                    }
-                }
-
-                if (! metrics.isEmpty())
-                {
-                    governanceDefinitionElement.setMetrics(metrics);
-                }
-                if (! governs.isEmpty())
-                {
-                    governanceDefinitionElement.setGovernedElements(governs);
-                }
-                if (! peers.isEmpty())
-                {
-                    governanceDefinitionElement.setPeerGovernanceDefinitions(peers);
-                }
-                if (! supportedGovernanceDefinitions.isEmpty())
-                {
-                    governanceDefinitionElement.setSupportedGovernanceDefinitions(supportedGovernanceDefinitions);
-                }
-                if (! supportingGovernanceDefinitions.isEmpty())
-                {
-                    governanceDefinitionElement.setSupportingGovernanceDefinitions(supportingGovernanceDefinitions);
-                }
-                if (! others.isEmpty())
-                {
-                    governanceDefinitionElement.setOtherRelatedElements(others);
-                }
-                else
-                {
-                    governanceDefinitionElement.setOtherRelatedElements(null);
-                }
-            }
-
-            GovernanceDefinitionMermaidGraphBuilder graphBuilder = new GovernanceDefinitionMermaidGraphBuilder(governanceDefinitionElement);
-
-            governanceDefinitionElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-
-            return governanceDefinitionElement;
-        }
-
-        return null;
     }
 }

@@ -4,10 +4,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationship;
-
 import java.util.List;
 import java.util.Objects;
 

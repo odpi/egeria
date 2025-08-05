@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
@@ -140,9 +139,9 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                 OpenMetadataType.CSV_FILE.typeName);
 
 
-                AssetElement          assetUniverse  = assetStore.getAssetProperties();
-                CSVFileStoreConnector assetConnector = (CSVFileStoreConnector) connector;
-                long                  recordCount    = assetConnector.getRecordCount();
+                OpenMetadataRootElement assetUniverse  = assetStore.getAssetProperties();
+                CSVFileStoreConnector   assetConnector = (CSVFileStoreConnector) connector;
+                long                    recordCount    = assetConnector.getRecordCount();
 
 
                 QualityAnnotation columnCountAnnotation = new QualityAnnotation();

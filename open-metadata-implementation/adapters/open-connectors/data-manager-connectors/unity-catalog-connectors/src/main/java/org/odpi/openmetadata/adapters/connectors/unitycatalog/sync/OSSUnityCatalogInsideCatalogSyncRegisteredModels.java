@@ -365,7 +365,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
 
         UpdateOptions updateOptions = new UpdateOptions(super.getMetadataSourceOptions());
 
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(egeriaModelGUID,
                                                        updateOptions,

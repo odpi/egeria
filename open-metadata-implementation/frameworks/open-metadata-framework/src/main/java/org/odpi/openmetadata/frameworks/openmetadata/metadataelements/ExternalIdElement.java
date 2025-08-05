@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EndpointElement contains the properties and header for an endpoint retrieved from the metadata repository.
+ * ExternalIdElement contains the properties and header for an endpoint retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -337,7 +337,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         UpdateOptions updateOptions = new UpdateOptions(super.getMetadataSourceOptions());
 
-        updateOptions.setMergePropertyUpdate(true);
+        updateOptions.setMergeUpdate(true);
 
         openMetadataStore.updateMetadataElementInStore(egeriaSchemaGUID,
                                                        updateOptions,

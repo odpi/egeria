@@ -419,7 +419,7 @@ public class OpenMetadataRelationshipBuilder
                 if (glossaryTermRelationship.getStatus() != null)
                 {
                     elementProperties = propertyHelper.addEnumProperty(elementProperties,
-                                                                       OpenMetadataProperty.STATUS.name,
+                                                                       OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
                                                                        GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                                        glossaryTermRelationship.getStatus().getName());
                 }
@@ -734,7 +734,7 @@ public class OpenMetadataRelationshipBuilder
                 if (semanticAssignmentProperties.getStatus() != null)
                 {
                     elementProperties = propertyHelper.addEnumProperty(elementProperties,
-                                                                       OpenMetadataProperty.STATUS.name,
+                                                                       OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
                                                                        GlossaryTermAssignmentStatus.getOpenTypeName(),
                                                                        semanticAssignmentProperties.getStatus().getName());
                 }

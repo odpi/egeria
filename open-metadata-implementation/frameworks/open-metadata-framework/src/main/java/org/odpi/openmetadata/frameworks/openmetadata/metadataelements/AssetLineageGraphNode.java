@@ -4,6 +4,9 @@
 package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -11,7 +14,14 @@ import java.util.Objects;
  * AssetLineageGraphNode is used to return an asset that is part of a lineage graph and the relationships
  * that are the evidence that this asset belongs in the graph.
  */
-public class AssetLineageGraphNode extends AssetElement
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = AssetLineageGraph.class, name = "AssetLineageGraph"),
+        })
+public class AssetLineageGraphNode extends OpenMetadataRootElement
 {
     private List<RelatedMetadataNodeSummary> upstreamRelationships   = null;
     private List<RelatedMetadataNodeSummary> downstreamRelationships = null;
@@ -30,7 +40,7 @@ public class AssetLineageGraphNode extends AssetElement
      *
      * @param template template values for asset
      */
-    public AssetLineageGraphNode(AssetElement template)
+    public AssetLineageGraphNode(OpenMetadataRootElement template)
     {
         super(template);
     }

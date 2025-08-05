@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateOptions extends MetadataSourceOptions
 {
-    private boolean mergePropertyUpdate = true;
+    private boolean mergeUpdate = true;
 
 
     /**
@@ -43,7 +43,7 @@ public class UpdateOptions extends MetadataSourceOptions
 
         if (template != null)
         {
-            mergePropertyUpdate = template.getMergePropertyUpdate();
+            mergeUpdate = template.getMergeUpdate();
         }
     }
 
@@ -65,9 +65,9 @@ public class UpdateOptions extends MetadataSourceOptions
      *
      * @return boolean
      */
-    public boolean getMergePropertyUpdate()
+    public boolean getMergeUpdate()
     {
-        return mergePropertyUpdate;
+        return mergeUpdate;
     }
 
 
@@ -75,11 +75,11 @@ public class UpdateOptions extends MetadataSourceOptions
      * Set up flag to indicate whether to completely replace the existing properties with the new properties, or just update
      * the individual properties specified on the request.  The default is false.
      *
-     * @param mergePropertyUpdate boolean
+     * @param mergeUpdate boolean
      */
-    public void setMergePropertyUpdate(boolean mergePropertyUpdate)
+    public void setMergeUpdate(boolean mergeUpdate)
     {
-        this.mergePropertyUpdate = mergePropertyUpdate;
+        this.mergeUpdate = mergeUpdate;
     }
 
 
@@ -92,7 +92,7 @@ public class UpdateOptions extends MetadataSourceOptions
     public String toString()
     {
         return "UpdateOptions{" +
-                ", replaceAllProperties=" + mergePropertyUpdate +
+                ", mergeUpdate=" + mergeUpdate +
                 "} " + super.toString();
     }
 
@@ -118,7 +118,7 @@ public class UpdateOptions extends MetadataSourceOptions
         {
             return false;
         }
-        return mergePropertyUpdate == that.mergePropertyUpdate;
+        return mergeUpdate == that.mergeUpdate;
     }
 
 
@@ -130,6 +130,6 @@ public class UpdateOptions extends MetadataSourceOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), mergePropertyUpdate);
+        return Objects.hash(super.hashCode(), mergeUpdate);
     }
 }

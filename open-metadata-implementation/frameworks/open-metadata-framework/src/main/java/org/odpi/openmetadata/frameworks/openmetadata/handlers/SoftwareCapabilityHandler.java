@@ -5,12 +5,10 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SoftwareCapabilityMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
@@ -19,7 +17,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * SoftwareCapabilityHandler provides methods to define all types of softwareCapabilities and their relationships
@@ -543,73 +544,5 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
         final String methodName = "findSoftwareCapabilities";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
-    }
-
-
-    /**
-     * Add relevant relationships and mermaid graph to the returned element.
-     *
-     * @param rootElement element extracted from the repository
-     * @return bean or null
-     */
-    protected OpenMetadataRootElement addMermaidToRootElement(OpenMetadataRootElement rootElement)
-    {
-        if (rootElement != null)
-        {
-            SoftwareCapabilityElement softwareCapabilityElement = new SoftwareCapabilityElement(rootElement);
-
-            if (rootElement.getOtherRelatedElements() != null)
-            {
-                List<RelatedMetadataElementSummary> assetUse = new ArrayList<>();
-                List<RelatedMetadataElementSummary> hostedBy = new ArrayList<>();
-                List<RelatedMetadataElementSummary> other    = new ArrayList<>();
-
-                for (RelatedMetadataElementSummary relatedMetadataElementSummary : rootElement.getOtherRelatedElements())
-                {
-                    if (relatedMetadataElementSummary != null)
-                    {
-                        if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName))
-                        {
-                            hostedBy.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName))
-                        {
-                            assetUse.add(relatedMetadataElementSummary);
-                        }
-                        else
-                        {
-                            other.add(relatedMetadataElementSummary);
-                        }
-                    }
-                }
-
-                if (! hostedBy.isEmpty())
-                {
-                    softwareCapabilityElement.setHostedBy(hostedBy);
-                }
-
-                if (! assetUse.isEmpty())
-                {
-                    softwareCapabilityElement.setAssetUse(assetUse);
-                }
-
-                if (! other.isEmpty())
-                {
-                    softwareCapabilityElement.setOtherRelatedElements(other);
-                }
-                else
-                {
-                    softwareCapabilityElement.setOtherRelatedElements(null);
-                }
-            }
-
-            SoftwareCapabilityMermaidGraphBuilder graphBuilder = new SoftwareCapabilityMermaidGraphBuilder(softwareCapabilityElement);
-
-            softwareCapabilityElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-
-            return softwareCapabilityElement;
-        }
-
-        return null;
     }
 }
