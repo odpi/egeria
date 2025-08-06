@@ -36,7 +36,7 @@ public class YAMLSecretsStoreProvider extends ConnectorProviderBase
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreConnector";
+    private static final String connectorClassName     = YAMLSecretsStoreConnector.class.getName();
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific

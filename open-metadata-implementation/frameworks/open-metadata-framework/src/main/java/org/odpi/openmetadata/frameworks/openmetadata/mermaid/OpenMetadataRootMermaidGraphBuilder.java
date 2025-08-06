@@ -185,7 +185,7 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
         super.addRelatedElementSummaries(openMetadataRootElement.getServerEndpoints(),
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummary(openMetadataRootElement.getEndpointForServer(),
+        super.addRelatedElementSummary(openMetadataRootElement.getServerForEndpoint(),
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());
 
@@ -213,7 +213,7 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
         super.addRelatedElementSummaries(openMetadataRootElement.getSupportedSoftwareCapabilities(),
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummaries(openMetadataRootElement.getHostedBy(),
+        super.addRelatedElementSummaries(openMetadataRootElement.getCapabilityHostedBy(),
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());
 

@@ -673,6 +673,22 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
+     * Log that the connector does no have an endpoint address.
+     *
+     * @param connectorName name of the connector
+     * @param methodName calling method
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwMissingEndpointAddress(String connectorName,
+                                               String methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(OCFErrorCode.MISSING_ENDPOINT_ADDRESS.getMessageDefinition(connectorName),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
      * Log that the survey action service can not process the type of root schema it has been passed.
      *
      * @param assetGUID identifier of the asset

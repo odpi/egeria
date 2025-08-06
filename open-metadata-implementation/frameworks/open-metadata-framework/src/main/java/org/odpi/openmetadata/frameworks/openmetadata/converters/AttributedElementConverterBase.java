@@ -109,7 +109,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             processedRelationshipTypes.add(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setServerEndpoints(super.getRelatedElements(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setEndpointForServer(super.getRelatedElement(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setServerForEndpoint(super.getRelatedElement(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setDeployedTo(super.getRelatedElements(OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName, relatedMetadataElements, false));
@@ -125,7 +125,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             processedRelationshipTypes.add(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setSupportedSoftwareCapabilities(super.getRelatedElements(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setHostedBy(super.getRelatedElements(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setCapabilityHostedBy(super.getRelatedElements(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setVisibleInNetworks(super.getRelatedElements(OpenMetadataType.VISIBLE_ENDPOINT.typeName, relatedMetadataElements, false));
@@ -180,8 +180,8 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setConnections(super.getRelatedElements(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setConnectedAssets(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setConnections(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setConnections(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setConnectedAssets(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setEmbeddedConnections(super.getRelatedElements(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));

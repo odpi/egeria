@@ -144,7 +144,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
         Map<String, Object> configurationProperties = new HashMap<>();
 
         configurationProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), PlaceholderProperty.SECRETS_STORE.getPlaceholder());
-        configurationProperties.put(PlaceholderProperty.SECRETS_COLLECTION_NAME.getName(), PlaceholderProperty.SECRETS_STORE.getPlaceholder());
+        configurationProperties.put(PlaceholderProperty.SECRETS_COLLECTION_NAME.getName(), PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder());
 
         return configurationProperties;
     }
