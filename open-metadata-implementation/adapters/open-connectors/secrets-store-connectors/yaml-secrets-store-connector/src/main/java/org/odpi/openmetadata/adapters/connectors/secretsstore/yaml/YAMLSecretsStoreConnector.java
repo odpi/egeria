@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.io.File;
 import java.net.URI;
@@ -50,8 +51,21 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
                            Connection connectionDetails)
     {
         super.initialize(connectorInstanceId, connectionDetails);
+    }
 
-        secretsStoreFile = new File(connectionDetails.getEndpoint().getAddress());
+
+
+    /**
+     * Indicates that the connector is completely configured and can begin processing.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
+    {
+        /*
+         * All handled by SecretsStoreConnector
+         */
+        super.start();
     }
 
 
@@ -461,11 +475,25 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
 
     /**
      * Request that the subclass refreshes its secrets.
+     *
+     * @throws ConnectorCheckedException problem with secrets file
      */
     @Override
-    protected void refreshSecrets()
+    protected void refreshSecrets() throws ConnectorCheckedException
     {
         final String methodName = "refreshSecrets";
+
+        if (secretsStoreFile == null)
+        {
+            if (connectionBean.getEndpoint().getAddress() != null)
+            {
+                secretsStoreFile = new File(connectionBean.getEndpoint().getAddress());
+            }
+            else
+            {
+                throwMissingEndpointAddress(connectionBean.getDisplayName(), methodName);
+            }
+        }
 
         try
         {

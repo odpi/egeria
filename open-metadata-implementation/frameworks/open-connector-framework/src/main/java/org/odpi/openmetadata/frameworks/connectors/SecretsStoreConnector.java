@@ -112,7 +112,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
     /**
      * Request that the subclass refreshes its secrets.
      */
-    protected abstract void refreshSecrets();
+    protected abstract void refreshSecrets() throws ConnectorCheckedException;
 
 
     /**

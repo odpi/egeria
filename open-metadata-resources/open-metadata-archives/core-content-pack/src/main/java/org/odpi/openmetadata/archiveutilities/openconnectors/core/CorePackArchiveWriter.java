@@ -1141,6 +1141,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         archiveHelper.addServerEndpointRelationship(assetGUID, endpointGUID);
 
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), "loading-bay/secrets/default.omsecrets");
+
         String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
                                                             serverName + " connection",
                                                             null,
@@ -1148,7 +1152,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                             null,
                                                             null,
                                                             null,
-                                                            null,
+                                                            configurationProperties,
                                                             null,
                                                             connectorTypeGUID,
                                                             endpointGUID,

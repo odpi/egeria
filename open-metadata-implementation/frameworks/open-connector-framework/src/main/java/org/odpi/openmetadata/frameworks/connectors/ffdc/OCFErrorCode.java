@@ -245,10 +245,19 @@ public enum OCFErrorCode implements ExceptionMessageSet
     /**
      * OCF-CONNECTOR-400-009 - The {0} connector is unable to proceed with is processing of {1} because the configuration property called {2} was not supplied
      */
-    MISSING_CONFIGURATION_PROPERTY(400, "OCF-CONNECTOR-400-008",
+    MISSING_CONFIGURATION_PROPERTY(400, "OCF-CONNECTOR-400-009",
                                    "The {0} connector is unable to proceed with is processing of {1} because the configuration property called {2} was not supplied",
                                    "The connector stop processing the named element.",
                                    "Update the source of the configuration properties.  This is typically in the connector's connection.  However, the configuration properties may be overridden by, say, the CatalogTarget relationship linking the connector to the resource it is processing."),
+
+
+    /**
+     * OCF-CONNECTOR-400-010 - The {0} connector is unable to proceed with is processing because the endpoint address is null
+     */
+    MISSING_ENDPOINT_ADDRESS(400, "OCF-CONNECTOR-400-010",
+                                   "The {0} connector is unable to proceed with is processing because the endpoint address is null",
+                                   "The connector is unable to access the digital resource it is supposed to connect to.",
+                                   "Update the source of the endpoint.  This may be from a template or from a connector."),
 
 
     /**

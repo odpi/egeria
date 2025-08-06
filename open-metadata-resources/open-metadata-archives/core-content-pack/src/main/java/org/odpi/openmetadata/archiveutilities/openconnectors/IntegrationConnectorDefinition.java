@@ -25,6 +25,7 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatal
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 
@@ -203,7 +204,7 @@ public enum IntegrationConnectorDefinition
                                     "omagspcatnpa",
                                     null,
                                     null,
-                                    null,
+                                    getOMAGCataloguerConfigProperties(),
                                     60,
                                     new String[]{EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName()},
                                     ContentPackDefinition.CORE_CONTENT_PACK),
@@ -324,6 +325,20 @@ public enum IntegrationConnectorDefinition
     {
         Map<String, Object> configurationProperties = new HashMap<>();
         configurationProperties.put(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName(), UC_CATALOG_CATALOGUER.getGUID());
+
+        return configurationProperties;
+    }
+
+    /**
+     * Get the configuration properties for the OMAGServerPlatformCataloguer.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getOMAGCataloguerConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), "loading-bay/secrets/default.omsecrets");
 
         return configurationProperties;
     }

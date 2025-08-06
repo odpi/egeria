@@ -57,16 +57,16 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> collectionMembers             = null; // CollectionMembership (0021)
 
 
-    private List<RelatedMetadataElementSummary> serverEndpoints               = null; // ServerEndpoint (0026)
-    private RelatedMetadataElementSummary       endpointForServer             = null; // ServerEndpoint (0026)
-    private List<RelatedMetadataElementSummary> hostedITAssets                = null; // DeployedOn (0035)
+    private List<RelatedMetadataElementSummary> serverEndpoints   = null; // ServerEndpoint (0026)
+    private RelatedMetadataElementSummary       serverForEndpoint = null; // ServerEndpoint (0026)
+    private List<RelatedMetadataElementSummary> hostedITAssets    = null; // DeployedOn (0035)
     private List<RelatedMetadataElementSummary> deployedTo                    = null; // DeployedOn (0035)
     private List<RelatedMetadataElementSummary> storageVolumes                = null; // AttachedStorage (0036)
     private List<RelatedMetadataElementSummary> hostsUsingStorageVolume       = null; // AttachedStorage (0036)
     private List<RelatedMetadataElementSummary> consumedByCapabilities        = null; // CapabilityAssetUse (0045)
     private List<RelatedMetadataElementSummary> capabilityConsumedAssets      = null; // CapabilityAssetUse (0045)
     private List<RelatedMetadataElementSummary> supportedSoftwareCapabilities = null; // SupportedSoftwareCapability (0042)
-    private List<RelatedMetadataElementSummary> hostedBy                      = null; // SupportedSoftwareCapability (0042)
+    private List<RelatedMetadataElementSummary> capabilityHostedBy            = null; // SupportedSoftwareCapability (0042)
     private List<RelatedMetadataElementSummary> visibleEndpoints              = null; // VisibleEndpoint (0070)
     private List<RelatedMetadataElementSummary> visibleInNetworks             = null; // VisibleEndpoint (0070)
 
@@ -97,7 +97,7 @@ public class AttributedMetadataElement implements MetadataElement
      * Area 2
      */
 
-    private List<RelatedMetadataElementSummary> connections         = null;  // AssetConnection (0205), ConnectorConnectionType, ConnectToEndpoint (0201)
+    private List<RelatedMetadataElementSummary> connections         = null; // AssetConnection (0205), ConnectorConnectionType, ConnectToEndpoint (0201)
     private RelatedMetadataElementSummary       connectorType       = null; // ConnectorConnectionType (0201)
     private RelatedMetadataElementSummary       endpoint            = null; // ConnectToEndpoint (0201)
     private List<RelatedMetadataElementSummary> connectedAssets     = null; // AssetConnection (0205)
@@ -130,7 +130,6 @@ public class AttributedMetadataElement implements MetadataElement
     private RelatedMetadataElementSummary       localMetadataCollection       = null; // CohortMemberMetadataCollection (0225)
     private RelatedMetadataElementSummary       archiveContents               = null; // ArchiveContents (0226)
     private List<RelatedMetadataElementSummary> packagedInArchiveFiles        = null; // ArchiveContents (0226)
-
 
 
     /*
@@ -291,8 +290,8 @@ public class AttributedMetadataElement implements MetadataElement
             memberOfCollections = template.getMemberOfCollections();
             collectionMembers   = template.getCollectionMembers();
 
-            serverEndpoints               = template.getServerEndpoints();
-            endpointForServer             = template.getEndpointForServer();
+            serverEndpoints   = template.getServerEndpoints();
+            serverForEndpoint = template.getServerForEndpoint();
 
             hostedITAssets = template.getHostedITAssets();
             deployedTo     = template.getDeployedTo();
@@ -304,7 +303,7 @@ public class AttributedMetadataElement implements MetadataElement
             capabilityConsumedAssets = template.getCapabilityConsumedAssets();
 
             supportedSoftwareCapabilities = template.getSupportedSoftwareCapabilities();
-            hostedBy                      = template.getHostedBy();
+            capabilityHostedBy            = template.getCapabilityHostedBy();
 
             visibleEndpoints              = template.getVisibleEndpoints();
             visibleInNetworks             = template.getVisibleInNetworks();
@@ -703,94 +702,177 @@ public class AttributedMetadataElement implements MetadataElement
         this.serverEndpoints = serverEndpoints;
     }
 
-    public RelatedMetadataElementSummary getEndpointForServer()
+    public RelatedMetadataElementSummary getServerForEndpoint()
     {
-        return endpointForServer;
+        return serverForEndpoint;
     }
 
-    public void setEndpointForServer(RelatedMetadataElementSummary endpointForServer)
+    public void setServerForEndpoint(RelatedMetadataElementSummary serverForEndpoint)
     {
-        this.endpointForServer = endpointForServer;
+        this.serverForEndpoint = serverForEndpoint;
     }
 
+    /**
+     * Return end 1 of DeployedOn relationship.  These are, for example, platforms and servers on a host..
+     *
+     * @return list of related elements
+     */
     public List<RelatedMetadataElementSummary> getHostedITAssets()
     {
         return hostedITAssets;
     }
 
+
+    /**
+     * Set up end 1 of DeployedOn relationship.  These are, for example, platforms and servers on a host.
+     *
+     * @param hostedITAssets list of related elements
+     */
     public void setHostedITAssets(List<RelatedMetadataElementSummary> hostedITAssets)
     {
         this.hostedITAssets = hostedITAssets;
     }
 
+
+    /**
+     * Return end 2 of the DeployedOn relationship.  This would be, say the platforms hosting a server.
+     *
+     * @return list of related elements
+     */
     public List<RelatedMetadataElementSummary> getDeployedTo()
     {
         return deployedTo;
     }
 
+
+    /**
+     * Set up end 2 of the DeployedOn relationship.  This would be, say the platforms hosting a server.
+     *
+     * @param deployedTo list of related elements
+     */
     public void setDeployedTo(List<RelatedMetadataElementSummary> deployedTo)
     {
         this.deployedTo = deployedTo;
     }
 
+
+    /**
+     * Return the storage volumes attached to a host.
+     *
+     * @return list of related elements
+     */
     public List<RelatedMetadataElementSummary> getStorageVolumes()
     {
         return storageVolumes;
     }
 
+
+    /**
+     * Set up the hosts that are using this storage volume
+     *
+     * @param storageVolumes list of related elements
+     */
     public void setStorageVolumes(List<RelatedMetadataElementSummary> storageVolumes)
     {
         this.storageVolumes = storageVolumes;
     }
 
+
+    /**
+     * Return the hosts that are using this storage volume.
+     *
+     * @return list of related elements
+     */
     public List<RelatedMetadataElementSummary> getHostsUsingStorageVolume()
     {
         return hostsUsingStorageVolume;
     }
 
+
+    /**
+     * Set up the hosts that are using this storage volume.
+     *
+     * @param hostsUsingStorageVolume list of related elements
+     */
     public void setHostsUsingStorageVolume(List<RelatedMetadataElementSummary> hostsUsingStorageVolume)
     {
         this.hostsUsingStorageVolume = hostsUsingStorageVolume;
     }
 
+
+    /**
+     * Return the capabilities that are using this asset.
+     *
+     * @return list of related elements
+     */
     public List<RelatedMetadataElementSummary> getConsumedByCapabilities()
     {
         return consumedByCapabilities;
     }
 
+
+    /**
+     * Set up the capabilities that are using this asset.
+     *
+     * @param consumedByCapabilities list of related elements
+     */
     public void setConsumedByCapabilities(List<RelatedMetadataElementSummary> consumedByCapabilities)
     {
         this.consumedByCapabilities = consumedByCapabilities;
     }
 
+
+    /**
+     * Return the assets that are consumed by this software capability.
+     *
+     * @return list of related elements
+     */
     public List<RelatedMetadataElementSummary> getCapabilityConsumedAssets()
     {
         return capabilityConsumedAssets;
     }
 
+
+    /**
+     * Set up the assets that are consumed by this software capability.
+     *
+     * @param capabilityConsumedAssets list of related elements
+     */
     public void setCapabilityConsumedAssets(List<RelatedMetadataElementSummary> capabilityConsumedAssets)
     {
         this.capabilityConsumedAssets = capabilityConsumedAssets;
     }
 
+
+    /**
+     * Return the software capabilities supported by this IT asset.
+     *
+     * @return list of related elements
+     */
     public List<RelatedMetadataElementSummary> getSupportedSoftwareCapabilities()
     {
         return supportedSoftwareCapabilities;
     }
 
+
+    /**
+     * Set up this software capabilities supported by this IT asset.
+     *
+     * @param supportedSoftwareCapabilities list of related elements
+     */
     public void setSupportedSoftwareCapabilities(List<RelatedMetadataElementSummary> supportedSoftwareCapabilities)
     {
         this.supportedSoftwareCapabilities = supportedSoftwareCapabilities;
     }
 
-    public List<RelatedMetadataElementSummary> getHostedBy()
+    public List<RelatedMetadataElementSummary> getCapabilityHostedBy()
     {
-        return hostedBy;
+        return capabilityHostedBy;
     }
 
-    public void setHostedBy(List<RelatedMetadataElementSummary> hostedBy)
+    public void setCapabilityHostedBy(List<RelatedMetadataElementSummary> capabilityHostedBy)
     {
-        this.hostedBy = hostedBy;
+        this.capabilityHostedBy = capabilityHostedBy;
     }
 
     public List<RelatedMetadataElementSummary> getVisibleEndpoints()

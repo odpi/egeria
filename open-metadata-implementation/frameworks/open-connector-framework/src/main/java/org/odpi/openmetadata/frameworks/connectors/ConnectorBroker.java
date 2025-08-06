@@ -215,20 +215,12 @@ public class ConnectorBroker
     {
         if (embeddedConnection != null)
         {
-            if (embeddedConnection.getEmbeddedConnection() instanceof VirtualConnection virtualConnectionDetails)
-            {
-                AccessibleVirtualConnection accessibleConnection = new AccessibleVirtualConnection(virtualConnectionDetails);
-                accessibleConnection.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
-                                                                                                     accessibleConnection.getConfigurationProperties()));
-                return new VirtualConnection(accessibleConnection);
-            }
-            else
-            {
-                AccessibleConnection accessibleConnection = new AccessibleConnection(embeddedConnection.getEmbeddedConnection());
-                accessibleConnection.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
-                                                                                                           accessibleConnection.getConfigurationProperties()));
-                return accessibleConnection;
-            }
+            Connection updatedConnection = embeddedConnection.getEmbeddedConnection();
+
+            updatedConnection.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
+                                                                                                    updatedConnection.getConfigurationProperties()));
+
+            return updatedConnection;
         }
 
         return null;
@@ -339,7 +331,6 @@ public class ConnectorBroker
         }
 
         List<Connector>                    embeddedConnectors       = new ArrayList<>();
-        Connection                         processedConnection      = connection;
         Map<String, SecretsStoreConnector> secretsStoreConnectorMap = new HashMap<>();
 
         /*
@@ -348,9 +339,6 @@ public class ConnectorBroker
          */
         if (connection instanceof VirtualConnection virtualConnectionDetails)
         {
-            AccessibleConnection accessibleConnection = new AccessibleConnection(connection);
-            processedConnection = accessibleConnection;
-
             /*
              * All ok so create the embedded connectors.  Note: one of these connectors may itself be
              * a virtual connector with embedded connectors of its own.  So this method may be called
@@ -373,39 +361,39 @@ public class ConnectorBroker
                 {
                     secretsStoreConnector.start();
 
-                    if (accessibleConnection.getUserId() == null)
+                    if (connection.getUserId() == null)
                     {
-                        accessibleConnection.setUserId(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.USER_ID.getName()));
+                        connection.setUserId(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.USER_ID.getName()));
 
-                        if (accessibleConnection.getUserId() == null)
+                        if (connection.getUserId() == null)
                         {
                             if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName()) != null))
                             {
-                                accessibleConnection.setUserId(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName())));
+                                connection.setUserId(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName())));
                             }
                         }
                     }
                     if (connection.getClearPassword() == null)
                     {
-                        accessibleConnection.setClearPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()));
+                        connection.setClearPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()));
 
-                        if (accessibleConnection.getClearPassword() == null)
+                        if (connection.getClearPassword() == null)
                         {
                             if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()) != null))
                             {
-                                accessibleConnection.setClearPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName())));
+                                connection.setClearPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName())));
                             }
                         }
                     }
                     if (connection.getEncryptedPassword() == null)
                     {
-                        accessibleConnection.setEncryptedPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()));
+                        connection.setEncryptedPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()));
 
-                        if (accessibleConnection.getEncryptedPassword() == null)
+                        if (connection.getEncryptedPassword() == null)
                         {
                             if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()) != null))
                             {
-                                accessibleConnection.setEncryptedPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName())));
+                                connection.setEncryptedPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName())));
                             }
                         }
                     }
@@ -440,7 +428,7 @@ public class ConnectorBroker
             /*
              * The connector is initialized status at this point.
              */
-            connectorInstance = connectorProvider.getConnector(processedConnection);
+            connectorInstance = connectorProvider.getConnector(connection);
         }
         catch (ConnectionCheckedException | ConnectorCheckedException ocfError)
         {
@@ -520,33 +508,5 @@ public class ConnectorBroker
     public String toString()
     {
         return "ConnectorBroker{}";
-    }
-
-
-    /**
-     * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
-     * connection in order to supply them to the Connector implementation.
-     */
-    private static class AccessibleConnection extends Connection
-    {
-        // todo remove
-        AccessibleConnection(Connection templateConnection)
-        {
-            super(templateConnection);
-        }
-    }
-
-
-    /**
-     * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
-     * connection in order to supply them to the Connector implementation.
-     */
-    private static class AccessibleVirtualConnection extends VirtualConnection
-    {
-        // todo remove
-        AccessibleVirtualConnection(VirtualConnection templateConnection)
-        {
-            super(templateConnection);
-        }
     }
 }

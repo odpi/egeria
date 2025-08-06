@@ -238,7 +238,7 @@ public class QueryBuilder
 
             if (completionTime.after(maxExecutionTime))
             {
-                throw new RepositoryErrorException(PostgresErrorCode.BAD_REGEX.getMessageDefinition(searchString),
+                throw new RepositoryErrorException(PostgresErrorCode.BAD_REGEX.getMessageDefinition(suppliedSearchString.toString()),
                                                     this.getClass().getName(),
                                                     methodName);
             }
