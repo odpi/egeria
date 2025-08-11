@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="ContactMethodElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ContactMethodElement</a></code>, <code><a href="InformationSupplyChainElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">InformationSupplyChainElement</a></code>, <code><a href="OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code>, <code><a href="ProjectElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProjectElement</a></code>, <code><a href="SecurityGroupElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SecurityGroupElement</a></code></dd>
+<dd><code><a href="InformationSupplyChainElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">InformationSupplyChainElement</a></code>, <code><a href="OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AttributedMetadataElement</span>
@@ -265,6 +265,16 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataSetContent()" class="member-name-link">getDataSetContent</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDependentProjects()" class="member-name-link">getDependentProjects</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of projects that need this project to complete.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDependsOnProjects()" class="member-name-link">getDependsOnProjects</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of projects that this project needs to complete.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedTo()" class="member-name-link">getDeployedTo</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return end 2 of the DeployedOn relationship.</div>
@@ -402,6 +412,16 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalMetadataCollection()" class="member-name-link">getLocalMetadataCollection</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getManagedProjects()" class="member-name-link">getManagedProjects</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the governance definitions that support this governance definition.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getManagingProjects()" class="member-name-link">getManagingProjects</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return parent projects.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMapFromElement()" class="member-name-link">getMapFromElement</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -838,6 +858,16 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDataSetContent(java.util.List)" class="member-name-link">setDataSetContent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;dataSetContent)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDependentProjects(java.util.List)" class="member-name-link">setDependentProjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;dependentProjects)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of projects that need this project to complete.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDependsOnProjects(java.util.List)" class="member-name-link">setDependsOnProjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;dependsOnProjects)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of projects that this project needs to complete.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDeployedTo(java.util.List)" class="member-name-link">setDeployedTo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;deployedTo)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up end 2 of the DeployedOn relationship.</div>
@@ -975,6 +1005,16 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalMetadataCollection(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary)" class="member-name-link">setLocalMetadataCollection</a><wbr>(<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;localMetadataCollection)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setManagedProjects(java.util.List)" class="member-name-link">setManagedProjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;managedProjects)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the governance definitions that support this governance definition.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setManagingProjects(java.util.List)" class="member-name-link">setManagingProjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;managingProjects)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up parent projects.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMapFromElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary)" class="member-name-link">setMapFromElement</a><wbr>(<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;mapFromElement)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -3028,6 +3068,94 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <section class="detail" id="getCommissionedBy()">
 <h3>getCommissionedBy</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">getCommissionedBy</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getDependentProjects()">
+<h3>getDependentProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">getDependentProjects</span>()</div>
+<div class="block">Return the list of projects that need this project to complete.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of project summaries</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setDependentProjects(java.util.List)">
+<h3>setDependentProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDependentProjects</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;dependentProjects)</span></div>
+<div class="block">Set up the list of projects that need this project to complete.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dependentProjects</code> - list of project summaries</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDependsOnProjects()">
+<h3>getDependsOnProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">getDependsOnProjects</span>()</div>
+<div class="block">Return the list of projects that this project needs to complete.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of project summaries</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setDependsOnProjects(java.util.List)">
+<h3>setDependsOnProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDependsOnProjects</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;dependsOnProjects)</span></div>
+<div class="block">Set up the list of projects that this project needs to complete.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dependsOnProjects</code> - list of project summaries</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getManagedProjects()">
+<h3>getManagedProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">getManagedProjects</span>()</div>
+<div class="block">Return the governance definitions that support this governance definition.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of governance definition stubs</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setManagedProjects(java.util.List)">
+<h3>setManagedProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setManagedProjects</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;managedProjects)</span></div>
+<div class="block">Set up the governance definitions that support this governance definition.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>managedProjects</code> - list of governance definition stubs</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getManagingProjects()">
+<h3>getManagingProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">getManagingProjects</span>()</div>
+<div class="block">Return parent projects.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setManagingProjects(java.util.List)">
+<h3>setManagingProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setManagingProjects</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;managingProjects)</span></div>
+<div class="block">Set up parent projects.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>managingProjects</code> - list</dd>
+</dl>
 </section>
 </li>
 <li>
