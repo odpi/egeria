@@ -74,7 +74,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -120,7 +120,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -429,7 +429,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -475,7 +475,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -757,7 +757,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -802,7 +802,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -1066,7 +1066,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -1116,7 +1116,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",

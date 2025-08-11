@@ -281,11 +281,11 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                 {
                     if (relatedMetadataElement != null)
                     {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP.typeName))
+                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.REPORT_ORIGINATOR.typeName))
                         {
                             relatedEngineAction = relatedMetadataElement;
                         }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName))
+                        else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.REPORT_SUBJECT.typeName))
                         {
                             relatedAsset = relatedMetadataElement;
                         }

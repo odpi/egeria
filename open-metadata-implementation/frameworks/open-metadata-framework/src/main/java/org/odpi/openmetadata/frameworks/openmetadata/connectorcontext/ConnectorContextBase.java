@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
-import org.odpi.openmetadata.frameworks.openmetadata.client.IntegrationReportClient;
+import org.odpi.openmetadata.frameworks.openmetadata.client.ConnectorActivityReportClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
@@ -21,7 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.Co
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.reports.IntegrationReportWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.reports.ConnectorActivityReportWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -48,8 +48,8 @@ public abstract class ConnectorContextBase
     protected final AuditLog                auditLog;
     protected final int                     maxPageSize;
     protected final DeleteMethod            defaultDeleteMethod;
-    protected final boolean                 generateIntegrationReport;
-    protected final IntegrationReportWriter integrationReportWriter;
+    protected final boolean                       generateIntegrationReport;
+    protected final ConnectorActivityReportWriter connectorActivityReportWriter;
 
     protected final FileClassifier       fileClassifier;
     private   final FilesListenerManager listenerManager;
@@ -293,19 +293,19 @@ public abstract class ConnectorContextBase
 
         if (generateIntegrationReport)
         {
-            this.integrationReportWriter = new IntegrationReportWriter(localServerName,
-                                                                       connectorId,
-                                                                       connectorGUID,
-                                                                       connectorName,
-                                                                       connectorUserId,
-                                                                       new IntegrationReportClient(localServerName,
-                                                                                                   auditLog,
-                                                                                                   localServiceName,
-                                                                                                   openMetadataClient));
+            this.connectorActivityReportWriter = new ConnectorActivityReportWriter(localServerName,
+                                                                                   connectorId,
+                                                                                   connectorGUID,
+                                                                                   connectorName,
+                                                                                   connectorUserId,
+                                                                                   new ConnectorActivityReportClient(localServerName,
+                                                                                                                     auditLog,
+                                                                                                                     localServiceName,
+                                                                                                                     openMetadataClient));
         }
         else
         {
-            this.integrationReportWriter = null;
+            this.connectorActivityReportWriter = null;
         }
     }
 
@@ -594,9 +594,9 @@ public abstract class ConnectorContextBase
      *
      * @return report writer or null
      */
-    IntegrationReportWriter getIntegrationReportWriter()
+    ConnectorActivityReportWriter getIntegrationReportWriter()
     {
-        return integrationReportWriter;
+        return connectorActivityReportWriter;
     }
 
 
@@ -609,9 +609,9 @@ public abstract class ConnectorContextBase
      */
     public void setActiveReportPublishing(boolean flag)
     {
-        if (integrationReportWriter != null)
+        if (connectorActivityReportWriter != null)
         {
-            integrationReportWriter.setActiveReportPublishing(flag);
+            connectorActivityReportWriter.setActiveReportPublishing(flag);
         }
     }
 
@@ -623,9 +623,9 @@ public abstract class ConnectorContextBase
      */
     public void startRecording()
     {
-        if (integrationReportWriter != null)
+        if (connectorActivityReportWriter != null)
         {
-            integrationReportWriter.startRecording();
+            connectorActivityReportWriter.startRecording();
         }
     }
 
@@ -637,9 +637,9 @@ public abstract class ConnectorContextBase
      */
     protected void reportElementCreation(String elementGUID)
     {
-        if (integrationReportWriter != null)
+        if (connectorActivityReportWriter != null)
         {
-            integrationReportWriter.reportElementCreation(elementGUID);
+            connectorActivityReportWriter.reportElementCreation(elementGUID);
         }
     }
 
@@ -651,9 +651,9 @@ public abstract class ConnectorContextBase
      */
     protected void reportElementUpdate(String elementGUID)
     {
-        if (integrationReportWriter != null)
+        if (connectorActivityReportWriter != null)
         {
-            integrationReportWriter.reportElementUpdate(elementGUID);
+            connectorActivityReportWriter.reportElementUpdate(elementGUID);
         }
     }
 
@@ -665,9 +665,9 @@ public abstract class ConnectorContextBase
      */
     protected void reportElementDelete(String elementGUID)
     {
-        if (integrationReportWriter != null)
+        if (connectorActivityReportWriter != null)
         {
-            integrationReportWriter.reportElementDelete(elementGUID);
+            connectorActivityReportWriter.reportElementDelete(elementGUID);
         }
     }
 
@@ -683,9 +683,9 @@ public abstract class ConnectorContextBase
                                        UserNotAuthorizedException,
                                        PropertyServerException
     {
-        if (integrationReportWriter != null)
+        if (connectorActivityReportWriter != null)
         {
-            integrationReportWriter.publishReport();
+            connectorActivityReportWriter.publishReport();
         }
     }
 

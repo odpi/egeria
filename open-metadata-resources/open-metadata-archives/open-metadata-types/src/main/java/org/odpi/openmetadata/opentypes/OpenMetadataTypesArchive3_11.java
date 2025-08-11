@@ -186,7 +186,6 @@ public class OpenMetadataTypesArchive3_11
     private void update0010BaseModel()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataSet());
-        this.archiveBuilder.addTypeDefPatch(updateDataSetContentRelationship());
     }
 
     private TypeDefPatch updateDataSet()
@@ -205,32 +204,6 @@ public class OpenMetadataTypesArchive3_11
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateDataSetContentRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_ID));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -548,8 +521,8 @@ public class OpenMetadataTypesArchive3_11
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROJECT_STATUS));
+
+
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -677,55 +650,7 @@ public class OpenMetadataTypesArchive3_11
 
     private void update04xxExplicitNames()
     {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceZoneDefinition());
-        this.archiveBuilder.addTypeDefPatch(updateSubjectAreaDefinition());
         this.archiveBuilder.addTypeDefPatch(updateBusinessCapability());
-    }
-
-
-    private TypeDefPatch updateGovernanceZoneDefinition()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ZONE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ZONE_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateSubjectAreaDefinition()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUBJECT_AREA_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 
@@ -804,7 +729,6 @@ public class OpenMetadataTypesArchive3_11
     {
         this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcess());
         this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionProcessStepRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateNextEngineActionRelationship());
         this.archiveBuilder.addTypeDefPatch(updateLicenseRelationship());
         this.archiveBuilder.addTypeDefPatch(updateCertificationRelationship());
     }
@@ -838,21 +762,6 @@ public class OpenMetadataTypesArchive3_11
          * Create the Patch
          */
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateNextEngineActionRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NEXT_ENGINE_ACTION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

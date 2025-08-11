@@ -25,6 +25,7 @@ public class ControlFlowProperties extends RelationshipBeanProperties
     private String label            = null;
     private String description      = null;
     private String guard            = null;
+    private boolean mandatoryGuard  = false;
 
 
     /**
@@ -52,6 +53,7 @@ public class ControlFlowProperties extends RelationshipBeanProperties
             label            = template.getLabel();
             description      = template.getDescription();
             guard            = template.getGuard();
+            mandatoryGuard   = template.getMandatoryGuard();
         }
     }
 
@@ -143,6 +145,16 @@ public class ControlFlowProperties extends RelationshipBeanProperties
         this.guard = guard;
     }
 
+
+    public boolean getMandatoryGuard()
+    {
+        return mandatoryGuard;
+    }
+
+    public void setMandatoryGuard(boolean mandatoryGuard)
+    {
+        this.mandatoryGuard = mandatoryGuard;
+    }
 
     /**
      * Standard toString method.

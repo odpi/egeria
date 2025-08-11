@@ -511,13 +511,6 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());
 
-        super.addRelatedElementSummaries(openMetadataRootElement.getMetrics(),
-                                         VisualStyle.LINKED_ELEMENT,
-                                         openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummaries(openMetadataRootElement.getMeasuredDefinitions(),
-                                         VisualStyle.LINKED_ELEMENT,
-                                         openMetadataRootElement.getElementHeader().getGUID());
-
         super.addRelatedElementSummaries(openMetadataRootElement.getLicenses(),
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());

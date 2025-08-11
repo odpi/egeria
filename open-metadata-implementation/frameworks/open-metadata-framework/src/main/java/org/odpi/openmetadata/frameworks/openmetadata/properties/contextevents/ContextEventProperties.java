@@ -21,7 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ContextEventProperties extends ReferenceableProperties
 {
-    private String contextEventType = null;
     private String eventEffect            = null;
     private Date   plannedStartDate       = null;
     private Date   actualStartDate        = null;
@@ -55,7 +54,6 @@ public class ContextEventProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            contextEventType = template.getContextEventType();
             eventEffect            = template.getEventEffect();
             plannedStartDate       = template.getPlannedStartDate();
             actualStartDate        = template.getActualStartDate();
@@ -67,27 +65,6 @@ public class ContextEventProperties extends ReferenceableProperties
             referenceEffectiveFrom = template.getReferenceEffectiveFrom();
             referenceEffectiveTo   = template.getReferenceEffectiveTo();
         }
-    }
-
-    /**
-     * Return the type of the event.
-     *
-     * @return string
-     */
-    public String getContextEventType()
-    {
-        return contextEventType;
-    }
-
-    
-    /**
-     * Set up the type of the event .
-     *
-     * @param contextEventType string
-     */
-    public void setContextEventType(String contextEventType)
-    {
-        this.contextEventType = contextEventType;
     }
 
 
@@ -320,8 +297,7 @@ public class ContextEventProperties extends ReferenceableProperties
     public String toString()
     {
         return "ContextEventProperties{" +
-                "contextEventType='" + contextEventType + '\'' +
-                ", eventEffect='" + eventEffect + '\'' +
+                "eventEffect='" + eventEffect + '\'' +
                 ", plannedStartDate=" + plannedStartDate +
                 ", actualStartDate=" + actualStartDate +
                 ", plannedDuration=" + plannedDuration +
@@ -351,7 +327,6 @@ public class ContextEventProperties extends ReferenceableProperties
         return plannedDuration == that.plannedDuration
                 && actualDuration == that.actualDuration
                 && repeatInterval == that.repeatInterval
-                && Objects.equals(contextEventType, that.contextEventType)
                 && Objects.equals(eventEffect, that.eventEffect)
                 && Objects.equals(plannedStartDate, that.plannedStartDate)
                 && Objects.equals(actualStartDate, that.actualStartDate)
@@ -370,7 +345,7 @@ public class ContextEventProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), contextEventType, eventEffect, plannedStartDate,
+        return Objects.hash(super.hashCode(), eventEffect, plannedStartDate,
                             actualStartDate, plannedDuration, actualDuration, repeatInterval, plannedCompletionDate,
                             actualCompletionDate, referenceEffectiveFrom, referenceEffectiveTo);
     }

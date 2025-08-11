@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindDigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
@@ -256,45 +255,6 @@ public class ClassificationExplorerResource
     {
         return restAPI.getMembersOfSubjectArea(serverName, urlMarker, requestBody);
     }
-
-
-    /**
-     * Return information about the assets from a specific origin.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param urlMarker  view service URL marker
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-asset-origin")
-
-    @Operation(summary="getAssetsByOrigin",
-            description="Return information about the assets from a specific origin.",
-            externalDocs=@ExternalDocumentation(description="Asset Origins", url="https://egeria-project.org/types/4/0440-Organizational-Controls/"))
-
-    public MetadataElementSummariesResponse getAssetsByOrigin(@PathVariable String                      serverName,
-                                                              @PathVariable String                        urlMarker,
-                                                              @RequestBody(required = false)
-                                                                  FindAssetOriginProperties requestBody)
-    {
-        if (requestBody != null)
-        {
-            return restAPI.getElementsByOrigin(serverName,
-                                               urlMarker,
-                                               new FindDigitalResourceOriginProperties(requestBody));
-        }
-        else
-        {
-            return restAPI.getElementsByOrigin(serverName,
-                                               urlMarker,
-                                               null);
-        }
-    }
-
 
 
     /**

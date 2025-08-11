@@ -96,7 +96,7 @@ public class SurveyReportConverter<B> extends SAFConverter<B>
                     {
                         if ((relationship != null) && (relationship.getType() != null) && (relationship.getType().getTypeDefName() != null))
                         {
-                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName))
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REPORT_SUBJECT.typeName))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 
@@ -105,7 +105,7 @@ public class SurveyReportConverter<B> extends SAFConverter<B>
                                     bean.setAssetGUID(endOne.getGUID());
                                 }
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP.typeName))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REPORT_ORIGINATOR.typeName))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 

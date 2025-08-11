@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.gaf.converters;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceServiceElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceService;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -56,7 +56,7 @@ public class RegisteredGovernanceServiceConverter
 
         if (relationships != null)
         {
-            Map<String, RegisteredGovernanceServiceProperties> requestTypeMappings = new HashMap<>();
+            Map<String, SupportedGovernanceServiceProperties> requestTypeMappings = new HashMap<>();
 
             for (Relationship relationship : relationships)
             {
@@ -75,9 +75,9 @@ public class RegisteredGovernanceServiceConverter
                                                                                 instanceProperties,
                                                                                 methodName);
 
-                        RegisteredGovernanceServiceProperties registeredGovernanceServiceProperties = new RegisteredGovernanceServiceProperties();
+                        SupportedGovernanceServiceProperties supportedGovernanceServiceProperties = new SupportedGovernanceServiceProperties();
 
-                        registeredGovernanceServiceProperties.setRequestType(requestType);
+                        supportedGovernanceServiceProperties.setRequestType(requestType);
 
                         String serviceRequestType = repositoryHelper.getStringProperty(serviceName,
                                                                                        OpenMetadataProperty.SERVICE_REQUEST_TYPE.name,
@@ -89,22 +89,22 @@ public class RegisteredGovernanceServiceConverter
                         {
                             if (serviceRequestType == null)
                             {
-                                registeredGovernanceServiceProperties.setServiceRequestType(requestType);
+                                supportedGovernanceServiceProperties.setServiceRequestType(requestType);
                             }
                             else
                             {
-                                registeredGovernanceServiceProperties.setServiceRequestType(serviceRequestType);
+                                supportedGovernanceServiceProperties.setServiceRequestType(serviceRequestType);
                             }
 
-                            registeredGovernanceServiceProperties.setRequestParameters(repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                                                                 OpenMetadataProperty.REQUEST_PARAMETERS.name,
-                                                                                                                                 instanceProperties,
-                                                                                                                                 methodName));
+                            supportedGovernanceServiceProperties.setRequestParameters(repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                                                OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                                                                                instanceProperties,
+                                                                                                                                methodName));
 
-                            registeredGovernanceServiceProperties.setGenerateIntegrationReports(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                                                                    OpenMetadataProperty.GENERATE_INTEGRATION_REPORT.name,
-                                                                                                                                    instanceProperties,
-                                                                                                                                    methodName));
+                            supportedGovernanceServiceProperties.setGenerateActivityReports(repositoryHelper.getBooleanProperty(serviceName,
+                                                                                                                                OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
+                                                                                                                                instanceProperties,
+                                                                                                                                methodName));
 
                             int deleteMethodOrdinal = repositoryHelper.getEnumPropertyOrdinal(serviceName,
                                                                                               OpenMetadataProperty.DELETE_METHOD.name,
@@ -115,10 +115,10 @@ public class RegisteredGovernanceServiceConverter
                             {
                                 if (deleteMethod.getOrdinal() == deleteMethodOrdinal)
                                 {
-                                    registeredGovernanceServiceProperties.setDeleteMethod(deleteMethod);
+                                    supportedGovernanceServiceProperties.setDeleteMethod(deleteMethod);
                                 }
                             }
-                            requestTypeMappings.put(requestType, registeredGovernanceServiceProperties);
+                            requestTypeMappings.put(requestType, supportedGovernanceServiceProperties);
                         }
                     }
                 }

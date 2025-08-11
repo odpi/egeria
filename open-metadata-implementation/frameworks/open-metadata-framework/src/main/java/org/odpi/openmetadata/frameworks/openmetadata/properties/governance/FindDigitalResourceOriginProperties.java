@@ -50,31 +50,6 @@ public class FindDigitalResourceOriginProperties extends FindProperties
 
 
     /**
-     * Copy/clone constructor
-     *
-     * @param template object to copy
-     */
-    public FindDigitalResourceOriginProperties(FindAssetOriginProperties template)
-    {
-        super(template);
-
-        if (template != null)
-        {
-            DigitalResourceOriginProperties newProperties = new DigitalResourceOriginProperties();
-
-            newProperties.setOrganization(template.getOrganizationGUID());
-            newProperties.setOrganizationPropertyName(OpenMetadataProperty.GUID.name);
-            newProperties.setBusinessCapability(template.getBusinessCapabilityGUID());
-            newProperties.setBusinessCapabilityPropertyName(OpenMetadataProperty.GUID.name);
-            newProperties.setOtherOriginValues(template.getOtherOriginValues());
-
-            this.properties = newProperties;
-        }
-    }
-
-
-
-    /**
      * Return the origin properties to search for.
      *
      * @return properties

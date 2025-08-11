@@ -1386,11 +1386,6 @@ public enum OpenMetadataProperty
     REFERENCE_ABSTRACT("referenceAbstract", DataType.STRING.getName(), "Summary of the key messages in the external source.", null, "57b63b64-5139-45db-94e4-146a57389fe8"),
 
     /**
-     * Name of the revision or version of the external source.
-     */
-    REFERENCE_VERSION("referenceVersion", DataType.STRING.getName(), "Name of the revision or version of the external source.", null, "f0365e94-3c4b-4386-a75a-a03f6e78cb7d"),
-
-    /**
      * List of authors for the external source.
      */
     AUTHORS("authors", DataType.ARRAY_STRING.getName(), "List of authors for the external source.", null, "b0dd1911-7bb6-47be-bd88-5a9c86f00fe0"),
@@ -1423,13 +1418,13 @@ public enum OpenMetadataProperty
     /**
      * Network address where this external source can be accessed from.
      */
-    URL("url", DataType.STRING.getName(), "Network address where this external source can be accessed from.", null, "604dbf10-335d-4132-8a32-c30fa9fec154"),
+    URL("url", DataType.STRING.getName(), "Primary address where this external source can be accessed from.", null, "604dbf10-335d-4132-8a32-c30fa9fec154"),
 
 
     /**
-     * Names of external sources and their specific network address where this external information can be accessed from.
+     * Names of external sources and specific location where this external information can be accessed from
      */
-    URLS("urls", DataType.MAP_STRING_STRING.getName(), "Names of external sources and their specific network address where this external information can be accessed from.", null, "c4189336-10ea-4a92-8974-6802170eae88"),
+    SOURCES("sources", DataType.MAP_STRING_STRING.getName(), "Names of external sources and specific location where this external information can be accessed from.  This may be URLs, publisher or retailer information, for example.", null, "c4189336-10ea-4a92-8974-6802170eae88"),
 
     /**
      * Name of the publisher responsible for producing this external source.
@@ -2033,11 +2028,6 @@ public enum OpenMetadataProperty
     PROTOCOL_VERSION("protocolVersion", DataType.STRING.getName(), "Version number of the protocol supported by the cohort registry.", null, "67fbbf35-ed67-4c50-b8d5-9eb03f6afbd5"),
 
     /**
-     * Id of report.
-     */
-    ID("id", DataType.STRING.getName(), "Id of report.", null, "3dd6fb02-e375-40ca-97bb-24af0142887f"),
-
-    /**
      * Author of the resource.
      */
     AUTHOR("author", DataType.STRING.getName(), "Author of the resource.", null, "e121d939-cd79-49cb-aa3e-d05b99c64b8a"),
@@ -2116,11 +2106,6 @@ public enum OpenMetadataProperty
      * Describes the expected effects of the event on the organization.
      */
     EVENT_EFFECT("eventEffect", DataType.STRING.getName(), "Describes the expected effects of the event on the organization.", null, "6ce8112d-55da-44c0-a9de-668cfb67b368"),
-
-    /**
-     * Describes the type/category of event.  Valid values for this attribute can be managed in a valid metadata value set.
-     */
-    CONTEXT_EVENT_TYPE("contextEventType", DataType.STRING.getName(), "Describes the type/category of event.  Valid values for this attribute can be managed in a valid metadata value set.", null, "05ddaeb1-bc67-46c8-bf44-7ffb6054d67f"),
 
     /**
      * Provides a planned date/time when the event should start.
@@ -2317,7 +2302,7 @@ public enum OpenMetadataProperty
     /**
      * Should the service/connector create integration reports based on its activity? (Default is true.)
      */
-    GENERATE_INTEGRATION_REPORT("generateIntegrationReports", DataType.BOOLEAN.getName(), "Should the service/connector create integration reports based on its activity? (Default is true.)", null, "61f01f63-2e2d-47d0-9ea7-a95c0d561194"),
+    GENERATE_CONNECTOR_ACTIVITY_REPORT("generateConnectorActivityReports", DataType.BOOLEAN.getName(), "Should the service/connector create integration reports based on its activity? (Default is true.)", null, "61f01f63-2e2d-47d0-9ea7-a95c0d561194"),
 
     /**
      * The name of the attribute that the reference data assignment represents.
@@ -2480,19 +2465,14 @@ public enum OpenMetadataProperty
     GROUPS("groups", DataType.ARRAY_STRING.getName(), "List of security group distinguished names.", null, "71adcf56-bf50-4cbe-abcc-fc9157a545f0"),
 
     /**
-     * Identifier of the zone - if null use qualifiedName.
-     */
-    ZONE_NAME("zoneName", DataType.STRING.getName(), "Identifier of the zone - if null use qualifiedName.", "quarantine_zone", "06d25085-acd6-4899-9247-e1675db07a22"),
-
-    /**
      * Descriptive type information about the policy management capability.
      */
     POINT_TYPE("pointType", DataType.STRING.getName(), "Descriptive type information about the the policy management capability.", null, "ab24e2bf-1ef8-4053-bb4d-9b4817bc095d"),
 
     /**
-     * Identifier of the subject area - if null use qualifiedName.
+     * Identifier of the subject area.
      */
-    SUBJECT_AREA_NAME("subjectAreaName", DataType.STRING.getName(), "Identifier of the subject area - if null use qualifiedName.", null, "ef1b567b-e079-4ef7-9a34-7c01e26a539e"),
+    SUBJECT_AREA_NAME("subjectAreaName", DataType.STRING.getName(), "Identifier of the subject area.", null, "ef1b567b-e079-4ef7-9a34-7c01e26a539e"),
 
     /**
      * A set of metric name to count value pairs.
@@ -2523,11 +2503,6 @@ public enum OpenMetadataProperty
      * A set of metric name to current boolean value pairs.
      */
     MEASUREMENT_FLAGS("measurementFlags", DataType.MAP_STRING_BOOLEAN.getName(), "A set of metric name to current boolean value pairs.", null, "79a797b2-f5a3-4d38-bbb3-0b587923f1fe"),
-
-    /**
-     * Description of the requirements, rights, terms and conditions associated with the certification or license.
-     */
-    DETAILS("details", DataType.STRING.getName(), "Description of the requirements, rights, terms and conditions associated with the certification or license.", null, "a2431fef-185d-4f1d-bbb8-22041fa8cb97"),
 
     /**
      * Unique identifier of the actual certificate.

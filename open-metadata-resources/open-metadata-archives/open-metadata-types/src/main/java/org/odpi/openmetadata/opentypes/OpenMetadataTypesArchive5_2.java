@@ -197,8 +197,6 @@ public class OpenMetadataTypesArchive5_2
         this.archiveBuilder.addRelationshipDef(getITProfileRoleRelationship());
 
         this.archiveBuilder.addRelationshipDef(getContributionRelationship());
-
-        this.archiveBuilder.addTypeDefPatch(updateDigitalProductManagementRelationship());
     }
 
 
@@ -412,36 +410,6 @@ public class OpenMetadataTypesArchive5_2
     }
 
 
-    private TypeDefPatch updateDigitalProductManagementRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_PRODUCT_MANAGEMENT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "digitalProductManagers";
-        final String                     end2AttributeDescription     = "The roles for managing this digital product.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR_ROLE.typeName),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -487,8 +455,6 @@ public class OpenMetadataTypesArchive5_2
     private void addLabelToLineage()
     {
         this.archiveBuilder.addTypeDefPatch(updateProcessCall());
-        this.archiveBuilder.addTypeDefPatch(updateDataFlow());
-        this.archiveBuilder.addTypeDefPatch(updateControlFlow());
         this.archiveBuilder.addTypeDefPatch(updateUltimateSource());
         this.archiveBuilder.addTypeDefPatch(updateUltimateDestination());
         this.archiveBuilder.addTypeDefPatch(updateLineageMapping());
@@ -501,52 +467,6 @@ public class OpenMetadataTypesArchive5_2
          * Create the Patch
          */
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateDataFlow()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateControlFlow()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

@@ -2151,28 +2151,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the referenceVersion property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string text or null
-     */
-    protected String removeReferenceVersion(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeReferenceVersion";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.REFERENCE_VERSION.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract and delete the referenceId property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -2775,50 +2753,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         return null;
     }
-
-    /**
-     * Retrieve the zoneName from the properties.
-     *
-     * @param instanceProperties properties from the entity
-     * @return zone name
-     */
-    protected String removeZoneName(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removeZoneName";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.ZONE_NAME.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the subjectAreaName from the properties.
-     *
-     * @param instanceProperties properties from the entity
-     * @return subject area name
-     */
-    protected String removeSubjectAreaName(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removeSubjectAreaName";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.SUBJECT_AREA_NAME.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
 
     /**
      * Extract and delete the distinguishedName property from the supplied instance properties.
@@ -3608,28 +3542,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                       OpenMetadataProperty.QUERY_ID.name,
                                                       instanceProperties,
                                                       methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the id property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string text or null
-     */
-    protected String removeId(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeId";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.ID.name,
-                                                         instanceProperties,
-                                                         methodName);
         }
 
         return null;
@@ -4747,28 +4659,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                               OpenMetadataProperty.RESULTS.name,
                                                               instanceProperties,
                                                               methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the "details" property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string text or null
-     */
-    protected String removeDetails(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removeDetails";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.DETAILS.name,
-                                                         instanceProperties,
-                                                         methodName);
         }
 
         return null;

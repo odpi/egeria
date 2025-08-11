@@ -160,7 +160,6 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Calls for new types go here
          */
-        update0424GovernanceZones();
         update042SubjectAreas();
         add0435PolicyManagementCapabilities();
         update0438NamingStandards();
@@ -177,37 +176,6 @@ public class OpenMetadataTypesArchive1_7
 
 
     /**
-     * 0424 - GovernanceZone is missing scope and domain attributes
-     */
-    private void update0424GovernanceZones()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceZoneEntity());
-    }
-
-    private TypeDefPatch updateGovernanceZoneEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ZONE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /**
      * 0425 - New types to describe subject areas
      */
     private void update042SubjectAreas()
@@ -219,20 +187,8 @@ public class OpenMetadataTypesArchive1_7
 
     private EntityDef addSubjectAreaDefinitionEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SUBJECT_AREA_DEFINITION,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USAGE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SUBJECT_AREA_DEFINITION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName));
     }
 
 
@@ -765,7 +721,6 @@ public class OpenMetadataTypesArchive1_7
     private void add0715DigitalServiceOwnership()
     {
         this.archiveBuilder.addEntityDef(getDigitalProductManagerEntity());
-        this.archiveBuilder.addRelationshipDef(getDigitalProductManagementRelationship());
         this.archiveBuilder.addRelationshipDef(getDigitalSupportRelationship());
     }
 
@@ -774,47 +729,6 @@ public class OpenMetadataTypesArchive1_7
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DIGITAL_PRODUCT_MANAGER,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName));
-    }
-
-
-    private RelationshipDef getDigitalProductManagementRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DIGITAL_PRODUCT_MANAGEMENT_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "managesDigitalProducts";
-        final String                     end1AttributeDescription     = "The digital product that this actor manages.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_PRODUCT.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "digitalProductManager";
-        final String                     end2AttributeDescription     = "The individual responsible for the digital products.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
     }
 
 

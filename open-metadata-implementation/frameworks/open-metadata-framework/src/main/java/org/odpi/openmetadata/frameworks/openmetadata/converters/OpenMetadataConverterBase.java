@@ -1939,6 +1939,51 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and delete the background property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeBackground(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeBackground";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.BACKGROUND.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the incidentClassifiers map property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return map
+     */
+    protected Map<String, Integer> removeIncidentClassifiers(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeIncidentClassifiers";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeIntegerMapFromProperty(localServiceName,
+                                                               OpenMetadataProperty.INCIDENT_CLASSIFIERS.name,
+                                                               elementProperties,
+                                                               methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the externalInstanceCreatedBy property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -2092,6 +2137,29 @@ public class OpenMetadataConverterBase<B>
     }
 
 
+
+    /**
+     * Extract and delete the numberOfPages property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return int
+     */
+    protected int removeNumberOfPages(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeNumberOfPages";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeIntProperty(localServiceName,
+                                                    OpenMetadataProperty.NUMBER_OF_PAGES.name,
+                                                    elementProperties,
+                                                    methodName);
+        }
+
+        return 0;
+    }
+
+
     /**
      * Extract and delete the URL property from the supplied element properties.
      *
@@ -2108,6 +2176,223 @@ public class OpenMetadataConverterBase<B>
                                                        OpenMetadataProperty.URL.name,
                                                        elementProperties,
                                                        methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removePageRange(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePageRange";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PAGE_RANGE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removePublicationSeries(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePublicationSeries";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PUBLICATION_SERIES.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removePublicationSeriesVolume(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePublicationSeriesVolume";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PUBLICATION_SERIES_VOLUME.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removePublisher(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePublisher";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PUBLISHER.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeEdition(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeEdition";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.EDITION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected Date removeFirstPublicationDate(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeFirstPublicationDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.FIRST_PUB_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected Date removePublicationDate(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePublicationDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.PUBLICATION_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removePublicationCity(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePublicationCity";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PUBLICATION_CITY.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removePublicationYear(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePublicationYear";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PUBLICATION_YEAR.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected List<String> removePublicationNumbers(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePublicationNumbers";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.PUBLICATION_NUMBERS.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
         return null;
@@ -2137,50 +2422,6 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the owningOrganization property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeOwningOrganization(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeOwningOrganization";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.ORGANIZATION.name,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the referenceVersion property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeReferenceVersion(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeReferenceVersion";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.REFERENCE_VERSION.name,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract and delete the referenceId property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -2194,6 +2435,209 @@ public class OpenMetadataConverterBase<B>
         {
             return propertyHelper.removeStringProperty(localServiceName,
                                                        OpenMetadataProperty.REFERENCE_ID.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the referenceTitle property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeReferenceTitle(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeReferenceTitle";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.REFERENCE_TITLE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the license property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeLicense(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLicense";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.LICENSE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the mediaTypeOtherId property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeMediaTypeOtherId(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeMediaTypeOtherId";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.MEDIA_TYPE_OTHER_ID.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+
+    /**
+     * Extract and delete the defaultMediaUsageOtherId property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeDefaultMediaUsageOtherId(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDefaultMediaUsageOtherId";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the copyright property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeCopyright(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCopyright";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.COPYRIGHT.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the attribution property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeAttribution(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeAttribution";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.ATTRIBUTION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the authors property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected List<String> removeAuthors(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeAuthors";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.AUTHORS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the sources property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected Map<String, String> removeSources(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeSources";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(localServiceName,
+                                                              OpenMetadataProperty.SOURCES.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the referenceAbstract property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeReferenceAbstract(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeReferenceAbstract";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.REFERENCE_ABSTRACT.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -3289,28 +3733,6 @@ public class OpenMetadataConverterBase<B>
                                                             OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                             elementProperties,
                                                             methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the zoneName from the properties.
-     *
-     * @param elementProperties properties from the element
-     * @return zone name
-     */
-    protected String removeZoneName(ElementProperties elementProperties)
-    {
-        final String methodName = "removeZoneName";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.ZONE_NAME.name,
-                                                       elementProperties,
-                                                       methodName);
         }
 
         return null;
@@ -4480,27 +4902,6 @@ public class OpenMetadataConverterBase<B>
     }
 
 
-    /**
-     * Extract and delete the id property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeId(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeId";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.ID.name,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
 
     /**
      * Extract and delete the createdTime property from the supplied element properties.
@@ -5652,21 +6053,70 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the "details" property from the supplied element properties.
+     * Extract and delete the entitlements property from the supplied element properties.
      *
      * @param elementProperties properties from element
-     * @return string text or null
+     * @return string
      */
-    protected String removeDetails(ElementProperties elementProperties)
+    protected Map<String, String> removeEntitlements(ElementProperties elementProperties)
+
     {
-        final String methodName = "removeDetails";
+        final String methodName = "removeEntitlements";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.DETAILS.name,
-                                                       elementProperties,
-                                                       methodName);
+            return propertyHelper.removeStringMapFromProperty(localServiceName,
+                                                              OpenMetadataProperty.ENTITLEMENTS.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+
+
+    /**
+     * Extract and delete the restrictions property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string
+     */
+    protected Map<String, String> removeRestrictions(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeRestrictions";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(localServiceName,
+                                                              OpenMetadataProperty.RESTRICTIONS.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the obligations property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string
+     */
+    protected Map<String, String> removeObligations(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeObligations";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(localServiceName,
+                                                              OpenMetadataProperty.OBLIGATIONS.name,
+                                                              elementProperties,
+                                                              methodName);
         }
 
         return null;
@@ -9120,6 +9570,68 @@ public class OpenMetadataConverterBase<B>
     }
 
 
+
+    /**
+     * Extract and delete the mediaType property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return enum
+     */
+    MediaType removeMediaType(ElementProperties elementProperties)
+    {
+        final String methodName = "removeMediaType";
+
+        if (elementProperties != null)
+        {
+            String retrievedProperty = propertyHelper.removeEnumProperty(localServiceName,
+                                                                         OpenMetadataProperty.MEDIA_TYPE.name,
+                                                                         elementProperties,
+                                                                         methodName);
+
+            for (MediaType enumValue : MediaType.values())
+            {
+                if (enumValue.getName().equals(retrievedProperty))
+                {
+                    return enumValue;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the defaultMediaUsage property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return enum
+     */
+    MediaUsage removeDefaultMediaUsage(ElementProperties elementProperties)
+    {
+        final String methodName = "removeDefaultMediaUsage";
+
+        if (elementProperties != null)
+        {
+            String retrievedProperty = propertyHelper.removeEnumProperty(localServiceName,
+                                                                         OpenMetadataProperty.DEFAULT_MEDIA_USAGE.name,
+                                                                         elementProperties,
+                                                                         methodName);
+
+            for (MediaUsage enumValue : MediaUsage.values())
+            {
+                if (enumValue.getName().equals(retrievedProperty))
+                {
+                    return enumValue;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
     /**
      * Extract and delete the ContactMethodType property from the supplied element properties.
      *
@@ -9142,6 +9654,36 @@ public class OpenMetadataConverterBase<B>
                 if (contactMethodType.getName().equals(retrievedProperty))
                 {
                     return contactMethodType;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the ContactMethodType property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return enum
+     */
+    IncidentReportStatus removeIncidentReportStatus(ElementProperties elementProperties)
+    {
+        final String methodName = "removeIncidentReportStatus";
+
+        if (elementProperties != null)
+        {
+            String retrievedProperty = propertyHelper.removeEnumProperty(localServiceName,
+                                                                         OpenMetadataProperty.INCIDENT_STATUS.name,
+                                                                         elementProperties,
+                                                                         methodName);
+
+            for (IncidentReportStatus incidentReportStatus : IncidentReportStatus.values())
+            {
+                if (incidentReportStatus.getName().equals(retrievedProperty))
+                {
+                    return incidentReportStatus;
                 }
             }
         }

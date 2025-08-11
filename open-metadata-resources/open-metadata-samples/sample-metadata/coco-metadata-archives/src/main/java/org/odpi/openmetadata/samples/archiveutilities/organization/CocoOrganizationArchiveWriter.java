@@ -315,7 +315,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
 
 
     /**
-     * Creates Scope valid value set to show the cope of a responsibility.
+     * Creates Scope valid value set to show the scope of a responsibility.
      */
     private void writeScopeValidValueSet()
     {

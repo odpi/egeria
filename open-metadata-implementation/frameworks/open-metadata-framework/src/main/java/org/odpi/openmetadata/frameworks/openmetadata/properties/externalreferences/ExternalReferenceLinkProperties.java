@@ -21,9 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExternalReferenceLinkProperties extends RelationshipBeanProperties
 {
-    private String linkId          = null;
-    private String linkDescription = null;
-    private String pages           = null;
+    private String label       = null;
+    private String description = null;
 
 
     /**
@@ -47,9 +46,8 @@ public class ExternalReferenceLinkProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.linkId = template.getLinkId();
-            this.linkDescription = template.getLinkDescription();
-            this.pages = template.getPages();
+            this.label       = template.getLabel();
+            this.description = template.getDescription();
         }
     }
 
@@ -59,20 +57,20 @@ public class ExternalReferenceLinkProperties extends RelationshipBeanProperties
      *
      * @return String identifier
      */
-    public String getLinkId()
+    public String getLabel()
     {
-        return linkId;
+        return label;
     }
 
 
     /**
      * Set up the identifier that this reference is to be known as with respect to the linked object.
      *
-     * @param linkId String identifier
+     * @param label String identifier
      */
-    public void setLinkId(String linkId)
+    public void setLabel(String label)
     {
-        this.linkId = linkId;
+        this.label = label;
     }
 
 
@@ -81,42 +79,20 @@ public class ExternalReferenceLinkProperties extends RelationshipBeanProperties
      *
      * @return string
      */
-    public String getLinkDescription()
+    public String getDescription()
     {
-        return linkDescription;
+        return description;
     }
 
 
     /**
      * Set up the description of the external reference with respect to the linked object.
      *
-     * @param linkDescription string
+     * @param description string
      */
-    public void setLinkDescription(String linkDescription)
+    public void setDescription(String description)
     {
-        this.linkDescription = linkDescription;
-    }
-
-
-    /**
-     * Return the page range for the reference.
-     *
-     * @return string
-     */
-    public String getPages()
-    {
-        return pages;
-    }
-
-
-    /**
-     * Set up the page range for the reference.
-     *
-     * @param pages string
-     */
-    public void setPages(String pages)
-    {
-        this.pages = pages;
+        this.description = description;
     }
 
 
@@ -129,15 +105,10 @@ public class ExternalReferenceLinkProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "ExternalReferenceLinkProperties{" +
-                       "linkId='" + linkId + '\'' +
-                       ", linkDescription='" + linkDescription + '\'' +
-                       ", pages='" + pages + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "label='" + label + '\'' +
+                ", description='" + description + '\'' +
+                "} " + super.toString();
     }
-
 
     /**
      * Equals method that returns true if containing properties are the same.
@@ -152,7 +123,7 @@ public class ExternalReferenceLinkProperties extends RelationshipBeanProperties
         {
             return true;
         }
-        if (! (objectToCompare instanceof ExternalReferenceLinkProperties))
+        if (! (objectToCompare instanceof ExternalReferenceLinkProperties that))
         {
             return false;
         }
@@ -160,9 +131,8 @@ public class ExternalReferenceLinkProperties extends RelationshipBeanProperties
         {
             return false;
         }
-        ExternalReferenceLinkProperties that = (ExternalReferenceLinkProperties) objectToCompare;
-        return Objects.equals(linkId, that.linkId) && Objects.equals(linkDescription, that.linkDescription)
-                       && Objects.equals(pages, that.pages);
+        return Objects.equals(label, that.label) &&
+                Objects.equals(description, that.description);
     }
 
 
@@ -174,6 +144,6 @@ public class ExternalReferenceLinkProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), linkId, linkDescription, pages);
+        return Objects.hash(super.hashCode(), label, description);
     }
 }

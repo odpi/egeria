@@ -226,9 +226,6 @@ public class OpenMetadataTypesArchive2_10
         this.archiveBuilder.addEntityDef(addBusinessImperativeEntity());
         this.archiveBuilder.addRelationshipDef(addGovernanceDriverLinkRelationship());
 
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceRoleEntity());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceOfficer());
-        this.archiveBuilder.addTypeDefPatch(updateAssetOrigin());
         this.archiveBuilder.addTypeDefPatch(updateCertification());
         this.archiveBuilder.addTypeDefPatch(updateLicense());
     }
@@ -258,55 +255,6 @@ public class OpenMetadataTypesArchive2_10
         classificationDef.setPropertiesDefinition(properties);
 
         return classificationDef;
-    }
-
-
-    /**
-     * Deprecate the domain attribute.
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateGovernanceRoleEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ROLE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * This change means that GovernanceOfficer is just another governance role and it can be managed as such.
-     * Also deprecates the domain attribute.
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateGovernanceOfficer()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_OFFICER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName));
-
-        return typeDefPatch;
     }
 
 
@@ -410,31 +358,6 @@ public class OpenMetadataTypesArchive2_10
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
-    }
-
-    /**
-     * Add properties so it is possible to specific the property name use to identify the organization and the business capability.
-     *
-     * @return typeDef patch
-     */
-    private TypeDefPatch updateAssetOrigin()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORGANIZATION_PROPERTY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY_PROPERTY_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 

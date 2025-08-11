@@ -300,8 +300,6 @@ public class OpenMetadataTypesArchive3_7
     private void updateArea7LineageRelationships()
     {
         this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnLineageMappingRelationship());
-        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnDataFlowRelationship());
-        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnControlFlowRelationship());
         this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnProcessCallRelationship());
     }
 
@@ -327,38 +325,6 @@ public class OpenMetadataTypesArchive3_7
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch enableMultiLinkOnDataFlowRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch enableMultiLinkOnControlFlowRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
 
         return typeDefPatch;
     }

@@ -8,8 +8,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.SubjectAreaHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -32,187 +33,6 @@ public class SubjectAreaRESTServices extends TokenController
      */
     public SubjectAreaRESTServices()
     {
-    }
-
-
-    /**
-     * Create a data structure.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the data structure.
-     *
-     * @return unique identifier of the newly created element
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createSubjectArea(String                serverName,
-                                          NewElementRequestBody requestBody)
-    {
-        final String methodName = "createSubjectArea";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
-
-                if (requestBody.getProperties() instanceof SubjectAreaDefinitionProperties subjectAreaDefinitionProperties)
-                {
-                    response.setGUID(handler.createSubjectArea(userId,
-                                                               requestBody,
-                                                               requestBody.getInitialClassifications(),
-                                                               subjectAreaDefinitionProperties,
-                                                               requestBody.getParentRelationshipProperties()));
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaDefinitionProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /**
-     * Create a new metadata element to represent a data structure using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new element.
-     *
-     * @param serverName             calling user
-     * @param requestBody properties that override the template
-     *
-     * @return unique identifier of the new metadata element
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GUIDResponse createSubjectAreaFromTemplate(String              serverName,
-                                                      TemplateRequestBody requestBody)
-    {
-        final String methodName = "createSubjectAreaFromTemplate";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
-
-                response.setGUID(handler.createSubjectAreaFromTemplate(userId,
-                                                                       requestBody,
-                                                                       requestBody.getTemplateGUID(),
-                                                                       requestBody.getReplacementProperties(),
-                                                                       requestBody.getPlaceholderPropertyValues(),
-                                                                       requestBody.getParentRelationshipProperties()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the properties of a data structure.
-     *
-     * @param serverName         name of called server.
-     * @param subjectAreaGUID unique identifier of the data structure (returned from create)
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse updateSubjectArea(String                   serverName,
-                                          String                   subjectAreaGUID,
-                                          UpdateElementRequestBody requestBody)
-    {
-        final String methodName = "updateSubjectArea";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
-
-                if (requestBody.getProperties() instanceof SubjectAreaDefinitionProperties subjectAreaDefinitionProperties)
-                {
-                    handler.updateSubjectArea(userId, subjectAreaGUID, requestBody, subjectAreaDefinitionProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateSubjectArea(userId, subjectAreaGUID, requestBody, null);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaDefinitionProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
     }
 
 
@@ -248,7 +68,7 @@ public class SubjectAreaRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -290,9 +110,9 @@ public class SubjectAreaRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSubjectAreas(String                   serverName,
-                                           String                   subjectAreaGUID,
-                                           String                   dataFieldGUID,
+    public VoidResponse detachSubjectAreas(String            serverName,
+                                           String            subjectAreaGUID,
+                                           String            dataFieldGUID,
                                            DeleteRequestBody requestBody)
     {
         final String methodName = "detachSubjectAreas";
@@ -310,7 +130,7 @@ public class SubjectAreaRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
             handler.detachSubjectAreas(userId, subjectAreaGUID, dataFieldGUID, requestBody);
         }
@@ -325,22 +145,22 @@ public class SubjectAreaRESTServices extends TokenController
 
 
     /**
-     * Delete a data structure.
+     * Classify the element to assert that the definitions it represents are part of a subject area definition.
      *
-     * @param serverName         name of called server
-     * @param subjectAreaGUID  unique identifier of the element to delete
-     * @param requestBody  description of the relationship.
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param requestBody properties for classification request
      *
      * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    public VoidResponse deleteSubjectArea(String                   serverName,
-                                          String                   subjectAreaGUID,
-                                          DeleteRequestBody requestBody)
+    public VoidResponse addElementToSubjectArea(String                    serverName,
+                                                String                    elementGUID,
+                                                NewClassificationRequestBody requestBody)
     {
-        final String methodName = "deleteSubjectArea";
+        final String methodName = "addElementToSubjectArea";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -355,54 +175,18 @@ public class SubjectAreaRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
-
-            handler.deleteSubjectArea(userId, subjectAreaGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of data structure metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public OpenMetadataRootElementsResponse getSubjectAreasByName(String            serverName,
-                                                                  FilterRequestBody requestBody)
-    {
-        final String methodName = "getSubjectAreasByName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
-        AuditLog                         auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
-
             if (requestBody != null)
             {
-                response.setElements(handler.getSubjectAreasByName(userId, requestBody.getFilter(), requestBody));
+                if (requestBody.getProperties() instanceof SubjectAreaProperties properties)
+                {
+                    GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+                    handler.addElementToSubjectArea(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -420,27 +204,27 @@ public class SubjectAreaRESTServices extends TokenController
 
 
     /**
-     * Retrieve the list of data structure metadata elements that contain the search string.
+     * Remove the subject area designation from the identified element.
      *
-     * @param serverName name of the service to route the request to
-     * @param subjectAreaGUID    unique identifier of the required element
-     * @param requestBody string to find in the properties
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param requestBody properties for classification request
      *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    public OpenMetadataRootElementResponse getSubjectAreaByGUID(String             serverName,
-                                                                String             subjectAreaGUID,
-                                                                GetRequestBody requestBody)
+    public VoidResponse removeElementFromSubjectArea(String                   serverName,
+                                                     String                   elementGUID,
+                                                     DeleteRequestBody requestBody)
     {
-        final String methodName = "getSubjectAreaByGUID";
+        final String   methodName = "removeElementFromSubjectArea";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
-        AuditLog                        auditLog = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -449,10 +233,9 @@ public class SubjectAreaRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
-            SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
-
-            response.setElement(handler.getSubjectAreaByGUID(userId, subjectAreaGUID, requestBody));
+            handler.removeElementFromSubjectArea(userId, elementGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -464,54 +247,5 @@ public class SubjectAreaRESTServices extends TokenController
     }
 
 
-    /**
-     * Retrieve the list of data structure metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public OpenMetadataRootElementsResponse findSubjectAreas(String                  serverName,
-                                                             SearchStringRequestBody requestBody)
-    {
-        final String methodName = "findSubjectAreas";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
-        AuditLog                         auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            SubjectAreaHandler handler = instanceHandler.getSubjectAreaManager(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElements(handler.findSubjectAreas(userId,
-                                                              requestBody.getSearchString(),
-                                                              requestBody));
-            }
-            else
-            {
-                response.setElements(handler.findSubjectAreas(userId, null, null));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
 }

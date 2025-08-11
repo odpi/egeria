@@ -374,91 +374,120 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Returns the list of softwareCapabilities with a particular softwareCapabilityGUID.
+     * Returns the list of softwareCapabilities linked to a particular itAssetGUID.
      *
      * @param userId                 userId of user making request
-     * @param softwareCapabilityGUID              unique identifier of the starting element
+     * @param itAssetGUID              unique identifier of the starting element
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getDeployedITSoftwareCapabilities(String       userId,
-                                                                           String       softwareCapabilityGUID,
-                                                                           QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                             PropertyServerException,
-                                                                                                             UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getSupportedSoftwareCapabilities(String       userId,
+                                                                          String       itAssetGUID,
+                                                                          QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
     {
-        final String methodName = "getDeployedITSoftwareCapabilities";
-        final String guidPropertyName = "softwareCapabilityGUID";
+        final String methodName = "getSupportedTSoftwareCapabilities";
+        final String guidPropertyName = "itAssetGUID";
 
         return super.getRelatedRootElements(userId,
-                                            softwareCapabilityGUID,
+                                            itAssetGUID,
                                             guidPropertyName,
                                             1,
-                                            OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
-                                            queryOptions,
-                                            methodName);
-    }
-
-
-
-    /**
-     * Returns the list of softwareCapabilities providing data to the data set.
-     *
-     * @param userId                 userId of user making request
-     * @param softwareCapabilityGUID              unique identifier of the starting element
-     * @param queryOptions           multiple options to control the query
-     * @return a list of elements
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<OpenMetadataRootElement> getDataSetContents(String       userId,
-                                                            String       softwareCapabilityGUID,
-                                                            QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
-    {
-        final String methodName = "getDataSetContents";
-        final String guidPropertyName = "softwareCapabilityGUID";
-
-        return super.getRelatedRootElements(userId,
-                                            softwareCapabilityGUID,
-                                            guidPropertyName,
-                                            1,
-                                            OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                            OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
                                             queryOptions,
                                             methodName);
     }
 
 
     /**
-     * Returns the list of softwareCapabilities providing data to the data set.
+     * Returns the list of softwareCapabilities that are using a particular asset.
      *
      * @param userId                 userId of user making request
-     * @param softwareCapabilityGUID              unique identifier of the starting element
+     * @param assetGUID              unique identifier of the starting element
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getSupportedDataSets(String       userId,
-                                                              String       softwareCapabilityGUID,
+    public List<OpenMetadataRootElement> getCapabilityUse(String       userId,
+                                                          String       assetGUID,
+                                                          QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "getCapabilityUse";
+        final String guidPropertyName = "assetGUID";
+
+        return super.getRelatedRootElements(userId,
+                                            assetGUID,
+                                            guidPropertyName,
+                                            2,
+                                            OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
+                                            queryOptions,
+                                            methodName);
+    }
+
+
+    /**
+     * Returns the list of governance engines connected to a particular governance service.
+     *
+     * @param userId                 userId of user making request
+     * @param governanceServiceGUID              unique identifier of the starting element
+     * @param queryOptions           multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getGovernanceEngines(String       userId,
+                                                              String       governanceServiceGUID,
                                                               QueryOptions queryOptions) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
     {
-        final String methodName = "getSupportedDataSets";
-        final String guidPropertyName = "softwareCapabilityGUID";
+        final String methodName = "getGovernanceEngines";
+        final String guidPropertyName = "governanceServiceGUID";
 
         return super.getRelatedRootElements(userId,
-                                            softwareCapabilityGUID,
+                                            governanceServiceGUID,
                                             guidPropertyName,
                                             2,
-                                            OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                            OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
+                                            queryOptions,
+                                            methodName);
+    }
+
+
+    /**
+     * Returns the list of integration groups connected to a particular integration connector.
+     *
+     * @param userId                 userId of user making request
+     * @param integrationConnectorGUID              unique identifier of the starting element
+     * @param queryOptions           multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getIntegrationGroups(String       userId,
+                                                              String       integrationConnectorGUID,
+                                                              QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String methodName = "getIntegrationGroups";
+        final String guidPropertyName = "integrationConnectorGUID";
+
+        return super.getRelatedRootElements(userId,
+                                            integrationConnectorGUID,
+                                            guidPropertyName,
+                                            2,
+                                            OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
                                             queryOptions,
                                             methodName);
     }

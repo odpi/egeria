@@ -209,7 +209,7 @@ Content-Type: application/json
     "parentGUID": "{{ctAddressDataFieldGUID}}",
     "parentRelationshipTypeName": "NestedDataField",
     "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "position" : {
         "class": "PrimitiveTypePropertyValue",
@@ -258,7 +258,7 @@ Content-Type: application/json
   "parentGUID": "{{ctAddressDataFieldGUID}}",
   "parentRelationshipTypeName": "NestedDataField",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "position" : {
         "class": "PrimitiveTypePropertyValue",
@@ -308,7 +308,7 @@ Content-Type: application/json
   "parentGUID": "{{ctAddressDataFieldGUID}}",
   "parentRelationshipTypeName": "NestedDataField",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "position" : {
         "class": "PrimitiveTypePropertyValue",
@@ -359,7 +359,7 @@ Content-Type: application/json
   "parentGUID": "{{ctAddressDataFieldGUID}}",
   "parentRelationshipTypeName": "NestedDataField",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "position" : {
         "class": "PrimitiveTypePropertyValue",
@@ -408,7 +408,7 @@ Content-Type: application/json
   "parentGUID": "{{ctAddressDataFieldGUID}}",
   "parentRelationshipTypeName": "NestedDataField",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "position" : {
         "class": "PrimitiveTypePropertyValue",
@@ -457,7 +457,7 @@ Content-Type: application/json
   "parentGUID": "{{ctAddressDataFieldGUID}}",
   "parentRelationshipTypeName": "NestedDataField",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "position" : {
         "class": "PrimitiveTypePropertyValue",
@@ -507,7 +507,7 @@ Content-Type: application/json
   "parentGUID": "{{ctAddressDataFieldGUID}}",
   "parentRelationshipTypeName": "NestedDataField",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "position" : {
         "class": "PrimitiveTypePropertyValue",

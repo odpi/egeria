@@ -162,6 +162,8 @@ include(':open-metadata-implementation:view-server-generic-services:governance-o
 include(':open-metadata-implementation:view-server-generic-services:governance-officer:governance-officer-spring')
 include(':open-metadata-implementation:view-server-generic-services:metadata-explorer:metadata-explorer-server')
 include(':open-metadata-implementation:view-server-generic-services:metadata-explorer:metadata-explorer-spring')
+include(':open-metadata-implementation:view-server-generic-services:metadata-expert:metadata-expert-server')
+include(':open-metadata-implementation:view-server-generic-services:metadata-expert:metadata-expert-spring')
 include(':open-metadata-implementation:view-services:my-profile:my-profile-server')
 include(':open-metadata-implementation:view-services:my-profile:my-profile-spring')
 include(':open-metadata-implementation:view-services:notification-manager:notification-manager-server')

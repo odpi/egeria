@@ -242,6 +242,19 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setPackagedInArchiveFiles(super.getRelatedElements(OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeName);
 
+            attributedMetadataElement.setGeneratedReports(super.getRelatedElements(OpenMetadataType.REPORT_ORIGINATOR.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setReportOriginator(super.getRelatedElement(OpenMetadataType.REPORT_ORIGINATOR.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.REPORT_ORIGINATOR.typeName);
+
+            attributedMetadataElement.setReports(super.getRelatedElements(OpenMetadataType.REPORT_SUBJECT.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setReportSubjects(super.getRelatedElements(OpenMetadataType.REPORT_SUBJECT.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.REPORT_SUBJECT.typeName);
+
+            attributedMetadataElement.setFollowOnReports(super.getRelatedElements(OpenMetadataType.REPORT_DEPENDENCY.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setPriorReports(super.getRelatedElements(OpenMetadataType.REPORT_DEPENDENCY.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.REPORT_DEPENDENCY.typeName);
+
+
             /*
              * Area 3
              */
@@ -306,13 +319,9 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setSupportingGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setSupportedGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName);
-            attributedMetadataElement.setSupportingGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setSupportedGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setMetrics(super.getRelatedElements(OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setMeasuredDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeName);
+            attributedMetadataElement.setSupportingGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setSupportedGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setLicenses(super.getRelatedElements(OpenMetadataType.LICENSE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setLicensedElements(super.getRelatedElements(OpenMetadataType.LICENSE_RELATIONSHIP.typeName, relatedMetadataElements, true));

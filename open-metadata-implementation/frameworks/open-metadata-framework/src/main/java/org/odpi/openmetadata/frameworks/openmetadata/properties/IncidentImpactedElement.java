@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * IncidentImpactedElement describes the element that is impacted by the incident reported by the incident report.
+ * ImpactedResourceProperties describes the element that is impacted by the incident reported by the incident report.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -101,7 +101,7 @@ public class IncidentImpactedElement
     @Override
     public String toString()
     {
-        return "IncidentImpactedElement{" +
+        return "ImpactedResourceProperties{" +
                        "impactSeverityLevel=" + impactSeverityLevel +
                        ", impactedElementGUID='" + impactedElementGUID + '\'' +
                        '}';

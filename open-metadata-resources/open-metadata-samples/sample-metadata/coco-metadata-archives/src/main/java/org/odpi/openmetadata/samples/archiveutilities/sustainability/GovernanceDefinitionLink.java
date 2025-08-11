@@ -31,23 +31,23 @@ public enum GovernanceDefinitionLink
                         GovernanceDefinition.GREENHOUSE_GASES_APPROACH),
 
     IMPL_1(GovernanceDefinition.AVOID_HARMFUL_MATERIALS,
-           OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName,
+           OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
            GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     IMPL_2(GovernanceDefinition.NEW_SUSTAINABILITY_DOMAIN,
-           OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName,
+           OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
            GovernanceDefinition.SUSTAINABILITY_LEADER_RESPONSIBILITY),
 
     IMPL_3(GovernanceDefinition.NEW_SUSTAINABILITY_DOMAIN,
-           OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName,
+           OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
            GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
     IMPL_4(GovernanceDefinition.NEW_SUSTAINABILITY_DOMAIN,
-           OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName,
+           OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
            GovernanceDefinition.SUSTAINABILITY_TECHNOLOGY_LEAD_RESPONSIBILITY),
 
     IMPL_5(GovernanceDefinition.GREENHOUSE_GASES_APPROACH,
-           OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName,
+           OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
            GovernanceDefinition.SUSTAINABILITY_TECHNOLOGY_LEAD_RESPONSIBILITY),
 
     ;

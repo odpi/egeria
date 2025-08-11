@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScope
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.ListenerInterfaceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.PublisherInterfaceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.RequestResponseInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
@@ -18,8 +19,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKe
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.ResourceManagerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ReferenceDataProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
 
 import java.util.Map;
 import java.util.Objects;
@@ -44,24 +47,34 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AnchorsProperties.class, name = "AnchorsProperties"),
                 @JsonSubTypes.Type(value = CalculatedValueProperties.class, name = "CalculatedValueProperties"),
                 @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),
+                @JsonSubTypes.Type(value = ContextDefinitionProperties.class, name = "ContextDefinitionProperties"),
+                @JsonSubTypes.Type(value = ContextEventCollectionProperties.class, name = "ContextEventCollectionProperties"),
                 @JsonSubTypes.Type(value = CyberLocationProperties.class, name = "CyberLocationProperties"),
                 @JsonSubTypes.Type(value = DataAssetEncodingProperties.class, name = "DataAssetEncodingProperties"),
                 @JsonSubTypes.Type(value = DataScopeProperties.class, name = "DataScopeProperties"),
                 @JsonSubTypes.Type(value = DataValueProperties.class, name = "DataValueProperties"),
                 @JsonSubTypes.Type(value = DigitalResourceOriginProperties.class, name = "DigitalResourceOriginProperties"),
                 @JsonSubTypes.Type(value = EditingGlossaryProperties.class, name = "EditingGlossaryProperties"),
+                @JsonSubTypes.Type(value = EventSetProperties.class, name = "EventSetProperties"),
                 @JsonSubTypes.Type(value = FixedLocationProperties.class, name = "FixedLocationProperties"),
-                @JsonSubTypes.Type(value = ContextDefinitionProperties.class, name = "ContextDefinitionProperties"),
+                @JsonSubTypes.Type(value = FolderProperties.class, name = "FolderProperties"),
                 @JsonSubTypes.Type(value = GovernanceClassificationBase.class, name = "GovernanceClassificationBase"),
-                @JsonSubTypes.Type(value = GovernanceMeasurementsResultsDataSetProperties.class, name = "GovernanceMeasurementsResultsDataSetProperties"),
-                @JsonSubTypes.Type(value = GovernanceMeasurementsProperties.class, name = "GovernanceMeasurementsProperties"),
                 @JsonSubTypes.Type(value = GovernanceExpectationsProperties.class, name = "GovernanceExpectationsProperties"),
+                @JsonSubTypes.Type(value = GovernanceMeasurementsProperties.class, name = "GovernanceMeasurementsProperties"),
+                @JsonSubTypes.Type(value = GovernanceMeasurementsResultsDataSetProperties.class, name = "GovernanceMeasurementsResultsDataSetProperties"),
+                @JsonSubTypes.Type(value = HomeCollectionProperties.class, name = "HomeCollectionProperties"),
                 @JsonSubTypes.Type(value = ListenerInterfaceProperties.class, name = "ListenerInterfaceProperties"),
+                @JsonSubTypes.Type(value = NamespaceProperties.class, name = "NamespaceProperties"),
                 @JsonSubTypes.Type(value = OwnershipProperties.class, name = "OwnershipProperties"),
                 @JsonSubTypes.Type(value = PrimaryKeyProperties.class, name = "PrimaryKeyProperties"),
                 @JsonSubTypes.Type(value = PublisherInterfaceProperties.class, name = "PublisherInterfaceProperties"),
+                @JsonSubTypes.Type(value = RecentAccessProperties.class, name = "RecentAccessProperties"),
                 @JsonSubTypes.Type(value = ReferenceDataProperties.class, name = "ReferenceDataProperties"),
+                @JsonSubTypes.Type(value = ReferenceListProperties.class, name = "ReferenceListProperties"),
                 @JsonSubTypes.Type(value = RequestResponseInterfaceProperties.class, name = "RequestResponseInterfaceProperties"),
+                @JsonSubTypes.Type(value = ResourceManagerProperties.class, name = "ResourceManagerProperties"),
+                @JsonSubTypes.Type(value = ResultsSetProperties.class, name = "ResultsSetProperties"),
+                @JsonSubTypes.Type(value = RootCollectionProperties.class, name = "RootCollectionProperties"),
                 @JsonSubTypes.Type(value = SecureLocationProperties.class, name = "SecureLocationProperties"),
                 @JsonSubTypes.Type(value = SecurityGroupMembershipProperties.class, name = "SecurityGroupMembershipProperties"),
                 @JsonSubTypes.Type(value = SecurityTagsProperties.class, name = "SecurityTagsProperties"),
@@ -70,6 +83,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = TaxonomyProperties.class, name = "TaxonomyProperties"),
                 @JsonSubTypes.Type(value = TemplateProperties.class, name = "TemplateProperties"),
                 @JsonSubTypes.Type(value = TypeEmbeddedAttributeProperties.class, name = "TypeEmbeddedAttributeProperties"),
+                @JsonSubTypes.Type(value = WorkItemListProperties.class, name = "WorkItemListProperties"),
                 @JsonSubTypes.Type(value = ZoneMembershipProperties.class, name = "ZoneMembershipProperties"),
         })
 public class ClassificationBeanProperties extends ClassificationProperties

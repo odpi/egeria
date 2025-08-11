@@ -962,6 +962,8 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                     }
                 }
             }
+
+            return collectionHierarchy;
         }
 
         return null;

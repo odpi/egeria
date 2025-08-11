@@ -131,6 +131,13 @@ public class AttributedMetadataElement implements MetadataElement
     private RelatedMetadataElementSummary       archiveContents               = null; // ArchiveContents (0226)
     private List<RelatedMetadataElementSummary> packagedInArchiveFiles        = null; // ArchiveContents (0226)
 
+    private RelatedMetadataElementSummary       reportOriginator               = null; // ReportOrigin (0239)
+    private List<RelatedMetadataElementSummary> generatedReports               = null; // ReportOrigin (0239)
+    private List<RelatedMetadataElementSummary> reportSubjects                 = null; // ReportSubject (0239)
+    private List<RelatedMetadataElementSummary> reports                        = null; // ReportSubject (0239)
+    private List<RelatedMetadataElementSummary> priorReports                   = null; // ReportDependency (0239)
+    private List<RelatedMetadataElementSummary> followOnReports                = null; // ReportDependency (0239)
+
 
     /*
      * Area 3
@@ -160,9 +167,6 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> peerGovernanceDefinitions       = null;
     private List<RelatedMetadataElementSummary> supportedGovernanceDefinitions  = null;
     private List<RelatedMetadataElementSummary> supportingGovernanceDefinitions = null;
-
-    private List<RelatedMetadataElementSummary> metrics             = null;
-    private List<RelatedMetadataElementSummary> measuredDefinitions = null;
 
     private List<RelatedMetadataElementSummary> licenses          = null; // License (0481)
     private List<RelatedMetadataElementSummary> licensedElements  = null; // License (0481)
@@ -368,6 +372,13 @@ public class AttributedMetadataElement implements MetadataElement
             archiveContents         = template.getArchiveContents();
             packagedInArchiveFiles  = template.getPackagedInArchiveFiles();
 
+            reportOriginator = template.getReportOriginator();
+            generatedReports = template.getGeneratedReports();
+            reportSubjects   = template.getReportSubjects();
+            reports          = template.getReports();
+            priorReports     = template.getPriorReports();
+            followOnReports  = template.getFollowOnReports();
+
             /*
              * Area 3
              */
@@ -396,9 +407,6 @@ public class AttributedMetadataElement implements MetadataElement
             peerGovernanceDefinitions      = template.getPeerGovernanceDefinitions();
             supportedGovernanceDefinitions = template.getSupportedGovernanceDefinitions();
             supportingGovernanceDefinitions = template.getSupportingGovernanceDefinitions();
-
-            metrics             = template.getMetrics();
-            measuredDefinitions = template.getMeasuredDefinitions();
 
             licenses                  = template.getLicenses();
             licensedElements          = template.getLicensedElements();
@@ -1591,6 +1599,66 @@ public class AttributedMetadataElement implements MetadataElement
         this.packagedInArchiveFiles = packagedInArchiveFiles;
     }
 
+    public RelatedMetadataElementSummary getReportOriginator()
+    {
+        return reportOriginator;
+    }
+
+    public void setReportOriginator(RelatedMetadataElementSummary reportOriginator)
+    {
+        this.reportOriginator = reportOriginator;
+    }
+
+    public List<RelatedMetadataElementSummary> getGeneratedReports()
+    {
+        return generatedReports;
+    }
+
+    public void setGeneratedReports(List<RelatedMetadataElementSummary> generatedReports)
+    {
+        this.generatedReports = generatedReports;
+    }
+
+    public List<RelatedMetadataElementSummary> getReportSubjects()
+    {
+        return reportSubjects;
+    }
+
+    public void setReportSubjects(List<RelatedMetadataElementSummary> reportSubjects)
+    {
+        this.reportSubjects = reportSubjects;
+    }
+
+    public List<RelatedMetadataElementSummary> getReports()
+    {
+        return reports;
+    }
+
+    public void setReports(List<RelatedMetadataElementSummary> reports)
+    {
+        this.reports = reports;
+    }
+
+    public List<RelatedMetadataElementSummary> getPriorReports()
+    {
+        return priorReports;
+    }
+
+    public void setPriorReports(List<RelatedMetadataElementSummary> priorReports)
+    {
+        this.priorReports = priorReports;
+    }
+
+    public List<RelatedMetadataElementSummary> getFollowOnReports()
+    {
+        return followOnReports;
+    }
+
+    public void setFollowOnReports(List<RelatedMetadataElementSummary> followOnReports)
+    {
+        this.followOnReports = followOnReports;
+    }
+
     /**
      * Return the parent glossary for this element.
      *
@@ -1822,38 +1890,6 @@ public class AttributedMetadataElement implements MetadataElement
     }
 
 
-
-    /**
-     * Return the governance metrics that measure this governance definition.
-     *
-     * @return list of governance definition stubs
-     */
-    public List<RelatedMetadataElementSummary> getMetrics()
-    {
-        return metrics;
-    }
-
-
-    /**
-     * Set up the governance metrics that measure this governance definition.
-     *
-     * @param metrics list of governance definition stubs
-     */
-    public void setMetrics(List<RelatedMetadataElementSummary> metrics)
-    {
-        this.metrics = metrics;
-    }
-
-
-    public List<RelatedMetadataElementSummary> getMeasuredDefinitions()
-    {
-        return measuredDefinitions;
-    }
-
-    public void setMeasuredDefinitions(List<RelatedMetadataElementSummary> measuredDefinitions)
-    {
-        this.measuredDefinitions = measuredDefinitions;
-    }
 
     public List<RelatedMetadataElementSummary> getGovernedElements()
     {

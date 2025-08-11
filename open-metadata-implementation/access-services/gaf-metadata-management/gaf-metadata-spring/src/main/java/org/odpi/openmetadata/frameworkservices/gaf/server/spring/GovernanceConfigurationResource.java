@@ -6,10 +6,10 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationConnectorProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationGroupProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.IntegrationGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.gaf.server.GovernanceConfigRESTServices;
 

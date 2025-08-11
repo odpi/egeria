@@ -315,17 +315,17 @@ public class OpenMetadataTypesArchive4_0
 
     private EntityDef getDeployedReportTypeEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DEPLOYED_REPORT_TYPE,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.REPORT_TYPE,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_ASSET.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AUTHOR));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.URL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CREATED_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_MODIFIED_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_MODIFIER));
@@ -379,10 +379,9 @@ public class OpenMetadataTypesArchive4_0
     {
         this.archiveBuilder.addEntityDef(addIntegrationGroupEntity());
         this.archiveBuilder.addEntityDef(addIntegrationConnectorEntity());
-        this.archiveBuilder.addEntityDef(addIntegrationReportEntity());
+        this.archiveBuilder.addEntityDef(addConnectorActivityReportEntity());
         this.archiveBuilder.addRelationshipDef(addRegisteredIntegrationConnectorRelationship());
         this.archiveBuilder.addRelationshipDef(addCatalogTargetRelationship());
-        this.archiveBuilder.addRelationshipDef(addRelatedIntegrationReportRelationship());
         this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
     }
 
@@ -410,10 +409,10 @@ public class OpenMetadataTypesArchive4_0
         return entityDef;
     }
 
-    private EntityDef addIntegrationReportEntity()
+    private EntityDef addConnectorActivityReportEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.INTEGRATION_REPORT,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.CONNECTOR_ACTIVITY_REPORT,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REPORT.typeName));
 
         /*
          * Build the attributes
@@ -485,7 +484,7 @@ public class OpenMetadataTypesArchive4_0
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.START_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFRESH_TIME_INTERVAL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GENERATE_INTEGRATION_REPORT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION));
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -509,7 +508,7 @@ public class OpenMetadataTypesArchive4_0
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GENERATE_INTEGRATION_REPORT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -566,47 +565,6 @@ public class OpenMetadataTypesArchive4_0
         return relationshipDef;
     }
 
-    private RelationshipDef addRelatedIntegrationReportRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.RELATED_INTEGRATION_REPORT,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "anchorSubject";
-        final String                     end1AttributeDescription     = "The anchor entity that the integration report describes.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "integrationReports";
-        final String                     end2AttributeDescription     = "A description of the changes made to the anchor entity by an integration " +
-                "report.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.INTEGRATION_REPORT.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
-
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -648,7 +606,6 @@ public class OpenMetadataTypesArchive4_0
         this.archiveBuilder.addTypeDefPatch(updateDataSet());
         this.archiveBuilder.addTypeDefPatch(updateCalculatedValue());
         this.archiveBuilder.addTypeDefPatch(updateProcessCall());
-        this.archiveBuilder.addTypeDefPatch(updateDataFlow());
     }
 
 
@@ -717,30 +674,6 @@ public class OpenMetadataTypesArchive4_0
 
         return typeDefPatch;
     }
-
-    private TypeDefPatch updateDataFlow()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
 
 
     /*

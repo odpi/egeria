@@ -12,6 +12,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.IntegrationGroupProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetsResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;

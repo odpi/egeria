@@ -19,11 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LicenseTypeProperties extends GovernanceDefinitionProperties
+public class LicenseTypeProperties extends TermsAndConditionsProperties
 {
-    private  String   details = null;
-
-
     /**
      * Default Constructor
      */
@@ -39,36 +36,9 @@ public class LicenseTypeProperties extends GovernanceDefinitionProperties
      *
      * @param template object to copy
      */
-    public LicenseTypeProperties(LicenseTypeProperties template)
+    public LicenseTypeProperties(TermsAndConditionsProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            this.details = template.getDetails();
-        }
-    }
-
-
-    /**
-     * Return the specific details of the license.
-     *
-     * @return string description
-     */
-    public String getDetails()
-    {
-        return details;
-    }
-
-
-    /**
-     * Set up the specific details of the license.
-     *
-     * @param details string description
-     */
-    public void setDetails(String details)
-    {
-        this.details = details;
     }
 
 
@@ -81,46 +51,6 @@ public class LicenseTypeProperties extends GovernanceDefinitionProperties
     public String toString()
     {
         return "LicenseTypeProperties{" +
-                "details='" + details + '\'' +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        LicenseTypeProperties that = (LicenseTypeProperties) objectToCompare;
-        return Objects.equals(details, that.details);
-    }
-
-
-
-    /**
-     * Return hash code based on properties.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), details);
     }
 }

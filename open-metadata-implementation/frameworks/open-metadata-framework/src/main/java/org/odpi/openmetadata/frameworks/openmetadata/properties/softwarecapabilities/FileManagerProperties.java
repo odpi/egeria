@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabil
 /**
  * FileSystemProperties describes an application that manages a collection of files.
  */
-public class FileManagerProperties extends SoftwareCapabilityProperties
+public class FileManagerProperties extends ResourceManagerProperties
 {
     /**
      * Default constructor
@@ -33,7 +33,7 @@ public class FileManagerProperties extends SoftwareCapabilityProperties
      *
      * @param template object to copy
      */
-    public FileManagerProperties(SoftwareCapabilityProperties template)
+    public FileManagerProperties(ResourceManagerProperties template)
     {
         super(template);
     }

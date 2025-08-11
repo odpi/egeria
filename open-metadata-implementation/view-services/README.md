@@ -20,13 +20,9 @@ The view services are as follows:
 
   The Automated Curation OMVS provides search and query capabilities for technology types and then the ability to run associated governance actions.
 
-* **[Classification Manager](classification-manager) - manage classifications on open metadata.
+* **[Classification Manager](classification-manager)** - manage classifications on open metadata.
 
   The Classification Manager OMVS enables the caller to add classifications and governance relationships to open metadata elements.
-
-* **[Collection Manager](collection-manager)** - manage collections of assets and other elements.
-
-  The Collection Manager OMVS provides the REST APIs to create collections of asset and other elements such as glossary terms or policies.  The collections can be nested (like folders in a file system) and they can be classified to describe the type of collection.  For example, one type of classification for a collection is a *DigitalProduct* that allows the collections of assets and other related material to describe data and or services for a specific consumer or purpose.
 
 * **[Data Designer](data-designer)** - create schema definitions to describe the structure of data.
 
@@ -51,10 +47,6 @@ The view services are as follows:
 * **[Glossary Manager](glossary-manager)** - develop new glossary terms and categories in a controlled workflow process.
 
   The Glossary Manager OMVS is for user interfaces supporting the creation and editing of glossary content, such as glossary terms and categories, in a controlled workflow process.  This means that as terms and categories are created, updated and deleted, these changes are invisible to the general user until they are approved.
-
-* **[Governance Officer](governance-officer)** - maintain governance definitions used to define any governance domain.
-
-  The Governance Officer OMVS is for user interfaces supporting the creation and editing of a new governance domain.
 
 * **[My Profile](my-profile)** - locate, retrieve and update information relating to the calling user's profile.
 

@@ -149,21 +149,20 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
         {
             Map<String, Object> extendedProperties = new HashMap<>();
 
-            extendedProperties.put(OpenMetadataProperty.DETAILS.name, licenseTypeDefinition.getDetails());
-
             archiveHelper.addGovernanceDefinition(OpenMetadataType.LICENSE_TYPE.typeName,
                                                   licenseTypeDefinition.getQualifiedName(),
                                                   licenseTypeDefinition.getTitle(),
                                                   licenseTypeDefinition.getSummary(),
                                                   licenseTypeDefinition.getScope().getPreferredValue(),
                                                   licenseTypeDefinition.getDescription(),
+                                                  null,
                                                   0,
                                                   null,
                                                   null,
                                                   null,
                                                   null,
                                                   null,
-                                                  extendedProperties);
+                                                  null);
         }
     }
 
@@ -177,10 +176,6 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 
         for (CertificationTypeDefinition certificationTypeDefinition : CertificationTypeDefinition.values())
         {
-            Map<String, Object> extendedProperties = new HashMap<>();
-
-            extendedProperties.put(OpenMetadataProperty.DETAILS.name, certificationTypeDefinition.getDetails());
-
             archiveHelper.setGUID(certificationTypeDefinition.getQualifiedName(), certificationTypeDefinition.getGUID());
 
             String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE.typeName,
@@ -189,13 +184,14 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                                 certificationTypeDefinition.getSummary(),
                                                                 certificationTypeDefinition.getDescription(),
                                                                 certificationTypeDefinition.getScope().getPreferredValue(),
+                                                                null,
                                                                 0,
                                                                 null,
                                                                 null,
                                                                 null,
                                                                 null,
                                                                 null,
-                                                                extendedProperties);
+                                                                null);
 
             assert (certificationTypeDefinition.getGUID().equals(guid));
 
@@ -225,6 +221,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                   dataProcessingPurposeDefinition.getSummary(),
                                                   dataProcessingPurposeDefinition.getScope().getPreferredValue(),
                                                   dataProcessingPurposeDefinition.getDescription(),
+                                                  null,
                                                   0,
                                                   null,
                                                   null,

@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationGroupElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.IntegrationGroupProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
@@ -382,7 +382,7 @@ public class IntegrationGroupHandler
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorName(),
                                                                            userId,
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getStartDate(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getStopDate(),
+                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorShutdownDate(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getMetadataSourceQualifiedName(),
                                                                            registeredIntegrationConnectorElement.getProperties().getConnection(),

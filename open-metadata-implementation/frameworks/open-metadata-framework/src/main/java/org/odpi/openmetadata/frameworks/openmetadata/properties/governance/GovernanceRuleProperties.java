@@ -9,8 +9,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * A governance rule defines an executable rule that can be deployed at particular points in the processing.
- * The implementation of this rule is identified by the GovernanceRuleImplementation relationship.
+ * GovernanceRuleProperties describes rule that the governance program wishes to enforce.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,8 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernanceRuleProperties extends TechnicalControlProperties
 {
+
     /**
-     * Default Constructor
+     * Default constructor
      */
     public GovernanceRuleProperties()
     {
@@ -35,11 +35,11 @@ public class GovernanceRuleProperties extends TechnicalControlProperties
 
 
     /**
-     * Copy/Clone Constructor
+     * Copy/clone constructor
      *
      * @param template object to copy
      */
-    public GovernanceRuleProperties(GovernanceRuleProperties template)
+    public GovernanceRuleProperties(TechnicalControlProperties template)
     {
         super(template);
     }
@@ -48,7 +48,7 @@ public class GovernanceRuleProperties extends TechnicalControlProperties
     /**
      * JSON-style toString
      *
-     * @return string containing the properties and their values
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()

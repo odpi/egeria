@@ -213,8 +213,6 @@ public class MetadataExplorerResource
      * @param urlMarker  view service URL marker
      * @param anchorDomainName name of open metadata type for the domain
      * @param requestBody string to search for in text
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
@@ -231,13 +229,9 @@ public class MetadataExplorerResource
     public AnchorSearchMatchesListResponse findElementsInAnchorDomain(@PathVariable String                  serverName,
                                                                       @PathVariable String                  urlMarker,
                                                                       @PathVariable String                  anchorDomainName,
-                                                                      @RequestParam (required = false, defaultValue = "0")
-                                                                      int                     startFrom,
-                                                                      @RequestParam (required = false, defaultValue = "0")
-                                                                      int                     pageSize,
                                                                       @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findElementsInAnchorDomain(serverName, urlMarker, anchorDomainName, startFrom, pageSize, requestBody);
+        return restAPI.findElementsInAnchorDomain(serverName, urlMarker, anchorDomainName, requestBody);
     }
 
 
@@ -250,8 +244,6 @@ public class MetadataExplorerResource
      * @param urlMarker  view service URL marker
      * @param anchorScopeGUID unique identifier of the scope to use
      * @param requestBody string to search for in text
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
@@ -269,13 +261,9 @@ public class MetadataExplorerResource
     public AnchorSearchMatchesListResponse findElementsInAnchorScope(@PathVariable String                  serverName,
                                                                      @PathVariable String                  urlMarker,
                                                                      @PathVariable String                  anchorScopeGUID,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int                     startFrom,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int                     pageSize,
                                                                      @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findElementsInAnchorScope(serverName, urlMarker, anchorScopeGUID, startFrom, pageSize, requestBody);
+        return restAPI.findElementsInAnchorScope(serverName, urlMarker, anchorScopeGUID, requestBody);
     }
 
 
@@ -287,8 +275,6 @@ public class MetadataExplorerResource
      * @param urlMarker  view service URL marker
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
@@ -307,10 +293,6 @@ public class MetadataExplorerResource
                                                                             @PathVariable String  urlMarker,
                                                                             @RequestParam (required = false, defaultValue = "0")
                                                                             int     startingAtEnd,
-                                                                            @RequestParam (required = false, defaultValue = "0")
-                                                                            int     startFrom,
-                                                                            @RequestParam (required = false, defaultValue = "0")
-                                                                            int     pageSize,
                                                                             @RequestBody (required = false)
                                                                                 ResultsRequestBody requestBody)
     {
@@ -319,8 +301,6 @@ public class MetadataExplorerResource
                                                   null,
                                                   urlMarker,
                                                   startingAtEnd,
-                                                  startFrom,
-                                                  pageSize,
                                                   requestBody);
     }
 
@@ -334,8 +314,6 @@ public class MetadataExplorerResource
      * @param urlMarker  view service URL marker
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
@@ -355,10 +333,6 @@ public class MetadataExplorerResource
                                                                          @PathVariable String  urlMarker,
                                                                          @RequestParam (required = false, defaultValue = "0")
                                                                          int     startingAtEnd,
-                                                                         @RequestParam (required = false, defaultValue = "0")
-                                                                         int     startFrom,
-                                                                         @RequestParam (required = false, defaultValue = "0")
-                                                                         int     pageSize,
                                                                          @RequestBody (required = false)
                                                                          ResultsRequestBody requestBody)
     {
@@ -367,8 +341,6 @@ public class MetadataExplorerResource
                                                   relationshipTypeName,
                                                   urlMarker,
                                                   startingAtEnd,
-                                                  startFrom,
-                                                  pageSize,
                                                   requestBody);
     }
 
@@ -382,8 +354,7 @@ public class MetadataExplorerResource
      * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
      * @param urlMarker  view service URL marker
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
+
      *
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
@@ -401,10 +372,6 @@ public class MetadataExplorerResource
                                                                                    @PathVariable String  metadataElementAtEnd1GUID,
                                                                                    @PathVariable String  metadataElementAtEnd2GUID,
                                                                                    @PathVariable String  urlMarker,
-                                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                                   int     startFrom,
-                                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                                   int     pageSize,
                                                                                    @RequestBody(required = false)
                                                                                    ResultsRequestBody requestBody)
     {
@@ -413,8 +380,6 @@ public class MetadataExplorerResource
                                                        null,
                                                        metadataElementAtEnd2GUID,
                                                        urlMarker,
-                                                       startFrom,
-                                                       pageSize,
                                                        requestBody);
     }
 
@@ -425,8 +390,6 @@ public class MetadataExplorerResource
      * @param serverName name of the server instances for this request
      * @param urlMarker      the identifier of the view service (for example runtime-manager for the Runtime Manager OMVS)
      * @param elementGUID  unique identifier for the element
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
      * @param requestBody effective time and asOfTime
      *
      * @return graph of elements or
@@ -444,14 +407,10 @@ public class MetadataExplorerResource
     public OpenMetadataGraphResponse getAnchoredElementsGraph(@PathVariable String          serverName,
                                                               @PathVariable String          urlMarker,
                                                               @PathVariable String          elementGUID,
-                                                              @RequestParam(required = false, defaultValue = "0")
-                                                              int             startFrom,
-                                                              @RequestParam(required = false, defaultValue = "0")
-                                                              int             pageSize,
                                                               @RequestBody (required = false)
                                                               ResultsRequestBody requestBody)
     {
-        return restAPI.getAnchoredElementsGraph(serverName, urlMarker, elementGUID, startFrom, pageSize, requestBody);
+        return restAPI.getAnchoredElementsGraph(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -465,8 +424,6 @@ public class MetadataExplorerResource
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param urlMarker  view service URL marker
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
@@ -485,10 +442,6 @@ public class MetadataExplorerResource
                                                                                 @PathVariable String  relationshipTypeName,
                                                                                 @PathVariable String  metadataElementAtEnd2GUID,
                                                                                 @PathVariable String  urlMarker,
-                                                                                @RequestParam  (required = false, defaultValue = "0")
-                                                                                int     startFrom,
-                                                                                @RequestParam  (required = false, defaultValue = "0")
-                                                                                int     pageSize,
                                                                                 @RequestBody(required = false)
                                                                                 ResultsRequestBody requestBody)
     {
@@ -497,8 +450,6 @@ public class MetadataExplorerResource
                                                        relationshipTypeName,
                                                        metadataElementAtEnd2GUID,
                                                        urlMarker,
-                                                       startFrom,
-                                                       pageSize,
                                                        requestBody);
     }
 
@@ -508,8 +459,6 @@ public class MetadataExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
@@ -526,14 +475,10 @@ public class MetadataExplorerResource
 
     public OpenMetadataElementsResponse findMetadataElements(@PathVariable String          serverName,
                                                              @PathVariable String          urlMarker,
-                                                             @RequestParam(required = false, defaultValue = "0")
-                                                             int             startFrom,
-                                                             @RequestParam(required = false, defaultValue = "0")
-                                                             int             pageSize,
                                                              @RequestBody (required = false)
                                                              FindRequestBody requestBody)
     {
-        return restAPI.findMetadataElements(serverName, urlMarker, startFrom, pageSize, requestBody);
+        return restAPI.findMetadataElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -542,8 +487,6 @@ public class MetadataExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
      *
      * @return a list of relationships - null means no matching relationships - or
@@ -560,13 +503,9 @@ public class MetadataExplorerResource
 
     public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
                                                                                          @PathVariable String          urlMarker,
-                                                                                         @RequestParam (required = false, defaultValue = "0")
-                                                                                         int             startFrom,
-                                                                                         @RequestParam  (required = false, defaultValue = "0")
-                                                                                         int             pageSize,
                                                                                          @RequestBody  FindRelationshipRequestBody requestBody)
     {
-        return restAPI.findRelationshipsBetweenMetadataElements(serverName, urlMarker, startFrom, pageSize, requestBody);
+        return restAPI.findRelationshipsBetweenMetadataElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -607,10 +546,6 @@ public class MetadataExplorerResource
      * @param serverName name of the server to route the request to
      * @param relationshipGUID unique identifier of object to retrieve
      * @param urlMarker  view service URL marker
-     * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
-     *                         versions beyond the first page of results. Zero means start from the first element.
-     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
-     *                 return results size.
      * @param requestBody the time window required
      * @return list of beans or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -627,18 +562,12 @@ public class MetadataExplorerResource
     public OpenMetadataRelationshipListResponse getRelationshipHistory(@PathVariable String                 serverName,
                                                                        @PathVariable String                 relationshipGUID,
                                                                        @PathVariable String                 urlMarker,
-                                                                       @RequestParam (required = false, defaultValue = "0")
-                                                                           int                    startFrom,
-                                                                       @RequestParam (required = false, defaultValue = "0")
-                                                                           int                    pageSize,
                                                                        @RequestBody(required = false)
                                                                        HistoryRequestBody     requestBody)
     {
         return restAPI.getRelationshipHistory(serverName,
                                               relationshipGUID,
                                               urlMarker,
-                                              startFrom,
-                                              pageSize,
                                               requestBody);
     }
 }

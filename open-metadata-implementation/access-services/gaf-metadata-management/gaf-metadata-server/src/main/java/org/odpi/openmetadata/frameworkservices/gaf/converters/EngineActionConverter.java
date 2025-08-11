@@ -180,7 +180,7 @@ public class EngineActionConverter<B> extends OpenGovernanceConverterBase<B>
                                         requestSourceElements.add(requestSourceElement);
                                     }
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.NEXT_ENGINE_ACTION.typeName))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName))
                                 {
                                     RelatedEngineActionElement relatedAction = new RelatedEngineActionElement();
 

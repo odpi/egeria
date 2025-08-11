@@ -7,12 +7,12 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 
@@ -68,27 +68,27 @@ public class GovernanceServiceCache
             this.governanceServiceName = element.getProperties().getQualifiedName();
             this.serviceConnection = element.getProperties().getConnection();
 
-            RegisteredGovernanceServiceProperties registeredGovernanceServiceProperties = element.getProperties().getRequestTypes().get(requestType);
+            SupportedGovernanceServiceProperties supportedGovernanceServiceProperties = element.getProperties().getRequestTypes().get(requestType);
 
-            if (registeredGovernanceServiceProperties.getServiceRequestType() != null)
+            if (supportedGovernanceServiceProperties.getServiceRequestType() != null)
             {
-                this.serviceRequestType = registeredGovernanceServiceProperties.getServiceRequestType();
+                this.serviceRequestType = supportedGovernanceServiceProperties.getServiceRequestType();
             }
             else
             {
                 this.serviceRequestType = requestType;
             }
 
-            this.requestParameters  = registeredGovernanceServiceProperties.getRequestParameters();
-            this.generateIntegrationReport = registeredGovernanceServiceProperties.getGenerateIntegrationReports();
+            this.requestParameters  = supportedGovernanceServiceProperties.getRequestParameters();
+            this.generateIntegrationReport = supportedGovernanceServiceProperties.getGenerateActivityReports();
 
-            if (registeredGovernanceServiceProperties.getDeleteMethod() == null)
+            if (supportedGovernanceServiceProperties.getDeleteMethod() == null)
             {
                 this.deleteMethod = DeleteMethod.LOOK_FOR_LINEAGE;
             }
             else
             {
-                this.deleteMethod = registeredGovernanceServiceProperties.getDeleteMethod();
+                this.deleteMethod = supportedGovernanceServiceProperties.getDeleteMethod();
             }
 
             getNextGovernanceService(); /* validate that the connection works */

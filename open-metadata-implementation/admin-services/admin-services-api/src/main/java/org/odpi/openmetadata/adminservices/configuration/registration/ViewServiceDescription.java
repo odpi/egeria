@@ -10,6 +10,29 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
  */
 public enum ViewServiceDescription
 {
+    /**
+     * Create new assets, software capabilities and link them to other elements.
+     */
+    ASSET_MAKER(801,
+                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     "Asset Maker",
+                     "Asset Maker OMVS",
+                     "asset-maker",
+                     "Create new assets, software capabilities and link them to other elements.",
+                     "https://egeria-project.org/services/omvs/asset-maker/overview/",
+                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+
+    /**
+     * Provides advanced metadata management features for experts in open metadata.
+     */
+    METADATA_EXPERT(801,
+                ComponentDevelopmentStatus.STABLE,
+                "Metadata Expert",
+                "Metadata Expert OMVS",
+                "metadata-expert",
+                "Provides advanced metadata management features for experts in open metadata.",
+                "https://egeria-project.org/services/omvs/metadata-expert/overview/",
+                AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
 
     /**
      * View glossary terms and categories within a glossary.

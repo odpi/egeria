@@ -128,8 +128,6 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                                                        null,
                                                        model.getModelUsage(),
                                                        false,
-                                                       false,
-                                                       false,
                                                        null,
                                                        null,
                                                        null,

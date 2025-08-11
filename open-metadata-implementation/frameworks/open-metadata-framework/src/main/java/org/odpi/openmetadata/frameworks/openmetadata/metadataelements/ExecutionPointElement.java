@@ -7,7 +7,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ExecutionPointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRuleProperties;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ExecutionPointElement implements MetadataElement
 {
     private ElementHeader            elementHeader = null;
-    private ExecutionPointProperties properties    = null;
+    private GovernanceRuleProperties properties    = null;
 
 
     /**
@@ -79,7 +79,7 @@ public class ExecutionPointElement implements MetadataElement
      *
      * @return properties bean
      */
-    public ExecutionPointProperties getProperties()
+    public GovernanceRuleProperties getProperties()
     {
         return properties;
     }
@@ -90,7 +90,7 @@ public class ExecutionPointElement implements MetadataElement
      *
      * @param properties properties bean
      */
-    public void setProperties(ExecutionPointProperties properties)
+    public void setProperties(GovernanceRuleProperties properties)
     {
         this.properties = properties;
     }

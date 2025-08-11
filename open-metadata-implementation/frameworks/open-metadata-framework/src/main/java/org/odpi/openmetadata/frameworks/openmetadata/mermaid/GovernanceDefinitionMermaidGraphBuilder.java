@@ -45,9 +45,5 @@ public class GovernanceDefinitionMermaidGraphBuilder extends OpenMetadataRootMer
         this.addRelatedElementSummaries(governanceDefinitionElement.getGovernedElements(),
                                         VisualStyle.LINKED_ELEMENT,
                                         governanceDefinitionElement.getElementHeader().getGUID());
-
-        this.addRelatedElementSummaries(governanceDefinitionElement.getMetrics(),
-                                        VisualStyle.LINKED_ELEMENT,
-                                        governanceDefinitionElement.getElementHeader().getGUID());
     }
 }

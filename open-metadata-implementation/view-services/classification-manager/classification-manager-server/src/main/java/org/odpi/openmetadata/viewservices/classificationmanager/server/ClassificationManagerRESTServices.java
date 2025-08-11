@@ -9,8 +9,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -1304,109 +1306,6 @@ public class ClassificationManagerRESTServices extends TokenController
 
 
     /**
-     * Classify the element to assert that the definitions it represents are part of a subject area definition.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param requestBody properties for classification request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse addElementToSubjectArea(String                    serverName,
-                                                String                    elementGUID,
-                                                NewClassificationRequestBody requestBody)
-    {
-        final String methodName = "addElementToSubjectArea";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof SubjectAreaProperties properties)
-                {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-                    handler.addElementToSubjectArea(userId, elementGUID, properties, requestBody);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the subject area designation from the identified element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param requestBody properties for classification request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse removeElementFromSubjectArea(String                   serverName,
-                                                     String                   elementGUID,
-                                                     DeleteRequestBody requestBody)
-    {
-        final String   methodName = "removeElementFromSubjectArea";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-            handler.removeElementFromSubjectArea(userId, elementGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
      * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
      *
@@ -1519,125 +1418,6 @@ public class ClassificationManagerRESTServices extends TokenController
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
             handler.clearSemanticAssignment(userId, elementGUID, glossaryTermGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Link a governance definition to an element using the GovernedBy relationship.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to link
-     * @param definitionGUID identifier of the governance definition to link
-     * @param requestBody properties for relationship request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse addGovernanceDefinitionToElement(String                  serverName,
-                                                         String                  elementGUID,
-                                                         String                  definitionGUID,
-                                                         NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "addGovernanceDefinitionToElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-            if (requestBody == null)
-            {
-                handler.addGovernanceDefinitionToElement(userId,
-                                                         elementGUID,
-                                                         definitionGUID,
-                                                         null,
-                                                         null);
-            }
-            else
-            {
-                if (requestBody.getProperties() instanceof GovernedByProperties governedByProperties)
-                {
-                    handler.addGovernanceDefinitionToElement(userId,
-                                                             elementGUID,
-                                                             definitionGUID,
-                                                             requestBody,
-                                                             governedByProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.addGovernanceDefinitionToElement(userId,
-                                                             elementGUID,
-                                                             definitionGUID,
-                                                             requestBody,
-                                                             null);
-                }
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Remove the GovernedBy relationship between a governance definition and an element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param definitionGUID identifier of the governance definition to link
-     * @param requestBody properties for relationship request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse removeGovernanceDefinitionFromElement(String                   serverName,
-                                                              String                   elementGUID,
-                                                              String                   definitionGUID,
-                                                              DeleteRequestBody requestBody)
-    {
-        final String methodName = "removeGovernanceDefinitionFromElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-            handler.removeGovernanceDefinitionFromElement(userId, elementGUID, definitionGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1987,9 +1767,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse removeResourceListFromElement(String                    serverName,
-                                                      String                    elementGUID,
-                                                      String                    resourceGUID,
+    public VoidResponse removeResourceListFromElement(String            serverName,
+                                                      String            elementGUID,
+                                                      String            resourceGUID,
                                                       DeleteRequestBody requestBody)
     {
         final String methodName = "removeResourceListFromElement";
@@ -2020,92 +1800,25 @@ public class ClassificationManagerRESTServices extends TokenController
     }
 
 
-    /* =======================================
-     * Licenses
-     */
-
     /**
-     * Link an element to a license type and include details of the license in the relationship properties.
+     * Link a resource to an element using the MoreInformation relationship.
      *
-     * @param serverName name of the server instance to connect to
-     * @param elementGUID unique identifier of the element being licensed
-     * @param licenseTypeGUID unique identifier for the license type
-     * @param requestBody the properties of the license
-     *
-     * @return guid or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    public GUIDResponse licenseElement(String                  serverName,
-                                       String                  elementGUID,
-                                       String                  licenseTypeGUID,
-                                       NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "licenseElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof LicenseProperties properties)
-                {
-                    response.setGUID(handler.licenseElement(userId,
-                                                            elementGUID,
-                                                            licenseTypeGUID,
-                                                            requestBody,
-                                                            properties));
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(LicenseTypeProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the properties of a license.  Remember to include the licenseId in the properties if the element has multiple
-     * licenses for the same license type.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param licenseGUID unique identifier for the license type
-     * @param requestBody the properties of the license
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param resourceGUID identifier of the resource to link
+     * @param requestBody properties for relationship request
      *
      * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    public VoidResponse updateLicense(String                  serverName,
-                                      String                  licenseGUID,
-                                      UpdateRelationshipRequestBody requestBody)
+    public VoidResponse addMoreInformationToElement(String                  serverName,
+                                                    String                  elementGUID,
+                                                    String                  resourceGUID,
+                                                    NewRelationshipRequestBody requestBody)
     {
-        final String methodName = "updateLicense";
+        final String methodName = "addMoreInformationToElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -2123,18 +1836,34 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof LicenseProperties licenseProperties)
+                if (requestBody.getProperties() instanceof MoreInformationProperties moreInformationProperties)
                 {
-                    handler.updateLicense(userId, licenseGUID, requestBody, licenseProperties);
+                    handler.addMoreInformationToElement(userId,
+                                                        elementGUID,
+                                                        resourceGUID,
+                                                        requestBody,
+                                                        moreInformationProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addMoreInformationToElement(userId,
+                                                        elementGUID,
+                                                        resourceGUID,
+                                                        requestBody,
+                                                        null);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(LicenseProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ScopedByProperties.class.getName(), methodName);
                 }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.addMoreInformationToElement(userId,
+                                                    elementGUID,
+                                                    resourceGUID,
+                                                    null,
+                                                    null);
             }
         }
         catch (Throwable error)
@@ -2143,27 +1872,30 @@ public class ClassificationManagerRESTServices extends TokenController
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
+
         return response;
     }
 
 
     /**
-     * Remove the license for an element.
+     * Remove the MoreInformation relationship between a resource and an element.
      *
-     * @param serverName name of the server instance to connect to
-     * @param licenseGUID unique identifier for the license type
-     * @param requestBody external source information.
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param resourceGUID identifier of the resource to link
+     * @param requestBody properties for relationship request
      *
      * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    public VoidResponse unlicenseElement(String                   serverName,
-                                         String                   licenseGUID,
-                                         DeleteRequestBody requestBody)
+    public VoidResponse removeMoreInformationFromElement(String            serverName,
+                                                         String            elementGUID,
+                                                         String            resourceGUID,
+                                                         DeleteRequestBody requestBody)
     {
-        final String methodName = "unlicenseElement";
+        final String methodName = "removeMoreInformationFromElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -2179,182 +1911,7 @@ public class ClassificationManagerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
-            handler.unlicenseElement(userId, licenseGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /* =======================================
-     * Certifications
-     */
-
-    /**
-     * Link an element to a certification type and include details of the certification in the relationship properties.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param elementGUID unique identifier of the element being certified
-     * @param certificationTypeGUID unique identifier for the certification type
-     * @param requestBody the properties of the certification
-     *
-     * @return guid or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    public GUIDResponse certifyElement(String                  serverName,
-                                       String                  elementGUID,
-                                       String                  certificationTypeGUID,
-                                       NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "certifyElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof CertificationProperties certificationProperties)
-                {
-                    response.setGUID(handler.certifyElement(userId,
-                                                            elementGUID,
-                                                            certificationTypeGUID,
-                                                            requestBody,
-                                                            certificationProperties));
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(CertificationTypeProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the properties of a certification.  Remember to include the certificationId in the properties if the element has multiple
-     * certifications for the same certification type.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param certificationGUID unique identifier for the certification type
-     * @param requestBody the properties of the certification
-     *
-     * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    public VoidResponse updateCertification(String                        serverName,
-                                            String                        certificationGUID,
-                                            UpdateRelationshipRequestBody requestBody)
-    {
-        final String methodName = "updateCertification";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof CertificationProperties properties)
-                {
-                    handler.updateCertification(userId,
-                                                certificationGUID,
-                                                requestBody,
-                                                properties);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(CertificationProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the certification for an element.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param certificationGUID unique identifier for the certification type
-     * @param requestBody external source information.
-     *
-     * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    public VoidResponse decertifyElement(String                   serverName,
-                                         String                   certificationGUID,
-                                         DeleteRequestBody requestBody)
-    {
-        final String methodName = "decertifyElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-            handler.decertifyElement(userId, certificationGUID, requestBody);
+            handler.removeMoreInformationFromElement(userId, elementGUID, resourceGUID, requestBody);
         }
         catch (Throwable error)
         {

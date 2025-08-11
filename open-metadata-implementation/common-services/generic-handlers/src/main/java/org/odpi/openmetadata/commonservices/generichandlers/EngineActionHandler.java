@@ -795,12 +795,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 this.uncheckedLinkElementToElement(userId,
                                                    null,
                                                    null,
-                                                   governanceActionProcessEntity.getGUID(),
-                                                   governanceActionProcessGUIDParameterName,
                                                    processInstanceGUID,
                                                    governanceActionProcessInstanceGUIDParameterName,
-                                                   OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeGUID,
-                                                   processBuilder.getProcessHierarchyProperties(ProcessContainmentType.OWNED.getOrdinal()),
+                                                   governanceActionProcessEntity.getGUID(),
+                                                   governanceActionProcessGUIDParameterName,
+                                                   OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeGUID,
+                                                   null,
                                                    methodName);
 
                 String engineActionGUID = prepareEngineActionFromProcessStep(userId,
@@ -1178,7 +1178,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                        methodName);
 
             repositoryHandler.createRelationship(userId,
-                                                 OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
+                                                 OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeGUID,
                                                  null,
                                                  null,
                                                  previousEngineActionGUID,
@@ -1256,8 +1256,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<Relationship> previousResults = repositoryHandler.getRelationshipsByType(userId,
                                                                                       engineActionGUID,
                                                                                       OpenMetadataType.ENGINE_ACTION.typeName,
-                                                                                      OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
-                                                                                      OpenMetadataType.NEXT_ENGINE_ACTION.typeName,
+                                                                                      OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeGUID,
+                                                                                      OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName,
                                                                                       1,
                                                                                       null,
                                                                                       null,

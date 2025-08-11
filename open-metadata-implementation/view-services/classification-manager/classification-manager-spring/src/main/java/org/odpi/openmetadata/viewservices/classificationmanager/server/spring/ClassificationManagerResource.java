@@ -735,62 +735,6 @@ public class ClassificationManagerResource
 
 
     /**
-     * Classify the element to assert that the definitions it represents are part of a subject area definition.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param requestBody properties for classification request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/subject-area-member")
-
-    @Operation(summary="addElementToSubjectArea",
-            description="Classify the element to assert that the definitions it represents are part of a subject area definition.",
-            externalDocs=@ExternalDocumentation(description="Subject Areas",
-                    url="https://egeria-project.org/types/4/0425-Subject-Areas/"))
-
-    public VoidResponse addElementToSubjectArea(@PathVariable String                    serverName,
-                                                @PathVariable String                    elementGUID,
-                                                @RequestBody  (required = false)
-                                                    NewClassificationRequestBody requestBody)
-    {
-        return restAPI.addElementToSubjectArea(serverName, elementGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the subject area designation from the identified element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param requestBody properties for classification request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/subject-area-member/remove")
-
-    @Operation(summary="removeElementFromSubjectArea",
-            description="Remove the subject area designation from the identified element.",
-            externalDocs=@ExternalDocumentation(description="Subject Areas",
-                    url="https://egeria-project.org/types/4/0425-Subject-Areas/"))
-
-    public VoidResponse removeElementFromSubjectArea(@PathVariable String                    serverName,
-                                                     @PathVariable String                    elementGUID,
-                                                     @RequestBody  (required = false)
-                                                         DeleteRequestBody requestBody)
-    {
-        return restAPI.removeElementFromSubjectArea(serverName, elementGUID, requestBody);
-    }
-
-
-    /**
      * Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
      * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
      *
@@ -848,66 +792,6 @@ public class ClassificationManagerResource
                                                     DeleteRequestBody requestBody)
     {
         return restAPI.clearSemanticAssignment(serverName, elementGUID, glossaryTermGUID, requestBody);
-    }
-
-
-    /**
-     * Link a governance definition to an element using the GovernedBy relationship.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to link
-     * @param definitionGUID identifier of the governance definition to link
-     * @param requestBody properties for relationship request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}")
-
-    @Operation(summary="addGovernanceDefinitionToElement",
-            description="Link a governance definition to an element using the GovernedBy relationship.",
-            externalDocs=@ExternalDocumentation(description="Governance Definitions",
-                    url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
-
-    public VoidResponse addGovernanceDefinitionToElement(@PathVariable String                  serverName,
-                                                         @PathVariable String                  elementGUID,
-                                                         @PathVariable String                  definitionGUID,
-                                                         @RequestBody  (required = false)
-                                                             NewRelationshipRequestBody requestBody)
-    {
-        return restAPI.addGovernanceDefinitionToElement(serverName, elementGUID, definitionGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the GovernedBy relationship between a governance definition and an element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param definitionGUID identifier of the governance definition to link
-     * @param requestBody properties for relationship request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}/remove")
-
-    @Operation(summary="removeGovernanceDefinitionFromElement",
-            description="Remove the GovernedBy relationship between a governance definition and an element.",
-            externalDocs=@ExternalDocumentation(description="Governance Definitions",
-                    url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
-
-    public VoidResponse removeGovernanceDefinitionFromElement(@PathVariable String                        serverName,
-                                                              @PathVariable String                        elementGUID,
-                                                              @PathVariable String                        definitionGUID,
-                                                              @RequestBody  (required = false)
-                                                                  DeleteRequestBody requestBody)
-    {
-        return restAPI.removeGovernanceDefinitionFromElement(serverName, elementGUID, definitionGUID, requestBody);
     }
 
 
@@ -1092,149 +976,65 @@ public class ClassificationManagerResource
     }
 
 
-    /* =======================================
-     * Licenses
-     */
 
-    /**
-     * Link an element to a license type and include details of the license in the relationship properties.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param elementGUID unique identifier of the element being licensed
-     * @param licenseTypeGUID unique identifier for the license type
-     * @param requestBody the properties of the license
-     *
-     * @return guid or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    @PostMapping (path = "/elements/{elementGUID}/license-types/{licenseTypeGUID}/license")
-
-    public GUIDResponse licenseElement(@PathVariable String                  serverName,
-                                       @PathVariable String                  elementGUID,
-                                       @PathVariable String                  licenseTypeGUID,
-                                       @RequestBody NewRelationshipRequestBody requestBody)
-    {
-        return restAPI.licenseElement(serverName, elementGUID, licenseTypeGUID, requestBody);
-    }
 
 
     /**
-     * Update the properties of a license.  Remember to include the licenseId in the properties if the element has multiple
-     * licenses for the same license type.
+     * Link a resource to an element using the MoreInformation relationship.
      *
-     * @param serverName name of the server instance to connect to
-     * @param licenseGUID unique identifier for the license relationship
-     * @param requestBody the properties of the license
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param resourceGUID identifier of the resource to link
+     * @param requestBody properties for relationship request
      *
      * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    @PostMapping (path = "/licenses/{licenseGUID}/update")
+    @PostMapping(path = "/elements/{elementGUID}/more-information/{resourceGUID}")
 
-    public VoidResponse updateLicense(@PathVariable String                  serverName,
-                                      @PathVariable String                  licenseGUID,
-                                      @RequestBody  UpdateRelationshipRequestBody requestBody)
+    @Operation(summary="addMoreInformationToElement",
+            description="Link a resource to an element using the MoreInformation relationship.",
+            externalDocs=@ExternalDocumentation(description="Resource Lists",
+                    url="https://egeria-project.org/types/0/0019-More-Information/"))
+
+    public VoidResponse addMoreInformationToElement(@PathVariable String                  serverName,
+                                                    @PathVariable String                  elementGUID,
+                                                    @PathVariable String resourceGUID,
+                                                    @RequestBody  (required = false)
+                                                        NewRelationshipRequestBody requestBody)
     {
-        return restAPI.updateLicense(serverName, licenseGUID, requestBody);
+        return restAPI.addMoreInformationToElement(serverName, elementGUID, resourceGUID, requestBody);
     }
 
 
     /**
-     * Remove the license for an element.
+     * Remove the MoreInformation relationship between a resource and an element.
      *
-     * @param serverName name of the server instance to connect to
-     * @param licenseGUID unique identifier for the license relationship
-     * @param requestBody external source information.
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param resourceGUID identifier of the resource to link
+     * @param requestBody properties for relationship request
      *
      * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    @PostMapping (path = "/licenses/{licenseGUID}/delete")
+    @PostMapping(path = "/elements/{elementGUID}/more-information/{resourceGUID}/remove")
 
-    public VoidResponse unlicenseElement(@PathVariable String                   serverName,
-                                         @PathVariable String                   licenseGUID,
-                                         @RequestBody DeleteRequestBody requestBody)
+    @Operation(summary="removeMoreInformationFromElement",
+            description="Remove the MoreInformation relationship between a resource and an element.",
+            externalDocs=@ExternalDocumentation(description="Resource Lists",
+                    url="https://egeria-project.org/types/0/0019-More-Information/"))
+
+    public VoidResponse removeMoreInformationFromElement(@PathVariable String                        serverName,
+                                                         @PathVariable String                        elementGUID,
+                                                         @PathVariable String resourceGUID,
+                                                         @RequestBody  (required = false)
+                                                             DeleteRequestBody requestBody)
     {
-        return restAPI.unlicenseElement(serverName, licenseGUID, requestBody);
-    }
-
-
-
-    /* =======================================
-     * Certifications
-     */
-
-    /**
-     * Link an element to a certification type and include details of the certification in the relationship properties.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param elementGUID unique identifier of the element being certified
-     * @param certificationTypeGUID unique identifier for the certification type
-     * @param requestBody the properties of the certification
-     *
-     * @return guid or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    @PostMapping (path = "/elements/{elementGUID}/certification-types/{certificationTypeGUID}/certify")
-
-    public GUIDResponse certifyElement(@PathVariable String                  serverName,
-                                       @PathVariable String                  elementGUID,
-                                       @PathVariable String                  certificationTypeGUID,
-                                       @RequestBody NewRelationshipRequestBody requestBody)
-    {
-        return restAPI.certifyElement(serverName, elementGUID, certificationTypeGUID, requestBody);
-    }
-
-
-    /**
-     * Update the properties of a certification.  Remember to include the certificationId in the properties if the element has multiple
-     * certifications for the same certification type.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param certificationGUID unique identifier for the certification relationship
-     * @param requestBody the properties of the certification
-     *
-     * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    @PostMapping (path = "/certifications/{certificationGUID}/update")
-
-    public VoidResponse updateCertification(@PathVariable String                        serverName,
-                                            @PathVariable String                        certificationGUID,
-                                            @RequestBody  UpdateRelationshipRequestBody requestBody)
-    {
-        return restAPI.updateCertification(serverName, certificationGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the certification for an element.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param certificationGUID unique identifier for the certification relationship
-     * @param requestBody external source information.
-     *
-     * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    @PostMapping (path = "/certifications/{certificationGUID}/delete")
-
-    public VoidResponse decertifyElement(@PathVariable String                   serverName,
-                                         @PathVariable String                   certificationGUID,
-                                         @RequestBody DeleteRequestBody requestBody)
-    {
-        return restAPI.decertifyElement(serverName, certificationGUID, requestBody);
+        return restAPI.removeMoreInformationFromElement(serverName, elementGUID, resourceGUID, requestBody);
     }
 }
