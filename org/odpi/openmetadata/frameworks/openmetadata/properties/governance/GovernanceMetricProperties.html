@@ -75,7 +75,13 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
 <div class="inheritance"><a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
 <div class="inheritance"><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
+<div class="inheritance"><a href="GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties</a>
+<div class="inheritance"><a href="GovernanceControlProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceControlProperties</a>
+<div class="inheritance"><a href="TechnicalControlProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.TechnicalControlProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -83,7 +89,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">GovernanceMetricProperties</span>
-<span class="extends-implements">extends <a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></span></div>
+<span class="extends-implements">extends <a href="TechnicalControlProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">TechnicalControlProperties</a></span></div>
 <div class="block">GovernanceMetricProperties stores information about the way activity associated with a governance definition is to be measured.</div>
 </section>
 <section class="summary">
@@ -123,30 +129,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDomainIdentifier()" class="member-name-link">getDomainIdentifier</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMeasurement()" class="member-name-link">getMeasurement</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the identifier of the governance domain that this metric is managed by.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMeasurement()" class="member-name-link">getMeasurement</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the measurements needed to support this metric.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTarget()" class="member-name-link">getTarget</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTarget()" class="member-name-link">getTarget</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the targets that the organization is aiming to achieve.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Uses the guid to create a hashcode.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDomainIdentifier(int)" class="member-name-link">setDomainIdentifier</a><wbr>(int&nbsp;domainIdentifier)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the identifier of the governance domain that this metric is managed by.</div>
+<div class="block">Uses the guid to create a hashcode.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMeasurement(java.lang.String)" class="member-name-link">setMeasurement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;measurement)</code></div>
@@ -166,6 +162,12 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceControlProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.governance.<a href="GovernanceControlProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceControlProperties</a></h3>
+<code><a href="GovernanceControlProperties.html#getImplementationDescription()">getImplementationDescription</a>, <a href="GovernanceControlProperties.html#setImplementationDescription(java.lang.String)">setImplementationDescription</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.governance.<a href="GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceDefinitionProperties</a></h3>
+<code><a href="GovernanceDefinitionProperties.html#getDomainIdentifier()">getDomainIdentifier</a>, <a href="GovernanceDefinitionProperties.html#getIdentifier()">getIdentifier</a>, <a href="GovernanceDefinitionProperties.html#getImplications()">getImplications</a>, <a href="GovernanceDefinitionProperties.html#getImportance()">getImportance</a>, <a href="GovernanceDefinitionProperties.html#getOutcomes()">getOutcomes</a>, <a href="GovernanceDefinitionProperties.html#getResults()">getResults</a>, <a href="GovernanceDefinitionProperties.html#getScope()">getScope</a>, <a href="GovernanceDefinitionProperties.html#getSummary()">getSummary</a>, <a href="GovernanceDefinitionProperties.html#getUsage()">getUsage</a>, <a href="GovernanceDefinitionProperties.html#getUserDefinedStatus()">getUserDefinedStatus</a>, <a href="GovernanceDefinitionProperties.html#setDomainIdentifier(int)">setDomainIdentifier</a>, <a href="GovernanceDefinitionProperties.html#setIdentifier(java.lang.String)">setIdentifier</a>, <a href="GovernanceDefinitionProperties.html#setImplications(java.util.List)">setImplications</a>, <a href="GovernanceDefinitionProperties.html#setImportance(java.lang.String)">setImportance</a>, <a href="GovernanceDefinitionProperties.html#setOutcomes(java.util.List)">setOutcomes</a>, <a href="GovernanceDefinitionProperties.html#setResults(java.util.List)">setResults</a>, <a href="GovernanceDefinitionProperties.html#setScope(java.lang.String)">setScope</a>, <a href="GovernanceDefinitionProperties.html#setSummary(java.lang.String)">setSummary</a>, <a href="GovernanceDefinitionProperties.html#setUsage(java.lang.String)">setUsage</a>, <a href="GovernanceDefinitionProperties.html#setUserDefinedStatus(java.lang.String)">setUserDefinedStatus</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
 <code><a href="../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
@@ -215,28 +217,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getDomainIdentifier()">
-<h3>getDomainIdentifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getDomainIdentifier</span>()</div>
-<div class="block">Return the identifier of the governance domain that this metric is managed by.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>int identifier</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setDomainIdentifier(int)">
-<h3>setDomainIdentifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDomainIdentifier</span><wbr><span class="parameters">(int&nbsp;domainIdentifier)</span></div>
-<div class="block">Set up the identifier of the governance domain that this metric is managed by.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>domainIdentifier</code> - int identifier</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getMeasurement()">
 <h3>getMeasurement</h3>
@@ -288,7 +268,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../ReferenceableProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="TechnicalControlProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="TechnicalControlProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">TechnicalControlProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -301,7 +281,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../ReferenceableProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="GovernanceControlProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceControlProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceControlProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -316,7 +296,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Uses the guid to create a hashcode.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../ReferenceableProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="GovernanceControlProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceControlProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceControlProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

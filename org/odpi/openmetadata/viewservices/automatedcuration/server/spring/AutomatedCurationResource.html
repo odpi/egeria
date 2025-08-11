@@ -112,10 +112,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCatalogTarget(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)" class="member-name-link">addCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCatalogTarget(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties)" class="member-name-link">addCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
- <a href="../../../../frameworks/governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../frameworks/openmetadata/properties/assets/processes/connectors/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors">CatalogTargetProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a catalog target to an integration connector.</div>
 </div>
@@ -345,9 +345,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the scope associated with a collection of external identifiers.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCatalogTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)" class="member-name-link">updateCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCatalogTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties)" class="member-name-link">updateCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
- <a href="../../../../frameworks/governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../frameworks/openmetadata/properties/assets/processes/connectors/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors">CatalogTargetProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update a catalog target for an integration connector.</div>
 </div>
@@ -553,7 +553,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addCatalogTarget(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">
+<section class="detail" id="addCatalogTarget(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties)">
 <h3>addCatalogTarget</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">addCatalogTarget</span><wbr><span class="parameters">(@PathVariable
@@ -563,7 +563,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  @RequestBody
- <a href="../../../../frameworks/governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../frameworks/openmetadata/properties/assets/processes/connectors/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors">CatalogTargetProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Add a catalog target to an integration connector.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -580,7 +580,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateCatalogTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">
+<section class="detail" id="updateCatalogTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties)">
 <h3>updateCatalogTarget</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/catalog-targets/{relationshipGUID}/update")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateCatalogTarget</span><wbr><span class="parameters">(@PathVariable
@@ -588,7 +588,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  @RequestBody
- <a href="../../../../frameworks/governanceaction/properties/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../frameworks/openmetadata/properties/assets/processes/connectors/CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors">CatalogTargetProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Update a catalog target for an integration connector.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

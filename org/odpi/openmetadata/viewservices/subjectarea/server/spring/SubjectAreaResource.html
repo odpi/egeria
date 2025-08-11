@@ -111,24 +111,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSubjectArea(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)" class="member-name-link">createSubjectArea</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a subject area definition.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSubjectAreaFromTemplate(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody)" class="member-name-link">createSubjectAreaFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../../commonservices/ffdc/rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">TemplateRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new metadata element to represent a subject area definition using an existing metadata element as a template.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteSubjectArea(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)" class="member-name-link">deleteSubjectArea</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaGUID,
- <a href="../../../../commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addElementToSubjectArea(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewClassificationRequestBody)" class="member-name-link">addElementToSubjectArea</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="../../../../commonservices/ffdc/rest/NewClassificationRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewClassificationRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Delete a subject area definition.</div>
+<div class="block">Classify the element to assert that the definitions it represents are part of a subject area definition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachSubjectAreas(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)" class="member-name-link">detachSubjectAreas</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -138,39 +126,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach a data field from a subject area definition.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findSubjectAreas(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findSubjectAreas</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the list of subject area definition metadata elements that contain the search string.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubjectAreaByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)" class="member-name-link">getSubjectAreaByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaGUID,
- <a href="../../../../commonservices/ffdc/rest/GetRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GetRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the properties of a specific subject area definition.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubjectAreasByName(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getSubjectAreasByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the list of subject area definitions with a particular name.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSubjectAreas(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkSubjectAreas</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSubjectAreas(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkSubjectAreas</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSubjectAreaGUID,
  <a href="../../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a nested subject area to a broader subject area definition.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSubjectArea(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)" class="member-name-link">updateSubjectArea</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaGUID,
- <a href="../../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the properties of a subject area definition.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeElementFromSubjectArea(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)" class="member-name-link">removeElementFromSubjectArea</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="../../../../commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove the subject area designation from the identified element.</div>
 </div>
 </div>
 </div>
@@ -204,73 +173,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="createSubjectArea(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)">
-<h3>createSubjectArea</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/subject-areas")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSubjectArea</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Create a subject area definition.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server.</dd>
-<dd><code>requestBody</code> - properties for the subject area definition.</dd>
-<dt>Returns:</dt>
-<dd>unique identifier of the newly created element
-  InvalidParameterException  one of the parameters is invalid.
-  PropertyServerException    there is a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="createSubjectAreaFromTemplate(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody)">
-<h3>createSubjectAreaFromTemplate</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/subject-areas/from-template")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSubjectAreaFromTemplate</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">TemplateRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Create a new metadata element to represent a subject area definition using an existing metadata element as a template.
- The template defines additional classifications and relationships that should be added to the new element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - calling user</dd>
-<dd><code>requestBody</code> - properties that override the template</dd>
-<dt>Returns:</dt>
-<dd>unique identifier of the new metadata element
-  InvalidParameterException  one of the parameters is invalid
-  UserNotAuthorizedException the user is not authorized to issue this request
-  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="updateSubjectArea(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)">
-<h3>updateSubjectArea</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/subject-areas/{subjectAreaGUID}/update")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateSubjectArea</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaGUID,
- @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/UpdateElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateElementRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Update the properties of a subject area definition.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server.</dd>
-<dd><code>subjectAreaGUID</code> - unique identifier of the subject area definition (returned from create)</dd>
-<dd><code>requestBody</code> - properties for the new element.</dd>
-<dt>Returns:</dt>
-<dd>void or
-  InvalidParameterException  one of the parameters is invalid.
-  PropertyServerException    there is a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="linkSubjectAreas(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
 <h3>linkSubjectAreas</h3>
@@ -326,92 +228,50 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteSubjectArea(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)">
-<h3>deleteSubjectArea</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/subject-areas/{subjectAreaGUID}/delete")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteSubjectArea</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="addElementToSubjectArea(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewClassificationRequestBody)">
+<h3>addElementToSubjectArea</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/subject-area-member")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addElementToSubjectArea</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Delete a subject area definition.</div>
+ <a href="../../../../commonservices/ffdc/rest/NewClassificationRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewClassificationRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Classify the element to assert that the definitions it represents are part of a subject area definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server</dd>
-<dd><code>subjectAreaGUID</code> - unique identifier of the element to delete</dd>
-<dd><code>requestBody</code> - description of the relationship.</dd>
+<dd><code>serverName</code> - name of the server instance to connect to</dd>
+<dd><code>elementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>requestBody</code> - properties for classification request</dd>
 <dt>Returns:</dt>
 <dd>void or
-  InvalidParameterException  one of the parameters is null or invalid.
-  PropertyServerException    there is a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+ InvalidParameterException full path or userId is null or
+ PropertyServerException problem accessing property server or
+ UserNotAuthorizedException security access problem</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getSubjectAreasByName(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
-<h3>getSubjectAreasByName</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/subject-areas/by-name")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getSubjectAreasByName</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Returns the list of subject area definitions with a particular name.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the service to route the request to</dd>
-<dd><code>requestBody</code> - string to find in the properties</dd>
-<dt>Returns:</dt>
-<dd>list of matching metadata elements or
-  InvalidParameterException  one of the parameters is invalid
-  UserNotAuthorizedException the user is not authorized to issue this request
-  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="findSubjectAreas(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
-<h3>findSubjectAreas</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/subject-areas/by-search-string")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">findSubjectAreas</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the list of subject area definition metadata elements that contain the search string.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the service to route the request to</dd>
-<dd><code>requestBody</code> - string to find in the properties</dd>
-<dt>Returns:</dt>
-<dd>list of matching metadata elements or
-  InvalidParameterException  one of the parameters is invalid
-  UserNotAuthorizedException the user is not authorized to issue this request
-  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSubjectAreaByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)">
-<h3>getSubjectAreaByGUID</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/subject-areas/{subjectAreaGUID}/retrieve")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></span>&nbsp;<span class="element-name">getSubjectAreaByGUID</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="removeElementFromSubjectArea(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)">
+<h3>removeElementFromSubjectArea</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/subject-area-member/remove")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeElementFromSubjectArea</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/GetRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GetRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return the properties of a specific subject area definition.</div>
+ <a href="../../../../commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Remove the subject area designation from the identified element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the service to route the request to</dd>
-<dd><code>subjectAreaGUID</code> - unique identifier of the required element</dd>
-<dd><code>requestBody</code> - string to find in the properties</dd>
+<dd><code>serverName</code> - name of the server instance to connect to</dd>
+<dd><code>elementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>requestBody</code> - properties for classification request</dd>
 <dt>Returns:</dt>
-<dd>list of matching metadata elements or
-  InvalidParameterException  one of the parameters is invalid
-  UserNotAuthorizedException the user is not authorized to issue this request
-  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
+<dd>void or
+ InvalidParameterException full path or userId is null or
+ PropertyServerException problem accessing property server or
+ UserNotAuthorizedException security access problem</dd>
 </dl>
 </section>
 </li>

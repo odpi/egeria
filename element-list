@@ -277,15 +277,17 @@ org.odpi.openmetadata.frameworks.openmetadata.mapper
 org.odpi.openmetadata.frameworks.openmetadata.mermaid
 org.odpi.openmetadata.frameworks.openmetadata.metadataelements
 org.odpi.openmetadata.frameworks.openmetadata.properties
-org.odpi.openmetadata.frameworks.openmetadata.properties.actions
 org.odpi.openmetadata.frameworks.openmetadata.properties.actors
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases
-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
+org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions
+org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors
+org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata
+org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics
 org.odpi.openmetadata.frameworks.openmetadata.properties.collections
 org.odpi.openmetadata.frameworks.openmetadata.properties.communities
@@ -299,6 +301,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences
 org.odpi.openmetadata.frameworks.openmetadata.properties.feedback
 org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries
 org.odpi.openmetadata.frameworks.openmetadata.properties.governance
+org.odpi.openmetadata.frameworks.openmetadata.properties.governanceactions
 org.odpi.openmetadata.frameworks.openmetadata.properties.implementations
 org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains
 org.odpi.openmetadata.frameworks.openmetadata.properties.lineage
@@ -459,6 +462,7 @@ org.odpi.openmetadata.samples.archiveutilities.combo
 org.odpi.openmetadata.samples.archiveutilities.governanceengines
 org.odpi.openmetadata.samples.archiveutilities.governanceprogram
 org.odpi.openmetadata.samples.archiveutilities.organization
+org.odpi.openmetadata.samples.archiveutilities.productcatalog
 org.odpi.openmetadata.samples.archiveutilities.sustainability
 org.odpi.openmetadata.samples.archiveutilities.types
 org.odpi.openmetadata.samples.governanceactions.clinicaltrials
@@ -555,6 +559,10 @@ org.odpi.openmetadata.viewservices.governanceofficer.admin
 org.odpi.openmetadata.viewservices.governanceofficer.ffdc
 org.odpi.openmetadata.viewservices.governanceofficer.server
 org.odpi.openmetadata.viewservices.governanceofficer.server.spring
+org.odpi.openmetadata.viewservices.metadataexpert.admin
+org.odpi.openmetadata.viewservices.metadataexpert.ffdc
+org.odpi.openmetadata.viewservices.metadataexpert.server
+org.odpi.openmetadata.viewservices.metadataexpert.server.spring
 org.odpi.openmetadata.viewservices.metadataexplorer.admin
 org.odpi.openmetadata.viewservices.metadataexplorer.ffdc
 org.odpi.openmetadata.viewservices.metadataexplorer.server
