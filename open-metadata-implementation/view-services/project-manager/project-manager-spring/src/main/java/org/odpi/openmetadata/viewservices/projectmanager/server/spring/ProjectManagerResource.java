@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="API: Project Manager OMVS",
      description="Maintain and explore the contents of nested projects. These projects can be used to represent digital products, or projects of resources for a particular project or team. They can be used to organize assets and other resources into logical groups.",
-     externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/project-manager/overview/"))
+     externalDocs=@ExternalDocumentation(description="Further Information",
+             url="https://egeria-project.org/services/omvs/project-manager/overview/"))
 
 public class ProjectManagerResource
 {
@@ -58,10 +59,10 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public ProjectsResponse getLinkedProjects(@PathVariable String            serverName,
-                                              @PathVariable String            parentGUID,
-                                              @RequestBody(required = false)
-                                                               FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getLinkedProjects(@PathVariable String            serverName,
+                                                              @PathVariable String            parentGUID,
+                                                              @RequestBody(required = false)
+                                                                  FilterRequestBody requestBody)
     {
         return restAPI.getLinkedProjects(serverName, parentGUID, requestBody);
     }
@@ -84,8 +85,8 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public ProjectsResponse getClassifiedProjects(@PathVariable String            serverName,
-                                                     @RequestBody  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getClassifiedProjects(@PathVariable String            serverName,
+                                                                  @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getClassifiedProjects(serverName, requestBody);
     }
@@ -107,14 +108,13 @@ public class ProjectManagerResource
     @Operation(summary="getProjectTeam",
             description="Returns the list of actors that are linked off of the project.  " +
                     "This includes the project managers. The optional request body allows a teamRole to be " +
-                    "specified as a filter.  To filter out the project managers, " +
-                    "specify ProjectManagement as the team role.",
+                    "specified as a filter.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public ProjectMembersResponse getProjectTeam(@PathVariable String            serverName,
-                                                 @PathVariable String            projectGUID,
-                                                 @RequestBody(required = false)  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getProjectTeam(@PathVariable String            serverName,
+                                                           @PathVariable String            projectGUID,
+                                                           @RequestBody(required = false)  FilterRequestBody requestBody)
     {
         return restAPI.getProjectTeam(serverName, projectGUID, requestBody);
     }
@@ -137,9 +137,9 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public    ProjectsResponse findProjects(@PathVariable String            serverName,
-                                            @RequestBody  (required = false)
-                                                          SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findProjects(@PathVariable String            serverName,
+                                                         @RequestBody  (required = false)
+                                                         SearchStringRequestBody requestBody)
     {
         return restAPI.findProjects(serverName, requestBody);
     }
@@ -162,35 +162,11 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public    ProjectsResponse getProjectsByName(@PathVariable String            serverName,
-                                                 @RequestBody(required = false)
-                                                               FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getProjectsByName(@PathVariable String            serverName,
+                                                              @RequestBody(required = false)
+                                                              FilterRequestBody requestBody)
     {
         return restAPI.getProjectsByName(serverName, requestBody);
-    }
-
-
-    /**
-     * Return the properties of a specific project.
-     *
-     * @param serverName         name of called server
-     * @param projectGUID unique identifier of the required project
-     *
-     * @return project properties
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @GetMapping(path = "/projects/{projectGUID}")
-    @Operation(summary="getProjectByGUID",
-            description="Return the properties of a specific project.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/project"))
-
-    public ProjectResponse getProject(@PathVariable String serverName,
-                                      @PathVariable String projectGUID)
-    {
-        return restAPI.getProject(serverName, projectGUID, null);
     }
 
 
@@ -212,35 +188,13 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public ProjectResponse getProject(@PathVariable String serverName,
-                                      @PathVariable String projectGUID,
-                                      @RequestBody(required = false) GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getProject(@PathVariable String serverName,
+                                                      @PathVariable String projectGUID,
+                                                      @RequestBody(required = false) GetRequestBody requestBody)
     {
         return restAPI.getProject(serverName, projectGUID, requestBody);
     }
 
-
-    /**
-     * Returns the graph of related projects and resources starting with a supplied project guid.
-     *
-     * @param serverName         name of called server
-     * @param projectGUID     unique identifier of the starting project
-     *
-     * @return a graph of projects or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @GetMapping(path = "/projects/{projectGUID}/graph")
-    @Operation(summary="getProjectGraph",
-            description="Returns the graph of related projects and resources starting with a supplied project guid.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/project"))
-    public ProjectGraphResponse getProjectGraph(@PathVariable String serverName,
-                                                @PathVariable String projectGUID)
-    {
-        return restAPI.getProjectGraph(serverName, projectGUID, null);
-    }
 
 
     /**
@@ -261,12 +215,42 @@ public class ProjectManagerResource
             description="Returns the graph of related projects and resources starting with a supplied project guid.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
-    public ProjectGraphResponse getProjectGraph(@PathVariable String serverName,
-                                                @PathVariable String projectGUID,
-                                                @RequestBody(required = false) ResultsRequestBody requestBody)
+    public OpenMetadataRootElementResponse getProjectGraph(@PathVariable String serverName,
+                                                           @PathVariable String projectGUID,
+                                                           @RequestBody(required = false)
+                                                               ResultsRequestBody requestBody)
     {
         return restAPI.getProjectGraph(serverName, projectGUID, requestBody);
     }
+
+
+
+    /**
+     * Returns the hierarchy of managed projects and resources starting with a supplied project guid.
+     *
+     * @param serverName         name of called server
+     * @param projectGUID     unique identifier of the starting project
+     * @param requestBody optional properties to control the query
+     *
+     * @return a graph of projects or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path =
+            "/projects/{projectGUID}/hierarchy")
+    @Operation(summary="getProjectHierarchy",
+            description="Returns the hierarchy of managed projects and resources starting with a supplied project guid.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+    public OpenMetadataRootElementResponse getProjectHierarchy(@PathVariable String serverName,
+                                                               @PathVariable String projectGUID,
+                                                               @RequestBody(required = false)
+                                                                   ResultsRequestBody requestBody)
+    {
+        return restAPI.getProjectHierarchy(serverName, projectGUID, requestBody);
+    }
+
 
     /**
      * Create a new generic project.
@@ -480,9 +464,9 @@ public class ProjectManagerResource
                     url="https://egeria-project.org/concepts/project"))
 
     public VoidResponse setupProjectHierarchy(@PathVariable String          serverName,
-                                                   @PathVariable String          projectGUID,
-                                                   @PathVariable String          managedProjectGUID,
-                                                   @RequestBody(required = false) NewRelationshipRequestBody requestBody)
+                                              @PathVariable String          projectGUID,
+                                              @PathVariable String          managedProjectGUID,
+                                              @RequestBody(required = false) NewRelationshipRequestBody requestBody)
     {
         return restAPI.setupProjectHierarchy(serverName, projectGUID, managedProjectGUID, requestBody);
     }
@@ -508,9 +492,9 @@ public class ProjectManagerResource
                     url="https://egeria-project.org/concepts/project"))
 
     public VoidResponse clearProjectHierarchy(@PathVariable String          serverName,
-                                                   @PathVariable String          projectGUID,
-                                                   @PathVariable String          managedProjectGUID,
-                                                   @RequestBody(required = false) DeleteRequestBody requestBody)
+                                              @PathVariable String          projectGUID,
+                                              @PathVariable String          managedProjectGUID,
+                                              @RequestBody(required = false) DeleteRequestBody requestBody)
     {
         return restAPI.clearProjectHierarchy(serverName, projectGUID, managedProjectGUID, requestBody);
     }
@@ -570,63 +554,6 @@ public class ProjectManagerResource
                                                @RequestBody(required = false) DeleteRequestBody requestBody)
     {
         return restAPI.clearProjectDependency(serverName, projectGUID, dependsOnProjectGUID, requestBody);
-    }
-
-
-
-    /**
-     * Create a ProjectManagement relationship between a project and a person role to show that anyone appointed to the role is a member of the project.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param projectGUID unique identifier of the project
-     * @param projectRoleGUID unique identifier of the person role
-     * @param requestBody external identifiers
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/projects/{projectGUID}/project-management-roles/{projectRoleGUID}/attach")
-    @Operation(summary="setupProjectManagementRole",
-            description="Create a ProjectManagement relationship between a project and a person role to show that anyone appointed to the role is a member of the project.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/project"))
-
-    public VoidResponse setupProjectManagementRole(@PathVariable String          serverName,
-                                                   @PathVariable String          projectGUID,
-                                                   @PathVariable String          projectRoleGUID,
-                                                   @RequestBody(required = false) NewRelationshipRequestBody requestBody)
-    {
-        return restAPI.setupProjectManagementRole(serverName, projectGUID, projectRoleGUID, requestBody);
-    }
-
-
-    /**
-     * Remove a ProjectManagement relationship between a project and a person role.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param projectGUID unique identifier of the project
-     * @param projectRoleGUID unique identifier of the person role
-     * @param requestBody external identifiers
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/projects/{projectGUID}/project-management-roles/{projectRoleGUID}/detach")
-    @Operation(summary="clearProjectManagementRole",
-            description="Remove a ProjectManagement relationship between a project and a person role.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/project"))
-
-    public VoidResponse clearProjectManagementRole(@PathVariable String          serverName,
-                                                   @PathVariable String          projectGUID,
-                                                   @PathVariable String          projectRoleGUID,
-                                                   @RequestBody(required = false) DeleteRequestBody requestBody)
-    {
-        return restAPI.clearProjectManagementRole(serverName, projectGUID, projectRoleGUID, requestBody);
     }
 }
 

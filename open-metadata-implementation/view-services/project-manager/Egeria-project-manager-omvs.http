@@ -312,8 +312,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ProjectTeamProperties",
-  "teamRole": "xxx"
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+    "class": "AssignmentScopeProperties",
+    "assignmentType": "xxx",
+    "description": "xxx"
+  }
 }
 
 
@@ -325,34 +329,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NullRequestBody"
+  "class" : "DeleteRequestBody"
 }
 
 
 ###
-
-@projectRoleGUID="guid that is to be the project manager of the project"
-
-###
-# @name setupProjectManagementRole
-# Create a ProjectManagement relationship between a project and a person role to show that anyone appointed to
-# the role is a member of the project.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/project-management-roles/{{projectRoleGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NullRequestBody"
-}
-
-
-###
-# @name clearProjectManagementRole
-# Remove a ProjectManagement relationship between a project and a person role.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/project-management-roles/{{projectRoleGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NullRequestBody"
-}

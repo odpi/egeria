@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ProjectHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -53,16 +54,16 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectsResponse getLinkedProjects(String            serverName,
-                                              String            parentGUID,
-                                              FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getLinkedProjects(String            serverName,
+                                                              String            parentGUID,
+                                                              FilterRequestBody requestBody)
     {
         final String methodName = "getLinkedProjects";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectsResponse response = new ProjectsResponse();
-        AuditLog         auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -105,16 +106,16 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectMembersResponse getProjectTeam(String            serverName,
-                                                 String            projectGUID,
-                                                 FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getProjectTeam(String            serverName,
+                                                           String            projectGUID,
+                                                           FilterRequestBody requestBody)
     {
         final String methodName = "getProjectTeam";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectMembersResponse response = new ProjectMembersResponse();
-        AuditLog                  auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                          auditLog = null;
 
         try
         {
@@ -156,15 +157,15 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectsResponse getClassifiedProjects(String            serverName,
-                                                  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getClassifiedProjects(String            serverName,
+                                                                  FilterRequestBody requestBody)
     {
         final String methodName = "getClassifiedProjects";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectsResponse response = new ProjectsResponse();
-        AuditLog            auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -206,15 +207,15 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectsResponse findProjects(String                  serverName,
-                                         SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findProjects(String                  serverName,
+                                                         SearchStringRequestBody requestBody)
     {
         final String methodName = "findProjects";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectsResponse response = new ProjectsResponse();
-        AuditLog            auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -258,15 +259,15 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectsResponse getProjectsByName(String            serverName,
-                                              FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getProjectsByName(String            serverName,
+                                                              FilterRequestBody requestBody)
     {
         final String methodName = "getProjectsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectsResponse response = new ProjectsResponse();
-        AuditLog            auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -313,15 +314,15 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectResponse getProject(String             serverName,
-                                      String             projectGUID,
-                                      GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getProject(String         serverName,
+                                                      String         projectGUID,
+                                                      GetRequestBody requestBody)
     {
         final String methodName = "getProject";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectResponse response = new ProjectResponse();
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
         AuditLog        auditLog = null;
 
         try
@@ -358,17 +359,17 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectGraphResponse getProjectGraph(String             serverName,
-                                                String             projectGUID,
-                                                ResultsRequestBody requestBody)
+    public OpenMetadataRootElementResponse getProjectGraph(String             serverName,
+                                                           String             projectGUID,
+                                                           ResultsRequestBody requestBody)
 
     {
         final String methodName = "getProjectGraph";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectGraphResponse response = new ProjectGraphResponse();
-        AuditLog             auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -380,7 +381,54 @@ public class ProjectManagerRESTServices extends TokenController
 
             ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getProjectGraph(userId, projectGUID, requestBody));
+            response.setElement(handler.getProjectInContext(userId, projectGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Returns the graph of managed projects and resources starting with a supplied project guid.
+     *
+     * @param serverName         name of called server
+     * @param projectGUID     unique identifier of the starting project
+     * @param requestBody properties to control the query
+     *
+     * @return a graph of projects or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElementResponse getProjectHierarchy(String             serverName,
+                                                               String             projectGUID,
+                                                               ResultsRequestBody requestBody)
+
+    {
+        final String methodName = "getProjectHierarchy";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getProjectHierarchy(userId, projectGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -728,7 +776,7 @@ public class ProjectManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ProjectTeamProperties projectTeamProperties)
+                if (requestBody.getProperties() instanceof AssignmentScopeProperties projectTeamProperties)
                 {
                     handler.setupProjectTeam(userId, projectGUID, actorGUID, null, projectTeamProperties);
                 }
@@ -738,7 +786,7 @@ public class ProjectManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ProjectTeamProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AssignmentScopeProperties.class.getName(), methodName);
                 }
             }
             else
@@ -801,131 +849,6 @@ public class ProjectManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
-    /**
-     * Create a ProjectHandler relationship between a project and a person role to show that anyone appointed to the role is a member of the project.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param projectGUID unique identifier of the project
-     * @param projectRoleGUID unique identifier of the person role
-     * @param requestBody external identifiers
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse setupProjectManagementRole(String                  serverName,
-                                                   String                  projectGUID,
-                                                   String                  projectRoleGUID,
-                                                   NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "setupProjectHandlerRole";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof ProjectManagementProperties projectManagementProperties)
-                {
-                    handler.setupProjectManagementRole(userId,
-                                                       projectGUID,
-                                                       projectRoleGUID,
-                                                       requestBody,
-                                                       projectManagementProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.setupProjectManagementRole(userId,
-                                                       projectGUID,
-                                                       projectRoleGUID,
-                                                       requestBody,
-                                                       null);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(ProjectManagementProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                handler.setupProjectManagementRole(userId,
-                                                   projectGUID,
-                                                   projectRoleGUID,
-                                                   null,
-                                                   null);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove a ProjectHandler relationship between a project and a person role.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param projectGUID unique identifier of the project
-     * @param projectRoleGUID unique identifier of the person role
-     * @param requestBody external identifiers
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse clearProjectManagementRole(String                   serverName,
-                                                   String                   projectGUID,
-                                                   String                   projectRoleGUID,
-                                                   DeleteRequestBody requestBody)
-    {
-        final String methodName = "clearProjectHandlerRole";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
-
-            handler.clearProjectManagementRole(userId, projectGUID, projectRoleGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
 
 
     /**

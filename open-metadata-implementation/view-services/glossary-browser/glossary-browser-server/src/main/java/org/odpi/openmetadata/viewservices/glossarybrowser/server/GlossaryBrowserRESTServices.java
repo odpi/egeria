@@ -321,8 +321,8 @@ public class GlossaryBrowserRESTServices extends TokenController
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public OpenMetadataRootElementResponse getGlossaryForTerm(String             serverName,
-                                                              String             glossaryTermGUID,
+    public OpenMetadataRootElementResponse getGlossaryForTerm(String         serverName,
+                                                              String         glossaryTermGUID,
                                                               GetRequestBody requestBody)
     {
         final String methodName = "getGlossaryForTerm";
@@ -353,7 +353,6 @@ public class GlossaryBrowserRESTServices extends TokenController
 
         return response;
     }
-
 
 
     /**

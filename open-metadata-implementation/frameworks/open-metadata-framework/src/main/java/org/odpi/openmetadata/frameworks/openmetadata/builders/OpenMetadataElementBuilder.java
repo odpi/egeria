@@ -582,6 +582,10 @@ public class OpenMetadataElementBuilder
                         else if (collectionProperties instanceof DigitalProductProperties digitalProductProperties)
                         {
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.IDENTIFIER.name,
+                                                                                 digitalProductProperties.getIdentifier());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.PRODUCT_NAME.name,
                                                                                  digitalProductProperties.getProductName());
 

@@ -7,7 +7,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.CollectionMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootHierarchyMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
@@ -519,10 +520,10 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkProductManager(String userId,
-                                   String digitalProductGUID,
-                                   String digitalProductManagerRoleGUID,
-                                   MetadataSourceOptions metadataSourceOptions,
+    public void linkProductManager(String                    userId,
+                                   String                    digitalProductGUID,
+                                   String                    digitalProductManagerRoleGUID,
+                                   MetadataSourceOptions     metadataSourceOptions,
                                    AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -555,9 +556,9 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachProductManager(String userId,
-                                     String digitalProductGUID,
-                                     String digitalProductManagerGUID,
+    public void detachProductManager(String        userId,
+                                     String        digitalProductGUID,
+                                     String        digitalProductManagerGUID,
                                      DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -591,10 +592,10 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String linkAgreementActor(String userId,
-                                     String agreementGUID,
-                                     String actorGUID,
-                                     MetadataSourceOptions metadataSourceOptions,
+    public String linkAgreementActor(String                   userId,
+                                     String                   agreementGUID,
+                                     String                   actorGUID,
+                                     MetadataSourceOptions    metadataSourceOptions,
                                      AgreementActorProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -863,27 +864,29 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionHierarchy getCollectionHierarchy(String       userId,
-                                                      String       collectionGUID,
-                                                      QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    public OpenMetadataRootHierarchy getCollectionHierarchy(String       userId,
+                                                            String       collectionGUID,
+                                                            QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
     {
-        final String methodName                  = "getCollectionGraph";
+        final String methodName                  = "getCollectionHierarchy";
         final String collectionGUIDParameterName = "collectionGUID";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
         propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
-        CollectionHierarchy collectionHierarchy = this.convertToCollectionGraph(userId,
-                                                                                this.getCollectionByGUID(userId, collectionGUID, queryOptions),
-                                                                                queryOptions,
-                                                                                0);
+        OpenMetadataRootHierarchy collectionHierarchy = this.convertToCollectionGraph(userId,
+                                                                                      this.getCollectionByGUID(userId, collectionGUID, queryOptions),
+                                                                                      queryOptions,
+                                                                                      0);
 
         if (collectionHierarchy != null)
         {
-            CollectionMermaidGraphBuilder graphBuilder = new CollectionMermaidGraphBuilder(collectionHierarchy);
+            OpenMetadataRootHierarchyMermaidGraphBuilder graphBuilder = new OpenMetadataRootHierarchyMermaidGraphBuilder(collectionHierarchy,
+                                                                                                                         "Collection Membership",
+                                                                                                                         VisualStyle.COLLECTION);
 
             collectionHierarchy.setMermaidGraph(graphBuilder.getMermaidGraph());
 
@@ -907,16 +910,16 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private CollectionHierarchy convertToCollectionGraph(String                  userId,
-                                                         OpenMetadataRootElement collectionElement,
-                                                         QueryOptions            queryOptions,
-                                                         int                     currentDepth) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
+    private OpenMetadataRootHierarchy convertToCollectionGraph(String                  userId,
+                                                               OpenMetadataRootElement collectionElement,
+                                                               QueryOptions            queryOptions,
+                                                               int                     currentDepth) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
     {
         if (collectionElement != null)
         {
-            CollectionHierarchy collectionHierarchy = new CollectionHierarchy(collectionElement);
+            OpenMetadataRootHierarchy collectionHierarchy = new OpenMetadataRootHierarchy(collectionElement);
 
             if ((queryOptions == null) || (queryOptions.getGraphQueryDepth() > currentDepth))
             {
@@ -925,7 +928,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                  */
                 if (collectionElement.getCollectionMembers() != null)
                 {
-                    List<CollectionHierarchy>           collectionMembers = new ArrayList<>();
+                    List<OpenMetadataRootHierarchy>     collectionMembers = new ArrayList<>();
                     List<RelatedMetadataElementSummary> otherMembers      = new ArrayList<>();
 
                     for (RelatedMetadataElementSummary collectionMember : collectionElement.getCollectionMembers())
@@ -958,7 +961,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
 
                     if (!collectionMembers.isEmpty())
                     {
-                        collectionHierarchy.setCollectionMemberGraphs(collectionMembers);
+                        collectionHierarchy.setOpenMetadataRootHierarchies(collectionMembers);
                     }
                 }
             }

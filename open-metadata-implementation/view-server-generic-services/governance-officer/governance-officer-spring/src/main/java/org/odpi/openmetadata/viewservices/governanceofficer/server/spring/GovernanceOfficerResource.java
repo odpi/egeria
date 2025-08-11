@@ -337,6 +337,75 @@ public class GovernanceOfficerResource
 
 
 
+    /**
+     * Attach an actor to an element that describes its scope.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID unique identifier of the actor
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{scopeElementGUID}/actors/{actorGUID}/attach")
+    @Operation(summary="linkAssignmentScope",
+            description="Attach an actor to an element that describes its scope.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/actor"))
+
+    public VoidResponse linkAssignmentScope(@PathVariable
+                                           String                                serverName,
+                                           @PathVariable String             urlMarker,
+                                           @PathVariable
+                                           String scopeElementGUID,
+                                           @PathVariable
+                                           String actorGUID,
+                                           @RequestBody (required = false)
+                                           NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAssignmentScope(serverName, urlMarker, scopeElementGUID, actorGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an actor from the element that describes its scope.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID unique identifier of the actor
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{scopeElementGUID}/actors/{actorGUID}/detach")
+    @Operation(summary="detachAssignmentScope",
+            description="Detach an actor from the element that describes its scope.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/actor"))
+
+    public VoidResponse detachAssignmentScope(@PathVariable
+                                             String                    serverName,
+                                             @PathVariable String             urlMarker,
+                                             @PathVariable
+                                             String scopeElementGUID,
+                                             @PathVariable
+                                             String actorGUID,
+                                             @RequestBody (required = false)
+                                             DeleteRequestBody requestBody)
+    {
+        return restAPI.detachAssignmentScope(serverName, urlMarker, scopeElementGUID, actorGUID, requestBody);
+    }
+
+
+
 
     /* =======================================
      * Licenses

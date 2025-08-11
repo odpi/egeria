@@ -8,13 +8,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.GovernanceDefinitionGraphMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionGraph;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootHierarchyMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
@@ -357,6 +356,79 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         definitionGUID,
+                                                        deleteOptions);
+    }
+
+
+
+    /**
+     * Attach an actor to an element that describes its scope.
+     *
+     * @param userId                        userId of user making request
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID unique identifier of the actor
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param relationshipProperties        description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkAssignmentScope(String                   userId,
+                                   String                    scopeElementGUID,
+                                   String                    actorGUID,
+                                   MetadataSourceOptions     metadataSourceOptions,
+                                   AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName            = "linkAssignmentScope";
+        final String end1GUIDParameterName = "scopeElementGUID";
+        final String end2GUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(scopeElementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        scopeElementGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach an actor from the element that describes its scope.
+     *
+     * @param userId                      userId of user making request.
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID                   unique identifier of the actor
+     * @param deleteOptions               options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAssignmentScope(String        userId,
+                                      String        scopeElementGUID,
+                                      String        actorGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "detachAssignmentScope";
+
+        final String end1GUIDParameterName = "scopeElementGUID";
+        final String end2GUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(scopeElementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        scopeElementGUID,
                                                         deleteOptions);
     }
 
@@ -827,33 +899,35 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDefinitionGraph getGovernanceDefinitionInContext(String       userId,
+    public OpenMetadataRootHierarchy getGovernanceDefinitionInContext(String       userId,
                                                                       String       governanceDefinitionGUID,
                                                                       QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
     {
         OpenMetadataRootElement rootElement = this.getGovernanceDefinitionByGUID(userId, governanceDefinitionGUID, queryOptions);
 
-        if (rootElement instanceof GovernanceDefinitionElement governanceDefinitionElement)
+        if (rootElement != null)
         {
-            GovernanceDefinitionGraph governanceDefinitionGraph = new GovernanceDefinitionGraph(governanceDefinitionElement);
+            OpenMetadataRootHierarchy openMetadataRootHierarchy = new OpenMetadataRootHierarchy(rootElement);
 
             Set<String>  processedGovernanceDefinitions = new HashSet<>(Collections.singletonList(governanceDefinitionGUID));
 
-            governanceDefinitionGraph.setRelatedGovernanceDefinitions(this.getRelatedGovernanceDefinitions(userId,
-                                                                                                           governanceDefinitionElement,
-                                                                                                           queryOptions,
-                                                                                                           processedGovernanceDefinitions));
+            openMetadataRootHierarchy.setOpenMetadataRootHierarchies(this.getRelatedGovernanceDefinitions(userId,
+                                                                                                          new OpenMetadataRootHierarchy(rootElement),
+                                                                                                          queryOptions,
+                                                                                                          processedGovernanceDefinitions));
 
             /*
              * Replaces the graph added by addMermaidToRootElement().
              */
-            GovernanceDefinitionGraphMermaidGraphBuilder mermaidGraphBuilder = new GovernanceDefinitionGraphMermaidGraphBuilder(governanceDefinitionGraph);
+            OpenMetadataRootHierarchyMermaidGraphBuilder mermaidGraphBuilder = new OpenMetadataRootHierarchyMermaidGraphBuilder(openMetadataRootHierarchy,
+                                                                                                                                "Related Governance Definitions",
+                                                                                                                                VisualStyle.GOVERNANCE_DEFINITION);
 
-            governanceDefinitionGraph.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
+            openMetadataRootHierarchy.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
 
-            return governanceDefinitionGraph;
+            return openMetadataRootHierarchy;
         }
 
         return null;
@@ -872,14 +946,14 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    private List<GovernanceDefinitionElement> getRelatedGovernanceDefinitions(String                        userId,
-                                                                              GovernanceDefinitionElement   startingGovernanceDefinition,
-                                                                              QueryOptions                  queryOptions,
-                                                                              Set<String>                   processedGovernanceDefinitions) throws InvalidParameterException,
-                                                                                                                                                   PropertyServerException,
-                                                                                                                                                   UserNotAuthorizedException
+    private List<OpenMetadataRootHierarchy> getRelatedGovernanceDefinitions(String                      userId,
+                                                                            OpenMetadataRootHierarchy   startingGovernanceDefinition,
+                                                                            QueryOptions                queryOptions,
+                                                                            Set<String>                 processedGovernanceDefinitions) throws InvalidParameterException,
+                                                                                                                                                PropertyServerException,
+                                                                                                                                                UserNotAuthorizedException
     {
-        List<GovernanceDefinitionElement> relatedElements = new ArrayList<>();
+        List<OpenMetadataRootHierarchy> relatedElements = new ArrayList<>();
 
         if (! processedGovernanceDefinitions.contains(startingGovernanceDefinition.getElementHeader().getGUID()))
         {
@@ -889,9 +963,10 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                 {
                     if ((relatedDefinition != null) && (! processedGovernanceDefinitions.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
                     {
-                        GovernanceDefinitionElement relatedElement = (GovernanceDefinitionElement) this.getGovernanceDefinitionByGUID(userId,
-                                                                                                                                   relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                                   queryOptions);
+                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
+                                this.getGovernanceDefinitionByGUID(userId,
+                                                                   relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
+                                                                   queryOptions));
 
                         relatedElements.add(relatedElement);
                         processedGovernanceDefinitions.add(relatedElement.getElementHeader().getGUID());
@@ -907,9 +982,10 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                 {
                     if ((relatedDefinition != null) && (! processedGovernanceDefinitions.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
                     {
-                        GovernanceDefinitionElement relatedElement = (GovernanceDefinitionElement) this.getGovernanceDefinitionByGUID(userId,
-                                                                                                                                   relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                                   queryOptions);
+                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
+                                this.getGovernanceDefinitionByGUID(userId,
+                                                                   relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
+                                                                   queryOptions));
 
                         relatedElements.add(relatedElement);
                         processedGovernanceDefinitions.add(relatedElement.getElementHeader().getGUID());
@@ -925,9 +1001,10 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                 {
                     if ((relatedDefinition != null) && (! processedGovernanceDefinitions.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
                     {
-                        GovernanceDefinitionElement relatedElement = (GovernanceDefinitionElement) this.getGovernanceDefinitionByGUID(userId,
-                                                                                                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                                      queryOptions);
+                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
+                                this.getGovernanceDefinitionByGUID(userId,
+                                                                   relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
+                                                                   queryOptions));
 
                         relatedElements.add(relatedElement);
                         processedGovernanceDefinitions.add(relatedElement.getElementHeader().getGUID());
@@ -940,7 +1017,6 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
 
         return relatedElements;
     }
-
 
 
 

@@ -469,7 +469,6 @@ Content-Type: application/json
 }
 
 
-
 ###
 # @name createGovernanceDefinitionFromTemplate
 # Create a new metadata element to represent a governance definition using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
@@ -613,7 +612,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -657,7 +656,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -674,7 +673,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -842,7 +841,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -885,7 +884,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -893,6 +892,51 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+
+###
+
+@actorGUID=add guid here
+@scopeElementGUID=add guid here
+
+###
+# @name linkAssignmentScope
+# Attach an actor to an element that describes its scope. Request body is optional.
+# https://egeria-project.org/concepts/actor/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ImplementationResourceProperties",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name detachAssignmentScope
+# Detach an actor from the element that describes its scope. Request body is optional.
+# https://egeria-project.org/concepts/actor/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 
 ###
 

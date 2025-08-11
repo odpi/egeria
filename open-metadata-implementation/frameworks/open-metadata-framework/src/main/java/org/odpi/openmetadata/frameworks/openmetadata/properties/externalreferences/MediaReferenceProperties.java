@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MediaReferenceProperties extends RelationshipBeanProperties
 {
-    private String     referenceId       = null;
-    private String     description       = null;
+    private String mediaId     = null;
+    private String description = null;
     private MediaUsage mediaUsage        = null;
     private String     mediaUsageOtherId = null;
 
@@ -49,8 +49,8 @@ public class MediaReferenceProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.referenceId       = template.getReferenceId();
-            this.description       = template.getDescription();
+            this.mediaId     = template.getMediaId();
+            this.description = template.getDescription();
             this.mediaUsage        = template.getMediaUsage();
             this.mediaUsageOtherId = template.getMediaUsageOtherId();
         }
@@ -62,20 +62,20 @@ public class MediaReferenceProperties extends RelationshipBeanProperties
      *
      * @return String identifier
      */
-    public String getReferenceId()
+    public String getMediaId()
     {
-        return referenceId;
+        return mediaId;
     }
 
 
     /**
      * Set up the identifier that this reference is to be known as with respect to the linked object.
      *
-     * @param referenceId String identifier
+     * @param mediaId String identifier
      */
-    public void setReferenceId(String referenceId)
+    public void setMediaId(String mediaId)
     {
-        this.referenceId = referenceId;
+        this.mediaId = mediaId;
     }
 
 
@@ -154,7 +154,7 @@ public class MediaReferenceProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "MediaReferenceProperties{" +
-                "referenceId='" + referenceId + '\'' +
+                "referenceId='" + mediaId + '\'' +
                 ", description='" + description + '\'' +
                 ", mediaUsage=" + mediaUsage +
                 ", mediaUsageOtherId='" + mediaUsageOtherId + '\'' +
@@ -184,7 +184,7 @@ public class MediaReferenceProperties extends RelationshipBeanProperties
             return false;
         }
         return mediaUsage == that.mediaUsage &&
-                Objects.equals(referenceId, that.referenceId) &&
+                Objects.equals(mediaId, that.mediaId) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(mediaUsageOtherId, that.mediaUsageOtherId);
     }
@@ -198,6 +198,6 @@ public class MediaReferenceProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), referenceId, description, mediaUsage, mediaUsageOtherId);
+        return Objects.hash(super.hashCode(), mediaId, description, mediaUsage, mediaUsageOtherId);
     }
 }

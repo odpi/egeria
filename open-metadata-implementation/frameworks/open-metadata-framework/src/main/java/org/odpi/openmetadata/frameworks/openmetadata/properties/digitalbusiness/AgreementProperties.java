@@ -54,7 +54,7 @@ public class AgreementProperties extends CollectionProperties
 
         if (template != null)
         {
-            this.identifier   = template.getIdentifier();
+            identifier   = template.getIdentifier();
             userDefinedStatus = template.getUserDefinedStatus();
         }
     }

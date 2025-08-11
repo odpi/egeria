@@ -5,7 +5,10 @@ package org.odpi.openmetadata.viewservices.peopleorganizer.server;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
  * PeopleOrganizerInstance caches references to the objects it needs for a specific server.
@@ -16,6 +19,7 @@ public class PeopleOrganizerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.PEOPLE_ORGANIZER;
 
+    private final ActorProfileHandler actorProfileHandler;
 
 
     /**
@@ -48,7 +52,37 @@ public class PeopleOrganizerInstance extends OMVSServiceInstance
               remoteServerURL);
 
 
+        OpenMetadataClient openMetadataClient;
+        if (localServerUserPassword == null)
+        {
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
+
+        }
+        else
+        {
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
+        }
+
+        actorProfileHandler = new ActorProfileHandler(serverName,
+                                                      auditLog,
+                                                      myDescription.getViewServiceFullName(),
+                                                      openMetadataClient);
     }
 
 
+    /**
+     * Return the actor profile handler.
+     *
+     * @return client
+     */
+    public ActorProfileHandler getActorProfileHandler()
+    {
+        return actorProfileHandler;
+    }
 }

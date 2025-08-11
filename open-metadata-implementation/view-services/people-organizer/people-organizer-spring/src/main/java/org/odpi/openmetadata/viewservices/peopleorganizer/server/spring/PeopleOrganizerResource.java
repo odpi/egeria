@@ -3,7 +3,11 @@
 package org.odpi.openmetadata.viewservices.peopleorganizer.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.viewservices.peopleorganizer.server.PeopleOrganizerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +31,262 @@ public class PeopleOrganizerResource
      */
     public PeopleOrganizerResource()
     {
+    }
+
+
+    /**
+     * Attach a person profile to one of its peers.
+     *
+     * @param serverName         name of called server
+     * @param personOneGUID          unique identifier of the first person profile
+     * @param personTwoGUID          unique identifier of the second person profile
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actor-profiles/{personOneGUID}/peer-persons/{personTwoGUID}/attach")
+    @Operation(summary="linkPeerPerson",
+            description="Attach a person profile to one of its peers.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/personal-profile/"))
+
+    public VoidResponse linkPeerPerson(@PathVariable
+                                       String                     serverName,
+                                       @PathVariable
+                                       String                     personOneGUID,
+                                       @PathVariable
+                                       String                     personTwoGUID,
+                                       @RequestBody (required = false)
+                                       NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkPeerPerson(serverName, personOneGUID, personTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a person profile from one of its peers.
+     *
+     * @param serverName         name of called server
+     * @param personOneGUID          unique identifier of the first person profile
+     * @param personTwoGUID          unique identifier of the second person profile
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actor-profiles/{personOneGUID}/peer-persons/{personTwoGUID}/detach")
+    @Operation(summary="detachSupportingDefinition",
+            description="Detach a person profile from one of its peers.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/personal-profile/"))
+
+    public VoidResponse detachPeerPerson(@PathVariable
+                                         String                    serverName,
+                                         @PathVariable
+                                         String                     personOneGUID,
+                                         @PathVariable
+                                         String                     personTwoGUID,
+                                         @RequestBody (required = false)
+                                         DeleteRequestBody requestBody)
+    {
+        return restAPI.detachPeerPerson(serverName, personOneGUID, personTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a super team to a subteam.
+     *
+     * @param serverName         name of called server
+     * @param superTeamGUID          unique identifier of the super team
+     * @param subteamGUID            unique identifier of the subteam
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actor-profiles/{superTeamGUID}/team-structures/{subteamGUID}/attach")
+    @Operation(summary="linkTeamStructure",
+            description="Attach a super team to a subteam.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/team"))
+
+    public VoidResponse linkTeamStructure(@PathVariable
+                                          String                     serverName,
+                                          @PathVariable
+                                          String superTeamGUID,
+                                          @PathVariable
+                                          String subteamGUID,
+                                          @RequestBody (required = false)
+                                          NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkTeamStructure(serverName, superTeamGUID, subteamGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a super team from a subteam.
+     *
+     * @param serverName         name of called server
+     * @param superTeamGUID          unique identifier of the super team
+     * @param subteamGUID            unique identifier of the subteam
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actor-profiles/{superTeamGUID}/team-structures/{subteamGUID}/detach")
+    @Operation(summary="detachTeamStructure",
+            description="Detach a super team from a subteam.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/team"))
+
+    public VoidResponse detachTeamStructure(@PathVariable
+                                            String                    serverName,
+                                            @PathVariable
+                                            String superTeamGUID,
+                                            @PathVariable
+                                            String subteamGUID,
+                                            @RequestBody (required = false)
+                                            DeleteRequestBody requestBody)
+    {
+        return restAPI.detachTeamStructure(serverName, superTeamGUID, subteamGUID, requestBody);
+    }
+
+
+
+    /**
+     * Attach a team to its membership role.
+     *
+     * @param serverName         name of called server
+     * @param teamGUID               unique identifier of the team
+     * @param personRoleGUID         unique identifier of the associated person role
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actor-profiles/{teamGUID}/team-membership-roles/{personRoleGUID}/attach")
+    @Operation(summary="linkTeamToMembershipRole",
+            description="Attach a team to its membership role.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/team"))
+
+    public VoidResponse linkTeamToMembershipRole(@PathVariable
+                                                 String                     serverName,
+                                                 @PathVariable
+                                                 String teamGUID,
+                                                 @PathVariable
+                                                 String personRoleGUID,
+                                                 @RequestBody (required = false)
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkTeamToMembershipRole(serverName, teamGUID, personRoleGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a team profile from its membership role.
+     *
+     * @param serverName         name of called server
+     * @param teamGUID               unique identifier of the team
+     * @param personRoleGUID         unique identifier of the associated person role
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actor-profiles/{teamGUID}/team-membership-roles/{personRoleGUID}/detach")
+    @Operation(summary="detachTeamFromMembershipRole",
+            description="Detach a actor profile from a supporting actor profile.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/team"))
+
+    public VoidResponse detachTeamFromMembershipRole(@PathVariable
+                                                     String                    serverName,
+                                                     @PathVariable
+                                                     String teamGUID,
+                                                     @PathVariable
+                                                     String personRoleGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteRequestBody requestBody)
+    {
+        return restAPI.detachTeamFromMembershipRole(serverName, teamGUID, personRoleGUID, requestBody);
+    }
+
+    /**
+     * Attach a team to its leadership role.
+     *
+     * @param serverName         name of called server
+     * @param teamGUID               unique identifier of the team
+     * @param personRoleGUID         unique identifier of the associated person role
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actor-profiles/{teamGUID}/team-leadership-roles/{personRoleGUID}/attach")
+    @Operation(summary="linkTeamToLeadershipRole",
+            description="Attach a team to its leadership role.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/team"))
+
+    public VoidResponse linkTeamToLeadershipRole(@PathVariable
+                                                 String                     serverName,
+                                                 @PathVariable
+                                                 String teamGUID,
+                                                 @PathVariable
+                                                 String personRoleGUID,
+                                                 @RequestBody (required = false)
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkTeamToLeadershipRole(serverName, teamGUID, personRoleGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a team profile from its leadership role.
+     *
+     * @param serverName         name of called server
+     * @param teamGUID               unique identifier of the team
+     * @param personRoleGUID         unique identifier of the associated person role
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actor-profiles/{teamGUID}/team-leadership-roles/{personRoleGUID}/detach")
+    @Operation(summary="detachTeamFromLeadershipRole",
+            description="Detach a actor profile from a supporting actor profile.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/team"))
+
+    public VoidResponse detachTeamFromLeadershipRole(@PathVariable
+                                                     String                    serverName,
+                                                     @PathVariable
+                                                     String teamGUID,
+                                                     @PathVariable
+                                                     String personRoleGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteRequestBody requestBody)
+    {
+        return restAPI.detachTeamFromLeadershipRole(serverName, teamGUID, personRoleGUID, requestBody);
     }
 
 }

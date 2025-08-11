@@ -32,8 +32,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.Comment
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryCategoryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governanceactions.GovernanceActionTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
@@ -463,6 +465,10 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                     {
                         beanProperties = new DataDictionaryProperties();
                     }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GLOSSARY_CATEGORY.typeName))
+                    {
+                        beanProperties = new GlossaryCategoryProperties();
+                    }
                     else
                     {
                         beanProperties = new CollectionProperties();
@@ -804,6 +810,18 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                     ((GovernanceDefinitionProperties)beanProperties).setOutcomes(this.removeOutcomes(elementProperties));
                     ((GovernanceDefinitionProperties)beanProperties).setResults(this.removeResults(elementProperties));
                     ((GovernanceDefinitionProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROJECT.typeName))
+                {
+                    beanProperties = new ProjectProperties();
+
+                    ((ProjectProperties)beanProperties).setIdentifier(this.removeIdentifier(elementProperties));
+                    ((ProjectProperties)beanProperties).setPriority(this.removeIntPriority(elementProperties));
+                    ((ProjectProperties)beanProperties).setStartDate(this.removeStartDate(elementProperties));
+                    ((ProjectProperties)beanProperties).setPlannedEndDate(this.removePlannedEndDate(elementProperties));
+                    ((ProjectProperties)beanProperties).setProjectHealth(this.removeProjectHealth(elementProperties));
+                    ((ProjectProperties)beanProperties).setProjectStatus(this.removeProjectStatus(elementProperties));
+                    ((ProjectProperties)beanProperties).setProjectPhase(this.removeProjectPhase(elementProperties));
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SCHEMA_ELEMENT.typeName))
                 {

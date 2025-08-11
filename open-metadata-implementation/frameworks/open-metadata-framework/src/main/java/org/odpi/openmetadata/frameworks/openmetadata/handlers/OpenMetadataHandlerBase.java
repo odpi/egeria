@@ -1151,10 +1151,7 @@ public class OpenMetadataHandlerBase
                                                                                                               relationshipTypeName,
                                                                                                               queryOptions);
 
-        return convertRootElements(userId,
-                                   relatedMetadataElementList,
-                                   queryOptions,
-                                   methodName);
+        return convertRootElements(userId, relatedMetadataElementList, queryOptions, methodName);
     }
 
 
