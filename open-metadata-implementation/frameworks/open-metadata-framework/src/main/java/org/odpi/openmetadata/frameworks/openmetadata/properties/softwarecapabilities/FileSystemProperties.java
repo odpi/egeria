@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-public class FileSystemProperties extends SoftwareCapabilityProperties
+public class FileSystemProperties extends ResourceManagerProperties
 {
     private String              format = null;
     private String              encryption = null;

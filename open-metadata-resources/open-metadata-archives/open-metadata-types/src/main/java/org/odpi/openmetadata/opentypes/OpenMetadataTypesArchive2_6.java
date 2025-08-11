@@ -225,7 +225,7 @@ public class OpenMetadataTypesArchive2_6
     private EntityDef addEmbeddedProcessEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.EMBEDDED_PROCESS,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ACTION.typeName));
     }
 
 
@@ -310,96 +310,13 @@ public class OpenMetadataTypesArchive2_6
 
     public void update0460GovernanceExecutionPoints()
     {
-        this.archiveBuilder.addEntityDef(addExecutionPointDefinitionEntity());
-        this.archiveBuilder.addEntityDef(addControlPointDefinitionEntity());
-        this.archiveBuilder.addEntityDef(addVerificationPointDefinitionEntity());
-        this.archiveBuilder.addEntityDef(addEnforcementPointDefinitionEntity());
 
-        this.archiveBuilder.addRelationshipDef(addExecutionPointUseRelationship());
 
         this.archiveBuilder.addTypeDefPatch(updateControlPointClassification());
         this.archiveBuilder.addTypeDefPatch(updateVerificationPointClassification());
         this.archiveBuilder.addTypeDefPatch(updateEnforcementPointClassification());
 
     }
-
-    private EntityDef addExecutionPointDefinitionEntity()
-    {
-        /*
-         * Build the Entity
-         */
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXECUTION_POINT_DEFINITION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-    }
-
-    private EntityDef addControlPointDefinitionEntity()
-    {
-        /*
-         * Build the Entity
-         */
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.CONTROL_POINT_DEFINITION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.EXECUTION_POINT_DEFINITION.typeName));
-    }
-
-
-    private EntityDef addVerificationPointDefinitionEntity()
-    {
-        /*
-         * Build the Entity
-         */
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VERIFICATION_POINT_DEFINITION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.EXECUTION_POINT_DEFINITION.typeName));
-    }
-
-    private EntityDef addEnforcementPointDefinitionEntity()
-    {
-        /*
-         * Build the Entity
-         */
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ENFORCEMENT_POINT_DEFINITION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.EXECUTION_POINT_DEFINITION.typeName));
-    }
-
-    private RelationshipDef addExecutionPointUseRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.EXECUTION_POINT_USE_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "supportsGovernanceDefinitions";
-        final String                     end1AttributeDescription     = "Governance definition that is implemented by this execution point.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "executedThrough";
-        final String                     end2AttributeDescription     = "Description of the execution points that support the implementation of this governance definition.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.EXECUTION_POINT_DEFINITION.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
-
 
     private TypeDefPatch updateControlPointClassification()
     {
@@ -576,7 +493,7 @@ public class OpenMetadataTypesArchive2_6
          * Build the Entity
          */
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION.typeName));
     }
 
 
@@ -586,14 +503,13 @@ public class OpenMetadataTypesArchive2_6
          * Build the Entity
          */
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_TYPE,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.WAIT_TIME));
 
         entityDef.setPropertiesDefinition(properties);
@@ -770,8 +686,6 @@ public class OpenMetadataTypesArchive2_6
     private void add0463EngineActions()
     {
         this.archiveBuilder.addEntityDef(addEngineActionEntity());
-
-        this.archiveBuilder.addRelationshipDef(addNextEngineActionRelationship());
     }
 
 
@@ -810,56 +724,6 @@ public class OpenMetadataTypesArchive2_6
         return entityDef;
     }
 
-    private RelationshipDef addNextEngineActionRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.NEXT_ENGINE_ACTION,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "previousActions";
-        final String                     end1AttributeDescription     = "Engine action that triggered this engine action.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE_ACTION.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "followOnActions";
-        final String                     end2AttributeDescription     = "Engine action(s) that should run next.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE_ACTION.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GUARD));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MANDATORY_GUARD));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -895,9 +759,7 @@ public class OpenMetadataTypesArchive2_6
         this.archiveBuilder.addEnumDef(getIncidentReportStatusEnum());
         this.archiveBuilder.addEntityDef(addIncidentReportEntity());
 
-        this.archiveBuilder.addRelationshipDef(addIncidentOriginatorRelationship());
         this.archiveBuilder.addRelationshipDef(addImpactedResourceRelationship());
-        this.archiveBuilder.addRelationshipDef(addIncidentDependencyRelationship());
     }
 
 
@@ -939,7 +801,7 @@ public class OpenMetadataTypesArchive2_6
          * Build the Entity
          */
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.INCIDENT_REPORT,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REPORT.typeName));
 
         /*
          * Build the attributes
@@ -959,45 +821,6 @@ public class OpenMetadataTypesArchive2_6
         return entityDef;
     }
 
-    private RelationshipDef addIncidentOriginatorRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.INCIDENT_ORIGINATOR_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "originators";
-        final String                     end1AttributeDescription     = "Source(s) of the incident report.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "resultingIncidentReports";
-        final String                     end2AttributeDescription     = "Descriptions of detected incidents.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.INCIDENT_REPORT.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
 
     private RelationshipDef addImpactedResourceRelationship()
     {
@@ -1048,54 +871,6 @@ public class OpenMetadataTypesArchive2_6
         return relationshipDef;
     }
 
-    private RelationshipDef addIncidentDependencyRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.INCIDENT_DEPENDENCY_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "priorReportedIncidents";
-        final String                     end1AttributeDescription     = "Previous reports on the same or related incident.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.INCIDENT_REPORT.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "followOnReportedIncidents";
-        final String                     end2AttributeDescription     = "Subsequent reports on the same or related incident.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.INCIDENT_REPORT.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

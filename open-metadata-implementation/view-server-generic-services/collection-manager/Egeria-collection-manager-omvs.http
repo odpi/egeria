@@ -152,9 +152,9 @@ Content-Type: application/json
 }
 
 ###
-# @name getCollectionsByType
+# @name getCollectionsByCategory
 # Returns the list of collections with a particular category.  This is an optional text field in the collection element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-collection-type
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-collection-category
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -237,7 +237,7 @@ Content-Type: application/json
 ###
 # @name getCollectionHierarchy
 # Return a hierarchy of nested collections. Request body is optional
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/graph
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/hierarchy
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -286,7 +286,7 @@ Content-Type: application/json
   "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
+    "displayName" : "Add display name here",
     "description" : "Add description of the collection here",
     "category": "Add appropriate valid value for type"
   }
@@ -310,7 +310,7 @@ Content-Type: application/json
   "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
+    "displayName" : "Add display name here",
     "description" : "Add description of the collection here",
     "category": "Add appropriate valid value for type"
   },
@@ -334,15 +334,15 @@ Content-Type: application/json
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "initialClassifications" : {
-    "RootCollection" : {}
-  },
+    "RootCollection" : { "class" :  "RootCollectionProperties" }
+     },
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
   "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
+    "displayName" : "Add display name here",
     "description" : "Add description of the collection here",
     "category": "Add appropriate valid value for type"
   },
@@ -373,7 +373,7 @@ Content-Type: application/json
   "properties": {
     "class" : "DataSpecProperties",
     "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
+    "displayName" : "Add display name here",
     "description" : "Add description of the collection here",
     "category": "Add appropriate valid value for type"
   },
@@ -403,7 +403,7 @@ Content-Type: application/json
   "properties": {
     "class" : "DataDictionaryProperties",
     "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
+    "displayName" : "Add display name here",
     "description" : "Add description of the collection here",
     "category": "Add appropriate valid value for type"
   },
@@ -427,7 +427,9 @@ Content-Type: application/json
   "isOwnAnchor" : false,
   "anchorScopeGUID" : "optional GUID of search scope",
   "initialClassifications" : {
-    "Folder" : {}
+    "Folder" : {
+      "class": "FolderProperties"
+    }
   },
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
@@ -435,7 +437,7 @@ Content-Type: application/json
   "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
+    "displayName" : "Add display name here",
     "description" : "Add description of the collection here",
     "category": "Add appropriate valid value for type"
   },
@@ -445,67 +447,6 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
-
-###
-# @name createContextEventCollection
-# Create a new collection with the ContextEventCollection classification.  This is used to group context events together.
-# For example, the collection may be a series of events that affect a set of resources.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/context-event-collection
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewElementRequestBody",
-  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
-  "isOwnAnchor" : false,
-  "anchorScopeGUID" : "optional GUID of search scope",
-  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
-  "parentRelationshipTypeName" : "open metadata type name",
-  "parentAtEnd1": true,
-  "properties": {
-    "class" : "CollectionProperties",
-    "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
-    "description" : "Add description of the collection here",
-    "category": "Add appropriate valid value for type"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-# @name createNamespaceCollection
-# Create a new collection with the Namespace classification.  This is used to group elements that belong to the same namespace.
-# For example, the collection may be a series of processes that are recording OpenLineage under a single namespace.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/namespace-collection
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewElementRequestBody",
-  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
-  "isOwnAnchor" : false,
-  "anchorScopeGUID" : "optional GUID of search scope",
-  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
-  "parentRelationshipTypeName" : "open metadata type name",
-  "parentAtEnd1": true,
-  "properties": {
-    "class" : "CollectionProperties",
-    "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
-    "description" : "Add description of the collection here",
-    "category": "Add appropriate valid value for type"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
 
 ###
 # @name createCollectionFromTemplate
@@ -556,7 +497,7 @@ Content-Type: application/json
   "properties": {
     "class" : "CollectionProperties",
     "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
+    "displayName" : "Add display name here",
     "description" : "Add description of the collection here",
     "category": "Add appropriate valid value for type"
   },
@@ -593,7 +534,7 @@ Content-Type: application/json
   "properties": {
     "class" : "DigitalProductProperties",
     "qualifiedName": "DigitalProduct::Add product name here",
-    "name" : "Product contents",
+    "displayName" : "Product contents",
     "description" : "Add description of product and its expected usage here",
     "identifier" : "Add product identifier here",
     "productName" : "Add product name here",
@@ -629,7 +570,7 @@ Content-Type: application/json
   "properties": {
     "class" : "DigitalProductProperties",
     "qualifiedName": "DigitalProduct::Add product name here",
-    "name" : "Product contents",
+    "displayName" : "Product contents",
     "description" : "Add description of product and its expected usage here",
     "userDefinedStatus" : "OBSOLETE",
     "identifier" : "Add product identifier here",
@@ -690,7 +631,7 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
-    "class": "InformationSupplyChainLinkProperties",
+    "class": "DigitalPropertyDependencyProperties",
     "label": "add label here",
     "description": "add description here",
     "effectiveFrom": "{{$isoTimestamp}}",
@@ -732,6 +673,7 @@ Content-Type: application/json
 {
   "class" : "NewRelationshipRequestBody",
   "properties": {
+      "class" : "AssignmentScope",
       "assignmentType" : "Add type here",
       "description" : "Add assignment description here"
   },
@@ -782,7 +724,7 @@ Content-Type: application/json
   "properties": {
     "class" : "AgreementProperties",
     "qualifiedName": "Agreement::Add agreement name here",
-    "name" : "display name",
+    "displayName" : "display name",
     "description" : "Add description of the agreement here",
     "identifier" : "Add agreement identifier here",
     "additionalProperties": {
@@ -818,7 +760,7 @@ Content-Type: application/json
   "properties": {
     "class" : "AgreementProperties",
     "qualifiedName": "Agreement::Add agreement name here",
-    "name" : "display name",
+    "displayName" : "display name",
     "description" : "Add description of the agreement here",
     "userDefinedStatus" : "NEW",
     "identifier" : "Add agreement identifier here",
@@ -839,7 +781,7 @@ Content-Type: application/json
 ###
 # @name updateAgreement
 # Update the properties of the Agreement collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{agreementGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{agreementGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -848,7 +790,7 @@ Content-Type: application/json
   "properties": {
     "class" : "AgreementProperties",
     "qualifiedName": "Agreement::Add agreement name here",
-    "name" : "display name",
+    "displayName" : "display name",
     "description" : "Add description of the agreement here",
     "userDefinedStatus" : "OBSOLETE",
     "identifier" : "Add agreement identifier here",
@@ -857,6 +799,7 @@ Content-Type: application/json
       "property2Name" : "property2Value"
     }
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -872,7 +815,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "AgreementStatusStatusRequestBody",
+  "class" : "UpdateStatusRequestBody",
   "status": "APPROVED",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -1059,7 +1002,7 @@ Content-Type: application/json
   "properties": {
     "class" : "DigitalSubscriptionProperties",
     "qualifiedName": "DigitalSubscription::Add subscription name here",
-    "name" : "display name",
+    "displayName" : "display name",
     "description" : "Add description of the subscription here",
     "userDefinedStatus" : "OBSOLETE",
     "identifier" : "Add subscription identifier here",
@@ -1093,7 +1036,7 @@ Content-Type: application/json
   "properties": {
     "class" : "DigitalSubscriptionProperties",
     "qualifiedName": "DigitalSubscription::Add subscription name here",
-    "name" : "display name",
+    "displayName" : "display name",
     "description" : "Add description of the subscription here",
     "userDefinedStatus" : "OBSOLETE",
     "identifier" : "Add subscription identifier here",

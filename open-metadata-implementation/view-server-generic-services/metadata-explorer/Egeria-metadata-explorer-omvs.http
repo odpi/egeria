@@ -81,7 +81,7 @@ Content-Type: application/json
 
 {
   "class" : "UniqueNameRequestBody",
-  "name" : "Glossary:CloudInformationModel",
+  "name" : "Glossary::CloudInformationModel",
   "namePropertyName" : "qualifiedName"
 }
 
@@ -97,7 +97,7 @@ Content-Type: application/json
 
 {
   "class" : "UniqueNameRequestBody",
-  "name" : "Glossary:Sustainability",
+  "name" : "Glossary::Sustainability",
   "namePropertyName" : "qualifiedName"
 }
 
@@ -156,8 +156,8 @@ Content-Type: application/json
 {
   "class" : "UniqueNameRequestBody",
   "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "Metadata Access Server:active-metadata-store",
-  "namePropertyName" : "qualifiedName"
+  "name" : "active-metadata-store",
+  "namePropertyName" : "displayName"
 }
 
 
@@ -171,8 +171,8 @@ Content-Type: application/json
 {
   "class" : "UniqueNameRequestBody",
   "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "Metadata Access Server:active-metadata-store",
-  "namePropertyName" : "qualifiedName"
+  "name" : "active-metadata-store",
+  "namePropertyName" : "displayName"
 }
 
 

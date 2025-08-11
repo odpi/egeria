@@ -901,11 +901,12 @@ public class MermaidGraphBuilderBase
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GOVERNANCE_DEFINITION.typeName))
         {
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GOVERNANCE_METRIC.typeName))
+            {
+                return VisualStyle.GOVERNANCE_METRIC;
+            }
+
             return VisualStyle.GOVERNANCE_DEFINITION;
-        }
-        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GOVERNANCE_METRIC.typeName))
-        {
-            return VisualStyle.GOVERNANCE_METRIC;
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.PROJECT.typeName))
         {
@@ -1750,7 +1751,7 @@ public class MermaidGraphBuilderBase
                 }
                 else if (properties instanceof ExternalReferenceProperties externalReferenceProperties)
                 {
-                    nodeDisplayName = externalReferenceProperties.getURI();
+                    nodeDisplayName = externalReferenceProperties.getURL();
                 }
                 else if (properties instanceof ExternalIdProperties externalIdentifierProperties)
                 {

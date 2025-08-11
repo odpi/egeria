@@ -2622,29 +2622,56 @@ public enum OpenMetadataType
     /**
      * A template for generating report.
      */
-    DEPLOYED_REPORT_TYPE("ed53a480-e6d4-44f1-aac7-3fac60bbb00e",
-                         "DeployedReportType",
-                         OpenMetadataWikiPages.MODEL_0239_REPORTS,
-                         "b7ba1739-bf1d-4c12-aa3f-dd5ef8dc7674",
-                         "A template for generating report."),
+    REPORT_TYPE("ed53a480-e6d4-44f1-aac7-3fac60bbb00e",
+                "ReportType",
+                OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                "b7ba1739-bf1d-4c12-aa3f-dd5ef8dc7674",
+                "A template for generating report."),
 
     /**
      * A collection if data items that describe a situation.  This is an instance of a report.
      */
-    DEPLOYED_REPORT("e9077f4f-955b-4d7b-b1f7-12ee769ff0c3",
-                    "DeployedReport",
-                    OpenMetadataWikiPages.MODEL_0239_REPORTS,
-                    "c01207de-0f57-491a-9377-84b80317c81e",
-                    "A collection if data items that describe a situation.  This is an instance of a report."),
+    REPORT("e9077f4f-955b-4d7b-b1f7-12ee769ff0c3",
+           "Report",
+           OpenMetadataWikiPages.MODEL_0239_REPORTS,
+           "c01207de-0f57-491a-9377-84b80317c81e",
+           "A collection if data items that describe a situation.  This is an instance of a report."),
 
     /**
-     * A collection of data items used to request activity.
+     * Links a report to the element (typically a process) that created the report.
+     */
+    REPORT_ORIGINATOR("6d38cf1f-44ba-44f7-8ec9-029535544d0b",
+                    "ReportOriginator",
+                    OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                    "c5fcbd04-4ba4-4d5a-abda-7c1b680e2b32",
+                    "Links a report to the element (typically a process) that created the report."),
+
+    /**
+     * Links a report to the element that the report is about.
+     */
+    REPORT_SUBJECT("559211a7-ddd2-4f31-9f2f-2bf3021124c8",
+                      "ReportSubject",
+                      OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                      "cba2f1ce-d3fa-4619-8310-382d8161aa5a",
+                      "Links a report to the element that the report is about."),
+
+    /**
+     * Links a report to another related report.  There is a sense of time in this relationship.
+     */
+    REPORT_DEPENDENCY("67015095-61d5-45bb-82a1-f802dc01b071",
+                      "ReportDependency",
+                      OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                      "7f6fdb6a-afa3-46de-a257-be2b4bc3a148",
+                      "Links a report to another related report.  There is a sense of time in this relationship."),
+
+    /**
+     * A structure used to request new data.
      */
     FORM("8078e3d1-0c63-4ace-aafa-68498b39ccd6",
          "Form",
          OpenMetadataWikiPages.MODEL_0239_REPORTS,
          "18ae6f80-98de-4f05-8684-426a90523834",
-         "A collection of data items used to request activity."),
+         "A structure used to request new data."),
 
     /**
      * A packaged and deployed analytics model.
@@ -2915,60 +2942,6 @@ public enum OpenMetadataType
                                      "Provides the semantic meaning of a definition by linking it to an appropriate glossary term."),
 
     /**
-     * Defines an inheritance relationship between two spine objects.
-     */
-    TERM_IS_A_TYPE_OF_RELATIONSHIP("71f83296-2007-46a5-a4c7-919a7c4a12f5",
-                                   "TermISATYPEOFRelationship",
-                                   OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
-                                   "b7e9f8a2-de9b-4d1f-a5d1-61b0dfd22df9",
-                                   "Defines an inheritance relationship between two spine objects."),
-
-    /**
-     * Defines the relationship between a spine object and a spine attribute.
-     */
-    TERM_HAS_A_RELATIONSHIP("d67f16d1-5348-419e-ba38-b0bb6fe4ad6c",
-                            "TermHASARelationship",
-                            OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
-                            "53e39548-233c-425e-a911-4e6d0337cc18",
-                            "Defines the relationship between a spine object and a spine attribute."),
-
-    /**
-     * Defines the relationship between a spine attribute and its type.
-     */
-   TERM_TYPED_BY_RELATIONSHIP("669e8aa4-c671-4ee7-8d03-f37d09b9d006",
-                              "TermTYPEDBYRelationship",
-                              OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
-                              "cf760a39-8f7a-4aad-957c-f16d64b0e3e9",
-                              "Defines the relationship between a spine attribute and its type."),
-
-    /**
-     * Identifies a glossary term that describes a type of spine object.
-     */
-    SPINE_OBJECT_CLASSIFICATION("a41ee152-de1e-4533-8535-2f8b37897cac",
-                                "SpineObject",
-                                OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
-                                "9f122fa4-3bf0-4169-a32b-5de5388e011d",
-                                "Identifies a glossary term that describes a type of spine object."),
-
-    /**
-     * Identifies a glossary term that describes an attribute of a spine object.
-     */
-    SPINE_ATTRIBUTE_CLASSIFICATION("ccb749ba-34ec-4f71-8755-4d8b383c34c3",
-                                   "SpineAttribute",
-                                   OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
-                                   "3ef02bfa-1963-458a-95f0-674ec2684d37",
-                                   "Identifies a glossary term that describes an attribute of a spine object."),
-
-    /**
-     * Defines a glossary term that is developed through a controlled workflow.
-     */
-    CONTROLLED_GLOSSARY_TERM("c04e29b2-2d66-48fc-a20d-e59895de6040",
-                             "ControlledGlossaryTerm",
-                             OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
-                             "513dbb8e-94fa-4764-b29e-e08e2cc7b4af",
-                             "Defines a glossary term that is developed through a controlled workflow."),
-
-    /**
      * A glossary holding copies of glossary content that is being edited.  The glossary content is typically sourced from another glossary
      */
     EDITING_GLOSSARY_CLASSIFICATION("173614ba-c582-4ecc-8fcc-cde5fb664548",
@@ -3027,14 +3000,7 @@ public enum OpenMetadataType
                           "8f4f3146-0c21-4754-b2d3-41e04c519226",
                           "Defines an aspect of the governance program."),
 
-    /**
-     * Person responsible for a governance domain.
-     */
-    GOVERNANCE_OFFICER("578a3510-9ad3-45fe-8ada-e4e9572c37c8",
-                       "GovernanceOfficer",
-                       OpenMetadataWikiPages.MODEL_0401_GOVERNANCE_DEFINITIONS,
-                       "be460431-d42b-40a8-a4dd-616082c51c88",
-                       "Person responsible for a governance domain."),
+
 
     /**
      * Shows the resources that are governed by a specific governance definition.
@@ -3228,13 +3194,13 @@ public enum OpenMetadataType
 
 
     /**
-     * A link between a governance control and the governance policy it is implementing.
+     * A link between a governance control and the governance policy it is supporting.
      */
-    GOVERNANCE_IMPLEMENTATION_RELATIONSHIP("787eaf46-7cf2-4096-8d6e-671a0819d57e",
-                                           "GovernanceImplementation",
-                                           OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
-                                           "3fa34b67-02a7-429c-bde5-9b7a3e8dce28",
-                                           "A link between a governance control and the governance policy it is implementing."),
+    GOVERNANCE_MECHANISM_RELATIONSHIP("787eaf46-7cf2-4096-8d6e-671a0819d57e",
+                                      "GovernanceMechanism",
+                                      OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                                      "3fa34b67-02a7-429c-bde5-9b7a3e8dce28",
+                                      "A link between a governance control and the governance policy it is supporting."),
 
     /**
      * A link between two related governance controls.
@@ -3309,8 +3275,6 @@ public enum OpenMetadataType
                                              "74509737-6fe9-4c9b-90f7-8abf16f7ed59",
                                              "Identifies the set of user groups that this user identity is a member of."),
 
-
-
     /**
      * Defines labels and properties used by a security engine.
      */
@@ -3347,15 +3311,6 @@ public enum OpenMetadataType
                                    OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
                                    "1d3983a0-a237-46fd-a07d-027a2a0cb5b1",
                                    "Defines the element's membership of the governance zones."),
-
-    /**
-     * Defines the asset's membership of the governance zones.
-     */
-    ASSET_ZONE_MEMBERSHIP_CLASSIFICATION("a1c17a86-9fd3-40ca-bb9b-fe83c6981deb",
-                                         "AssetZoneMembership",
-                                         OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
-                                         "3c2d8924-84d7-4b4f-9422-71cdda15865d",
-                                         "Defines the asset's membership of the governance zones."),
 
     /**
      * Defines a collection of assets that are suitable for a particular usage or are governed by a particular process.
@@ -3421,13 +3376,13 @@ public enum OpenMetadataType
                             "The set of behaviour-related objectives that an asset or capability seeks to achieve."),
 
     /**
-     * Technical control expressed as a sequence of tasks.
+     * Technical control expressed as one or more actions.
      */
-    GOVERNANCE_PROCESS("b68b5d9d-6b79-4f3a-887f-ec0f81c54aea",
-                       "GovernanceProcess",
-                       OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
-                       "2e184032-436b-48ff-b5a2-93cc1bec250b",
-                       "Technical control expressed as a sequence of tasks."),
+    GOVERNANCE_ACTION("b68b5d9d-6b79-4f3a-887f-ec0f81c54aea",
+                      "GovernanceAction",
+                      OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
+                      "2e184032-436b-48ff-b5a2-93cc1bec250b",
+                      "Technical control expressed as one or more actions."),
 
     /**
      * Describes the capability where policies are maintained.
@@ -3525,63 +3480,36 @@ public enum OpenMetadataType
      */
     DIGITAL_SUPPORT_RELATIONSHIP("9e187e1e-2547-46bd-b0ee-c33ac6df4a1f",
                                  "DigitalSupport",
-                                 OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                                 OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
                                  "79f27291-ed2f-4012-a603-3e3aca5bcbe7",
                                  "Relationship identifying the digital services supporting each business capability."),
 
     /**
-     * Describes a function, capability or skill set.
+     * The set of entitlements, restrictions and obligations associated with an agreement, license etc.
      */
-    BUSINESS_CAPABILITY("7cc6bcb2-b573-4719-9412-cf6c3f4bbb15",
-                        "BusinessCapability",
-                        OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
-                        "102f73be-7baf-4a10-997e-41e6eb42d66b",
-                        "Describes a function, capability or skill set."),
+    TERMS_AND_CONDITIONS("2ddc42d3-7791-4b4e-a064-91df9300290a",
+                         "TermsAndConditions",
+                         OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                         "d8aca540-2868-4c9f-a1b3-899f822f3127",
+                         "The set of entitlements, restrictions and obligations associated with an agreement, license etc."),
 
     /**
-     * Describes the origin of a digital resource, or a collection of digital resources.
+     * A type of license that sets out specific terms and conditions for the use of a resource.
      */
-    DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION("5842941d-91a3-40e0-8ca8-f29c300f1af1",
-                                           "DigitalResourceOrigin",
-                                           OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
-                                           "55349176-4812-475b-abd4-34cd92e4a9d0",
-                                           "Describes the origin of a digital resource, or a collection of digital resources."),
+    LICENSE_TYPE("046a049d-5f80-4e5b-b0ae-f3cf6009b513",
+                 "LicenseType",
+                 OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                 "5e54973c-6a71-44b3-9570-1df85b905e73",
+                 "A type of license that sets out specific terms and conditions for the use of a resource."),
 
     /**
-     * Describes the origin of an asset.
+     * A specific type of certification required by a regulation or governance process.
      */
-    ASSET_ORIGIN_CLASSIFICATION("e530c566-03d2-470a-be69-6f52bfbd5fb7",
-                                "AssetOrigin",
-                                OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
-                                "1298ba80-f745-4878-b16c-181a7c25db09",
-                                "Describes the origin of an asset."),
-
-    /**
-     * Describes the relationship between a team and the business capabilities it supports.
-     */
-    BUSINESS_CAPABILITY_TEAM_RELATIONSHIP("47f0ad39-db77-41b0-b406-36b1598e0ba7",
-                                          "BusinessCapabilityTeam",
-                                          OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
-                                          "0cf949bc-70cf-4ae1-887a-4738d30c9317",
-                                          "Describes the relationship between a team and the business capabilities it supports."),
-
-    /**
-     * Describes the goals, scope and authority of a project.
-     */
-    PROJECT_CHARTER("f96b5a32-42c1-4a74-8f77-70a81cec783d",
-                    "ProjectCharter",
-                    OpenMetadataWikiPages.MODEL_0442_PROJECT_CHARTER,
-                    "c9b7873e-771e-4d34-a6b7-0f6fe1b9c9e4",
-                    "Describes the goals, scope and authority of a project."),
-
-    /**
-     * Links a Project with its Charter.
-     */
-    PROJECT_CHARTER_LINK_RELATIONSHIP("f081808d-545a-41cb-a9aa-c4f074a16c78",
-                                      "ProjectCharterLink",
-                                      OpenMetadataWikiPages.MODEL_0442_PROJECT_CHARTER,
-                                      "86d5460a-e6b2-415b-965a-f2c52ff2d5e9",
-                                      "Links a Project with its Charter."),
+    CERTIFICATION_TYPE("97f9ffc9-e2f7-4557-ac12-925257345eea",
+                       "CertificationType",
+                       OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                       "10dd155f-14f0-4bd4-90e4-eae761a652e8",
+                       "A specific type of certification required by a regulation or governance process."),
 
     /**
      * Who is responsible for making decisions on the management and governance of this element.
@@ -3600,6 +3528,15 @@ public enum OpenMetadataType
                     OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                     "f8bfd5eb-2dea-4c41-8c7e-1c6965108944",
                     "Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource."),
+
+    /**
+     * Person responsible for a governance domain.
+     */
+    GOVERNANCE_OFFICER("578a3510-9ad3-45fe-8ada-e4e9572c37c8",
+                       "GovernanceOfficer",
+                       OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                       "be460431-d42b-40a8-a4dd-616082c51c88",
+                       "Person responsible for a governance domain."),
 
     /**
      * A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.
@@ -3673,16 +3610,6 @@ public enum OpenMetadataType
                     "13a43ee5-acad-4e67-a4d2-4f4d87e1abea",
                     "An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end to end validation of the values as they move from asset to asset."),
 
-
-    /**
-     * Identifies a role that will perform a governance responsibility.
-     */
-    GOVERNANCE_RESPONSIBILITY_ASSIGNMENT("cb15c107-b7af-475d-aab0-d78b8297b982",
-                                         "GovernanceResponsibilityAssignment",
-                                         OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
-                                         "b44383d1-58bb-4609-b84e-45fed8b9ea1d",
-                                         "Identifies an actor that will perform a governance responsibility."),
-
     /**
      * A definition for how the effectiveness of the governance program is measured.
      */
@@ -3691,15 +3618,6 @@ public enum OpenMetadataType
                       OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
                       "c6e37924-a550-46ba-b8e6-92891bdf4178",
                       "A definition for how the effectiveness of the governance program is measured."),
-
-    /**
-     * Link between a governance definition and a governance metric used to measure this definition.
-     */
-    GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP("e076fbb3-54f5-46b8-8f1e-a7cb7e792673",
-                                              "GovernanceDefinitionMetric",
-                                              OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
-                                              "10f36c85-835f-4b55-a56d-41a69feb6baa",
-                                              "Link between a governance definition and a governance metric used to measure this definition."),
 
     /**
      * Link between a governance metric and a data set used to gather measurements from the landscape.
@@ -3809,51 +3727,6 @@ public enum OpenMetadataType
                                      OpenMetadataWikiPages.MODEL_0460_EXECUTION_POINTS,
                                      "e38fda50-b405-48c2-a466-123e2c42b446",
                                      "A governance rule that ensures a required condition is true."),
-
-    /**
-     * A description of an activity that supports the implementation of a governance requirement.
-     */
-    EXECUTION_POINT_DEFINITION("d7f8d1d2-8cec-4fd2-b9fd-c8307cad750d",
-                               "ExecutionPointDefinition",
-                               OpenMetadataWikiPages.MODEL_0460_EXECUTION_POINTS,
-                               "3c7387ee-1047-41ec-ad6e-7035849f5563",
-                               "A description of an activity that supports the implementation of a governance requirement."),
-
-    /**
-     * A decision needs to be made on how to proceed.
-     */
-    CONTROL_POINT_DEFINITION("a376a993-5f1c-4926-b74e-a15a38e1d55a",
-                             "ControlPointDefinition",
-                             OpenMetadataWikiPages.MODEL_0460_EXECUTION_POINTS,
-                             "0b077fd9-d465-4278-a685-9f609f9ab329",
-                             "A decision needs to be made on how to proceed."),
-
-    /**
-     * A test is made to ensure the current situation is valid.
-     */
-    VERIFICATION_POINT_DEFINITION("27db26a1-ff66-4042-9932-ddc728b977b9",
-                                  "VerificationPointDefinition",
-                                  OpenMetadataWikiPages.MODEL_0460_EXECUTION_POINTS,
-                                  "fca1e23c-bd5a-4857-b098-2771b8463a69",
-                                  "A test is made to ensure the current situation is valid."),
-
-    /**
-     * A change is made to enforce a governance requirement.
-     */
-    ENFORCEMENT_POINT_DEFINITION("e87ff806-bb9c-4c5d-8106-f38f2dd21037",
-                                 "EnforcementPointDefinition",
-                                 OpenMetadataWikiPages.MODEL_0460_EXECUTION_POINTS,
-                                 "d50f39b1-407c-4318-b735-dfacc93c30c4",
-                                 "A change is made to enforce a governance requirement."),
-
-    /**
-     * Link between a governance execution point definition and the governance definition it supports.
-     */
-    EXECUTION_POINT_USE_RELATIONSHIP("3eb268f4-9419-4281-a487-d25ccd88eba3",
-                                     "ExecutionPointUse",
-                                     OpenMetadataWikiPages.MODEL_0460_EXECUTION_POINTS,
-                                     "3ef397a1-3495-4d4f-90e2-ee9be04d4910",
-                                     "Link between a governance execution point definition and the governance definition it supports."),
 
     /**
      * A collection of related governance services of the same type.
@@ -4011,13 +3884,13 @@ public enum OpenMetadataType
                                            "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller."),
 
     /**
-     * Represents a single run of a governance action process.  It is linked to the parent governance action process using the ProcessHierarchy relationship.
+     * Represents a single run of a governance action process.  It is linked to the parent governance action process using the GovernedBy relationship.
      */
     GOVERNANCE_ACTION_PROCESS_INSTANCE("206a6e44-ffe7-408b-8e59-79842d362776",
                               "GovernanceActionProcessInstance",
                               OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                               "6fcfbc4c-f08d-4946-a311-e76237fa1263",
-                              "Represents a single run of a governance action process.  It is linked to the parent governance action process using the ProcessHierarchy relationship."),
+                              "Represents a single run of a governance action process.  It is linked to the parent governance action process using the GovernedBy relationship."),
 
     /**
      * An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape.
@@ -4036,15 +3909,6 @@ public enum OpenMetadataType
                            OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
                            "f86f2040-652e-495e-b27d-ffcc7c75a05e",
                            "Link between an engine action and the governance engine that will execute it."),
-
-    /**
-     * Linking of engine actions to show execution sequence.
-     */
-    NEXT_ENGINE_ACTION("4efd16d4-f397-449c-a75d-ebea42fe581b",
-                       "NextEngineAction",
-                       OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
-                       "6b3e721b-b11d-4de9-bcce-62a62466d866",
-                       "Linking of engine actions to show execution sequence."),
 
     /**
      * A collection of integration connectors to run together.
@@ -4083,22 +3947,13 @@ public enum OpenMetadataType
                                 "Identifies an element that an integration connector is to work with."),
 
     /**
-     * Details of the metadata changes made by the execution of the refresh() method by an integration connector.
+     * Details of the metadata changes made by the execution of the refresh() method by an integration connector or governance service.
      */
-    INTEGRATION_REPORT("b8703d3f-8668-4e6a-bf26-27db1607220d",
-                    "IntegrationReport",
-                    OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
-                    "56c76116-1b1c-447c-b74d-ff860a2e41c6",
-                    "Details of the metadata changes made by the execution of the refresh() method by an integration connector."),
-
-    /**
-     * Links an integration report to the anchor entity it describes.
-     */
-    RELATED_INTEGRATION_REPORT("83d12156-f8f3-4b4b-b31b-18c140df9aa3",
-                               "RelatedIntegrationReport",
-                               OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
-                               "7f392793-3c12-4c18-be92-233d9f152a84",
-                               "Links an integration report to the anchor entity it describes."),
+    CONNECTOR_ACTIVITY_REPORT("b8703d3f-8668-4e6a-bf26-27db1607220d",
+                              "ConnectorActivityReport",
+                              OpenMetadataWikiPages.MODEL_0457_CONNECTOR_ACTIVITY_REPORTS,
+                              "56c76116-1b1c-447c-b74d-ff860a2e41c6",
+                              "Details of the metadata changes made by the execution of the refresh() method by an integration connector/governance service."),
 
     /**
      * Defines that duplicate resolution processing is required.
@@ -4147,15 +4002,6 @@ public enum OpenMetadataType
                     "A description of an adverse situation or activity."),
 
     /**
-     * Link between an incident report and its originator (person, process, engine, ...).
-     */
-    INCIDENT_ORIGINATOR_RELATIONSHIP("e490772e-c2c5-445a-aea6-1aab3499a76c",
-                                     "IncidentOriginator",
-                                     OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
-                                     "34229da5-6581-405e-9739-d400e964944a",
-                                     "Link between an incident report and its originator (person, process, engine, ...)."),
-
-    /**
      * Link between an impacted referenceable and an incident report.
      */
     IMPACTED_RESOURCE_RELATIONSHIP("0908e153-e0fd-499c-8a30-5ea8b81395cd",
@@ -4163,15 +4009,6 @@ public enum OpenMetadataType
                                    OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
                                    "5bab8c09-1a03-4706-9e59-fd7ac5083a1a",
                                    "Link between an impacted referenceable and an incident report."),
-
-    /**
-     * Link between an incident report and its predecessors.
-     */
-    INCIDENT_DEPENDENCY_RELATIONSHIP("017be6a8-0037-49d8-af5d-c45c41f25e0b",
-                                     "IncidentDependency",
-                                     OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
-                                     "a5a02778-8ad0-4149-9ecd-71273214c88e",
-                                     "Link between an incident report and its predecessors."),
 
     /**
      * A description of an event that impacts users, data, services, etcetera.  It is used to describe what was happening during a named time period.
@@ -4237,15 +4074,6 @@ public enum OpenMetadataType
                                                     "Associates a ContextEvent to a Referenceable (typically and Asset or DigitalProduct) whose data is effected by the event."),
 
     /**
-     * A type of license that sets out specific terms and conditions for the use of a resource.
-     */
-    LICENSE_TYPE("046a049d-5f80-4e5b-b0ae-f3cf6009b513",
-                 "LicenseType",
-                 OpenMetadataWikiPages.MODEL_0481_LICENSES,
-                 "5e54973c-6a71-44b3-9570-1df85b905e73",
-                 "A type of license that sets out specific terms and conditions for the use of a resource."),
-
-    /**
      * Link between a resource description and its license.
      */
     LICENSE_RELATIONSHIP("35e53b7f-2312-4d66-ae90-2d4cb47901ee",
@@ -4253,15 +4081,6 @@ public enum OpenMetadataType
                          OpenMetadataWikiPages.MODEL_0481_LICENSES,
                          "84ff8464-aa51-4a64-8422-5439a34b9908",
                          "Link between a resource description and its license."),
-
-    /**
-     * A specific type of certification required by a regulation or governance process.
-     */
-    CERTIFICATION_TYPE("97f9ffc9-e2f7-4557-ac12-925257345eea",
-                       "CertificationType",
-                       OpenMetadataWikiPages.MODEL_0482_CERTIFICATIONS,
-                       "10dd155f-14f0-4bd4-90e4-eae761a652e8",
-                       "A specific type of certification required by a regulation or governance process."),
 
     /**
      * An awarded certification of a specific type.
@@ -4280,24 +4099,6 @@ public enum OpenMetadataType
                                   OpenMetadataWikiPages.MODEL_0482_CERTIFICATIONS,
                                   "c7fb5690-b8c8-4db2-8f18-c441c77fb014",
                                   "Identifies a certification required by a regulation."),
-
-    /**
-     * The set of entitlements, restrictions and obligations associated with an agreement, license etc.
-     */
-    TERMS_AND_CONDITIONS("2ddc42d3-7791-4b4e-a064-91df9300290a",
-                         "TermsAndConditions",
-                         OpenMetadataWikiPages.MODEL_0483_TERMS_AND_CONDITIONS,
-                         "d8aca540-2868-4c9f-a1b3-899f822f3127",
-                         "The set of entitlements, restrictions and obligations associated with an agreement, license etc."),
-
-    /**
-     * The terms and conditions associated with an agreement, license etc.
-     */
-    ATTACHED_TERMS_AND_CONDITIONS_RELATIONSHIP("8292343f-6a96-4ca8-a447-38f734c75634",
-                                               "AttachedTermsAndConditions",
-                                               OpenMetadataWikiPages.MODEL_0483_TERMS_AND_CONDITIONS,
-                                               "4867c028-f9c3-4acc-95d7-062bfaf096fc",
-                                               "The terms and conditions associated with an agreement, license etc."),
 
 
     /**
@@ -5050,13 +4851,22 @@ public enum OpenMetadataType
                            "A single valid value for a referenceable."),
 
     /**
-     * An asset that contains trusted values for use as a reference.
+     * A data set with values defined by a valid value set.
+     */
+    REFERENCE_DATA_SET("001f87fc-beae-4714-b899-d620a8a8137a",
+                                  "ReferenceDataSet",
+                                  OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                  "c9d87116-6c60-4dd6-a2f2-e774371948e0",
+                                  "A data set with values defined by a valid value set."),
+
+    /**
+     * An asset that contains trusted values for use as reference data.
      */
     REFERENCE_DATA_CLASSIFICATION("55e5ae33-39c6-4834-9d05-ef0ae4e0163b",
                                   "ReferenceData",
                                   OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                   "2d88a635-81ee-4ad8-9e1b-7cccea448776",
-                                  "An asset that contains trusted values for use as a reference."),
+                                  "An asset that contains trusted values for use as reference data."),
 
     /**
      * Links a referenceable to its valid values.
@@ -5433,24 +5243,6 @@ public enum OpenMetadataType
                   "A set of results describing the analysis from the execution of a survey action service."),
 
     /**
-     * Link between an Asset and a SurveyReport generated against its associated resource.
-     */
-    ASSET_SURVEY_REPORT_RELATIONSHIP("0a5572d4-71fe-4a13-beba-e6ece5104799",
-                                     "AssetSurveyReport",
-                                     OpenMetadataWikiPages.MODEL_0603_SURVEY_REPORTS,
-                                     "4b76f90e-3222-480e-9ee3-845f93c72e4f",
-                                     "Link between an Asset and a SurveyReport generated against its associated resource."),
-
-    /**
-     * Link to a SurveyReport from the EngineAction that initiated the request.
-     */
-    ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP("9ee592d0-ee01-4e47-a7b9-fa97ad9f395e",
-                                             "EngineActionSurveyReport",
-                                             OpenMetadataWikiPages.MODEL_0603_SURVEY_REPORTS,
-                                             "efc672a1-4b8f-4197-9038-5eb6ebd7a075",
-                                             "Link to a SurveyReport from the EngineAction that initiated the request."),
-
-    /**
      * Link between a SurveyReport and an Annotation generated from the same run of a survey action service.
      */
     REPORTED_ANNOTATION_RELATIONSHIP("3af278ed-f4e8-4afc-851b-a5b0908ba06f",
@@ -5690,6 +5482,17 @@ public enum OpenMetadataType
                     "6751673f-a4e7-4b64-84e4-4c59163d0102",
                     "A digital product is a collection of digital resources that have been designed to meet a specific consumer need."),
 
+
+    /**
+     * Person managing a digital product.
+     */
+    DIGITAL_PRODUCT_MANAGER("6dfba6ce-e925-4281-880d-d04100c5b991",
+                            "DigitalProductManager",
+                            OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
+                            "6057d7a8-4b7f-4d37-95dd-513c131c7381",
+                            "Person managing a digital product."),
+
+
     /**
      * A specialized agreement that represents a subscription to a digital service such as a digital product.
      */
@@ -5708,23 +5511,26 @@ public enum OpenMetadataType
                                     "60dac0a2-8326-4321-ad88-92b343ef89d2",
                                     "The link between a digital subscriber and the subscription details."),
 
-    /**
-     * Relationship identifying the individual responsible for the development of the attached digital product.
-     */
-    DIGITAL_PRODUCT_MANAGEMENT_RELATIONSHIP("91ff7542-c275-4cd3-b367-97eec3360422",
-                                            "DigitalProjectManagement",
-                                            OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
-                                            "ee3fd1ff-0c81-4862-a29d-57b6c4175cce",
-                                            "Relationship identifying the individual responsible for the development of the attached digital product."),
 
     /**
-     * Person managing a digital product.
+     * Describes a function, capability or skill set.
      */
-    DIGITAL_PRODUCT_MANAGER("6dfba6ce-e925-4281-880d-d04100c5b991",
-                            "DigitalProductManager",
-                            OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
-                            "6057d7a8-4b7f-4d37-95dd-513c131c7381",
-                            "Person managing a digital product."),
+    BUSINESS_CAPABILITY("7cc6bcb2-b573-4719-9412-cf6c3f4bbb15",
+                        "BusinessCapability",
+                        OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
+                        "102f73be-7baf-4a10-997e-41e6eb42d66b",
+                        "Describes a function, capability or skill set."),
+
+
+    /**
+     * Describes the relationship between a team and the business capabilities it supports.
+     */
+    BUSINESS_CAPABILITY_TEAM_RELATIONSHIP("47f0ad39-db77-41b0-b406-36b1598e0ba7",
+                                          "BusinessCapabilityTeam",
+                                          OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
+                                          "0cf949bc-70cf-4ae1-887a-4738d30c9317",
+                                          "Describes the relationship between a team and the business capabilities it supports."),
+
 
     /**
      * A description of a managed flow of information between multiple systems.
@@ -5928,6 +5734,17 @@ public enum OpenMetadataType
                          OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
                          "f8e24bca-3fe7-48f6-af28-48a1cc9f18e7",
                          "Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow."),
+
+
+    /**
+     * Describes the origin of a digital resource, or a collection of digital resources.
+     */
+    DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION("5842941d-91a3-40e0-8ca8-f29c300f1af1",
+                                           "DigitalResourceOrigin",
+                                           OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
+                                           "55349176-4812-475b-abd4-34cd92e4a9d0",
+                                           "Describes the origin of a digital resource, or a collection of digital resources."),
+
 
     /**
      * A referenceable item that is meaningful to business users.

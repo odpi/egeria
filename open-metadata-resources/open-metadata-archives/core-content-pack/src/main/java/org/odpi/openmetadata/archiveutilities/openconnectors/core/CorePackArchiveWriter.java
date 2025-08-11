@@ -1303,6 +1303,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                                    null,
                                                                                    null,
                                                                                    null,
+                                                                                   originatorName,
                                                                                    null,
                                                                                    openMetadataType.wikiURL,
                                                                                    null,

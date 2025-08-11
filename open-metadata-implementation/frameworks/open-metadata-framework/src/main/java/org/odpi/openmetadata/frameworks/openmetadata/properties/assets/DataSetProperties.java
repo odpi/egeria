@@ -5,9 +5,10 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DeployedDatabaseSchemaProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.FormProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.QueryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.ReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.FormProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.InformationViewProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -29,8 +30,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = DeployedDatabaseSchemaProperties.class, name = "DeployedDatabaseSchemaProperties"),
                 @JsonSubTypes.Type(value = FormProperties.class, name = "FormProperties"),
+                @JsonSubTypes.Type(value = ReferenceDataSetProperties.class, name = "ReferenceDataSetProperties"),
                 @JsonSubTypes.Type(value = ReportProperties.class, name = "ReportProperties"),
-                @JsonSubTypes.Type(value = QueryProperties.class, name = "QueryProperties"),
+                @JsonSubTypes.Type(value = InformationViewProperties.class, name = "InformationViewProperties"),
                 @JsonSubTypes.Type(value = TopicProperties.class, name = "TopicProperties"),
         })
 public class DataSetProperties extends DataAssetProperties

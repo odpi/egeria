@@ -156,6 +156,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                                                     governanceDefinition.getSummary(),
                                                                                     governanceDefinition.getDescription(),
                                                                                     governanceDefinition.getScope().getPreferredValue(),
+                                                                                    null,
                                                                                     governanceDefinition.getDomain(),
                                                                                     governanceDefinition.getImportance(),
                                                                                     governanceDefinition.getImplications(),
@@ -182,7 +183,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeRoles()
     {
-        String communityQName = "Community: " + SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getQualifiedName();
+        String communityQName = "Community:: " + SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getQualifiedName();
 
         for (SustainabilityRoleDefinition roleDefinition : SustainabilityRoleDefinition.values())
         {
@@ -220,8 +221,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 
             if (roleDefinition.getGovernanceResponsibility() != null)
             {
-                archiveHelper.addGovernanceResponsibilityAssignmentRelationship(roleDefinition.getQualifiedName(),
-                                                                                roleDefinition.getGovernanceResponsibility().getQualifiedName());
+                archiveHelper.addGovernedByRelationship(roleDefinition.getQualifiedName(),
+                                                        roleDefinition.getGovernanceResponsibility().getQualifiedName());
             }
         }
     }
@@ -258,7 +259,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                              false,
                                              null);
 
-            String communityQName = "Community: " + domainDefinition.getQualifiedName();
+            String communityQName = "Community:: " + domainDefinition.getQualifiedName();
 
             archiveHelper.addCommunity(null,
                                        communityQName,
@@ -275,11 +276,11 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                       null);
 
 
-            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER.typeName + ": " + domainDefinition.getQualifiedName();
+            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER.typeName + ":: " + domainDefinition.getQualifiedName();
             archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_OFFICER.typeName,
                                             governanceOfficerQName,
                                             domainDefinition.getDomainIdentifier(),
-                                            "GOV_OFFICER:" + domainDefinition.getDomainIdentifier(),
+                                            "GOV_OFFICER::" + domainDefinition.getDomainIdentifier(),
                                             "Governance Officer for " + domainDefinition.getDisplayName(),
                                             null,
                                             null,
@@ -301,7 +302,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 
     private void writeGlossary()
     {
-        String glossaryGUID = archiveHelper.addGlossary("Glossary:Sustainability",
+        String glossaryGUID = archiveHelper.addGlossary("Glossary::Sustainability",
                                                         "Sustainability Glossary",
                                                         "Terminology associated with Coco Pharmaceutical's sustainability initiative.",
                                                         "English",
@@ -328,15 +329,13 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
             String glossaryTermGUID = archiveHelper.addTerm(glossaryGUID,
                                                             null,
                                                             false,
-                                                            "GlossaryTerm:" + glossaryTermDefinition.getName(),
+                                                            "GlossaryTerm::" + glossaryTermDefinition.getName(),
                                                             glossaryTermDefinition.getName(),
                                                             glossaryTermDefinition.getSummary(),
                                                             glossaryTermDefinition.getDescription(),
                                                             null,
                                                             glossaryTermDefinition.getAbbreviation(),
                                                             null,
-                                                            false,
-                                                            false,
                                                             false,
                                                             null,
                                                             null,
@@ -363,6 +362,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                    null,
                                                    null,
                                                    null,
+                                                   originatorName,
                                                    null,
                                                    glossaryTermDefinition.getUrl(),
                                                    null,

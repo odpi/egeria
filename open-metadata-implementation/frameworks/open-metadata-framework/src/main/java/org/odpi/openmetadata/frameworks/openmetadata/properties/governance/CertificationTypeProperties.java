@@ -21,11 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CertificationTypeProperties extends GovernanceDefinitionProperties
+public class CertificationTypeProperties extends TermsAndConditionsProperties
 {
-    private String details = null;
-
-
     /**
      * Default Constructor
      */
@@ -41,38 +38,10 @@ public class CertificationTypeProperties extends GovernanceDefinitionProperties
      *
      * @param template object to copy
      */
-    public CertificationTypeProperties(CertificationTypeProperties template)
+    public CertificationTypeProperties(TermsAndConditionsProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            this.details = template.getDetails();
-        }
     }
-
-
-    /**
-     * Return the specific details of the certification.
-     *
-     * @return string description
-     */
-    public String getDetails()
-    {
-        return details;
-    }
-
-
-    /**
-     * Set up the specific details of the certification.
-     *
-     * @param details string description
-     */
-    public void setDetails(String details)
-    {
-        this.details = details;
-    }
-
 
     /**
      * JSON-style toString
@@ -83,45 +52,6 @@ public class CertificationTypeProperties extends GovernanceDefinitionProperties
     public String toString()
     {
         return "CertificationTypeProperties{" +
-                "details='" + details + '\'' +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        CertificationTypeProperties that = (CertificationTypeProperties) objectToCompare;
-        return Objects.equals(details, that.details);
-    }
-
-
-    /**
-     * Return hash code based on properties.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), details);
     }
 }

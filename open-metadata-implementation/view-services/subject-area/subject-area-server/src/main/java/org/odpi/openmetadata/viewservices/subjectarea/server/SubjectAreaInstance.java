@@ -2,14 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.subjectarea.server;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.SubjectAreaHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
@@ -21,7 +19,7 @@ public class SubjectAreaInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.SUBJECT_AREA;
 
-    private final SubjectAreaHandler subjectAreaHandler;
+    private final GovernanceDefinitionHandler governanceDefinitionHandler;
 
 
 
@@ -71,10 +69,10 @@ public class SubjectAreaInstance extends OMVSServiceInstance
                                                                     maxPageSize);
         }
 
-        subjectAreaHandler = new SubjectAreaHandler(serverName,
-                                                    auditLog,
-                                                    myDescription.getViewServiceFullName(),
-                                                    openMetadataClient);
+        governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
+                                                                      auditLog,
+                                                                      myDescription.getViewServiceFullName(),
+                                                                      openMetadataClient);
     }
 
 
@@ -84,8 +82,8 @@ public class SubjectAreaInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public SubjectAreaHandler getSubjectAreaManagerHandler()
+    public GovernanceDefinitionHandler getGovernanceDefinitionHandler()
     {
-        return subjectAreaHandler;
+        return governanceDefinitionHandler;
     }
 }

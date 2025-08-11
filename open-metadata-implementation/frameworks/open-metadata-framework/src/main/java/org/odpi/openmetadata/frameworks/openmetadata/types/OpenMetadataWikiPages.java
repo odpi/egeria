@@ -485,6 +485,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0455_EXCEPTION_MANAGEMENT         = "https://egeria-project.org/types/4/0455-Exception-Management/";
 
     /**
+     * <a href="https://egeria-project.org/types/4/0457-Connector-Activity-Reports/">...</a>
+     */
+    public static final String MODEL_0457_CONNECTOR_ACTIVITY_REPORTS         = "https://egeria-project.org/types/4/0455-Connector-Activity-Reports/";
+
+    /**
      * <a href="https://egeria-project.org/types/4/0460-Governance-Execution-Points/">...</a>
      */
     public static final String MODEL_0460_EXECUTION_POINTS             = "https://egeria-project.org/types/4/0460-Governance-Execution-Points/";

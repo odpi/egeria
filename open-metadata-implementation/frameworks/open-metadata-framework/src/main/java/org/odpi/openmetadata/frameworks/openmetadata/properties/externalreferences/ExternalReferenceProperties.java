@@ -2,31 +2,45 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ExternalReferenceProperties stores information about an link to an external resource that is relevant to this element.
+ * ExternalReferenceProperties stores information about a link to an external resource that is relevant to
+ * open metadata.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = CitedDocumentProperties.class, name = "CitedDocumentProperties"),
+                @JsonSubTypes.Type(value = ExternalDataSourceProperties.class, name = "ExternalDataSourceProperties"),
+                @JsonSubTypes.Type(value = ExternalModelSourceProperties.class, name = "ExternalModelSourceProperties"),
+                @JsonSubTypes.Type(value = RelatedMediaProperties.class, name = "RelatedMediaProperties"),
+        })
 public class ExternalReferenceProperties extends ReferenceableProperties
 {
-    private String localReferenceId           = null;
-    private String linkDescription            = null;
-    private String resourceDescription        = null;
-    private String uri                        = null;
-    private String referenceVersionIdentifier = null;
-    private String organization               = null;
+    private String              referenceTitle    = null;
+    private String              referenceAbstract = null;
+    private List<String>        authors           = null;
+    private String              organization      = null;
+    private String              url               = null;
+    private Map<String, String> sources           = null;
+    private String              license           = null;
+    private String              copyright         = null;
+    private String              attribution         = null;
 
 
     /**
@@ -50,76 +64,76 @@ public class ExternalReferenceProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            /*
-             * Copy the values from the supplied template.
-             */
-            localReferenceId     = template.getLocalReferenceId();
-            linkDescription      = template.getLinkDescription();
-            uri                  = template.getURI();
-            resourceDescription        = template.getResourceDescription();
-            referenceVersionIdentifier = template.getReferenceVersionIdentifier();
-            organization               = template.getOrganization();
+            referenceTitle    = template.getReferenceTitle();
+            referenceAbstract = template.getReferenceAbstract();
+            url               = template.getURL();
+            license           = template.getLicense();
+            copyright         = template.getCopyright();
+            organization      = template.getOrganization();
+            authors           = template.getAuthors();
+            sources           = template.getSources();
+            attribution       = template.getAttribution();
         }
     }
 
 
     /**
-     * Return the identifier given to this reference (with respect to this governance definition).
+     * Return the title of this reference.
      *
-     * @return localReferenceId
+     * @return string
      */
-    public String getLocalReferenceId()
+    public String getReferenceTitle()
     {
-        return localReferenceId;
+        return referenceTitle;
     }
 
 
     /**
-     * Set up the identifier given to this reference (with respect to this governance definition).
+     * Set up the title of this reference.
      *
-     * @param localReferenceId String name
+     * @param referenceTitle string
      */
-    public void setLocalReferenceId(String localReferenceId)
+    public void setReferenceTitle(String referenceTitle)
     {
-        this.localReferenceId = localReferenceId;
+        this.referenceTitle = referenceTitle;
     }
 
 
     /**
-     * Return the description of the reference (with respect to this governance definition).
+     * Return the short description of the reference.
      *
      * @return String link description.
      */
-    public String getLinkDescription() { return linkDescription; }
+    public String getReferenceAbstract() { return referenceAbstract; }
 
 
     /**
-     * Set up the description of the reference (with respect to the governance definition this reference is linked to).
+     * Set up the short description of the reference.
      *
-     * @param linkDescription String description
+     * @param referenceAbstract String description
      */
-    public void setLinkDescription(String linkDescription)
+    public void setReferenceAbstract(String referenceAbstract)
     {
-        this.linkDescription = linkDescription;
+        this.referenceAbstract = referenceAbstract;
     }
 
 
     /**
-     * Return the description of the resource that this external reference represents.
+     * Return the license granted for this external reference.
      *
-     * @return String description
+     * @return string
      */
-    public String getResourceDescription() { return resourceDescription; }
+    public String getLicense() { return license; }
 
 
     /**
-     * Set up the description of the resource that this external reference represents.
+     * Set up the license granted for this external reference.
      *
-     * @param resourceDescription String description
+     * @param license string
      */
-    public void setResourceDescription(String resourceDescription)
+    public void setLicense(String license)
     {
-        this.resourceDescription = resourceDescription;
+        this.license = license;
     }
 
 
@@ -128,7 +142,7 @@ public class ExternalReferenceProperties extends ReferenceableProperties
      *
      * @return String URI
      */
-    public String getURI() { return uri; }
+    public String getURL() { return url; }
 
 
     /**
@@ -136,29 +150,29 @@ public class ExternalReferenceProperties extends ReferenceableProperties
      *
      * @param uri String URI
      */
-    public void setURI(String uri)
+    public void setURL(String uri)
     {
-        this.uri = uri;
+        this.url = uri;
     }
 
 
 
     /**
-     * Return the version of the resource that this external reference represents.
+     * Return the copyright statement for this external reference.
      *
-     * @return String version identifier
+     * @return string
      */
-    public String getReferenceVersionIdentifier() { return referenceVersionIdentifier; }
+    public String getCopyright() { return copyright; }
 
 
     /**
-     * Set up the version of the resource that this external reference represents.
+     * Set up the copyright statement for this external reference.
      *
-     * @param referenceVersionIdentifier String identifier
+     * @param copyright string
      */
-    public void setReferenceVersionIdentifier(String referenceVersionIdentifier)
+    public void setCopyright(String copyright)
     {
-        this.referenceVersionIdentifier = referenceVersionIdentifier;
+        this.copyright = copyright;
     }
 
 
@@ -182,6 +196,72 @@ public class ExternalReferenceProperties extends ReferenceableProperties
 
 
     /**
+     * Return the list of authors.
+     *
+     * @return list
+     */
+    public List<String> getAuthors()
+    {
+        return authors;
+    }
+
+
+    /**
+     * Set up the list of authors.
+     *
+     * @param authors list
+     */
+    public void setAuthors(List<String> authors)
+    {
+        this.authors = authors;
+    }
+
+
+    /**
+     * Return the names and addresses of all of the sources of this information.
+     *
+     * @return map
+     */
+    public Map<String, String> getSources()
+    {
+        return sources;
+    }
+
+
+    /**
+     * Set up the names and addresses of all of the sources of this information.
+     *
+     * @param sources map
+     */
+    public void setSources(Map<String, String> sources)
+    {
+        this.sources = sources;
+    }
+
+
+    /**
+     * Return the attribution statement required when this reference is used.
+     *
+     * @return string
+     */
+    public String getAttribution()
+    {
+        return attribution;
+    }
+
+
+    /**
+     * Set up the attribution statement required when this reference is used.
+     *
+     * @param attribution string
+     */
+    public void setAttribution(String attribution)
+    {
+        this.attribution = attribution;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -190,15 +270,17 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     public String toString()
     {
         return "ExternalReferenceProperties{" +
-                "localReferenceId='" + localReferenceId + '\'' +
-                ", linkDescription='" + linkDescription + '\'' +
-                ", resourceDescription='" + resourceDescription + '\'' +
-                ", uri='" + uri + '\'' +
-                ", referenceVersionIdentifier='" + referenceVersionIdentifier + '\'' +
+                "referenceTitle='" + referenceTitle + '\'' +
+                ", referenceAbstract='" + referenceAbstract + '\'' +
+                ", authors=" + authors +
                 ", organization='" + organization + '\'' +
+                ", url='" + url + '\'' +
+                ", sources=" + sources +
+                ", license='" + license + '\'' +
+                ", copyright='" + copyright + '\'' +
+                ", attribution='" + attribution + '\'' +
                 "} " + super.toString();
     }
-
 
 
     /**
@@ -210,27 +292,20 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         ExternalReferenceProperties that = (ExternalReferenceProperties) objectToCompare;
-        return Objects.equals(localReferenceId, that.localReferenceId) &&
-                       Objects.equals(linkDescription, that.linkDescription) &&
-                       Objects.equals(resourceDescription, that.resourceDescription) &&
-                       Objects.equals(uri, that.uri) &&
-                       Objects.equals(referenceVersionIdentifier, that.referenceVersionIdentifier) &&
-                       Objects.equals(organization, that.organization);
+        return Objects.equals(referenceTitle, that.referenceTitle) &&
+                Objects.equals(referenceAbstract, that.referenceAbstract) &&
+                Objects.equals(authors, that.authors) &&
+                Objects.equals(organization, that.organization) &&
+                Objects.equals(url, that.url) &&
+                Objects.equals(sources, that.sources) &&
+                Objects.equals(license, that.license) &&
+                Objects.equals(copyright, that.copyright) &&
+                Objects.equals(attribution, that.attribution);
     }
-
 
     /**
      * Uses the guid to create a hashcode.
@@ -240,6 +315,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(localReferenceId, linkDescription, resourceDescription, uri, referenceVersionIdentifier, organization);
+        return Objects.hash(super.hashCode(), referenceTitle, referenceAbstract, authors, organization, url, sources, license, copyright, attribution);
     }
 }

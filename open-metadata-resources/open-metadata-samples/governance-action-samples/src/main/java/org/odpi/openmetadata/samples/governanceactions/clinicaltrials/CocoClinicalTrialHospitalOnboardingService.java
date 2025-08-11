@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
@@ -420,7 +421,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
             contextEventProperties.setQualifiedName("ContextEvent:" + contextEventName);
             contextEventProperties.setDisplayName(contextEventName);
             contextEventProperties.setEventEffect("Data from a new hospital will be incorporated in the measurements data sets.");
-            contextEventProperties.setContextEventType("NewDataFeed");
+            contextEventProperties.setCategory("NewDataFeed");
             contextEventProperties.setActualStartDate(new Date());
 
             effectedDataSources.put(dataLakeFolderGUID, new RelationshipProperties());

@@ -17,7 +17,7 @@ public enum SustainabilitySubjectAreaDefinition
                     "Sustainability",
                     "Information relating to the Coco Pharmaceuticals' sustainability initiatives.",
                     ScopeDefinition.ALL_COCO.getPreferredValue(),
-                    "Education and reporting of sustainability initiatives and greenhouse gas emissions reporting.",
+                    "Sustainability initiatives and greenhouse gas emissions reporting.",
                     SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier()),
     ;
 

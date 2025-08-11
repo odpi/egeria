@@ -7,10 +7,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationConnectorProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationGroupProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.IntegrationGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.GovernanceEngineConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.IntegrationGroupConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
@@ -1845,7 +1845,7 @@ public class GovernanceConfigRESTServices
                                                               requestBody.getMetadataSourceQualifiedName(),
                                                               requestBody.getStartDate(),
                                                               requestBody.getRefreshTimeInterval(),
-                                                              requestBody.getStopDate(),
+                                                              requestBody.getConnectorShutdownDate(),
                                                               requestBody.getPermittedSynchronization(),
                                                               instanceHandler.getSupportedZones(userId,
                                                                                                 serverName,

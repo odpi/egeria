@@ -26,6 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = GovernanceRoleProperties.class, name = "GovernanceRoleProperties"),
+                @JsonSubTypes.Type(value = DigitalProductManagerProperties.class, name = "DigitalProductManagerProperties"),
         })
 public class PersonRoleProperties extends ActorRoleProperties
 {

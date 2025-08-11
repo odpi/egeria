@@ -14,12 +14,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NamingStandardRuleProperties defines the patterns for a naming standard..
+ * NamingStandardRuleProperties defines the patterns for a naming standard.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NamingStandardRuleProperties extends GovernanceControlProperties
+public class NamingStandardRuleProperties extends GovernanceRuleProperties
 {
     private List<String> namePatterns = null;
 
@@ -80,8 +80,8 @@ public class NamingStandardRuleProperties extends GovernanceControlProperties
     @Override
     public String toString()
     {
-        return "GovernanceStrategyProperties{" +
-                "businessImperatives=" + namePatterns +
+        return "NamingStandardRuleProperties{" +
+                "namePatterns=" + namePatterns +
                 "} " + super.toString();
     }
 

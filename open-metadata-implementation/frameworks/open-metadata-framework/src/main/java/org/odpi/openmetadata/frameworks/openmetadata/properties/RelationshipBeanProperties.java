@@ -7,12 +7,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionSponsorProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionsProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionRequesterProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionSponsorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportOriginatorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportSubjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FolderHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.NestedFileProperties;
@@ -24,6 +31,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.CitedDocumentLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.AssetConnectionProperties;
@@ -57,6 +66,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedGroupProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
@@ -101,7 +111,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AttributeForSchemaProperties.class, name = "AttributeForSchemaProperties"),
                 @JsonSubTypes.Type(value = BusinessCapabilityTeamProperties.class, name = "BusinessCapabilityTeamProperties"),
                 @JsonSubTypes.Type(value = CapabilityAssetUseProperties.class, name = "CapabilityAssetUseProperties"),
+                @JsonSubTypes.Type(value = CatalogTargetProperties.class, name = "CatalogTargetProperties"),
                 @JsonSubTypes.Type(value = CertificationProperties.class, name = "CertificationProperties"),
+                @JsonSubTypes.Type(value = CitedDocumentLinkProperties.class, name = "CitedDocumentLinkProperties"),
                 @JsonSubTypes.Type(value = CollectionMembershipProperties.class, name = "CollectionMembershipProperties"),
                 @JsonSubTypes.Type(value = CommunityMembershipProperties.class, name = "CommunityMembershipProperties"),
                 @JsonSubTypes.Type(value = ConnectionConnectorTypeProperties.class, name = "ConnectionConnectorTypeProperties"),
@@ -122,7 +134,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DeployedOnProperties.class, name = "DeployedOnProperties"),
                 @JsonSubTypes.Type(value = DerivedSchemaTypeQueryTargetProperties.class, name = "DerivedSchemaTypeQueryTargetProperties"),
                 @JsonSubTypes.Type(value = DigitalProductDependencyProperties.class, name = "DigitalProductDependencyProperties"),
-                @JsonSubTypes.Type(value = DigitalProductManagementProperties.class, name = "DigitalProductManagementProperties"),
                 @JsonSubTypes.Type(value = DigitalSubscriberProperties.class, name = "DigitalSubscriberProperties"),
                 @JsonSubTypes.Type(value = DigitalSupportProperties.class, name = "DigitalSupportProperties"),
                 @JsonSubTypes.Type(value = DuplicateProperties.class, name = "DuplicateProperties"),
@@ -134,10 +145,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = FolderHierarchyProperties.class, name = "FolderHierarchyProperties"),
                 @JsonSubTypes.Type(value = ForeignKeyProperties.class, name = "ForeignKeyProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermRelationship.class, name = "GlossaryTermRelationship"),
-                @JsonSubTypes.Type(value = GovernanceDefinitionMetricProperties.class, name = "GovernanceDefinitionMetricProperties"),
                 @JsonSubTypes.Type(value = GovernanceResultsProperties.class, name = "GovernanceResultsProperties"),
                 @JsonSubTypes.Type(value = GovernedByProperties.class, name = "GovernedByProperties"),
                 @JsonSubTypes.Type(value = GraphEdgeLinkProperties.class, name = "GraphEdgeLinkProperties"),
+                @JsonSubTypes.Type(value = ImpactedResourceProperties.class, name = "ImpactedResourceProperties"),
                 @JsonSubTypes.Type(value = ImplementedByProperties.class, name = "ImplementedByProperties"),
                 @JsonSubTypes.Type(value = ImplementationResourceProperties.class, name = "ImplementationResourceProperties"),
                 @JsonSubTypes.Type(value = InformationSupplyChainLinkProperties.class, name = "InformationSupplyChainLinkProperties"),
@@ -149,6 +160,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = LinkedFileProperties.class, name = "LinkedFileProperties"),
                 @JsonSubTypes.Type(value = MapFromElementTypeProperties.class, name = "MapFromElementTypeProperties"),
                 @JsonSubTypes.Type(value = MapToElementTypeProperties.class, name = "MapToElementTypeProperties"),
+                @JsonSubTypes.Type(value = MediaReferenceProperties.class, name = "MediaReferenceProperties"),
                 @JsonSubTypes.Type(value = MemberDataFieldProperties.class, name = "MemberDataFieldProperties"),
                 @JsonSubTypes.Type(value = MoreInformationProperties.class, name = "MoreInformationProperties"),
                 @JsonSubTypes.Type(value = NestedFileProperties.class, name = "NestedFileProperties"),
@@ -167,7 +179,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ProjectManagementProperties.class, name = "ProjectManagementProperties"),
                 @JsonSubTypes.Type(value = ProjectTeamProperties.class, name = "ProjectTeamProperties"),
                 @JsonSubTypes.Type(value = ReferenceValueAssignmentProperties.class, name = "ReferenceValueAssignmentProperties"),
+                @JsonSubTypes.Type(value = RegisteredIntegrationConnectorProperties.class, name = "RegisteredIntegrationConnectorProperties"),
+                @JsonSubTypes.Type(value = RegulationCertificationTypeProperties.class, name = "RegulationCertificationTypeProperties"),
                 @JsonSubTypes.Type(value = RelatedContextEventProperties.class, name = "RelatedContextEventProperties"),
+                @JsonSubTypes.Type(value = ReportDependencyProperties.class, name = "ReportDependencyProperties"),
+                @JsonSubTypes.Type(value = ReportOriginatorProperties.class, name = "ReportOriginatorProperties"),
+                @JsonSubTypes.Type(value = ReportSubjectProperties.class, name = "ReportSubjectProperties"),
                 @JsonSubTypes.Type(value = ResourceListProperties.class, name = "ResourceListProperties"),
                 @JsonSubTypes.Type(value = SchemaAttributeRelationshipProperties.class, name = "SchemaAttributeRelationshipProperties"),
                 @JsonSubTypes.Type(value = SchemaTypeOptionProperties.class, name = "SchemaTypeOptionProperties"),
@@ -182,6 +199,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = StakeholderProperties.class, name = "StakeholderProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaHierarchyProperties.class, name = "SubjectAreaHierarchyProperties"),
                 @JsonSubTypes.Type(value = SupplementaryProperties.class, name = "SupplementaryProperties"),
+                @JsonSubTypes.Type(value = SupportedGovernanceServiceProperties.class, name = "SupportedGovernanceServiceProperties"),
                 @JsonSubTypes.Type(value = SupportingDefinitionProperties.class, name = "SupportingDefinitionProperties"),
                 @JsonSubTypes.Type(value = TeamLeadershipProperties.class, name = "TeamLeadershipProperties"),
                 @JsonSubTypes.Type(value = TeamMembershipProperties.class, name = "TeamMembershipProperties"),

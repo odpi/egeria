@@ -641,50 +641,6 @@ Content-Type: application/json
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
-
-###
-# @name addElementToSubjectArea
-# Classify the element to assert that the definitions it represents are part of a subject area definition.
-#
-# Subject Areas: https://egeria-project.org/types/4/0425-Subject-Areas/
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/subject-area-member
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-   "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
-   "properties" : {
-       "class" : "SubjectAreaMemberProperties",
-       "subjectAreaName" : "Add value here"
-   }
-}
-
-
-###
-# @name removeElementFromSubjectArea
-# Remove the subject area designation from the identified element.
-#
-# Subject Areas: https://egeria-project.org/types/4/0425-Subject-Areas/
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/subject-area-member/remove
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}"
-}
-
 ###
 
 @glossaryTermGUID=add guid here

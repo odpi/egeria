@@ -6,7 +6,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.reports.IntegrationReport;
+import org.odpi.openmetadata.frameworks.openmetadata.reports.ConnectorActivityReport;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,14 +17,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * IntegrationReportsResponse is the response structure used on REST API calls that returns a
- * list of IntegrationReport objects as a response.
+ * list of ConnectorActivityReport objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationReportsResponse extends FFDCResponseBase
 {
-    private List<IntegrationReport> elements = null;
+    private List<ConnectorActivityReport> elements = null;
 
     /**
      * Default constructor
@@ -56,7 +56,7 @@ public class IntegrationReportsResponse extends FFDCResponseBase
      *
      * @return list of properties objects
      */
-    public List<IntegrationReport> getElements()
+    public List<ConnectorActivityReport> getElements()
     {
         if (elements == null)
         {
@@ -74,7 +74,7 @@ public class IntegrationReportsResponse extends FFDCResponseBase
      *
      * @param elements  list of properties objects
      */
-    public void setElements(List<IntegrationReport> elements)
+    public void setElements(List<ConnectorActivityReport> elements)
     {
         this.elements = elements;
     }

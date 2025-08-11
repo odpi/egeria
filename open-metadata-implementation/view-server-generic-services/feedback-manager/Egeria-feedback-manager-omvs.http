@@ -275,7 +275,7 @@ Content-Type: application/json
 {
   "class" : "TagProperties",
   "isPrivateTag" : false,
-  "name"         : "Add tag name here",
+  "displayName"         : "Add tag name here",
   "description"  : "Add tag description here"
 }
 
@@ -415,7 +415,7 @@ Content-Type: application/json
     "properties": {
       "class": "NoteLogProperties",
       "qualifiedName": "Add unique name here",
-      "name": "Add name here",
+      "displayName": "Add name here",
       "description": "Add description here",
       "additionalProperties": {
         "propertyName 1": "property value 1",
@@ -439,7 +439,7 @@ Content-Type: application/json
   "properties" : {
     "class" : "NoteLogProperties",
     "qualifiedName" : "Add unique name here",
-    "name" : "Add name here",
+    "displayName" : "Add name here",
     "description" : "Add description here",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",

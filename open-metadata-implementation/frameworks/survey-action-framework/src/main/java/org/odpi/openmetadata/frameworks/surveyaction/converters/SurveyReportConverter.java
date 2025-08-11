@@ -82,7 +82,7 @@ public class SurveyReportConverter<B> extends OpenMetadataConverterBase<B>
                 {
                     if (relationship != null)
                     {
-                        if (propertyHelper.isTypeOf(relationship, OpenMetadataType.ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP.typeName))
+                        if (propertyHelper.isTypeOf(relationship, OpenMetadataType.REPORT_ORIGINATOR.typeName))
                         {
                             surveyReport.setEngineActionGUID(relationship.getElement().getElementGUID());
                             break;

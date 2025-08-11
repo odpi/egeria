@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processe
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -27,7 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DeployedSoftwareComponentProperties.class, name = "DeployedSoftwareComponentProperties"),
-        @JsonSubTypes.Type(value = EmbeddedProcessProperties.class, name = "EmbeddedProcessProperties"),
         @JsonSubTypes.Type(value = ActionProperties.class, name = "ActionProperties"),
 })
 public class ProcessProperties extends AssetProperties

@@ -772,7 +772,7 @@ public class IntegrationConnectorHandler
         integrationConnectorName = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorName();
         integrationConnectorUserId = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId();
         startDate = registeredIntegrationConnectorElement.getRegistrationProperties().getStartDate();
-        stopDate = registeredIntegrationConnectorElement.getRegistrationProperties().getStopDate();
+        stopDate = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorShutdownDate();
         metadataSourceQualifiedName = registeredIntegrationConnectorElement.getRegistrationProperties().getMetadataSourceQualifiedName();
         permittedSynchronization = registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization();
         minMinutesBetweenRefresh = registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval();

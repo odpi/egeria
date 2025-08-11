@@ -167,7 +167,6 @@ public class OpenMetadataTypesArchive5_0
         update0221MediaFiles();
         add0226ArchiveFiles();
         update0280SoftwareArtifacts();
-        update0380TermInheritance();
         update0461GovernanceEngines();
         update0464IntegrationGroups();
         update0545ReferenceData();
@@ -346,6 +345,8 @@ public class OpenMetadataTypesArchive5_0
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROJECT_HEALTH));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRIORITY));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROJECT_PHASE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MISSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSES));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -828,75 +829,6 @@ public class OpenMetadataTypesArchive5_0
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void update0380TermInheritance()
-    {
-        this.archiveBuilder.addRelationshipDef(addTermISATYPEOFRelationship());
-    }
-
-
-    /**
-     * Defines an inheritance relationship between two spine objects. It provides a type for a Spine Object.
-     * @return RelationshipDef
-     */
-    private RelationshipDef addTermISATYPEOFRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TERM_IS_A_TYPE_OF_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "inherited";
-        final String                     end1AttributeDescription     = "Inherited (Subtypes) for this object.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "inheritedFrom";
-        final String                     end2AttributeDescription     = "Inherited from type (Supertypes) for this object.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
     private void update0461GovernanceEngines()
     {
         this.archiveBuilder.addEntityDef(getSurveyActionEngineEntity());
@@ -984,7 +916,6 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EVENT_EFFECT));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTEXT_EVENT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_START_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTUAL_START_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_DURATION));
@@ -1490,8 +1421,6 @@ public class OpenMetadataTypesArchive5_0
     private void add0603SurveyReports()
     {
         this.archiveBuilder.addEntityDef(addSurveyReportEntity());
-        this.archiveBuilder.addRelationshipDef(addAssetSurveyReportRelationship());
-        this.archiveBuilder.addRelationshipDef(addEngineActionSurveyReportRelationship());
         this.archiveBuilder.addRelationshipDef(getReportedAnnotationRelationship());
         this.archiveBuilder.addRelationshipDef(getAssociatedAnnotationRelationship());
     }
@@ -1502,104 +1431,19 @@ public class OpenMetadataTypesArchive5_0
          * Build the Entity
          */
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SURVEY_REPORT,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REPORT.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANALYSIS_PARAMETERS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANALYSIS_STEP));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.START_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_TIME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_MESSAGE));
 
         entityDef.setPropertiesDefinition(properties);
 
         return entityDef;
-    }
-
-    private RelationshipDef addAssetSurveyReportRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "surveyReportTarget";
-        final String                     end1AttributeDescription     = "The asset describing the resource that was surveyed.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "surveyReports";
-        final String                     end2AttributeDescription     = "Survey reports for the asset.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SURVEY_REPORT.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
-
-    private RelationshipDef addEngineActionSurveyReportRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "engineAction";
-        final String                     end1AttributeDescription     = "The engine action controlling the survey action service invocation.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE_ACTION.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "surveyReport";
-        final String                     end2AttributeDescription     = "Survey report generated form the execution of the survey action service.  Typically only one unless failures occurred.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SURVEY_REPORT.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
     }
 
     private RelationshipDef getReportedAnnotationRelationship()

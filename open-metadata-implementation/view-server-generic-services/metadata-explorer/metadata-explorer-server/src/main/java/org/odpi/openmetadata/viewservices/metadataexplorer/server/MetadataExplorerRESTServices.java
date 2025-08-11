@@ -366,8 +366,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
      * @param anchorDomainName name of open metadata type for the domain
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -378,8 +376,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public AnchorSearchMatchesListResponse findElementsInAnchorDomain(String                  serverName,
                                                                       String                  viewServiceURLMarker,
                                                                       String                  anchorDomainName,
-                                                                      int                     startFrom,
-                                                                      int                     pageSize,
                                                                       SearchStringRequestBody requestBody)
     {
         final String methodName = "findElementsInAnchorDomain";
@@ -429,8 +425,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
      * @param anchorScopeGUID unique identifier of the scope to use
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -441,8 +435,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public AnchorSearchMatchesListResponse findElementsInAnchorScope(String                  serverName,
                                                                      String                  viewServiceURLMarker,
                                                                      String                  anchorScopeGUID,
-                                                                     int                     startFrom,
-                                                                     int                     pageSize,
                                                                      SearchStringRequestBody requestBody)
     {
         final String methodName = "findElementsInAnchorScope";
@@ -493,8 +485,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param viewServiceURLMarker  view service URL marker
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param requestBody only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
@@ -506,8 +496,6 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                          String             relationshipTypeName,
                                                                          String             viewServiceURLMarker,
                                                                          int                startingAtEnd,
-                                                                         int                startFrom,
-                                                                         int                pageSize,
                                                                          ResultsRequestBody requestBody)
     {
         final String methodName = "getRelatedMetadataElements";
@@ -550,8 +538,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName name of the server instances for this request
      * @param viewServiceURLMarker      the identifier of the view service
      * @param elementGUID  unique identifier for the element
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
      * @param requestBody effective time and asOfTime
      *
      * @return graph of elements or
@@ -562,8 +548,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataGraphResponse getAnchoredElementsGraph(String             serverName,
                                                               String             viewServiceURLMarker,
                                                               String             elementGUID,
-                                                              int                startFrom,
-                                                              int                pageSize,
                                                               ResultsRequestBody requestBody)
     {
         final String methodName    = "getAnchoredElementsGraph";
@@ -604,8 +588,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param viewServiceURLMarker  view service URL marker
      * @param requestBody only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
@@ -617,8 +599,6 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                                 String             relationshipTypeName,
                                                                                 String             metadataElementAtEnd2GUID,
                                                                                 String             viewServiceURLMarker,
-                                                                                int                startFrom,
-                                                                                int                pageSize,
                                                                                 ResultsRequestBody requestBody)
     {
         final String methodName = "getMetadataElementRelationships";
@@ -659,8 +639,6 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
@@ -670,8 +648,6 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataElementsResponse findMetadataElements(String          serverName,
                                                              String          viewServiceURLMarker,
-                                                             int             startFrom,
-                                                             int             pageSize,
                                                              FindRequestBody requestBody)
     {
         final String methodName = "findMetadataElements";
@@ -718,8 +694,6 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
      *
      * @return a list of relationships - null means no matching relationships - or
@@ -729,8 +703,6 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(String                      serverName,
                                                                                          String                      viewServiceURLMarker,
-                                                                                         int                         startFrom,
-                                                                                         int                         pageSize,
                                                                                          FindRelationshipRequestBody requestBody)
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
@@ -829,8 +801,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param relationshipGUID unique identifier for the metadata element
      * @param viewServiceURLMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody the time window required
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -841,8 +811,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataRelationshipListResponse getRelationshipHistory(String             serverName,
                                                                        String             relationshipGUID,
                                                                        String             viewServiceURLMarker,
-                                                                       int                startFrom,
-                                                                       int                pageSize,
                                                                        HistoryRequestBody requestBody)
     {
         final String methodName = "getRelationshipHistory";

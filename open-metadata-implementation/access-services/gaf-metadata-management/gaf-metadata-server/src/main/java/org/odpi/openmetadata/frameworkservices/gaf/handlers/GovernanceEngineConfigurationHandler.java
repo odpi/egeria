@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -16,7 +17,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceServiceElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceEngineConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceServiceConverter;
@@ -1114,7 +1114,7 @@ public class GovernanceEngineConfigurationHandler
 
                     if (requestType != null)
                     {
-                        RegisteredGovernanceServiceProperties relationshipProperties = new RegisteredGovernanceServiceProperties();
+                        SupportedGovernanceServiceProperties relationshipProperties = new SupportedGovernanceServiceProperties();
 
                         relationshipProperties.setRequestType(repositoryHelper.getStringProperty(serviceName,
                                                                                                  OpenMetadataProperty.REQUEST_TYPE.name,
@@ -1129,11 +1129,11 @@ public class GovernanceEngineConfigurationHandler
                                                                                                               relationship.getProperties(),
                                                                                                               methodName));
 
-                        relationshipProperties.setGenerateIntegrationReports(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                                                 OpenMetadataProperty.GENERATE_INTEGRATION_REPORT.name,
-                                                                                                                 relationship.getProperties(),
-                                                                                                                 methodName));
-                        Map<String, RegisteredGovernanceServiceProperties> requestTypes = governanceService.getProperties().getRequestTypes();
+                        relationshipProperties.setGenerateActivityReports(repositoryHelper.getBooleanProperty(serviceName,
+                                                                                                              OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
+                                                                                                              relationship.getProperties(),
+                                                                                                              methodName));
+                        Map<String, SupportedGovernanceServiceProperties> requestTypes = governanceService.getProperties().getRequestTypes();
 
                         if (requestTypes == null)
                         {

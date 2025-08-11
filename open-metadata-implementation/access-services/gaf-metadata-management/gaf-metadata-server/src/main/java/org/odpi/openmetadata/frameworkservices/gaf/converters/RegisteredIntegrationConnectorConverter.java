@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronizat
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationConnectorElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -82,12 +82,12 @@ public class RegisteredIntegrationConnectorConverter
                                                                                                OpenMetadataProperty.REFRESH_TIME_INTERVAL.name,
                                                                                                instanceProperties,
                                                                                                methodName));
-                registrationProperties.setStopDate(repositoryHelper.getDateProperty(serviceName,
-                                                                                    OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE.name,
-                                                                                    instanceProperties,
-                                                                                    methodName));
+                registrationProperties.setConnectorShutdownDate(repositoryHelper.getDateProperty(serviceName,
+                                                                                                 OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE.name,
+                                                                                                 instanceProperties,
+                                                                                                 methodName));
                 registrationProperties.setGenerateIntegrationReports(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                                         OpenMetadataProperty.GENERATE_INTEGRATION_REPORT.name,
+                                                                                                         OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
                                                                                                          instanceProperties,
                                                                                                          methodName));
 

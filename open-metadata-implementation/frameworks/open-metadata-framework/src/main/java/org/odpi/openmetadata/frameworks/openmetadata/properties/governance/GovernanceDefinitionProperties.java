@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
@@ -45,12 +44,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = LicenseTypeProperties.class, name = "LicenseTypeProperties"),
-                @JsonSubTypes.Type(value = CertificationTypeProperties.class, name = "CertificationTypeProperties"),
                 @JsonSubTypes.Type(value = GovernanceDriverProperties.class, name = "GovernanceDriverProperties"),
                 @JsonSubTypes.Type(value = GovernancePolicyProperties.class, name = "GovernancePolicyProperties"),
                 @JsonSubTypes.Type(value = GovernanceControlProperties.class, name = "GovernanceControlProperties"),
-                @JsonSubTypes.Type(value = DataProcessingPurposeProperties.class, name = "DataProcessingPurposeProperties"),
         })
 public class GovernanceDefinitionProperties extends ReferenceableProperties
 {
@@ -58,6 +54,7 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
     private String       identifier       = null;
     private String       summary          = null;
     private String       scope            = null;
+    private String       usage            = null;
     private int          domainIdentifier = 0;
     private String       importance       = null;
     private List<String> implications     = null;
@@ -90,6 +87,7 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
             this.identifier        = template.getIdentifier();
             this.summary           = template.getSummary();
             this.scope             = template.getScope();
+            this.usage             = template.getUsage();
             this.domainIdentifier  = template.getDomainIdentifier();
             this.importance        = template.getImportance();
             this.implications      = template.getImplications();
@@ -187,6 +185,28 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
     public void setScope(String scope)
     {
         this.scope = scope;
+    }
+
+
+    /**
+     * Return details of the usage of this governance definition.
+     *
+     * @return text
+     */
+    public String getUsage()
+    {
+        return usage;
+    }
+
+
+    /**
+     * Set up the details of the usage of this governance definition.
+     *
+     * @param usage text
+     */
+    public void setUsage(String usage)
+    {
+        this.usage = usage;
     }
 
 
@@ -319,6 +339,7 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
                 ", identifier='" + identifier + '\'' +
                 ", summary='" + summary + '\'' +
                 ", scope='" + scope + '\'' +
+                ", usage='" + usage + '\'' +
                 ", domainIdentifier=" + domainIdentifier +
                 ", importance='" + importance + '\'' +
                 ", implications=" + implications +
@@ -346,6 +367,7 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
                 Objects.equals(userDefinedStatus, that.userDefinedStatus)&&
                 Objects.equals(summary, that.summary) &&
                 Objects.equals(scope, that.scope) &&
+                Objects.equals(usage, that.usage) &&
                 Objects.equals(importance, that.importance) &&
                 Objects.equals(implications, that.implications) &&
                 Objects.equals(outcomes, that.outcomes) &&
@@ -361,6 +383,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), userDefinedStatus, identifier, summary, scope, domainIdentifier, importance, implications, outcomes, results);
+        return Objects.hash(super.hashCode(), userDefinedStatus, identifier, summary, scope, usage, domainIdentifier, importance, implications, outcomes, results);
     }
 }

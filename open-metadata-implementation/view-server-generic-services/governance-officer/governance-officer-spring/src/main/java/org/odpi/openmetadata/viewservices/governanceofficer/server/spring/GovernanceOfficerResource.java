@@ -270,6 +270,233 @@ public class GovernanceOfficerResource
     }
 
 
+
+
+    /**
+     * Link a governance definition to an element using the GovernedBy relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param definitionGUID identifier of the governance definition to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}")
+
+    @Operation(summary="addGovernanceDefinitionToElement",
+            description="Link a governance definition to an element using the GovernedBy relationship.",
+            externalDocs=@ExternalDocumentation(description="Governance Definitions",
+                    url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
+
+    public VoidResponse addGovernanceDefinitionToElement(@PathVariable String       serverName,
+                                                         @PathVariable String       urlMarker,
+                                                         @PathVariable String       elementGUID,
+                                                         @PathVariable String       definitionGUID,
+                                                         @RequestBody  (required = false)
+                                                         NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.addGovernanceDefinitionToElement(serverName, urlMarker, elementGUID, definitionGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the GovernedBy relationship between a governance definition and an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param definitionGUID identifier of the governance definition to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}/remove")
+
+    @Operation(summary="removeGovernanceDefinitionFromElement",
+            description="Remove the GovernedBy relationship between a governance definition and an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Definitions",
+                    url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
+
+    public VoidResponse removeGovernanceDefinitionFromElement(@PathVariable String  serverName,
+                                                              @PathVariable String  urlMarker,
+                                                              @PathVariable String  elementGUID,
+                                                              @PathVariable String  definitionGUID,
+                                                              @RequestBody  (required = false)
+                                                                  DeleteRequestBody requestBody)
+    {
+        return restAPI.removeGovernanceDefinitionFromElement(serverName, urlMarker, elementGUID, definitionGUID, requestBody);
+    }
+
+
+
+
+    /* =======================================
+     * Licenses
+     */
+
+    /**
+     * Link an element to a license type and include details of the license in the relationship properties.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element being licensed
+     * @param licenseTypeGUID unique identifier for the license type
+     * @param requestBody the properties of the license
+     *
+     * @return guid or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/elements/{elementGUID}/license-types/{licenseTypeGUID}/license")
+
+    public GUIDResponse licenseElement(@PathVariable String                    serverName,
+                                       @PathVariable String                    urlMarker,
+                                       @PathVariable String                    elementGUID,
+                                       @PathVariable String                    licenseTypeGUID,
+                                       @RequestBody NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.licenseElement(serverName, urlMarker, elementGUID, licenseTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a license.  Remember to include the licenseId in the properties if the element has multiple
+     * licenses for the same license type.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param licenseGUID unique identifier for the license relationship
+     * @param requestBody the properties of the license
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/licenses/{licenseGUID}/update")
+
+    public VoidResponse updateLicense(@PathVariable String                        serverName,
+                                      @PathVariable String                        urlMarker,
+                                      @PathVariable String                        licenseGUID,
+                                      @RequestBody  UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateLicense(serverName, urlMarker, licenseGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the license for an element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param licenseGUID unique identifier for the license relationship
+     * @param requestBody external source information.
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/licenses/{licenseGUID}/delete")
+
+    public VoidResponse unlicenseElement(@PathVariable String           serverName,
+                                         @PathVariable String           urlMarker,
+                                         @PathVariable String           licenseGUID,
+                                         @RequestBody DeleteRequestBody requestBody)
+    {
+        return restAPI.unlicenseElement(serverName, urlMarker, licenseGUID, requestBody);
+    }
+
+
+
+    /* =======================================
+     * Certifications
+     */
+
+    /**
+     * Link an element to a certification type and include details of the certification in the relationship properties.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element being certified
+     * @param certificationTypeGUID unique identifier for the certification type
+     * @param requestBody the properties of the certification
+     *
+     * @return guid or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/elements/{elementGUID}/certification-types/{certificationTypeGUID}/certify")
+
+    public GUIDResponse certifyElement(@PathVariable String                    serverName,
+                                       @PathVariable String                    urlMarker,
+                                       @PathVariable String                    elementGUID,
+                                       @PathVariable String                    certificationTypeGUID,
+                                       @RequestBody NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.certifyElement(serverName, urlMarker, elementGUID, certificationTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a certification.  Remember to include the certificationId in the properties if the element has multiple
+     * certifications for the same certification type.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param certificationGUID unique identifier for the certification relationship
+     * @param requestBody the properties of the certification
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/certifications/{certificationGUID}/update")
+
+    public VoidResponse updateCertification(@PathVariable String                        serverName,
+                                            @PathVariable String                        urlMarker,
+                                            @PathVariable String                        certificationGUID,
+                                            @RequestBody  UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateCertification(serverName, urlMarker, certificationGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the certification for an element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param certificationGUID unique identifier for the certification relationship
+     * @param requestBody external source information.
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/certifications/{certificationGUID}/delete")
+
+    public VoidResponse decertifyElement(@PathVariable String           serverName,
+                                         @PathVariable String           urlMarker,
+                                         @PathVariable String           certificationGUID,
+                                         @RequestBody DeleteRequestBody requestBody)
+    {
+        return restAPI.decertifyElement(serverName, urlMarker, certificationGUID, requestBody);
+    }
+
+
     /**
      * Delete a governance definition.
      *

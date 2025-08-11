@@ -393,85 +393,16 @@ public class OpenMetadataTypesArchive
     private void update04xxGovernanceDefinitions()
     {
         this.archiveBuilder.addEntityDef(getMethodologyEntity());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceResponsibilityAssignmentRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateAssetZoneMembership());
-        this.archiveBuilder.addTypeDefPatch(deprecateAssetOrigin());
         this.archiveBuilder.addClassificationDef(getDigitalResourceOriginClassification());
         this.archiveBuilder.addClassificationDef(getZoneMembershipClassification());
     }
 
-
-    /**
-     * Link GovernanceResponsibility to PersonRole rather than GovernanceRole.
-     *
-     * @return typeDef patch
-     */
-    private TypeDefPatch updateGovernanceResponsibilityAssignmentRelationship()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Update end 2.
-         */
-        final String                     end1AttributeName            = "performedByActors";
-        final String                     end1AttributeDescription     = "The actors assigned to this responsibility.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
 
 
     private EntityDef getMethodologyEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.METHODOLOGY,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_PROCEDURE.typeName));
-    }
-
-
-    /**
-     * Deprecate AssetZoneMembership
-     *
-     * @return typeDef patch
-     */
-    private TypeDefPatch deprecateAssetZoneMembership()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    /**
-     * Deprecate AssetZoneMembership
-     *
-     * @return typeDef patch
-     */
-    private TypeDefPatch deprecateAssetOrigin()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 

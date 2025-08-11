@@ -5,8 +5,8 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RegisteredGovernanceService extends GovernanceServiceProperties
 {
-    private Map<String, RegisteredGovernanceServiceProperties> requestTypes = null; /* a map from request types to service request type and request parameters */
+    private Map<String, SupportedGovernanceServiceProperties> requestTypes = null; /* a map from request types to service request type and request parameters */
 
 
     /**
@@ -63,7 +63,7 @@ public class RegisteredGovernanceService extends GovernanceServiceProperties
      *
      * @return Map of request types to parameters
      */
-    public Map<String, RegisteredGovernanceServiceProperties> getRequestTypes()
+    public Map<String, SupportedGovernanceServiceProperties> getRequestTypes()
     {
         return requestTypes;
     }
@@ -74,7 +74,7 @@ public class RegisteredGovernanceService extends GovernanceServiceProperties
      *
      * @param requestTypes Map of request types to parameters
      */
-    public void setRequestTypes(Map<String, RegisteredGovernanceServiceProperties> requestTypes)
+    public void setRequestTypes(Map<String, SupportedGovernanceServiceProperties> requestTypes)
     {
         this.requestTypes = requestTypes;
     }

@@ -55,7 +55,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -118,7 +118,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -706,7 +706,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -928,7 +928,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -942,7 +942,7 @@ Content-Type: application/json
     "class" : "EndpointProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name":"add name here",
+    "displayName":"add name here",
     "description": "add description here",
     "networkAddress": "add address here",
     "protocol": "add protocol here",
@@ -989,7 +989,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -1045,7 +1045,7 @@ Content-Type: application/json
     "class" : "EndpointProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name":"add name here",
+    "displayName":"add name here",
     "description": "add description here",
     "networkAddress": "add address here",
     "protocol": "add protocol here",

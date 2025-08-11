@@ -53,7 +53,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -67,8 +67,8 @@ Content-Type: application/json
     "class" : "GovernanceDefinitionProperties",
     "typeName" : "enter the type of the governance definition",
     "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
     "summary": "add summary here",
     "description": "add description here",
     "scope": "add scope of effect for this definition",
@@ -105,7 +105,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -119,8 +119,8 @@ Content-Type: application/json
     "class" : "GovernanceStrategyProperties",
     "typeName" : "GovernanceStrategy",
     "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
     "summary": "add summary here",
     "description": "add description here",
     "scope": "add scope of effect for this definition",
@@ -158,7 +158,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -172,8 +172,8 @@ Content-Type: application/json
     "class" : "RegulationProperties",
     "typeName" : "Regulation",
     "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
     "summary": "add summary here",
     "description": "add description here",
     "scope": "add scope of effect for this definition",
@@ -219,7 +219,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -233,8 +233,8 @@ Content-Type: application/json
     "class" : "GovernanceControlProperties",
     "typeName" : "enter the type of the governance definition",
     "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
     "summary": "add summary here",
     "description": "add description here",
     "scope": "add scope of effect for this definition",
@@ -272,7 +272,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -287,8 +287,8 @@ Content-Type: application/json
     "typeName" : "SecurityGroup",
     "domainIdentifier": 0,
     "distinguishedName" : "",
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
     "summary": "add summary here",
     "description": "add description here",
     "scope": "add scope of effect for this definition",
@@ -326,7 +326,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -340,8 +340,8 @@ Content-Type: application/json
     "class" : "NamingStandardRuleProperties",
     "typeName" : "NamingStandardRule",
     "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
     "summary": "add summary here",
     "description": "add description here",
     "scope": "add scope of effect for this definition",
@@ -380,7 +380,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -394,8 +394,8 @@ Content-Type: application/json
     "class" : "CertificationTypeProperties",
     "typeName" : "CertificationType",
     "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
     "summary": "add summary here",
     "description": "add description here",
     "scope": "add scope of effect for this definition",
@@ -433,7 +433,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -447,11 +447,12 @@ Content-Type: application/json
     "class" : "LicenseTypeProperties",
     "typeName" : "LicenseType",
     "domainIdentifier": 0,
-    "documentIdentifier": "add unique name here",
-    "title": "add short name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
     "summary": "add summary here",
     "description": "add description here",
     "scope": "add scope of effect for this definition",
+    "usage": "add usage for this definition",
     "importance": "add importance for this definition",
     "details" : "",
     "implications": [],
@@ -488,7 +489,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -626,7 +627,7 @@ Content-Type: application/json
 # Attach a supporting governance definition. Request body is optional.
 # The relationshipTypeNme can be:
 ## * GovernanceResponse between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat) and governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
-## * GovernanceImplementation between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach) and governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
+## * GovernanceMechanism between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach) and governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionOneGUID}}/supporting-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json

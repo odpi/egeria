@@ -56,7 +56,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -70,7 +70,7 @@ Content-Type: application/json
     "class" : "ActorProfileProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name": "add short name here",
+    "displayName": "add short name here",
     "description": "add description here",
     "additionalProperties": {
       "property1" : "propertyValue1",
@@ -114,7 +114,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -165,7 +165,7 @@ Content-Type: application/json
     "class" : "ActorProfileProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name": "add short name here",
+    "displayName": "add short name here",
     "description": "add description here",
     "additionalProperties": {
       "property1" : "propertyValue1",
@@ -710,7 +710,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -724,7 +724,7 @@ Content-Type: application/json
     "class" : "ActorRoleProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name":"add name here",
+    "displayName":"add name here",
     "identifier": "add name here",
     "description": "add description here",
     "scope": "add scope here",
@@ -770,7 +770,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -821,7 +821,7 @@ Content-Type: application/json
     "class" : "ActorRoleProperties",
     "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
-    "name":"add name here",
+    "displayName":"add name here",
     "identifier": "add name here",
     "description": "add description here",
     "scope": "add scope here",
@@ -1183,7 +1183,7 @@ Content-Type: application/json
   "parentGUID": "add guid here",
   "parentRelationshipTypeName": "add type name here",
   "parentRelationshipProperties": {
-    "class": "ElementProperties",
+    "class": "RelationshipElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",

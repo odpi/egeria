@@ -15,11 +15,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDefinitionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SupportingDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -40,10 +39,10 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param serviceName            local service name
      * @param openMetadataClient     access to open metadata
      */
-    GovernanceDefinitionHandler(String             localServerName,
-                                AuditLog           auditLog,
-                                String             serviceName,
-                                OpenMetadataClient openMetadataClient)
+    public GovernanceDefinitionHandler(String             localServerName,
+                                       AuditLog           auditLog,
+                                       String             serviceName,
+                                       OpenMetadataClient openMetadataClient)
     {
         super(localServerName, auditLog, serviceName, openMetadataClient, OpenMetadataType.GOVERNANCE_DEFINITION.typeName);
     }
@@ -297,6 +296,424 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     }
 
 
+
+    /**
+     * Link a governance definition to an element using the GovernedBy relationship.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param definitionGUID identifier of the governance definition to link
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addGovernanceDefinitionToElement(String                userId,
+                                                 String                elementGUID,
+                                                 String                definitionGUID,
+                                                 MetadataSourceOptions metadataSourceOptions,
+                                                 GovernedByProperties  properties) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        elementGUID,
+                                                        OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                        definitionGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the GovernedBy relationship between a governance definition and an element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param definitionGUID identifier of the governance definition to link
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeGovernanceDefinitionFromElement(String        userId,
+                                                      String        elementGUID,
+                                                      String        definitionGUID,
+                                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        final String methodName            = "removeGovernanceDefinitionFromElement";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "definitionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(definitionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        definitionGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach governance zones in a hierarchy.
+     *
+     * @param userId                  userId of user making request
+     * @param governanceZoneGUID        unique identifier of the parent
+     * @param nestedGovernanceZoneGUID             unique identifier of the actor profile
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties  description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkGovernanceZones(String                  userId,
+                                    String                  governanceZoneGUID,
+                                    String                  nestedGovernanceZoneGUID,
+                                    MetadataSourceOptions   metadataSourceOptions,
+                                    ZoneHierarchyProperties relationshipProperties) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "linkGovernanceZones";
+        final String end1GUIDParameterName = "governanceZoneGUID";
+        final String end2GUIDParameterName = "nestedGovernanceZoneGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceZoneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(nestedGovernanceZoneGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP.typeName,
+                                                        governanceZoneGUID,
+                                                        nestedGovernanceZoneGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach governance zone from a hierarchical relationship.
+     *
+     * @param userId                 userId of user making request.
+     * @param governanceZoneGUID       unique identifier of the parent actor profile
+     * @param nestedGovernanceZoneGUID            unique identifier of the nested actor profile
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachGovernanceZones(String        userId,
+                                      String        governanceZoneGUID,
+                                      String        nestedGovernanceZoneGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "detachGovernanceZones";
+
+        final String end1GUIDParameterName = "governanceZoneGUID";
+        final String end2GUIDParameterName = "nestedGovernanceZoneGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceZoneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(nestedGovernanceZoneGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP.typeName,
+                                                        governanceZoneGUID,
+                                                        nestedGovernanceZoneGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Link subject area definitions in a hierarchy.
+     *
+     * @param userId                  userId of user making request
+     * @param subjectAreaGUID        unique identifier of the parent
+     * @param nestedSubjectAreaGUID             unique identifier of the actor profile
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties  description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSubjectAreas(String                 userId,
+                                 String                 subjectAreaGUID,
+                                 String                 nestedSubjectAreaGUID,
+                                 MetadataSourceOptions  metadataSourceOptions,
+                                 RelationshipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        final String methodName = "linkSubjectAreas";
+        final String end1GUIDParameterName = "subjectAreaGUID";
+        final String end2GUIDParameterName = "nestedSubjectAreaGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(subjectAreaGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(nestedSubjectAreaGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeName,
+                                                        subjectAreaGUID,
+                                                        nestedSubjectAreaGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach subject area definitions from their hierarchical relationship..
+     *
+     * @param userId                 userId of user making request.
+     * @param subjectAreaGUID       unique identifier of the parent actor profile
+     * @param nestedSubjectAreaGUID            unique identifier of the nested actor profile
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSubjectAreas(String        userId,
+                                   String        subjectAreaGUID,
+                                   String        nestedSubjectAreaGUID,
+                                   DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        final String methodName = "detachSubjectAreas";
+
+        final String end1GUIDParameterName = "subjectAreaGUID";
+        final String end2GUIDParameterName = "nestedSubjectAreaGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(subjectAreaGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(nestedSubjectAreaGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeName,
+                                                        subjectAreaGUID,
+                                                        nestedSubjectAreaGUID,
+                                                        deleteOptions);
+    }
+
+
+
+    /**
+     * Classify the element to assert that the definitions it represents are part of a subject area definition.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param properties qualified name of subject area
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addElementToSubjectArea(String                userId,
+                                        String                elementGUID,
+                                        SubjectAreaProperties properties,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the subject area designation from the identified element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeElementFromSubjectArea(String                userId,
+                                             String                elementGUID,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+
+    /**
+     * Create a link between a license type and an element that has achieved the license.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param licenseTypeGUID unique identifier of the license type
+     * @param properties   additional information, endorsements etc
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @return guid of license relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String licenseElement(String                userId,
+                                 String                elementGUID,
+                                 String                licenseTypeGUID,
+                                 MetadataSourceOptions metadataSourceOptions,
+                                 LicenseProperties     properties) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
+                                                               elementGUID,
+                                                               licenseTypeGUID,
+                                                               metadataSourceOptions,
+                                                               relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Update the license relationship.
+     *
+     * @param userId calling user
+     * @param licenseGUID unique identifier for the relationship
+     * @param updateOptions options for the request
+     * @param properties properties of the relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateLicense(String            userId,
+                              String            licenseGUID,
+                              UpdateOptions     updateOptions,
+                              LicenseProperties properties) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     licenseGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove a relationship between two definitions.
+     *
+     * @param userId calling user
+     * @param licenseGUID unique identifier of the license relationship
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void unlicenseElement(String        userId,
+                                 String        licenseGUID,
+                                 DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        openMetadataClient.deleteRelationshipInStore(userId, licenseGUID, deleteOptions);
+    }
+
+
+    /**
+     * Create a link between a certification type and an element that has achieved the certification.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param certificationTypeGUID unique identifier of the certification type
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param properties additional information, endorsements etc
+     *
+     * @return guid of certification relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String certifyElement(String                  userId,
+                                 String                  elementGUID,
+                                 String                  certificationTypeGUID,
+                                 MetadataSourceOptions   metadataSourceOptions,
+                                 CertificationProperties properties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
+                                                               elementGUID,
+                                                               certificationTypeGUID,
+                                                               metadataSourceOptions,
+                                                               relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Update the certification relationship.
+     *
+     * @param userId calling user
+     * @param certificationGUID unique identifier for the relationship
+     * @param properties additional information, endorsements etc
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateCertification(String                  userId,
+                                    String                  certificationGUID,
+                                    UpdateOptions           updateOptions,
+                                    CertificationProperties properties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     certificationGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove a certification relationship.
+     *
+     * @param userId calling user
+     * @param certificationGUID unique identifier of the certification relationship
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void decertifyElement(String        userId,
+                                 String        certificationGUID,
+                                 DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        openMetadataClient.deleteRelationshipInStore(userId, certificationGUID, deleteOptions);
+    }
+
+
+
     /**
      * Delete a governance definition.
      *
@@ -525,9 +942,6 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     }
 
 
-    /*
-     * Design to implementations
-     */
 
 
     /**
@@ -600,6 +1014,8 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         implementationGUID,
                                                         deleteOptions);
     }
+
+
 
 
     /**

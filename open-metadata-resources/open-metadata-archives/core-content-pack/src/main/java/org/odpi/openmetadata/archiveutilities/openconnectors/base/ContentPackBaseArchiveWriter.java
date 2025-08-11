@@ -1064,6 +1064,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                                    null,
                                                                                    null,
                                                                                    null,
+                                                                                   originatorName,
                                                                                    null,
                                                                                    wikiLink,
                                                                                    null,

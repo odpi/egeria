@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetGraphMermaidGr
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetLineageGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FolderHierarchyProperties;
@@ -21,6 +20,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastru
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionSponsorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -173,9 +176,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                AnchorOptions                     anchorOptions,
                                Map<String, NewElementProperties> initialClassifications,
                                List<NewActionTarget>             newActionTargets,
-                               ActionProperties                  properties) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+                               ActionProperties properties) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         final String methodName                 = "createAction";
         final String toDoPropertiesName         = "properties";
@@ -2220,7 +2223,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                          * Save the relationship if it is structural.  The relationships relating to ongoing dynamic activity are ignored.
                          */
                         if ((! propertyHelper.isTypeOf(relationship, OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName)) &&
-                                (! propertyHelper.isTypeOf(relationship, OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName)))
+                                (! propertyHelper.isTypeOf(relationship, OpenMetadataType.REPORT_SUBJECT.typeName)))
                         {
                             receivedRelationships.put(relationship.getRelationshipGUID(), relationship);
                         }

@@ -98,6 +98,10 @@ public class AnnotationStore
                                                       reportDisplayName);
 
         properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.AUTHOR.name,
+                                                      userId);
+
+        properties = propertyHelper.addStringProperty(properties,
                                                       OpenMetadataProperty.DESCRIPTION.name,
                                                       surveyDescription);
 
@@ -107,7 +111,11 @@ public class AnnotationStore
 
         Date startDate = new Date();
         properties = propertyHelper.addDateProperty(properties,
-                                                    OpenMetadataProperty.START_DATE.name,
+                                                    OpenMetadataProperty.START_TIME.name,
+                                                    startDate);
+
+        properties = propertyHelper.addDateProperty(properties,
+                                                    OpenMetadataProperty.CREATED_TIME.name,
                                                     startDate);
 
         NewElementOptions newElementOptions = new NewElementOptions();
@@ -121,7 +129,7 @@ public class AnnotationStore
 
         newElementOptions.setParentGUID(assetGUID);
         newElementOptions.setParentAtEnd1(true);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REPORT_SUBJECT.typeName);
 
 
         this.surveyReportGUID = openMetadataStore.createMetadataElementInStore(userId,
@@ -134,7 +142,7 @@ public class AnnotationStore
         if ((surveyReportGUID != null) && (engineActionGUID != null))
         {
             openMetadataStore.createRelatedElementsInStore(userId,
-                                                           OpenMetadataType.ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP.typeName,
+                                                           OpenMetadataType.REPORT_ORIGINATOR.typeName,
                                                            engineActionGUID,
                                                            surveyReportGUID,
                                                            newElementOptions,

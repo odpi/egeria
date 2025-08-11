@@ -17,9 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceMetricProperties extends ReferenceableProperties
+public class GovernanceMetricProperties extends TechnicalControlProperties
 {
-    private int    domainIdentifier = 0;
     private String measurement      = null;
     private String target           = null;
 
@@ -48,33 +47,9 @@ public class GovernanceMetricProperties extends ReferenceableProperties
             /*
              * Copy the values from the supplied template.
              */
-            domainIdentifier = template.getDomainIdentifier();
             measurement      = template.getMeasurement();
             target           = template.getTarget();
         }
-    }
-
-
-
-    /**
-     * Return the identifier of the governance domain that this metric is managed by.
-     *
-     * @return int identifier
-     */
-    public int getDomainIdentifier()
-    {
-        return domainIdentifier;
-    }
-
-
-    /**
-     * Set up the identifier of the governance domain that this metric is managed by.
-     *
-     * @param domainIdentifier int identifier
-     */
-    public void setDomainIdentifier(int domainIdentifier)
-    {
-        this.domainIdentifier = domainIdentifier;
     }
 
 
@@ -127,8 +102,7 @@ public class GovernanceMetricProperties extends ReferenceableProperties
     public String toString()
     {
         return "GovernanceMetricProperties{" +
-                "domainIdentifier=" + domainIdentifier +
-                ", measurement='" + measurement + '\'' +
+                "measurement='" + measurement + '\'' +
                 ", target='" + target + '\'' +
                 "} " + super.toString();
     }
@@ -156,8 +130,7 @@ public class GovernanceMetricProperties extends ReferenceableProperties
             return false;
         }
         GovernanceMetricProperties that = (GovernanceMetricProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
-                       Objects.equals(measurement, that.measurement) &&
+        return Objects.equals(measurement, that.measurement) &&
                        Objects.equals(target, that.target);
     }
 
@@ -170,6 +143,6 @@ public class GovernanceMetricProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, measurement, target);
+        return Objects.hash(super.hashCode(), measurement, target);
     }
 }

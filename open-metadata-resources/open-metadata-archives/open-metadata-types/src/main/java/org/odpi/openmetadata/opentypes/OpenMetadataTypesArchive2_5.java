@@ -466,6 +466,7 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA));
 
@@ -480,6 +481,8 @@ public class OpenMetadataTypesArchive2_5
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_FLOW_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
+
+        relationshipDef.setMultiLink(true);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -518,8 +521,10 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -533,13 +538,15 @@ public class OpenMetadataTypesArchive2_5
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
+        relationshipDef.setMultiLink(true);
+
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "currentStep";
-        final String                     end1AttributeDescription     = "Element that executes first.";
+        final String                     end1AttributeName            = "previousActions";
+        final String                     end1AttributeDescription     = "Elements that execute first.";
         final String                     end1AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
@@ -553,8 +560,8 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "nextStep";
-        final String                     end2AttributeDescription     = "Element that executes next.";
+        final String                     end2AttributeName            = "followOnActions";
+        final String                     end2AttributeDescription     = "Elements that execute next.";
         final String                     end2AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
@@ -571,7 +578,9 @@ public class OpenMetadataTypesArchive2_5
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GUARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MANDATORY_GUARD));
 
         relationshipDef.setPropertiesDefinition(properties);
 

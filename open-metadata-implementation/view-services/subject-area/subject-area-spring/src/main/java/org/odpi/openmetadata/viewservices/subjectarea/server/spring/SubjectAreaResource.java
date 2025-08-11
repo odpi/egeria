@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.viewservices.subjectarea.server.SubjectAreaRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,89 +29,6 @@ public class SubjectAreaResource
      */
     public SubjectAreaResource()
     {
-    }
-
-
-    /**
-     * Create a subject area definition.
-     *
-     * @param serverName                 name of called server.
-     * @param requestBody             properties for the subject area definition.
-     *
-     * @return unique identifier of the newly created element
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/subject-areas")
-
-    @Operation(summary="createSubjectArea",
-            description="Create a subject area definition.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/subject-area"))
-
-    public GUIDResponse createSubjectArea(@PathVariable
-                                          String                               serverName,
-                                          @RequestBody (required = false)
-                                          NewElementRequestBody requestBody)
-    {
-        return restAPI.createSubjectArea(serverName, requestBody);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a subject area definition using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new element.
-     *
-     * @param serverName             calling user
-     * @param requestBody properties that override the template
-     *
-     * @return unique identifier of the new metadata element
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/subject-areas/from-template")
-    @Operation(summary="createSubjectAreaFromTemplate",
-            description="Create a new metadata element to represent a subject area definition using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/subject-area"))
-
-    public GUIDResponse createSubjectAreaFromTemplate(@PathVariable
-                                                      String              serverName,
-                                                      @RequestBody (required = false)
-                                                      TemplateRequestBody requestBody)
-    {
-        return restAPI.createSubjectAreaFromTemplate(serverName, requestBody);
-    }
-
-
-    /**
-     * Update the properties of a subject area definition.
-     *
-     * @param serverName         name of called server.
-     * @param subjectAreaGUID unique identifier of the subject area definition (returned from create)
-     * @param requestBody     properties for the new element.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/subject-areas/{subjectAreaGUID}/update")
-    @Operation(summary="updateSubjectArea",
-            description="Update the properties of a subject area definition.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/subject-area"))
-
-    public VoidResponse updateSubjectArea(@PathVariable
-                                          String                                  serverName,
-                                          @PathVariable
-                                          String                                  subjectAreaGUID,
-                                          @RequestBody (required = false)
-                                          UpdateElementRequestBody requestBody)
-    {
-        return restAPI.updateSubjectArea(serverName, subjectAreaGUID, requestBody);
     }
 
 
@@ -180,112 +96,59 @@ public class SubjectAreaResource
     }
 
 
+
     /**
-     * Delete a subject area definition.
+     * Classify the element to assert that the definitions it represents are part of a subject area definition.
      *
-     * @param serverName         name of called server
-     * @param subjectAreaGUID  unique identifier of the element to delete
-     * @param requestBody  description of the relationship.
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param requestBody properties for classification request
      *
      * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/subject-areas/{subjectAreaGUID}/delete")
-    @Operation(summary="deleteSubjectArea",
-            description="Delete a subject area definition.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/subject-area"))
+    @PostMapping(path = "/elements/{elementGUID}/subject-area-member")
 
-    public VoidResponse deleteSubjectArea(@PathVariable
-                                          String                    serverName,
-                                          @PathVariable
-                                          String                    subjectAreaGUID,
-                                          @RequestBody (required = false)
-                                              DeleteRequestBody requestBody)
+    @Operation(summary="addElementToSubjectArea",
+            description="Classify the element to assert that the definitions it represents are part of a subject area definition.",
+            externalDocs=@ExternalDocumentation(description="Subject Areas",
+                    url="https://egeria-project.org/types/4/0425-Subject-Areas/"))
+
+    public VoidResponse addElementToSubjectArea(@PathVariable String                    serverName,
+                                                @PathVariable String                    elementGUID,
+                                                @RequestBody  (required = false)
+                                                NewClassificationRequestBody requestBody)
     {
-        return restAPI.deleteSubjectArea(serverName, subjectAreaGUID, requestBody);
+        return restAPI.addElementToSubjectArea(serverName, elementGUID, requestBody);
     }
 
 
     /**
-     * Returns the list of subject area definitions with a particular name.
+     * Remove the subject area designation from the identified element.
      *
-     * @param serverName name of the service to route the request to
-     * @param requestBody string to find in the properties
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param requestBody properties for classification request
      *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/subject-areas/by-name")
-    @Operation(summary="getSubjectAreasByName",
-            description="Returns the list of subject area definitions with a particular name.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/subject-area"))
+    @PostMapping(path = "/elements/{elementGUID}/subject-area-member/remove")
 
-    public OpenMetadataRootElementsResponse getSubjectAreasByName(@PathVariable
-                                                                  String            serverName,
-                                                                  @RequestBody (required = false)
-                                                                  FilterRequestBody requestBody)
+    @Operation(summary="removeElementFromSubjectArea",
+            description="Remove the subject area designation from the identified element.",
+            externalDocs=@ExternalDocumentation(description="Subject Areas",
+                    url="https://egeria-project.org/types/4/0425-Subject-Areas/"))
+
+    public VoidResponse removeElementFromSubjectArea(@PathVariable String                    serverName,
+                                                     @PathVariable String                    elementGUID,
+                                                     @RequestBody  (required = false)
+                                                     DeleteRequestBody requestBody)
     {
-        return restAPI.getSubjectAreasByName(serverName, requestBody);
-    }
-
-
-    /**
-     * Retrieve the list of subject area definition metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/subject-areas/by-search-string")
-    @Operation(summary="findSubjectAreas",
-            description="Retrieve the list of subject area definition metadata elements that contain the search string.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/subject-area"))
-
-    public OpenMetadataRootElementsResponse findSubjectAreas(@PathVariable
-                                                             String                  serverName,
-                                                             @RequestBody (required = false)
-                                                             SearchStringRequestBody requestBody)
-    {
-        return restAPI.findSubjectAreas(serverName, requestBody);
-    }
-
-
-    /**
-     * Return the properties of a specific subject area definition.
-     *
-     * @param serverName name of the service to route the request to
-     * @param subjectAreaGUID    unique identifier of the required element
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/subject-areas/{subjectAreaGUID}/retrieve")
-    @Operation(summary="getSubjectAreaByGUID",
-            description="Return the properties of a specific subject area definition.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/subject-area"))
-
-    public OpenMetadataRootElementResponse getSubjectAreaByGUID(@PathVariable
-                                                                String             serverName,
-                                                                @PathVariable
-                                                                String             subjectAreaGUID,
-                                                                @RequestBody (required = false)
-                                                                    GetRequestBody requestBody)
-    {
-        return restAPI.getSubjectAreaByGUID(serverName, subjectAreaGUID, requestBody);
+        return restAPI.removeElementFromSubjectArea(serverName, elementGUID, requestBody);
     }
 }

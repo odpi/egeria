@@ -82,7 +82,7 @@ Content-Type: application/json
 
 {
   "class" : "UniqueNameRequestBody",
-  "name" : "Glossary:CloudInformationModel",
+  "name" : "Glossary::CloudInformationModel",
   "namePropertyName" : "qualifiedName"
 }
 

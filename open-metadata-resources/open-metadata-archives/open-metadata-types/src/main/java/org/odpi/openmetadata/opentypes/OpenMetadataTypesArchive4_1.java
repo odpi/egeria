@@ -336,7 +336,6 @@ public class OpenMetadataTypesArchive4_1
     private void update0423SecurityAccessControl()
     {
         this.archiveBuilder.addTypeDefPatch(updateSecurityTagsClassification());
-        this.archiveBuilder.addEntityDef(addSecurityAccessControlEntity());
         this.archiveBuilder.addRelationshipDef(addAssociatedGroupRelationship());
     }
 
@@ -411,13 +410,6 @@ public class OpenMetadataTypesArchive4_1
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
-    }
-
-
-    private EntityDef addSecurityAccessControlEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_ACCESS_CONTROL,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
     }
 
 
