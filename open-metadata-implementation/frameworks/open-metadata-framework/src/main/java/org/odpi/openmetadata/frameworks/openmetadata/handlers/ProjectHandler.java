@@ -4,17 +4,21 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.ProjectConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.ProjectHierarchyConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.TeamMemberConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.ProjectGraphMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.ProjectMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.*;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootHierarchyMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootHierarchy;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectDependencyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectHierarchyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -26,13 +30,6 @@ import java.util.*;
  */
 public class ProjectHandler extends OpenMetadataHandlerBase
 {
-
-
-    final private ProjectConverter<ProjectElement>       projectConverter;
-    final private Class<ProjectElement>                  projectBeanClass       = ProjectElement.class;
-    final private TeamMemberConverter<ProjectTeamMember> teamMemberConverter;
-
-    final private Class<ProjectTeamMember> projectMemberBeanClass = ProjectTeamMember.class;
 
     final private ActorRoleHandler actorRoleHandler;
 
@@ -54,14 +51,6 @@ public class ProjectHandler extends OpenMetadataHandlerBase
               serviceName,
               openMetadataClient,
               OpenMetadataType.PROJECT.typeName);
-
-        projectConverter = new ProjectConverter<>(propertyHelper,
-                                                  serviceName,
-                                                  localServerName);
-
-        teamMemberConverter = new TeamMemberConverter<>(propertyHelper,
-                                                        serviceName,
-                                                        localServerName);
 
         actorRoleHandler = new ActorRoleHandler(localServerName, auditLog, serviceName, openMetadataClient);
     }
@@ -182,79 +171,6 @@ public class ProjectHandler extends OpenMetadataHandlerBase
                             updateOptions,
                             projectProperties,
                             methodName);
-    }
-
-
-    /**
-     * Create a project management relationship between a project and a person role to show that someone has been appointed to the project management role.
-     *
-     * @param userId calling user
-     * @param projectGUID unique identifier of the project
-     * @param personRoleGUID unique identifier of the person role
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param properties  properties for the relationship
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void setupProjectManagementRole(String                      userId,
-                                           String                      projectGUID,
-                                           String                      personRoleGUID,
-                                           MetadataSourceOptions       metadataSourceOptions,
-                                           ProjectManagementProperties properties) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        final String methodName                  = "setupProjectManagementRole";
-        final String projectGUIDParameterName    = "projectGUID";
-        final String personRoleGUIDParameterName = "personRoleGUID";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(projectGUID, projectGUIDParameterName, methodName);
-        propertyHelper.validateGUID(personRoleGUID, personRoleGUIDParameterName, methodName);
-
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
-                                                        projectGUID,
-                                                        personRoleGUID,
-                                                        metadataSourceOptions,
-                                                        relationshipBuilder.getNewElementProperties(properties));
-    }
-
-
-    /**
-     * Remove a project management relationship between a project and a person role.
-     *
-     * @param userId calling user
-     * @param projectGUID unique identifier of the project
-     * @param personRoleGUID unique identifier of the person role
-     * @param deleteOptions  options to control access to open metadata
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void clearProjectManagementRole(String        userId,
-                                           String        projectGUID,
-                                           String        personRoleGUID,
-                                           DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String methodName                  = "clearProjectManagementRole";
-        final String projectGUIDParameterName    = "projectGUID";
-        final String personRoleGUIDParameterName = "personRoleGUID";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(projectGUID, projectGUIDParameterName, methodName);
-        propertyHelper.validateGUID(personRoleGUID, personRoleGUIDParameterName, methodName);
-
-        openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
-                                                        projectGUID,
-                                                        personRoleGUID,
-                                                        deleteOptions);
     }
 
 
@@ -417,13 +333,13 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupProjectTeam(String                userId,
-                                 String                projectGUID,
-                                 String                actorGUID,
-                                 MetadataSourceOptions metadataSourceOptions,
-                                 ProjectTeamProperties properties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public void setupProjectTeam(String                    userId,
+                                 String                    projectGUID,
+                                 String                    actorGUID,
+                                 MetadataSourceOptions     metadataSourceOptions,
+                                 AssignmentScopeProperties properties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName                  = "setupProjectTeam";
         final String projectGUIDParameterName    = "projectGUID";
@@ -434,7 +350,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(actorGUID, personRoleGUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                         projectGUID,
                                                         actorGUID,
                                                         metadataSourceOptions,
@@ -470,7 +386,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(actorGUID, personRoleGUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                         projectGUID,
                                                         actorGUID,
                                                         deleteOptions);
@@ -518,53 +434,55 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<ProjectElement> getLinkedProjects(String       userId,
-                                                  String       parentGUID,
-                                                  String       projectStatus,
-                                                  QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getLinkedProjects(String       userId,
+                                                           String       parentGUID,
+                                                           String       projectStatus,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         final String methodName = "getLinkedProjects";
         final String parentGUIDParameterName = "parentGUID";
 
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(parentGUID, parentGUIDParameterName, methodName);
-        propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
+        List<OpenMetadataRootElement> linkedProjects = super.getRelatedRootElements(userId,
+                                                                                    parentGUID,
+                                                                                    parentGUIDParameterName,
+                                                                                    1,
+                                                                                    null,
+                                                                                    queryOptions,
+                                                                                    methodName);
 
-        RelatedMetadataElementList linkedProjects = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                  parentGUID,
-                                                                                                  1,
-                                                                                                  null,
-                                                                                                  queryOptions);
+        return this.filterProjects(linkedProjects, projectStatus);
+    }
 
-        if ((linkedProjects != null) && (linkedProjects.getElementList() != null))
+
+    /**
+     * Filter process objects by activity status.
+     *
+     * @param openMetadataRootElements retrieved elements
+     * @param projectStatus           optional  status
+     * @return list of process elements
+     */
+    private List<OpenMetadataRootElement> filterProjects(List<OpenMetadataRootElement> openMetadataRootElements,
+                                                         String                        projectStatus)
+    {
+        if (openMetadataRootElements != null)
         {
-            List<ProjectElement> filteredProjects = new ArrayList<>();
+            List<OpenMetadataRootElement> projects = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedProjects.getElementList())
+            for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.PROJECT.typeName))
+                if ((openMetadataRootElement != null) &&
+                        (openMetadataRootElement.getProperties() instanceof ProjectProperties projectProperties))
                 {
-                    ProjectElement projectElement = projectConverter.getNewComplexBean(projectBeanClass,
-                                                                                       relatedMetadataElement,
-                                                                                       super.getElementRelatedElements(userId, relatedMetadataElement.getElement(), queryOptions),
-                                                                                       methodName);
-
-                    if ((projectStatus == null) || (projectStatus.isBlank()) || (projectStatus.equals(projectElement.getProperties().getProjectStatus())))
+                    if ((projectStatus == null) || (projectStatus.isBlank()) || (projectStatus.equals(projectProperties.getProjectStatus())))
                     {
-                        ProjectMermaidGraphBuilder mermaidGraphBuilder = new ProjectMermaidGraphBuilder(projectElement);
-
-                        projectElement.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
-                        filteredProjects.add(projectElement);
+                        projects.add(openMetadataRootElement);
                     }
                 }
             }
 
-            if (! filteredProjects.isEmpty())
-            {
-                return filteredProjects;
-            }
+            return projects;
         }
 
         return null;
@@ -572,128 +490,253 @@ public class ProjectHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Returns the graph of related projects and resources starting with a supplied project guid..
+     * Retrieve the project metadata element and all linked projects.
      *
-     * @param userId         userId of user making request
-     * @param projectGUID     unique identifier of the starting project
-     * @param queryOptions multiple options to control the query
+     * @param userId calling user
+     * @param projectGUID unique identifier of the requested metadata element
+     * @param queryOptions           multiple options to control the query
      *
-     * @return a graph of projects
+     * @return matching metadata element
      *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProjectGraph getProjectGraph(String       userId,
-                                        String       projectGUID,
-                                        QueryOptions queryOptions) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public OpenMetadataRootHierarchy getProjectInContext(String       userId,
+                                                         String       projectGUID,
+                                                         QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        OpenMetadataElement startingProject = openMetadataClient.getMetadataElementByGUID(userId, projectGUID, queryOptions);
+        final String methodName = "getProjectsInContext";
 
-        if (startingProject != null)
+        OpenMetadataRootElement rootElement = this.getRootElementByGUID(userId, projectGUID, queryOptions, methodName);
+
+        if (rootElement != null)
         {
-            ProjectGraph projectGraph = new ProjectGraph(this.getProjectHierarchy(userId, startingProject, queryOptions, new ArrayList<>()));
+            OpenMetadataRootHierarchy openMetadataRootHierarchy = new OpenMetadataRootHierarchy(rootElement);
 
-            ProjectGraphMermaidGraphBuilder projectGraphBuilder = new ProjectGraphMermaidGraphBuilder(projectGraph);
+            Set<String>  processedProjects = new HashSet<>(Collections.singletonList(projectGUID));
 
-            projectGraph.setMermaidGraph(projectGraphBuilder.getMermaidGraph());
+            openMetadataRootHierarchy.setOpenMetadataRootHierarchies(this.getRelatedProjects(userId,
+                                                                                             new OpenMetadataRootHierarchy(rootElement),
+                                                                                             queryOptions,
+                                                                                             processedProjects));
 
-            return projectGraph;
+            /*
+             * Replaces the graph added by addMermaidToRootElement().
+             */
+            OpenMetadataRootHierarchyMermaidGraphBuilder mermaidGraphBuilder = new OpenMetadataRootHierarchyMermaidGraphBuilder(openMetadataRootHierarchy,
+                                                                                                                                "Related Projects",
+                                                                                                                                VisualStyle.PROJECT);
+
+            openMetadataRootHierarchy.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
+
+            return openMetadataRootHierarchy;
         }
 
         return null;
     }
+
+
+    /**
+     * Retrieve the list of related projects not currently in the list.
+     *
+     * @param userId calling user
+     * @param startingProject place to start
+     * @param queryOptions type of query
+     * @param processedProjects list of guids of governance definitions already processed.
+     * @return list of connected governance definitions not yet processed
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private List<OpenMetadataRootHierarchy> getRelatedProjects(String                      userId,
+                                                               OpenMetadataRootHierarchy   startingProject,
+                                                               QueryOptions                queryOptions,
+                                                               Set<String>                 processedProjects) throws InvalidParameterException,
+                                                                                                                     PropertyServerException,
+                                                                                                                     UserNotAuthorizedException
+    {
+        List<OpenMetadataRootHierarchy> relatedElements = new ArrayList<>();
+
+        if (! processedProjects.contains(startingProject.getElementHeader().getGUID()))
+        {
+            if (startingProject.getManagedProjects() != null)
+            {
+                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getManagedProjects())
+                {
+                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
+                    {
+                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
+                                this.getProjectByGUID(userId,
+                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
+                                                      queryOptions));
+
+                        relatedElements.add(relatedElement);
+                        processedProjects.add(relatedElement.getElementHeader().getGUID());
+
+                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
+                    }
+                }
+            }
+
+            if (startingProject.getManagingProjects() != null)
+            {
+                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getManagingProjects())
+                {
+                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
+                    {
+                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
+                                this.getProjectByGUID(userId,
+                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
+                                                      queryOptions));
+
+                        relatedElements.add(relatedElement);
+                        processedProjects.add(relatedElement.getElementHeader().getGUID());
+
+                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
+                    }
+                }
+            }
+
+            if (startingProject.getDependentProjects() != null)
+            {
+                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getDependentProjects())
+                {
+                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
+                    {
+                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
+                                this.getProjectByGUID(userId,
+                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
+                                                      queryOptions));
+
+                        relatedElements.add(relatedElement);
+                        processedProjects.add(relatedElement.getElementHeader().getGUID());
+
+                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
+                    }
+                }
+            }
+
+            if (startingProject.getDependsOnProjects() != null)
+            {
+                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getDependsOnProjects())
+                {
+                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
+                    {
+                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
+                                this.getProjectByGUID(userId,
+                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
+                                                      queryOptions));
+
+                        relatedElements.add(relatedElement);
+                        processedProjects.add(relatedElement.getElementHeader().getGUID());
+
+                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
+                    }
+                }
+            }
+        }
+
+        return relatedElements;
+    }
+
+
+    /**
+     * Retrieve the list of subprojects not currently in the list.
+     *
+     * @param userId calling user
+     * @param startingProject place to start
+     * @param queryOptions type of query
+     * @param processedProjects list of guids of governance definitions already processed.
+     * @return list of connected governance definitions not yet processed
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private List<OpenMetadataRootHierarchy> getSubProjects(String                      userId,
+                                                           OpenMetadataRootHierarchy   startingProject,
+                                                           QueryOptions                queryOptions,
+                                                           Set<String>                 processedProjects) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
+    {
+        List<OpenMetadataRootHierarchy> relatedElements = new ArrayList<>();
+
+        if (! processedProjects.contains(startingProject.getElementHeader().getGUID()))
+        {
+            if (startingProject.getManagedProjects() != null)
+            {
+                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getManagedProjects())
+                {
+                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
+                    {
+                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
+                                this.getProjectByGUID(userId,
+                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
+                                                      queryOptions));
+
+                        relatedElements.add(relatedElement);
+                        processedProjects.add(relatedElement.getElementHeader().getGUID());
+
+                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
+                    }
+                }
+            }
+        }
+
+        return relatedElements;
+    }
+
+
 
 
     /**
      * Retrieve the project hierarchy for a project.
      *
      * @param userId calling user
-     * @param project starting project
+     * @param projectGUID starting project
      * @param queryOptions multiple options to control the query
-     * @param coveredProjects unique identifiers of projects already processed
      * @return project hierarchy for the element
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private ProjectHierarchy getProjectHierarchy(String              userId,
-                                                 OpenMetadataElement project,
-                                                 QueryOptions        queryOptions,
-                                                 List<String>        coveredProjects) throws InvalidParameterException,
+    public OpenMetadataRootHierarchy getProjectHierarchy(String userId,
+                                                         String projectGUID,
+                                                         QueryOptions queryOptions) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
-        final String methodName = "getProjectHierarchy";
+        final String methodName  = "getProjectHierarchy";
 
-        List<RelatedMetadataElement> relatedElements  = super.getElementRelatedElements(userId, project, queryOptions);
-        List<RelatedMetadataElement> projectResources = new ArrayList<>();
+        OpenMetadataRootElement rootElement = this.getRootElementByGUID(userId, projectGUID, queryOptions, methodName);
 
-        List<ProjectHierarchy>       projectHierarchy = null;
-
-        if (relatedElements != null)
+        if (rootElement != null)
         {
-            List<RelatedMetadataElement> children = new ArrayList<>();
+            OpenMetadataRootHierarchy openMetadataRootHierarchy = new OpenMetadataRootHierarchy(rootElement);
 
-            for (RelatedMetadataElement relatedProjectElement : relatedElements)
-            {
-                /*
-                 * Separate details of the project dependency elements
-                 */
-                if ((relatedProjectElement != null) &&
-                        (propertyHelper.isTypeOf(relatedProjectElement, OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName)))
-                {
-                    if (! relatedProjectElement.getElementAtEnd1())
-                    {
-                        children.add(relatedProjectElement);
-                    }
-                    else if (! coveredProjects.contains(relatedProjectElement.getElement().getElementGUID()))
-                    {
-                        /*
-                         * Only keeping projects not already in the graph
-                         */
-                        projectResources.add(relatedProjectElement);
-                    }
-                }
-                else
-                {
-                    projectResources.add(relatedProjectElement);
-                }
-            }
+            Set<String>  processedProjects = new HashSet<>(Collections.singletonList(projectGUID));
 
-            if (! children.isEmpty())
-            {
-                projectHierarchy = new ArrayList<>();
+            openMetadataRootHierarchy.setOpenMetadataRootHierarchies(this.getSubProjects(userId,
+                                                                                         new OpenMetadataRootHierarchy(rootElement),
+                                                                                         queryOptions,
+                                                                                         processedProjects));
 
-                for (RelatedMetadataElement child : children)
-                {
-                    if ((child != null) && (! coveredProjects.contains(child.getElement().getElementGUID())))
-                    {
-                        coveredProjects.add(child.getElement().getElementGUID());
+            /*
+             * Replaces the graph added by addMermaidToRootElement().
+             */
+            OpenMetadataRootHierarchyMermaidGraphBuilder mermaidGraphBuilder = new OpenMetadataRootHierarchyMermaidGraphBuilder(openMetadataRootHierarchy,
+                                                                                                                                "Managed Projects",
+                                                                                                                                VisualStyle.PROJECT);
 
-                        ProjectHierarchy childProjectHierarchy = this.getProjectHierarchy(userId, child.getElement(), queryOptions, coveredProjects);
+            openMetadataRootHierarchy.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
 
-                        childProjectHierarchy.setRelatedBy(projectConverter.getRelatedBy(ProjectElement.class,
-                                                                                         child,
-                                                                                         methodName));
-
-                        projectHierarchy.add(childProjectHierarchy);
-                    }
-                }
-            }
+            return openMetadataRootHierarchy;
         }
 
-        ProjectHierarchyConverter<ProjectHierarchy> hierarchyConverter = new ProjectHierarchyConverter<>(propertyHelper,
-                                                                                                         localServiceName,
-                                                                                                         localServerName,
-                                                                                                         projectHierarchy);
-
-        return hierarchyConverter.getNewComplexBean(ProjectHierarchy.class,
-                                                    project,
-                                                    projectResources,
-                                                    methodName);
+        return null;
     }
 
 
@@ -709,11 +752,11 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<ProjectElement> getClassifiedProjects(String       userId,
-                                                      String       classificationName,
-                                                      QueryOptions suppliedQueryOptions) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getClassifiedProjects(String       userId,
+                                                               String       classificationName,
+                                                               QueryOptions suppliedQueryOptions) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         final String methodName = "getClassifiedProjects";
         final String parameterName = "classificationName";
@@ -737,7 +780,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         List<OpenMetadataElement> openMetadataElements = openMetadataClient.getMetadataElementsByClassification(userId,
                                                                                                                 classificationName,
                                                                                                                 queryOptions);
-        return convertProjects(userId, openMetadataElements, queryOptions);
+        return convertRootElements(userId, openMetadataElements, queryOptions, methodName);
     }
 
 
@@ -754,12 +797,12 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<ProjectTeamMember> getProjectMembers(String       userId,
-                                                     String       projectGUID,
-                                                     String       teamRole,
-                                                     QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getProjectMembers(String       userId,
+                                                           String       projectGUID,
+                                                           String       teamRole,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         final String methodName = "getProjectMembers";
         final String parentGUIDParameterName = "projectGUID";
@@ -768,92 +811,37 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(projectGUID, parentGUIDParameterName, methodName);
         propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
-        RelatedMetadataElementList linkedActors = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                projectGUID,
-                                                                                                1,
-                                                                                                null,
-                                                                                                queryOptions);
+        List<OpenMetadataRootElement> linkedActors = super.getRelatedRootElements(userId,
+                                                                                  projectGUID,
+                                                                                  parentGUIDParameterName,
+                                                                                  2,
+                                                                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                                  queryOptions,
+                                                                                  methodName);
 
-        if ((linkedActors != null) && (linkedActors.getElementList() != null))
+        if (linkedActors != null)
         {
-            List<ProjectTeamMember> teamMembers = new ArrayList<>();
+            List<OpenMetadataRootElement> teamMembers = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedActors.getElementList())
+            for (OpenMetadataRootElement linkedActor : linkedActors)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName))
+                if ((teamRole == null) || (linkedActor == null))
                 {
-                    if ((teamRole == null) || (teamRole.isBlank()) || (OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName.equals(teamRole)))
-                    {
-                        ProjectTeamMember projectTeamMember = teamMemberConverter.getNewBean(projectMemberBeanClass, relatedMetadataElement, methodName);
-
-                        ProjectTeamProperties projectTeamProperties = new ProjectTeamProperties();
-
-                        projectTeamProperties.setTeamRole(OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName);
-
-                        projectTeamMember.setProjectTeamProperties(projectTeamProperties);
-
-                        teamMembers.add(projectTeamMember);
-                    }
+                    teamMembers.add(linkedActor);
                 }
-                else if  (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName))
+                else
                 {
-                    ProjectTeamMember projectTeamMember = teamMemberConverter.getNewBean(projectMemberBeanClass, relatedMetadataElement, methodName);
+                    if ((linkedActor.getRelatedBy() != null) &&
+                            (linkedActor.getRelatedBy().getRelationshipProperties() instanceof AssignmentScopeProperties assignmentScopeProperties) &&
+                            (teamRole.equals(assignmentScopeProperties.getAssignmentType())))
 
-                    if ((teamRole == null) || ((projectTeamMember.getProjectTeamProperties() != null) && (teamRole.equals(projectTeamMember.getProjectTeamProperties().getTeamRole()))))
                     {
-                        teamMembers.add(projectTeamMember);
+                        teamMembers.add(linkedActor);
                     }
                 }
             }
 
-            if (! teamMembers.isEmpty())
-            {
-                return teamMembers;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Convert project objects from the OpenMetadataClient to local beans.
-     *
-     * @param userId calling user
-     * @param openMetadataElements retrieved elements
-     * @param queryOptions multiple options to control the query
-     *
-     * @return list of project elements
-     * @throws PropertyServerException error in retrieved values
-     */
-    private List<ProjectElement> convertProjects(String                     userId,
-                                                 List<OpenMetadataElement>  openMetadataElements,
-                                                 QueryOptions               queryOptions) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException
-    {
-        final String methodName = "convertProjects";
-
-        if (openMetadataElements != null)
-        {
-            List<ProjectElement> projectElements = new ArrayList<>();
-
-            for (OpenMetadataElement openMetadataElement : openMetadataElements)
-            {
-                if (openMetadataElement != null)
-                {
-                    ProjectElement projectElement = projectConverter.getNewComplexBean(projectBeanClass,
-                                                                                       openMetadataElement,
-                                                                                       super.getElementRelatedElements(userId, openMetadataElement, queryOptions),
-                                                                                       methodName);
-
-                    ProjectMermaidGraphBuilder mermaidGraphBuilder = new ProjectMermaidGraphBuilder(projectElement);
-
-                    projectElement.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
-
-                    projectElements.add(projectElement);
-                }
-            }
-
-            return projectElements;
+            return teamMembers;
         }
 
         return null;
@@ -866,7 +854,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param suppliedSearchOptions options for query
+     * @param searchOptions options for query
      *
      * @return list of matching metadata elements
      *
@@ -874,35 +862,15 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProjectElement> findProjects(String        userId,
-                                             String        searchString,
-                                             SearchOptions suppliedSearchOptions) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<OpenMetadataRootElement> findProjects(String        userId,
+                                                      String        searchString,
+                                                      SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        final String methodName                = "findProject";
-        final String searchStringParameterName = "searchString";
+        final String methodName = "findProjects";
 
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateSearchString(searchString, searchStringParameterName, methodName);
-
-        SearchOptions searchOptions = suppliedSearchOptions;
-
-        if (searchOptions == null)
-        {
-            searchOptions = new SearchOptions();
-        }
-
-        if (searchOptions.getMetadataElementTypeName() == null)
-        {
-            searchOptions.setMetadataElementTypeName(OpenMetadataType.PROJECT.typeName);
-        }
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId,
-                                                                                                           searchString,
-                                                                                                           searchOptions);
-
-        return this.convertProjects(userId, openMetadataElements, searchOptions);
+        return super.findRootElements(userId, searchString, searchOptions, methodName);
     }
 
 
@@ -912,7 +880,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @param userId calling user
      * @param name name to search for
-     * @param suppliedQueryOptions multiple options to control the query
+     * @param queryOptions multiple options to control the query
      *
      * @return list of matching metadata elements
      *
@@ -920,46 +888,23 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProjectElement> getProjectsByName(String       userId,
-                                                  String       name,
-                                                  QueryOptions suppliedQueryOptions) throws InvalidParameterException,
+    public List<OpenMetadataRootElement> getProjectsByName(String       userId,
+                                                           String       name,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        final String methodName        = "getProjectByName";
-        final String nameParameterName = "name";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
-        propertyHelper.validatePaging(suppliedQueryOptions, openMetadataClient.getMaxPagingSize(), methodName);
+        final String methodName = "getProjectByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
                                                    OpenMetadataProperty.IDENTIFIER.name);
 
-        QueryOptions queryOptions = suppliedQueryOptions;
-
-        if (queryOptions == null)
-        {
-            queryOptions = new QueryOptions();
-        }
-
-        if (queryOptions.getMetadataElementTypeName() == null)
-        {
-            queryOptions.setMetadataElementTypeName(OpenMetadataType.PROJECT.typeName);
-        }
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.getMetadataElementsByPropertyValue(userId,
-                                                                                                               propertyNames,
-                                                                                                               name,
-                                                                                                               queryOptions);
-
-        if (openMetadataElements != null)
-        {
-            return this.convertProjects(userId, openMetadataElements, queryOptions);
-        }
-
-        return null;
+        return super.getRootElementsByName(userId,
+                                           name,
+                                           propertyNames,
+                                           queryOptions,
+                                           methodName);
     }
 
 
@@ -967,7 +912,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * Retrieve the list of projects.
      *
      * @param userId calling user
-     * @param suppliedQueryOptions multiple options to control the query
+     * @param queryOptions multiple options to control the query
      *
      * @return list of matching metadata elements
      *
@@ -975,70 +920,16 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProjectElement> getProjects(String       userId,
-                                            QueryOptions suppliedQueryOptions) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public List<OpenMetadataRootElement> getProjects(String       userId,
+                                                     QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName = "getProjects";
 
-        propertyHelper.validateUserId(userId, methodName);
-
-        QueryOptions queryOptions = suppliedQueryOptions;
-
-        if (queryOptions == null)
-        {
-            queryOptions = new QueryOptions();
-        }
-
-        if (queryOptions.getMetadataElementTypeName() == null)
-        {
-            queryOptions.setMetadataElementTypeName(OpenMetadataType.PROJECT.typeName);
-        }
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId,
-                                                                                                           null,
-                                                                                                           new SearchOptions(queryOptions));
-
-        if (openMetadataElements != null)
-        {
-            return this.convertProjects(userId, openMetadataElements, queryOptions);
-        }
-
-        return null;
+        return super.findRootElements(userId,null, new SearchOptions(queryOptions), methodName);
     }
 
-
-    /**
-     * Return information about the person roles linked to a project.
-     *
-     * @param userId calling user
-     * @param projectGUID unique identifier for the project
-     * @param queryOptions multiple options to control the query
-     *
-     * @return list of matching actor profiles (hopefully only one)
-     *
-     * @throws InvalidParameterException name or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<OpenMetadataRootElement> getProjectManagementRoles(String       userId,
-                                                                   String       projectGUID,
-                                                                   QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
-    {
-        final String methodName        = "getProjectManagementRoles";
-        final String guidPropertyName  = "projectGUID";
-
-        return actorRoleHandler.getRelatedRootElements(userId,
-                                                       projectGUID,
-                                                       guidPropertyName,
-                                                       1,
-                                                       OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
-                                                       queryOptions,
-                                                       methodName);
-    }
 
 
     /**
@@ -1066,8 +957,8 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         return actorRoleHandler.getRelatedRootElements(userId,
                                                        projectGUID,
                                                        guidPropertyName,
-                                                       1,
-                                                       OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
+                                                       2,
+                                                       OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                        queryOptions,
                                                        methodName);
     }
@@ -1086,11 +977,11 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProjectElement getProjectByGUID(String     userId,
-                                           String     projectGUID,
-                                           GetOptions getOptions) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public OpenMetadataRootElement getProjectByGUID(String     userId,
+                                                    String     projectGUID,
+                                                    GetOptions getOptions) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String methodName = "getProjectByGUID";
         final String guidParameterName = "projectGUID";
@@ -1098,22 +989,6 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
 
-        OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByGUID(userId, projectGUID, getOptions);
-
-        if (openMetadataElement != null)
-        {
-            ProjectElement projectElement = projectConverter.getNewComplexBean(projectBeanClass,
-                                                                               openMetadataElement,
-                                                                               super.getElementRelatedElements(userId, openMetadataElement, new QueryOptions(getOptions)),
-                                                                               methodName);
-
-            ProjectMermaidGraphBuilder mermaidGraphBuilder = new ProjectMermaidGraphBuilder(projectElement);
-
-            projectElement.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
-
-            return projectElement;
-        }
-
-        return null;
+        return super.getRootElementByGUID(userId, projectGUID, getOptions, methodName);
     }
 }

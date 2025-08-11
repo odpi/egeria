@@ -60,9 +60,8 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public OpenMetadataRootElementsResponse getAttachedCollections(@PathVariable String            serverName,
-                                                                   @PathVariable String             urlMarker,
+                                                                   @PathVariable String            urlMarker,
                                                                    @PathVariable String            parentGUID,
-                                                                   @RequestParam(required = false, defaultValue = "0")
                                                                    @RequestBody(required = false)
                                                                    ResultsRequestBody requestBody)
     {
@@ -171,7 +170,7 @@ public class CollectionManagerResource
     public OpenMetadataRootElementResponse getCollectionByGUID(@PathVariable String serverName,
                                                                @PathVariable String urlMarker,
                                                                @PathVariable String collectionGUID,
-                                                               @RequestBody GetRequestBody requestBody)
+                                                               @RequestBody(required = false) GetRequestBody requestBody)
     {
         return restAPI.getCollectionByGUID(serverName, urlMarker, collectionGUID, requestBody);
     }
@@ -197,7 +196,7 @@ public class CollectionManagerResource
 
     public GUIDResponse createCollection(@PathVariable String                   serverName,
                                          @PathVariable String             urlMarker,
-                                         @RequestBody  NewElementRequestBody requestBody)
+                                         @RequestBody(required = false)  NewElementRequestBody requestBody)
     {
         return restAPI.createCollection(serverName, urlMarker, requestBody);
     }
@@ -225,7 +224,7 @@ public class CollectionManagerResource
 
     public GUIDResponse createCollectionFromTemplate(@PathVariable String              serverName,
                                                      @PathVariable String             urlMarker,
-                                                     @RequestBody  TemplateRequestBody requestBody)
+                                                     @RequestBody(required = false)  TemplateRequestBody requestBody)
     {
         return restAPI.createCollectionFromTemplate(serverName, urlMarker, requestBody);
     }
@@ -253,7 +252,7 @@ public class CollectionManagerResource
     public VoidResponse updateCollection(@PathVariable String                  serverName,
                                          @PathVariable String                  urlMarker,
                                          @PathVariable String                  collectionGUID,
-                                         @RequestBody  UpdateElementRequestBody requestBody)
+                                         @RequestBody(required = false)  UpdateElementRequestBody requestBody)
     {
         return restAPI.updateCollection(serverName, urlMarker, collectionGUID, requestBody);
     }

@@ -1,35 +1,36 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.commonservices.ffdc.rest;
+package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ElementStubResponse is a response object for passing back the header of a Referenceable
- * element or an exception if the request failed.
+ * OpenMetadataRootHierarchy contains the properties, header and nested members of an element retrieved
+ * from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ElementStubResponse extends FFDCResponseBase
+public class OpenMetadataRootHierarchy extends OpenMetadataRootElement
 {
-    private ElementStub element = null;
+    private List<OpenMetadataRootHierarchy> openMetadataRootHierarchies = null;
 
 
     /**
      * Default constructor
      */
-    public ElementStubResponse()
+    public OpenMetadataRootHierarchy()
     {
+        super();
     }
 
 
@@ -38,38 +39,49 @@ public class ElementStubResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public ElementStubResponse(ElementStubResponse template)
+    public OpenMetadataRootHierarchy(OpenMetadataRootHierarchy template)
     {
         super(template);
 
         if (template != null)
         {
-            element = template.getElement();
+            openMetadataRootHierarchies = template.getOpenMetadataRootHierarchies();
         }
     }
 
 
     /**
-     * Return the metadata element.
+     * Copy/clone constructor
      *
-     * @return result object
+     * @param template object to copy
      */
-    public ElementStub getElement()
+    public OpenMetadataRootHierarchy(OpenMetadataRootElement template)
     {
-        return element;
+        super(template);
+    }
+
+
+
+    /**
+     * Return the members of the collection, organized hierarchically.
+     *
+     * @return hierarchy of members
+     */
+    public List<OpenMetadataRootHierarchy> getOpenMetadataRootHierarchies()
+    {
+        return openMetadataRootHierarchies;
     }
 
 
     /**
-     * Set up the metadata element to return.
+     * Set up the members of the collection, organized hierarchically.
      *
-     * @param element result object
+     * @param openMetadataRootHierarchies  list of category hierarchies
      */
-    public void setElement(ElementStub element)
+    public void setOpenMetadataRootHierarchies(List<OpenMetadataRootHierarchy> openMetadataRootHierarchies)
     {
-        this.element = element;
+        this.openMetadataRootHierarchies = openMetadataRootHierarchies;
     }
-
 
     /**
      * JSON-style toString
@@ -79,11 +91,10 @@ public class ElementStubResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "ElementStubResponse{" +
-                "element=" + element +
+        return "OpenMetadataRootHierarchy{" +
+                "openMetadataRootHierarchies=" + openMetadataRootHierarchies +
                 "} " + super.toString();
     }
-
 
 
     /**
@@ -107,8 +118,8 @@ public class ElementStubResponse extends FFDCResponseBase
         {
             return false;
         }
-        ElementStubResponse that = (ElementStubResponse) objectToCompare;
-        return Objects.equals(element, that.element);
+        OpenMetadataRootHierarchy that = (OpenMetadataRootHierarchy) objectToCompare;
+        return Objects.equals(openMetadataRootHierarchies, that.openMetadataRootHierarchies);
     }
 
 
@@ -120,6 +131,6 @@ public class ElementStubResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), element);
+        return Objects.hash(super.hashCode(), openMetadataRootHierarchies);
     }
 }

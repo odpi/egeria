@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectDependencyProperties extends RelationshipBeanProperties
 {
-    String projectDependency = null;
+    String dependencySummary = null;
 
     /**
      * Default constructor
@@ -45,7 +45,7 @@ public class ProjectDependencyProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.projectDependency = template.getProjectDependency();
+            this.dependencySummary = template.getDependencySummary();
         }
     }
 
@@ -55,20 +55,20 @@ public class ProjectDependencyProperties extends RelationshipBeanProperties
      *
      * @return membership type
      */
-    public String getProjectDependency()
+    public String getDependencySummary()
     {
-        return projectDependency;
+        return dependencySummary;
     }
 
 
     /**
      * Set up the membership type.
      *
-     * @param projectDependency membership type
+     * @param dependencySummary membership type
      */
-    public void setProjectDependency(String projectDependency)
+    public void setDependencySummary(String dependencySummary)
     {
-        this.projectDependency = projectDependency;
+        this.dependencySummary = dependencySummary;
     }
 
 
@@ -81,7 +81,7 @@ public class ProjectDependencyProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "ProjectDependencyProperties{" +
-                "projectDependency='" + projectDependency + '\'' +
+                "dependencySummary='" + dependencySummary + '\'' +
                 "} " + super.toString();
     }
 
@@ -108,7 +108,7 @@ public class ProjectDependencyProperties extends RelationshipBeanProperties
             return false;
         }
         ProjectDependencyProperties that = (ProjectDependencyProperties) objectToCompare;
-        return Objects.equals(projectDependency, that.projectDependency);
+        return Objects.equals(dependencySummary, that.dependencySummary);
     }
 
 
@@ -120,6 +120,6 @@ public class ProjectDependencyProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), projectDependency);
+        return Objects.hash(super.hashCode(), dependencySummary);
     }
 }

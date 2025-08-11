@@ -84,6 +84,11 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> commissionedElements      = null; // Stakeholder (0120)
     private List<RelatedMetadataElementSummary> commissionedBy            = null; // Stakeholder (0120)
 
+    private List<RelatedMetadataElementSummary> dependentProjects = null; // ProjectDependency (0130)
+    private List<RelatedMetadataElementSummary> dependsOnProjects = null; // ProjectDependency (0130)
+    private List<RelatedMetadataElementSummary> managingProjects  = null; // ProjectHierarchy (0130)
+    private List<RelatedMetadataElementSummary> managedProjects   = null; // ProjectHierarchy (0130)
+
     private List<RelatedMetadataElementSummary> likes              = null;
     private RelatedMetadataElementSummary       likedElement       = null;
     private List<RelatedMetadataElementSummary> informalTags       = null;
@@ -327,6 +332,11 @@ public class AttributedMetadataElement implements MetadataElement
             commissionedElements      = template.getCommissionedElements();
             commissionedBy            = template.getCommissionedBy();
 
+            dependsOnProjects = template.getDependsOnProjects();
+            dependentProjects = template.getDependentProjects();
+            managedProjects   = template.getManagedProjects();
+            managingProjects  = template.getManagingProjects();
+
             likes              = template.getLikes();
             likedElement       = template.getLikedElement();
             reviews            = template.getReviews();
@@ -477,7 +487,6 @@ public class AttributedMetadataElement implements MetadataElement
             /*
              * Others
              */
-
             otherRelatedElements      = template.getOtherRelatedElements();
             relatedBy                 = template.getRelatedBy();
             mermaidGraph              = template.getMermaidGraph();
@@ -2026,6 +2035,94 @@ public class AttributedMetadataElement implements MetadataElement
     {
         return commissionedBy;
     }
+
+    /**
+     * Return the list of projects that need this project to complete.
+     *
+     * @return list of project summaries
+     */
+    public List<RelatedMetadataElementSummary> getDependentProjects()
+    {
+        return dependentProjects;
+    }
+
+
+    /**
+     * Set up the list of projects that need this project to complete.
+     *
+     * @param dependentProjects list of project summaries
+     */
+    public void setDependentProjects(List<RelatedMetadataElementSummary> dependentProjects)
+    {
+        this.dependentProjects = dependentProjects;
+    }
+
+
+    /**
+     * Return the list of projects that this project needs to complete.
+     *
+     * @return list of project summaries
+     */
+    public List<RelatedMetadataElementSummary> getDependsOnProjects()
+    {
+        return dependsOnProjects;
+    }
+
+
+    /**
+     * Set up the list of projects that this project needs to complete.
+     *
+     * @param dependsOnProjects list of project summaries
+     */
+    public void setDependsOnProjects(List<RelatedMetadataElementSummary> dependsOnProjects)
+    {
+        this.dependsOnProjects = dependsOnProjects;
+    }
+
+
+    /**
+     * Return the governance definitions that support this governance definition.
+     *
+     * @return list of governance definition stubs
+     */
+    public List<RelatedMetadataElementSummary> getManagedProjects()
+    {
+        return managedProjects;
+    }
+
+
+    /**
+     * Set up the governance definitions that support this governance definition.
+     *
+     * @param managedProjects list of governance definition stubs
+     */
+    public void setManagedProjects(List<RelatedMetadataElementSummary> managedProjects)
+    {
+        this.managedProjects = managedProjects;
+    }
+
+
+    /**
+     * Return parent projects.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getManagingProjects()
+    {
+        return managingProjects;
+    }
+
+
+    /**
+     * Set up parent projects.
+     *
+     * @param managingProjects list
+     */
+    public void setManagingProjects(List<RelatedMetadataElementSummary> managingProjects)
+    {
+        this.managingProjects = managingProjects;
+    }
+
 
     public void setCommissionedBy(List<RelatedMetadataElementSummary> commissionedBy)
     {

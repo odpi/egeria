@@ -8,10 +8,13 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +44,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Create a governance definition.
      *
      * @param serverName                 name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the governance definition.
      *
      * @return unique identifier of the newly created element
@@ -50,7 +53,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createGovernanceDefinition(String                serverName,
-                                                   String                viewServiceURLMarker,
+                                                   String                urlMarker,
                                                    NewElementRequestBody requestBody)
     {
         final String methodName = "createGovernanceDefinition";
@@ -70,7 +73,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+                GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof GovernanceDefinitionProperties properties)
                 {
@@ -105,7 +108,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -114,7 +117,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGovernanceDefinitionFromTemplate(String              serverName,
-                                                               String              viewServiceURLMarker,
+                                                               String              urlMarker,
                                                                TemplateRequestBody requestBody)
     {
         final String methodName = "createGovernanceDefinitionFromTemplate";
@@ -134,7 +137,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+                GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createGovernanceDefinitionFromTemplate(userId,
                                                                                 requestBody,
@@ -162,7 +165,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Update the properties of a governance definition.
      *
      * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID unique identifier of the governance definition (returned from create)
      * @param requestBody     properties for the new element.
      *
@@ -172,7 +175,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateGovernanceDefinition(String                   serverName,
-                                                   String                   viewServiceURLMarker,
+                                                   String                   urlMarker,
                                                    String                   governanceDefinitionGUID,
                                                    UpdateElementRequestBody requestBody)
     {
@@ -193,7 +196,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+                GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof GovernanceDefinitionProperties governanceDefinitionProperties)
                 {
@@ -233,7 +236,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Attach two peer governance definitions.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param governanceDefinitionOneGUID unique identifier of the first governance definition
      * @param governanceDefinitionTwoGUID unique identifier of the second governance definition
      * @param relationshipTypeName name of the relationship to use
@@ -245,7 +248,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkPeerDefinitions(String                  serverName,
-                                            String                  viewServiceURLMarker,
+                                            String                  urlMarker,
                                             String                  governanceDefinitionOneGUID,
                                             String                  governanceDefinitionTwoGUID,
                                             String                  relationshipTypeName,
@@ -265,7 +268,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -319,7 +322,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Detach a governance definition from one of its peers.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param governanceDefinitionOneGUID unique identifier of the first governance definition
      * @param governanceDefinitionTwoGUID unique identifier of the second governance definition
      * @param relationshipTypeName name of the relationship to use
@@ -331,7 +334,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachPeerDefinitions(String                   serverName,
-                                              String                   viewServiceURLMarker,
+                                              String                   urlMarker,
                                               String                   governanceDefinitionOneGUID,
                                               String                   governanceDefinitionTwoGUID,
                                               String                   relationshipTypeName,
@@ -352,7 +355,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachPeerDefinitions(userId,
                                           governanceDefinitionOneGUID,
@@ -375,7 +378,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Attach a supporting governance definition.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param governanceDefinitionOneGUID unique identifier of the first governance definition
      * @param governanceDefinitionTwoGUID unique identifier of the second governance definition
      * @param relationshipTypeName name of the relationship to use
@@ -387,7 +390,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse attachSupportingDefinition(String                  serverName,
-                                                   String                  viewServiceURLMarker,
+                                                   String                  urlMarker,
                                                    String                  governanceDefinitionOneGUID,
                                                    String                  governanceDefinitionTwoGUID,
                                                    String                  relationshipTypeName,
@@ -407,7 +410,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -458,7 +461,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Detach a governance definition from a supporting governance definition.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param governanceDefinitionOneGUID unique identifier of the first governance definition
      * @param governanceDefinitionTwoGUID unique identifier of the second governance definition
      * @param relationshipTypeName name of the relationship to use
@@ -470,7 +473,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachSupportingDefinition(String                   serverName,
-                                                   String                   viewServiceURLMarker,
+                                                   String                   urlMarker,
                                                    String                   governanceDefinitionOneGUID,
                                                    String                   governanceDefinitionTwoGUID,
                                                    String                   relationshipTypeName,
@@ -491,7 +494,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachSupportingDefinition(userId,
                                                governanceDefinitionOneGUID,
@@ -515,7 +518,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Link a governance definition to an element using the GovernedBy relationship.
      *
      * @param serverName  name of the server instance to connect to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to link
      * @param definitionGUID identifier of the governance definition to link
      * @param requestBody properties for relationship request
@@ -526,7 +529,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addGovernanceDefinitionToElement(String                  serverName,
-                                                         String                   viewServiceURLMarker,
+                                                         String                   urlMarker,
                                                          String                  elementGUID,
                                                          String                  definitionGUID,
                                                          NewRelationshipRequestBody requestBody)
@@ -545,7 +548,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody == null)
             {
@@ -590,7 +593,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Remove the GovernedBy relationship between a governance definition and an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to update
      * @param definitionGUID identifier of the governance definition to link
      * @param requestBody properties for relationship request
@@ -601,7 +604,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse removeGovernanceDefinitionFromElement(String            serverName,
-                                                              String            viewServiceURLMarker,
+                                                              String            urlMarker,
                                                               String            elementGUID,
                                                               String            definitionGUID,
                                                               DeleteRequestBody requestBody)
@@ -620,7 +623,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             handler.removeGovernanceDefinitionFromElement(userId, elementGUID, definitionGUID, requestBody);
         }
@@ -635,6 +638,138 @@ public class GovernanceOfficerRESTServices extends TokenController
 
 
 
+    /**
+     * Attach a product manager to a digital product.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID unique identifier of the actor
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkAssignmentScope(String                     serverName,
+                                            String                     urlMarker,
+                                            String                     scopeElementGUID,
+                                            String                     actorGUID,
+                                            NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAssignmentScope";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof AssignmentScopeProperties properties)
+                {
+                    handler.linkAssignmentScope(userId,
+                                               scopeElementGUID,
+                                               actorGUID,
+                                               requestBody,
+                                               properties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkAssignmentScope(userId,
+                                               scopeElementGUID,
+                                               actorGUID,
+                                               requestBody,
+                                               null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkAssignmentScope(userId,
+                                           scopeElementGUID,
+                                           actorGUID,
+                                           requestBody,
+                                           null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a product manager from a digital product.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID unique identifier of the actor
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachAssignmentScope(String            serverName,
+                                              String            urlMarker,
+                                              String            scopeElementGUID,
+                                              String            actorGUID,
+                                              DeleteRequestBody requestBody)
+    {
+        final String methodName = "detachAssignmentScope";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAssignmentScope(userId,
+                                          scopeElementGUID,
+                                          actorGUID,
+                                          requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
 
     /* =======================================
      * Licenses
@@ -644,7 +779,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Link an element to a license type and include details of the license in the relationship properties.
      *
      * @param serverName name of the server instance to connect to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element being licensed
      * @param licenseTypeGUID unique identifier for the license type
      * @param requestBody the properties of the license
@@ -655,7 +790,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException security access problem
      */
     public GUIDResponse licenseElement(String                     serverName,
-                                       String                     viewServiceURLMarker,
+                                       String                     urlMarker,
                                        String                     elementGUID,
                                        String                     licenseTypeGUID,
                                        NewRelationshipRequestBody requestBody)
@@ -674,7 +809,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -711,7 +846,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * licenses for the same license type.
      *
      * @param serverName name of the server instance to connect to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param licenseGUID unique identifier for the license type
      * @param requestBody the properties of the license
      *
@@ -721,7 +856,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException security access problem
      */
     public VoidResponse updateLicense(String                        serverName,
-                                      String                        viewServiceURLMarker,
+                                      String                        urlMarker,
                                       String                        licenseGUID,
                                       UpdateRelationshipRequestBody requestBody)
     {
@@ -739,7 +874,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -771,7 +906,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Remove the license for an element.
      *
      * @param serverName name of the server instance to connect to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param licenseGUID unique identifier for the license type
      * @param requestBody external source information.
      *
@@ -781,7 +916,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException security access problem
      */
     public VoidResponse unlicenseElement(String            serverName,
-                                         String            viewServiceURLMarker,
+                                         String            urlMarker,
                                          String            licenseGUID,
                                          DeleteRequestBody requestBody)
     {
@@ -799,7 +934,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             handler.unlicenseElement(userId, licenseGUID, requestBody);
         }
@@ -822,7 +957,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Link an element to a certification type and include details of the certification in the relationship properties.
      *
      * @param serverName name of the server instance to connect to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element being certified
      * @param certificationTypeGUID unique identifier for the certification type
      * @param requestBody the properties of the certification
@@ -833,7 +968,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException security access problem
      */
     public GUIDResponse certifyElement(String                     serverName,
-                                       String                     viewServiceURLMarker,
+                                       String                     urlMarker,
                                        String                     elementGUID,
                                        String                     certificationTypeGUID,
                                        NewRelationshipRequestBody requestBody)
@@ -852,7 +987,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -889,7 +1024,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * certifications for the same certification type.
      *
      * @param serverName name of the server instance to connect to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param certificationGUID unique identifier for the certification type
      * @param requestBody the properties of the certification
      *
@@ -899,7 +1034,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException security access problem
      */
     public VoidResponse updateCertification(String                        serverName,
-                                            String                        viewServiceURLMarker,
+                                            String                        urlMarker,
                                             String                        certificationGUID,
                                             UpdateRelationshipRequestBody requestBody)
     {
@@ -917,7 +1052,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -952,7 +1087,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Remove the certification for an element.
      *
      * @param serverName name of the server instance to connect to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param certificationGUID unique identifier for the certification type
      * @param requestBody external source information.
      *
@@ -962,7 +1097,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException security access problem
      */
     public VoidResponse decertifyElement(String            serverName,
-                                         String            viewServiceURLMarker,
+                                         String            urlMarker,
                                          String            certificationGUID,
                                          DeleteRequestBody requestBody)
     {
@@ -980,7 +1115,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             handler.decertifyElement(userId, certificationGUID, requestBody);
         }
@@ -997,7 +1132,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Delete a governance definition.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID  unique identifier of the element to delete
      * @param requestBody  description of the relationship.
      *
@@ -1007,7 +1142,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteGovernanceDefinition(String                   serverName,
-                                                   String                   viewServiceURLMarker,
+                                                   String                   urlMarker,
                                                    String                   governanceDefinitionGUID,
                                                    DeleteRequestBody requestBody)
     {
@@ -1026,7 +1161,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             handler.deleteGovernanceDefinition(userId, governanceDefinitionGUID, requestBody);
         }
@@ -1044,7 +1179,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Retrieve the list of governance definition metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1053,7 +1188,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getGovernanceDefinitionsByName(String            serverName,
-                                                                           String            viewServiceURLMarker,
+                                                                           String            urlMarker,
                                                                            FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceDefinitionsByName";
@@ -1071,7 +1206,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1098,7 +1233,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Retrieve the list of governance definition metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
@@ -1108,7 +1243,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getGovernanceDefinitionByGUID(String             serverName,
-                                                                         String             viewServiceURLMarker,
+                                                                         String             urlMarker,
                                                                          String             governanceDefinitionGUID,
                                                                          GetRequestBody requestBody)
     {
@@ -1127,7 +1262,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getGovernanceDefinitionByGUID(userId, governanceDefinitionGUID, requestBody));
         }
@@ -1145,7 +1280,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Retrieve the list of governance definition metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1154,7 +1289,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findGovernanceDefinitions(String                  serverName,
-                                                                      String                  viewServiceURLMarker,
+                                                                      String                  urlMarker,
                                                                       SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceDefinitions";
@@ -1172,7 +1307,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1199,7 +1334,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Return the governance definition associated with a unique identifier and the other governance definitions linked to it.
      *
      * @param serverName name of the server instance to connect to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param governanceDefinitionGUID unique identifier of the governance definition
      * @param requestBody additional query parameters
      *
@@ -1209,7 +1344,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  PropertyServerException the metadata service has problems
      */
     public OpenMetadataRootElementResponse getGovernanceDefinitionInContext(String             serverName,
-                                                                            String             viewServiceURLMarker,
+                                                                            String             urlMarker,
                                                                             String             governanceDefinitionGUID,
                                                                             ResultsRequestBody requestBody)
     {
@@ -1228,7 +1363,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getGovernanceDefinitionInContext(userId,
                                                                          governanceDefinitionGUID,
@@ -1248,7 +1383,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship. Request body is optional.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param designGUID unique identifier of the design object such as a governance definition or solution component
      * @param implementationGUID unique identifier of the second governance definition
      * @param requestBody  description of the relationship.
@@ -1259,7 +1394,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkDesignToImplementation(String                  serverName,
-                                                   String                  viewServiceURLMarker,
+                                                   String                  urlMarker,
                                                    String                  designGUID,
                                                    String                  implementationGUID,
                                                    NewRelationshipRequestBody requestBody)
@@ -1278,7 +1413,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1326,7 +1461,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Detach a governance definition from its implementation.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param designGUID      unique identifier of the design object such as a governance definition or solution component
      * @param implementationGUID unique identifier of the second governance definition
      * @param requestBody  description of the relationship.
@@ -1337,7 +1472,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachDesignFromImplementation(String                   serverName,
-                                                       String                   viewServiceURLMarker,
+                                                       String                   urlMarker,
                                                        String                   designGUID,
                                                        String                   implementationGUID,
                                                        DeleteRequestBody requestBody)
@@ -1357,7 +1492,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachDesignFromImplementation(userId, designGUID, implementationGUID, requestBody);
         }
@@ -1376,7 +1511,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Attach a design object such as a solution component or governance definition to one of its implementation resource via the ImplementationResource relationship. Request body is optional.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param designGUID unique identifier of the design object such as a governance definition or solution component
      * @param implementationResourceGUID unique identifier of the implementation resource
      * @param requestBody  description of the relationship.
@@ -1387,7 +1522,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkImplementationResource(String                  serverName,
-                                                   String                  viewServiceURLMarker,
+                                                   String                  urlMarker,
                                                    String                  designGUID,
                                                    String                  implementationResourceGUID,
                                                    NewRelationshipRequestBody requestBody)
@@ -1406,7 +1541,7 @@ public class GovernanceOfficerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1454,7 +1589,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * Detach a design object such as a governance definition or solution component from one of its implementation resources
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param designGUID      unique identifier of the design object such as a governance definition or solution component
      * @param implementationResourceGUID unique identifier of the implementation resource
      * @param requestBody  description of the relationship.
@@ -1465,7 +1600,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachImplementationResource(String                   serverName,
-                                                     String                   viewServiceURLMarker,
+                                                     String                   urlMarker,
                                                      String                   designGUID,
                                                      String                   implementationResourceGUID,
                                                      DeleteRequestBody requestBody)
@@ -1485,7 +1620,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachImplementationResource(userId, designGUID, implementationResourceGUID, requestBody);
         }

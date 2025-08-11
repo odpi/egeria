@@ -1267,7 +1267,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
     }
 
 
-
     /**
      * Returns the list of assets with a particular assetGUID.
      *
@@ -1436,6 +1435,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
         return super.getRootElementByUniqueName(userId, name, propertyName, getOptions, methodName);
     }
+
 
     /**
      * Retrieve the list of assets metadata elements that contain the search string and show which solution components (if any) are attached to it.

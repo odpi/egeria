@@ -83,7 +83,7 @@ public class MyProfileInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the organization management client.  This client is from Community Profile OMAS and is for maintaining information .
+     * Return the actor profile handler.
      *
      * @return client
      */
@@ -94,7 +94,7 @@ public class MyProfileInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the to do management client.  This client is from Community Profile OMAS and is for maintaining information .
+     * Return the asset handler.
      *
      * @return client
      */

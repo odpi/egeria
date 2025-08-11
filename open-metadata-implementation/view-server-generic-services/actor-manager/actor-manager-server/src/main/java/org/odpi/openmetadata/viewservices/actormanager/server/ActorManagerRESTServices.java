@@ -48,7 +48,7 @@ public class ActorManagerRESTServices extends TokenController
      * Create an actor profile.
      *
      * @param serverName                 name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the actor profile.
      *
      * @return unique identifier of the newly created element
@@ -57,7 +57,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createActorProfile(String                serverName,
-                                           String                viewServiceURLMarker,
+                                           String                urlMarker,
                                            NewElementRequestBody requestBody)
     {
         final String methodName = "createActorProfile";
@@ -77,7 +77,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof ActorProfileProperties actorProfileProperties)
                 {
@@ -112,7 +112,7 @@ public class ActorManagerRESTServices extends TokenController
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -121,7 +121,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createActorProfileFromTemplate(String              serverName,
-                                                       String              viewServiceURLMarker,
+                                                       String              urlMarker,
                                                        TemplateRequestBody requestBody)
     {
         final String methodName = "createActorProfileFromTemplate";
@@ -141,7 +141,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createActorProfileFromTemplate(userId,
                                                                         requestBody,
@@ -169,7 +169,7 @@ public class ActorManagerRESTServices extends TokenController
      * Update the properties of an actor profile.
      *
      * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param actorProfileGUID unique identifier of the actor profile (returned from create)
      * @param requestBody     properties for the new element.
      *
@@ -179,7 +179,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateActorProfile(String                   serverName,
-                                           String                   viewServiceURLMarker,
+                                           String                   urlMarker,
                                            String                   actorProfileGUID,
                                            UpdateElementRequestBody requestBody)
     {
@@ -200,7 +200,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof ActorProfileProperties actorProfileProperties)
                 {
@@ -233,7 +233,7 @@ public class ActorManagerRESTServices extends TokenController
      * Attach a profile to a location.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param actorProfileGUID       unique identifier of the actor profile
      * @param locationGUID           unique identifier of the location
      * @param requestBody  description of the relationship.
@@ -244,7 +244,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkLocationToProfile(String                  serverName,
-                                              String                  viewServiceURLMarker,
+                                              String                  urlMarker,
                                               String                  actorProfileGUID,
                                               String                  locationGUID,
                                               NewRelationshipRequestBody requestBody)
@@ -263,7 +263,7 @@ public class ActorManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -306,7 +306,7 @@ public class ActorManagerRESTServices extends TokenController
      * Detach an actor profile from a location.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param actorProfileGUID       unique identifier of the actor profile
      * @param locationGUID           unique identifier of the location
      * @param requestBody  description of the relationship.
@@ -317,7 +317,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachLocationFromProfile(String                   serverName,
-                                                  String                   viewServiceURLMarker,
+                                                  String                   urlMarker,
                                                   String                   actorProfileGUID,
                                                   String                   locationGUID,
                                                   DeleteRequestBody requestBody)
@@ -337,253 +337,9 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachLocationFromProfile(userId, actorProfileGUID, locationGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Attach a person profile to one of its peers.
-     *
-     * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
-     * @param personOneGUID unique identifier of the first actor profile
-     * @param personTwoGUID unique identifier of the second actor profile
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse linkPeerPerson(String                  serverName,
-                                       String                  viewServiceURLMarker,
-                                       String                  personOneGUID,
-                                       String                  personTwoGUID,
-                                       NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "linkPeerPerson";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof PeerProperties peerProperties)
-                {
-                    handler.linkPeerPerson(userId,
-                                           personOneGUID,
-                                           personTwoGUID,
-                                           requestBody,
-                                           peerProperties);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(PeerProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
-                handler.linkPeerPerson(userId,
-                                       personOneGUID,
-                                       personTwoGUID,
-                                       metadataSourceOptions,
-                                       null);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Detach a person profile from one of its peers.
-     *
-     * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
-     * @param personOneGUID          unique identifier of the first person profile
-     * @param personTwoGUID          unique identifier of the second person profile
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse detachPeerPerson(String                   serverName,
-                                         String                   viewServiceURLMarker,
-                                         String                   personOneGUID,
-                                         String                   personTwoGUID,
-                                         DeleteRequestBody requestBody)
-    {
-        final String methodName = "detachPeerPerson";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-            handler.detachPeerPerson(userId, personOneGUID, personTwoGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Attach a super team to a subteam.
-     *
-     * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
-     * @param superTeamGUID          unique identifier of the super team
-     * @param subteamGUID            unique identifier of the subteam
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse linkTeamStructure(String                  serverName,
-                                          String                  viewServiceURLMarker,
-                                          String                  superTeamGUID,
-                                          String                  subteamGUID,
-                                          NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "linkTeamStructure";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof TeamStructureProperties teamStructureProperties)
-                {
-                    handler.linkTeamStructure(userId,
-                                              superTeamGUID,
-                                              subteamGUID,
-                                              requestBody,
-                                              teamStructureProperties);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(TeamStructureProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
-                handler.linkTeamStructure(userId,
-                                          superTeamGUID,
-                                          subteamGUID,
-                                          metadataSourceOptions,
-                                          null);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Detach a super team from a subteam.
-     *
-     * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
-     * @param superTeamGUID          unique identifier of the super team
-     * @param subteamGUID            unique identifier of the subteam
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse detachTeamStructure(String                   serverName,
-                                            String                   viewServiceURLMarker,
-                                            String                   superTeamGUID,
-                                            String                   subteamGUID,
-                                            DeleteRequestBody requestBody)
-    {
-        final String methodName = "detachTeamStructure";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-            handler.detachTeamStructure(userId, superTeamGUID, subteamGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -599,7 +355,7 @@ public class ActorManagerRESTServices extends TokenController
      * Attach an asset to an IT profile.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param assetGUID       unique identifier of the asset
      * @param itProfileGUID            unique identifier of the IT profile
      * @param requestBody  description of the relationship.
@@ -610,7 +366,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkAssetToProfile(String                  serverName,
-                                           String                  viewServiceURLMarker,
+                                           String                  urlMarker,
                                            String                  assetGUID,
                                            String                  itProfileGUID,
                                            NewRelationshipRequestBody requestBody)
@@ -629,7 +385,7 @@ public class ActorManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -672,7 +428,7 @@ public class ActorManagerRESTServices extends TokenController
      * Detach an asset from an IT profile.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param assetGUID       unique identifier of the asset
      * @param itProfileGUID            unique identifier of the IT profile
      * @param requestBody  description of the relationship.
@@ -683,7 +439,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAssetFromProfile(String                   serverName,
-                                               String                   viewServiceURLMarker,
+                                               String                   urlMarker,
                                                String                   assetGUID,
                                                String                   itProfileGUID,
                                                DeleteRequestBody requestBody)
@@ -703,253 +459,9 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachAssetFromProfile(userId, assetGUID, itProfileGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Attach a team to its membership role.
-     *
-     * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse linkTeamToMembershipRole(String                  serverName,
-                                                 String                  viewServiceURLMarker,
-                                                 String                  teamGUID,
-                                                 String                  personRoleGUID,
-                                                 NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "linkTeamToMembershipRole";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof TeamMembershipProperties teamMembershipProperties)
-                {
-                    handler.linkTeamToMembershipRole(userId,
-                                                     teamGUID,
-                                                     personRoleGUID,
-                                                     requestBody,
-                                                     teamMembershipProperties);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(TeamMembershipProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
-                handler.linkTeamToMembershipRole(userId,
-                                                 teamGUID,
-                                                 personRoleGUID,
-                                                 metadataSourceOptions,
-                                                 null);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Detach a team profile from its membership role.
-     *
-     * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse detachTeamFromMembershipRole(String                   serverName,
-                                                     String                   viewServiceURLMarker,
-                                                     String                   teamGUID,
-                                                     String                   personRoleGUID,
-                                                     DeleteRequestBody requestBody)
-    {
-        final String methodName = "detachTeamFromMembershipRole";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-            handler.detachTeamFromMembershipRole(userId, teamGUID, personRoleGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Attach a team to its leadership role.
-     *
-     * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse linkTeamToLeadershipRole(String                  serverName,
-                                                 String                  viewServiceURLMarker,
-                                                 String                  teamGUID,
-                                                 String                  personRoleGUID,
-                                                 NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "attachSupportingDefinition";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof TeamLeadershipProperties teamLeadershipProperties)
-                {
-                    handler.linkTeamToLeadershipRole(userId,
-                                                     teamGUID,
-                                                     personRoleGUID,
-                                                     requestBody,
-                                                     teamLeadershipProperties);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(TeamLeadershipProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
-                handler.linkTeamToLeadershipRole(userId,
-                                                 teamGUID,
-                                                 personRoleGUID,
-                                                 metadataSourceOptions,
-                                                 null);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Detach a team profile from its leadership role.
-     *
-     * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse detachTeamFromLeadershipRole(String                   serverName,
-                                                     String                   viewServiceURLMarker,
-                                                     String                   teamGUID,
-                                                     String                   personRoleGUID,
-                                                     DeleteRequestBody requestBody)
-    {
-        final String methodName = "detachTeamFromLeadershipRole";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
-
-            handler.detachTeamFromLeadershipRole(userId, teamGUID, personRoleGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -965,7 +477,7 @@ public class ActorManagerRESTServices extends TokenController
      * Delete an actor profile.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param actorProfileGUID  unique identifier of the element to delete
      * @param requestBody  description of the relationship.
      *
@@ -975,7 +487,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteActorProfile(String                   serverName,
-                                           String                   viewServiceURLMarker,
+                                           String                   urlMarker,
                                            String                   actorProfileGUID,
                                            DeleteRequestBody requestBody)
     {
@@ -994,7 +506,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
             handler.deleteActorProfile(userId, actorProfileGUID, requestBody);
         }
@@ -1012,7 +524,7 @@ public class ActorManagerRESTServices extends TokenController
      * Retrieve the list of actor profile metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1021,7 +533,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getActorProfilesByName(String            serverName,
-                                                                   String            viewServiceURLMarker,
+                                                                   String            urlMarker,
                                                                    FilterRequestBody requestBody)
     {
         final String methodName = "getActorProfilesByName";
@@ -1039,7 +551,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1064,7 +576,7 @@ public class ActorManagerRESTServices extends TokenController
      * Retrieve the list of actor profile metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param actorProfileGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
@@ -1074,7 +586,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getActorProfileByGUID(String             serverName,
-                                                                 String             viewServiceURLMarker,
+                                                                 String             urlMarker,
                                                                  String             actorProfileGUID,
                                                                  GetRequestBody requestBody)
     {
@@ -1093,7 +605,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getActorProfileByGUID(userId, actorProfileGUID, requestBody));
         }
@@ -1111,7 +623,7 @@ public class ActorManagerRESTServices extends TokenController
      * Retrieve the list of actor profile metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1120,7 +632,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findActorProfiles(String                  serverName,
-                                                              String                  viewServiceURLMarker,
+                                                              String                  urlMarker,
                                                               SearchStringRequestBody requestBody)
     {
         final String methodName = "findActorProfiles";
@@ -1138,7 +650,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
             response.setElements(handler.findActorProfiles(userId, requestBody.getSearchString(), requestBody));
         }
@@ -1156,7 +668,7 @@ public class ActorManagerRESTServices extends TokenController
      * Create an actor role.
      *
      * @param serverName                 name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the actor role.
      *
      * @return unique identifier of the newly created element
@@ -1165,7 +677,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createActorRole(String                serverName,
-                                        String                viewServiceURLMarker,
+                                        String                urlMarker,
                                         NewElementRequestBody requestBody)
     {
         final String methodName = "createActorRole";
@@ -1185,7 +697,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof ActorRoleProperties actorRoleProperties)
                 {
@@ -1220,7 +732,7 @@ public class ActorManagerRESTServices extends TokenController
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -1229,7 +741,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createActorRoleFromTemplate(String              serverName,
-                                                    String              viewServiceURLMarker,
+                                                    String              urlMarker,
                                                     TemplateRequestBody requestBody)
     {
         final String methodName = "createActorRoleFromTemplate";
@@ -1249,7 +761,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createActorRoleFromTemplate(userId,
                                                                      requestBody,
@@ -1277,7 +789,7 @@ public class ActorManagerRESTServices extends TokenController
      * Update the properties of an actor role.
      *
      * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param actorRoleGUID unique identifier of the actor role (returned from create)
      * @param requestBody     properties for the new element.
      *
@@ -1287,7 +799,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateActorRole(String                   serverName,
-                                        String                   viewServiceURLMarker,
+                                        String                   urlMarker,
                                         String                   actorRoleGUID,
                                         UpdateElementRequestBody requestBody)
     {
@@ -1308,7 +820,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof ActorRoleProperties actorRoleProperties)
                 {
@@ -1341,7 +853,7 @@ public class ActorManagerRESTServices extends TokenController
      * Attach a team role to a team profile.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param personRoleGUID       unique identifier of the person role
      * @param personProfileGUID            unique identifier of the person profile
      * @param requestBody  description of the relationship.
@@ -1352,7 +864,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkPersonRoleToProfile(String                  serverName,
-                                                String                  viewServiceURLMarker,
+                                                String                  urlMarker,
                                                 String                  personRoleGUID,
                                                 String                  personProfileGUID,
                                                 NewRelationshipRequestBody requestBody)
@@ -1371,7 +883,7 @@ public class ActorManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1415,7 +927,7 @@ public class ActorManagerRESTServices extends TokenController
      * Detach a team role from a team profile.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param personRoleGUID       unique identifier of the person role
      * @param personProfileGUID            unique identifier of the person profile
      * @param requestBody  description of the relationship.
@@ -1426,7 +938,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachPersonRoleFromProfile(String                   serverName,
-                                                    String                   viewServiceURLMarker,
+                                                    String                   urlMarker,
                                                     String                   personRoleGUID,
                                                     String                   personProfileGUID,
                                                     DeleteRequestBody requestBody)
@@ -1446,7 +958,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachPersonRoleFromProfile(userId, personRoleGUID, personProfileGUID, requestBody);
         }
@@ -1464,7 +976,7 @@ public class ActorManagerRESTServices extends TokenController
      * Attach a team role to a team profile.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param teamRoleGUID           unique identifier of the team role
      * @param teamProfileGUID        unique identifier of the team profile
      * @param requestBody  description of the relationship.
@@ -1475,7 +987,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkTeamRoleToProfile(String                  serverName,
-                                              String                  viewServiceURLMarker,
+                                              String                  urlMarker,
                                               String                  teamRoleGUID,
                                               String                  teamProfileGUID,
                                               NewRelationshipRequestBody requestBody)
@@ -1494,7 +1006,7 @@ public class ActorManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1537,7 +1049,7 @@ public class ActorManagerRESTServices extends TokenController
      * Detach a team role from a team profile.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param teamRoleGUID           unique identifier of the team role
      * @param teamProfileGUID        unique identifier of the team profile
      * @param requestBody  description of the relationship.
@@ -1548,7 +1060,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachTeamRoleFromProfile(String                   serverName,
-                                                  String                   viewServiceURLMarker,
+                                                  String                   urlMarker,
                                                   String                   teamRoleGUID,
                                                   String                   teamProfileGUID,
                                                   DeleteRequestBody requestBody)
@@ -1568,7 +1080,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachTeamRoleFromProfile(userId, teamRoleGUID, teamProfileGUID, requestBody);
         }
@@ -1586,7 +1098,7 @@ public class ActorManagerRESTServices extends TokenController
      * Attach an IT profile role to an IT profile.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param itProfileRoleGUID      unique identifier of the IT profile role
      * @param itProfileGUID          unique identifier of the IT profile
      * @param requestBody  description of the relationship.
@@ -1597,7 +1109,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkITProfileRoleToProfile(String                  serverName,
-                                                   String                  viewServiceURLMarker,
+                                                   String                  urlMarker,
                                                    String                  itProfileRoleGUID,
                                                    String                  itProfileGUID,
                                                    NewRelationshipRequestBody requestBody)
@@ -1617,7 +1129,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1661,7 +1173,7 @@ public class ActorManagerRESTServices extends TokenController
      * Detach an IT profile role from an IT profile.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param itProfileRoleGUID      unique identifier of the IT profile role
      * @param itProfileGUID          unique identifier of the IT profile
      * @param requestBody  description of the relationship.
@@ -1672,7 +1184,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachITProfileRoleFromProfile(String                   serverName,
-                                                       String                   viewServiceURLMarker,
+                                                       String                   urlMarker,
                                                        String                   itProfileRoleGUID,
                                                        String                   itProfileGUID,
                                                        DeleteRequestBody requestBody)
@@ -1692,7 +1204,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachITProfileRoleFromProfile(userId, itProfileRoleGUID, itProfileGUID, requestBody);
         }
@@ -1710,7 +1222,7 @@ public class ActorManagerRESTServices extends TokenController
      * Delete an actor role.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param actorRoleGUID  unique identifier of the element to delete
      * @param requestBody  description of the relationship.
      *
@@ -1720,7 +1232,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteActorRole(String                   serverName,
-                                        String                   viewServiceURLMarker,
+                                        String                   urlMarker,
                                         String                   actorRoleGUID,
                                         DeleteRequestBody requestBody)
     {
@@ -1739,7 +1251,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             handler.deleteActorRole(userId, actorRoleGUID, requestBody);
         }
@@ -1757,7 +1269,7 @@ public class ActorManagerRESTServices extends TokenController
      * Retrieve the list of actor role metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1766,7 +1278,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getActorRolesByName(String            serverName,
-                                                                String            viewServiceURLMarker,
+                                                                String            urlMarker,
                                                                 FilterRequestBody requestBody)
     {
         final String methodName = "getActorRolesByName";
@@ -1784,7 +1296,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1809,7 +1321,7 @@ public class ActorManagerRESTServices extends TokenController
      * Retrieve the list of actor role metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param actorRoleGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
@@ -1819,7 +1331,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getActorRoleByGUID(String             serverName,
-                                                              String             viewServiceURLMarker,
+                                                              String             urlMarker,
                                                               String             actorRoleGUID,
                                                               GetRequestBody requestBody)
     {
@@ -1838,7 +1350,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getActorRoleByGUID(userId, actorRoleGUID, requestBody));
         }
@@ -1856,7 +1368,7 @@ public class ActorManagerRESTServices extends TokenController
      * Retrieve the list of actor role metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1865,7 +1377,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findActorRoles(String                  serverName,
-                                                           String                  viewServiceURLMarker,
+                                                           String                  urlMarker,
                                                            SearchStringRequestBody requestBody)
     {
         final String methodName = "findActorRoles";
@@ -1883,7 +1395,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ActorRoleHandler handler = instanceHandler.getActorRoleHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1912,7 +1424,7 @@ public class ActorManagerRESTServices extends TokenController
      * Create a user identity.
      *
      * @param serverName                 name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the user identity.
      *
      * @return unique identifier of the newly created element
@@ -1921,7 +1433,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createUserIdentity(String                serverName,
-                                           String                viewServiceURLMarker,
+                                           String                urlMarker,
                                            NewElementRequestBody requestBody)
     {
         final String methodName = "createUserIdentity";
@@ -1941,7 +1453,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+                UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof UserIdentityProperties userIdentityProperties)
                 {
@@ -1976,7 +1488,7 @@ public class ActorManagerRESTServices extends TokenController
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -1985,7 +1497,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createUserIdentityFromTemplate(String              serverName,
-                                                       String              viewServiceURLMarker,
+                                                       String              urlMarker,
                                                        TemplateRequestBody requestBody)
     {
         final String methodName = "createUserIdentityFromTemplate";
@@ -2005,7 +1517,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+                UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createUserIdentityFromTemplate(userId,
                                                                         requestBody,
@@ -2033,7 +1545,7 @@ public class ActorManagerRESTServices extends TokenController
      * Update the properties of a user identity.
      *
      * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param userIdentityGUID unique identifier of the user identity (returned from create)
      * @param requestBody     properties for the new element.
      *
@@ -2043,7 +1555,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateUserIdentity(String                   serverName,
-                                           String                   viewServiceURLMarker,
+                                           String                   urlMarker,
                                            String                   userIdentityGUID,
                                            UpdateElementRequestBody requestBody)
     {
@@ -2064,7 +1576,7 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+                UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof UserIdentityProperties userIdentityProperties)
                 {
@@ -2097,7 +1609,7 @@ public class ActorManagerRESTServices extends TokenController
      * Attach a profile to a user identity.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param userIdentityGUID unique identifier of the parent
      * @param profileGUID     unique identifier of the actor profile
      * @param requestBody  description of the relationship.
@@ -2108,7 +1620,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkIdentityToProfile(String                  serverName,
-                                              String                  viewServiceURLMarker,
+                                              String                  urlMarker,
                                               String                  userIdentityGUID,
                                               String                  profileGUID,
                                               NewRelationshipRequestBody requestBody)
@@ -2127,7 +1639,7 @@ public class ActorManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -2170,7 +1682,7 @@ public class ActorManagerRESTServices extends TokenController
      * Detach an actor profile from a user identity.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param userIdentityGUID    unique identifier of the parent actor profile
      * @param profileGUID    unique identifier of the nested actor profile
      * @param requestBody  description of the relationship.
@@ -2181,7 +1693,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachProfileIdentity(String                   serverName,
-                                              String                   viewServiceURLMarker,
+                                              String                   urlMarker,
                                               String                   userIdentityGUID,
                                               String                   profileGUID,
                                               DeleteRequestBody requestBody)
@@ -2201,7 +1713,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachProfileIdentity(userId, userIdentityGUID, profileGUID, requestBody);
         }
@@ -2219,7 +1731,7 @@ public class ActorManagerRESTServices extends TokenController
      * Add the SecurityGroupMembership classification to the user identity.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param userIdentityGUID unique identifier of the user identity
      * @param requestBody  description of the relationship.
      *
@@ -2229,7 +1741,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse addSecurityGroupMembership(String                    serverName,
-                                                   String                    viewServiceURLMarker,
+                                                   String                    urlMarker,
                                                    String                    userIdentityGUID,
                                                    NewClassificationRequestBody requestBody)
     {
@@ -2247,7 +1759,7 @@ public class ActorManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -2282,7 +1794,7 @@ public class ActorManagerRESTServices extends TokenController
      * Update the SecurityGroupMembership classification to the user identity.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param userIdentityGUID unique identifier of the user identity
      * @param requestBody  description of the relationship.
      *
@@ -2292,7 +1804,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateSecurityGroupMembership(String                          serverName,
-                                                      String                          viewServiceURLMarker,
+                                                      String                          urlMarker,
                                                       String                          userIdentityGUID,
                                                       UpdateClassificationRequestBody requestBody)
     {
@@ -2310,7 +1822,7 @@ public class ActorManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -2345,7 +1857,7 @@ public class ActorManagerRESTServices extends TokenController
      * Detach a user identity from a supporting user identity.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param userIdentityGUID unique identifier of the first user identity
      * @param requestBody  description of the relationship.
      *
@@ -2355,7 +1867,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse removeAllSecurityGroupMembership(String                    serverName,
-                                                         String                    viewServiceURLMarker,
+                                                         String                    urlMarker,
                                                          String                    userIdentityGUID,
                                                          MetadataSourceRequestBody requestBody)
     {
@@ -2374,7 +1886,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
             handler.removeAllSecurityGroupMembership(userId, userIdentityGUID, requestBody);
         }
@@ -2392,7 +1904,7 @@ public class ActorManagerRESTServices extends TokenController
      * Delete a user identity.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param userIdentityGUID  unique identifier of the element to delete
      * @param requestBody  description of the relationship.
      *
@@ -2402,7 +1914,7 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteUserIdentity(String                    serverName,
-                                           String                    viewServiceURLMarker,
+                                           String                    urlMarker,
                                            String                    userIdentityGUID,
                                            DeleteRequestBody requestBody)
     {
@@ -2421,7 +1933,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
             handler.deleteUserIdentity(userId, userIdentityGUID, requestBody);
         }
@@ -2439,7 +1951,7 @@ public class ActorManagerRESTServices extends TokenController
      * Retrieve the list of user identity metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -2448,7 +1960,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getUserIdentitiesByName(String            serverName,
-                                                                    String            viewServiceURLMarker,
+                                                                    String            urlMarker,
                                                                     FilterRequestBody requestBody)
     {
         final String methodName = "getUserIdentitiesByName";
@@ -2466,7 +1978,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -2491,7 +2003,7 @@ public class ActorManagerRESTServices extends TokenController
      * Retrieve the list of user identity metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param userIdentityGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
@@ -2501,7 +2013,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getUserIdentityByGUID(String             serverName,
-                                                                 String             viewServiceURLMarker,
+                                                                 String             urlMarker,
                                                                  String             userIdentityGUID,
                                                                  GetRequestBody requestBody)
     {
@@ -2520,7 +2032,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getUserIdentityByGUID(userId, userIdentityGUID, requestBody));
         }
@@ -2538,7 +2050,7 @@ public class ActorManagerRESTServices extends TokenController
      * Retrieve the list of user identity metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -2547,7 +2059,7 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findUserIdentities(String                  serverName,
-                                                               String                  viewServiceURLMarker,
+                                                               String                  urlMarker,
                                                                SearchStringRequestBody requestBody)
     {
         final String methodName = "findUserIdentities";
@@ -2565,7 +2077,7 @@ public class ActorManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, viewServiceURLMarker, methodName);
+            UserIdentityHandler handler = instanceHandler.getUserIdentityHandler(userId, serverName, urlMarker, methodName);
 
 
             if (requestBody != null)
