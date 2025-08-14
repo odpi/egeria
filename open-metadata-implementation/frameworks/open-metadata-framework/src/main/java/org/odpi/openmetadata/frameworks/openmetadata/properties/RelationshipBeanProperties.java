@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionSponsorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
@@ -40,7 +39,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetCo
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EmbeddedConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
@@ -90,7 +88,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = AcceptedAnswerProperties.class, name = "AcceptedAnswerProperties"),
                 @JsonSubTypes.Type(value = ActionRequesterProperties.class, name = "ActionRequesterProperties"),
-                @JsonSubTypes.Type(value = ActionSponsorProperties.class, name = "ActionSponsorProperties"),
                 @JsonSubTypes.Type(value = ActionsProperties.class, name = "ActionsProperties"),
                 @JsonSubTypes.Type(value = ActionTargetProperties.class, name = "ActionTargetProperties"),
                 @JsonSubTypes.Type(value = AdjacentLocationProperties.class, name = "AdjacentLocationProperties"),
@@ -113,7 +110,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CertificationProperties.class, name = "CertificationProperties"),
                 @JsonSubTypes.Type(value = CitedDocumentLinkProperties.class, name = "CitedDocumentLinkProperties"),
                 @JsonSubTypes.Type(value = CollectionMembershipProperties.class, name = "CollectionMembershipProperties"),
-                @JsonSubTypes.Type(value = CommunityMembershipProperties.class, name = "CommunityMembershipProperties"),
                 @JsonSubTypes.Type(value = ConnectionConnectorTypeProperties.class, name = "ConnectionConnectorTypeProperties"),
                 @JsonSubTypes.Type(value = ConnectionEndpointProperties.class, name = "ConnectionEndpointProperties"),
                 @JsonSubTypes.Type(value = ConsistentValidValuesProperties.class, name = "ConsistentValidValuesProperties"),
@@ -192,13 +188,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SolutionCompositionProperties.class, name = "SolutionCompositionProperties"),
                 @JsonSubTypes.Type(value = SolutionDesignProperties.class, name = "SolutionDesignProperties"),
                 @JsonSubTypes.Type(value = SolutionLinkingWireProperties.class, name = "SolutionLinkingWireProperties"),
-                @JsonSubTypes.Type(value = StakeholderProperties.class, name = "StakeholderProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaHierarchyProperties.class, name = "SubjectAreaHierarchyProperties"),
                 @JsonSubTypes.Type(value = SupplementaryProperties.class, name = "SupplementaryProperties"),
                 @JsonSubTypes.Type(value = SupportedGovernanceServiceProperties.class, name = "SupportedGovernanceServiceProperties"),
                 @JsonSubTypes.Type(value = SupportingDefinitionProperties.class, name = "SupportingDefinitionProperties"),
-                @JsonSubTypes.Type(value = TeamLeadershipProperties.class, name = "TeamLeadershipProperties"),
-                @JsonSubTypes.Type(value = TeamMembershipProperties.class, name = "TeamMembershipProperties"),
                 @JsonSubTypes.Type(value = TeamStructureProperties.class, name = "TeamStructureProperties"),
                 @JsonSubTypes.Type(value = TeamRoleAppointmentProperties.class, name = "TeamRoleAppointmentProperties"),
                 @JsonSubTypes.Type(value = ValidValueAssignmentProperties.class, name = "ValidValueAssignmentProperties"),

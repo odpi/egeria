@@ -44,202 +44,156 @@ Authorization: Bearer {{token}}
 
 
 ###
-# group: Glossaries
 # @name findGlossaries
 # Retrieve the list of glossary metadata elements that contain the search string.  The search string is located
 # in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and
 # ignoreCase can be used to allow a fuzzy search.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/by-search-string?
-    startFrom=0&pageSize=0&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "sus"
+  "searchString" : "sus",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
 ###
-# group: Glossaries
 # @name getGlossariesByName
 # Retrieve the list of glossary metadata elements with an exactly matching qualified or display name.
 # There are no wildcards supported on this request.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/by-name?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NameRequestBody",
-  "name" : "Sustainability Glossary"
+  "class" : "FilterRequestBody",
+  "name" : "Sustainability Glossary",
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
+###
 
+@glossaryGUID=add guid here
 
 ###
-# group: Glossaries
 # @name getGlossaryByGUID
 # Retrieve the glossary metadata element with the supplied unique identifier.  The optional request body allows you to
 # specify that the glossary element should only be returned if it was effective at a particular time.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/retrieve
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-	"class" : "EffectiveTimeQueryRequestBody",
-	 "effectiveTime" : "null"
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
+###
+
+@glossaryTermGUID=add guid here
 
 ###
-# group: Glossaries
 # @name getGlossaryForTerm
 # Retrieve the glossary metadata element for the requested term.  The optional request body allows you to specify
-# that the glossary element should only be returned if it was effective at a particular time.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/for-term/{{glossaryTermGUID}}/retrieve
+# additional sesrch options.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/for-term/{{glossaryTermGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "EffectiveTimeQueryRequestBody",
-  "effectiveTime" : "null"
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
 ###
-# group: Glossaries
-# @name getRelatedTerms
-# Retrieve the glossary terms that are linked to the requested glossary term.  The optional request body allows you to specify
-# that the glossary term should only be returned if it was effective at a particular time and limit the results by relationship type name,
-# owning type name and the status of the relatiosnships
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/related-terms
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "GlossaryTermRelationshipRequestBody",
-  "effectiveTime" : "null",
-  "glossaryGUID" : "add guid",
-  "relationshipTypeName" :  "add type name",
-  "limitResultsByStatus" :  []
-}
-
-
-###
-# group: GlossaryTerms
 # @name getGlossaryTermByName
 # Retrieve the list of glossary metadata elements with an exactly matching qualified or display name.
 # There are no wildcards supported on this request.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-name?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NameRequestBody",
-  "name" : "Carbon Dioxide"
+  "class" : "FilterRequestBody",
+  "filter" : "Carbon Dioxide"
 }
 
 
 ###
-# group: GlossaryTerms
-# @name Retrieve a glossary term's relationships
-# This call retrieves details of the glossary terms linked to this glossary term.  Notice the original org 1 glossary term is linked via the "SourcedFrom" relationship..
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/related-terms?
-    startFrom=0&
-    pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# group: GlossaryTerms
 # @name Retrieve the DRAFT glossary terms from a glossary
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-search-string?
-    startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "GlossarySearchStringRequestBody",
+    "class" : "SearchStringRequestBody",
     "searchString" : "",
-    "glossaryGUID" : "{{glossaryGUID}}",
+    "startsWith" : false,
+    "endsWith" : false,
+    "ignoreCase" : true,
+    "startFrom" : 0,
+    "pageSize": 0,
+    "anchorScopeGUID" : "{{glossaryGUID}}",
     "limitResultsByStatus" : ["DRAFT"]
 }
 
 ###
 # group: GlossaryTerms
 # @name Retrieve the ACTIVE and PREPARED glossary terms from a glossary
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-search-string?
-    startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "GlossarySearchStringRequestBody",
+    "class" : "SearchStringRequestBody",
     "searchString" : "",
+    "startsWith" : false,
+    "endsWith" : false,
+    "ignoreCase" : true,
+    "startFrom" : 0,
+    "pageSize": 0,
     "glossaryGUID" : "{{glossaryGUID}}",
     "limitResultsByStatus" : ["ACTIVE", "PREPARED"]
 }
 
 ###
-# group: GlossaryTerms
 # @name Retrieve a glossary term by GUID
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/retrieve
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# group: GlossaryTerms
-# @name Retrieve the versions of the glossary term
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/history?
-    startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# group: GlossaryTerms
-# @name Retrieve the revision log for a glossary term
-# Add the returned guid as orgGlossaryTerm1_RevisionLogGUID variable.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/elements/{{glossaryTermGUID}}/note-logs/retrieve?
-    startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# group: GlossaryTerms
-# @name Retrieve the revision history for a glossary term
-# This revision history is created automatically.  The text is supplied on the update request.  If no text is supplied, the value "None" is show.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/note-logs/{{glossaryTermRevisionLogGUID}}/notes/retrieve?
-    startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# group: GlossaryTerms
-# @name Search for term by version identifier
-POST {{baseURL}}/servers/{{viewServer}}/open-metadata/access-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-conditions?
-    startFrom=0&pageSize=0&
-    forLineage=false&
-    forDuplicateProcessing=false&
-    effectiveTime=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindRequestBody",
-    "metadataElementTypeName" : "GlossaryTerm",
-    "searchProperties" : {
-        "class" : "SearchProperties",
-        "conditions" : [{
-            "class" : "PropertyCondition",
-            "property" : "publishVersionIdentifier",
-            "operator" : "EQ",
-            "value" : {
-                "class" : "PrimitiveTypePropertyValue",
-                "primitiveTypeCategory" : "OM_PRIMITIVE_TYPE_STRING",
-                "primitiveValue" : "V1.0",
-                "typeName" : "string"
-                }
-        }],
-        "matchCriteria" : "ALL"
-    }
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }

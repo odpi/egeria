@@ -478,6 +478,55 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
 
     /**
+     * Retrieve the number of rows in the table.
+     *
+     * @param jdbcConnection connection to use
+     * @param tableName name of the table to query
+     * @return number of rows in the named table
+     * @throws PropertyServerException there was a problem calling the database
+     */
+    public int getRowCount(java.sql.Connection  jdbcConnection,
+                           String               tableName) throws PropertyServerException
+    {
+        final String methodName = "getRowCount";
+
+        String sqlCommand = "SELECT COUNT(*) FROM " + tableName;
+        log.debug(sqlCommand);
+
+        int rowCount = 0;
+
+        try
+        {
+
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next())
+            {
+                rowCount = resultSet.getInt(1); // Get the count from the first column
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException sqlException)
+        {
+            this.rollbackAfterException(jdbcConnection, sqlException);
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
+
+        return rowCount;
+    }
+
+
+    /**
      * Retrieve the row with the requested identifier and with the latest timestamp.
      *
      * @param jdbcConnection connection to use
@@ -520,6 +569,117 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                                               methodName,
                                               sqlException);
         }
+    }
+
+
+
+    /**
+     * Retrieve the row with the requested identifier and with the latest timestamp.
+     *
+     * @param jdbcConnection connection to use
+     * @param tableName name of the table to query
+     * @return list of rows consisting of column names to data values that represent the requested row
+     * @throws PropertyServerException there was a problem calling the database
+     */
+    public List<Map<String, Object>> getUnmappedRows(java.sql.Connection  jdbcConnection,
+                                                     String               tableName) throws PropertyServerException
+    {
+        final String methodName = "getUnmappedRows";
+
+        String sqlCommand = "SELECT * FROM " + tableName;
+
+        List<Map<String, Object>> rows = new ArrayList<>();
+
+        try
+        {
+            log.debug(sqlCommand);
+
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            int columnCount = resultSetMetaData.getColumnCount();
+
+            /*
+             * The query should have returned 0 or more rows
+             */
+            while (resultSet.next())
+            {
+                Map<String, Object> row = new HashMap<>();
+
+                for (int i = 0; i < columnCount; i++)
+                {
+                    row.put(resultSetMetaData.getColumnName(i), resultSet.getObject(i));
+                }
+
+                rows.add(row);
+            }
+
+
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException sqlException)
+        {
+            this.rollbackAfterException(jdbcConnection, sqlException);
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
+
+        if (! rows.isEmpty())
+        {
+            return rows;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return whether a table exists or not.
+     *
+     * @param jdbcConnection connection to use
+     * @param tableName name of the table to query
+     * @return boolean
+     * @throws PropertyServerException there was a problem calling the database
+     */
+    public boolean doesTableExist(java.sql.Connection  jdbcConnection,
+                                  String               tableName) throws PropertyServerException
+    {
+        final String methodName = "doesTableExist";
+
+        boolean exists;
+
+        try
+        {
+            DatabaseMetaData metaData = jdbcConnection.getMetaData();
+            try (ResultSet resultSet = metaData.getTables(null,
+                                                          null,
+                                                          tableName,
+                                                          new String[]{"TABLE"}))
+            {
+                exists = resultSet.next();
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            this.rollbackAfterException(jdbcConnection, sqlException);
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          "metaData.getTables",
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
+
+        return exists;
     }
 
 

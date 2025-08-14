@@ -15,6 +15,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
 
@@ -138,12 +141,14 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
 
                                     if (sponsorGUID != null)
                                     {
-                                        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                                                               sponsorGUID,
                                                                                                               toDoGUID,
                                                                                                               null,
                                                                                                               null,
-                                                                                                              null);
+                                                                                                              new NewElementProperties(propertyHelper.addStringProperty(null,
+                                                                                                                                                                        OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                                                                                                                                        AssignmentType.SPONSOR.getName())));
                                     }
                                 }
                             }

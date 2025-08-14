@@ -4,8 +4,8 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -314,7 +314,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                            null,
                                            null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, CommunityMembershipType.LEADER.getOrdinal());
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, AssignmentType.LEADER.getName());
 
                 for (PersonDefinition leader : communityDefinition.getLeaders())
                 {
@@ -337,7 +337,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                            null,
                                            null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, CommunityMembershipType.CONTRIBUTOR.getOrdinal());
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, AssignmentType.CONTRIBUTOR.getName());
 
                 for (PersonDefinition member : communityDefinition.getMembers())
                 {
@@ -493,7 +493,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                 {
                     archiveHelper.addProjectTeamRelationship(projectDefinition.getQualifiedName(),
                                                              member.getQualifiedName(),
-                                                             null);
+                                                             AssignmentType.CONTRIBUTOR.getName());
                 }
 
             }

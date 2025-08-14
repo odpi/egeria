@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.converters.OpenMetadataRelationshipConverter;
@@ -938,20 +939,50 @@ public class OpenMetadataStoreRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findMetadataElementsWithString(userId,
-                                                                               propertyHelper.getSearchString(requestBody.getSearchString(), requestBody.getStartsWith(), requestBody.getEndsWith(), requestBody.getIgnoreCase()),
-                                                                               requestBody.getTypeName(),
-                                                                               requestBody.getLimitResultsByStatus(),
-                                                                               requestBody.getAsOfTime(),
-                                                                               requestBody.getSequencingProperty(),
-                                                                               requestBody.getSequencingOrder(),
-                                                                               requestBody.getForLineage(),
-                                                                               requestBody.getForDuplicateProcessing(),
-                                                                               requestBody.getGovernanceZoneFilter(),
-                                                                               requestBody.getEffectiveTime(),
-                                                                               requestBody.getStartFrom(),
-                                                                               requestBody.getPageSize(),
-                                                                               methodName));
+                if (requestBody.getAnchorGUID() != null)
+                {
+                    response.setElementList(this.findAnchoredElements(userId,
+                                                                      requestBody.getSearchString(),
+                                                                      requestBody,
+                                                                      OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                      requestBody.getAnchorGUID(),
+                                                                      handler));
+                }
+                else if (requestBody.getAnchorDomainName() != null)
+                {
+                    response.setElementList(this.findAnchoredElements(userId,
+                                                                      requestBody.getSearchString(),
+                                                                      requestBody,
+                                                                      OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name,
+                                                                      requestBody.getAnchorDomainName(),
+                                                                      handler));
+                }
+                else if (requestBody.getAnchorScopeGUID() != null)
+                {
+                    response.setElementList(this.findAnchoredElements(userId,
+                                                                      requestBody.getSearchString(),
+                                                                      requestBody,
+                                                                      OpenMetadataProperty.ANCHOR_SCOPE_GUID.name,
+                                                                      requestBody.getAnchorScopeGUID(),
+                                                                      handler));
+                }
+                else
+                {
+                    response.setElementList(handler.findMetadataElementsWithString(userId,
+                                                                                   propertyHelper.getSearchString(requestBody.getSearchString(), requestBody.getStartsWith(), requestBody.getEndsWith(), requestBody.getIgnoreCase()),
+                                                                                   requestBody.getMetadataElementTypeName(),
+                                                                                   requestBody.getLimitResultsByStatus(),
+                                                                                   requestBody.getAsOfTime(),
+                                                                                   requestBody.getSequencingProperty(),
+                                                                                   requestBody.getSequencingOrder(),
+                                                                                   requestBody.getForLineage(),
+                                                                                   requestBody.getForDuplicateProcessing(),
+                                                                                   requestBody.getGovernanceZoneFilter(),
+                                                                                   requestBody.getEffectiveTime(),
+                                                                                   requestBody.getStartFrom(),
+                                                                                   requestBody.getPageSize(),
+                                                                                   methodName));
+                }
             }
             else
             {
@@ -965,6 +996,78 @@ public class OpenMetadataStoreRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
+    }
+
+
+    /**
+     * Performs a search of elements, typically of a single type, that share one of the anchoring properties.
+     *
+     * @param userId calling user
+     * @param searchString requested search string
+     * @param searchOptions search options
+     * @param anchorPropertyName name of the anchor property to match
+     * @param anchorPropertyValue value of the anchor property to match
+     * @param handler open metadata handler
+     * @return list of matching elements
+     * @throws InvalidParameterException the qualified name is null
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    private List<OpenMetadataElement> findAnchoredElements(String                                      userId,
+                                                           String                                      searchString,
+                                                           SearchOptions                               searchOptions,
+                                                           String                                      anchorPropertyName,
+                                                           String                                      anchorPropertyValue,
+                                                           MetadataElementHandler<OpenMetadataElement> handler) throws InvalidParameterException,
+                                                                                                                       PropertyServerException,
+                                                                                                                       UserNotAuthorizedException
+    {
+        final String methodName = "findAnchoredElements";
+
+        OpenMetadataAPIGenericConverter<OpenMetadataElement> converter = handler.getConverter();
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setMatchCriteria(MatchCriteria.ANY);
+        searchProperties.setConditions(getPropertyConditions(propertyHelper.getSearchString(searchString, searchOptions.getStartsWith(), searchOptions.getEndsWith(), searchOptions.getIgnoreCase()),
+                                                             getAnchorSearchesPropertyList()));
+
+        SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorPropertyValue,
+                                                                                     anchorPropertyName);
+
+        List<EntityDetail> anchoredEntities = handler.findEntities(userId,
+                                                                   searchOptions.getMetadataElementTypeName(),
+                                                                   searchOptions.getMetadataElementSubtypeNames(),
+                                                                   searchProperties,
+                                                                   handler.getInstanceStatuses(searchOptions.getLimitResultsByStatus()),
+                                                                   searchClassifications,
+                                                                   searchOptions.getAsOfTime(),
+                                                                   searchOptions.getSequencingProperty(),
+                                                                   handler.getSequencingOrder(searchOptions.getSequencingOrder()),
+                                                                   searchOptions.getForLineage(),
+                                                                   searchOptions.getForDuplicateProcessing(),
+                                                                   searchOptions.getStartFrom(),
+                                                                   searchOptions.getPageSize(),
+                                                                   searchOptions.getGovernanceZoneFilter(),
+                                                                   searchOptions.getEffectiveTime(),
+                                                                   methodName);
+        if (anchoredEntities != null)
+        {
+            List<OpenMetadataElement> results = new ArrayList<>();
+
+            for (EntityDetail anchoredEntity : anchoredEntities)
+            {
+                OpenMetadataElement matchedElementElement = converter.getNewBean(OpenMetadataElement.class,
+                                                                                 anchoredEntity,
+                                                                                 methodName);
+
+                results.add(matchedElementElement);
+            }
+
+            return results;
+        }
+
+        return null;
     }
 
 
@@ -1014,14 +1117,14 @@ public class OpenMetadataStoreRESTServices
                                                                                              OpenMetadataProperty.ANCHOR_GUID.name);
 
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
-                                                                           requestBody.getTypeName(),
-                                                                           null,
+                                                                           requestBody.getMetadataElementTypeName(),
+                                                                           requestBody.getMetadataElementSubtypeNames(),
                                                                            searchProperties,
-                                                                           null,
+                                                                           handler.getInstanceStatuses(requestBody.getLimitResultsByStatus()),
                                                                            searchClassifications,
                                                                            requestBody.getAsOfTime(),
-                                                                           null,
-                                                                           null,
+                                                                           requestBody.getSequencingProperty(),
+                                                                           handler.getSequencingOrder(requestBody.getSequencingOrder()),
                                                                            requestBody.getForLineage(),
                                                                            requestBody.getForDuplicateProcessing(),
                                                                            requestBody.getStartFrom(),
@@ -1092,14 +1195,14 @@ public class OpenMetadataStoreRESTServices
                                                                                              OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name);
 
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
-                                                                           requestBody.getTypeName(),
-                                                                           null,
+                                                                           requestBody.getMetadataElementTypeName(),
+                                                                           requestBody.getMetadataElementSubtypeNames(),
                                                                            searchProperties,
-                                                                           null,
+                                                                           handler.getInstanceStatuses(requestBody.getLimitResultsByStatus()),
                                                                            searchClassifications,
                                                                            requestBody.getAsOfTime(),
-                                                                           null,
-                                                                           null,
+                                                                           requestBody.getSequencingProperty(),
+                                                                           handler.getSequencingOrder(requestBody.getSequencingOrder()),
                                                                            requestBody.getForLineage(),
                                                                            requestBody.getForDuplicateProcessing(),
                                                                            requestBody.getStartFrom(),
@@ -1170,14 +1273,14 @@ public class OpenMetadataStoreRESTServices
                                                                                              OpenMetadataProperty.ANCHOR_SCOPE_GUID.name);
 
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
-                                                                           requestBody.getTypeName(),
-                                                                           null,
+                                                                           requestBody.getMetadataElementTypeName(),
+                                                                           requestBody.getMetadataElementSubtypeNames(),
                                                                            searchProperties,
-                                                                           null,
+                                                                           handler.getInstanceStatuses(requestBody.getLimitResultsByStatus()),
                                                                            searchClassifications,
                                                                            requestBody.getAsOfTime(),
-                                                                           null,
-                                                                           null,
+                                                                           requestBody.getSequencingProperty(),
+                                                                           handler.getSequencingOrder(requestBody.getSequencingOrder()),
                                                                            requestBody.getForLineage(),
                                                                            requestBody.getForDuplicateProcessing(),
                                                                            requestBody.getStartFrom(),
@@ -1459,6 +1562,7 @@ public class OpenMetadataStoreRESTServices
         propertyList.add(OpenMetadataProperty.REVIEW.name);
         propertyList.add(OpenMetadataProperty.KEYWORD.name);
         propertyList.add(OpenMetadataProperty.DESCRIPTION.name);
+        propertyList.add(OpenMetadataProperty.CATEGORY.name);
 
         return propertyList;
     }
@@ -2044,7 +2148,7 @@ public class OpenMetadataStoreRESTServices
                                                                                    requestBody.getAsOfTime(),
                                                                                    requestBody.getSequencingProperty(),
                                                                                    requestBody.getSequencingOrder(),
-                                                                                   null,
+                                                                                   requestBody.getGovernanceZoneFilter(),
                                                                                    requestBody.getEffectiveTime(),
                                                                                    requestBody.getStartFrom(),
                                                                                    requestBody.getPageSize(),

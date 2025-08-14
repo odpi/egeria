@@ -250,6 +250,38 @@ public enum PostgresConfigurationProperty
 
 
     /**
+     * Get recognizedConfigurationProperties for the PostgreSQL tabular data source resource connector.
+     *
+     * @return list of property names
+     */
+    public static List<String> getPostgresTabularDataSourceConnectorNames()
+    {
+        List<String> recognizedConfigurationProperties = new ArrayList<>();
+
+        recognizedConfigurationProperties.add(PostgresConfigurationProperty.TABLE_NAME.getName());
+
+        return recognizedConfigurationProperties;
+    }
+
+
+    /**
+     * Retrieve the defined configuration properties for the PostgreSQL tabular data source connector
+     *
+     * @return list of configuration property types
+     */
+    public static List<ConfigurationPropertyType> getPostgresTabularDataSourceConfigurationPropertyTypes()
+    {
+        List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
+
+        configurationPropertyTypes.add(PostgresConfigurationProperty.TABLE_NAME.getConfigurationPropertyType());
+
+        return configurationPropertyTypes;
+    }
+
+
+
+
+    /**
      * Retrieve all the defined configuration properties
      *
      * @return list of configuration property types

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.viewservices.actormanager.server;
 
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
@@ -114,6 +115,36 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getUserIdentityHandler(viewServiceURLMarker, serviceOperationName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns a handler.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String userId,
+                                                                      String serverName,
+                                                                      String viewServiceURLMarker,
+                                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
+    {
+        ActorManagerInstance instance = (ActorManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getGovernanceDefinitionHandler(viewServiceURLMarker, serviceOperationName);
         }
 
         return null;

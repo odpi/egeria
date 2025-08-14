@@ -167,7 +167,6 @@ public class OpenMetadataTypesArchive3_11
         add0022Translations();
         update0025Locations();
         update0110ActorProfile();
-        update0130Projects();
         updateResponsibilityAssignments();
         update04xxExplicitNames();
         update04xxNewGovernanceRoles();
@@ -488,90 +487,6 @@ public class OpenMetadataTypesArchive3_11
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ASSOCIATION_TYPE));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void update0130Projects()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateProjectStatusAttribute());
-        this.archiveBuilder.addRelationshipDef(getStakeholderRelationship());
-    }
-
-    private TypeDefPatch deprecateProjectStatusAttribute()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROJECT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-
-
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private RelationshipDef getStakeholderRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.STAKEHOLDER_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "commissioned";
-        final String                     end1AttributeDescription     = "Team, project, community, asset, service, ... that was commissioned by the stakeholders.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "commissionedBy";
-        final String                     end2AttributeDescription     = "Profiles of actors or roles that are stakeholders.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STAKEHOLDER_ROLE));
 
         relationshipDef.setPropertiesDefinition(properties);
 

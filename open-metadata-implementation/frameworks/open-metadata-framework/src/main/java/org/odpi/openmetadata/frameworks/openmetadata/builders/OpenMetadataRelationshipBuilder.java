@@ -875,29 +875,11 @@ public class OpenMetadataRelationshipBuilder
                                                                           OpenMetadataProperty.ISC_QUALIFIED_NAMES.name,
                                                                           solutionLinkingWireProperties.getISCQualifiedNames());
             }
-            else if (properties instanceof StakeholderProperties stakeholderProperties)
-            {
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.STAKEHOLDER_ROLE.name,
-                                                                     stakeholderProperties.getStakeholderRole());
-            }
             else if (properties instanceof SupportingDefinitionProperties supportingDefinitionProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.RATIONALE.name,
                                                                      supportingDefinitionProperties.getRationale());
-            }
-            else if (properties instanceof TeamLeadershipProperties teamLeadershipProperties)
-            {
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.POSITION_NAME.name,
-                                                                     teamLeadershipProperties.getPositionName());
-            }
-            else if (properties instanceof TeamMembershipProperties teamMembershipProperties)
-            {
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.POSITION_NAME.name,
-                                                                     teamMembershipProperties.getPositionName());
             }
             else if (properties instanceof TeamRoleAppointmentProperties teamRoleAppointmentProperties)
             {

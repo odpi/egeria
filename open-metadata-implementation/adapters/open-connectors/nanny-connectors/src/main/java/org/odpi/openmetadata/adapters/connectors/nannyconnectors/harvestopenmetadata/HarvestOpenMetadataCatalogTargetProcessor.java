@@ -1071,9 +1071,10 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
+            // todo - work out leadership assignmentTypes
             RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(teamGUID,
-                                                                                                              1,
-                                                                                                              OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
+                                                                                                              2,
+                                                                                                              OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                                                               0,
                                                                                                               openMetadataStore.getMaxPagingSize());
 
@@ -1253,7 +1254,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(projectElement.getElementGUID(),
                                                                                    2,
-                                                                                   OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
+                                                                                   OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                                    0,
                                                                                    openMetadataStore.getMaxPagingSize());
 
@@ -1265,7 +1266,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(projectElement.getElementGUID(),
                                                                                    2,
-                                                                                   OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
+                                                                                   OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                                    0,
                                                                                    openMetadataStore.getMaxPagingSize());
 
@@ -1304,7 +1305,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(communityElement.getElementGUID(),
                                                                                                               2,
-                                                                                                              OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                              OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                                                               0,
                                                                                                               openMetadataStore.getMaxPagingSize());
 
@@ -1470,7 +1471,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(toDoElement.getElementGUID(),
                                                                                    2,
-                                                                                   OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                                                                   OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                                    0,
                                                                                    openMetadataStore.getMaxPagingSize());
 
@@ -1538,21 +1539,10 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     if (roleElement != null)
                     {
                         RelatedMetadataElementList teamElements = openMetadataStore.getRelatedMetadataElements(roleElement.getElement().getElementGUID(),
-                                                                                                               2,
-                                                                                                               OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                               1,
+                                                                                                               OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                                                                0,
                                                                                                                openMetadataStore.getMaxPagingSize());
-
-                        if ((teamElements != null) && (teamElements.getElementList() != null))
-                        {
-                            teams.addAll(teamElements.getElementList());
-                        }
-
-                        teamElements = openMetadataStore.getRelatedMetadataElements(roleElement.getElement().getElementGUID(),
-                                                                                    2,
-                                                                                    OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
-                                                                                    0,
-                                                                                    openMetadataStore.getMaxPagingSize());
                         if ((teamElements != null) && (teamElements.getElementList() != null))
                         {
                             teams.addAll(teamElements.getElementList());

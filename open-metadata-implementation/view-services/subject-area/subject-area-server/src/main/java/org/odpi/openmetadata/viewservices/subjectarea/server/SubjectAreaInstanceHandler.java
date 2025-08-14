@@ -30,7 +30,7 @@ public class SubjectAreaInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns a Open Metadata Store client.
+     * This method returns an Open Metadata Handler.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid

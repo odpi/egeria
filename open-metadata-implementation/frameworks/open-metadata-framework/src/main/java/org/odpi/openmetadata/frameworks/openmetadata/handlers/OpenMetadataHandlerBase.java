@@ -1330,12 +1330,7 @@ public class OpenMetadataHandlerBase
     {
         propertyHelper.validateUserId(userId, methodName);
 
-        SearchOptions searchOptions = suppliedSearchOptions;
-
-        if (searchOptions == null)
-        {
-            searchOptions = new SearchOptions();
-        }
+        SearchOptions searchOptions = new SearchOptions(suppliedSearchOptions);
 
         if (searchOptions.getMetadataElementTypeName() == null)
         {

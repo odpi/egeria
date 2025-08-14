@@ -2713,28 +2713,6 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the teamRole property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeTeamRole(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeTeamRole";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.TEAM_ROLE.name,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract and delete the teamType property from the supplied element properties.
      *
      * @param elementProperties properties from element

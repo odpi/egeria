@@ -1762,11 +1762,6 @@ public enum OpenMetadataProperty
     TEAM_TYPE("teamType", DataType.STRING.getName(), "Type of team, such as division, or department.", null, "109d24af-b694-4f1e-90d2-ad3945596f2f"),
 
     /**
-     * Details of the type of role position within a group, team, project, eg deputy.
-     */
-    POSITION_NAME("positionName", DataType.STRING.getName(), "Details of the type of role position within a group, team, project, eg deputy.", null, "dc83ac84-914f-441e-876b-5a02293fc568"),
-
-    /**
      * Can delegations and escalations flow on this relationship.
      */
     DELEGATION_ESCALATION("delegationEscalationAuthority", DataType.BOOLEAN.getName(), "Can delegations and escalations flow on this relationship.", null, "c8238d05-07ac-4c1e-a89c-34299d9827f8"),
@@ -1777,19 +1772,10 @@ public enum OpenMetadataProperty
     ASSIGNMENT_TYPE("assignmentType", DataType.STRING.getName(), "What is the scope or nature of the assignment.", null, "6d6af0b8-1b56-4941-a0c9-524331c46038"),
 
     /**
-     * Description of the role of the team in the project.
-     */
-    TEAM_ROLE("teamRole", DataType.STRING.getName(), "Description of the role of the team in the project.", null, "4ce8ffb3-2688-425e-abdd-b165bbf2adc6"),
-
-    /**
      * Reasons for the project dependency.
      */
     DEPENDENCY_SUMMARY("dependencySummary", DataType.STRING.getName(), "Reasons for the project dependency.", null, "c1e02d1e-efb8-4299-be32-529b4a5976c1"),
 
-    /**
-     * Identifier that describes the role that the stakeholders will play in the operation of the Referenceable.
-     */
-    STAKEHOLDER_ROLE("stakeholderRole", DataType.STRING.getName(), "Identifier that describes the role that the stakeholders will play in the operation of the Referenceable.", "fundingExecutive", "09b45956-ad1b-4e51-ab7f-b1858f71de0d"),
 
     /**
      * Breadth of responsibility or coverage.
@@ -1851,16 +1837,10 @@ public enum OpenMetadataProperty
      */
     RESULTS("results", DataType.ARRAY_STRING.getName(), "Actual results.", null, "cb9ed4e0-bb5f-4ab9-95be-38c3d59517d8"),
 
-
     /**
      * The high-level goal of the activity.
      */
     MISSION("mission", DataType.STRING.getName(), "The high-level goal of the activity.", "To share new data science techniques.", "cb870681-de85-406b-bea6-6d138777cfe9"),
-
-    /**
-     * Type of community membership.
-     */
-    MEMBERSHIP_TYPE("membershipType", CommunityMembershipType.getOpenTypeName(), "Type of community membership.", "Observer.", "d94a88e9-f5f6-4c3f-8ce2-e565817d6294"),
 
     /**
      * Private properties accessible only to the connector.

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -776,12 +777,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                      null,
                                                                                      true);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                              projectGUID,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               clinicalTrialOwnerGUID,
+                                                                              projectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "owner"));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.OWNER.getName()));
 
         return projectGUID;
     }
@@ -832,24 +833,24 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    null,
                                                                                                    true);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                              projectGUID,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               clinicalTrialOwnerGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "owner"));
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
                                                                               projectGUID,
+                                                                              null,
+                                                                              null,
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.OWNER.getName()));
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               clinicalTrialManagerGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "manager"));
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
                                                                               projectGUID,
+                                                                              null,
+                                                                              null,
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getName()));
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               dataScientistGUID,
+                                                                              projectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "analyst"));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getName()));
 
         initialClassifications = new HashMap<>();
 
@@ -930,18 +931,18 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    null,
                                                                                                    true);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                              projectGUID,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               clinicalTrialOwnerGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "owner"));
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
                                                                               projectGUID,
+                                                                              null,
+                                                                              null,
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.OWNER.getName()));
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               clinicalTrialManagerGUID,
+                                                                              projectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "manager"));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getName()));
 
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                               projectGUID,
@@ -996,12 +997,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    null,
                                                                                                    true);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                              projectGUID,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               itProjectManager,
+                                                                              projectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "manager"));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getName()));
 
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                               projectGUID,
@@ -1057,12 +1058,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    null,
                                                                                                    true);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                              projectGUID,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               dataEngineerGUID,
+                                                                              projectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "developer"));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getName()));
 
         return projectGUID;
     }
@@ -1111,12 +1112,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    null,
                                                                                                    true);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                              projectGUID,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               integrationDeveloperGUID,
+                                                                              projectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "developer"));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getName()));
 
         return projectGUID;
     }
@@ -1165,12 +1166,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    null,
                                                                                                    true);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                              projectGUID,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               clinicalTrialManagerGUID,
+                                                                              projectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "relationship manager"));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getName()));
 
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                               projectGUID,
@@ -1225,12 +1226,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    null,
                                                                                                    true);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                              projectGUID,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               dataEngineerGUID,
+                                                                              projectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "deployer"));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getName()));
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                               projectGUID,
                                                                               devProjectGUID,
@@ -1285,12 +1286,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                    null,
                                                                                                    true);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                              projectGUID,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                               dataScientistGUID,
+                                                                              projectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.TEAM_ROLE.name, "analyst"));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getName()));
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                               projectGUID,
                                                                               onboardingPipelinesProjectGUID,

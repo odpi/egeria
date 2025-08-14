@@ -796,66 +796,6 @@ public class ClassificationManagerResource
 
 
     /**
-     * Link a governance definition to an element using the GovernedBy relationship.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to link
-     * @param stakeholderGUID identifier of the stakeholder to link
-     * @param requestBody properties for relationship request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/stakeholders/{stakeholderGUID}")
-
-    @Operation(summary="addStakeholderToElement",
-            description="Link a stakeholder to an element using the Stakeholder relationship.",
-            externalDocs=@ExternalDocumentation(description="Stakeholders",
-                    url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
-
-    public VoidResponse addStakeholderToElement(@PathVariable String                  serverName,
-                                                @PathVariable String                  elementGUID,
-                                                @PathVariable String                  stakeholderGUID,
-                                                @RequestBody  (required = false)
-                                                    NewRelationshipRequestBody requestBody)
-    {
-        return restAPI.addStakeholderToElement(serverName, elementGUID, stakeholderGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the Stakeholder relationship between a stakeholder (typically Actor) and an element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param stakeholderGUID identifier of the stakeholder to link
-     * @param requestBody properties for relationship request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/stakeholders/{stakeholderGUID}/remove")
-
-    @Operation(summary="removeStakeholderFromElement",
-            description="Remove the Stakeholder relationship between a stakeholder (typically Actor) and an element.",
-            externalDocs=@ExternalDocumentation(description="Stakeholders",
-                    url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
-
-    public VoidResponse removeStakeholderFromElement(@PathVariable String                        serverName,
-                                                     @PathVariable String                        elementGUID,
-                                                     @PathVariable String                        stakeholderGUID,
-                                                     @RequestBody  (required = false)
-                                                         DeleteRequestBody requestBody)
-    {
-        return restAPI.removeStakeholderFromElement(serverName, elementGUID, stakeholderGUID, requestBody);
-    }
-
-
-    /**
      * Link a scope to an element using the ScopedBy relationship.
      *
      * @param serverName  name of the server instance to connect to

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 
@@ -490,7 +491,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                        null,
                                        null);
 
-            archiveHelper.addTeamLeadershipRelationship(leadershipRoleQName, deptDefinition.getQualifiedName(), null);
+            archiveHelper.addTeamLeadershipRelationship(leadershipRoleQName, deptDefinition.getQualifiedName(), AssignmentType.LEADER.getName());
 
             if (deptDefinition.getLeaders() != null)
             {
@@ -515,7 +516,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                        null,
                                        null);
 
-            archiveHelper.addTeamMembershipRelationship(membershipRoleQName, deptDefinition.getQualifiedName(), null);
+            archiveHelper.addTeamMembershipRelationship(membershipRoleQName, deptDefinition.getQualifiedName(), AssignmentType.CONTRIBUTOR.getName());
 
             if (deptDefinition.getMembers() != null)
             {

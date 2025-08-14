@@ -182,16 +182,6 @@ public enum OpenMetadataType
                                   "4b7c5d49-cef0-495e-8710-23c293828575",
                                   "The source of the action, such as a person, meeting or a governance action."),
 
-
-    /**
-     * Identifies the sponsor that requires the action to be completed.
-     */
-    ACTION_SPONSOR_RELATIONSHIP("aca1277b-bf1c-42f5-9b3b-fbc2c9047325",
-                                "ActionSponsor",
-                                OpenMetadataWikiPages.MODEL_0013_ACTIONS,
-                                "c3d68cbc-9e1e-4820-8647-cdf29a64fb2b",
-                                "Identifies the sponsor that requires the action to be completed."),
-
     /**
      * Identifies the cause that requires the action to be completed.
      */
@@ -1569,15 +1559,6 @@ public enum OpenMetadataType
                 "Person assigned to a team."),
 
     /**
-     * Relationship identifying the members of teams.
-     */
-    TEAM_MEMBERSHIP_RELATIONSHIP("1ebc4fb2-b62a-4269-8f18-e9237a2119ca",
-                                 "TeamMembership",
-                                 OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
-                                 "623667d6-2d09-4e2c-8078-bbfd7f8bdbcc",
-                                 "Relationship identifying the members of teams."),
-
-    /**
      * Person leading a team.
      */
     TEAM_LEADER("36db26d5-abb2-439b-bc15-d62d373c5db6",
@@ -1585,15 +1566,6 @@ public enum OpenMetadataType
                 OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
                 "021c3a71-c912-49e1-a099-1866746e4825",
                 "Person leading a team."),
-
-    /**
-     * Relationship identifying the leaders of teams.
-     */
-    TEAM_LEADERSHIP_RELATIONSHIP("5ebc4fb2-b62a-4269-8f18-e9237a2119ca",
-                                 "TeamLeadership",
-                                 OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
-                                 "83e54789-e20e-439c-99af-e5dcb21e3b29",
-                                 "Relationship identifying the leaders of teams."),
 
     /**
      * Links a profile, role or project to the elements that they are responsible for managing.
@@ -1614,15 +1586,6 @@ public enum OpenMetadataType
                            "Link between a scope - such as a digital product, infrastructure element or organization - and an element restricted the scope, such as a governance definition."),
 
     /**
-     * Identifies the Actor that commissioned work (such as a project or a community) or a capability, service or assets.
-     */
-   STAKEHOLDER_RELATIONSHIP("efd8a136-0aea-4668-b91a-30f947e38b82",
-                            "Stakeholder",
-                            OpenMetadataWikiPages.MODEL_0120_ASSIGNMENT_SCOPES,
-                            "97aa5776-e978-4684-b014-5be35c497ffe",
-                            "Identifies the Actor that commissioned work (such as a project or a community) or a capability, service or assets."),
-
-    /**
      * An organized activity, typically to achieve a well-defined goal.
      */
     PROJECT("0799569f-0c16-4a1f-86d9-e2e89568f7fd",
@@ -1639,24 +1602,6 @@ public enum OpenMetadataType
                     OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                     "fbc22a33-8a07-45a3-afdf-839717be9f05",
                     "A person with overall responsibility for one or more projects."),
-
-    /**
-     * The link between a project and its project manager role.
-     */
-    PROJECT_MANAGEMENT_RELATIONSHIP("ac63ac45-a4d0-4fba-b583-92859de77dd8",
-                                    "ProjectManagement",
-                                    OpenMetadataWikiPages.MODEL_0130_PROJECTS,
-                                    "8f09b512-1f13-417d-99ed-beb628e47e39",
-                                    "The link between a project and its project manager role."),
-
-    /**
-     * The actors assigned to a project.
-     */
-    PROJECT_TEAM_RELATIONSHIP("746875af-2e41-4d1f-864b-35265df1d5dc",
-                              "ProjectTeam",
-                              OpenMetadataWikiPages.MODEL_0130_PROJECTS,
-                              "fdae8a21-8713-466c-9446-bf6b482ec103",
-                              "The actors assigned to a project."),
 
     /**
      * A nesting relationship between projects.
@@ -1757,15 +1702,6 @@ public enum OpenMetadataType
               OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
               "38833f01-dbad-4cf7-b825-54a9a97d6d78",
               "A person who has joined a community."),
-
-    /**
-     * Associates an actor profile with a community.
-     */
-    COMMUNITY_MEMBERSHIP_RELATIONSHIP("7c7da1a3-01b3-473e-972e-606eff0cb112",
-                                      "CommunityMembership",
-                                      OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
-                                      "a4f0935f-78f3-4d0a-aa11-a3f86a50ea36",
-                                      "Associates an actor profile with a community."),
 
 
     /**
@@ -1911,15 +1847,6 @@ public enum OpenMetadataType
                     OpenMetadataWikiPages.MODEL_0160_NOTES,
                     "58213b72-68b7-4259-938c-f0f5c59396b0",
                     "A person adding notes to a note log."),
-
-    /**
-     * Links a note log to an author.
-     */
-    NOTE_LOG_AUTHORSHIP_RELATIONSHIP("8f798c0c-6769-4a2d-b489-12714d89e0a4",
-                                     "NoteLogAuthorship",
-                                     OpenMetadataWikiPages.MODEL_0160_NOTES,
-                                     "1f972f03-e7a7-4fd9-923e-bdbcdf37c4f9",
-                                     "Links a note log to an author."),
 
 
     /* ============================================================================================================================*/

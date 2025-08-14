@@ -25,8 +25,6 @@ public class SearchStringRequestBody extends SearchOptions
 {
     private String         searchString              = null;
     private String         searchStringParameterName = null;
-    private String         typeName                  = null;
-
 
 
     /**
@@ -51,7 +49,6 @@ public class SearchStringRequestBody extends SearchOptions
         {
             searchString              = template.getSearchString();
             searchStringParameterName = template.getSearchStringParameterName();
-            typeName                  = template.getTypeName();
         }
     }
 
@@ -123,28 +120,6 @@ public class SearchStringRequestBody extends SearchOptions
 
 
     /**
-     * Return the optional type name for the search results (null means any type).
-     *
-     * @return unique name of type
-     */
-    public String getTypeName()
-    {
-        return typeName;
-    }
-
-
-    /**
-     * Set up the optional type name for the search results (null means any type).
-     *
-     * @param typeName unique name of type
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -155,7 +130,6 @@ public class SearchStringRequestBody extends SearchOptions
         return "SearchStringRequestBody{" +
                 "searchString='" + searchString + '\'' +
                 ", searchStringParameterName='" + searchStringParameterName + '\'' +
-                ", typeName='" + typeName + '\'' +
                 "} " + super.toString();
     }
 
@@ -174,8 +148,7 @@ public class SearchStringRequestBody extends SearchOptions
         if (!super.equals(objectToCompare)) return false;
         SearchStringRequestBody that = (SearchStringRequestBody) objectToCompare;
         return Objects.equals(searchString, that.searchString) &&
-                Objects.equals(searchStringParameterName, that.searchStringParameterName) &&
-                Objects.equals(typeName, that.typeName);
+                Objects.equals(searchStringParameterName, that.searchStringParameterName);
     }
 
     /**
@@ -186,6 +159,6 @@ public class SearchStringRequestBody extends SearchOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), searchString, searchStringParameterName, typeName);
+        return Objects.hash(super.hashCode(), searchString, searchStringParameterName);
     }
 }

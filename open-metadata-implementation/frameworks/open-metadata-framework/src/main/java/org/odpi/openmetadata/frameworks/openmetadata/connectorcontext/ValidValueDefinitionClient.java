@@ -61,6 +61,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
         this.validValueDefinitionHandler = new ValidValueDefinitionHandler(localServerName, auditLog, localServiceName, openMetadataClient);
     }
 
+
     /**
      * Create a new valid value definition.
      *
@@ -354,90 +355,6 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
                                                                            UserNotAuthorizedException
     {
         validValueDefinitionHandler.detachAssetFromProfile(connectorUserId, assetGUID, itProfileGUID, deleteOptions);
-    }
-
-
-    /**
-     * Attach a team to its membership role.
-     *
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param relationshipProperties description of the relationship.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void linkTeamToMembershipRole(String                   teamGUID,
-                                         String                   personRoleGUID,
-                                         MetadataSourceOptions    metadataSourceOptions,
-                                         TeamMembershipProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
-    {
-        validValueDefinitionHandler.linkTeamToMembershipRole(connectorUserId, teamGUID, personRoleGUID, metadataSourceOptions, relationshipProperties);
-    }
-
-
-    /**
-     * Detach a team profile from its membership role.
-     *
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param deleteOptions  options to control access to open metadata
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void detachTeamFromMembershipRole(String        teamGUID,
-                                             String        personRoleGUID,
-                                             DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
-    {
-        validValueDefinitionHandler.detachTeamFromMembershipRole(connectorUserId, teamGUID, personRoleGUID, deleteOptions);
-    }
-
-
-    /**
-     * Attach a team to its leadership role.
-     *
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param relationshipProperties description of the relationship.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void linkTeamToLeadershipRole(String                   teamGUID,
-                                         String                   personRoleGUID,
-                                         MetadataSourceOptions    metadataSourceOptions,
-                                         TeamLeadershipProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
-    {
-        validValueDefinitionHandler.linkTeamToLeadershipRole(connectorUserId, teamGUID, personRoleGUID, metadataSourceOptions, relationshipProperties);
-    }
-
-
-    /**
-     * Detach a team profile from its leadership role.
-     *
-     * @param teamGUID               unique identifier of the team
-     * @param personRoleGUID         unique identifier of the associated person role
-     * @param deleteOptions  options to control access to open metadata
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void detachTeamFromLeadershipRole(String        teamGUID,
-                                             String        personRoleGUID,
-                                             DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
-    {
-        validValueDefinitionHandler.detachTeamFromLeadershipRole(connectorUserId, teamGUID, personRoleGUID, deleteOptions);
     }
 
 

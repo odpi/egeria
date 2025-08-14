@@ -623,7 +623,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SecurityTagsProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceExpectationsProperties.class.getName(), methodName);
                 }
             }
             else
@@ -727,7 +727,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SecurityTagsProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceMeasurementsProperties.class.getName(), methodName);
                 }
             }
             else
@@ -830,7 +830,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SecurityTagsProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceMeasurementsResultsDataSetProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1427,130 +1427,6 @@ public class ClassificationManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
-    /**
-     * Link a stakeholder to an element using the Stakeholder relationship.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to link
-     * @param stakeholderGUID identifier of the governance definition to link
-     * @param requestBody properties for relationship request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse addStakeholderToElement(String                  serverName,
-                                                String                  elementGUID,
-                                                String                  stakeholderGUID,
-                                                NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "addStakeholderToElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof StakeholderProperties stakeholderProperties)
-                {
-                    handler.addStakeholderToElement(userId,
-                                                    elementGUID,
-                                                    stakeholderGUID,
-                                                    requestBody,
-                                                    stakeholderProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.addStakeholderToElement(userId,
-                                                    elementGUID,
-                                                    stakeholderGUID,
-                                                    requestBody,
-                                                    null);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(StakeholderProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                handler.addStakeholderToElement(userId,
-                                                elementGUID,
-                                                stakeholderGUID,
-                                                null,
-                                                null);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Remove the Stakeholder relationship between a stakeholder (typically Actor) and an element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param stakeholderGUID identifier of the governance definition to link
-     * @param requestBody properties for relationship request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse removeStakeholderFromElement(String                   serverName,
-                                                     String                   elementGUID,
-                                                     String                   stakeholderGUID,
-                                                     DeleteRequestBody requestBody)
-    {
-        final String methodName = "removeStakeholderFromElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
-
-            handler.removeStakeholderFromElement(userId, elementGUID, stakeholderGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
 
 
     /**

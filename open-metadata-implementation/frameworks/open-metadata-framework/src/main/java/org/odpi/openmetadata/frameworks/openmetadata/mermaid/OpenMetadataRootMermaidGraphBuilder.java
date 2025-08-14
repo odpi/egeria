@@ -122,12 +122,6 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
         super.addRelatedElementSummaries(openMetadataRootElement.getRequestedActions(),
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummaries(openMetadataRootElement.getActionSponsors(),
-                                         VisualStyle.LINKED_ELEMENT,
-                                         openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummaries(openMetadataRootElement.getTrackedActions(),
-                                         VisualStyle.LINKED_ELEMENT,
-                                         openMetadataRootElement.getElementHeader().getGUID());
         super.addRelatedElementSummaries(openMetadataRootElement.getActionCause(),
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());
@@ -241,12 +235,6 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());
         super.addRelatedElementSummaries(openMetadataRootElement.getAssignedActors(),
-                                         VisualStyle.LINKED_ELEMENT,
-                                         openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummaries(openMetadataRootElement.getCommissionedElements(),
-                                         VisualStyle.LINKED_ELEMENT,
-                                         openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummaries(openMetadataRootElement.getCommissionedBy(),
                                          VisualStyle.LINKED_ELEMENT,
                                          openMetadataRootElement.getElementHeader().getGUID());
 

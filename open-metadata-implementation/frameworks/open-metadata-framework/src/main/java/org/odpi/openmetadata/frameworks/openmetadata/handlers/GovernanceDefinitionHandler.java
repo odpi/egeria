@@ -360,7 +360,6 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     }
 
 
-
     /**
      * Attach an actor to an element that describes its scope.
      *
@@ -410,6 +409,79 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAssignmentScope(String        userId,
+                                      String        scopeElementGUID,
+                                      String        actorGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "detachAssignmentScope";
+
+        final String end1GUIDParameterName = "scopeElementGUID";
+        final String end2GUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(scopeElementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        scopeElementGUID,
+                                                        deleteOptions);
+    }
+
+
+
+    /**
+     * Attach an actor to an element that describes its scope.
+     *
+     * @param userId                        userId of user making request
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID unique identifier of the actor
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param relationshipProperties        description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkGovernanceResults(String                   userId,
+                                    String                    scopeElementGUID,
+                                    String                    actorGUID,
+                                    MetadataSourceOptions     metadataSourceOptions,
+                                    AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName            = "linkAssignmentScope";
+        final String end1GUIDParameterName = "scopeElementGUID";
+        final String end2GUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(scopeElementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        scopeElementGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach an actor from the element that describes its scope.
+     *
+     * @param userId                      userId of user making request.
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID                   unique identifier of the actor
+     * @param deleteOptions               options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachGovernanceResults(String        userId,
                                       String        scopeElementGUID,
                                       String        actorGUID,
                                       DeleteOptions deleteOptions) throws InvalidParameterException,
@@ -517,13 +589,13 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkSubjectAreas(String                 userId,
-                                 String                 subjectAreaGUID,
-                                 String                 nestedSubjectAreaGUID,
-                                 MetadataSourceOptions  metadataSourceOptions,
-                                 RelationshipProperties relationshipProperties) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
+    public void linkSubjectAreas(String                         userId,
+                                 String                         subjectAreaGUID,
+                                 String                         nestedSubjectAreaGUID,
+                                 MetadataSourceOptions          metadataSourceOptions,
+                                 SubjectAreaHierarchyProperties relationshipProperties) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         final String methodName = "linkSubjectAreas";
         final String end1GUIDParameterName = "subjectAreaGUID";

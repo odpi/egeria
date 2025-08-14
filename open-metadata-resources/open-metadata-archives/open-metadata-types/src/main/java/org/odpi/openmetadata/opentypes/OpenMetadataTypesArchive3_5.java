@@ -167,8 +167,6 @@ public class OpenMetadataTypesArchive3_5
         update0041ServerPurpose();
         update00420045SoftwareCapabilities();
         extend0112Person();
-        update0130Projects();
-        update0140Communities();
     }
 
 
@@ -696,87 +694,6 @@ public class OpenMetadataTypesArchive3_5
     }
 
 
-    /**
-     * Changing end 2 from ProjectManager to PersonRole to allow any role to manage projects.
-     */
-    private void update0130Projects()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateProjectManagementRelationship());
-    }
-
-
-    /* Deprecated */
-    private TypeDefPatch updateProjectManagementRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "projectManagers";
-        final String                     end2AttributeDescription     = "The roles for managing this project.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Changing end 2 from CommunityMember to PersonRole to allow any role to be a member of a community.
-     */
-    private void update0140Communities()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateCommunityMembershipRelationship());
-    }
-
-
-    private TypeDefPatch updateCommunityMembershipRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "communityMembers";
-        final String                     end2AttributeDescription     = "Members of the community.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

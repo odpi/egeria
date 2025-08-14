@@ -4,7 +4,15 @@ package org.odpi.openmetadata.viewservices.securityofficer.server;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -31,5 +39,127 @@ public class SecurityOfficerRESTServices extends TokenController
     }
 
 
+
+    /**
+     * Attach governance zones in a hierarchy.
+     *
+     * @param serverName         name of called server
+     * @param governanceZoneGUID    unique identifier of the parent subject area.
+     * @param nestedGovernanceZoneGUID    unique identifier of the nested subject area.
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkGovernanceZones(String                  serverName,
+                                            String                  governanceZoneGUID,
+                                            String                  nestedGovernanceZoneGUID,
+                                            NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkGovernanceZones";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ZoneHierarchyProperties zoneHierarchyProperties)
+                {
+                    handler.linkGovernanceZones(userId,
+                                                governanceZoneGUID,
+                                                nestedGovernanceZoneGUID,
+                                                requestBody,
+                                                zoneHierarchyProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkGovernanceZones(userId,
+                                                governanceZoneGUID,
+                                                nestedGovernanceZoneGUID,
+                                                requestBody,
+                                                null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ZoneHierarchyProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkGovernanceZones(userId,
+                                         governanceZoneGUID,
+                                         nestedGovernanceZoneGUID,
+                                         null,
+                                         null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach governance zone from a hierarchical relationship.
+     *
+     * @param serverName         name of called server
+     * @param governanceZoneGUID    unique identifier of the parent data structure.
+     * @param dataFieldGUID    unique identifier of the nested data field.
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachGovernanceZones(String            serverName,
+                                           String            governanceZoneGUID,
+                                           String            dataFieldGUID,
+                                           DeleteRequestBody requestBody)
+    {
+        final String methodName = "detachGovernanceZones";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            handler.detachGovernanceZones(userId, governanceZoneGUID, dataFieldGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
 }
