@@ -294,7 +294,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getGlossaryByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)">
 <h3>getGlossaryByGUID</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/{glossaryGUID}/retrieve")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/{glossaryGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></span>&nbsp;<span class="element-name">getGlossaryByGUID</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -306,7 +306,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to route the request to</dd>
 <dd><code>glossaryGUID</code> - unique identifier of the requested metadata element</dd>
-<dd><code>requestBody</code> - asset manager identifiers</dd>
+<dd><code>requestBody</code> - search options</dd>
 <dt>Returns:</dt>
 <dd>matching metadata element or
  InvalidParameterException  one of the parameters is invalid
@@ -318,7 +318,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getGlossaryForTerm(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)">
 <h3>getGlossaryForTerm</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/for-term/{glossaryTermGUID}/retrieve")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/for-term/{glossaryTermGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></span>&nbsp;<span class="element-name">getGlossaryForTerm</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -352,7 +352,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>requestBody</code> - asset manager identifiers and search string</dd>
+<dd><code>requestBody</code> - query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements or
  InvalidParameterException  one of the parameters is invalid
@@ -386,7 +386,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getGlossaryTermByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)">
 <h3>getGlossaryTermByGUID</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/terms/{glossaryTermGUID}/retrieve")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/terms/{glossaryTermGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></span>&nbsp;<span class="element-name">getGlossaryTermByGUID</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable

@@ -411,22 +411,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the elements linked via a "SourceFrom" relationship to the requested element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStakeholderElements(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties)" class="member-name-link">getStakeholderElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stakeholderGUID,
- <a href="../../../../frameworks/openmetadata/search/FindProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindProperties</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the elements linked via a "Stakeholder" relationship to the requested stakeholder.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStakeholders(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties)" class="member-name-link">getStakeholders</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="../../../../frameworks/openmetadata/search/FindProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindProperties</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the elements linked via a "Stakeholder" relationship to the requested element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedByResource(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties)" class="member-name-link">getSupportedByResource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceGUID,
@@ -844,60 +828,6 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the server instance to connect to</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
 <dd><code>elementGUID</code> - unique identifier of the element that the returned elements are linked to</dd>
-<dd><code>requestBody</code> - properties for relationship request</dd>
-<dt>Returns:</dt>
-<dd>linked elements or
- InvalidParameterException full path or userId is null or
- PropertyServerException problem accessing property server or
- UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getStakeholders(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties)">
-<h3>getStakeholders</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/stakeholders")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getStakeholders</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- @RequestBody(required=false)
- <a href="../../../../frameworks/openmetadata/search/FindProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindProperties</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the elements linked via a "Stakeholder" relationship to the requested element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>urlMarker</code> - view service URL marker</dd>
-<dd><code>elementGUID</code> - unique identifier of the element that the returned elements are linked to</dd>
-<dd><code>requestBody</code> - properties for relationship request</dd>
-<dt>Returns:</dt>
-<dd>linked elements or
- InvalidParameterException full path or userId is null or
- PropertyServerException problem accessing property server or
- UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getStakeholderElements(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties)">
-<h3>getStakeholderElements</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/stakeholders/{stakeholderGUID}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getStakeholderElements</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stakeholderGUID,
- @RequestBody(required=false)
- <a href="../../../../frameworks/openmetadata/search/FindProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindProperties</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the elements linked via a "Stakeholder" relationship to the requested stakeholder.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>urlMarker</code> - view service URL marker</dd>
-<dd><code>stakeholderGUID</code> - unique identifier of the element that the returned elements are linked to</dd>
 <dd><code>requestBody</code> - properties for relationship request</dd>
 <dt>Returns:</dt>
 <dd>linked elements or

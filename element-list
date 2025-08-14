@@ -74,6 +74,8 @@ org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
 org.odpi.openmetadata.adapters.connectors.postgres.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.survey
+org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource
+org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.utilities
 org.odpi.openmetadata.adapters.connectors.reports
 org.odpi.openmetadata.adapters.connectors.reports.ffdc

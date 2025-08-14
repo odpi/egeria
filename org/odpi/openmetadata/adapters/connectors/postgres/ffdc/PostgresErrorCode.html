@@ -121,12 +121,16 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_DATABASE_CONNECTION" class="member-name-link">NO_DATABASE_CONNECTION</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">POSTGRES-CONNECTOR-400-002 - Connection {0} has been configured without the embedded JDBC database connection</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">POSTGRES-CONNECTOR-400-001 - Connection {0} has been configured without the URL to the database</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">POSTGRES-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -194,6 +198,13 @@ the order they are declared.</div>
 <h3>NULL_URL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.ffdc">PostgresErrorCode</a></span>&nbsp;<span class="element-name">NULL_URL</span></div>
 <div class="block">POSTGRES-CONNECTOR-400-001 - Connection {0} has been configured without the URL to the database</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_DATABASE_CONNECTION">
+<h3>NO_DATABASE_CONNECTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.ffdc">PostgresErrorCode</a></span>&nbsp;<span class="element-name">NO_DATABASE_CONNECTION</span></div>
+<div class="block">POSTGRES-CONNECTOR-400-002 - Connection {0} has been configured without the embedded JDBC database connection</div>
 </section>
 </li>
 <li>
